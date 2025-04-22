@@ -37,6 +37,33 @@ class GeoSeries:
             e.g. ``name``.
     """
 
+    # GeoSeries.area overrides Series.area with something totally different.
+    # Ignore this type error, as we are trying to be as close to geopandas as
+    # we can.
+    @property
+    def area(self, crs=None) -> bigframes.series.Series:  # type: ignore
+        """[Not Implemented] Use ``bigframes.bigquery.st_area(series)``,
+        instead to return the area in square meters.
+
+        In GeoPandas, this returns a Series containing the area of each geometry
+        in the GeoSeries expressed in the units of the CRS.
+
+        Args:
+            crs (optional):
+                Coordinate Reference System of the geometry objects. Can be
+                anything accepted by pyproj.CRS.from_user_input(), such as an
+                authority string (eg “EPSG:4326”) or a WKT string.
+
+        Returns:
+            bigframes.pandas.Series:
+                Series of float representing the areas.
+
+        Raises:
+            NotImplementedError:
+                GeoSeries.area is not supported. Use bigframes.bigquery.st_area(series), instead.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     @property
     def x(self) -> bigframes.series.Series:
         """Return the x location of point geometries in a GeoSeries
@@ -345,6 +372,30 @@ class GeoSeries:
             bigframes.geopandas.GeoSeries:
                 A GeoSeries of the points in each aligned geometry that are not
                 in other.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def distance(self: GeoSeries, other: GeoSeries) -> bigframes.series.Series:
+        """
+        [Not Implemented] Use ``bigframes.bigquery.st_distance(series, other)``
+        instead to return the shorted distance between two
+        ``GEOGRAPHY`` objects in meters.
+
+        In GeoPandas, this returns a Series of the distances between each
+        aligned geometry in the expressed in the units of the CRS.
+
+        Args:
+            other:
+                The Geoseries (elementwise) or geometric object to find the distance to.
+
+        Returns:
+            bigframes.pandas.Series:
+                Series of float representing the distances.
+
+        Raises:
+            NotImplementedError:
+                GeoSeries.distance is not supported. Use
+                ``bigframes.bigquery.st_distance(series, other)``, instead.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

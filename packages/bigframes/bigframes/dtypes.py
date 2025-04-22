@@ -586,30 +586,32 @@ def _is_bigframes_dtype(dtype) -> bool:
     return False
 
 
-def _infer_dtype_from_python_type(type: type) -> Dtype:
-    if type in (datetime.timedelta, pd.Timedelta, np.timedelta64):
+def _infer_dtype_from_python_type(type_: type) -> Dtype:
+    if type_ in (datetime.timedelta, pd.Timedelta, np.timedelta64):
         # Must check timedelta type first. Otherwise other branchs will be evaluated to true
         # E.g. np.timedelta64 is a sublcass as np.integer
         return TIMEDELTA_DTYPE
-    if issubclass(type, (bool, np.bool_)):
+    if issubclass(type_, (bool, np.bool_)):
         return BOOL_DTYPE
-    if issubclass(type, (int, np.integer)):
+    if issubclass(type_, (int, np.integer)):
         return INT_DTYPE
-    if issubclass(type, (float, np.floating)):
+    if issubclass(type_, (float, np.floating)):
         return FLOAT_DTYPE
-    if issubclass(type, decimal.Decimal):
+    if issubclass(type_, decimal.Decimal):
         return NUMERIC_DTYPE
-    if issubclass(type, (str, np.str_)):
+    if issubclass(type_, (str, np.str_)):
         return STRING_DTYPE
-    if issubclass(type, (bytes, np.bytes_)):
+    if issubclass(type_, (bytes, np.bytes_)):
         return BYTES_DTYPE
-    if issubclass(type, datetime.date):
+    if issubclass(type_, datetime.date):
         return DATE_DTYPE
-    if issubclass(type, datetime.time):
+    if issubclass(type_, datetime.time):
         return TIME_DTYPE
+    if issubclass(type_, shapely.Geometry):
+        return GEO_DTYPE
     else:
         raise TypeError(
-            f"No matching datatype for python type: {type}. {constants.FEEDBACK_LINK}"
+            f"No matching datatype for python type: {type_}. {constants.FEEDBACK_LINK}"
         )
 
 

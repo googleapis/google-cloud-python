@@ -1023,6 +1023,13 @@ def geo_st_difference_op_impl(x: ibis_types.Value, y: ibis_types.Value):
     )
 
 
+@scalar_op_compiler.register_binary_op(ops.GeoStDistanceOp, pass_op=True)
+def geo_st_distance_op_impl(
+    x: ibis_types.Value, y: ibis_types.Value, op: ops.GeoStDistanceOp
+):
+    return st_distance(x, y, op.use_spheroid)
+
+
 @scalar_op_compiler.register_unary_op(ops.geo_st_geogfromtext_op)
 def geo_st_geogfromtext_op_impl(x: ibis_types.Value):
     # Ibis doesn't seem to provide a dedicated method to cast from string to geography,
@@ -1987,6 +1994,11 @@ def unix_millis(a: ibis_dtypes.timestamp) -> int:  # type: ignore
 @ibis_udf.scalar.builtin
 def st_boundary(a: ibis_dtypes.geography) -> ibis_dtypes.geography:  # type: ignore
     """Find the boundary of a geography."""
+
+
+@ibis_udf.scalar.builtin
+def st_distance(a: ibis_dtypes.geography, b: ibis_dtypes.geography, use_spheroid: bool) -> ibis_dtypes.float:  # type: ignore
+    """Convert string to geography."""
 
 
 @ibis_udf.scalar.builtin

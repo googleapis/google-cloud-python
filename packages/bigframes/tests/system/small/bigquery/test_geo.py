@@ -14,6 +14,7 @@
 
 import geopandas  # type: ignore
 import pandas as pd
+import pandas.testing
 from shapely.geometry import (  # type: ignore
     GeometryCollection,
     LineString,
@@ -23,7 +24,6 @@ from shapely.geometry import (  # type: ignore
 
 import bigframes.bigquery as bbq
 import bigframes.geopandas
-import bigframes.series
 
 
 def test_geo_st_area():
@@ -54,7 +54,7 @@ def test_geo_st_area():
         check_dtype=False,
         check_index_type=False,
         check_exact=False,
-        rtol=1,
+        rtol=0.1,
     )
 
 
@@ -75,7 +75,7 @@ def test_geo_st_difference_with_geometry_objects():
     geobf_s2 = bigframes.geopandas.GeoSeries(data=data2)
     geobf_s_result = bbq.st_difference(geobf_s1, geobf_s2).to_pandas()
 
-    expected = bigframes.series.Series(
+    expected = pd.Series(
         [
             GeometryCollection([]),
             GeometryCollection([]),
@@ -83,46 +83,45 @@ def test_geo_st_difference_with_geometry_objects():
         ],
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
-    ).to_pandas()
-
-    assert geobf_s_result.dtype == "geometry"
-    assert expected.iloc[0].equals(geobf_s_result.iloc[0])
-    assert expected.iloc[1].equals(geobf_s_result.iloc[1])
-    assert expected.iloc[2].equals(geobf_s_result.iloc[2])
+    )
+    pandas.testing.assert_series_equal(
+        geobf_s_result,
+        expected,
+        check_index_type=False,
+        check_exact=False,
+        rtol=0.1,
+    )
 
 
 def test_geo_st_difference_with_single_geometry_object():
     data1 = [
-        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
-        Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]),
+        Polygon([(0, 1), (10, 1), (10, 9), (0, 9), (0, 1)]),
         Point(0, 1),
     ]
 
     geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
     geobf_s_result = bbq.st_difference(
         geobf_s1,
-        bigframes.geopandas.GeoSeries(
-            [
-                Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
-                Polygon([(1, 0), (0, 5), (0, 0), (1, 0)]),
-            ]
-        ),
+        Polygon([(0, 0), (10, 0), (10, 5), (0, 5), (0, 0)]),
     ).to_pandas()
 
-    expected = bigframes.series.Series(
+    expected = pd.Series(
         [
+            Polygon([(10, 5), (10, 10), (0, 10), (0, 5), (10, 5)]),
+            Polygon([(10, 5), (10, 9), (0, 9), (0, 5), (10, 5)]),
             GeometryCollection([]),
-            Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
-            None,
         ],
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
-    ).to_pandas()
-
-    assert geobf_s_result.dtype == "geometry"
-    assert (expected.iloc[0]).equals(geobf_s_result.iloc[0])
-    assert expected.iloc[1] == geobf_s_result.iloc[1]
-    assert expected.iloc[2] == geobf_s_result.iloc[2]
+    )
+    pandas.testing.assert_series_equal(
+        geobf_s_result,
+        expected,
+        check_index_type=False,
+        check_exact=False,
+        rtol=0.1,
+    )
 
 
 def test_geo_st_difference_with_similar_geometry_objects():
@@ -135,16 +134,113 @@ def test_geo_st_difference_with_similar_geometry_objects():
     geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
     geobf_s_result = bbq.st_difference(geobf_s1, geobf_s1).to_pandas()
 
-    expected = bigframes.series.Series(
+    expected = pd.Series(
         [GeometryCollection([]), GeometryCollection([]), GeometryCollection([])],
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
+    )
+    pandas.testing.assert_series_equal(
+        geobf_s_result,
+        expected,
+        check_index_type=False,
+        check_exact=False,
+        rtol=0.1,
+    )
+
+
+def test_geo_st_distance_with_geometry_objects():
+    data1 = [
+        # 0.00001 is approximately 1 meter.
+        Polygon([(0, 0), (0.00001, 0), (0.00001, 0.00001), (0, 0.00001), (0, 0)]),
+        Polygon(
+            [
+                (0.00002, 0),
+                (0.00003, 0),
+                (0.00003, 0.00001),
+                (0.00002, 0.00001),
+                (0.00002, 0),
+            ]
+        ),
+        Point(0, 0.00002),
+    ]
+
+    data2 = [
+        Polygon(
+            [
+                (0.00002, 0),
+                (0.00003, 0),
+                (0.00003, 0.00001),
+                (0.00002, 0.00001),
+                (0.00002, 0),
+            ]
+        ),
+        Point(0, 0.00002),
+        Polygon([(0, 0), (0.00001, 0), (0.00001, 0.00001), (0, 0.00001), (0, 0)]),
+        Point(
+            1, 1
+        ),  # No matching row in data1, so this will be NULL after the call to distance.
+    ]
+
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s2 = bigframes.geopandas.GeoSeries(data=data2)
+    geobf_s_result = bbq.st_distance(geobf_s1, geobf_s2).to_pandas()
+
+    expected = pd.Series(
+        [
+            1.112,
+            2.486,
+            1.112,
+            None,
+        ],
+        index=[0, 1, 2, 3],
+        dtype="Float64",
+    )
+    pandas.testing.assert_series_equal(
+        geobf_s_result,
+        expected,
+        check_index_type=False,
+        check_exact=False,
+        rtol=0.1,
+    )
+
+
+def test_geo_st_distance_with_single_geometry_object():
+    data1 = [
+        # 0.00001 is approximately 1 meter.
+        Polygon([(0, 0), (0.00001, 0), (0.00001, 0.00001), (0, 0.00001), (0, 0)]),
+        Polygon(
+            [
+                (0.00001, 0),
+                (0.00002, 0),
+                (0.00002, 0.00001),
+                (0.00001, 0.00001),
+                (0.00001, 0),
+            ]
+        ),
+        Point(0, 0.00002),
+    ]
+
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s_result = bbq.st_distance(
+        geobf_s1,
+        Point(0, 0),
     ).to_pandas()
 
-    assert geobf_s_result.dtype == "geometry"
-    assert expected.iloc[0].equals(geobf_s_result.iloc[0])
-    assert expected.iloc[1].equals(geobf_s_result.iloc[1])
-    assert expected.iloc[2].equals(geobf_s_result.iloc[2])
+    expected = pd.Series(
+        [
+            0,
+            1.112,
+            2.224,
+        ],
+        dtype="Float64",
+    )
+    pandas.testing.assert_series_equal(
+        geobf_s_result,
+        expected,
+        check_index_type=False,
+        check_exact=False,
+        rtol=0.1,
+    )
 
 
 def test_geo_st_intersection_with_geometry_objects():
@@ -164,7 +260,7 @@ def test_geo_st_intersection_with_geometry_objects():
     geobf_s2 = bigframes.geopandas.GeoSeries(data=data2)
     geobf_s_result = bbq.st_intersection(geobf_s1, geobf_s2).to_pandas()
 
-    expected = bigframes.series.Series(
+    expected = pd.Series(
         [
             Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
             Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
@@ -172,46 +268,45 @@ def test_geo_st_intersection_with_geometry_objects():
         ],
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
-    ).to_pandas()
-
-    assert geobf_s_result.dtype == "geometry"
-    assert expected.iloc[0].equals(geobf_s_result.iloc[0])
-    assert expected.iloc[1].equals(geobf_s_result.iloc[1])
-    assert expected.iloc[2].equals(geobf_s_result.iloc[2])
+    )
+    pandas.testing.assert_series_equal(
+        geobf_s_result,
+        expected,
+        check_index_type=False,
+        check_exact=False,
+        rtol=0.1,
+    )
 
 
 def test_geo_st_intersection_with_single_geometry_object():
     data1 = [
-        Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
-        Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
+        Polygon([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]),
+        Polygon([(0, 1), (10, 1), (10, 9), (0, 9), (0, 1)]),
         Point(0, 1),
     ]
 
     geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
     geobf_s_result = bbq.st_intersection(
         geobf_s1,
-        bigframes.geopandas.GeoSeries(
-            [
-                Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
-                Polygon([(1, 0), (0, 5), (0, 0), (1, 0)]),
-            ]
-        ),
+        Polygon([(0, 0), (10, 0), (10, 5), (0, 5), (0, 0)]),
     ).to_pandas()
 
-    expected = bigframes.series.Series(
+    expected = pd.Series(
         [
-            Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
-            GeometryCollection([]),
-            None,
+            Polygon([(0, 0), (10, 0), (10, 5), (0, 5), (0, 0)]),
+            Polygon([(0, 1), (10, 1), (10, 5), (0, 5), (0, 1)]),
+            Point(0, 1),
         ],
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
-    ).to_pandas()
-
-    assert geobf_s_result.dtype == "geometry"
-    assert (expected.iloc[0]).equals(geobf_s_result.iloc[0])
-    assert expected.iloc[1] == geobf_s_result.iloc[1]
-    assert expected.iloc[2] == geobf_s_result.iloc[2]
+    )
+    pandas.testing.assert_series_equal(
+        geobf_s_result,
+        expected,
+        check_index_type=False,
+        check_exact=False,
+        rtol=0.1,
+    )
 
 
 def test_geo_st_intersection_with_similar_geometry_objects():
@@ -224,7 +319,7 @@ def test_geo_st_intersection_with_similar_geometry_objects():
     geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
     geobf_s_result = bbq.st_intersection(geobf_s1, geobf_s1).to_pandas()
 
-    expected = bigframes.series.Series(
+    expected = pd.Series(
         [
             Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
             Polygon([(0, 0), (1, 1), (0, 1)]),
@@ -232,9 +327,11 @@ def test_geo_st_intersection_with_similar_geometry_objects():
         ],
         index=[0, 1, 2],
         dtype=geopandas.array.GeometryDtype(),
-    ).to_pandas()
-
-    assert geobf_s_result.dtype == "geometry"
-    assert expected.iloc[0].equals(geobf_s_result.iloc[0])
-    assert expected.iloc[1].equals(geobf_s_result.iloc[1])
-    assert expected.iloc[2].equals(geobf_s_result.iloc[2])
+    )
+    pandas.testing.assert_series_equal(
+        geobf_s_result,
+        expected,
+        check_index_type=False,
+        check_exact=False,
+        rtol=0.1,
+    )

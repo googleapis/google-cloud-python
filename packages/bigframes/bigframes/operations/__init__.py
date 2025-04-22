@@ -96,6 +96,7 @@ from bigframes.operations.geo_ops import (
     geo_st_intersection_op,
     geo_x_op,
     geo_y_op,
+    GeoStDistanceOp,
 )
 from bigframes.operations.json_ops import (
     JSONExtract,
@@ -375,6 +376,7 @@ __all__ = [
     "geo_st_intersection_op",
     "geo_x_op",
     "geo_y_op",
+    "GeoStDistanceOp",
     # Numpy ops mapping
     "NUMPY_TO_BINOP",
     "NUMPY_TO_OP",

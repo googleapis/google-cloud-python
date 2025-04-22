@@ -47,23 +47,6 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
     # we can.
     @property
     def area(self, crs=None) -> bigframes.series.Series:  # type: ignore
-        """Returns a Series containing the area of each geometry in the GeoSeries
-        expressed in the units of the CRS.
-
-        Args:
-            crs (optional):
-                Coordinate Reference System of the geometry objects. Can be
-                anything accepted by pyproj.CRS.from_user_input(), such as an
-                authority string (eg “EPSG:4326”) or a WKT string.
-
-        Returns:
-            bigframes.pandas.Series:
-                Series of float representing the areas.
-
-        Raises:
-            NotImplementedError:
-                GeoSeries.area is not supported. Use bigframes.bigquery.st_area(series), instead.
-        """
         raise NotImplementedError(
             f"GeoSeries.area is not supported. Use bigframes.bigquery.st_area(series), instead. {constants.FEEDBACK_LINK}"
         )
@@ -96,6 +79,11 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
 
     def difference(self: GeoSeries, other: GeoSeries) -> bigframes.series.Series:  # type: ignore
         return self._apply_binary_op(other, ops.geo_st_difference_op)
+
+    def distance(self: GeoSeries, other: GeoSeries) -> bigframes.series.Series:  # type: ignore
+        raise NotImplementedError(
+            f"GeoSeries.distance is not supported. Use bigframes.bigquery.st_distance(series, other), instead. {constants.FEEDBACK_LINK}"
+        )
 
     def intersection(self: GeoSeries, other: GeoSeries) -> bigframes.series.Series:  # type: ignore
         return self._apply_binary_op(other, ops.geo_st_intersection_op)

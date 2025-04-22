@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import dataclasses
+
 from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
@@ -69,3 +71,12 @@ geo_y_op = base_ops.create_unary_op(
 geo_st_intersection_op = base_ops.create_binary_op(
     name="geo_st_intersection", type_signature=op_typing.BinaryGeo()
 )
+
+
+@dataclasses.dataclass(frozen=True)
+class GeoStDistanceOp(base_ops.BinaryOp):
+    name = "st_distance"
+    use_spheroid: bool
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.FLOAT_DTYPE

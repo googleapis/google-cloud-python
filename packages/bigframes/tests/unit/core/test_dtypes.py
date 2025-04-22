@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
+import shapely  # type: ignore
 
 import bigframes.core.compile.ibis_types
 import bigframes.dtypes
@@ -222,6 +223,22 @@ def test_bigframes_string_dtype_converts(ibis_dtype, bigframes_dtype_str):
         bigframes.dtypes.bigframes_type(bigframes_dtype_str)
     )
     assert result == ibis_dtype
+
+
+@pytest.mark.parametrize(
+    ["python_type", "expected_dtype"],
+    [
+        (bool, bigframes.dtypes.BOOL_DTYPE),
+        (int, bigframes.dtypes.INT_DTYPE),
+        (str, bigframes.dtypes.STRING_DTYPE),
+        (shapely.Point, bigframes.dtypes.GEO_DTYPE),
+        (shapely.Polygon, bigframes.dtypes.GEO_DTYPE),
+        (shapely.Geometry, bigframes.dtypes.GEO_DTYPE),
+    ],
+)
+def test_bigframes_type_supports_python_types(python_type, expected_dtype):
+    got_dtype = bigframes.dtypes.bigframes_type(python_type)
+    assert got_dtype == expected_dtype
 
 
 def test_unsupported_dtype_raises_unexpected_datatype():
