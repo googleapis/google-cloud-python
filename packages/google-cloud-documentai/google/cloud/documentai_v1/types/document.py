@@ -66,6 +66,9 @@ class Document(proto.Message):
             representations use base64.
 
             This field is a member of `oneof`_ ``source``.
+        docid (str):
+            Optional. An internal identifier for
+            document. Should be loggable (no PII).
         mime_type (str):
             An IANA published `media type (MIME
             type) <https://www.iana.org/assignments/media-types/media-types.xhtml>`__.
@@ -1851,6 +1854,8 @@ class Document(proto.Message):
                     ID of the block.
                 page_span (google.cloud.documentai_v1.types.Document.DocumentLayout.DocumentLayoutBlock.LayoutPageSpan):
                     Page span of the block.
+                bounding_box (google.cloud.documentai_v1.types.BoundingPoly):
+                    Identifies the bounding box for the block.
             """
 
             class LayoutPageSpan(proto.Message):
@@ -2050,6 +2055,11 @@ class Document(proto.Message):
                 number=5,
                 message="Document.DocumentLayout.DocumentLayoutBlock.LayoutPageSpan",
             )
+            bounding_box: geometry.BoundingPoly = proto.Field(
+                proto.MESSAGE,
+                number=6,
+                message=geometry.BoundingPoly,
+            )
 
         blocks: MutableSequence[
             "Document.DocumentLayout.DocumentLayoutBlock"
@@ -2191,6 +2201,10 @@ class Document(proto.Message):
         proto.BYTES,
         number=2,
         oneof="source",
+    )
+    docid: str = proto.Field(
+        proto.STRING,
+        number=15,
     )
     mime_type: str = proto.Field(
         proto.STRING,
