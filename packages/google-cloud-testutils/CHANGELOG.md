@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/python-test-utils/compare/v1.6.0...v1.6.1) (2025-04-22)
+
+
+### Bug Fixes
+
+* Remove setup.cfg configuration for creating universal wheels ([#272](https://github.com/googleapis/python-test-utils/issues/272)) ([32a23d2](https://github.com/googleapis/python-test-utils/commit/32a23d2e434e133d2b16e4afed6b80890b544968))
+
 ## [1.6.0](https://github.com/googleapis/python-test-utils/compare/v1.5.0...v1.6.0) (2025-01-30)
 
 
