@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [1.2.2](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v1.2.1...v1.2.2) (2025-04-01)
+
+
+### Bug Fixes
+
+* Do not include docs/conf.py & scripts in wheel ([#328](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/328)) ([78940df](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/78940dfce4e4cb3fbf73464cb42867a732f2110b))
+* Let OS select an available port when running TestInstalledAppFlow ([#407](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/407)) ([6060d65](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/6060d65626fbfe4472625f27039df72956f5f3be)), closes [#381](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/381)
+* Remove setup.cfg configuration for creating universal wheels ([#405](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/405)) ([0b962ed](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/0b962ed5aa39e2e728a3aaf6507c064ddf0b0532))
+
 ## [1.2.1](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v1.2.0...v1.2.1) (2024-07-08)
 
 
