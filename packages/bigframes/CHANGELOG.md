@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.1.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.0.0...v2.1.0) (2025-04-22)
+
+
+### Features
+
+* Add `bigframes.bigquery.st_distance` function ([#1637](https://github.com/googleapis/python-bigquery-dataframes/issues/1637)) ([bf1ae70](https://github.com/googleapis/python-bigquery-dataframes/commit/bf1ae7091a02ad28d222fa63d311ed5ef3800807))
+* Enable local json string validations ([#1614](https://github.com/googleapis/python-bigquery-dataframes/issues/1614)) ([233347a](https://github.com/googleapis/python-bigquery-dataframes/commit/233347aca0ac55b2407e0f49430bf13536986e25))
+* Enhance `read_csv` `index_col` parameter support ([#1631](https://github.com/googleapis/python-bigquery-dataframes/issues/1631)) ([f4e5b26](https://github.com/googleapis/python-bigquery-dataframes/commit/f4e5b26b7b7b00ef807987c4b9c5fded56ad883f))
+
+
+### Bug Fixes
+
+* Add retry for test_clean_up_via_context_manager ([#1627](https://github.com/googleapis/python-bigquery-dataframes/issues/1627)) ([58e7cb0](https://github.com/googleapis/python-bigquery-dataframes/commit/58e7cb025a86959164643cebb725c853dc2ebc34))
+* Improve robustness of managed udf code extraction ([#1634](https://github.com/googleapis/python-bigquery-dataframes/issues/1634)) ([8cc56d5](https://github.com/googleapis/python-bigquery-dataframes/commit/8cc56d5118017beb2931519ddd1eb8e151852849))
+
+
+### Documentation
+
+* Add code samples in the `udf` API docstring ([#1632](https://github.com/googleapis/python-bigquery-dataframes/issues/1632)) ([f68b80c](https://github.com/googleapis/python-bigquery-dataframes/commit/f68b80cce2451a8c8d931a54e0cb69e02f34ce10))
+
 ## [2.0.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.42.0...v2.0.0) (2025-04-17)
 
 
