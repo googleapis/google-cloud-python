@@ -73,6 +73,63 @@ def test_simple_literal(value, expected_pattern):
     assert re.match(expected_pattern, got) is not None
 
 
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    (
+        # Try to have some list of literals for each scalar data type:
+        # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
+        ([None, None], "[NULL, NULL]"),
+        ([True, False], "[True, False]"),
+        (
+            [b"\x01\x02\x03ABC", b"\x01\x02\x03ABC"],
+            "[b'\\x01\\x02\\x03ABC', b'\\x01\\x02\\x03ABC']",
+        ),
+        (
+            [datetime.date(2025, 1, 1), datetime.date(2025, 1, 1)],
+            "[DATE('2025-01-01'), DATE('2025-01-01')]",
+        ),
+        (
+            [datetime.datetime(2025, 1, 2, 3, 45, 6, 789123)],
+            "[DATETIME('2025-01-02T03:45:06.789123')]",
+        ),
+        (
+            [shapely.Point(0, 1), shapely.Point(0, 2)],
+            "[ST_GEOGFROMTEXT('POINT (0 1)'), ST_GEOGFROMTEXT('POINT (0 2)')]",
+        ),
+        # TODO: INTERVAL type (e.g. from dateutil.relativedelta)
+        # TODO: JSON type (TBD what Python object that would correspond to)
+        ([123, 456], "[123, 456]"),
+        (
+            [decimal.Decimal("123.75"), decimal.Decimal("456.78")],
+            "[CAST('123.75' AS NUMERIC), CAST('456.78' AS NUMERIC)]",
+        ),
+        # TODO: support BIGNUMERIC by looking at precision/scale of the DECIMAL
+        ([123.75, 456.78], "[123.75, 456.78]"),
+        # TODO: support RANGE type
+        (["abc", "def"], "['abc', 'def']"),
+        # TODO: support STRUCT type (possibly another method?)
+        (
+            [datetime.time(12, 34, 56, 789123), datetime.time(11, 25, 56, 789123)],
+            "[TIME(DATETIME('1970-01-01 12:34:56.789123')), TIME(DATETIME('1970-01-01 11:25:56.789123'))]",
+        ),
+        (
+            [
+                datetime.datetime(
+                    2025, 1, 2, 3, 45, 6, 789123, tzinfo=datetime.timezone.utc
+                ),
+                datetime.datetime(
+                    2025, 2, 1, 4, 45, 6, 789123, tzinfo=datetime.timezone.utc
+                ),
+            ],
+            "[TIMESTAMP('2025-01-02T03:45:06.789123+00:00'), TIMESTAMP('2025-02-01T04:45:06.789123+00:00')]",
+        ),
+    ),
+)
+def test_simple_literal_w_list(value: list, expected: str):
+    got = sql.simple_literal(value)
+    assert got == expected
+
+
 def test_create_vector_search_sql_simple():
     result_query = sql.create_vector_search_sql(
         sql_string="SELECT embedding FROM my_embeddings_table WHERE id = 1",
