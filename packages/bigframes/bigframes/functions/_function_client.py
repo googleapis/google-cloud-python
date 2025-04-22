@@ -19,6 +19,7 @@ import inspect
 import logging
 import os
 import random
+import re
 import shutil
 import string
 import tempfile
@@ -272,7 +273,10 @@ class FunctionClient:
             # i.e. there are no references to variables or imports outside the
             # body.
             udf_code = textwrap.dedent(inspect.getsource(func))
-            udf_code = udf_code[udf_code.index("def") :]
+            match = re.search(r"^def ", udf_code, flags=re.MULTILINE)
+            if match is None:
+                raise ValueError("The UDF is not defined correctly.")
+            udf_code = udf_code[match.start() :]
 
         with_connection_clause = (
             (
