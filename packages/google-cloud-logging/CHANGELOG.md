@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.12.1](https://github.com/googleapis/python-logging/compare/v3.12.0...v3.12.1) (2025-04-21)
+
+
+### Bug Fixes
+
+* Make logging handler close conditional to having the transport opened ([#990](https://github.com/googleapis/python-logging/issues/990)) ([66c6b91](https://github.com/googleapis/python-logging/commit/66c6b91725eb479a0af138a2be13f3c25f369d7e))
+
 ## [3.12.0](https://github.com/googleapis/python-logging/compare/v3.11.4...v3.12.0) (2025-04-10)
 
 
