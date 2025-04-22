@@ -135,7 +135,7 @@ class DetectionConfidenceLevel(proto.Enum):
 
     Values:
         DETECTION_CONFIDENCE_LEVEL_UNSPECIFIED (0):
-            Same as LOW_AND_ABOVE.
+            Same as MEDIUM_AND_ABOVE.
         LOW_AND_ABOVE (1):
             Highest chance of a false positive.
         MEDIUM_AND_ABOVE (2):
