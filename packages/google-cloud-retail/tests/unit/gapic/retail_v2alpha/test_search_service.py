@@ -1175,6 +1175,9 @@ def test_search_non_empty_request_with_auto_populated_field():
         canonical_filter="canonical_filter_value",
         order_by="order_by_value",
         entity="entity_value",
+        language_code="language_code_value",
+        region_code="region_code_value",
+        place_id="place_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1195,6 +1198,9 @@ def test_search_non_empty_request_with_auto_populated_field():
             canonical_filter="canonical_filter_value",
             order_by="order_by_value",
             entity="entity_value",
+            language_code="language_code_value",
+            region_code="region_code_value",
+            place_id="place_id_value",
         )
 
 
