@@ -67,7 +67,7 @@ class gdchardwaremanagementCallTransformer(cst.CSTTransformer):
         'list_skus': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_zones': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'record_action_on_comment': ('name', 'action_type', ),
-        'signal_zone_state': ('name', 'request_id', 'state_signal', 'provisioning_state_signal', ),
+        'signal_zone_state': ('name', 'request_id', 'state_signal', 'provisioning_state_signal', 'step', 'details', ),
         'submit_order': ('name', 'request_id', 'type_', ),
         'update_hardware': ('update_mask', 'hardware', 'request_id', ),
         'update_hardware_group': ('update_mask', 'hardware_group', 'request_id', ),

@@ -1748,6 +1748,7 @@ def test_get_order(request_type, transport: str = "grpc"):
             order_form_uri="order_form_uri_value",
             type_=resources.Order.Type.PAID,
             billing_id="billing_id_value",
+            deployment_type=resources.Order.DeploymentType.FULL_PRODUCTION,
         )
         response = client.get_order(request)
 
@@ -1768,6 +1769,7 @@ def test_get_order(request_type, transport: str = "grpc"):
     assert response.order_form_uri == "order_form_uri_value"
     assert response.type_ == resources.Order.Type.PAID
     assert response.billing_id == "billing_id_value"
+    assert response.deployment_type == resources.Order.DeploymentType.FULL_PRODUCTION
 
 
 def test_get_order_non_empty_request_with_auto_populated_field():
@@ -1900,6 +1902,7 @@ async def test_get_order_async(
                 order_form_uri="order_form_uri_value",
                 type_=resources.Order.Type.PAID,
                 billing_id="billing_id_value",
+                deployment_type=resources.Order.DeploymentType.FULL_PRODUCTION,
             )
         )
         response = await client.get_order(request)
@@ -1921,6 +1924,7 @@ async def test_get_order_async(
     assert response.order_form_uri == "order_form_uri_value"
     assert response.type_ == resources.Order.Type.PAID
     assert response.billing_id == "billing_id_value"
+    assert response.deployment_type == resources.Order.DeploymentType.FULL_PRODUCTION
 
 
 @pytest.mark.asyncio
@@ -14420,6 +14424,8 @@ def test_signal_zone_state_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = service.SignalZoneStateRequest(
         name="name_value",
+        step="step_value",
+        details="details_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14434,6 +14440,8 @@ def test_signal_zone_state_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.SignalZoneStateRequest(
             name="name_value",
+            step="step_value",
+            details="details_value",
         )
 
 
@@ -14644,7 +14652,7 @@ def test_signal_zone_state_flattened():
         # using the keyword arguments to the method.
         client.signal_zone_state(
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_STARTED,
         )
 
         # Establish that the underlying call was made with the expected
@@ -14656,7 +14664,7 @@ def test_signal_zone_state_flattened():
         assert arg == mock_val
         arg = args[0].state_signal
         mock_val = (
-            service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED
+            service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_STARTED
         )
         assert arg == mock_val
 
@@ -14672,7 +14680,7 @@ def test_signal_zone_state_flattened_error():
         client.signal_zone_state(
             service.SignalZoneStateRequest(),
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_STARTED,
         )
 
 
@@ -14696,7 +14704,7 @@ async def test_signal_zone_state_flattened_async():
         # using the keyword arguments to the method.
         response = await client.signal_zone_state(
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_STARTED,
         )
 
         # Establish that the underlying call was made with the expected
@@ -14708,7 +14716,7 @@ async def test_signal_zone_state_flattened_async():
         assert arg == mock_val
         arg = args[0].state_signal
         mock_val = (
-            service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED
+            service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_STARTED
         )
         assert arg == mock_val
 
@@ -14725,7 +14733,7 @@ async def test_signal_zone_state_flattened_error_async():
         await client.signal_zone_state(
             service.SignalZoneStateRequest(),
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_STARTED,
         )
 
 
@@ -21817,7 +21825,7 @@ def test_signal_zone_state_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_STARTED,
         )
         mock_args.update(sample_request)
 
@@ -21854,7 +21862,7 @@ def test_signal_zone_state_rest_flattened_error(transport: str = "rest"):
         client.signal_zone_state(
             service.SignalZoneStateRequest(),
             name="name_value",
-            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_PASSED,
+            state_signal=service.SignalZoneStateRequest.StateSignal.FACTORY_TURNUP_CHECKS_STARTED,
         )
 
 
@@ -22782,6 +22790,7 @@ async def test_get_order_empty_call_grpc_asyncio():
                 order_form_uri="order_form_uri_value",
                 type_=resources.Order.Type.PAID,
                 billing_id="billing_id_value",
+                deployment_type=resources.Order.DeploymentType.FULL_PRODUCTION,
             )
         )
         await client.get_order(request=None)
@@ -23893,6 +23902,7 @@ def test_get_order_rest_call_success(request_type):
             order_form_uri="order_form_uri_value",
             type_=resources.Order.Type.PAID,
             billing_id="billing_id_value",
+            deployment_type=resources.Order.DeploymentType.FULL_PRODUCTION,
         )
 
         # Wrap the value into a proper Response obj
@@ -23918,6 +23928,7 @@ def test_get_order_rest_call_success(request_type):
     assert response.order_form_uri == "order_form_uri_value"
     assert response.type_ == resources.Order.Type.PAID
     assert response.billing_id == "billing_id_value"
+    assert response.deployment_type == resources.Order.DeploymentType.FULL_PRODUCTION
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -24077,6 +24088,9 @@ def test_create_order_rest_call_success(request_type):
                 "rack_space": [{"start_rack_unit": 1613, "end_rack_unit": 1366}],
             }
         ],
+        "deployment_type": 1,
+        "actual_installation_date": {"year": 433, "month": 550, "day": 318},
+        "estimated_installation_date": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -24329,6 +24343,9 @@ def test_update_order_rest_call_success(request_type):
                 "rack_space": [{"start_rack_unit": 1613, "end_rack_unit": 1366}],
             }
         ],
+        "deployment_type": 1,
+        "actual_installation_date": {"year": 433, "month": 550, "day": 318},
+        "estimated_installation_date": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -142,12 +142,21 @@ class Order(proto.Message):
             submitted. Is auto-populated to the current time
             when an order is submitted.
         billing_id (str):
-            Required. The Google Cloud Billing ID to be
-            charged for this order.
+            Output only. The Google Cloud Billing ID to
+            be charged for this order.
         existing_hardware (MutableSequence[google.cloud.gdchardwaremanagement_v1alpha.types.HardwareLocation]):
             Optional. Existing hardware to be removed as
             part of this order. Note: any hardware removed
             will be recycled unless otherwise agreed.
+        deployment_type (google.cloud.gdchardwaremanagement_v1alpha.types.Order.DeploymentType):
+            Output only. The deployment type of this
+            order.
+        actual_installation_date (google.type.date_pb2.Date):
+            Output only. Actual installation date for
+            this order.
+        estimated_installation_date (google.type.date_pb2.Date):
+            Output only. Estimated installation date for
+            this order.
     """
 
     class State(proto.Enum):
@@ -212,10 +221,38 @@ class Order(proto.Message):
                 Paid by the customer.
             POC (2):
                 Proof of concept for the customer.
+            UNPAID (2):
+                Not billed.
         """
+        _pb_options = {"allow_alias": True}
         TYPE_UNSPECIFIED = 0
         PAID = 1
         POC = 2
+        UNPAID = 2
+
+    class DeploymentType(proto.Enum):
+        r"""Valid types of a deployment.
+
+        Values:
+            DEPLOYMENT_TYPE_UNSPECIFIED (0):
+                Deployment type is unspecified.
+            FULL_PRODUCTION (1):
+                Prod deployment with SLOs.
+            PROOF_OF_CONCEPT (2):
+                Deployment with best-effort support and no
+                SLOs.
+            INTERNAL (3):
+                Internal deployment with best-effort support
+                and no SLOs.
+            CUSTOMER_LAB (4):
+                Customer lab deployment that we support as
+                though it's prod.
+        """
+        DEPLOYMENT_TYPE_UNSPECIFIED = 0
+        FULL_PRODUCTION = 1
+        PROOF_OF_CONCEPT = 2
+        INTERNAL = 3
+        CUSTOMER_LAB = 4
 
     name: str = proto.Field(
         proto.STRING,
@@ -289,6 +326,21 @@ class Order(proto.Message):
         proto.MESSAGE,
         number=16,
         message="HardwareLocation",
+    )
+    deployment_type: DeploymentType = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=DeploymentType,
+    )
+    actual_installation_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=date_pb2.Date,
+    )
+    estimated_installation_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message=date_pb2.Date,
     )
 
 
@@ -972,6 +1024,10 @@ class Sku(proto.Message):
         vcpu_count (int):
             Output only. The vCPU count associated with
             this SKU.
+        hardware_count_ranges (MutableSequence[google.cloud.gdchardwaremanagement_v1alpha.types.Sku.Range]):
+            Output only. The inclusive ranges of hardware
+            counts that are allowed in a zone using this
+            SKU.
     """
 
     class Type(proto.Enum):
@@ -989,6 +1045,25 @@ class Sku(proto.Message):
         TYPE_UNSPECIFIED = 0
         RACK = 1
         SERVER = 2
+
+    class Range(proto.Message):
+        r"""Inclusive range.
+
+        Attributes:
+            min_ (int):
+                The minimum value of the range.
+            max_ (int):
+                The maximum value of the range.
+        """
+
+        min_: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        max_: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -1038,6 +1113,11 @@ class Sku(proto.Message):
     vcpu_count: int = proto.Field(
         proto.INT32,
         number=12,
+    )
+    hardware_count_ranges: MutableSequence[Range] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message=Range,
     )
 
 
@@ -1095,6 +1175,8 @@ class Zone(proto.Message):
                 Google is preparing the Zone.
             READY_FOR_CUSTOMER_FACTORY_TURNUP_CHECKS (5):
                 Factory turnup has succeeded.
+            CUSTOMER_FACTORY_TURNUP_CHECKS_STARTED (8):
+                The Zone is running factory turnup checks.
             READY_FOR_SITE_TURNUP (6):
                 The Zone is ready for site turnup.
             CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED (7):
@@ -1108,6 +1190,7 @@ class Zone(proto.Message):
         ADDITIONAL_INFO_NEEDED = 1
         PREPARING = 2
         READY_FOR_CUSTOMER_FACTORY_TURNUP_CHECKS = 5
+        CUSTOMER_FACTORY_TURNUP_CHECKS_STARTED = 8
         READY_FOR_SITE_TURNUP = 6
         CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED = 7
         ACTIVE = 3
