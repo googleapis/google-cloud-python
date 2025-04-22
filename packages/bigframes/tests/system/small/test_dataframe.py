@@ -5283,6 +5283,16 @@ def test_to_gbq_and_create_dataset(session, scalars_df_index, dataset_id_not_cre
     assert not loaded_scalars_df_index.empty
 
 
+def test_read_gbq_to_pandas_no_exec(unordered_session: bigframes.Session):
+    metrics = unordered_session._metrics
+    execs_pre = metrics.execution_count
+    df = unordered_session.read_gbq("bigquery-public-data.ml_datasets.penguins")
+    df.to_pandas()
+    execs_post = metrics.execution_count
+    assert df.shape == (344, 7)
+    assert execs_pre == execs_post
+
+
 def test_to_gbq_table_labels(scalars_df_index):
     destination_table = "bigframes-dev.bigframes_tests_sys.table_labels"
     result_table = scalars_df_index.to_gbq(

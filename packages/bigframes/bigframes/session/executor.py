@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import abc
 import dataclasses
+import itertools
 from typing import Callable, Iterator, Literal, Mapping, Optional, Sequence, Union
 
 from google.cloud import bigquery
@@ -37,10 +38,16 @@ class ExecuteResult:
         # Need to provide schema if no result rows, as arrow can't infer
         # If ther are rows, it is safest to infer schema from batches.
         # Any discrepencies between predicted schema and actual schema will produce errors.
-        return pyarrow.Table.from_batches(
-            self.arrow_batches(),
-            self.schema.to_pyarrow() if not self.total_rows else None,
-        )
+        batches = iter(self.arrow_batches())
+        peek_it = itertools.islice(batches, 0, 1)
+        peek_value = list(peek_it)
+        # TODO: Enforce our internal schema on the table for consistency
+        if len(peek_value) > 0:
+            return pyarrow.Table.from_batches(
+                itertools.chain(peek_value, batches),  # reconstruct
+            )
+        else:
+            return self.schema.to_pyarrow().empty_table()
 
 
 class Executor(abc.ABC):
