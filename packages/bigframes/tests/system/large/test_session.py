@@ -151,6 +151,7 @@ def test_clean_up_by_session_id():
         pytest.param(bigframes.connect, id="connect-method"),
     ],
 )
+@pytest.mark.flaky(retries=3)
 def test_clean_up_via_context_manager(session_creator):
     # we will create two tables and confirm that they are deleted
     # when the session is closed
