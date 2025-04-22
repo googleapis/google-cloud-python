@@ -91,13 +91,13 @@ def update_instance(instance_id):
             labels={
                 "sample_name": "snippets-update_instance-explicit",
             },
-            edition=spanner_instance_admin.Instance.Edition.STANDARD,  # Optional
+            edition=spanner_instance_admin.Instance.Edition.ENTERPRISE,  # Optional
         ),
         field_mask=field_mask_pb2.FieldMask(paths=["labels", "edition"]),
     )
 
     print("Waiting for operation to complete...")
-    operation.result(OPERATION_TIMEOUT_SECONDS)
+    operation.result(900)
 
     print("Updated instance {}".format(instance_id))
 
