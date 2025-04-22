@@ -47,6 +47,8 @@
         uid: bigframes.operations.structs.StructFrameAccessor
       - name: AI
         uid: bigframes.operations.ai.AIAccessor
+        status: beta
+      name: DataFrame
     - items:
       - name: DataFrameGroupBy
         uid: bigframes.core.groupby.DataFrameGroupBy
@@ -84,6 +86,8 @@
         uid: bigframes.operations.strings.StringMethods
       - name: StructAccessor
         uid: bigframes.operations.structs.StructAccessor
+      - name: ListAccessor
+        uid: bigframes.operations.lists.ListAccessor
       - name: PlotAccessor
         uid: bigframes.operations.plotting.PlotAccessor
       - name: BlobAccessor

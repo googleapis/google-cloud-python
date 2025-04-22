@@ -22,7 +22,7 @@ Accessors
 Plotting handling
 ^^^^^^^^^^^^^^^^^
 
-.. automodule:: bigframes.operations.plotting
+.. autoclass:: bigframes.operations.plotting.PlotAccessor
     :members:
     :inherited-members:
     :undoc-members:
