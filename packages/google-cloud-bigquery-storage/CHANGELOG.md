@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.31.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.30.0...v2.31.0) (2025-04-22)
+
+
+### Features
+
+* **v1alpha:** Increased the number of partitions can be written in a single request ([1f2ed7e](https://github.com/googleapis/python-bigquery-storage/commit/1f2ed7e918bce8d1ffd795abbdc4de826783cce7))
+
+
+### Documentation
+
+* **v1alpha:** Updated the number of partitions (from 100 to 900) that can be inserted, updated and deleted in a single request ([1f2ed7e](https://github.com/googleapis/python-bigquery-storage/commit/1f2ed7e918bce8d1ffd795abbdc4de826783cce7))
+
 ## [2.30.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.29.1...v2.30.0) (2025-03-25)
 
 
