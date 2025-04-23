@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -2962,6 +2963,10 @@ class MigrationConfig(proto.Message):
             Templates to Dataplex.
         catalog_ui_experience (google.cloud.datacatalog_v1.types.CatalogUIExperience):
             Opt-in status for the UI switch to Dataplex.
+        template_migration_enabled_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the Tag Template migration was
+            enabled. If the Tag Template migration is not
+            enabled, this field is not set.
     """
 
     tag_template_migration: "TagTemplateMigration" = proto.Field(
@@ -2973,6 +2978,11 @@ class MigrationConfig(proto.Message):
         proto.ENUM,
         number=2,
         enum="CatalogUIExperience",
+    )
+    template_migration_enabled_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 
