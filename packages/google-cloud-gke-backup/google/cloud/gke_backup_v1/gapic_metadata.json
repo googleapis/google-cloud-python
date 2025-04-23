@@ -15,6 +15,11 @@
                 "create_backup"
               ]
             },
+            "CreateBackupChannel": {
+              "methods": [
+                "create_backup_channel"
+              ]
+            },
             "CreateBackupPlan": {
               "methods": [
                 "create_backup_plan"
@@ -23,6 +28,11 @@
             "CreateRestore": {
               "methods": [
                 "create_restore"
+              ]
+            },
+            "CreateRestoreChannel": {
+              "methods": [
+                "create_restore_channel"
               ]
             },
             "CreateRestorePlan": {
@@ -35,6 +45,11 @@
                 "delete_backup"
               ]
             },
+            "DeleteBackupChannel": {
+              "methods": [
+                "delete_backup_channel"
+              ]
+            },
             "DeleteBackupPlan": {
               "methods": [
                 "delete_backup_plan"
@@ -43,6 +58,11 @@
             "DeleteRestore": {
               "methods": [
                 "delete_restore"
+              ]
+            },
+            "DeleteRestoreChannel": {
+              "methods": [
+                "delete_restore_channel"
               ]
             },
             "DeleteRestorePlan": {
@@ -55,6 +75,11 @@
                 "get_backup"
               ]
             },
+            "GetBackupChannel": {
+              "methods": [
+                "get_backup_channel"
+              ]
+            },
             "GetBackupIndexDownloadUrl": {
               "methods": [
                 "get_backup_index_download_url"
@@ -65,14 +90,29 @@
                 "get_backup_plan"
               ]
             },
+            "GetBackupPlanBinding": {
+              "methods": [
+                "get_backup_plan_binding"
+              ]
+            },
             "GetRestore": {
               "methods": [
                 "get_restore"
               ]
             },
+            "GetRestoreChannel": {
+              "methods": [
+                "get_restore_channel"
+              ]
+            },
             "GetRestorePlan": {
               "methods": [
                 "get_restore_plan"
+              ]
+            },
+            "GetRestorePlanBinding": {
+              "methods": [
+                "get_restore_plan_binding"
               ]
             },
             "GetVolumeBackup": {
@@ -85,6 +125,16 @@
                 "get_volume_restore"
               ]
             },
+            "ListBackupChannels": {
+              "methods": [
+                "list_backup_channels"
+              ]
+            },
+            "ListBackupPlanBindings": {
+              "methods": [
+                "list_backup_plan_bindings"
+              ]
+            },
             "ListBackupPlans": {
               "methods": [
                 "list_backup_plans"
@@ -93,6 +143,16 @@
             "ListBackups": {
               "methods": [
                 "list_backups"
+              ]
+            },
+            "ListRestoreChannels": {
+              "methods": [
+                "list_restore_channels"
+              ]
+            },
+            "ListRestorePlanBindings": {
+              "methods": [
+                "list_restore_plan_bindings"
               ]
             },
             "ListRestorePlans": {
@@ -120,6 +180,11 @@
                 "update_backup"
               ]
             },
+            "UpdateBackupChannel": {
+              "methods": [
+                "update_backup_channel"
+              ]
+            },
             "UpdateBackupPlan": {
               "methods": [
                 "update_backup_plan"
@@ -128,6 +193,11 @@
             "UpdateRestore": {
               "methods": [
                 "update_restore"
+              ]
+            },
+            "UpdateRestoreChannel": {
+              "methods": [
+                "update_restore_channel"
               ]
             },
             "UpdateRestorePlan": {
@@ -145,6 +215,11 @@
                 "create_backup"
               ]
             },
+            "CreateBackupChannel": {
+              "methods": [
+                "create_backup_channel"
+              ]
+            },
             "CreateBackupPlan": {
               "methods": [
                 "create_backup_plan"
@@ -153,6 +228,11 @@
             "CreateRestore": {
               "methods": [
                 "create_restore"
+              ]
+            },
+            "CreateRestoreChannel": {
+              "methods": [
+                "create_restore_channel"
               ]
             },
             "CreateRestorePlan": {
@@ -165,6 +245,11 @@
                 "delete_backup"
               ]
             },
+            "DeleteBackupChannel": {
+              "methods": [
+                "delete_backup_channel"
+              ]
+            },
             "DeleteBackupPlan": {
               "methods": [
                 "delete_backup_plan"
@@ -173,6 +258,11 @@
             "DeleteRestore": {
               "methods": [
                 "delete_restore"
+              ]
+            },
+            "DeleteRestoreChannel": {
+              "methods": [
+                "delete_restore_channel"
               ]
             },
             "DeleteRestorePlan": {
@@ -185,6 +275,11 @@
                 "get_backup"
               ]
             },
+            "GetBackupChannel": {
+              "methods": [
+                "get_backup_channel"
+              ]
+            },
             "GetBackupIndexDownloadUrl": {
               "methods": [
                 "get_backup_index_download_url"
@@ -195,14 +290,29 @@
                 "get_backup_plan"
               ]
             },
+            "GetBackupPlanBinding": {
+              "methods": [
+                "get_backup_plan_binding"
+              ]
+            },
             "GetRestore": {
               "methods": [
                 "get_restore"
               ]
             },
+            "GetRestoreChannel": {
+              "methods": [
+                "get_restore_channel"
+              ]
+            },
             "GetRestorePlan": {
               "methods": [
                 "get_restore_plan"
+              ]
+            },
+            "GetRestorePlanBinding": {
+              "methods": [
+                "get_restore_plan_binding"
               ]
             },
             "GetVolumeBackup": {
@@ -215,6 +325,16 @@
                 "get_volume_restore"
               ]
             },
+            "ListBackupChannels": {
+              "methods": [
+                "list_backup_channels"
+              ]
+            },
+            "ListBackupPlanBindings": {
+              "methods": [
+                "list_backup_plan_bindings"
+              ]
+            },
             "ListBackupPlans": {
               "methods": [
                 "list_backup_plans"
@@ -223,6 +343,16 @@
             "ListBackups": {
               "methods": [
                 "list_backups"
+              ]
+            },
+            "ListRestoreChannels": {
+              "methods": [
+                "list_restore_channels"
+              ]
+            },
+            "ListRestorePlanBindings": {
+              "methods": [
+                "list_restore_plan_bindings"
               ]
             },
             "ListRestorePlans": {
@@ -250,6 +380,11 @@
                 "update_backup"
               ]
             },
+            "UpdateBackupChannel": {
+              "methods": [
+                "update_backup_channel"
+              ]
+            },
             "UpdateBackupPlan": {
               "methods": [
                 "update_backup_plan"
@@ -258,6 +393,11 @@
             "UpdateRestore": {
               "methods": [
                 "update_restore"
+              ]
+            },
+            "UpdateRestoreChannel": {
+              "methods": [
+                "update_restore_channel"
               ]
             },
             "UpdateRestorePlan": {
@@ -275,6 +415,11 @@
                 "create_backup"
               ]
             },
+            "CreateBackupChannel": {
+              "methods": [
+                "create_backup_channel"
+              ]
+            },
             "CreateBackupPlan": {
               "methods": [
                 "create_backup_plan"
@@ -283,6 +428,11 @@
             "CreateRestore": {
               "methods": [
                 "create_restore"
+              ]
+            },
+            "CreateRestoreChannel": {
+              "methods": [
+                "create_restore_channel"
               ]
             },
             "CreateRestorePlan": {
@@ -295,6 +445,11 @@
                 "delete_backup"
               ]
             },
+            "DeleteBackupChannel": {
+              "methods": [
+                "delete_backup_channel"
+              ]
+            },
             "DeleteBackupPlan": {
               "methods": [
                 "delete_backup_plan"
@@ -303,6 +458,11 @@
             "DeleteRestore": {
               "methods": [
                 "delete_restore"
+              ]
+            },
+            "DeleteRestoreChannel": {
+              "methods": [
+                "delete_restore_channel"
               ]
             },
             "DeleteRestorePlan": {
@@ -315,6 +475,11 @@
                 "get_backup"
               ]
             },
+            "GetBackupChannel": {
+              "methods": [
+                "get_backup_channel"
+              ]
+            },
             "GetBackupIndexDownloadUrl": {
               "methods": [
                 "get_backup_index_download_url"
@@ -325,14 +490,29 @@
                 "get_backup_plan"
               ]
             },
+            "GetBackupPlanBinding": {
+              "methods": [
+                "get_backup_plan_binding"
+              ]
+            },
             "GetRestore": {
               "methods": [
                 "get_restore"
               ]
             },
+            "GetRestoreChannel": {
+              "methods": [
+                "get_restore_channel"
+              ]
+            },
             "GetRestorePlan": {
               "methods": [
                 "get_restore_plan"
+              ]
+            },
+            "GetRestorePlanBinding": {
+              "methods": [
+                "get_restore_plan_binding"
               ]
             },
             "GetVolumeBackup": {
@@ -345,6 +525,16 @@
                 "get_volume_restore"
               ]
             },
+            "ListBackupChannels": {
+              "methods": [
+                "list_backup_channels"
+              ]
+            },
+            "ListBackupPlanBindings": {
+              "methods": [
+                "list_backup_plan_bindings"
+              ]
+            },
             "ListBackupPlans": {
               "methods": [
                 "list_backup_plans"
@@ -353,6 +543,16 @@
             "ListBackups": {
               "methods": [
                 "list_backups"
+              ]
+            },
+            "ListRestoreChannels": {
+              "methods": [
+                "list_restore_channels"
+              ]
+            },
+            "ListRestorePlanBindings": {
+              "methods": [
+                "list_restore_plan_bindings"
               ]
             },
             "ListRestorePlans": {
@@ -380,6 +580,11 @@
                 "update_backup"
               ]
             },
+            "UpdateBackupChannel": {
+              "methods": [
+                "update_backup_channel"
+              ]
+            },
             "UpdateBackupPlan": {
               "methods": [
                 "update_backup_plan"
@@ -388,6 +593,11 @@
             "UpdateRestore": {
               "methods": [
                 "update_restore"
+              ]
+            },
+            "UpdateRestoreChannel": {
+              "methods": [
+                "update_restore_channel"
               ]
             },
             "UpdateRestorePlan": {

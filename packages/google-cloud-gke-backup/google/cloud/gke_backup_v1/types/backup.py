@@ -138,7 +138,9 @@ class Backup(proto.Message):
             Output only. Current state of the Backup
         state_reason (str):
             Output only. Human-readable description of why the backup is
-            in the current ``state``.
+            in the current ``state``. This field is only meant for human
+            readability and should not be used programmatically as this
+            field is not guaranteed to be consistent.
         complete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Completion time of the Backup
         resource_count (int):
@@ -179,6 +181,10 @@ class Backup(proto.Message):
             Inherited from the parent BackupPlan's
             [permissive_mode][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.permissive_mode]
             value.
+        satisfies_pzs (bool):
+            Output only. [Output Only] Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. [Output Only] Reserved for future use.
     """
 
     class State(proto.Enum):
@@ -398,6 +404,14 @@ class Backup(proto.Message):
     permissive_mode: bool = proto.Field(
         proto.BOOL,
         number=28,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=29,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=30,
     )
 
 

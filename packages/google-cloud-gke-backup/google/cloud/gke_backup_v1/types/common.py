@@ -32,11 +32,11 @@ __protobuf__ = proto.module(
 
 
 class Namespaces(proto.Message):
-    r"""A list of Kubernetes Namespaces
+    r"""A list of Kubernetes Namespaces.
 
     Attributes:
         namespaces (MutableSequence[str]):
-            Optional. A list of Kubernetes Namespaces
+            Optional. A list of Kubernetes Namespaces.
     """
 
     namespaces: MutableSequence[str] = proto.RepeatedField(

@@ -3696,6 +3696,16 @@
                 {
                     "type": "json",
                     "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.ordertracking.v1beta.json",
+                     "jsonpath": "$.clientLibrary.version"
+                }
+            ]
+        },
+        "packages/google-cloud-lustre": {
+            "extra-files": [
+                "google/cloud/lustre_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.lustre.v1.json",
                     "jsonpath": "$.clientLibrary.version"
                 }
             ]

@@ -40,10 +40,14 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.gke_backup_v1.types import (
     backup,
+    backup_channel,
     backup_plan,
+    backup_plan_binding,
     gkebackup,
     restore,
+    restore_channel,
     restore_plan,
+    restore_plan_binding,
     volume,
 )
 
@@ -196,6 +200,318 @@ class ListBackupPlansAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.backup_plans:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupChannelsPager:
+    """A pager for iterating through ``list_backup_channels`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListBackupChannelsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backup_channels`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBackupChannels`` requests and continue to iterate
+    through the ``backup_channels`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListBackupChannelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListBackupChannelsResponse],
+        request: gkebackup.ListBackupChannelsRequest,
+        response: gkebackup.ListBackupChannelsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListBackupChannelsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListBackupChannelsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = gkebackup.ListBackupChannelsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListBackupChannelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[backup_channel.BackupChannel]:
+        for page in self.pages:
+            yield from page.backup_channels
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupChannelsAsyncPager:
+    """A pager for iterating through ``list_backup_channels`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListBackupChannelsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backup_channels`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackupChannels`` requests and continue to iterate
+    through the ``backup_channels`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListBackupChannelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListBackupChannelsResponse]],
+        request: gkebackup.ListBackupChannelsRequest,
+        response: gkebackup.ListBackupChannelsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListBackupChannelsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListBackupChannelsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = gkebackup.ListBackupChannelsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListBackupChannelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[backup_channel.BackupChannel]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backup_channels:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupPlanBindingsPager:
+    """A pager for iterating through ``list_backup_plan_bindings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListBackupPlanBindingsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backup_plan_bindings`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBackupPlanBindings`` requests and continue to iterate
+    through the ``backup_plan_bindings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListBackupPlanBindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListBackupPlanBindingsResponse],
+        request: gkebackup.ListBackupPlanBindingsRequest,
+        response: gkebackup.ListBackupPlanBindingsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListBackupPlanBindingsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListBackupPlanBindingsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = gkebackup.ListBackupPlanBindingsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListBackupPlanBindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[backup_plan_binding.BackupPlanBinding]:
+        for page in self.pages:
+            yield from page.backup_plan_bindings
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupPlanBindingsAsyncPager:
+    """A pager for iterating through ``list_backup_plan_bindings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListBackupPlanBindingsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backup_plan_bindings`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackupPlanBindings`` requests and continue to iterate
+    through the ``backup_plan_bindings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListBackupPlanBindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListBackupPlanBindingsResponse]],
+        request: gkebackup.ListBackupPlanBindingsRequest,
+        response: gkebackup.ListBackupPlanBindingsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListBackupPlanBindingsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListBackupPlanBindingsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = gkebackup.ListBackupPlanBindingsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListBackupPlanBindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[backup_plan_binding.BackupPlanBinding]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backup_plan_bindings:
                     yield response
 
         return async_generator()
@@ -664,6 +980,318 @@ class ListRestorePlansAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.restore_plans:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRestoreChannelsPager:
+    """A pager for iterating through ``list_restore_channels`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListRestoreChannelsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``restore_channels`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListRestoreChannels`` requests and continue to iterate
+    through the ``restore_channels`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListRestoreChannelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListRestoreChannelsResponse],
+        request: gkebackup.ListRestoreChannelsRequest,
+        response: gkebackup.ListRestoreChannelsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListRestoreChannelsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListRestoreChannelsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = gkebackup.ListRestoreChannelsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListRestoreChannelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[restore_channel.RestoreChannel]:
+        for page in self.pages:
+            yield from page.restore_channels
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRestoreChannelsAsyncPager:
+    """A pager for iterating through ``list_restore_channels`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListRestoreChannelsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``restore_channels`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListRestoreChannels`` requests and continue to iterate
+    through the ``restore_channels`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListRestoreChannelsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListRestoreChannelsResponse]],
+        request: gkebackup.ListRestoreChannelsRequest,
+        response: gkebackup.ListRestoreChannelsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListRestoreChannelsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListRestoreChannelsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = gkebackup.ListRestoreChannelsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListRestoreChannelsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[restore_channel.RestoreChannel]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.restore_channels:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRestorePlanBindingsPager:
+    """A pager for iterating through ``list_restore_plan_bindings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListRestorePlanBindingsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``restore_plan_bindings`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListRestorePlanBindings`` requests and continue to iterate
+    through the ``restore_plan_bindings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListRestorePlanBindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., gkebackup.ListRestorePlanBindingsResponse],
+        request: gkebackup.ListRestorePlanBindingsRequest,
+        response: gkebackup.ListRestorePlanBindingsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListRestorePlanBindingsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListRestorePlanBindingsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = gkebackup.ListRestorePlanBindingsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[gkebackup.ListRestorePlanBindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[restore_plan_binding.RestorePlanBinding]:
+        for page in self.pages:
+            yield from page.restore_plan_bindings
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListRestorePlanBindingsAsyncPager:
+    """A pager for iterating through ``list_restore_plan_bindings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.gke_backup_v1.types.ListRestorePlanBindingsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``restore_plan_bindings`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListRestorePlanBindings`` requests and continue to iterate
+    through the ``restore_plan_bindings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.gke_backup_v1.types.ListRestorePlanBindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[gkebackup.ListRestorePlanBindingsResponse]],
+        request: gkebackup.ListRestorePlanBindingsRequest,
+        response: gkebackup.ListRestorePlanBindingsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.gke_backup_v1.types.ListRestorePlanBindingsRequest):
+                The initial request object.
+            response (google.cloud.gke_backup_v1.types.ListRestorePlanBindingsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = gkebackup.ListRestorePlanBindingsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[gkebackup.ListRestorePlanBindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[restore_plan_binding.RestorePlanBinding]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.restore_plan_bindings:
                     yield response
 
         return async_generator()

@@ -4162,6 +4162,7 @@ def test_write_user_event_rest_call_success(request_type):
                         {
                             "place_id": "place_id_value",
                             "price_info": {},
+                            "availability": 1,
                             "attributes": {},
                             "fulfillment_types": [
                                 "fulfillment_types_value1",

@@ -53,8 +53,8 @@ class Restore(proto.Message):
             Output only. The timestamp when this Restore
             resource was last updated.
         description (str):
-            User specified descriptive string for this
-            Restore.
+            Optional. User specified descriptive string
+            for this Restore.
         backup (str):
             Required. Immutable. A reference to the
             [Backup][google.cloud.gkebackup.v1.Backup] used as the
@@ -83,7 +83,10 @@ class Restore(proto.Message):
             Restore.
         state_reason (str):
             Output only. Human-readable description of
-            why the Restore is in its current state.
+            why the Restore is in its current state. This
+            field is only meant for human readability and
+            should not be used programmatically as this
+            field is not guaranteed to be consistent.
         complete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp of when the restore
             operation completed.
@@ -113,9 +116,9 @@ class Restore(proto.Message):
         filter (google.cloud.gke_backup_v1.types.Restore.Filter):
             Optional. Immutable. Filters resources for ``Restore``. If
             not specified, the scope of the restore will remain the same
-            as defined in the ``RestorePlan``. If this is specified, and
+            as defined in the ``RestorePlan``. If this is specified and
             no resources are matched by the ``inclusion_filters`` or
-            everyting is excluded by the ``exclusion_filters``, nothing
+            everything is excluded by the ``exclusion_filters``, nothing
             will be restored. This filter can only be specified if the
             value of
             [namespaced_resource_restore_mode][google.cloud.gkebackup.v1.RestoreConfig.namespaced_resource_restore_mode]
@@ -151,6 +154,9 @@ class Restore(proto.Message):
             DELETING (5):
                 This Restore resource is in the process of
                 being deleted.
+            VALIDATING (6):
+                The Kubernetes resources created by this
+                Restore are being validated.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -158,6 +164,7 @@ class Restore(proto.Message):
         SUCCEEDED = 3
         FAILED = 4
         DELETING = 5
+        VALIDATING = 6
 
     class Filter(proto.Message):
         r"""Defines the filter for ``Restore``. This filter can be used to
@@ -507,7 +514,7 @@ class RestoreConfig(proto.Message):
                 Optional. API group string of a Kubernetes
                 resource, e.g. "apiextensions.k8s.io",
                 "storage.k8s.io", etc. Note: use empty string
-                for core API group
+                for core API group.
             resource_kind (str):
                 Optional. Kind of a Kubernetes resource, must
                 be in UpperCamelCase (PascalCase) and singular
@@ -531,14 +538,16 @@ class RestoreConfig(proto.Message):
         will cause an error if selected here. Any scope selection that
         would restore "all valid" resources automatically excludes these
         group kinds.
+        - Node
+        - ComponentStatus
         - gkebackup.gke.io/BackupJob
         - gkebackup.gke.io/RestoreJob
         - metrics.k8s.io/NodeMetrics
         - migration.k8s.io/StorageState
         - migration.k8s.io/StorageVersionMigration
-        - Node
         - snapshot.storage.k8s.io/VolumeSnapshotContent
         - storage.k8s.io/CSINode
+        - storage.k8s.io/VolumeAttachment
 
         Some group kinds are driven by restore configuration elsewhere,
         and will cause an error if selected here.

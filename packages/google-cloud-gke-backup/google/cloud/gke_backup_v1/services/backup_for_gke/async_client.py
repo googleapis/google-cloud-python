@@ -54,16 +54,20 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.gke_backup_v1.services.backup_for_gke import pagers
+from google.cloud.gke_backup_v1.types import backup_plan_binding, common, gkebackup
+from google.cloud.gke_backup_v1.types import backup_channel as gcg_backup_channel
+from google.cloud.gke_backup_v1.types import restore_channel as gcg_restore_channel
 from google.cloud.gke_backup_v1.types import backup
 from google.cloud.gke_backup_v1.types import backup as gcg_backup
+from google.cloud.gke_backup_v1.types import backup_channel
 from google.cloud.gke_backup_v1.types import backup_plan
 from google.cloud.gke_backup_v1.types import backup_plan as gcg_backup_plan
-from google.cloud.gke_backup_v1.types import common, gkebackup
 from google.cloud.gke_backup_v1.types import restore
 from google.cloud.gke_backup_v1.types import restore as gcg_restore
+from google.cloud.gke_backup_v1.types import restore_channel
 from google.cloud.gke_backup_v1.types import restore_plan
 from google.cloud.gke_backup_v1.types import restore_plan as gcg_restore_plan
-from google.cloud.gke_backup_v1.types import volume
+from google.cloud.gke_backup_v1.types import restore_plan_binding, volume
 
 from .client import BackupForGKEClient
 from .transports.base import DEFAULT_CLIENT_INFO, BackupForGKETransport
@@ -96,16 +100,34 @@ class BackupForGKEAsyncClient:
 
     backup_path = staticmethod(BackupForGKEClient.backup_path)
     parse_backup_path = staticmethod(BackupForGKEClient.parse_backup_path)
+    backup_channel_path = staticmethod(BackupForGKEClient.backup_channel_path)
+    parse_backup_channel_path = staticmethod(
+        BackupForGKEClient.parse_backup_channel_path
+    )
     backup_plan_path = staticmethod(BackupForGKEClient.backup_plan_path)
     parse_backup_plan_path = staticmethod(BackupForGKEClient.parse_backup_plan_path)
+    backup_plan_binding_path = staticmethod(BackupForGKEClient.backup_plan_binding_path)
+    parse_backup_plan_binding_path = staticmethod(
+        BackupForGKEClient.parse_backup_plan_binding_path
+    )
     cluster_path = staticmethod(BackupForGKEClient.cluster_path)
     parse_cluster_path = staticmethod(BackupForGKEClient.parse_cluster_path)
     crypto_key_path = staticmethod(BackupForGKEClient.crypto_key_path)
     parse_crypto_key_path = staticmethod(BackupForGKEClient.parse_crypto_key_path)
     restore_path = staticmethod(BackupForGKEClient.restore_path)
     parse_restore_path = staticmethod(BackupForGKEClient.parse_restore_path)
+    restore_channel_path = staticmethod(BackupForGKEClient.restore_channel_path)
+    parse_restore_channel_path = staticmethod(
+        BackupForGKEClient.parse_restore_channel_path
+    )
     restore_plan_path = staticmethod(BackupForGKEClient.restore_plan_path)
     parse_restore_plan_path = staticmethod(BackupForGKEClient.parse_restore_plan_path)
+    restore_plan_binding_path = staticmethod(
+        BackupForGKEClient.restore_plan_binding_path
+    )
+    parse_restore_plan_binding_path = staticmethod(
+        BackupForGKEClient.parse_restore_plan_binding_path
+    )
     volume_backup_path = staticmethod(BackupForGKEClient.volume_backup_path)
     parse_volume_backup_path = staticmethod(BackupForGKEClient.parse_volume_backup_path)
     volume_restore_path = staticmethod(BackupForGKEClient.volume_restore_path)
@@ -995,6 +1017,937 @@ class BackupForGKEAsyncClient:
             self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=gkebackup.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_backup_channel(
+        self,
+        request: Optional[Union[gkebackup.CreateBackupChannelRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        backup_channel: Optional[gcg_backup_channel.BackupChannel] = None,
+        backup_channel_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new BackupChannel in a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_create_backup_channel():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                backup_channel = gke_backup_v1.BackupChannel()
+                backup_channel.destination_project = "destination_project_value"
+
+                request = gke_backup_v1.CreateBackupChannelRequest(
+                    parent="parent_value",
+                    backup_channel=backup_channel,
+                )
+
+                # Make the request
+                operation = client.create_backup_channel(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.CreateBackupChannelRequest, dict]]):
+                The request object. Request message for
+                CreateBackupChannel.
+            parent (:class:`str`):
+                Required. The location within which to create the
+                BackupChannel. Format: ``projects/*/locations/*``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_channel (:class:`google.cloud.gke_backup_v1.types.BackupChannel`):
+                Required. The BackupChannel resource
+                object to create.
+
+                This corresponds to the ``backup_channel`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_channel_id (:class:`str`):
+                Optional. The client-provided short
+                name for the BackupChannel resource.
+                This name must:
+
+                - be between 1 and 63 characters long
+                  (inclusive)
+                - consist of only lower-case ASCII
+                  letters, numbers, and dashes
+                - start with a lower-case letter
+                - end with a lower-case letter or number
+                - be unique within the set of
+                  BackupChannels in this location If the
+                  user does not provide a name, a uuid
+                  will be used as the name.
+
+                This corresponds to the ``backup_channel_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.BackupChannel` A BackupChannel imposes constraints on where clusters can be backed up.
+                   The BackupChannel should be in the same project and
+                   region as the cluster being backed up. The backup can
+                   be created only in destination_project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, backup_channel, backup_channel_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.CreateBackupChannelRequest):
+            request = gkebackup.CreateBackupChannelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if backup_channel is not None:
+            request.backup_channel = backup_channel
+        if backup_channel_id is not None:
+            request.backup_channel_id = backup_channel_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_backup_channel
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            gcg_backup_channel.BackupChannel,
+            metadata_type=gkebackup.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_backup_channels(
+        self,
+        request: Optional[Union[gkebackup.ListBackupChannelsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListBackupChannelsAsyncPager:
+        r"""Lists BackupChannels in a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_list_backup_channels():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.ListBackupChannelsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backup_channels(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListBackupChannelsRequest, dict]]):
+                The request object. Request message for
+                ListBackupChannels.
+            parent (:class:`str`):
+                Required. The location that contains the BackupChannels
+                to list. Format: ``projects/*/locations/*``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.gke_backup_v1.services.backup_for_gke.pagers.ListBackupChannelsAsyncPager:
+                Response message for
+                ListBackupChannels.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListBackupChannelsRequest):
+            request = gkebackup.ListBackupChannelsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backup_channels
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListBackupChannelsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_backup_channel(
+        self,
+        request: Optional[Union[gkebackup.GetBackupChannelRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> backup_channel.BackupChannel:
+        r"""Retrieve the details of a single BackupChannel.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_get_backup_channel():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.GetBackupChannelRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_backup_channel(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetBackupChannelRequest, dict]]):
+                The request object. Request message for GetBackupChannel.
+            name (:class:`str`):
+                Required. Fully qualified BackupChannel name. Format:
+                ``projects/*/locations/*/backupChannels/*``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.gke_backup_v1.types.BackupChannel:
+                A BackupChannel imposes constraints on where clusters can be backed up.
+                   The BackupChannel should be in the same project and
+                   region as the cluster being backed up. The backup can
+                   be created only in destination_project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetBackupChannelRequest):
+            request = gkebackup.GetBackupChannelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup_channel
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_backup_channel(
+        self,
+        request: Optional[Union[gkebackup.UpdateBackupChannelRequest, dict]] = None,
+        *,
+        backup_channel: Optional[gcg_backup_channel.BackupChannel] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Update a BackupChannel.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_update_backup_channel():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                backup_channel = gke_backup_v1.BackupChannel()
+                backup_channel.destination_project = "destination_project_value"
+
+                request = gke_backup_v1.UpdateBackupChannelRequest(
+                    backup_channel=backup_channel,
+                )
+
+                # Make the request
+                operation = client.update_backup_channel(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.UpdateBackupChannelRequest, dict]]):
+                The request object. Request message for
+                UpdateBackupChannel.
+            backup_channel (:class:`google.cloud.gke_backup_v1.types.BackupChannel`):
+                Required. A new version of the BackupChannel resource
+                that contains updated fields. This may be sparsely
+                populated if an ``update_mask`` is provided.
+
+                This corresponds to the ``backup_channel`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. This is used to specify the fields to be
+                overwritten in the BackupChannel targeted for update.
+                The values for each of these updated fields will be
+                taken from the ``backup_channel`` provided with this
+                request. Field names are relative to the root of the
+                resource (e.g., ``description``, ``labels``, etc.) If no
+                ``update_mask`` is provided, all fields in
+                ``backup_channel`` will be written to the target
+                BackupChannel resource. Note that OUTPUT_ONLY and
+                IMMUTABLE fields in ``backup_channel`` are ignored and
+                are not used to update the target BackupChannel.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.BackupChannel` A BackupChannel imposes constraints on where clusters can be backed up.
+                   The BackupChannel should be in the same project and
+                   region as the cluster being backed up. The backup can
+                   be created only in destination_project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [backup_channel, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.UpdateBackupChannelRequest):
+            request = gkebackup.UpdateBackupChannelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if backup_channel is not None:
+            request.backup_channel = backup_channel
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_backup_channel
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("backup_channel.name", request.backup_channel.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            gcg_backup_channel.BackupChannel,
+            metadata_type=gkebackup.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_backup_channel(
+        self,
+        request: Optional[Union[gkebackup.DeleteBackupChannelRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes an existing BackupChannel.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_delete_backup_channel():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.DeleteBackupChannelRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_backup_channel(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.DeleteBackupChannelRequest, dict]]):
+                The request object. Request message for
+                DeleteBackupChannel.
+            name (:class:`str`):
+                Required. Fully qualified BackupChannel name. Format:
+                ``projects/*/locations/*/backupChannels/*``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.DeleteBackupChannelRequest):
+            request = gkebackup.DeleteBackupChannelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_backup_channel
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=gkebackup.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_backup_plan_bindings(
+        self,
+        request: Optional[Union[gkebackup.ListBackupPlanBindingsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListBackupPlanBindingsAsyncPager:
+        r"""Lists BackupPlanBindings in a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_list_backup_plan_bindings():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.ListBackupPlanBindingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backup_plan_bindings(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListBackupPlanBindingsRequest, dict]]):
+                The request object. Request message for
+                ListBackupPlanBindings.
+            parent (:class:`str`):
+                Required. The BackupChannel that contains the
+                BackupPlanBindings to list. Format:
+                ``projects/*/locations/*/backupChannels/*``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.gke_backup_v1.services.backup_for_gke.pagers.ListBackupPlanBindingsAsyncPager:
+                Response message for
+                ListBackupPlanBindings.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListBackupPlanBindingsRequest):
+            request = gkebackup.ListBackupPlanBindingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_backup_plan_bindings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListBackupPlanBindingsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_backup_plan_binding(
+        self,
+        request: Optional[Union[gkebackup.GetBackupPlanBindingRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> backup_plan_binding.BackupPlanBinding:
+        r"""Retrieve the details of a single BackupPlanBinding.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_get_backup_plan_binding():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.GetBackupPlanBindingRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_backup_plan_binding(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetBackupPlanBindingRequest, dict]]):
+                The request object. Request message for
+                GetBackupPlanBinding.
+            name (:class:`str`):
+                Required. Fully qualified BackupPlanBinding name.
+                Format:
+                ``projects/*/locations/*/backupChannels/*/backupPlanBindings/*``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.gke_backup_v1.types.BackupPlanBinding:
+                A BackupPlanBinding binds a
+                BackupPlan with a BackupChannel. This
+                resource is created automatically when a
+                BackupPlan is created using a
+                BackupChannel. This also serves as a
+                holder for cross-project fields that
+                need to be displayed in the current
+                project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetBackupPlanBindingRequest):
+            request = gkebackup.GetBackupPlanBindingRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_backup_plan_binding
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2598,6 +3551,939 @@ class BackupForGKEAsyncClient:
             self._client._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=gkebackup.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_restore_channel(
+        self,
+        request: Optional[Union[gkebackup.CreateRestoreChannelRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        restore_channel: Optional[gcg_restore_channel.RestoreChannel] = None,
+        restore_channel_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new RestoreChannel in a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_create_restore_channel():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                restore_channel = gke_backup_v1.RestoreChannel()
+                restore_channel.destination_project = "destination_project_value"
+
+                request = gke_backup_v1.CreateRestoreChannelRequest(
+                    parent="parent_value",
+                    restore_channel=restore_channel,
+                )
+
+                # Make the request
+                operation = client.create_restore_channel(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.CreateRestoreChannelRequest, dict]]):
+                The request object. Request message for
+                CreateRestoreChannel.
+            parent (:class:`str`):
+                Required. The location within which to create the
+                RestoreChannel. Format: ``projects/*/locations/*``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            restore_channel (:class:`google.cloud.gke_backup_v1.types.RestoreChannel`):
+                Required. The RestoreChannel resource
+                object to create.
+
+                This corresponds to the ``restore_channel`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            restore_channel_id (:class:`str`):
+                Optional. The client-provided short
+                name for the RestoreChannel resource.
+                This name must:
+
+                - be between 1 and 63 characters long
+                  (inclusive)
+                - consist of only lower-case ASCII
+                  letters, numbers, and dashes
+                - start with a lower-case letter
+                - end with a lower-case letter or number
+                - be unique within the set of
+                  RestoreChannels in this location If
+                  the user does not provide a name, a
+                  uuid will be used as the name.
+
+                This corresponds to the ``restore_channel_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.RestoreChannel` A RestoreChannel imposes constraints on where backups can be restored.
+                   The RestoreChannel should be in the same project and
+                   region as the backups. The backups can only be
+                   restored in the destination_project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, restore_channel, restore_channel_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.CreateRestoreChannelRequest):
+            request = gkebackup.CreateRestoreChannelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if restore_channel is not None:
+            request.restore_channel = restore_channel
+        if restore_channel_id is not None:
+            request.restore_channel_id = restore_channel_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_restore_channel
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            gcg_restore_channel.RestoreChannel,
+            metadata_type=gkebackup.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_restore_channels(
+        self,
+        request: Optional[Union[gkebackup.ListRestoreChannelsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListRestoreChannelsAsyncPager:
+        r"""Lists RestoreChannels in a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_list_restore_channels():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.ListRestoreChannelsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_restore_channels(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListRestoreChannelsRequest, dict]]):
+                The request object. Request message for
+                ListRestoreChannels.
+            parent (:class:`str`):
+                Required. The location that contains the RestoreChannels
+                to list. Format: ``projects/*/locations/*``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.gke_backup_v1.services.backup_for_gke.pagers.ListRestoreChannelsAsyncPager:
+                Response message for
+                ListRestoreChannels.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListRestoreChannelsRequest):
+            request = gkebackup.ListRestoreChannelsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_restore_channels
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListRestoreChannelsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_restore_channel(
+        self,
+        request: Optional[Union[gkebackup.GetRestoreChannelRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> restore_channel.RestoreChannel:
+        r"""Retrieve the details of a single RestoreChannel.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_get_restore_channel():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.GetRestoreChannelRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_restore_channel(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetRestoreChannelRequest, dict]]):
+                The request object. Request message for
+                GetRestoreChannel.
+            name (:class:`str`):
+                Required. Fully qualified RestoreChannel name. Format:
+                ``projects/*/locations/*/restoreChannels/*``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.gke_backup_v1.types.RestoreChannel:
+                A RestoreChannel imposes constraints on where backups can be restored.
+                   The RestoreChannel should be in the same project and
+                   region as the backups. The backups can only be
+                   restored in the destination_project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetRestoreChannelRequest):
+            request = gkebackup.GetRestoreChannelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_restore_channel
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_restore_channel(
+        self,
+        request: Optional[Union[gkebackup.UpdateRestoreChannelRequest, dict]] = None,
+        *,
+        restore_channel: Optional[gcg_restore_channel.RestoreChannel] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Update a RestoreChannel.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_update_restore_channel():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                restore_channel = gke_backup_v1.RestoreChannel()
+                restore_channel.destination_project = "destination_project_value"
+
+                request = gke_backup_v1.UpdateRestoreChannelRequest(
+                    restore_channel=restore_channel,
+                )
+
+                # Make the request
+                operation = client.update_restore_channel(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.UpdateRestoreChannelRequest, dict]]):
+                The request object. Request message for
+                UpdateRestoreChannel.
+            restore_channel (:class:`google.cloud.gke_backup_v1.types.RestoreChannel`):
+                Required. A new version of the RestoreChannel resource
+                that contains updated fields. This may be sparsely
+                populated if an ``update_mask`` is provided.
+
+                This corresponds to the ``restore_channel`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. This is used to specify the fields to be
+                overwritten in the RestoreChannel targeted for update.
+                The values for each of these updated fields will be
+                taken from the ``restore_channel`` provided with this
+                request. Field names are relative to the root of the
+                resource (e.g., ``description``,
+                ``destination_project_id``, etc.) If no ``update_mask``
+                is provided, all fields in ``restore_channel`` will be
+                written to the target RestoreChannel resource. Note that
+                OUTPUT_ONLY and IMMUTABLE fields in ``restore_channel``
+                are ignored and are not used to update the target
+                RestoreChannel.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.gke_backup_v1.types.RestoreChannel` A RestoreChannel imposes constraints on where backups can be restored.
+                   The RestoreChannel should be in the same project and
+                   region as the backups. The backups can only be
+                   restored in the destination_project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [restore_channel, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.UpdateRestoreChannelRequest):
+            request = gkebackup.UpdateRestoreChannelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if restore_channel is not None:
+            request.restore_channel = restore_channel
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_restore_channel
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("restore_channel.name", request.restore_channel.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            gcg_restore_channel.RestoreChannel,
+            metadata_type=gkebackup.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_restore_channel(
+        self,
+        request: Optional[Union[gkebackup.DeleteRestoreChannelRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes an existing RestoreChannel.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_delete_restore_channel():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.DeleteRestoreChannelRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_restore_channel(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.DeleteRestoreChannelRequest, dict]]):
+                The request object. Request message for
+                DeleteRestoreChannel.
+            name (:class:`str`):
+                Required. Fully qualified RestoreChannel name. Format:
+                ``projects/*/locations/*/restoreChannels/*``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.DeleteRestoreChannelRequest):
+            request = gkebackup.DeleteRestoreChannelRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_restore_channel
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=gkebackup.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_restore_plan_bindings(
+        self,
+        request: Optional[Union[gkebackup.ListRestorePlanBindingsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListRestorePlanBindingsAsyncPager:
+        r"""Lists RestorePlanBindings in a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_list_restore_plan_bindings():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.ListRestorePlanBindingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_restore_plan_bindings(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.ListRestorePlanBindingsRequest, dict]]):
+                The request object. Request message for
+                ListRestorePlanBindings.
+            parent (:class:`str`):
+                Required. The RestoreChannel that contains the
+                ListRestorePlanBindings to list. Format:
+                ``projects/*/locations/*/restoreChannels/*``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.gke_backup_v1.services.backup_for_gke.pagers.ListRestorePlanBindingsAsyncPager:
+                Response message for
+                ListRestorePlanBindings.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.ListRestorePlanBindingsRequest):
+            request = gkebackup.ListRestorePlanBindingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_restore_plan_bindings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListRestorePlanBindingsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_restore_plan_binding(
+        self,
+        request: Optional[Union[gkebackup.GetRestorePlanBindingRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> restore_plan_binding.RestorePlanBinding:
+        r"""Retrieve the details of a single RestorePlanBinding.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import gke_backup_v1
+
+            async def sample_get_restore_plan_binding():
+                # Create a client
+                client = gke_backup_v1.BackupForGKEAsyncClient()
+
+                # Initialize request argument(s)
+                request = gke_backup_v1.GetRestorePlanBindingRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_restore_plan_binding(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.gke_backup_v1.types.GetRestorePlanBindingRequest, dict]]):
+                The request object. Request message for
+                GetRestorePlanBinding.
+            name (:class:`str`):
+                Required. Fully qualified RestorePlanBinding name.
+                Format:
+                ``projects/*/locations/*/restoreChannels/*/restorePlanBindings/*``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.gke_backup_v1.types.RestorePlanBinding:
+                A RestorePlanBinding binds a
+                RestorePlan with a RestoreChannel. This
+                resource is created automatically when a
+                RestorePlan is created using a
+                RestoreChannel. This also serves as a
+                holder for cross-project fields that
+                need to be displayed in the current
+                project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gkebackup.GetRestorePlanBindingRequest):
+            request = gkebackup.GetRestorePlanBindingRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_restore_plan_binding
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.

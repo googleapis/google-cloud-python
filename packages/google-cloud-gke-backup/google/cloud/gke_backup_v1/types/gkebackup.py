@@ -21,11 +21,14 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.gke_backup_v1.types import backup_channel as gcg_backup_channel
+from google.cloud.gke_backup_v1.types import restore_channel as gcg_restore_channel
 from google.cloud.gke_backup_v1.types import backup as gcg_backup
 from google.cloud.gke_backup_v1.types import backup_plan as gcg_backup_plan
+from google.cloud.gke_backup_v1.types import backup_plan_binding
 from google.cloud.gke_backup_v1.types import restore as gcg_restore
 from google.cloud.gke_backup_v1.types import restore_plan as gcg_restore_plan
-from google.cloud.gke_backup_v1.types import volume
+from google.cloud.gke_backup_v1.types import restore_plan_binding, volume
 
 __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
@@ -37,6 +40,15 @@ __protobuf__ = proto.module(
         "GetBackupPlanRequest",
         "UpdateBackupPlanRequest",
         "DeleteBackupPlanRequest",
+        "CreateBackupChannelRequest",
+        "ListBackupChannelsRequest",
+        "ListBackupChannelsResponse",
+        "GetBackupChannelRequest",
+        "UpdateBackupChannelRequest",
+        "DeleteBackupChannelRequest",
+        "ListBackupPlanBindingsRequest",
+        "ListBackupPlanBindingsResponse",
+        "GetBackupPlanBindingRequest",
         "CreateBackupRequest",
         "ListBackupsRequest",
         "ListBackupsResponse",
@@ -52,6 +64,15 @@ __protobuf__ = proto.module(
         "GetRestorePlanRequest",
         "UpdateRestorePlanRequest",
         "DeleteRestorePlanRequest",
+        "CreateRestoreChannelRequest",
+        "ListRestoreChannelsRequest",
+        "ListRestoreChannelsResponse",
+        "GetRestoreChannelRequest",
+        "UpdateRestoreChannelRequest",
+        "DeleteRestoreChannelRequest",
+        "ListRestorePlanBindingsRequest",
+        "ListRestorePlanBindingsResponse",
+        "GetRestorePlanBindingRequest",
         "CreateRestoreRequest",
         "ListRestoresRequest",
         "ListRestoresResponse",
@@ -89,9 +110,11 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            successfully been cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.
@@ -328,6 +351,322 @@ class DeleteBackupPlanRequest(proto.Message):
     )
 
 
+class CreateBackupChannelRequest(proto.Message):
+    r"""Request message for CreateBackupChannel.
+
+    Attributes:
+        parent (str):
+            Required. The location within which to create the
+            BackupChannel. Format: ``projects/*/locations/*``
+        backup_channel (google.cloud.gke_backup_v1.types.BackupChannel):
+            Required. The BackupChannel resource object
+            to create.
+        backup_channel_id (str):
+            Optional. The client-provided short name for
+            the BackupChannel resource. This name must:
+
+            - be between 1 and 63 characters long
+              (inclusive)
+            - consist of only lower-case ASCII letters,
+              numbers, and dashes
+            - start with a lower-case letter
+            - end with a lower-case letter or number
+            - be unique within the set of BackupChannels in
+              this location If the user does not provide a
+              name, a uuid will be used as the name.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    backup_channel: gcg_backup_channel.BackupChannel = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcg_backup_channel.BackupChannel,
+    )
+    backup_channel_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListBackupChannelsRequest(proto.Message):
+    r"""Request message for ListBackupChannels.
+
+    Attributes:
+        parent (str):
+            Required. The location that contains the BackupChannels to
+            list. Format: ``projects/*/locations/*``
+        page_size (int):
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
+            [next_page_token][google.cloud.gkebackup.v1.ListBackupChannelsResponse.next_page_token]
+            to determine if there are more instances left to be queried.
+        page_token (str):
+            Optional. The value of
+            [next_page_token][google.cloud.gkebackup.v1.ListBackupChannelsResponse.next_page_token]
+            received from a previous ``ListBackupChannels`` call.
+            Provide this to retrieve the subsequent page in a multi-page
+            list of results. When paginating, all other parameters
+            provided to ``ListBackupChannels`` must match the call that
+            provided the page token.
+        filter (str):
+            Optional. Field match expression used to
+            filter the results.
+        order_by (str):
+            Optional. Field by which to sort the results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListBackupChannelsResponse(proto.Message):
+    r"""Response message for ListBackupChannels.
+
+    Attributes:
+        backup_channels (MutableSequence[google.cloud.gke_backup_v1.types.BackupChannel]):
+            The list of BackupChannels matching the given
+            criteria.
+        next_page_token (str):
+            A token which may be sent as
+            [page_token][google.cloud.gkebackup.v1.ListBackupChannelsRequest.page_token]
+            in a subsequent ``ListBackupChannels`` call to retrieve the
+            next page of results. If this field is omitted or empty,
+            then there are no more results to return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    backup_channels: MutableSequence[
+        gcg_backup_channel.BackupChannel
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcg_backup_channel.BackupChannel,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetBackupChannelRequest(proto.Message):
+    r"""Request message for GetBackupChannel.
+
+    Attributes:
+        name (str):
+            Required. Fully qualified BackupChannel name. Format:
+            ``projects/*/locations/*/backupChannels/*``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateBackupChannelRequest(proto.Message):
+    r"""Request message for UpdateBackupChannel.
+
+    Attributes:
+        backup_channel (google.cloud.gke_backup_v1.types.BackupChannel):
+            Required. A new version of the BackupChannel resource that
+            contains updated fields. This may be sparsely populated if
+            an ``update_mask`` is provided.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. This is used to specify the fields to be
+            overwritten in the BackupChannel targeted for update. The
+            values for each of these updated fields will be taken from
+            the ``backup_channel`` provided with this request. Field
+            names are relative to the root of the resource (e.g.,
+            ``description``, ``labels``, etc.) If no ``update_mask`` is
+            provided, all fields in ``backup_channel`` will be written
+            to the target BackupChannel resource. Note that OUTPUT_ONLY
+            and IMMUTABLE fields in ``backup_channel`` are ignored and
+            are not used to update the target BackupChannel.
+    """
+
+    backup_channel: gcg_backup_channel.BackupChannel = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcg_backup_channel.BackupChannel,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteBackupChannelRequest(proto.Message):
+    r"""Request message for DeleteBackupChannel.
+
+    Attributes:
+        name (str):
+            Required. Fully qualified BackupChannel name. Format:
+            ``projects/*/locations/*/backupChannels/*``
+        etag (str):
+            Optional. If provided, this value must match the current
+            value of the target BackupChannel's
+            [etag][google.cloud.gkebackup.v1.BackupChannel.etag] field
+            or the request is rejected.
+        force (bool):
+            Optional. If set to true, any
+            BackupPlanAssociations below this BackupChannel
+            will also be deleted. Otherwise, the request
+            will only succeed if the BackupChannel has no
+            BackupPlanAssociations.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class ListBackupPlanBindingsRequest(proto.Message):
+    r"""Request message for ListBackupPlanBindings.
+
+    Attributes:
+        parent (str):
+            Required. The BackupChannel that contains the
+            BackupPlanBindings to list. Format:
+            ``projects/*/locations/*/backupChannels/*``
+        page_size (int):
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
+            [next_page_token][google.cloud.gkebackup.v1.ListBackupPlanBindingsResponse.next_page_token]
+            to determine if there are more instances left to be queried.
+        page_token (str):
+            Optional. The value of
+            [next_page_token][google.cloud.gkebackup.v1.ListBackupPlanBindingsResponse.next_page_token]
+            received from a previous ``ListBackupPlanBindings`` call.
+            Provide this to retrieve the subsequent page in a multi-page
+            list of results. When paginating, all other parameters
+            provided to ``ListBackupPlanBindings`` must match the call
+            that provided the page token.
+        filter (str):
+            Optional. Field match expression used to
+            filter the results.
+        order_by (str):
+            Optional. Field by which to sort the results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListBackupPlanBindingsResponse(proto.Message):
+    r"""Response message for ListBackupPlanBindings.
+
+    Attributes:
+        backup_plan_bindings (MutableSequence[google.cloud.gke_backup_v1.types.BackupPlanBinding]):
+            The list of BackupPlanBindings matching the
+            given criteria.
+        next_page_token (str):
+            A token which may be sent as
+            [page_token][google.cloud.gkebackup.v1.ListBackupPlanBindingsRequest.page_token]
+            in a subsequent ``ListBackupPlanBindingss`` call to retrieve
+            the next page of results. If this field is omitted or empty,
+            then there are no more results to return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    backup_plan_bindings: MutableSequence[
+        backup_plan_binding.BackupPlanBinding
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=backup_plan_binding.BackupPlanBinding,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetBackupPlanBindingRequest(proto.Message):
+    r"""Request message for GetBackupPlanBinding.
+
+    Attributes:
+        name (str):
+            Required. Fully qualified BackupPlanBinding name. Format:
+            ``projects/*/locations/*/backupChannels/*/backupPlanBindings/*``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class CreateBackupRequest(proto.Message):
     r"""Request message for CreateBackup.
 
@@ -393,6 +732,11 @@ class ListBackupsRequest(proto.Message):
             filter the results.
         order_by (str):
             Optional. Field by which to sort the results.
+        return_partial_success (bool):
+            Optional. If set to true, the response will
+            return partial results when some regions are
+            unreachable and the unreachable field will be
+            populated.
     """
 
     parent: str = proto.Field(
@@ -415,6 +759,10 @@ class ListBackupsRequest(proto.Message):
         proto.STRING,
         number=5,
     )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 class ListBackupsResponse(proto.Message):
@@ -430,6 +778,8 @@ class ListBackupsResponse(proto.Message):
             in a subsequent ``ListBackups`` call to retrieve the next
             page of results. If this field is omitted or empty, then
             there are no more results to return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
     """
 
     @property
@@ -444,6 +794,10 @@ class ListBackupsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -831,6 +1185,314 @@ class DeleteRestorePlanRequest(proto.Message):
     )
 
 
+class CreateRestoreChannelRequest(proto.Message):
+    r"""Request message for CreateRestoreChannel.
+
+    Attributes:
+        parent (str):
+            Required. The location within which to create the
+            RestoreChannel. Format: ``projects/*/locations/*``
+        restore_channel (google.cloud.gke_backup_v1.types.RestoreChannel):
+            Required. The RestoreChannel resource object
+            to create.
+        restore_channel_id (str):
+            Optional. The client-provided short name for
+            the RestoreChannel resource. This name must:
+
+            - be between 1 and 63 characters long
+              (inclusive)
+            - consist of only lower-case ASCII letters,
+              numbers, and dashes
+            - start with a lower-case letter
+            - end with a lower-case letter or number
+            - be unique within the set of RestoreChannels in
+              this location If the user does not provide a
+              name, a uuid will be used as the name.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    restore_channel: gcg_restore_channel.RestoreChannel = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcg_restore_channel.RestoreChannel,
+    )
+    restore_channel_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListRestoreChannelsRequest(proto.Message):
+    r"""Request message for ListRestoreChannels.
+
+    Attributes:
+        parent (str):
+            Required. The location that contains the RestoreChannels to
+            list. Format: ``projects/*/locations/*``
+        page_size (int):
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
+            [next_page_token][google.cloud.gkebackup.v1.ListRestoreChannelsResponse.next_page_token]
+            to determine if there are more instances left to be queried.
+        page_token (str):
+            Optional. The value of
+            [next_page_token][google.cloud.gkebackup.v1.ListRestoreChannelsResponse.next_page_token]
+            received from a previous ``ListRestoreChannels`` call.
+            Provide this to retrieve the subsequent page in a multi-page
+            list of results. When paginating, all other parameters
+            provided to ``ListRestoreChannels`` must match the call that
+            provided the page token.
+        filter (str):
+            Optional. Field match expression used to
+            filter the results.
+        order_by (str):
+            Optional. Field by which to sort the results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListRestoreChannelsResponse(proto.Message):
+    r"""Response message for ListRestoreChannels.
+
+    Attributes:
+        restore_channels (MutableSequence[google.cloud.gke_backup_v1.types.RestoreChannel]):
+            The list of RestoreChannels matching the
+            given criteria.
+        next_page_token (str):
+            A token which may be sent as
+            [page_token][google.cloud.gkebackup.v1.ListRestoreChannelsRequest.page_token]
+            in a subsequent ``ListRestoreChannels`` call to retrieve the
+            next page of results. If this field is omitted or empty,
+            then there are no more results to return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    restore_channels: MutableSequence[
+        gcg_restore_channel.RestoreChannel
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcg_restore_channel.RestoreChannel,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetRestoreChannelRequest(proto.Message):
+    r"""Request message for GetRestoreChannel.
+
+    Attributes:
+        name (str):
+            Required. Fully qualified RestoreChannel name. Format:
+            ``projects/*/locations/*/restoreChannels/*``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateRestoreChannelRequest(proto.Message):
+    r"""Request message for UpdateRestoreChannel.
+
+    Attributes:
+        restore_channel (google.cloud.gke_backup_v1.types.RestoreChannel):
+            Required. A new version of the RestoreChannel resource that
+            contains updated fields. This may be sparsely populated if
+            an ``update_mask`` is provided.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. This is used to specify the fields to be
+            overwritten in the RestoreChannel targeted for update. The
+            values for each of these updated fields will be taken from
+            the ``restore_channel`` provided with this request. Field
+            names are relative to the root of the resource (e.g.,
+            ``description``, ``destination_project_id``, etc.) If no
+            ``update_mask`` is provided, all fields in
+            ``restore_channel`` will be written to the target
+            RestoreChannel resource. Note that OUTPUT_ONLY and IMMUTABLE
+            fields in ``restore_channel`` are ignored and are not used
+            to update the target RestoreChannel.
+    """
+
+    restore_channel: gcg_restore_channel.RestoreChannel = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcg_restore_channel.RestoreChannel,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteRestoreChannelRequest(proto.Message):
+    r"""Request message for DeleteRestoreChannel.
+
+    Attributes:
+        name (str):
+            Required. Fully qualified RestoreChannel name. Format:
+            ``projects/*/locations/*/restoreChannels/*``
+        etag (str):
+            Optional. If provided, this value must match the current
+            value of the target RestoreChannel's
+            [etag][google.cloud.gkebackup.v1.RestoreChannel.etag] field
+            or the request is rejected.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListRestorePlanBindingsRequest(proto.Message):
+    r"""Request message for ListRestorePlanBindings.
+
+    Attributes:
+        parent (str):
+            Required. The RestoreChannel that contains the
+            ListRestorePlanBindings to list. Format:
+            ``projects/*/locations/*/restoreChannels/*``
+        page_size (int):
+            Optional. The target number of results to return in a single
+            response. If not specified, a default value will be chosen
+            by the service. Note that the response may include a partial
+            list and a caller should only rely on the response's
+            [next_page_token][google.cloud.gkebackup.v1.ListRestorePlanBindingsResponse.next_page_token]
+            to determine if there are more instances left to be queried.
+        page_token (str):
+            Optional. The value of
+            [next_page_token][google.cloud.gkebackup.v1.ListRestorePlanBindingsResponse.next_page_token]
+            received from a previous ``ListRestorePlanBindings`` call.
+            Provide this to retrieve the subsequent page in a multi-page
+            list of results. When paginating, all other parameters
+            provided to ``ListRestorePlanBindings`` must match the call
+            that provided the page token.
+        filter (str):
+            Optional. Field match expression used to
+            filter the results.
+        order_by (str):
+            Optional. Field by which to sort the results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListRestorePlanBindingsResponse(proto.Message):
+    r"""Response message for ListRestorePlanBindings.
+
+    Attributes:
+        restore_plan_bindings (MutableSequence[google.cloud.gke_backup_v1.types.RestorePlanBinding]):
+            The list of RestorePlanBindings matching the
+            given criteria.
+        next_page_token (str):
+            A token which may be sent as
+            [page_token][google.cloud.gkebackup.v1.ListRestorePlanBindingsRequest.page_token]
+            in a subsequent ``ListRestorePlanBindings`` call to retrieve
+            the next page of results. If this field is omitted or empty,
+            then there are no more results to return.
+        unreachable (MutableSequence[str]):
+            Unordered list. Locations that could not be
+            reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    restore_plan_bindings: MutableSequence[
+        restore_plan_binding.RestorePlanBinding
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=restore_plan_binding.RestorePlanBinding,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetRestorePlanBindingRequest(proto.Message):
+    r"""Request message for GetRestorePlanBinding.
+
+    Attributes:
+        name (str):
+            Required. Fully qualified RestorePlanBinding name. Format:
+            ``projects/*/locations/*/restoreChannels/*/restorePlanBindings/*``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class CreateRestoreRequest(proto.Message):
     r"""Request message for CreateRestore.
 
@@ -1153,7 +1815,8 @@ class GetBackupIndexDownloadUrlResponse(proto.Message):
 
     Attributes:
         signed_url (str):
-
+            Required. The signed URL for downloading the
+            backup index.
     """
 
     signed_url: str = proto.Field(

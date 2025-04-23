@@ -135,6 +135,12 @@ class ProcessOptions(proto.Message):
             chunking_config (google.cloud.documentai_v1.types.ProcessOptions.LayoutConfig.ChunkingConfig):
                 Optional. Config for chunking in layout
                 parser processor.
+            return_images (bool):
+                Optional. Whether to include images in layout
+                parser processor response.
+            return_bounding_boxes (bool):
+                Optional. Whether to include bounding boxes
+                in layout parser processor response.
         """
 
         class ChunkingConfig(proto.Message):
@@ -162,6 +168,14 @@ class ProcessOptions(proto.Message):
             proto.MESSAGE,
             number=1,
             message="ProcessOptions.LayoutConfig.ChunkingConfig",
+        )
+        return_images: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        return_bounding_boxes: bool = proto.Field(
+            proto.BOOL,
+            number=3,
         )
 
     class IndividualPageSelector(proto.Message):
