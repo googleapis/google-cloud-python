@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.2...google-cloud-modelarmor-v0.2.3) (2025-04-23)
+
+
+### Documentation
+
+* [google-cloud-modelarmor] fix monitored resources documentation ([#13815](https://github.com/googleapis/google-cloud-python/issues/13815)) ([92d823f](https://github.com/googleapis/google-cloud-python/commit/92d823ff4d81988fcd3acf134ecb482e280cd229))
+
 ## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.1...google-cloud-modelarmor-v0.2.2) (2025-04-12)
 
 

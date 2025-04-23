@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.17...google-cloud-gke-backup-v0.5.18) (2025-04-23)
+
+
+### Features
+
+* Adding `CLEANED_UP` enum in state field of volume.proto ([5900059](https://github.com/googleapis/google-cloud-python/commit/5900059276c15615ff178952384d0d4ee28e03c8))
+* Adding `last_successful_backup_time` field in BackupPlan ([5900059](https://github.com/googleapis/google-cloud-python/commit/5900059276c15615ff178952384d0d4ee28e03c8))
+* Adding `VALIDATING` enum in state field of restore.proto ([5900059](https://github.com/googleapis/google-cloud-python/commit/5900059276c15615ff178952384d0d4ee28e03c8))
+* Adding new BackupChannel, RestoreChannel, BackupPlanBinding and RestorePlanBinding ([5900059](https://github.com/googleapis/google-cloud-python/commit/5900059276c15615ff178952384d0d4ee28e03c8))
+
+
+### Documentation
+
+* minor documentation fixes ([5900059](https://github.com/googleapis/google-cloud-python/commit/5900059276c15615ff178952384d0d4ee28e03c8))
+
 ## [0.5.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.16...google-cloud-gke-backup-v0.5.17) (2025-03-15)
 
 

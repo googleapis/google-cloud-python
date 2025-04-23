@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.25.1...google-cloud-retail-v2.0.0) (2025-04-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing message `LlmEmbeddingConfig` is removed.
+* An existing field `llm_embedding_config` is removed from message `.google.cloud.retail.v2alpha.Model`
+
+### Features
+
+* add availability field to Localnventory ([4e07ac3](https://github.com/googleapis/google-cloud-python/commit/4e07ac3b5e3e5f28e7c583e67b6d576c8c24987f))
+* add new fields including language_code, region_code and place_id to SearchRequest. ([4e07ac3](https://github.com/googleapis/google-cloud-python/commit/4e07ac3b5e3e5f28e7c583e67b6d576c8c24987f))
+* add pin_control_metadata to SearchResponse. ([4e07ac3](https://github.com/googleapis/google-cloud-python/commit/4e07ac3b5e3e5f28e7c583e67b6d576c8c24987f))
+
+
+### Bug Fixes
+
+* An existing field `llm_embedding_config` is removed from message `.google.cloud.retail.v2alpha.Model` ([4e07ac3](https://github.com/googleapis/google-cloud-python/commit/4e07ac3b5e3e5f28e7c583e67b6d576c8c24987f))
+* An existing message `LlmEmbeddingConfig` is removed. ([4e07ac3](https://github.com/googleapis/google-cloud-python/commit/4e07ac3b5e3e5f28e7c583e67b6d576c8c24987f))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([4e07ac3](https://github.com/googleapis/google-cloud-python/commit/4e07ac3b5e3e5f28e7c583e67b6d576c8c24987f))
+
 ## [1.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.25.0...google-cloud-retail-v1.25.1) (2025-03-15)
 
 
