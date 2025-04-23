@@ -27,7 +27,7 @@ import uuid
 
 from google import auth
 import google.api_core.exceptions
-from google.cloud.bigquery import dbapi
+from google.cloud.bigquery import dbapi, ConnectionProperty
 from google.cloud.bigquery.table import (
     RangePartitioning,
     TableReference,
@@ -61,6 +61,7 @@ import re
 from .parse_url import parse_url
 from . import _helpers, _struct, _types
 import sqlalchemy_bigquery_vendored.sqlalchemy.postgresql.base as vendored_postgresql
+from google.cloud.bigquery import QueryJobConfig
 
 # Illegal characters is intended to be all characters that are not explicitly
 # allowed as part of the flexible column names.
@@ -1080,6 +1081,7 @@ class BigQueryDialect(DefaultDialect):
         self,
         arraysize=5000,
         credentials_path=None,
+        billing_project_id=None,
         location=None,
         credentials_info=None,
         credentials_base64=None,
@@ -1092,6 +1094,8 @@ class BigQueryDialect(DefaultDialect):
         self.credentials_path = credentials_path
         self.credentials_info = credentials_info
         self.credentials_base64 = credentials_base64
+        self.project_id = None
+        self.billing_project_id = billing_project_id
         self.location = location
         self.identifier_preparer = self.preparer(self)
         self.dataset_id = None
@@ -1114,15 +1118,20 @@ class BigQueryDialect(DefaultDialect):
         """Build '<dataset_id>.<table_id>' string using given table."""
         return "{}.{}".format(table.reference.dataset_id, table.table_id)
 
-    @staticmethod
-    def _add_default_dataset_to_job_config(job_config, project_id, dataset_id):
-        # If dataset_id is set, then we know the job_config isn't None
-        if dataset_id:
-            # If project_id is missing, use default project_id for the current environment
+    def create_job_config(self, provided_config: QueryJobConfig):
+        project_id = self.project_id
+        if self.dataset_id is None and project_id == self.billing_project_id:
+            return provided_config
+        job_config = provided_config or QueryJobConfig()
+        if project_id != self.billing_project_id:
+            job_config.connection_properties = [
+                ConnectionProperty(key="dataset_project_id", value=project_id)
+            ]
+        if self.dataset_id:
             if not project_id:
                 _, project_id = auth.default()
-
-            job_config.default_dataset = "{}.{}".format(project_id, dataset_id)
+            job_config.default_dataset = "{}.{}".format(project_id, self.dataset_id)
+        return job_config
 
     def do_execute(self, cursor, statement, parameters, context=None):
         kwargs = {}
@@ -1132,13 +1141,13 @@ class BigQueryDialect(DefaultDialect):
 
     def create_connect_args(self, url):
         (
-            project_id,
+            self.project_id,
             location,
             dataset_id,
             arraysize,
             credentials_path,
             credentials_base64,
-            default_query_job_config,
+            provided_job_config,
             list_tables_page_size,
             user_supplied_client,
         ) = parse_url(url)
@@ -1149,9 +1158,9 @@ class BigQueryDialect(DefaultDialect):
         self.credentials_path = credentials_path or self.credentials_path
         self.credentials_base64 = credentials_base64 or self.credentials_base64
         self.dataset_id = dataset_id
-        self._add_default_dataset_to_job_config(
-            default_query_job_config, project_id, dataset_id
-        )
+        self.billing_project_id = self.billing_project_id or self.project_id
+
+        default_query_job_config = self.create_job_config(provided_job_config)
 
         if user_supplied_client:
             # The user is expected to supply a client with
@@ -1162,10 +1171,14 @@ class BigQueryDialect(DefaultDialect):
                 credentials_path=self.credentials_path,
                 credentials_info=self.credentials_info,
                 credentials_base64=self.credentials_base64,
-                project_id=project_id,
+                project_id=self.billing_project_id,
                 location=self.location,
                 default_query_job_config=default_query_job_config,
             )
+            # If the user specified `bigquery://` we need to set the project_id
+            # from the client
+            self.project_id = self.project_id or client.project
+            self.billing_project_id = self.billing_project_id or client.project
             return ([], {"client": client})
 
     def _get_table_or_view_names(self, connection, item_types, schema=None):
@@ -1177,7 +1190,7 @@ class BigQueryDialect(DefaultDialect):
         )
 
         client = connection.connection._client
-        datasets = client.list_datasets()
+        datasets = client.list_datasets(self.project_id)
 
         result = []
         for dataset in datasets:
@@ -1278,7 +1291,8 @@ class BigQueryDialect(DefaultDialect):
 
         client = connection.connection._client
 
-        table_ref = self._table_reference(schema, table_name, client.project)
+        # table_ref = self._table_reference(schema, table_name, client.project)
+        table_ref = self._table_reference(schema, table_name, self.project_id)
         try:
             table = client.get_table(table_ref)
         except NotFound:
@@ -1332,7 +1346,7 @@ class BigQueryDialect(DefaultDialect):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
-        datasets = connection.connection._client.list_datasets()
+        datasets = connection.connection._client.list_datasets(self.project_id)
         return [d.dataset_id for d in datasets]
 
     def get_table_names(self, connection, schema=None, **kw):
