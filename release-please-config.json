@@ -3689,6 +3689,16 @@
             "component": "grpc-google-iam-v1",
             "extra-files": [],
             "release-type": "python"
+        },
+        "packages/google-shopping-merchant-ordertracking": {
+            "extra-files": [
+                "google/shopping/merchant_ordertracking_v1beta/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.ordertracking.v1beta.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
         }
     }
 }
