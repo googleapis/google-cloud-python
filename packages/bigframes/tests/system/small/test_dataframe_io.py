@@ -552,6 +552,89 @@ def test_to_gbq_w_duplicate_column_names(
     )
 
 
+def test_to_gbq_w_flexible_column_names(
+    scalars_df_index, dataset_id: str, bigquery_client
+):
+    """Test the `to_gbq` API when dealing with flexible column names.
+
+    This test is for BigQuery-backed storage nodes.
+
+    See: https://cloud.google.com/bigquery/docs/schemas#flexible-column-names
+    """
+    destination_table = f"{dataset_id}.test_to_gbq_w_flexible_column_names"
+    renamed_columns = {
+        # First column in Japanese (tests unicode).
+        "bool_col": "最初のカラム",
+        "bytes_col": "col with space",
+        # Dots aren't allowed in BigQuery column names, so these should be translated
+        "date_col": "col.with.dots",
+        "datetime_col": "col-with-hyphens",
+        "geography_col": "1start_with_number",
+        "int64_col": "col_with_underscore",
+        # Just numbers.
+        "int64_too": "123",
+    }
+    bf_df = scalars_df_index[renamed_columns.keys()].rename(columns=renamed_columns)
+    assert list(bf_df.columns) == list(renamed_columns.values())
+    bf_df.to_gbq(destination_table, index=False)
+
+    table = bigquery_client.get_table(destination_table)
+    columns = [field.name for field in table.schema]
+    assert columns == [
+        "最初のカラム",
+        "col with space",
+        # Dots aren't allowed in BigQuery column names, so these should be translated
+        "col_with_dots",
+        "col-with-hyphens",
+        "1start_with_number",
+        "col_with_underscore",
+        "123",
+    ]
+
+
+def test_to_gbq_w_flexible_column_names_local_node(
+    session, dataset_id: str, bigquery_client
+):
+    """Test the `to_gbq` API when dealing with flexible column names.
+
+    This test is for local nodes, e.g. read_pandas(), since those may go through
+    a different code path compared to data that starts in BigQuery.
+
+    See: https://cloud.google.com/bigquery/docs/schemas#flexible-column-names
+    """
+    destination_table = f"{dataset_id}.test_to_gbq_w_flexible_column_names_local_node"
+
+    data = {
+        # First column in Japanese (tests unicode).
+        "最初のカラム": [1, 2, 3],
+        "col with space": [4, 5, 6],
+        # Dots aren't allowed in BigQuery column names, so these should be translated
+        "col.with.dots": [7, 8, 9],
+        "col-with-hyphens": [10, 11, 12],
+        "1start_with_number": [13, 14, 15],
+        "col_with_underscore": [16, 17, 18],
+        "123": [19, 20, 21],
+    }
+    pd_df = pd.DataFrame(data)
+    assert list(pd_df.columns) == list(data.keys())
+    bf_df = session.read_pandas(pd_df)
+    assert list(bf_df.columns) == list(data.keys())
+    bf_df.to_gbq(destination_table, index=False)
+
+    table = bigquery_client.get_table(destination_table)
+    columns = [field.name for field in table.schema]
+    assert columns == [
+        "最初のカラム",
+        "col with space",
+        # Dots aren't allowed in BigQuery column names, so these should be translated
+        "col_with_dots",
+        "col-with-hyphens",
+        "1start_with_number",
+        "col_with_underscore",
+        "123",
+    ]
+
+
 def test_to_gbq_w_None_column_names(
     scalars_df_index, scalars_pandas_df_index, dataset_id
 ):
