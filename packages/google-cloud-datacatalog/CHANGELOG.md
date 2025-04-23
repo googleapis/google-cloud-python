@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.26.1...google-cloud-datacatalog-v3.27.0) (2025-04-23)
+
+
+### Features
+
+* [google-cloud-datacatalog] add field `template_migration_enabled_time` to `.google.cloud.datacatalog.v1.MigrationConfig` ([#13823](https://github.com/googleapis/google-cloud-python/issues/13823)) ([e2b8039](https://github.com/googleapis/google-cloud-python/commit/e2b80394d320a95036931e4c4c897700f42c370f))
+
 ## [3.26.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.26.0...google-cloud-datacatalog-v3.26.1) (2025-04-12)
 
 

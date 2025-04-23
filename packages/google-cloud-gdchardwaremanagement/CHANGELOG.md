@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.11...google-cloud-gdchardwaremanagement-v0.1.12) (2025-04-23)
+
+
+### Features
+
+* accept status updates in the SignalZoneState method ([a66badc](https://github.com/googleapis/google-cloud-python/commit/a66badc3fd01734c6e2c4192b92cc4a0b998e8f8))
+* add deployment type and installation dates to orders ([a66badc](https://github.com/googleapis/google-cloud-python/commit/a66badc3fd01734c6e2c4192b92cc4a0b998e8f8))
+* expose the allowed hardware count for each SKU ([a66badc](https://github.com/googleapis/google-cloud-python/commit/a66badc3fd01734c6e2c4192b92cc4a0b998e8f8))
+
+
+### Documentation
+
+* make billing_id an output-only field ([a66badc](https://github.com/googleapis/google-cloud-python/commit/a66badc3fd01734c6e2c4192b92cc4a0b998e8f8))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gdchardwaremanagement-v0.1.10...google-cloud-gdchardwaremanagement-v0.1.11) (2025-03-15)
 
 

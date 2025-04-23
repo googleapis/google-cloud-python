@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.3.0...google-cloud-documentai-v3.4.0) (2025-04-23)
+
+
+### Features
+
+* [google-cloud-documentai] Added a field for enabling returning images and bounding boxes from layout parser processor ([#13822](https://github.com/googleapis/google-cloud-python/issues/13822)) ([77e38cd](https://github.com/googleapis/google-cloud-python/commit/77e38cd3499f8ea66e5aa9703a56bd8be9b9836d))
+
 ## [3.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.2.1...google-cloud-documentai-v3.3.0) (2025-03-19)
 
 

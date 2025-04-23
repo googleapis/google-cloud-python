@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.6...google-maps-areainsights-v0.1.7) (2025-04-23)
+
+
+### Documentation
+
+* clarifications of comments ([31b3cc8](https://github.com/googleapis/google-cloud-python/commit/31b3cc82071330347b4212d5192b7700672e9123))
+* sample requests rewritten as JSON ([31b3cc8](https://github.com/googleapis/google-cloud-python/commit/31b3cc82071330347b4212d5192b7700672e9123))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.5...google-maps-areainsights-v0.1.6) (2025-04-17)
 
 
