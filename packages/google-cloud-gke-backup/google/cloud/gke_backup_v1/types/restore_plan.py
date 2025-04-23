@@ -90,7 +90,9 @@ class RestorePlan(proto.Message):
             operation.
         state_reason (str):
             Output only. Human-readable description of why RestorePlan
-            is in the current ``state``
+            is in the current ``state``. This field is only meant for
+            human readability and should not be used programmatically as
+            this field is not guaranteed to be consistent.
     """
 
     class State(proto.Enum):

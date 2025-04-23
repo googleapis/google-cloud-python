@@ -17,15 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.cloud.gkebackup.v1',
+    package="google.cloud.gkebackup.v1",
     manifest={
-        'BackupPlanBinding',
+        "BackupPlanBinding",
     },
 )
 
@@ -106,6 +104,7 @@ class BackupPlanBinding(proto.Message):
                 Backup created under this BackupPlan.
                 ``projects/*/locations/*/backupPlans/*/backups/*``
         """
+
         class State(proto.Enum):
             r"""State
 
@@ -140,10 +139,10 @@ class BackupPlanBinding(proto.Message):
             proto.INT32,
             number=1,
         )
-        state: 'BackupPlanBinding.BackupPlanDetails.State' = proto.Field(
+        state: "BackupPlanBinding.BackupPlanDetails.State" = proto.Field(
             proto.ENUM,
             number=2,
-            enum='BackupPlanBinding.BackupPlanDetails.State',
+            enum="BackupPlanBinding.BackupPlanDetails.State",
         )
         last_successful_backup_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,

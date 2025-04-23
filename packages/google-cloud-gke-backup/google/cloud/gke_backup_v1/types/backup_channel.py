@@ -17,32 +17,30 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.cloud.gkebackup.v1',
+    package="google.cloud.gkebackup.v1",
     manifest={
-        'RestoreChannel',
+        "BackupChannel",
     },
 )
 
 
-class RestoreChannel(proto.Message):
-    r"""A RestoreChannel imposes constraints on where backups can be
-    restored. The RestoreChannel should be in the same project and
-    region as the backups. The backups can only be restored in the
-    ``destination_project``.
+class BackupChannel(proto.Message):
+    r"""A BackupChannel imposes constraints on where clusters can be backed
+    up. The BackupChannel should be in the same project and region as
+    the cluster being backed up. The backup can be created only in
+    destination_project.
 
     Attributes:
         name (str):
-            Identifier. The fully qualified name of the RestoreChannel.
-            ``projects/*/locations/*/restoreChannels/*``
+            Identifier. The fully qualified name of the BackupChannel.
+            ``projects/*/locations/*/backupChannels/*``
         destination_project (str):
-            Required. Immutable. The project into which the backups will
-            be restored. The format is ``projects/{project}``.
+            Required. Immutable. The project where Backups are allowed
+            to be stored. The format is ``projects/{project}``.
             Currently, {project} can only be the project number. Support
             for project IDs will be added in the future.
         uid (str):
@@ -51,31 +49,31 @@ class RestoreChannel(proto.Message):
             format.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when this
-            RestoreChannel was created.
+            BackupChannel resource was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when this
-            RestoreChannel was last updated.
+            BackupChannel resource was last updated.
         labels (MutableMapping[str, str]):
             Optional. A set of custom labels supplied by
             user.
         description (str):
             Optional. User specified descriptive string
-            for this RestoreChannel.
+            for this BackupChannel.
         etag (str):
             Output only. ``etag`` is used for optimistic concurrency
             control as a way to help prevent simultaneous updates of a
-            RestoreChannel from overwriting each other. It is strongly
+            BackupChannel from overwriting each other. It is strongly
             suggested that systems make use of the 'etag' in the
-            read-modify-write cycle to perform RestoreChannel updates in
+            read-modify-write cycle to perform BackupChannel updates in
             order to avoid race conditions: An ``etag`` is returned in
-            the response to ``GetRestoreChannel``, and systems are
+            the response to ``GetBackupChannel``, and systems are
             expected to put that etag in the request to
-            ``UpdateRestoreChannel`` or ``DeleteRestoreChannel`` to
-            ensure that their change will be applied to the same version
-            of the resource.
+            ``UpdateBackupChannel`` or ``DeleteBackupChannel`` to ensure
+            that their change will be applied to the same version of the
+            resource.
         destination_project_id (str):
-            Output only. The project_id where backups will be restored.
-            Example Project ID: "my-project-id". This will be an
+            Output only. The project_id where Backups are allowed to be
+            stored. Example Project ID: "my-project-id". This will be an
             OUTPUT_ONLY field to return the project_id of the
             destination project.
     """
