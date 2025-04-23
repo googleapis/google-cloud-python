@@ -1033,6 +1033,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1446966>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1446966&template=1822025>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Device Streaming API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-devicestreaming>`_
+     - preview
+     - |PyPI-google-cloud-devicestreaming|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1767292>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1767292&template=2112325>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Discovery Engine API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-discoveryengine>`_
      - preview
      - |PyPI-google-cloud-discoveryengine|
@@ -1798,6 +1804,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dataform
 .. |PyPI-google-cloud-developerconnect| image:: https://img.shields.io/pypi/v/google-cloud-developerconnect.svg
      :target: https://pypi.org/project/google-cloud-developerconnect
+.. |PyPI-google-cloud-devicestreaming| image:: https://img.shields.io/pypi/v/google-cloud-devicestreaming.svg
+     :target: https://pypi.org/project/google-cloud-devicestreaming
 .. |PyPI-google-cloud-discoveryengine| image:: https://img.shields.io/pypi/v/google-cloud-discoveryengine.svg
      :target: https://pypi.org/project/google-cloud-discoveryengine
 .. |PyPI-google-cloud-edgecontainer| image:: https://img.shields.io/pypi/v/google-cloud-edgecontainer.svg
