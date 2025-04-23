@@ -3689,6 +3689,16 @@
             "component": "grpc-google-iam-v1",
             "extra-files": [],
             "release-type": "python"
+        },
+        "packages/google-cloud-lustre": {
+            "extra-files": [
+                "google/cloud/lustre_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.lustre.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
         }
     }
 }
