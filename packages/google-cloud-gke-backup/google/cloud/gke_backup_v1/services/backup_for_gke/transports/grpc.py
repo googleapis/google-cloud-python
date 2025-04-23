@@ -34,10 +34,14 @@ import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import (
     backup,
+    backup_channel,
     backup_plan,
+    backup_plan_binding,
     gkebackup,
     restore,
+    restore_channel,
     restore_plan,
+    restore_plan_binding,
     volume,
 )
 
@@ -482,6 +486,195 @@ class BackupForGKEGrpcTransport(BackupForGKETransport):
         return self._stubs["delete_backup_plan"]
 
     @property
+    def create_backup_channel(
+        self,
+    ) -> Callable[[gkebackup.CreateBackupChannelRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create backup channel method over gRPC.
+
+        Creates a new BackupChannel in a given location.
+
+        Returns:
+            Callable[[~.CreateBackupChannelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_backup_channel" not in self._stubs:
+            self._stubs["create_backup_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/CreateBackupChannel",
+                request_serializer=gkebackup.CreateBackupChannelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_backup_channel"]
+
+    @property
+    def list_backup_channels(
+        self,
+    ) -> Callable[
+        [gkebackup.ListBackupChannelsRequest], gkebackup.ListBackupChannelsResponse
+    ]:
+        r"""Return a callable for the list backup channels method over gRPC.
+
+        Lists BackupChannels in a given location.
+
+        Returns:
+            Callable[[~.ListBackupChannelsRequest],
+                    ~.ListBackupChannelsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_channels" not in self._stubs:
+            self._stubs["list_backup_channels"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/ListBackupChannels",
+                request_serializer=gkebackup.ListBackupChannelsRequest.serialize,
+                response_deserializer=gkebackup.ListBackupChannelsResponse.deserialize,
+            )
+        return self._stubs["list_backup_channels"]
+
+    @property
+    def get_backup_channel(
+        self,
+    ) -> Callable[[gkebackup.GetBackupChannelRequest], backup_channel.BackupChannel]:
+        r"""Return a callable for the get backup channel method over gRPC.
+
+        Retrieve the details of a single BackupChannel.
+
+        Returns:
+            Callable[[~.GetBackupChannelRequest],
+                    ~.BackupChannel]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_channel" not in self._stubs:
+            self._stubs["get_backup_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/GetBackupChannel",
+                request_serializer=gkebackup.GetBackupChannelRequest.serialize,
+                response_deserializer=backup_channel.BackupChannel.deserialize,
+            )
+        return self._stubs["get_backup_channel"]
+
+    @property
+    def update_backup_channel(
+        self,
+    ) -> Callable[[gkebackup.UpdateBackupChannelRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update backup channel method over gRPC.
+
+        Update a BackupChannel.
+
+        Returns:
+            Callable[[~.UpdateBackupChannelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_backup_channel" not in self._stubs:
+            self._stubs["update_backup_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/UpdateBackupChannel",
+                request_serializer=gkebackup.UpdateBackupChannelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_backup_channel"]
+
+    @property
+    def delete_backup_channel(
+        self,
+    ) -> Callable[[gkebackup.DeleteBackupChannelRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete backup channel method over gRPC.
+
+        Deletes an existing BackupChannel.
+
+        Returns:
+            Callable[[~.DeleteBackupChannelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_backup_channel" not in self._stubs:
+            self._stubs["delete_backup_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/DeleteBackupChannel",
+                request_serializer=gkebackup.DeleteBackupChannelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_backup_channel"]
+
+    @property
+    def list_backup_plan_bindings(
+        self,
+    ) -> Callable[
+        [gkebackup.ListBackupPlanBindingsRequest],
+        gkebackup.ListBackupPlanBindingsResponse,
+    ]:
+        r"""Return a callable for the list backup plan bindings method over gRPC.
+
+        Lists BackupPlanBindings in a given location.
+
+        Returns:
+            Callable[[~.ListBackupPlanBindingsRequest],
+                    ~.ListBackupPlanBindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_backup_plan_bindings" not in self._stubs:
+            self._stubs["list_backup_plan_bindings"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/ListBackupPlanBindings",
+                request_serializer=gkebackup.ListBackupPlanBindingsRequest.serialize,
+                response_deserializer=gkebackup.ListBackupPlanBindingsResponse.deserialize,
+            )
+        return self._stubs["list_backup_plan_bindings"]
+
+    @property
+    def get_backup_plan_binding(
+        self,
+    ) -> Callable[
+        [gkebackup.GetBackupPlanBindingRequest], backup_plan_binding.BackupPlanBinding
+    ]:
+        r"""Return a callable for the get backup plan binding method over gRPC.
+
+        Retrieve the details of a single BackupPlanBinding.
+
+        Returns:
+            Callable[[~.GetBackupPlanBindingRequest],
+                    ~.BackupPlanBinding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_backup_plan_binding" not in self._stubs:
+            self._stubs["get_backup_plan_binding"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/GetBackupPlanBinding",
+                request_serializer=gkebackup.GetBackupPlanBindingRequest.serialize,
+                response_deserializer=backup_plan_binding.BackupPlanBinding.deserialize,
+            )
+        return self._stubs["get_backup_plan_binding"]
+
+    @property
     def create_backup(
         self,
     ) -> Callable[[gkebackup.CreateBackupRequest], operations_pb2.Operation]:
@@ -794,6 +987,198 @@ class BackupForGKEGrpcTransport(BackupForGKETransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_restore_plan"]
+
+    @property
+    def create_restore_channel(
+        self,
+    ) -> Callable[[gkebackup.CreateRestoreChannelRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create restore channel method over gRPC.
+
+        Creates a new RestoreChannel in a given location.
+
+        Returns:
+            Callable[[~.CreateRestoreChannelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_restore_channel" not in self._stubs:
+            self._stubs["create_restore_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/CreateRestoreChannel",
+                request_serializer=gkebackup.CreateRestoreChannelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_restore_channel"]
+
+    @property
+    def list_restore_channels(
+        self,
+    ) -> Callable[
+        [gkebackup.ListRestoreChannelsRequest], gkebackup.ListRestoreChannelsResponse
+    ]:
+        r"""Return a callable for the list restore channels method over gRPC.
+
+        Lists RestoreChannels in a given location.
+
+        Returns:
+            Callable[[~.ListRestoreChannelsRequest],
+                    ~.ListRestoreChannelsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_restore_channels" not in self._stubs:
+            self._stubs["list_restore_channels"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/ListRestoreChannels",
+                request_serializer=gkebackup.ListRestoreChannelsRequest.serialize,
+                response_deserializer=gkebackup.ListRestoreChannelsResponse.deserialize,
+            )
+        return self._stubs["list_restore_channels"]
+
+    @property
+    def get_restore_channel(
+        self,
+    ) -> Callable[[gkebackup.GetRestoreChannelRequest], restore_channel.RestoreChannel]:
+        r"""Return a callable for the get restore channel method over gRPC.
+
+        Retrieve the details of a single RestoreChannel.
+
+        Returns:
+            Callable[[~.GetRestoreChannelRequest],
+                    ~.RestoreChannel]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_restore_channel" not in self._stubs:
+            self._stubs["get_restore_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/GetRestoreChannel",
+                request_serializer=gkebackup.GetRestoreChannelRequest.serialize,
+                response_deserializer=restore_channel.RestoreChannel.deserialize,
+            )
+        return self._stubs["get_restore_channel"]
+
+    @property
+    def update_restore_channel(
+        self,
+    ) -> Callable[[gkebackup.UpdateRestoreChannelRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update restore channel method over gRPC.
+
+        Update a RestoreChannel.
+
+        Returns:
+            Callable[[~.UpdateRestoreChannelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_restore_channel" not in self._stubs:
+            self._stubs["update_restore_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/UpdateRestoreChannel",
+                request_serializer=gkebackup.UpdateRestoreChannelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_restore_channel"]
+
+    @property
+    def delete_restore_channel(
+        self,
+    ) -> Callable[[gkebackup.DeleteRestoreChannelRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete restore channel method over gRPC.
+
+        Deletes an existing RestoreChannel.
+
+        Returns:
+            Callable[[~.DeleteRestoreChannelRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_restore_channel" not in self._stubs:
+            self._stubs["delete_restore_channel"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/DeleteRestoreChannel",
+                request_serializer=gkebackup.DeleteRestoreChannelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_restore_channel"]
+
+    @property
+    def list_restore_plan_bindings(
+        self,
+    ) -> Callable[
+        [gkebackup.ListRestorePlanBindingsRequest],
+        gkebackup.ListRestorePlanBindingsResponse,
+    ]:
+        r"""Return a callable for the list restore plan bindings method over gRPC.
+
+        Lists RestorePlanBindings in a given location.
+
+        Returns:
+            Callable[[~.ListRestorePlanBindingsRequest],
+                    ~.ListRestorePlanBindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_restore_plan_bindings" not in self._stubs:
+            self._stubs[
+                "list_restore_plan_bindings"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/ListRestorePlanBindings",
+                request_serializer=gkebackup.ListRestorePlanBindingsRequest.serialize,
+                response_deserializer=gkebackup.ListRestorePlanBindingsResponse.deserialize,
+            )
+        return self._stubs["list_restore_plan_bindings"]
+
+    @property
+    def get_restore_plan_binding(
+        self,
+    ) -> Callable[
+        [gkebackup.GetRestorePlanBindingRequest],
+        restore_plan_binding.RestorePlanBinding,
+    ]:
+        r"""Return a callable for the get restore plan binding method over gRPC.
+
+        Retrieve the details of a single RestorePlanBinding.
+
+        Returns:
+            Callable[[~.GetRestorePlanBindingRequest],
+                    ~.RestorePlanBinding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_restore_plan_binding" not in self._stubs:
+            self._stubs["get_restore_plan_binding"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkebackup.v1.BackupForGKE/GetRestorePlanBinding",
+                request_serializer=gkebackup.GetRestorePlanBindingRequest.serialize,
+                response_deserializer=restore_plan_binding.RestorePlanBinding.deserialize,
+            )
+        return self._stubs["get_restore_plan_binding"]
 
     @property
     def create_restore(

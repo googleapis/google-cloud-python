@@ -83,7 +83,10 @@ class VolumeBackup(proto.Message):
         state_message (str):
             Output only. A human readable message
             explaining why the VolumeBackup is in its
-            current state.
+            current state. This field is only meant for
+            human consumption and should not be used
+            programmatically as this field is not guaranteed
+            to be consistent.
         etag (str):
             Output only. ``etag`` is used for optimistic concurrency
             control as a way to help prevent simultaneous updates of a
@@ -91,6 +94,10 @@ class VolumeBackup(proto.Message):
             suggested that systems make use of the ``etag`` in the
             read-modify-write cycle to perform volume backup updates in
             order to avoid race conditions.
+        satisfies_pzs (bool):
+            Output only. [Output Only] Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. [Output Only] Reserved for future use.
     """
 
     class VolumeBackupFormat(proto.Enum):
@@ -136,6 +143,9 @@ class VolumeBackup(proto.Message):
                 This VolumeBackup resource (and its
                 associated artifacts) is in the process of being
                 deleted.
+            CLEANED_UP (7):
+                The underlying artifacts of a volume backup
+                (eg: persistent disk snapshots) are deleted.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
@@ -144,6 +154,7 @@ class VolumeBackup(proto.Message):
         SUCCEEDED = 4
         FAILED = 5
         DELETING = 6
+        CLEANED_UP = 7
 
     name: str = proto.Field(
         proto.STRING,
@@ -202,6 +213,14 @@ class VolumeBackup(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=13,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=15,
     )
 
 
