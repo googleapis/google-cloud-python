@@ -106,7 +106,9 @@ def st_area(
 def st_difference(
     series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
     other: Union[
-        bigframes.series.Series, bigframes.geopandas.GeoSeries, shapely.Geometry
+        bigframes.series.Series,
+        bigframes.geopandas.GeoSeries,
+        shapely.geometry.base.BaseGeometry,
     ],
 ) -> bigframes.series.Series:
     """
@@ -207,7 +209,9 @@ def st_difference(
 def st_distance(
     series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
     other: Union[
-        bigframes.series.Series, bigframes.geopandas.GeoSeries, shapely.Geometry
+        bigframes.series.Series,
+        bigframes.geopandas.GeoSeries,
+        shapely.geometry.base.BaseGeometry,
     ],
     *,
     use_spheroid: bool = False,
@@ -282,7 +286,9 @@ def st_distance(
 def st_intersection(
     series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
     other: Union[
-        bigframes.series.Series, bigframes.geopandas.GeoSeries, shapely.Geometry
+        bigframes.series.Series,
+        bigframes.geopandas.GeoSeries,
+        shapely.geometry.base.BaseGeometry,
     ],
 ) -> bigframes.series.Series:
     """

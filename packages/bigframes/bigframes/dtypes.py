@@ -607,7 +607,7 @@ def _infer_dtype_from_python_type(type_: type) -> Dtype:
         return DATE_DTYPE
     if issubclass(type_, datetime.time):
         return TIME_DTYPE
-    if issubclass(type_, shapely.Geometry):
+    if issubclass(type_, shapely.geometry.base.BaseGeometry):
         return GEO_DTYPE
     else:
         raise TypeError(

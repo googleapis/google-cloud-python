@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
-import shapely  # type: ignore
+import shapely.geometry  # type: ignore
 
 import bigframes.core.compile.ibis_types
 import bigframes.dtypes
@@ -231,9 +231,9 @@ def test_bigframes_string_dtype_converts(ibis_dtype, bigframes_dtype_str):
         (bool, bigframes.dtypes.BOOL_DTYPE),
         (int, bigframes.dtypes.INT_DTYPE),
         (str, bigframes.dtypes.STRING_DTYPE),
-        (shapely.Point, bigframes.dtypes.GEO_DTYPE),
-        (shapely.Polygon, bigframes.dtypes.GEO_DTYPE),
-        (shapely.Geometry, bigframes.dtypes.GEO_DTYPE),
+        (shapely.geometry.Point, bigframes.dtypes.GEO_DTYPE),
+        (shapely.geometry.Polygon, bigframes.dtypes.GEO_DTYPE),
+        (shapely.geometry.base.BaseGeometry, bigframes.dtypes.GEO_DTYPE),
     ],
 )
 def test_bigframes_type_supports_python_types(python_type, expected_dtype):

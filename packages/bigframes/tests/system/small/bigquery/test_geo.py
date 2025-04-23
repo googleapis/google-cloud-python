@@ -15,6 +15,7 @@
 import geopandas  # type: ignore
 import pandas as pd
 import pandas.testing
+import pytest
 from shapely.geometry import (  # type: ignore
     GeometryCollection,
     LineString,
@@ -94,6 +95,12 @@ def test_geo_st_difference_with_geometry_objects():
 
 
 def test_geo_st_difference_with_single_geometry_object():
+    pytest.importorskip(
+        "shapely",
+        minversion="2.0.0",
+        reason="shapely objects must be hashable to include in our expression trees",
+    )
+
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]),
         Polygon([(0, 1), (10, 1), (10, 9), (0, 9), (0, 1)]),
@@ -205,6 +212,12 @@ def test_geo_st_distance_with_geometry_objects():
 
 
 def test_geo_st_distance_with_single_geometry_object():
+    pytest.importorskip(
+        "shapely",
+        minversion="2.0.0",
+        reason="shapely objects must be hashable to include in our expression trees",
+    )
+
     data1 = [
         # 0.00001 is approximately 1 meter.
         Polygon([(0, 0), (0.00001, 0), (0.00001, 0.00001), (0, 0.00001), (0, 0)]),
@@ -279,6 +292,12 @@ def test_geo_st_intersection_with_geometry_objects():
 
 
 def test_geo_st_intersection_with_single_geometry_object():
+    pytest.importorskip(
+        "shapely",
+        minversion="2.0.0",
+        reason="shapely objects must be hashable to include in our expression trees",
+    )
+
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 10), (0, 0)]),
         Polygon([(0, 1), (10, 1), (10, 9), (0, 9), (0, 1)]),
