@@ -66,7 +66,7 @@ def test_json_set_w_more_pairs():
         s, json_path_value_pairs=[("$.a", 1), ("$.b", 2), ("$.a", [3, 4, 5])]
     )
 
-    expected_json = ['{"a": 3, "b": 2}', '{"a": 4, "b": 2}', '{"a": 5, "b": 2, "c": 1}']
+    expected_json = ['{"a": 3,"b":2}', '{"a":4,"b": 2}', '{"a": 5,"b":2,"c":1}']
     expected = bpd.Series(expected_json, dtype=dtypes.JSON_DTYPE)
 
     pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())

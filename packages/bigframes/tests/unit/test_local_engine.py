@@ -41,7 +41,7 @@ def small_inline_frame() -> pd.DataFrame:
             "bools": pd.Series([True, None, False], dtype="boolean"),
             "strings": pd.Series(["b", "aa", "ccc"], dtype="string[pyarrow]"),
             "intLists": pd.Series(
-                [[1, 2, 3], [4, 5, 6, 7], None],
+                [[1, 2, 3], [4, 5, 6, 7], []],
                 dtype=pd.ArrowDtype(pa.list_(pa.int64())),
             ),
         },

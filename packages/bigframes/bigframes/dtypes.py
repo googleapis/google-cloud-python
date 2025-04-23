@@ -19,7 +19,7 @@ import datetime
 import decimal
 import textwrap
 import typing
-from typing import Any, Dict, List, Literal, Union
+from typing import Any, Dict, List, Literal, Sequence, Union
 
 import bigframes_vendored.constants as constants
 import db_dtypes  # type: ignore
@@ -368,6 +368,19 @@ def get_array_inner_type(type_: ExpressionType) -> Dtype:
     assert isinstance(type_.pyarrow_dtype, pa.ListType)
     list_type = type_.pyarrow_dtype
     return arrow_dtype_to_bigframes_dtype(list_type.value_type)
+
+
+def list_type(values_type: Dtype) -> Dtype:
+    """Create a list dtype with given value type."""
+    return pd.ArrowDtype(pa.list_(bigframes_dtype_to_arrow_dtype(values_type)))
+
+
+def struct_type(fields: Sequence[tuple[str, Dtype]]) -> Dtype:
+    """Create a struct dtype with give fields names and types."""
+    pa_fields = [
+        pa.field(str, bigframes_dtype_to_arrow_dtype(dtype)) for str, dtype in fields
+    ]
+    return pd.ArrowDtype(pa.struct(pa_fields))
 
 
 _ORDERABLE_SIMPLE_TYPES = set(

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import io
+import json
 import random
 import re
 import tempfile
@@ -32,7 +33,6 @@ import pyarrow as pa
 import pytest
 
 import bigframes
-import bigframes.core.indexes.base
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.ml.linear_model
@@ -990,10 +990,7 @@ def test_read_pandas_json_series_w_invalid_json(session, write_engine):
     ]
     pd_s = pd.Series(json_data, dtype=bigframes.dtypes.JSON_DTYPE)
 
-    with pytest.raises(
-        ValueError,
-        match="Invalid JSON format found",
-    ):
+    with pytest.raises(json.JSONDecodeError):
         session.read_pandas(pd_s, write_engine=write_engine)
 
 
@@ -1101,7 +1098,7 @@ def test_read_pandas_w_nested_invalid_json(session, write_engine):
         ),
     )
 
-    with pytest.raises(ValueError, match="Invalid JSON format found"):
+    with pytest.raises(json.JSONDecodeError):
         session.read_pandas(pd_s, write_engine=write_engine)
 
 

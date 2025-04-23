@@ -35,7 +35,7 @@ import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.features
-from bigframes.session import executor, read_api_execution
+from bigframes.session import executor, local_scan_executor, read_api_execution
 import bigframes.session._io.bigquery as bq_io
 import bigframes.session.metrics
 import bigframes.session.planner
@@ -84,6 +84,7 @@ class BigQueryCachingExecutor(executor.Executor):
                 bqstoragereadclient=bqstoragereadclient,
                 project=self.bqclient.project,
             ),
+            local_scan_executor.LocalScanExecutor(),
         )
 
     def to_sql(

@@ -28,6 +28,20 @@ def try_reduce_to_table_scan(root: nodes.BigFrameNode) -> Optional[nodes.ReadTab
     return None
 
 
+def try_reduce_to_local_scan(node: nodes.BigFrameNode) -> Optional[nodes.ReadLocalNode]:
+    if not all(
+        map(
+            lambda x: isinstance(x, (nodes.ReadLocalNode, nodes.SelectionNode)),
+            node.unique_nodes(),
+        )
+    ):
+        return None
+    result = node.bottom_up(merge_scan)
+    if isinstance(result, nodes.ReadLocalNode):
+        return result
+    return None
+
+
 @functools.singledispatch
 def merge_scan(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
     return node
@@ -35,11 +49,12 @@ def merge_scan(node: nodes.BigFrameNode) -> nodes.BigFrameNode:
 
 @merge_scan.register
 def _(node: nodes.SelectionNode) -> nodes.BigFrameNode:
-    if not isinstance(node.child, nodes.ReadTableNode):
+    if not isinstance(node.child, (nodes.ReadTableNode, nodes.ReadLocalNode)):
         return node
     if node.has_multi_referenced_ids:
         return node
-
+    if isinstance(node, nodes.ReadLocalNode) and node.offsets_col is not None:
+        return node
     selection = {
         aliased_ref.ref.id: aliased_ref.id for aliased_ref in node.input_output_pairs
     }
