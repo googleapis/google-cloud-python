@@ -1819,6 +1819,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-lustre": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-lustre",
+            "extra-files": [
+                "google/cloud/lustre/gapic_version.py",
+                "google/cloud/lustre_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.lustre.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-managed-identities": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -3577,6 +3592,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-shopping-merchant-ordertracking": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-ordertracking",
+            "extra-files": [
+                "google/shopping/merchant_ordertracking/gapic_version.py",
+                "google/shopping/merchant_ordertracking_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.ordertracking.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-shopping-merchant-products": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -3689,26 +3719,6 @@
             "component": "grpc-google-iam-v1",
             "extra-files": [],
             "release-type": "python"
-        },
-        "packages/google-shopping-merchant-ordertracking": {
-            "extra-files": [
-                "google/shopping/merchant_ordertracking_v1beta/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.ordertracking.v1beta.json",
-                     "jsonpath": "$.clientLibrary.version"
-                }
-            ]
-        },
-        "packages/google-cloud-lustre": {
-            "extra-files": [
-                "google/cloud/lustre_v1/gapic_version.py",
-                {
-                    "type": "json",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.lustre.v1.json",
-                    "jsonpath": "$.clientLibrary.version"
-                }
-            ]
         }
     }
 }
