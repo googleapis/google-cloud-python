@@ -49,59 +49,81 @@ class Insight(proto.Enum):
             When this insight is specified ComputeInsights returns the
             number of places that match the specified filter criteria.
 
+            Example request:
+
             ::
 
-               For example if the request is:
-               ComputeInsightsRequest {
-                 insights: INSIGHT_COUNT
-                 filter {
-                   location_filter {region: <PlaceId of state of CA>}
-                   type_filter {included_types: "restaurant"}
-                   operating_status: OPERATING_STATUS_OPERATIONAL
-                   price_levels: PRICE_LEVEL_FREE
-                   price_levels: PRICE_LEVEL_INEXPENSIVE
-                   min_rating: 4.0
+               {
+                 "insights": ["INSIGHT_COUNT"],
+                 "filter": {
+                   "locationFilter": {
+                     "region": {
+                       "place": "places/ChIJPV4oX_65j4ARVW8IJ6IJUYs"
+                     }
+                   },
+                   "typeFilter": {
+                     "includedTypes": ["restaurant"]
+                   },
+                   "operatingStatus": ["OPERATING_STATUS_OPERATIONAL"],
+                   "priceLevels": [
+                     "PRICE_LEVEL_FREE",
+                     "PRICE_LEVEL_INEXPENSIVE"
+                   ],
+                   "ratingFilter": {
+                     "minRating": 4.0
+                   }
                  }
                }
 
-               The method will return the count of restaurants in California that are
-               operational, with price level free or inexpensive and have an average
-               rating of at least 4 starts.
+            Example response:
 
-               Example response:
-               ComputeInsightsResponse {
-                 count: <number of places>
+            ::
+
+               {
+                 "count": 1234
                }
         INSIGHT_PLACES (2):
             Return Places
 
             When this insight is specified ComputeInsights returns
-            Places that match the specified filter criteria.
+            places IDs that match the specified filter criteria.
+
+            Example request:
 
             ::
 
-               For example if the request is:
-               ComputeInsightsRequest {
-                 insights: INSIGHT_PLACES
-                 filter {
-                   location_filter {region: <PlaceId of state of CA>}
-                   type_filter {included_types: "restaurant"}
-                   operating_status: OPERATING_STATUS_OPERATIONAL
-                   price_levels: PRICE_LEVEL_FREE
-                   price_levels: PRICE_LEVEL_INEXPENSIVE
-                   min_rating: 4.0
+               {
+                 "insights": ["INSIGHT_PLACES"],
+                 "filter": {
+                   "locationFilter": {
+                     "region": {
+                       "place": "places/ChIJPV4oX_65j4ARVW8IJ6IJUYs"
+                     }
+                   },
+                   "typeFilter": {
+                     "includedTypes": ["restaurant"]
+                   },
+                   "operatingStatus": ["OPERATING_STATUS_OPERATIONAL"],
+                   "priceLevels": [
+                     "PRICE_LEVEL_FREE",
+                     "PRICE_LEVEL_INEXPENSIVE"
+                   ],
+                   "ratingFilter": {
+                     "minRating": 4.0
+                   }
                  }
                }
 
-               The method will return list of places of restaurants in
-               California that are operational, with price level free or inexpensive and
-               have an average rating of at least 4 stars.
+            Example response:
 
-               Example response:
-               ComputeInsightsResponse {
-                 place_insights { place: "places/ABC" }
-                 place_insights { place: "places/PQR" }
-                 place_insights { place: "places/XYZ" }
+            ::
+
+               {
+                 "placeInsights": [
+                   {"place": "places/ABC"},
+                   {"place": "places/PQR"},
+                   {"place": "places/XYZ"}
+                 ]
                }
     """
     INSIGHT_UNSPECIFIED = 0
@@ -114,14 +136,14 @@ class OperatingStatus(proto.Enum):
 
     Values:
         OPERATING_STATUS_UNSPECIFIED (0):
-            Not Specified.
+            Not specified. This value should not be used.
         OPERATING_STATUS_OPERATIONAL (1):
             The place is operational and its open during
             its defined hours.
         OPERATING_STATUS_PERMANENTLY_CLOSED (3):
             The Place is no longer in business.
         OPERATING_STATUS_TEMPORARILY_CLOSED (4):
-            The Place is temporarily closed and expected
+            The place is temporarily closed and expected
             to reopen in the future.
     """
     OPERATING_STATUS_UNSPECIFIED = 0
@@ -135,7 +157,7 @@ class PriceLevel(proto.Enum):
 
     Values:
         PRICE_LEVEL_UNSPECIFIED (0):
-            Place price level is unspecified or unknown.
+            Not specified. This value should not be used.
         PRICE_LEVEL_FREE (1):
             Place provides free services.
         PRICE_LEVEL_INEXPENSIVE (2):
@@ -237,8 +259,8 @@ class Filter(proto.Message):
             OPERATING_STATUS_OPERATIONAL is used as default.
         price_levels (MutableSequence[google.maps.areainsights_v1.types.PriceLevel]):
             Optional. Restricts results to places whose price level is
-            included on this list. If price_level is not set, all price
-            levels are included in the results.
+            included on this list. If ``price_levels`` is not set, all
+            price levels are included in the results.
         rating_filter (google.maps.areainsights_v1.types.RatingFilter):
             Optional. Restricts results to places whose average user
             ratings are in the range specified by rating_filter. If
@@ -317,8 +339,9 @@ class LocationFilter(proto.Message):
 
                 This field is a member of `oneof`_ ``center``.
             place (str):
-                The Place resource name of the center of the
-                circle. Only point places are supported.
+                **Format:** Must be in the format ``places/PLACE_ID``, where
+                ``PLACE_ID`` is the unique identifier of a place. For
+                example: ``places/ChIJgUbEo8cfqokR5lP9_Wh_DaM``.
 
                 This field is a member of `oneof`_ ``center``.
             radius (int):
