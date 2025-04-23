@@ -10,12 +10,12 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=99,
     unit_test_external_dependencies=["click"],
-    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12"],
+    unit_test_python_versions=["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"],
 )
 s.move(templated_files, excludes=[
     "docs/multiprocessing.rst",
     "README.rst",
-    ".github/workflows/unittest.yml" #remove this exclusion when removing 3.6 from unit test
+    ".kokoro/samples/**", # this repository has no samples
 ])
 
 # Change black paths
