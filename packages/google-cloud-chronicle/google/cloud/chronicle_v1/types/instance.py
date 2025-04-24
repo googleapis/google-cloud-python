@@ -34,7 +34,7 @@ class Instance(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of this instance. Format:
+            Identifier. The resource name of this instance. Format:
             ``projects/{project}/locations/{location}/instances/{instance}``
     """
 

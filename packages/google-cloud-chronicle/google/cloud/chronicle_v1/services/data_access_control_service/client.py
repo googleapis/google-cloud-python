@@ -789,7 +789,6 @@ class DataAccessControlServiceClient(metaclass=DataAccessControlServiceClientMet
                 # Initialize request argument(s)
                 data_access_label = chronicle_v1.DataAccessLabel()
                 data_access_label.udm_query = "udm_query_value"
-                data_access_label.name = "name_value"
 
                 request = chronicle_v1.CreateDataAccessLabelRequest(
                     parent="parent_value",
@@ -1168,7 +1167,6 @@ class DataAccessControlServiceClient(metaclass=DataAccessControlServiceClientMet
                 # Initialize request argument(s)
                 data_access_label = chronicle_v1.DataAccessLabel()
                 data_access_label.udm_query = "udm_query_value"
-                data_access_label.name = "name_value"
 
                 request = chronicle_v1.UpdateDataAccessLabelRequest(
                     data_access_label=data_access_label,
