@@ -1856,7 +1856,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
             request.
         service_account_impersonation_analysis (MutableSequence[google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
             The service account impersonation analysis if
-            [AnalyzeIamPolicyRequest.analyze_service_account_impersonation][]
+            [IamPolicyAnalysisQuery.Options.analyze_service_account_impersonation][google.cloud.asset.v1.IamPolicyAnalysisQuery.Options.analyze_service_account_impersonation]
             is enabled.
         fully_explored (bool):
             Represents whether all entries in the
@@ -3448,11 +3448,19 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
                 DELETE (3):
                     Constraint applied when deleting the
                     resource.
+                REMOVE_GRANT (4):
+                    Constraint applied when removing an IAM
+                    grant.
+                GOVERN_TAGS (5):
+                    Constraint applied when enforcing forced
+                    tagging.
             """
             METHOD_TYPE_UNSPECIFIED = 0
             CREATE = 1
             UPDATE = 2
             DELETE = 3
+            REMOVE_GRANT = 4
+            GOVERN_TAGS = 5
 
         class ActionType(proto.Enum):
             r"""Allow or deny type.
@@ -3612,12 +3620,13 @@ class AnalyzeOrgPoliciesResponse(proto.Message):
                 The consolidated organization policy for the analyzed
                 resource. The consolidated organization policy is computed
                 by merging and evaluating
-                [AnalyzeOrgPoliciesResponse.policy_bundle][]. The evaluation
-                will respect the organization policy `hierarchy
+                [policy_bundle][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.OrgPolicyResult.policy_bundle].
+                The evaluation will respect the organization policy
+                `hierarchy
                 rules <https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy>`__.
             policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
                 The ordered list of all organization policies from the
-                [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][].
+                [consolidated_policy.attached_resource][google.cloud.asset.v1.AnalyzerOrgPolicy.attached_resource].
                 to the scope specified in the request.
 
                 If the constraint is defined with default policy, it will
@@ -3790,7 +3799,7 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
                 rules <https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy>`__.
             policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
                 The ordered list of all organization policies from the
-                [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][].
+                [consolidated_policy.attached_resource][google.cloud.asset.v1.AnalyzerOrgPolicy.attached_resource].
                 to the scope specified in the request.
 
                 If the constraint is defined with default policy, it will
@@ -4144,7 +4153,7 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 rules <https://cloud.google.com/resource-manager/docs/organization-policy/understanding-hierarchy>`__.
             policy_bundle (MutableSequence[google.cloud.asset_v1.types.AnalyzerOrgPolicy]):
                 The ordered list of all organization policies from the
-                [AnalyzeOrgPoliciesResponse.OrgPolicyResult.consolidated_policy.attached_resource][]
+                [consolidated_policy.attached_resource][google.cloud.asset.v1.AnalyzerOrgPolicy.attached_resource]
                 to the scope specified in the request.
 
                 If the constraint is defined with default policy, it will

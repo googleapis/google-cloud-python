@@ -30,11 +30,14 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import code_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.asset_v1.types import asset_enrichment_resourceowners
+
 __protobuf__ = proto.module(
     package="google.cloud.asset.v1",
     manifest={
         "TemporalAsset",
         "TimeWindow",
+        "AssetEnrichment",
         "Asset",
         "Resource",
         "RelatedAssets",
@@ -144,6 +147,30 @@ class TimeWindow(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class AssetEnrichment(proto.Message):
+    r"""The enhanced metadata information for a resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        resource_owners (google.cloud.asset_v1.types.ResourceOwners):
+            The resource owners for a resource.
+
+            Note that this field only contains the members
+            that have "roles/owner" role in the resource's
+            IAM Policy.
+
+            This field is a member of `oneof`_ ``EnrichmentData``.
+    """
+
+    resource_owners: asset_enrichment_resourceowners.ResourceOwners = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="EnrichmentData",
+        message=asset_enrichment_resourceowners.ResourceOwners,
     )
 
 
@@ -571,8 +598,9 @@ class EffectiveTagDetails(proto.Message):
         attached_resource (str):
             The `full resource
             name <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
-            of the ancestor from which an [effective_tag][] is
-            inherited, according to `tag
+            of the ancestor from which
+            [effective_tags][google.cloud.asset.v1.EffectiveTagDetails.effective_tags]
+            are inherited, according to `tag
             inheritance <https://cloud.google.com/resource-manager/docs/tags/tags-overview#inheritance>`__.
 
             This field is a member of `oneof`_ ``_attached_resource``.
@@ -943,6 +971,32 @@ class ResourceSearchResult(proto.Message):
                -  ``effectiveTagValues:"123456789/env/prod*"``
                -  ``effectiveTagValues="123456789/env/prod"``
                -  ``effectiveTagValueIds="tagValues/456"``
+        enrichments (MutableSequence[google.cloud.asset_v1.types.AssetEnrichment]):
+            Enrichments of the asset. Currently supported enrichment
+            types with SearchAllResources API:
+
+            -  RESOURCE_OWNERS
+
+            The corresponding read masks in order to get the enrichment:
+
+            -  enrichments.resource_owners
+
+            The corresponding required permissions:
+
+            -  cloudasset.assets.searchEnrichmentResourceOwners
+
+            Example query to get resource owner enrichment:
+
+            ::
+
+                 scope: "projects/my-project"
+                 query: "name: my-project"
+                 assetTypes: "cloudresourcemanager.googleapis.com/Project"
+                 readMask: {
+                    paths: "asset_type"
+                    paths: "name"
+                    paths: "enrichments.resource_owners"
+                 }
         parent_asset_type (str):
             The type of this resource's immediate parent, if there is
             one.
@@ -1076,6 +1130,11 @@ class ResourceSearchResult(proto.Message):
         proto.MESSAGE,
         number=30,
         message="EffectiveTagDetails",
+    )
+    enrichments: MutableSequence["AssetEnrichment"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=31,
+        message="AssetEnrichment",
     )
     parent_asset_type: str = proto.Field(
         proto.STRING,
