@@ -1385,6 +1385,7 @@ class ConfigClient(metaclass=ConfigClientMeta):
         request: Optional[Union[config.DeleteDeploymentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
+        force: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1431,6 +1432,13 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            force (bool):
+                If set to true, any revisions for this deployment will also be deleted.
+                (Otherwise, the delete will only work if the deployment has no revisions.)
+
+                This corresponds to the ``force`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1450,7 +1458,7 @@ class ConfigClient(metaclass=ConfigClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [name]
+        flattened_params = [name, force]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1468,6 +1476,8 @@ class ConfigClient(metaclass=ConfigClientMeta):
             # request, apply these.
             if name is not None:
                 request.name = name
+            if force is not None:
+                request.force = force
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
