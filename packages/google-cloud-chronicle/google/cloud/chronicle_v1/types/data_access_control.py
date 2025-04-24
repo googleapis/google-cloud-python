@@ -402,8 +402,8 @@ class DataAccessLabel(proto.Message):
 
             This field is a member of `oneof`_ ``definition``.
         name (str):
-            Required. The unique resource name of the
-            data access label.
+            The unique resource name of the data access
+            label.
         display_name (str):
             Output only. The short name displayed for the
             label as it appears on event data.
