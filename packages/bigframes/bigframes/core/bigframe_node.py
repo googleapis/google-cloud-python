@@ -20,10 +20,9 @@ import dataclasses
 import functools
 import itertools
 import typing
-from typing import Callable, Dict, Generator, Iterable, Mapping, Set, Tuple
+from typing import Callable, Dict, Generator, Iterable, Mapping, Sequence, Set, Tuple
 
 from bigframes.core import identifiers
-import bigframes.core.guid
 import bigframes.core.schema as schemata
 import bigframes.dtypes
 
@@ -163,7 +162,7 @@ class BigFrameNode:
     # TODO: Store some local data lazily for select, aggregate nodes.
     @property
     @abc.abstractmethod
-    def fields(self) -> Iterable[Field]:
+    def fields(self) -> Sequence[Field]:
         ...
 
     @property

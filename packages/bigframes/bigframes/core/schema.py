@@ -17,11 +17,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 import functools
 import typing
+from typing import Sequence
 
 import google.cloud.bigquery
 import pyarrow
 
-import bigframes.core.guid
 import bigframes.dtypes
 
 ColumnIdentifierType = str
@@ -35,7 +35,10 @@ class SchemaItem:
 
 @dataclass(frozen=True)
 class ArraySchema:
-    items: typing.Tuple[SchemaItem, ...]
+    items: Sequence[SchemaItem]
+
+    def __iter__(self):
+        yield from self.items
 
     @classmethod
     def from_bq_table(
