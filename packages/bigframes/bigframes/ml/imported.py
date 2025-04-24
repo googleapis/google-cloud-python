@@ -216,8 +216,8 @@ class XGBoostModel(base.Predictor):
         self,
         model_path: str,
         *,
-        input: Mapping[str, str] = {},
-        output: Mapping[str, str] = {},
+        input: Optional[Mapping[str, str]] = None,
+        output: Optional[Mapping[str, str]] = None,
         session: Optional[bigframes.session.Session] = None,
     ):
         self.session = session or bpd.get_global_session()
@@ -234,20 +234,23 @@ class XGBoostModel(base.Predictor):
             return self._bqml_model_factory.create_imported_model(
                 session=self.session, options=options
             )
-        else:
-            for io in (self.input, self.output):
-                for v in io.values():
-                    if v not in globals._SUPPORTED_DTYPES:
-                        raise ValueError(
-                            f"field_type {v} is not supported. We only support {', '.join(globals._SUPPORTED_DTYPES)}."
-                        )
+        if not self.input or not self.output:
+            raise ValueError("input and output must both or neigher be set.")
+        self.input = {
+            k: utils.standardize_type(v, globals._REMOTE_MODEL_SUPPORTED_DTYPES)
+            for k, v in self.input.items()
+        }
+        self.output = {
+            k: utils.standardize_type(v, globals._REMOTE_MODEL_SUPPORTED_DTYPES)
+            for k, v in self.output.items()
+        }
 
-            return self._bqml_model_factory.create_xgboost_imported_model(
-                session=self.session,
-                input=self.input,
-                output=self.output,
-                options=options,
-            )
+        return self._bqml_model_factory.create_xgboost_imported_model(
+            session=self.session,
+            input=self.input,
+            output=self.output,
+            options=options,
+        )
 
     @classmethod
     def _from_bq(

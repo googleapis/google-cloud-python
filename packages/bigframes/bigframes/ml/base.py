@@ -22,7 +22,7 @@ This library is an evolving attempt to
 """
 
 import abc
-from typing import Callable, cast, Mapping, Optional, TypeVar, Union
+from typing import cast, Optional, TypeVar, Union
 import warnings
 
 import bigframes_vendored.sklearn.base
@@ -244,18 +244,12 @@ class UnsupervisedTrainablePredictor(TrainablePredictor):
 
 
 class RetriableRemotePredictor(BaseEstimator):
-    @property
-    @abc.abstractmethod
-    def _predict_func(self) -> Callable[[bpd.DataFrame, Mapping], bpd.DataFrame]:
-        pass
-
-    @property
-    @abc.abstractmethod
-    def _status_col(self) -> str:
-        pass
-
     def _predict_and_retry(
-        self, X: bpd.DataFrame, options: Mapping, max_retries: int
+        self,
+        bqml_model_predict_tvf: core.BqmlModel.TvfDef,
+        X: bpd.DataFrame,
+        options: dict,
+        max_retries: int,
     ) -> bpd.DataFrame:
         assert self._bqml_model is not None
 
@@ -269,9 +263,9 @@ class RetriableRemotePredictor(BaseEstimator):
                 warnings.warn(msg, category=RuntimeWarning)
                 break
 
-            df = self._predict_func(df_fail, options)
+            df = bqml_model_predict_tvf.tvf(self._bqml_model, df_fail, options)
 
-            success = df[self._status_col].str.len() == 0
+            success = df[bqml_model_predict_tvf.status_col].str.len() == 0
             df_succ = df[success]
             df_fail = df[~success]
 

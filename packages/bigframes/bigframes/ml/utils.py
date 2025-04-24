@@ -13,7 +13,17 @@
 # limitations under the License.
 
 import typing
-from typing import Any, Generator, Hashable, Literal, Mapping, Optional, Tuple, Union
+from typing import (
+    Any,
+    Generator,
+    Hashable,
+    Iterable,
+    Literal,
+    Mapping,
+    Optional,
+    Tuple,
+    Union,
+)
 
 import bigframes_vendored.constants as constants
 from google.cloud import bigquery
@@ -178,3 +188,16 @@ def combine_training_and_evaluation_data(
     bqml_options["data_split_col"] = split_col
 
     return X, y, bqml_options
+
+
+def standardize_type(v: str, supported_dtypes: Optional[Iterable[str]] = None):
+    t = v.lower()
+    t = t.replace("boolean", "bool")
+
+    if supported_dtypes:
+        if t not in supported_dtypes:
+            raise ValueError(
+                f"Data type {v} is not supported. We only support {', '.join(supported_dtypes)}."
+            )
+
+    return t

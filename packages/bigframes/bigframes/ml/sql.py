@@ -24,6 +24,8 @@ import google.cloud.bigquery
 import bigframes.core.compile.googlesql as sql_utils
 import bigframes.core.sql as sql_vals
 
+INDENT_STR = "  "
+
 
 # TODO: Add proper escaping logic from core/compile module
 class BaseSqlGenerator:
@@ -44,35 +46,35 @@ class BaseSqlGenerator:
 
     def build_parameters(self, **kwargs: Union[str, int, float, Iterable[str]]) -> str:
         """Encode a dict of values into a formatted Iterable of key-value pairs for SQL"""
-        indent_str = "  "
         param_strs = [f"{k}={self.encode_value(v)}" for k, v in kwargs.items()]
-        return "\n" + indent_str + f",\n{indent_str}".join(param_strs)
+        return "\n" + INDENT_STR + f",\n{INDENT_STR}".join(param_strs)
 
-    def build_structs(self, **kwargs: Union[int, float]) -> str:
+    def build_structs(self, **kwargs: Union[int, float, str, Mapping]) -> str:
         """Encode a dict of values into a formatted STRUCT items for SQL"""
-        indent_str = "  "
-        param_strs = [
-            f"{sql_vals.simple_literal(v)} AS {sql_utils.identifier(k)}"
-            for k, v in kwargs.items()
-        ]
-        return "\n" + indent_str + f",\n{indent_str}".join(param_strs)
+        param_strs = []
+        for k, v in kwargs.items():
+            v_trans = self.build_schema(**v) if isinstance(v, Mapping) else v
+
+            param_strs.append(
+                f"{sql_vals.simple_literal(v_trans)} AS {sql_utils.identifier(k)}"
+            )
+
+        return "\n" + INDENT_STR + f",\n{INDENT_STR}".join(param_strs)
 
     def build_expressions(self, *expr_sqls: str) -> str:
         """Encode a Iterable of SQL expressions into a formatted Iterable for SQL"""
-        indent_str = "  "
-        return "\n" + indent_str + f",\n{indent_str}".join(expr_sqls)
+        return "\n" + INDENT_STR + f",\n{INDENT_STR}".join(expr_sqls)
 
     def build_schema(self, **kwargs: str) -> str:
         """Encode a dict of values into a formatted schema type items for SQL"""
-        indent_str = "  "
         param_strs = [f"{sql_utils.identifier(k)} {v}" for k, v in kwargs.items()]
-        return "\n" + indent_str + f",\n{indent_str}".join(param_strs)
+        return "\n" + INDENT_STR + f",\n{INDENT_STR}".join(param_strs)
 
     def options(self, **kwargs: Union[str, int, float, Iterable[str]]) -> str:
         """Encode the OPTIONS clause for BQML"""
         return f"OPTIONS({self.build_parameters(**kwargs)})"
 
-    def struct_options(self, **kwargs: Union[int, float]) -> str:
+    def struct_options(self, **kwargs: Union[int, float, Mapping]) -> str:
         """Encode a BQ STRUCT as options."""
         return f"STRUCT({self.build_structs(**kwargs)})"
 
@@ -406,3 +408,13 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
         """Encode ML.TRANSFORM for BQML"""
         return f"""SELECT * FROM ML.TRANSFORM(MODEL {self._model_ref_sql()},
   ({source_sql}))"""
+
+    def ai_generate_table(
+        self,
+        source_sql: str,
+        struct_options: Mapping[str, Union[int, float, bool, Mapping]],
+    ) -> str:
+        """Encode AI.GENERATE_TABLE for BQML"""
+        struct_options_sql = self.struct_options(**struct_options)
+        return f"""SELECT * FROM AI.GENERATE_TABLE(MODEL {self._model_ref_sql()},
+  ({source_sql}), {struct_options_sql})"""

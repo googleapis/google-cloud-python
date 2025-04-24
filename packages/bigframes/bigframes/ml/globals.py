@@ -19,7 +19,7 @@ from bigframes.ml import core, sql
 _BASE_SQL_GENERATOR = sql.BaseSqlGenerator()
 _BQML_MODEL_FACTORY = core.BqmlModelFactory()
 
-_SUPPORTED_DTYPES = (
+_REMOTE_MODEL_SUPPORTED_DTYPES = (
     "bool",
     "string",
     "int64",

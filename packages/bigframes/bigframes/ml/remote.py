@@ -78,19 +78,14 @@ class VertexAIModel(base.BaseEstimator):
             "endpoint": self.endpoint,
         }
 
-        def standardize_type(v: str):
-            v = v.lower()
-            v = v.replace("boolean", "bool")
-
-            if v not in globals._SUPPORTED_DTYPES:
-                raise ValueError(
-                    f"Data type {v} is not supported. We only support {', '.join(globals._SUPPORTED_DTYPES)}."
-                )
-
-            return v
-
-        self.input = {k: standardize_type(v) for k, v in self.input.items()}
-        self.output = {k: standardize_type(v) for k, v in self.output.items()}
+        self.input = {
+            k: utils.standardize_type(v, globals._REMOTE_MODEL_SUPPORTED_DTYPES)
+            for k, v in self.input.items()
+        }
+        self.output = {
+            k: utils.standardize_type(v, globals._REMOTE_MODEL_SUPPORTED_DTYPES)
+            for k, v in self.output.items()
+        }
 
         return self._bqml_model_factory.create_remote_model(
             session=self.session,
