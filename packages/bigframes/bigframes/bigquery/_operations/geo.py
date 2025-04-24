@@ -264,7 +264,7 @@ def st_distance(
             A series containing geography objects.
         other (bigframes.pandas.Series | bigframes.geopandas.GeoSeries | shapely.Geometry):
             The series or geometric object to calculate the distance in meters
-            to from the geography objects in ``series``.
+            to form the geography objects in ``series``.
         use_spheroid (optional, default ``False``):
             Determines how this function measures distance. If ``use_spheroid``
             is False, the function measures distance on the surface of a perfect
