@@ -60,7 +60,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class AreaInsightsAsyncClient:
-    """Service definition for the Places Insights API."""
+    """Service definition for the Places Aggregate RPC."""
 
     _client: AreaInsightsClient
 
@@ -291,10 +291,8 @@ class AreaInsightsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> area_insights_service.ComputeInsightsResponse:
-        r"""Compute Insights RPC
-
-        This method lets you retrieve insights about areas using a
-        variaty of filter such as: area, place type, operating status,
+        r"""This method lets you retrieve insights about areas using a
+        variety of filter such as: area, place type, operating status,
         price level and ratings. Currently "count" and "places" insights
         are supported. With "count" insights you can answer questions
         such as "How many restaurant are located in California that are

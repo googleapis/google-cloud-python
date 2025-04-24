@@ -104,7 +104,7 @@ class AreaInsightsClientMeta(type):
 
 
 class AreaInsightsClient(metaclass=AreaInsightsClientMeta):
-    """Service definition for the Places Insights API."""
+    """Service definition for the Places Aggregate RPC."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -706,10 +706,8 @@ class AreaInsightsClient(metaclass=AreaInsightsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> area_insights_service.ComputeInsightsResponse:
-        r"""Compute Insights RPC
-
-        This method lets you retrieve insights about areas using a
-        variaty of filter such as: area, place type, operating status,
+        r"""This method lets you retrieve insights about areas using a
+        variety of filter such as: area, place type, operating status,
         price level and ratings. Currently "count" and "places" insights
         are supported. With "count" insights you can answer questions
         such as "How many restaurant are located in California that are

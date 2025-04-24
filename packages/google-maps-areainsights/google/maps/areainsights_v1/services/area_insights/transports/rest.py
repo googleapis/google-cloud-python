@@ -145,7 +145,7 @@ class AreaInsightsRestStub:
 class AreaInsightsRestTransport(_BaseAreaInsightsRestTransport):
     """REST backend synchronous transport for AreaInsights.
 
-    Service definition for the Places Insights API.
+    Service definition for the Places Aggregate RPC.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

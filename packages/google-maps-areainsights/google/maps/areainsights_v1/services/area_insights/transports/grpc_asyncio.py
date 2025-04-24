@@ -116,7 +116,7 @@ class _LoggingClientAIOInterceptor(
 class AreaInsightsGrpcAsyncIOTransport(AreaInsightsTransport):
     """gRPC AsyncIO backend transport for AreaInsights.
 
-    Service definition for the Places Insights API.
+    Service definition for the Places Aggregate RPC.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -336,10 +336,8 @@ class AreaInsightsGrpcAsyncIOTransport(AreaInsightsTransport):
     ]:
         r"""Return a callable for the compute insights method over gRPC.
 
-        Compute Insights RPC
-
         This method lets you retrieve insights about areas using a
-        variaty of filter such as: area, place type, operating status,
+        variety of filter such as: area, place type, operating status,
         price level and ratings. Currently "count" and "places" insights
         are supported. With "count" insights you can answer questions
         such as "How many restaurant are located in California that are
