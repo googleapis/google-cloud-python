@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.7...google-maps-areainsights-v0.1.8) (2025-04-24)
+
+
+### Documentation
+
+* [google-maps-areainsights] A comment for service `AreaInsights` is changed ([#13830](https://github.com/googleapis/google-cloud-python/issues/13830)) ([dd4a1dc](https://github.com/googleapis/google-cloud-python/commit/dd4a1dc8caa2f01f6475975eb39b08d3d3322d0e))
+* A comment for method `ComputeInsights` in service `AreaInsights` ([dd4a1dc](https://github.com/googleapis/google-cloud-python/commit/dd4a1dc8caa2f01f6475975eb39b08d3d3322d0e))
+* A comment for service AreaInsights is changed ([dd4a1dc](https://github.com/googleapis/google-cloud-python/commit/dd4a1dc8caa2f01f6475975eb39b08d3d3322d0e))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-areainsights-v0.1.6...google-maps-areainsights-v0.1.7) (2025-04-23)
 
 
