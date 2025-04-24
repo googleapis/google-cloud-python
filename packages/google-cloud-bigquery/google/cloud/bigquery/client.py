@@ -3388,7 +3388,7 @@ class Client(ClientWithProject):
         project: Optional[str] = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
-        job_retry: retries.Retry = DEFAULT_JOB_RETRY,
+        job_retry: Optional[retries.Retry] = DEFAULT_JOB_RETRY,
         api_method: Union[str, enums.QueryApiMethod] = enums.QueryApiMethod.INSERT,
     ) -> job.QueryJob:
         """Run a SQL query.
@@ -3455,18 +3455,9 @@ class Client(ClientWithProject):
                 class, or if both ``job_id`` and non-``None`` non-default
                 ``job_retry`` are provided.
         """
-        job_id_given = job_id is not None
-        if (
-            job_id_given
-            and job_retry is not None
-            and job_retry is not DEFAULT_JOB_RETRY
-        ):
-            raise TypeError(
-                "`job_retry` was provided, but the returned job is"
-                " not retryable, because a custom `job_id` was"
-                " provided."
-            )
+        _job_helpers.validate_job_retry(job_id, job_retry)
 
+        job_id_given = job_id is not None
         if job_id_given and api_method == enums.QueryApiMethod.QUERY:
             raise TypeError(
                 "`job_id` was provided, but the 'QUERY' `api_method` was requested."

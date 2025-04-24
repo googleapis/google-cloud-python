@@ -511,26 +511,34 @@ def test_retry_failed_jobs_after_retry_failed(sleep, client):
 def test_raises_on_job_retry_on_query_with_non_retryable_jobs(client):
     with pytest.raises(
         TypeError,
-        match=re.escape(
+        match=(
             "`job_retry` was provided, but the returned job is"
             " not retryable, because a custom `job_id` was"
             " provided."
-        ),
+        ).replace(" ", r"\s"),
     ):
         client.query("select 42", job_id=42, job_retry=google.api_core.retry.Retry())
 
 
 def test_raises_on_job_retry_on_result_with_non_retryable_jobs(client):
     client._connection = make_connection({})
-    job = client.query("select 42", job_id=42)
+
+    with pytest.warns(
+        FutureWarning,
+        match=re.escape("job_retry must be explicitly set to None if job_id is set."),
+    ):
+        # Implicitly providing a job_retry is a warning and will be an error in the future.
+        job = client.query("select 42", job_id=42)
+
     with pytest.raises(
         TypeError,
-        match=re.escape(
+        match=(
             "`job_retry` was provided, but this job is"
             " not retryable, because a custom `job_id` was"
             " provided to the query that created this job."
-        ),
+        ).replace(" ", r"\s"),
     ):
+        # Explicitly providing a job_retry is an error.
         job.result(job_retry=google.api_core.retry.Retry())
 
 

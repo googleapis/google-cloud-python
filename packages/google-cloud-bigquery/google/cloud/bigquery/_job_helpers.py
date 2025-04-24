@@ -39,7 +39,9 @@ import copy
 import functools
 import os
 import uuid
+import textwrap
 from typing import Any, Dict, Optional, TYPE_CHECKING, Union
+import warnings
 
 import google.api_core.exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -198,6 +200,44 @@ def _validate_job_config(request_body: Dict[str, Any], invalid_key: str):
         raise ValueError(f"got unexpected key {repr(invalid_key)} in job_config")
 
 
+def validate_job_retry(job_id: Optional[str], job_retry: Optional[retries.Retry]):
+    """Catch common mistakes, such as setting a job_id and job_retry at the same
+    time.
+    """
+    if job_id is not None and job_retry is not None:
+        # TODO(tswast): To avoid breaking changes but still allow a default
+        # query job retry, we currently only raise if they explicitly set a
+        # job_retry other than the default. In a future version, we may want to
+        # avoid this check for DEFAULT_JOB_RETRY and always raise.
+        if job_retry is not google.cloud.bigquery.retry.DEFAULT_JOB_RETRY:
+            raise TypeError(
+                textwrap.dedent(
+                    """
+                    `job_retry` was provided, but the returned job is
+                    not retryable, because a custom `job_id` was
+                    provided. To customize the job ID and allow for job
+                    retries, set job_id_prefix, instead.
+                    """
+                ).strip()
+            )
+        else:
+            warnings.warn(
+                textwrap.dedent(
+                    """
+                    job_retry must be explicitly set to None if job_id is set.
+                    BigQuery cannot retry a failed job by using the exact
+                    same ID. Setting job_id without explicitly disabling
+                    job_retry will raise an error in the future. To avoid this
+                    warning, either use job_id_prefix instead (preferred) or
+                    set job_retry=None.
+                    """
+                ).strip(),
+                category=FutureWarning,
+                # user code -> client.query / client.query_and_wait -> validate_job_retry
+                stacklevel=3,
+            )
+
+
 def _to_query_request(
     job_config: Optional[job.QueryJobConfig] = None,
     *,
@@ -308,7 +348,7 @@ def query_jobs_query(
     project: str,
     retry: retries.Retry,
     timeout: Optional[float],
-    job_retry: retries.Retry,
+    job_retry: Optional[retries.Retry],
 ) -> job.QueryJob:
     """Initiate a query using jobs.query with jobCreationMode=JOB_CREATION_REQUIRED.
 
