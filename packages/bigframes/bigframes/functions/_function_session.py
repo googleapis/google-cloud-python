@@ -838,9 +838,18 @@ class FunctionSession:
                     TypeError, f"func must be a callable, got {func}"
                 )
 
-            # Managed function supports version >= 3.11.
-            signature_kwargs: Mapping[str, Any] = {"eval_str": True}
-            signature = inspect.signature(func, **signature_kwargs)
+            if sys.version_info >= (3, 10):
+                # Add `eval_str = True` so that deferred annotations are turned into their
+                # corresponding type objects. Need Python 3.10 for eval_str parameter.
+                # https://docs.python.org/3/library/inspect.html#inspect.signature
+                signature_kwargs: Mapping[str, Any] = {"eval_str": True}
+            else:
+                signature_kwargs = {}  # type: ignore
+
+            signature = inspect.signature(
+                func,
+                **signature_kwargs,
+            )
 
             # Try to get input types via type annotations.
             if input_types is None:

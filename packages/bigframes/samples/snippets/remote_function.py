@@ -21,7 +21,7 @@ def run_remote_function_and_read_gbq_function(project_id: str) -> None:
 
     # Set BigQuery DataFrames options
     bpd.options.bigquery.project = your_gcp_project_id
-    bpd.options.bigquery.location = "us"
+    bpd.options.bigquery.location = "US"
 
     # BigQuery DataFrames gives you the ability to turn your custom scalar
     # functions into a BigQuery remote function. It requires the GCP project to
@@ -56,7 +56,7 @@ def run_remote_function_and_read_gbq_function(project_id: str) -> None:
         boundary = 4000
         return "at_or_above_4000" if num >= boundary else "below_4000"
 
-    # Then we can apply the remote function on the `Series`` of interest via
+    # Then we can apply the remote function on the `Series` of interest via
     # `apply` API and store the result in a new column in the DataFrame.
     df = df.assign(body_mass_bucket=df["body_mass_g"].apply(get_bucket))
 
