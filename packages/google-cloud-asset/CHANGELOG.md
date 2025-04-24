@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.29.2...google-cloud-asset-v3.30.0) (2025-04-24)
+
+
+### Features
+
+* A new field `enrichments` is added to message `.google.cloud.asset.v1.ResourceSearchResult` ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+* A new message `AssetEnrichment` is added ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+* A new message `ResourceOwners` is added ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+* A new value `GOVERN_TAGS` is added to enum `MethodType` ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+* A new value `REMOVE_GRANT` is added to enum `MethodType` ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+
+
+### Documentation
+
+* A comment for field `attached_resource` in message `.google.cloud.asset.v1.EffectiveTagDetails` is changed ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+* A comment for field `consolidated_policy` in message `.google.cloud.asset.v1.AnalyzeOrgPoliciesResponse` is changed ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+* A comment for field `policy_bundle` in message `.google.cloud.asset.v1.AnalyzeOrgPoliciesResponse` is changed ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+* A comment for field `policy_bundle` in message `.google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse` is changed ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+* A comment for field `policy_bundle` in message `.google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse` is changed ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+* A comment for field `service_account_impersonation_analysis` in message `.google.cloud.asset.v1.AnalyzeIamPolicyResponse` is changed ([b464b68](https://github.com/googleapis/google-cloud-python/commit/b464b68f31f1c54ec98881262a903de85f21cb8c))
+
 ## [3.29.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.29.1...google-cloud-asset-v3.29.2) (2025-03-15)
 
 
