@@ -872,6 +872,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-chronicle": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-chronicle",
+            "extra-files": [
+                "google/cloud/chronicle/gapic_version.py",
+                "google/cloud/chronicle_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.chronicle.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-cloudcontrolspartner": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
