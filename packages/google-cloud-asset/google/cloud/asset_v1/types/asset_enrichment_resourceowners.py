@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 # Copyright 2025 Google LLC
 #
@@ -14,3 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
+from typing import MutableMapping, MutableSequence
+
+import proto  # type: ignore
+
+__protobuf__ = proto.module(
+    package="google.cloud.asset.v1",
+    manifest={
+        "ResourceOwners",
+    },
+)
+
+
+class ResourceOwners(proto.Message):
+    r"""The resource owners information.
+
+    Attributes:
+        resource_owners (MutableSequence[str]):
+            List of resource owners.
+    """
+
+    resource_owners: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))

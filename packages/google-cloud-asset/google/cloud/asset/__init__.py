@@ -22,6 +22,7 @@ from google.cloud.asset_v1.services.asset_service.async_client import (
     AssetServiceAsyncClient,
 )
 from google.cloud.asset_v1.services.asset_service.client import AssetServiceClient
+from google.cloud.asset_v1.types.asset_enrichment_resourceowners import ResourceOwners
 from google.cloud.asset_v1.types.asset_service import (
     AnalyzeIamPolicyLongrunningMetadata,
     AnalyzeIamPolicyLongrunningRequest,
@@ -87,6 +88,7 @@ from google.cloud.asset_v1.types.asset_service import (
 )
 from google.cloud.asset_v1.types.assets import (
     Asset,
+    AssetEnrichment,
     AttachedResource,
     ConditionEvaluation,
     EffectiveTagDetails,
@@ -109,6 +111,7 @@ from google.cloud.asset_v1.types.assets import (
 __all__ = (
     "AssetServiceClient",
     "AssetServiceAsyncClient",
+    "ResourceOwners",
     "AnalyzeIamPolicyLongrunningMetadata",
     "AnalyzeIamPolicyLongrunningRequest",
     "AnalyzeIamPolicyLongrunningResponse",
@@ -171,6 +174,7 @@ __all__ = (
     "UpdateSavedQueryRequest",
     "ContentType",
     "Asset",
+    "AssetEnrichment",
     "AttachedResource",
     "ConditionEvaluation",
     "EffectiveTagDetails",
