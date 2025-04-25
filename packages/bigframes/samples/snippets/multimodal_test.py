@@ -21,6 +21,8 @@ def test_multimodal_dataframe(gcs_dst_bucket: str) -> None:
 
     # Flag to enable the feature
     bigframes.options.experiments.blob = True
+    # Flags to control preview image/video preview size
+    bigframes.options.experiments.blob_display_width = 300
 
     import bigframes.pandas as bpd
 
@@ -47,10 +49,12 @@ def test_multimodal_dataframe(gcs_dst_bucket: str) -> None:
     df_image["size"] = df_image["image"].blob.size()
     df_image["updated"] = df_image["image"].blob.updated()
     df_image
-
-    # Filter images and display, you can also display audio and video types. Use width/height parameters to constrain window sizes.
-    df_image[df_image["author"] == "alice"]["image"].blob.display(width=400)
     # [END bigquery_dataframes_multimodal_dataframe_merge]
+
+    # [START bigquery_dataframes_multimodal_dataframe_filter]
+    # Filter images and display, you can also display audio and video types. Use width/height parameters to constrain window sizes.
+    df_image[df_image["author"] == "alice"]["image"].blob.display()
+    # [END bigquery_dataframes_multimodal_dataframe_filter]
 
     # [START bigquery_dataframes_multimodal_dataframe_image_transform]
     df_image["blurred"] = df_image["image"].blob.image_blur(

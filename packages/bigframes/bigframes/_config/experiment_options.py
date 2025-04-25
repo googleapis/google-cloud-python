@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Optional
 import warnings
 
 import bigframes.exceptions as bfe
@@ -26,6 +27,9 @@ class ExperimentOptions:
         self._semantic_operators: bool = False
         self._ai_operators: bool = False
         self._blob: bool = False
+        self._blob_display: bool = True
+        self._blob_display_width: Optional[int] = None
+        self._blob_display_height: Optional[int] = None
 
     @property
     def semantic_operators(self) -> bool:
@@ -67,3 +71,30 @@ class ExperimentOptions:
             )
             warnings.warn(msg, category=bfe.PreviewWarning)
         self._blob = value
+
+    @property
+    def blob_display(self) -> bool:
+        """Whether to display the blob content in notebook DataFrame preview. Default True."""
+        return self._blob_display
+
+    @blob_display.setter
+    def blob_display(self, value: bool):
+        self._blob_display = value
+
+    @property
+    def blob_display_width(self) -> Optional[int]:
+        """Width in pixels that the blob constrained to."""
+        return self._blob_display_width
+
+    @blob_display_width.setter
+    def blob_display_width(self, value: Optional[int]):
+        self._blob_display_width = value
+
+    @property
+    def blob_display_height(self) -> Optional[int]:
+        """Height in pixels that the blob constrained to."""
+        return self._blob_display_height
+
+    @blob_display_height.setter
+    def blob_display_height(self, value: Optional[int]):
+        self._blob_display_height = value
