@@ -387,3 +387,19 @@ class RoundingMode(str, enum.Enum):
     ROUNDING_MODE_UNSPECIFIED = enum.auto()
     ROUND_HALF_AWAY_FROM_ZERO = enum.auto()
     ROUND_HALF_EVEN = enum.auto()
+
+
+class BigLakeFileFormat(object):
+    FILE_FORMAT_UNSPECIFIED = "FILE_FORMAT_UNSPECIFIED"
+    """The default unspecified value."""
+
+    PARQUET = "PARQUET"
+    """Apache Parquet format."""
+
+
+class BigLakeTableFormat(object):
+    TABLE_FORMAT_UNSPECIFIED = "TABLE_FORMAT_UNSPECIFIED"
+    """The default unspecified value."""
+
+    ICEBERG = "ICEBERG"
+    """Apache Iceberg format."""
