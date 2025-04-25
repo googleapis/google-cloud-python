@@ -11,8 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import annotations
 
-from bigframes.core.compile.sqlglot.compiler import SQLGlotCompiler
+import pandas as pd
 
-__all__ = ["SQLGlotCompiler"]
+import bigframes
+import bigframes.pandas as bpd
+
+
+def test_compile_local(all_types_df: pd.DataFrame, compiler_session: bigframes.Session):
+    bf_df = bpd.DataFrame(all_types_df, session=compiler_session)
+    sql = bf_df.sql
+    assert sql == "SELECT"

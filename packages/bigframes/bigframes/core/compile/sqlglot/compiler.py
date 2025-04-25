@@ -1,0 +1,141 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+from __future__ import annotations
+
+import dataclasses
+import functools
+import typing
+
+import google.cloud.bigquery as bigquery
+import sqlglot.expressions as sge
+
+from bigframes.core import expression, nodes, rewrite
+from bigframes.core.compile import configs
+from bigframes.core.compile.sqlglot import sql_gen
+import bigframes.core.ordering as bf_ordering
+
+
+@dataclasses.dataclass(frozen=True)
+class SQLGlotCompiler:
+    """Compiles BigFrame nodes into SQL using SQLGlot."""
+
+    sql_gen = sql_gen.SQLGen()
+
+    def compile(
+        self,
+        node: nodes.BigFrameNode,
+        *,
+        ordered: bool = True,
+        limit: typing.Optional[int] = None,
+    ) -> str:
+        """Compile node into sql where rows are sorted with ORDER BY."""
+        request = configs.CompileRequest(node, sort_rows=ordered, peek_count=limit)
+        return self._compile_sql(request).sql
+
+    def compile_raw(
+        self,
+        node: nodes.BigFrameNode,
+    ) -> typing.Tuple[
+        str, typing.Sequence[bigquery.SchemaField], bf_ordering.RowOrdering
+    ]:
+        """Compile node into sql that exposes all columns, including hidden
+        ordering-only columns."""
+        request = configs.CompileRequest(
+            node, sort_rows=False, materialize_all_order_keys=True
+        )
+        result = self._compile_sql(request)
+        assert result.row_order is not None
+        return result.sql, result.sql_schema, result.row_order
+
+    def _compile_sql(self, request: configs.CompileRequest) -> configs.CompileResult:
+        output_names = tuple(
+            (expression.DerefOp(id), id.sql) for id in request.node.ids
+        )
+        result_node = nodes.ResultNode(
+            request.node,
+            output_cols=output_names,
+            limit=request.peek_count,
+        )
+        if request.sort_rows:
+            # Can only pullup slice if we are doing ORDER BY in outermost SELECT
+            # Need to do this before replacing unsupported ops, as that will rewrite slice ops
+            result_node = rewrite.pull_up_limits(result_node)
+        result_node = _replace_unsupported_ops(result_node)
+        # prune before pulling up order to avoid unnnecessary row_number() ops
+        result_node = typing.cast(nodes.ResultNode, rewrite.column_pruning(result_node))
+        result_node = rewrite.defer_order(
+            result_node, output_hidden_row_keys=request.materialize_all_order_keys
+        )
+        if request.sort_rows:
+            result_node = typing.cast(
+                nodes.ResultNode, rewrite.column_pruning(result_node)
+            )
+            sql = self._compile_result_node(result_node)
+            return configs.CompileResult(
+                sql, result_node.schema.to_bigquery(), result_node.order_by
+            )
+
+        ordering: typing.Optional[bf_ordering.RowOrdering] = result_node.order_by
+        result_node = dataclasses.replace(result_node, order_by=None)
+        result_node = typing.cast(nodes.ResultNode, rewrite.column_pruning(result_node))
+        sql = self._compile_result_node(result_node)
+        # Return the ordering iff no extra columns are needed to define the row order
+        if ordering is not None:
+            output_order = (
+                ordering
+                if ordering.referenced_columns.issubset(result_node.ids)
+                else None
+            )
+        assert (not request.materialize_all_order_keys) or (output_order is not None)
+        return configs.CompileResult(
+            sql, result_node.schema.to_bigquery(), output_order
+        )
+
+    def _compile_result_node(self, root: nodes.ResultNode) -> str:
+        sqlglot_expr = compile_node(root.child)
+        # TODO: add order_by, limit, and selections to sqlglot_expr
+        return self.sql_gen.sql(sqlglot_expr)
+
+
+def _replace_unsupported_ops(node: nodes.BigFrameNode):
+    node = nodes.bottom_up(node, rewrite.rewrite_slice)
+    node = nodes.bottom_up(node, rewrite.rewrite_timedelta_expressions)
+    node = nodes.bottom_up(node, rewrite.rewrite_range_rolling)
+    return node
+
+
+@functools.lru_cache(maxsize=5000)
+def compile_node(node: nodes.BigFrameNode) -> sge.Expression:
+    """Compile node into CompileArrayValue. Caches result."""
+    return node.reduce_up(lambda node, children: _compile_node(node, *children))
+
+
+@functools.singledispatch
+def _compile_node(
+    node: nodes.BigFrameNode, *compiled_children: sge.Expression
+) -> sge.Expression:
+    """Defines transformation but isn't cached, always use compile_node instead"""
+    raise ValueError(f"Can't compile unrecognized node: {node}")
+
+
+@_compile_node.register
+def compile_readlocal(node: nodes.ReadLocalNode, *args) -> sge.Expression:
+    # TODO: add support for reading from local files
+    return sge.select()
+
+
+@_compile_node.register
+def compile_selection(node: nodes.SelectionNode, child: sge.Expression):
+    # TODO: add support for selection
+    return child

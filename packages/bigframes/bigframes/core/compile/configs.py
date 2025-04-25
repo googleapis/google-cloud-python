@@ -13,6 +13,24 @@
 # limitations under the License.
 from __future__ import annotations
 
-from bigframes.core.compile.sqlglot.compiler import SQLGlotCompiler
+import dataclasses
+import typing
 
-__all__ = ["SQLGlotCompiler"]
+import google.cloud.bigquery
+
+from bigframes.core import nodes, ordering
+
+
+@dataclasses.dataclass(frozen=True)
+class CompileRequest:
+    node: nodes.BigFrameNode
+    sort_rows: bool
+    materialize_all_order_keys: bool = False
+    peek_count: typing.Optional[int] = None
+
+
+@dataclasses.dataclass(frozen=True)
+class CompileResult:
+    sql: str
+    sql_schema: typing.Sequence[google.cloud.bigquery.SchemaField]
+    row_order: typing.Optional[ordering.RowOrdering]

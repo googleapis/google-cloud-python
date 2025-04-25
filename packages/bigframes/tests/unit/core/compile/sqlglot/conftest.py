@@ -11,8 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from __future__ import annotations
 
-from bigframes.core.compile.sqlglot.compiler import SQLGlotCompiler
+import pandas as pd
+import pytest
 
-__all__ = ["SQLGlotCompiler"]
+
+@pytest.fixture(scope="module")
+def compiler_session():
+    from . import compiler_session
+
+    return compiler_session.SQLCompilerSession()
+
+
+@pytest.fixture(scope="module")
+def all_types_df() -> pd.DataFrame:
+    # TODO: all types pandas dataframes
+    return pd.DataFrame({})

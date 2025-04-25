@@ -419,11 +419,23 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             str:
                 string representing the compiled SQL.
         """
-        include_index = self._has_index and (
-            self.index.name is not None or len(self.index.names) > 1
-        )
-        sql, _, _ = self._to_sql_query(include_index=include_index)
-        return sql
+        try:
+            include_index = self._has_index and (
+                self.index.name is not None or len(self.index.names) > 1
+            )
+            sql, _, _ = self._to_sql_query(include_index=include_index)
+            return sql
+        except AttributeError as e:
+            # Workaround for a development-mode debugging issue:
+            # An `AttributeError` originating *inside* this @property getter (e.g., due to
+            # a typo or referencing a non-existent attribute) can be mistakenly intercepted
+            # by the class's __getattr__ method if one is defined.
+            # We catch the AttributeError and raise SyntaxError instead to make it clear
+            # the error originates *here* in the property implementation.
+            # See: https://stackoverflow.com/questions/50542177/correct-handling-of-attributeerror-in-getattr-when-using-property
+            raise SyntaxError(
+                "AttributeError encountered. Please check the implementation for incorrect attribute access."
+            ) from e
 
     @property
     def query_job(self) -> Optional[bigquery.QueryJob]:

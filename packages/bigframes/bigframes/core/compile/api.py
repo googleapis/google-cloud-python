@@ -18,7 +18,7 @@ from typing import Optional, Sequence, Tuple, TYPE_CHECKING
 import google.cloud.bigquery as bigquery
 
 from bigframes.core import rewrite
-from bigframes.core.compile import compiler
+from bigframes.core.compile import compiler, configs
 
 if TYPE_CHECKING:
     import bigframes.core.nodes
@@ -34,7 +34,7 @@ class SQLCompiler:
         limit: Optional[int] = None,
     ) -> str:
         """Compile node into sql where rows are sorted with ORDER BY."""
-        request = compiler.CompileRequest(node, sort_rows=ordered, peek_count=limit)
+        request = configs.CompileRequest(node, sort_rows=ordered, peek_count=limit)
         return compiler.compile_sql(request).sql
 
     def compile_raw(
@@ -44,7 +44,7 @@ class SQLCompiler:
         str, Sequence[bigquery.SchemaField], bigframes.core.ordering.RowOrdering
     ]:
         """Compile node into sql that exposes all columns, including hidden ordering-only columns."""
-        request = compiler.CompileRequest(
+        request = configs.CompileRequest(
             node, sort_rows=False, materialize_all_order_keys=True
         )
         result = compiler.compile_sql(request)
