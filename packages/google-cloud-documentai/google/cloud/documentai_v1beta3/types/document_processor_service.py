@@ -144,6 +144,9 @@ class ProcessOptions(proto.Message):
             return_bounding_boxes (bool):
                 Optional. Whether to include bounding boxes
                 in layout parser processor response.
+            enable_image_annotation (bool):
+                Optional. Whether to include image
+                annotations in layout parser response.
             enable_llm_layout_parsing (bool):
                 Optional. Whether to refine PDF layout using
                 LLM.
@@ -200,6 +203,10 @@ class ProcessOptions(proto.Message):
         return_bounding_boxes: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        enable_image_annotation: bool = proto.Field(
+            proto.BOOL,
+            number=4,
         )
         enable_llm_layout_parsing: bool = proto.Field(
             proto.BOOL,
