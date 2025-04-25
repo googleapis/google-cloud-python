@@ -255,6 +255,7 @@ class Session(
             session=self,
             bqclient=self._clients_provider.bqclient,
             storage_manager=self._temp_storage_manager,
+            write_client=self._clients_provider.bqstoragewriteclient,
             default_index_type=self._default_index_type,
             scan_index_uniqueness=self._strictly_ordered,
             force_total_order=self._strictly_ordered,
@@ -731,7 +732,9 @@ class Session(
                   workload is such that you exhaust the BigQuery load job
                   quota and your data cannot be embedded in SQL due to size or
                   data type limitations.
-
+                * "bigquery_write":
+                  [Preview] Use the BigQuery Storage Write API. This feature
+                  is in public preview.
         Returns:
             An equivalent bigframes.pandas.(DataFrame/Series/Index) object
 
@@ -804,6 +807,10 @@ class Session(
         elif write_engine == "bigquery_streaming":
             return self._loader.read_pandas(
                 pandas_dataframe, method="stream", api_name=api_name
+            )
+        elif write_engine == "bigquery_write":
+            return self._loader.read_pandas(
+                pandas_dataframe, method="write", api_name=api_name
             )
         else:
             raise ValueError(f"Got unexpected write_engine '{write_engine}'")

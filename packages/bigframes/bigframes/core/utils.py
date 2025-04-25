@@ -142,6 +142,9 @@ def label_to_identifier(label: typing.Hashable, strict: bool = False) -> str:
         identifier = re.sub(r"[^a-zA-Z0-9_]", "", identifier)
         if not identifier:
             identifier = "id"
+        elif identifier[0].isdigit():
+            # first character must be letter or underscore
+            identifier = "_" + identifier
     return identifier
 
 

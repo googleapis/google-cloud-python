@@ -42,6 +42,8 @@ dependencies = [
     "google-cloud-bigtable >=2.24.0",
     "google-cloud-pubsub >=2.21.4",
     "google-cloud-bigquery[bqstorage,pandas] >=3.31.0",
+    # 2.30 needed for arrow support.
+    "google-cloud-bigquery-storage >= 2.30.0, < 3.0.0",
     "google-cloud-functions >=1.12.0",
     "google-cloud-bigquery-connection >=1.12.0",
     "google-cloud-iam >=2.12.1",

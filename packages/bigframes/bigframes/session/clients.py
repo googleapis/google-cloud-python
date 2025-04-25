@@ -134,6 +134,9 @@ class ClientsProvider:
         self._bqstoragereadclient: Optional[
             google.cloud.bigquery_storage_v1.BigQueryReadClient
         ] = None
+        self._bqstoragewriteclient: Optional[
+            google.cloud.bigquery_storage_v1.BigQueryWriteClient
+        ] = None
         self._cloudfunctionsclient: Optional[
             google.cloud.functions_v2.FunctionServiceClient
         ] = None
@@ -237,6 +240,34 @@ class ClientsProvider:
             )
 
         return self._bqstoragereadclient
+
+    @property
+    def bqstoragewriteclient(self):
+        if not self._bqstoragewriteclient:
+            bqstorage_options = None
+            if "bqstoragewriteclient" in self._client_endpoints_override:
+                bqstorage_options = google.api_core.client_options.ClientOptions(
+                    api_endpoint=self._client_endpoints_override["bqstoragewriteclient"]
+                )
+            elif self._use_regional_endpoints:
+                bqstorage_options = google.api_core.client_options.ClientOptions(
+                    api_endpoint=_BIGQUERYSTORAGE_REGIONAL_ENDPOINT.format(
+                        location=self._location
+                    )
+                )
+
+            bqstorage_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                user_agent=self._application_name
+            )
+            self._bqstoragewriteclient = (
+                google.cloud.bigquery_storage_v1.BigQueryWriteClient(
+                    client_info=bqstorage_info,
+                    client_options=bqstorage_options,
+                    credentials=self._credentials,
+                )
+            )
+
+        return self._bqstoragewriteclient
 
     @property
     def cloudfunctionsclient(self):

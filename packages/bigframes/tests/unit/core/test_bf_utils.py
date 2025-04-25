@@ -46,7 +46,7 @@ def test_get_standardized_ids_indexes():
     assert col_ids == ["duplicate_2"]
     assert idx_ids == [
         "string",
-        "0",
+        "_0",
         utils.UNNAMED_INDEX_ID,
         "duplicate",
         "duplicate_1",
