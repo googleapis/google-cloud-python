@@ -855,9 +855,11 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> httpbody_pb2.HttpBody:
-        r"""Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a 3rd party domain.
+        r"""Writes a single user event from the browser.
+
+        For larger user event payload over 16 KB, the POST
+        method should be used instead, otherwise a 400 Bad
+        Request error is returned.
 
         This method is used only by the Retail API JavaScript
         pixel and Google Tag Manager. Users should not call this

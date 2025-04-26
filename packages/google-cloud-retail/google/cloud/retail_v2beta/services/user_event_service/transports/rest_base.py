@@ -119,6 +119,11 @@ class _BaseUserEventServiceRestTransport(UserEventServiceTransport):
                     "method": "get",
                     "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/userEvents:collect",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v2beta/{parent=projects/*/locations/*/catalogs/*}/userEvents:collect",
+                    "body": "*",
+                },
             ]
             return http_options
 
