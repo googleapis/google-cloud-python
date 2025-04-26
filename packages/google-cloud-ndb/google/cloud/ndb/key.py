@@ -716,13 +716,13 @@ class Key(object):
             >>> key = ndb.Key("Trampoline", 88, project="xy", database="wv", namespace="zt")
             >>> key.reference()
             app: "xy"
-            name_space: "zt"
             path {
               element {
                 type: "Trampoline"
                 id: 88
               }
             }
+            name_space: "zt"
             database_id: "wv"
             <BLANKLINE>
         """

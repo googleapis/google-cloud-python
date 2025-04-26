@@ -2698,14 +2698,26 @@ class BlobProperty(Property):
         Need to check the ds_entity for a compressed meaning that would
         indicate we are getting a compressed value.
         """
-        if self._name in ds_entity._meanings:
-            meaning = ds_entity._meanings[self._name][0]
-            if meaning == _MEANING_COMPRESSED and not self._compressed:
-                if self._repeated:
-                    for sub_value in value:
-                        sub_value.b_val = zlib.decompress(sub_value.b_val)
-                else:
-                    value.b_val = zlib.decompress(value.b_val)
+        if self._name in ds_entity._meanings and not self._compressed:
+            root_meaning = ds_entity._meanings[self._name][0]
+            sub_meanings = None
+            # meaning may be a tuple. Attempt unwrap
+            if isinstance(root_meaning, tuple):
+                root_meaning, sub_meanings = root_meaning
+            # decompress values if needed
+            if root_meaning == _MEANING_COMPRESSED and not self._repeated:
+                value.b_val = zlib.decompress(value.b_val)
+            elif root_meaning == _MEANING_COMPRESSED and self._repeated:
+                for sub_value in value:
+                    sub_value.b_val = zlib.decompress(sub_value.b_val)
+            elif isinstance(sub_meanings, list) and self._repeated:
+                for idx, sub_value in enumerate(value):
+                    try:
+                        if sub_meanings[idx] == _MEANING_COMPRESSED:
+                            sub_value.b_val = zlib.decompress(sub_value.b_val)
+                    except IndexError:
+                        # value list size exceeds sub_meanings list
+                        break
         return value
 
     def _db_set_compressed_meaning(self, p):

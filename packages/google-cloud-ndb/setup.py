@@ -41,7 +41,7 @@ def main():
         readme = readme_file.read()
     dependencies = [
         "google-api-core[grpc] >= 1.34.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-        "google-cloud-datastore >= 2.16.0, < 3.0.0dev",
+        "google-cloud-datastore >= 2.16.0, != 2.20.2, < 3.0.0dev",
         "protobuf >= 3.20.2, <6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
         "pymemcache >= 2.1.0, < 5.0.0dev",
         "pytz >= 2018.3",
