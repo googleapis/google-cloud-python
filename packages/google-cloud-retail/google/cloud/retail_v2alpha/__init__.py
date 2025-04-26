@@ -29,6 +29,10 @@ from .services.completion_service import (
     CompletionServiceClient,
 )
 from .services.control_service import ControlServiceAsyncClient, ControlServiceClient
+from .services.conversational_search_service import (
+    ConversationalSearchServiceAsyncClient,
+    ConversationalSearchServiceClient,
+)
 from .services.generative_question_service import (
     GenerativeQuestionServiceAsyncClient,
     GenerativeQuestionServiceClient,
@@ -114,6 +118,10 @@ from .types.control_service import (
     ListControlsRequest,
     ListControlsResponse,
     UpdateControlRequest,
+)
+from .types.conversational_search_service import (
+    ConversationalSearchRequest,
+    ConversationalSearchResponse,
 )
 from .types.export_config import (
     BigQueryOutputResult,
@@ -273,6 +281,7 @@ __all__ = (
     "CatalogServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ControlServiceAsyncClient",
+    "ConversationalSearchServiceAsyncClient",
     "GenerativeQuestionServiceAsyncClient",
     "MerchantCenterAccountLinkServiceAsyncClient",
     "ModelServiceAsyncClient",
@@ -319,6 +328,9 @@ __all__ = (
     "Condition",
     "Control",
     "ControlServiceClient",
+    "ConversationalSearchRequest",
+    "ConversationalSearchResponse",
+    "ConversationalSearchServiceClient",
     "CreateControlRequest",
     "CreateMerchantCenterAccountLinkMetadata",
     "CreateMerchantCenterAccountLinkRequest",
