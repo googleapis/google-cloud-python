@@ -14,6 +14,18 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.14.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.13.0...v1.14.0) (2025-04-23)
+
+
+### Features
+
+* Allow jobs to be run in a different project ([#1180](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1180)) ([eea4994](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/eea4994b0134a0e413ea22b8d9e3e85a14ce998d))
+
+
+### Bug Fixes
+
+* Remove setup.cfg configuration for creating universal wheels ([#1175](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1175)) ([dc394ac](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/dc394ac5e95095ca69a4f0000ec1820ed3cf53cb))
+
 ## [1.13.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.12.1...v1.13.0) (2025-03-11)
 
 
