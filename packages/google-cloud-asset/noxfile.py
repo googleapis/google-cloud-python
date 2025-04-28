@@ -235,6 +235,14 @@ def unit(session, protobuf_implementation):
     if protobuf_implementation == "cpp":
         session.install("protobuf<4")
 
+    core_dependencies_from_source = [
+        f"{CURRENT_DIRECTORY}/../googleapis-common-protos",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
     # Run py.test against the unit tests.
     session.run(
         "py.test",
