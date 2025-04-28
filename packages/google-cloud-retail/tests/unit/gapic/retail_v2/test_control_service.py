@@ -4518,6 +4518,7 @@ def test_create_control_rest_call_success(request_type):
             "remove_facet_action": {
                 "attribute_names": ["attribute_names_value1", "attribute_names_value2"]
             },
+            "pin_action": {"pin_map": {}},
             "condition": {
                 "query_terms": [{"value": "value_value", "full_match": True}],
                 "active_time_range": [
@@ -4904,6 +4905,7 @@ def test_update_control_rest_call_success(request_type):
             "remove_facet_action": {
                 "attribute_names": ["attribute_names_value1", "attribute_names_value2"]
             },
+            "pin_action": {"pin_map": {}},
             "condition": {
                 "query_terms": [{"value": "value_value", "full_match": True}],
                 "active_time_range": [
