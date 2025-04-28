@@ -65,7 +65,6 @@ def test_metrics_emission_with_failure_attempt(patched_client):
         return _UnaryOutcome(MagicMock(), MagicMock())
 
     def intercept_wrapper(invoked_method, request_or_iterator, call_details):
-        nonlocal original_intercept
         nonlocal first_attempt
         invoked_method = mocked_call
         if first_attempt:

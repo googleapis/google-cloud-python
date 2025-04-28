@@ -31,7 +31,7 @@ from google.api_core.exceptions import Aborted
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud.spanner_v1 import TypeCode
 from google.cloud.spanner_v1 import ExecuteSqlRequest
-from google.cloud.spanner_v1 import JsonObject
+from google.cloud.spanner_v1 import JsonObject, Interval
 from google.cloud.spanner_v1 import TransactionOptions
 from google.cloud.spanner_v1.request_id_header import with_request_id
 from google.rpc.error_details_pb2 import RetryInfo
@@ -251,6 +251,8 @@ def _make_value_pb(value):
             return Value(null_value="NULL_VALUE")
         else:
             return Value(string_value=base64.b64encode(value))
+    if isinstance(value, Interval):
+        return Value(string_value=str(value))
 
     raise ValueError("Unknown type: %s" % (value,))
 
@@ -367,6 +369,8 @@ def _get_type_decoder(field_type, field_name, column_info=None):
             for item_field in field_type.struct_type.fields
         ]
         return lambda value_pb: _parse_struct(value_pb, element_decoders)
+    elif type_code == TypeCode.INTERVAL:
+        return _parse_interval
     else:
         raise ValueError("Unknown type: %s" % (field_type,))
 
@@ -471,6 +475,13 @@ def _parse_nullable(value_pb, decoder):
         return None
     else:
         return decoder(value_pb)
+
+
+def _parse_interval(value_pb):
+    """Parse a Value protobuf containing an interval."""
+    if hasattr(value_pb, "string_value"):
+        return Interval.from_str(value_pb.string_value)
+    return Interval.from_str(value_pb)
 
 
 class _SessionWrapper(object):

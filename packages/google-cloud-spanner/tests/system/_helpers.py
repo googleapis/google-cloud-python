@@ -115,9 +115,20 @@ def scrub_instance_ignore_not_found(to_scrub):
     """Helper for func:`cleanup_old_instances`"""
     scrub_instance_backups(to_scrub)
 
+    for database_pb in to_scrub.list_databases():
+        db = to_scrub.database(database_pb.name.split("/")[-1])
+        db.reload()
+        try:
+            if db.enable_drop_protection:
+                db.enable_drop_protection = False
+                operation = db.update(["enable_drop_protection"])
+                operation.result(DATABASE_OPERATION_TIMEOUT_IN_SECONDS)
+        except exceptions.NotFound:
+            pass
+
     try:
         retry_429_503(to_scrub.delete)()
-    except exceptions.NotFound:  # lost the race
+    except exceptions.NotFound:
         pass
 
 

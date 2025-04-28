@@ -1036,3 +1036,484 @@ class Test_merge_transaction_options(unittest.TestCase):
         )
         result = self._callFUT(default, merge)
         self.assertEqual(result, expected)
+
+
+class Test_interval(unittest.TestCase):
+    from google.protobuf.struct_pb2 import Value
+    from google.cloud.spanner_v1 import Interval
+    from google.cloud.spanner_v1 import Type
+    from google.cloud.spanner_v1 import TypeCode
+
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _make_value_pb
+
+        return _make_value_pb(*args, **kw)
+
+    def test_interval_cases(self):
+        test_cases = [
+            {
+                "name": "Basic interval",
+                "interval": self.Interval(months=14, days=3, nanos=43926789000123),
+                "expected": "P1Y2M3DT12H12M6.789000123S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Months only",
+                "interval": self.Interval(months=10, days=0, nanos=0),
+                "expected": "P10M",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Days only",
+                "interval": self.Interval(months=0, days=10, nanos=0),
+                "expected": "P10D",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Seconds only",
+                "interval": self.Interval(months=0, days=0, nanos=10000000000),
+                "expected": "PT10S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Milliseconds only",
+                "interval": self.Interval(months=0, days=0, nanos=10000000),
+                "expected": "PT0.010S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Microseconds only",
+                "interval": self.Interval(months=0, days=0, nanos=10000),
+                "expected": "PT0.000010S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Nanoseconds only",
+                "interval": self.Interval(months=0, days=0, nanos=10),
+                "expected": "PT0.000000010S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Mixed components",
+                "interval": self.Interval(months=10, days=20, nanos=1030),
+                "expected": "P10M20DT0.000001030S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Mixed components with negative nanos",
+                "interval": self.Interval(months=10, days=20, nanos=-1030),
+                "expected": "P10M20DT-0.000001030S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Negative interval",
+                "interval": self.Interval(months=-14, days=-3, nanos=-43926789000123),
+                "expected": "P-1Y-2M-3DT-12H-12M-6.789000123S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Mixed signs",
+                "interval": self.Interval(months=10, days=3, nanos=-41401234000000),
+                "expected": "P10M3DT-11H-30M-1.234S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Large values",
+                "interval": self.Interval(
+                    months=25, days=15, nanos=316223999999999999999
+                ),
+                "expected": "P2Y1M15DT87839999H59M59.999999999S",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+            {
+                "name": "Zero interval",
+                "interval": self.Interval(months=0, days=0, nanos=0),
+                "expected": "P0Y",
+                "expected_type": self.Type(code=self.TypeCode.INTERVAL),
+            },
+        ]
+
+        for case in test_cases:
+            with self.subTest(name=case["name"]):
+                value_pb = self._callFUT(case["interval"])
+                self.assertIsInstance(value_pb, self.Value)
+                self.assertEqual(value_pb.string_value, case["expected"])
+                # TODO: Add type checking once we have access to the type information
+
+
+class Test_parse_interval(unittest.TestCase):
+    from google.protobuf.struct_pb2 import Value
+
+    def _callFUT(self, *args, **kw):
+        from google.cloud.spanner_v1._helpers import _parse_interval
+
+        return _parse_interval(*args, **kw)
+
+    def test_parse_interval_cases(self):
+        test_cases = [
+            {
+                "name": "full interval with all components",
+                "input": "P1Y2M3DT12H12M6.789000123S",
+                "expected_months": 14,
+                "expected_days": 3,
+                "expected_nanos": 43926789000123,
+                "want_err": False,
+            },
+            {
+                "name": "interval with negative minutes",
+                "input": "P1Y2M3DT13H-48M6S",
+                "expected_months": 14,
+                "expected_days": 3,
+                "expected_nanos": 43926000000000,
+                "want_err": False,
+            },
+            {
+                "name": "date only interval",
+                "input": "P1Y2M3D",
+                "expected_months": 14,
+                "expected_days": 3,
+                "expected_nanos": 0,
+                "want_err": False,
+            },
+            {
+                "name": "years and months only",
+                "input": "P1Y2M",
+                "expected_months": 14,
+                "expected_days": 0,
+                "expected_nanos": 0,
+                "want_err": False,
+            },
+            {
+                "name": "years only",
+                "input": "P1Y",
+                "expected_months": 12,
+                "expected_days": 0,
+                "expected_nanos": 0,
+                "want_err": False,
+            },
+            {
+                "name": "months only",
+                "input": "P2M",
+                "expected_months": 2,
+                "expected_days": 0,
+                "expected_nanos": 0,
+                "want_err": False,
+            },
+            {
+                "name": "days only",
+                "input": "P3D",
+                "expected_months": 0,
+                "expected_days": 3,
+                "expected_nanos": 0,
+                "want_err": False,
+            },
+            {
+                "name": "time components with fractional seconds",
+                "input": "PT4H25M6.7890001S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 15906789000100,
+                "want_err": False,
+            },
+            {
+                "name": "time components without fractional seconds",
+                "input": "PT4H25M6S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 15906000000000,
+                "want_err": False,
+            },
+            {
+                "name": "hours and seconds only",
+                "input": "PT4H30S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 14430000000000,
+                "want_err": False,
+            },
+            {
+                "name": "hours and minutes only",
+                "input": "PT4H1M",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 14460000000000,
+                "want_err": False,
+            },
+            {
+                "name": "minutes only",
+                "input": "PT5M",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 300000000000,
+                "want_err": False,
+            },
+            {
+                "name": "fractional seconds only",
+                "input": "PT6.789S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 6789000000,
+                "want_err": False,
+            },
+            {
+                "name": "small fractional seconds",
+                "input": "PT0.123S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 123000000,
+                "want_err": False,
+            },
+            {
+                "name": "very small fractional seconds",
+                "input": "PT.000000123S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 123,
+                "want_err": False,
+            },
+            {
+                "name": "zero years",
+                "input": "P0Y",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 0,
+                "want_err": False,
+            },
+            {
+                "name": "all negative components",
+                "input": "P-1Y-2M-3DT-12H-12M-6.789000123S",
+                "expected_months": -14,
+                "expected_days": -3,
+                "expected_nanos": -43926789000123,
+                "want_err": False,
+            },
+            {
+                "name": "mixed signs in components",
+                "input": "P1Y-2M3DT13H-51M6.789S",
+                "expected_months": 10,
+                "expected_days": 3,
+                "expected_nanos": 43746789000000,
+                "want_err": False,
+            },
+            {
+                "name": "negative years with mixed signs",
+                "input": "P-1Y2M-3DT-13H49M-6.789S",
+                "expected_months": -10,
+                "expected_days": -3,
+                "expected_nanos": -43866789000000,
+                "want_err": False,
+            },
+            {
+                "name": "negative time components",
+                "input": "P1Y2M3DT-4H25M-6.7890001S",
+                "expected_months": 14,
+                "expected_days": 3,
+                "expected_nanos": -12906789000100,
+                "want_err": False,
+            },
+            {
+                "name": "large time values",
+                "input": "PT100H100M100.5S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 366100500000000,
+                "want_err": False,
+            },
+            {
+                "name": "only time components with seconds",
+                "input": "PT12H30M1S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 45001000000000,
+                "want_err": False,
+            },
+            {
+                "name": "date and time no seconds",
+                "input": "P1Y2M3DT12H30M",
+                "expected_months": 14,
+                "expected_days": 3,
+                "expected_nanos": 45000000000000,
+                "want_err": False,
+            },
+            {
+                "name": "fractional seconds with max digits",
+                "input": "PT0.123456789S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 123456789,
+                "want_err": False,
+            },
+            {
+                "name": "hours and fractional seconds",
+                "input": "PT1H0.5S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 3600500000000,
+                "want_err": False,
+            },
+            {
+                "name": "years and months to months with fractional seconds",
+                "input": "P1Y2M3DT12H30M1.23456789S",
+                "expected_months": 14,
+                "expected_days": 3,
+                "expected_nanos": 45001234567890,
+                "want_err": False,
+            },
+            {
+                "name": "comma as decimal point",
+                "input": "P1Y2M3DT12H30M1,23456789S",
+                "expected_months": 14,
+                "expected_days": 3,
+                "expected_nanos": 45001234567890,
+                "want_err": False,
+            },
+            {
+                "name": "fractional seconds without 0 before decimal",
+                "input": "PT.5S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 500000000,
+                "want_err": False,
+            },
+            {
+                "name": "mixed signs",
+                "input": "P-1Y2M3DT12H-30M1.234S",
+                "expected_months": -10,
+                "expected_days": 3,
+                "expected_nanos": 41401234000000,
+                "want_err": False,
+            },
+            {
+                "name": "more mixed signs",
+                "input": "P1Y-2M3DT-12H30M-1.234S",
+                "expected_months": 10,
+                "expected_days": 3,
+                "expected_nanos": -41401234000000,
+                "want_err": False,
+            },
+            {
+                "name": "trailing zeros after decimal",
+                "input": "PT1.234000S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 1234000000,
+                "want_err": False,
+            },
+            {
+                "name": "all zeros after decimal",
+                "input": "PT1.000S",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 1000000000,
+                "want_err": False,
+            },
+            # Invalid cases
+            {"name": "invalid format", "input": "invalid", "want_err": True},
+            {"name": "missing duration specifier", "input": "P", "want_err": True},
+            {"name": "missing time components", "input": "PT", "want_err": True},
+            {"name": "missing unit specifier", "input": "P1YM", "want_err": True},
+            {"name": "missing T separator", "input": "P1Y2M3D4H5M6S", "want_err": True},
+            {
+                "name": "missing decimal value",
+                "input": "P1Y2M3DT4H5M6.S",
+                "want_err": True,
+            },
+            {
+                "name": "extra unit specifier",
+                "input": "P1Y2M3DT4H5M6.789SS",
+                "want_err": True,
+            },
+            {
+                "name": "missing value after decimal",
+                "input": "P1Y2M3DT4H5M6.",
+                "want_err": True,
+            },
+            {
+                "name": "non-digit after decimal",
+                "input": "P1Y2M3DT4H5M6.ABC",
+                "want_err": True,
+            },
+            {"name": "missing unit", "input": "P1Y2M3", "want_err": True},
+            {"name": "missing time value", "input": "P1Y2M3DT", "want_err": True},
+            {
+                "name": "invalid negative sign position",
+                "input": "P-T1H",
+                "want_err": True,
+            },
+            {"name": "trailing negative sign", "input": "PT1H-", "want_err": True},
+            {
+                "name": "too many decimal places",
+                "input": "P1Y2M3DT4H5M6.789123456789S",
+                "want_err": True,
+            },
+            {
+                "name": "multiple decimal points",
+                "input": "P1Y2M3DT4H5M6.123.456S",
+                "want_err": True,
+            },
+            {
+                "name": "both dot and comma decimals",
+                "input": "P1Y2M3DT4H5M6.,789S",
+                "want_err": True,
+            },
+        ]
+
+        for case in test_cases:
+            with self.subTest(name=case["name"]):
+                value_pb = self.Value(string_value=case["input"])
+                if case.get("want_err", False):
+                    with self.assertRaises(ValueError):
+                        self._callFUT(value_pb)
+                else:
+                    result = self._callFUT(value_pb)
+                    self.assertEqual(result.months, case["expected_months"])
+                    self.assertEqual(result.days, case["expected_days"])
+                    self.assertEqual(result.nanos, case["expected_nanos"])
+
+    def test_large_values(self):
+        large_test_cases = [
+            {
+                "name": "large positive hours",
+                "input": "PT87840000H",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": 316224000000000000000,
+                "want_err": False,
+            },
+            {
+                "name": "large negative hours",
+                "input": "PT-87840000H",
+                "expected_months": 0,
+                "expected_days": 0,
+                "expected_nanos": -316224000000000000000,
+                "want_err": False,
+            },
+            {
+                "name": "large mixed values with max precision",
+                "input": "P2Y1M15DT87839999H59M59.999999999S",
+                "expected_months": 25,
+                "expected_days": 15,
+                "expected_nanos": 316223999999999999999,
+                "want_err": False,
+            },
+            {
+                "name": "large mixed negative values with max precision",
+                "input": "P2Y1M15DT-87839999H-59M-59.999999999S",
+                "expected_months": 25,
+                "expected_days": 15,
+                "expected_nanos": -316223999999999999999,
+                "want_err": False,
+            },
+        ]
+
+        for case in large_test_cases:
+            with self.subTest(name=case["name"]):
+                value_pb = self.Value(string_value=case["input"])
+                if case.get("want_err", False):
+                    with self.assertRaises(ValueError):
+                        self._callFUT(value_pb)
+                else:
+                    result = self._callFUT(value_pb)
+                    self.assertEqual(result.months, case["expected_months"])
+                    self.assertEqual(result.days, case["expected_days"])
+                    self.assertEqual(result.nanos, case["expected_nanos"])

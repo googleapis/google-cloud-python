@@ -36,6 +36,7 @@ JSON = Type(code=TypeCode.JSON)
 PG_NUMERIC = Type(code=TypeCode.NUMERIC, type_annotation=TypeAnnotationCode.PG_NUMERIC)
 PG_JSONB = Type(code=TypeCode.JSON, type_annotation=TypeAnnotationCode.PG_JSONB)
 PG_OID = Type(code=TypeCode.INT64, type_annotation=TypeAnnotationCode.PG_OID)
+INTERVAL = Type(code=TypeCode.INTERVAL)
 
 
 def Array(element_type):

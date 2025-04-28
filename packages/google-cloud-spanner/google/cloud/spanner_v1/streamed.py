@@ -391,6 +391,7 @@ _MERGE_BY_TYPE = {
     TypeCode.NUMERIC: _merge_string,
     TypeCode.JSON: _merge_string,
     TypeCode.PROTO: _merge_string,
+    TypeCode.INTERVAL: _merge_string,
     TypeCode.ENUM: _merge_string,
 }
 

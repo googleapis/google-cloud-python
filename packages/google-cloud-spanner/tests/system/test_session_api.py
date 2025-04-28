@@ -2907,3 +2907,210 @@ def _check_batch_status(status_code, expected=code_pb2.OK):
         raise exceptions.from_grpc_status(
             grpc_status_code, "batch_update failed", errors=[call]
         )
+
+
+def get_param_info(param_names, database_dialect):
+    keys = [f"p{i + 1}" for i in range(len(param_names))]
+    if database_dialect == DatabaseDialect.POSTGRESQL:
+        placeholders = [f"${i + 1}" for i in range(len(param_names))]
+    else:
+        placeholders = [f"@p{i + 1}" for i in range(len(param_names))]
+    return keys, placeholders
+
+
+def test_interval(sessions_database, database_dialect, not_emulator):
+    from google.cloud.spanner_v1 import Interval
+
+    def setup_table():
+        if database_dialect == DatabaseDialect.POSTGRESQL:
+            sessions_database.update_ddl(
+                [
+                    """
+                CREATE TABLE IntervalTable (
+                    key text primary key,
+                    create_time timestamptz,
+                    expiry_time timestamptz,
+                    expiry_within_month bool GENERATED ALWAYS AS (expiry_time - create_time < INTERVAL '30' DAY) STORED,
+                    interval_array_len bigint GENERATED ALWAYS AS (ARRAY_LENGTH(ARRAY[INTERVAL '1-2 3 4:5:6'], 1)) STORED
+                )
+                """
+                ]
+            ).result()
+        else:
+            sessions_database.update_ddl(
+                [
+                    """
+                CREATE TABLE IntervalTable (
+                    key STRING(MAX),
+                    create_time TIMESTAMP,
+                    expiry_time TIMESTAMP,
+                    expiry_within_month bool AS (expiry_time - create_time < INTERVAL 30 DAY),
+                    interval_array_len INT64 AS (ARRAY_LENGTH(ARRAY<INTERVAL>[INTERVAL '1-2 3 4:5:6' YEAR TO SECOND]))
+                ) PRIMARY KEY (key)
+                """
+                ]
+            ).result()
+
+    def insert_test1(transaction):
+        keys, placeholders = get_param_info(
+            ["key", "create_time", "expiry_time"], database_dialect
+        )
+        transaction.execute_update(
+            f"""
+            INSERT INTO IntervalTable (key, create_time, expiry_time)
+            VALUES ({placeholders[0]}, {placeholders[1]}, {placeholders[2]})
+            """,
+            params={
+                keys[0]: "test1",
+                keys[1]: datetime.datetime(2004, 11, 30, 4, 53, 54, tzinfo=UTC),
+                keys[2]: datetime.datetime(2004, 12, 15, 4, 53, 54, tzinfo=UTC),
+            },
+            param_types={
+                keys[0]: spanner_v1.param_types.STRING,
+                keys[1]: spanner_v1.param_types.TIMESTAMP,
+                keys[2]: spanner_v1.param_types.TIMESTAMP,
+            },
+        )
+
+    def insert_test2(transaction):
+        keys, placeholders = get_param_info(
+            ["key", "create_time", "expiry_time"], database_dialect
+        )
+        transaction.execute_update(
+            f"""
+            INSERT INTO IntervalTable (key, create_time, expiry_time)
+            VALUES ({placeholders[0]}, {placeholders[1]}, {placeholders[2]})
+            """,
+            params={
+                keys[0]: "test2",
+                keys[1]: datetime.datetime(2004, 8, 30, 4, 53, 54, tzinfo=UTC),
+                keys[2]: datetime.datetime(2004, 12, 15, 4, 53, 54, tzinfo=UTC),
+            },
+            param_types={
+                keys[0]: spanner_v1.param_types.STRING,
+                keys[1]: spanner_v1.param_types.TIMESTAMP,
+                keys[2]: spanner_v1.param_types.TIMESTAMP,
+            },
+        )
+
+    def test_computed_columns(transaction):
+        keys, placeholders = get_param_info(["key"], database_dialect)
+        results = list(
+            transaction.execute_sql(
+                f"""
+                SELECT expiry_within_month, interval_array_len
+                FROM IntervalTable
+                WHERE key = {placeholders[0]}""",
+                params={keys[0]: "test1"},
+                param_types={keys[0]: spanner_v1.param_types.STRING},
+            )
+        )
+        assert len(results) == 1
+        row = results[0]
+        assert row[0] is True  # expiry_within_month
+        assert row[1] == 1  # interval_array_len
+
+    def test_interval_arithmetic(transaction):
+        results = list(
+            transaction.execute_sql(
+                "SELECT INTERVAL '1' DAY + INTERVAL '1' MONTH AS Col1"
+            )
+        )
+        assert len(results) == 1
+        row = results[0]
+        interval = row[0]
+        assert interval.months == 1
+        assert interval.days == 1
+        assert interval.nanos == 0
+
+    def test_interval_timestamp_comparison(transaction):
+        timestamp = "2004-11-30T10:23:54+0530"
+        keys, placeholders = get_param_info(["interval"], database_dialect)
+        if database_dialect == DatabaseDialect.POSTGRESQL:
+            query = f"SELECT COUNT(*) FROM IntervalTable WHERE create_time < TIMESTAMPTZ '%s' - {placeholders[0]}"
+        else:
+            query = f"SELECT COUNT(*) FROM IntervalTable WHERE create_time < TIMESTAMP('%s') - {placeholders[0]}"
+
+        results = list(
+            transaction.execute_sql(
+                query % timestamp,
+                params={keys[0]: Interval(days=30)},
+                param_types={keys[0]: spanner_v1.param_types.INTERVAL},
+            )
+        )
+        assert len(results) == 1
+        assert results[0][0] == 1
+
+    def test_interval_array_param(transaction):
+        intervals = [
+            Interval(months=14, days=3, nanos=14706000000000),
+            Interval(),
+            Interval(months=-14, days=-3, nanos=-14706000000000),
+            None,
+        ]
+        keys, placeholders = get_param_info(["intervals"], database_dialect)
+        array_type = spanner_v1.Type(
+            code=spanner_v1.TypeCode.ARRAY,
+            array_element_type=spanner_v1.param_types.INTERVAL,
+        )
+        results = list(
+            transaction.execute_sql(
+                f"SELECT {placeholders[0]}",
+                params={keys[0]: intervals},
+                param_types={keys[0]: array_type},
+            )
+        )
+        assert len(results) == 1
+        row = results[0]
+        intervals = row[0]
+        assert len(intervals) == 4
+
+        assert intervals[0].months == 14
+        assert intervals[0].days == 3
+        assert intervals[0].nanos == 14706000000000
+
+        assert intervals[1].months == 0
+        assert intervals[1].days == 0
+        assert intervals[1].nanos == 0
+
+        assert intervals[2].months == -14
+        assert intervals[2].days == -3
+        assert intervals[2].nanos == -14706000000000
+
+        assert intervals[3] is None
+
+    def test_interval_array_cast(transaction):
+        results = list(
+            transaction.execute_sql(
+                """
+                SELECT ARRAY[
+                    CAST('P1Y2M3DT4H5M6.789123S' AS INTERVAL),
+                    null,
+                    CAST('P-1Y-2M-3DT-4H-5M-6.789123S' AS INTERVAL)
+                ] AS Col1
+                """
+            )
+        )
+        assert len(results) == 1
+        row = results[0]
+        intervals = row[0]
+        assert len(intervals) == 3
+
+        assert intervals[0].months == 14  # 1 year + 2 months
+        assert intervals[0].days == 3
+        assert intervals[0].nanos == 14706789123000  # 4h5m6.789123s in nanos
+
+        assert intervals[1] is None
+
+        assert intervals[2].months == -14
+        assert intervals[2].days == -3
+        assert intervals[2].nanos == -14706789123000
+
+    setup_table()
+    sessions_database.run_in_transaction(insert_test1)
+    sessions_database.run_in_transaction(test_computed_columns)
+    sessions_database.run_in_transaction(test_interval_arithmetic)
+    sessions_database.run_in_transaction(insert_test2)
+    sessions_database.run_in_transaction(test_interval_timestamp_comparison)
+    sessions_database.run_in_transaction(test_interval_array_param)
+    sessions_database.run_in_transaction(test_interval_array_cast)
