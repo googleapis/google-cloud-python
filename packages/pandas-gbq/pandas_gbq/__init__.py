@@ -5,9 +5,10 @@
 import warnings
 
 from pandas_gbq import version as pandas_gbq_version
+from pandas_gbq.contexts import Context, context
 
 from . import _versions_helpers
-from .gbq import Context, context, read_gbq, to_gbq  # noqa
+from .gbq import read_gbq, to_gbq  # noqa
 
 sys_major, sys_minor, sys_micro = _versions_helpers.extract_runtime_version()
 if sys_major == 3 and sys_minor in (7, 8):

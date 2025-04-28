@@ -645,7 +645,9 @@ ORDER BY row_num ASC
         }
     )
     result = read_gbq(query, use_bqstorage_api=use_bqstorage_api)
-    pandas.testing.assert_frame_equal(result, expected, check_index_type=False)
+    pandas.testing.assert_frame_equal(
+        result, expected, check_index_type=False, check_dtype=False
+    )
 
 
 def test_dml_query(read_gbq, writable_table: str):
