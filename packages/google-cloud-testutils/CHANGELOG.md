@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/python-test-utils/compare/v1.6.1...v1.6.2) (2025-04-28)
+
+
+### Miscellaneous Chores
+
+* Force rebuild ([#275](https://github.com/googleapis/python-test-utils/issues/275)) ([40fb90e](https://github.com/googleapis/python-test-utils/commit/40fb90e61f49e8e96b73cfe2c80133a5768b98c0))
+
 ## [1.6.1](https://github.com/googleapis/python-test-utils/compare/v1.6.0...v1.6.1) (2025-04-22)
 
 
