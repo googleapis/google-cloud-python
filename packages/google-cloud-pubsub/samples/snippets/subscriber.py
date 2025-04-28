@@ -578,6 +578,45 @@ def create_cloudstorage_subscription(
     # [END pubsub_create_cloud_storage_subscription]
 
 
+def create_subscription_with_smt(
+    project_id: str, topic_id: str, subscription_id: str
+) -> None:
+    """Create a subscription with a UDF SMT."""
+    # [START pubsub_create_subscription_with_smt]
+    from google.cloud import pubsub_v1
+    from google.pubsub_v1.types import JavaScriptUDF, MessageTransform
+
+    # TODO(developer): Choose an existing topic.
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+    # subscription_id = "your-subscription-id"
+
+    publisher = pubsub_v1.PublisherClient()
+    subscriber = pubsub_v1.SubscriberClient()
+    topic_path = publisher.topic_path(project_id, topic_id)
+    subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+    code = """function redactSSN(message, metadata) {
+                const data = JSON.parse(message.data);
+                delete data['ssn'];
+                message.data = JSON.stringify(data);
+                return message;
+                }"""
+    udf = JavaScriptUDF(code=code, function_name="redactSSN")
+    transforms = [MessageTransform(javascript_udf=udf)]
+
+    with subscriber:
+        subscription = subscriber.create_subscription(
+            request={
+                "name": subscription_path,
+                "topic": topic_path,
+                "message_transforms": transforms,
+            }
+        )
+        print(f"Created subscription with SMT: {subscription}")
+    # [END pubsub_create_subscription_with_smt]
+
+
 def delete_subscription(project_id: str, subscription_id: str) -> None:
     """Deletes an existing Pub/Sub topic."""
     # [START pubsub_delete_subscription]
@@ -1310,6 +1349,12 @@ if __name__ == "__main__":  # noqa
     create_cloudstorage_subscription_parser.add_argument("subscription_id")
     create_cloudstorage_subscription_parser.add_argument("bucket")
 
+    create_subscription_with_smt_parser = subparsers.add_parser(
+        "create-with-smt", help=create_subscription_with_smt.__doc__
+    )
+    create_subscription_with_smt_parser.add_argument("topic_id")
+    create_subscription_with_smt_parser.add_argument("subscription_id")
+
     delete_parser = subparsers.add_parser("delete", help=delete_subscription.__doc__)
     delete_parser.add_argument("subscription_id")
 
@@ -1470,6 +1515,10 @@ if __name__ == "__main__":  # noqa
     elif args.command == "create-cloudstorage":
         create_cloudstorage_subscription(
             args.project_id, args.topic_id, args.subscription_id, args.bucket
+        )
+    elif args.command == "create-with-smt":
+        create_subscription_with_smt(
+            args.project_id, args.topic_id, args.subscription_id
         )
 
     elif args.command == "delete":

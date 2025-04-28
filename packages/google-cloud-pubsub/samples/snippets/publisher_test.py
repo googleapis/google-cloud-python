@@ -313,6 +313,26 @@ def test_create_topic_with_confluent_cloud_ingestion(
     publisher_client.delete_topic(request={"topic": topic_path})
 
 
+def test_create_with_smt(
+    publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture[str]
+) -> None:
+    # The scope of `topic_path` is limited to this function.
+    topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
+
+    try:
+        publisher_client.delete_topic(request={"topic": topic_path})
+    except NotFound:
+        pass
+
+    publisher.create_topic_with_smt(PROJECT_ID, TOPIC_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"Created topic: {topic_path} with SMT" in out
+
+    # Clean up resource created for the test.
+    publisher_client.delete_topic(request={"topic": topic_path})
+
+
 def test_update_topic_type(
     publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture[str]
 ) -> None:

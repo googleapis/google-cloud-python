@@ -326,6 +326,39 @@ def create_topic_with_confluent_cloud_ingestion(
     # [END pubsub_create_topic_with_confluent_cloud_ingestion]
 
 
+def create_topic_with_smt(
+    project_id: str,
+    topic_id: str,
+) -> None:
+    """Create a new Pub/Sub topic with a UDF SMT."""
+    # [START pubsub_create_topic_with_smt]
+    from google.cloud import pubsub_v1
+    from google.pubsub_v1.types import JavaScriptUDF, MessageTransform, Topic
+
+    # TODO(developer)
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+
+    code = """function redactSSN(message, metadata) {
+                const data = JSON.parse(message.data);
+                delete data['ssn'];
+                message.data = JSON.stringify(data);
+                return message;
+                }"""
+    udf = JavaScriptUDF(code=code, function_name="redactSSN")
+    transforms = [MessageTransform(javascript_udf=udf)]
+
+    publisher = pubsub_v1.PublisherClient()
+    topic_path = publisher.topic_path(project_id, topic_id)
+
+    request = Topic(name=topic_path, message_transforms=transforms)
+
+    topic = publisher.create_topic(request=request)
+
+    print(f"Created topic: {topic.name} with SMT")
+    # [END pubsub_create_topic_with_smt]
+
+
 def update_topic_type(
     project_id: str,
     topic_id: str,
@@ -888,6 +921,11 @@ if __name__ == "__main__":  # noqa: C901
         "gcp_service_account"
     )
 
+    create_parser = subparsers.add_parser(
+        "create_smt", help=create_topic_with_smt.__doc__
+    )
+    create_parser.add_argument("topic_id")
+
     update_topic_type_parser = subparsers.add_parser(
         "update_kinesis_ingestion", help=update_topic_type.__doc__
     )
@@ -1006,6 +1044,11 @@ if __name__ == "__main__":  # noqa: C901
             args.confluent_topic,
             args.identity_pool_id,
             args.gcp_service_account,
+        )
+    elif args.command == "create_smt":
+        create_topic_with_smt(
+            args.project_id,
+            args.topic_id,
         )
     elif args.command == "update_kinesis_ingestion":
         update_topic_type(

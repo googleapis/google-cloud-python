@@ -579,6 +579,37 @@ def test_create_push_subscription(
     subscriber_client.delete_subscription(request={"subscription": subscription_path})
 
 
+def test_create_subscription_with_smt(
+    subscriber_client: pubsub_v1.SubscriberClient,
+    topic: str,
+    capsys: CaptureFixture[str],
+) -> None:
+    subscription_for_create_name = (
+        f"subscription-test-subscription-for-create-with-smt-{PY_VERSION}-{UUID}"
+    )
+
+    subscription_path = subscriber_client.subscription_path(
+        PROJECT_ID, subscription_for_create_name
+    )
+
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
+    except NotFound:
+        pass
+
+    subscriber.create_subscription_with_smt(
+        PROJECT_ID, TOPIC, subscription_for_create_name
+    )
+
+    out, _ = capsys.readouterr()
+    assert f"{subscription_for_create_name}" in out
+
+    # Clean up.
+    subscriber_client.delete_subscription(request={"subscription": subscription_path})
+
+
 def test_update_push_subscription(
     subscriber_client: pubsub_v1.SubscriberClient,
     topic: str,
