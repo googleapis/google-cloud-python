@@ -77,6 +77,9 @@ class TaskType(proto.Enum):
         FACT_VERIFICATION (7):
             Specifies that the given text will be used
             for fact verification.
+        CODE_RETRIEVAL_QUERY (8):
+            Specifies that the given text will be used
+            for code retrieval.
     """
     TASK_TYPE_UNSPECIFIED = 0
     RETRIEVAL_QUERY = 1
@@ -86,6 +89,7 @@ class TaskType(proto.Enum):
     CLUSTERING = 5
     QUESTION_ANSWERING = 6
     FACT_VERIFICATION = 7
+    CODE_RETRIEVAL_QUERY = 8
 
 
 class GenerateContentRequest(proto.Message):
@@ -171,9 +175,9 @@ class GenerationConfig(proto.Message):
     Attributes:
         candidate_count (int):
             Optional. Number of generated responses to
-            return.
-            Currently, this value can only be set to 1. If
-            unset, this will default to 1.
+            return. If unset, this will default to 1. Please
+            note that this doesn't work for previous
+            generation models (Gemini 1.0 family)
 
             This field is a member of `oneof`_ ``_candidate_count``.
         stop_sequences (MutableSequence[str]):
@@ -235,6 +239,11 @@ class GenerationConfig(proto.Message):
             doesn't allow setting ``top_k`` on requests.
 
             This field is a member of `oneof`_ ``_top_k``.
+        seed (int):
+            Optional. Seed used in decoding. If not set,
+            the request uses a randomly generated seed.
+
+            This field is a member of `oneof`_ ``_seed``.
         presence_penalty (float):
             Optional. Presence penalty applied to the next token's
             logprobs if the token has already been seen in the response.
@@ -261,7 +270,7 @@ class GenerationConfig(proto.Message):
             A positive penalty will discourage the use of tokens that
             have already been used, proportional to the number of times
             the token has been used: The more a token is used, the more
-            dificult it is for the model to use that token again
+            difficult it is for the model to use that token again
             increasing the vocabulary of responses.
 
             Caution: A *negative* penalty will encourage the model to
@@ -321,6 +330,11 @@ class GenerationConfig(proto.Message):
     top_k: int = proto.Field(
         proto.INT32,
         number=7,
+        optional=True,
+    )
+    seed: int = proto.Field(
+        proto.INT32,
+        number=8,
         optional=True,
     )
     presence_penalty: float = proto.Field(
@@ -442,9 +456,27 @@ class GenerateContentResponse(proto.Message):
             candidates_token_count (int):
                 Total number of tokens across all the
                 generated response candidates.
+            tool_use_prompt_token_count (int):
+                Output only. Number of tokens present in
+                tool-use prompt(s).
+            thoughts_token_count (int):
+                Output only. Number of tokens of thoughts for
+                thinking models.
             total_token_count (int):
                 Total token count for the generation request
                 (prompt + response candidates).
+            prompt_tokens_details (MutableSequence[google.ai.generativelanguage_v1.types.ModalityTokenCount]):
+                Output only. List of modalities that were
+                processed in the request input.
+            cache_tokens_details (MutableSequence[google.ai.generativelanguage_v1.types.ModalityTokenCount]):
+                Output only. List of modalities of the cached
+                content in the request input.
+            candidates_tokens_details (MutableSequence[google.ai.generativelanguage_v1.types.ModalityTokenCount]):
+                Output only. List of modalities that were
+                returned in the response.
+            tool_use_prompt_tokens_details (MutableSequence[google.ai.generativelanguage_v1.types.ModalityTokenCount]):
+                Output only. List of modalities that were
+                processed for tool-use request inputs.
         """
 
         prompt_token_count: int = proto.Field(
@@ -455,9 +487,45 @@ class GenerateContentResponse(proto.Message):
             proto.INT32,
             number=2,
         )
+        tool_use_prompt_token_count: int = proto.Field(
+            proto.INT32,
+            number=8,
+        )
+        thoughts_token_count: int = proto.Field(
+            proto.INT32,
+            number=10,
+        )
         total_token_count: int = proto.Field(
             proto.INT32,
             number=3,
+        )
+        prompt_tokens_details: MutableSequence[
+            gag_content.ModalityTokenCount
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=gag_content.ModalityTokenCount,
+        )
+        cache_tokens_details: MutableSequence[
+            gag_content.ModalityTokenCount
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=gag_content.ModalityTokenCount,
+        )
+        candidates_tokens_details: MutableSequence[
+            gag_content.ModalityTokenCount
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gag_content.ModalityTokenCount,
+        )
+        tool_use_prompt_tokens_details: MutableSequence[
+            gag_content.ModalityTokenCount
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=9,
+            message=gag_content.ModalityTokenCount,
         )
 
     candidates: MutableSequence["Candidate"] = proto.RepeatedField(
@@ -937,7 +1005,8 @@ class EmbedContentRequest(proto.Message):
             fields will be counted.
         task_type (google.ai.generativelanguage_v1.types.TaskType):
             Optional. Optional task type for which the embeddings will
-            be used. Can only be set for ``models/embedding-001``.
+            be used. Not supported on earlier models
+            (``models/embedding-001``).
 
             This field is a member of `oneof`_ ``_task_type``.
         title (str):
@@ -1118,11 +1187,31 @@ class CountTokensResponse(proto.Message):
         total_tokens (int):
             The number of tokens that the ``Model`` tokenizes the
             ``prompt`` into. Always non-negative.
+        prompt_tokens_details (MutableSequence[google.ai.generativelanguage_v1.types.ModalityTokenCount]):
+            Output only. List of modalities that were
+            processed in the request input.
+        cache_tokens_details (MutableSequence[google.ai.generativelanguage_v1.types.ModalityTokenCount]):
+            Output only. List of modalities that were
+            processed in the cached content.
     """
 
     total_tokens: int = proto.Field(
         proto.INT32,
         number=1,
+    )
+    prompt_tokens_details: MutableSequence[
+        gag_content.ModalityTokenCount
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=gag_content.ModalityTokenCount,
+    )
+    cache_tokens_details: MutableSequence[
+        gag_content.ModalityTokenCount
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=gag_content.ModalityTokenCount,
     )
 
 

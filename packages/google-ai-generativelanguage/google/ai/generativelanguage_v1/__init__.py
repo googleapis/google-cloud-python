@@ -24,7 +24,7 @@ from .services.generative_service import (
 )
 from .services.model_service import ModelServiceAsyncClient, ModelServiceClient
 from .types.citation import CitationMetadata, CitationSource
-from .types.content import Blob, Content, Part
+from .types.content import Blob, Content, Modality, ModalityTokenCount, Part
 from .types.generative_service import (
     BatchEmbedContentsRequest,
     BatchEmbedContentsResponse,
@@ -77,6 +77,8 @@ __all__ = (
     "ListModelsRequest",
     "ListModelsResponse",
     "LogprobsResult",
+    "Modality",
+    "ModalityTokenCount",
     "Model",
     "ModelServiceClient",
     "Part",

@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 from .citation import CitationMetadata, CitationSource
-from .content import Blob, Content, Part
+from .content import Blob, Content, Modality, ModalityTokenCount, Part
 from .generative_service import (
     BatchEmbedContentsRequest,
     BatchEmbedContentsResponse,
@@ -45,7 +45,9 @@ __all__ = (
     "CitationSource",
     "Blob",
     "Content",
+    "ModalityTokenCount",
     "Part",
+    "Modality",
     "BatchEmbedContentsRequest",
     "BatchEmbedContentsResponse",
     "Candidate",
