@@ -23,6 +23,7 @@ from typing import (
     Callable,
     Dict,
     Iterable,
+    Iterator,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -1566,6 +1567,97 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         # Send the request.
         response = rpc(
             request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def bidi_generate_content(
+        self,
+        requests: Optional[
+            Iterator[generative_service.BidiGenerateContentClientMessage]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> Iterable[generative_service.BidiGenerateContentServerMessage]:
+        r"""Low-Latency bidirectional streaming API that supports
+        audio and video streaming inputs can produce multimodal
+        output streams (audio and text).
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ai import generativelanguage_v1beta
+
+            def sample_bidi_generate_content():
+                # Create a client
+                client = generativelanguage_v1beta.GenerativeServiceClient()
+
+                # Initialize request argument(s)
+                setup = generativelanguage_v1beta.BidiGenerateContentSetup()
+                setup.model = "model_value"
+
+                request = generativelanguage_v1beta.BidiGenerateContentClientMessage(
+                    setup=setup,
+                )
+
+                # This method expects an iterator which contains
+                # 'generativelanguage_v1beta.BidiGenerateContentClientMessage' objects
+                # Here we create a generator that yields a single `request` for
+                # demonstrative purposes.
+                requests = [request]
+
+                def request_generator():
+                    for request in requests:
+                        yield request
+
+                # Make the request
+                stream = client.bidi_generate_content(requests=request_generator())
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
+        Args:
+            requests (Iterator[google.ai.generativelanguage_v1beta.types.BidiGenerateContentClientMessage]):
+                The request object iterator. Messages sent by the client in the
+                BidiGenerateContent call.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            Iterable[google.ai.generativelanguage_v1beta.types.BidiGenerateContentServerMessage]:
+                Response message for the
+                BidiGenerateContent call.
+
+        """
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.bidi_generate_content]
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            requests,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

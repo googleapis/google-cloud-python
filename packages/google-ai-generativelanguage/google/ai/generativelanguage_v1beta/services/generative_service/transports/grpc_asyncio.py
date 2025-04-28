@@ -521,6 +521,37 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
             )
         return self._stubs["count_tokens"]
 
+    @property
+    def bidi_generate_content(
+        self,
+    ) -> Callable[
+        [generative_service.BidiGenerateContentClientMessage],
+        Awaitable[generative_service.BidiGenerateContentServerMessage],
+    ]:
+        r"""Return a callable for the bidi generate content method over gRPC.
+
+        Low-Latency bidirectional streaming API that supports
+        audio and video streaming inputs can produce multimodal
+        output streams (audio and text).
+
+        Returns:
+            Callable[[~.BidiGenerateContentClientMessage],
+                    Awaitable[~.BidiGenerateContentServerMessage]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "bidi_generate_content" not in self._stubs:
+            self._stubs["bidi_generate_content"] = self._logged_channel.stream_stream(
+                "/google.ai.generativelanguage.v1beta.GenerativeService/BidiGenerateContent",
+                request_serializer=generative_service.BidiGenerateContentClientMessage.serialize,
+                response_deserializer=generative_service.BidiGenerateContentServerMessage.deserialize,
+            )
+        return self._stubs["bidi_generate_content"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -606,6 +637,11 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.bidi_generate_content: self._wrap_method(
+                self.bidi_generate_content,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_operation: self._wrap_method(

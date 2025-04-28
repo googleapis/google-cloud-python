@@ -30,6 +30,8 @@ __protobuf__ = proto.module(
         "ListFilesResponse",
         "GetFileRequest",
         "DeleteFileRequest",
+        "DownloadFileRequest",
+        "DownloadFileResponse",
     },
 )
 
@@ -140,6 +142,25 @@ class DeleteFileRequest(proto.Message):
         proto.STRING,
         number=1,
     )
+
+
+class DownloadFileRequest(proto.Message):
+    r"""Request for ``DownloadFile``.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``File`` to download. Example:
+            ``files/abc-123``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DownloadFileResponse(proto.Message):
+    r"""Response for ``DownloadFile``."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

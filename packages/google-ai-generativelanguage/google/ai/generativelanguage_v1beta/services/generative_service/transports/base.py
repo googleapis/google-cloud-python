@@ -213,6 +213,11 @@ class GenerativeServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.bidi_generate_content: gapic_v1.method.wrap_method(
+                self.bidi_generate_content,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -302,6 +307,18 @@ class GenerativeServiceTransport(abc.ABC):
         Union[
             generative_service.CountTokensResponse,
             Awaitable[generative_service.CountTokensResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def bidi_generate_content(
+        self,
+    ) -> Callable[
+        [generative_service.BidiGenerateContentClientMessage],
+        Union[
+            generative_service.BidiGenerateContentServerMessage,
+            Awaitable[generative_service.BidiGenerateContentServerMessage],
         ],
     ]:
         raise NotImplementedError()

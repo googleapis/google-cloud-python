@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1beta",
     manifest={
         "Type",
+        "Modality",
         "Content",
         "Part",
         "Blob",
@@ -42,6 +43,7 @@ __protobuf__ = proto.module(
         "Schema",
         "GroundingPassage",
         "GroundingPassages",
+        "ModalityTokenCount",
     },
 )
 
@@ -65,6 +67,11 @@ class Type(proto.Enum):
             Array type.
         OBJECT (6):
             Object type.
+        NULL (7):
+            Null type.
+            HACK: We use this to handle optional parameters,
+            which users are specifying optional things by
+            using a OneOf with a second type of NULL.
     """
     TYPE_UNSPECIFIED = 0
     STRING = 1
@@ -73,6 +80,32 @@ class Type(proto.Enum):
     BOOLEAN = 4
     ARRAY = 5
     OBJECT = 6
+    NULL = 7
+
+
+class Modality(proto.Enum):
+    r"""Content Part modality
+
+    Values:
+        MODALITY_UNSPECIFIED (0):
+            Unspecified modality.
+        TEXT (1):
+            Plain text.
+        IMAGE (2):
+            Image.
+        VIDEO (3):
+            Video.
+        AUDIO (4):
+            Audio.
+        DOCUMENT (5):
+            Document, e.g. PDF.
+    """
+    MODALITY_UNSPECIFIED = 0
+    TEXT = 1
+    IMAGE = 2
+    VIDEO = 3
+    AUDIO = 4
+    DOCUMENT = 5
 
 
 class Content(proto.Message):
@@ -160,6 +193,9 @@ class Part(proto.Message):
             Result of executing the ``ExecutableCode``.
 
             This field is a member of `oneof`_ ``data``.
+        thought (bool):
+            Optional. Indicates if the part is thought
+            from the model.
     """
 
     text: str = proto.Field(
@@ -202,6 +238,10 @@ class Part(proto.Message):
         number=10,
         oneof="data",
         message="CodeExecutionResult",
+    )
+    thought: bool = proto.Field(
+        proto.BOOL,
+        number=11,
     )
 
 
@@ -530,11 +570,17 @@ class FunctionCallingConfig(proto.Message):
                 Model will not predict any function call.
                 Model behavior is same as when not passing any
                 function declarations.
+            VALIDATED (4):
+                Model decides to predict either a function
+                call or a natural language response, but will
+                validate function calls with constrained
+                decoding.
         """
         MODE_UNSPECIFIED = 0
         AUTO = 1
         ANY = 2
         NONE = 3
+        VALIDATED = 4
 
     mode: Mode = proto.Field(
         proto.ENUM,
@@ -702,7 +748,9 @@ class Schema(proto.Message):
 
              for NUMBER type: float, double
              for INTEGER type: int32, int64
-             for STRING type: enum
+             for STRING type: enum, date-time
+        title (str):
+            Optional. The title of the schema.
         description (str):
             Optional. A brief description of the
             parameter. This could contain examples of use.
@@ -730,6 +778,32 @@ class Schema(proto.Message):
             Optional. Properties of Type.OBJECT.
         required (MutableSequence[str]):
             Optional. Required properties of Type.OBJECT.
+        minimum (float):
+            Optional. SCHEMA FIELDS FOR TYPE INTEGER and
+            NUMBER Minimum value of the Type.INTEGER and
+            Type.NUMBER
+
+            This field is a member of `oneof`_ ``_minimum``.
+        maximum (float):
+            Optional. Maximum value of the Type.INTEGER
+            and Type.NUMBER
+
+            This field is a member of `oneof`_ ``_maximum``.
+        any_of (MutableSequence[google.ai.generativelanguage_v1beta.types.Schema]):
+            Optional. The value should be validated
+            against any (one or more) of the subschemas in
+            the list.
+        property_ordering (MutableSequence[str]):
+            Optional. The order of the properties.
+            Not a standard field in open api spec. Used to
+            determine the order of the properties in the
+            response.
+        default (google.protobuf.struct_pb2.Value):
+            Optional. Default value of the field. Per JSON Schema, this
+            field is intended for documentation generators and doesn't
+            affect validation. Thus it's included here and ignored so
+            that developers who send schemas with a ``default`` field
+            don't get unknown-field errors.
     """
 
     type_: "Type" = proto.Field(
@@ -740,6 +814,10 @@ class Schema(proto.Message):
     format_: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    title: str = proto.Field(
+        proto.STRING,
+        number=24,
     )
     description: str = proto.Field(
         proto.STRING,
@@ -777,6 +855,30 @@ class Schema(proto.Message):
         proto.STRING,
         number=8,
     )
+    minimum: float = proto.Field(
+        proto.DOUBLE,
+        number=11,
+        optional=True,
+    )
+    maximum: float = proto.Field(
+        proto.DOUBLE,
+        number=12,
+        optional=True,
+    )
+    any_of: MutableSequence["Schema"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=18,
+        message="Schema",
+    )
+    property_ordering: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=23,
+    )
+    default: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message=struct_pb2.Value,
+    )
 
 
 class GroundingPassage(proto.Message):
@@ -813,6 +915,28 @@ class GroundingPassages(proto.Message):
         proto.MESSAGE,
         number=1,
         message="GroundingPassage",
+    )
+
+
+class ModalityTokenCount(proto.Message):
+    r"""Represents token counting info for a single modality.
+
+    Attributes:
+        modality (google.ai.generativelanguage_v1beta.types.Modality):
+            The modality associated with this token
+            count.
+        token_count (int):
+            Number of tokens.
+    """
+
+    modality: "Modality" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="Modality",
+    )
+    token_count: int = proto.Field(
+        proto.INT32,
+        number=2,
     )
 
 

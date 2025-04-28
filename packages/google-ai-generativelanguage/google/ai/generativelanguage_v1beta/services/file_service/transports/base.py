@@ -150,6 +150,11 @@ class FileServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.download_file: gapic_v1.method.wrap_method(
+                self.download_file,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -207,6 +212,18 @@ class FileServiceTransport(abc.ABC):
     ) -> Callable[
         [file_service.DeleteFileRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def download_file(
+        self,
+    ) -> Callable[
+        [file_service.DownloadFileRequest],
+        Union[
+            file_service.DownloadFileResponse,
+            Awaitable[file_service.DownloadFileResponse],
+        ],
     ]:
         raise NotImplementedError()
 

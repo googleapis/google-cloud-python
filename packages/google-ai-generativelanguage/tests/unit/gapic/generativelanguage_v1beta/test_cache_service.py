@@ -4247,6 +4247,7 @@ def test_create_cached_content_rest_call_success(request_type):
                     },
                     "executable_code": {"language": 1, "code": "code_value"},
                     "code_execution_result": {"outcome": 1, "output": "output_value"},
+                    "thought": True,
                 }
             ],
             "role": "role_value",
@@ -4261,6 +4262,7 @@ def test_create_cached_content_rest_call_success(request_type):
                         "parameters": {
                             "type_": 1,
                             "format_": "format__value",
+                            "title": "title_value",
                             "description": "description_value",
                             "nullable": True,
                             "enum": ["enum_value1", "enum_value2"],
@@ -4269,6 +4271,21 @@ def test_create_cached_content_rest_call_success(request_type):
                             "min_items": 965,
                             "properties": {},
                             "required": ["required_value1", "required_value2"],
+                            "minimum": 0.764,
+                            "maximum": 0.766,
+                            "any_of": {},
+                            "property_ordering": [
+                                "property_ordering_value1",
+                                "property_ordering_value2",
+                            ],
+                            "default": {
+                                "null_value": 0,
+                                "number_value": 0.1285,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "struct_value": {},
+                                "list_value": {"values": {}},
+                            },
                         },
                         "response": {},
                     }
@@ -4657,6 +4674,7 @@ def test_update_cached_content_rest_call_success(request_type):
                     },
                     "executable_code": {"language": 1, "code": "code_value"},
                     "code_execution_result": {"outcome": 1, "output": "output_value"},
+                    "thought": True,
                 }
             ],
             "role": "role_value",
@@ -4671,6 +4689,7 @@ def test_update_cached_content_rest_call_success(request_type):
                         "parameters": {
                             "type_": 1,
                             "format_": "format__value",
+                            "title": "title_value",
                             "description": "description_value",
                             "nullable": True,
                             "enum": ["enum_value1", "enum_value2"],
@@ -4679,6 +4698,21 @@ def test_update_cached_content_rest_call_success(request_type):
                             "min_items": 965,
                             "properties": {},
                             "required": ["required_value1", "required_value2"],
+                            "minimum": 0.764,
+                            "maximum": 0.766,
+                            "any_of": {},
+                            "property_ordering": [
+                                "property_ordering_value1",
+                                "property_ordering_value2",
+                            ],
+                            "default": {
+                                "null_value": 0,
+                                "number_value": 0.1285,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "struct_value": {},
+                                "list_value": {"values": {}},
+                            },
                         },
                         "response": {},
                     }

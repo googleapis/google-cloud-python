@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ai.generativelanguage_v1beta.types import citation
@@ -31,6 +32,7 @@ __protobuf__ = proto.module(
         "PrebuiltVoiceConfig",
         "VoiceConfig",
         "SpeechConfig",
+        "ThinkingConfig",
         "GenerationConfig",
         "SemanticRetrieverConfig",
         "GenerateContentResponse",
@@ -53,6 +55,24 @@ __protobuf__ = proto.module(
         "BatchEmbedContentsResponse",
         "CountTokensRequest",
         "CountTokensResponse",
+        "RealtimeInputConfig",
+        "SessionResumptionConfig",
+        "ContextWindowCompressionConfig",
+        "AudioTranscriptionConfig",
+        "BidiGenerateContentSetup",
+        "BidiGenerateContentClientContent",
+        "BidiGenerateContentRealtimeInput",
+        "BidiGenerateContentToolResponse",
+        "BidiGenerateContentClientMessage",
+        "BidiGenerateContentSetupComplete",
+        "BidiGenerateContentServerContent",
+        "BidiGenerateContentToolCall",
+        "BidiGenerateContentToolCallCancellation",
+        "GoAway",
+        "SessionResumptionUpdate",
+        "BidiGenerateContentTranscription",
+        "BidiGenerateContentServerMessage",
+        "UsageMetadata",
     },
 )
 
@@ -85,6 +105,9 @@ class TaskType(proto.Enum):
         FACT_VERIFICATION (7):
             Specifies that the given text will be used
             for fact verification.
+        CODE_RETRIEVAL_QUERY (8):
+            Specifies that the given text will be used
+            for code retrieval.
     """
     TASK_TYPE_UNSPECIFIED = 0
     RETRIEVAL_QUERY = 1
@@ -94,6 +117,7 @@ class TaskType(proto.Enum):
     CLUSTERING = 5
     QUESTION_ANSWERING = 6
     FACT_VERIFICATION = 7
+    CODE_RETRIEVAL_QUERY = 8
 
 
 class GenerateContentRequest(proto.Message):
@@ -266,13 +290,58 @@ class SpeechConfig(proto.Message):
 
     Attributes:
         voice_config (google.ai.generativelanguage_v1beta.types.VoiceConfig):
-            The configuration for the speaker to use.
+            The configuration in case of single-voice
+            output.
+        language_code (str):
+            Optional. Language code (in BCP 47 format,
+            e.g. "en-US") for speech synthesis.
+
+            Valid values are: de-DE, en-AU, en-GB, en-IN,
+            en-US, es-US, fr-FR, hi-IN, pt-BR, ar-XA, es-ES,
+            fr-CA, id-ID, it-IT, ja-JP, tr-TR, vi-VN, bn-IN,
+            gu-IN, kn-IN, ml-IN, mr-IN, ta-IN, te-IN, nl-NL,
+            ko-KR, cmn-CN, pl-PL, ru-RU, and th-TH.
     """
 
     voice_config: "VoiceConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="VoiceConfig",
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ThinkingConfig(proto.Message):
+    r"""Config for thinking features.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        include_thoughts (bool):
+            Indicates whether to include thoughts in the
+            response. If true, thoughts are returned only
+            when available.
+
+            This field is a member of `oneof`_ ``_include_thoughts``.
+        thinking_budget (int):
+            The number of thoughts tokens that the model
+            should generate.
+
+            This field is a member of `oneof`_ ``_thinking_budget``.
+    """
+
+    include_thoughts: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
+    )
+    thinking_budget: int = proto.Field(
+        proto.INT32,
+        number=2,
+        optional=True,
     )
 
 
@@ -286,9 +355,9 @@ class GenerationConfig(proto.Message):
     Attributes:
         candidate_count (int):
             Optional. Number of generated responses to
-            return.
-            Currently, this value can only be set to 1. If
-            unset, this will default to 1.
+            return. If unset, this will default to 1. Please
+            note that this doesn't work for previous
+            generation models (Gemini 1.0 family)
 
             This field is a member of `oneof`_ ``_candidate_count``.
         stop_sequences (MutableSequence[str]):
@@ -350,6 +419,11 @@ class GenerationConfig(proto.Message):
             doesn't allow setting ``top_k`` on requests.
 
             This field is a member of `oneof`_ ``_top_k``.
+        seed (int):
+            Optional. Seed used in decoding. If not set,
+            the request uses a randomly generated seed.
+
+            This field is a member of `oneof`_ ``_seed``.
         response_mime_type (str):
             Optional. MIME type of the generated candidate text.
             Supported MIME types are: ``text/plain``: (default) Text
@@ -395,7 +469,7 @@ class GenerationConfig(proto.Message):
             A positive penalty will discourage the use of tokens that
             have already been used, proportional to the number of times
             the token has been used: The more a token is used, the more
-            dificult it is for the model to use that token again
+            difficult it is for the model to use that token again
             increasing the vocabulary of responses.
 
             Caution: A *negative* penalty will encourage the model to
@@ -444,6 +518,17 @@ class GenerationConfig(proto.Message):
             Optional. The speech generation config.
 
             This field is a member of `oneof`_ ``_speech_config``.
+        thinking_config (google.ai.generativelanguage_v1beta.types.ThinkingConfig):
+            Optional. Config for thinking features.
+            An error will be returned if this field is set
+            for models that don't support thinking.
+
+            This field is a member of `oneof`_ ``_thinking_config``.
+        media_resolution (google.ai.generativelanguage_v1beta.types.GenerationConfig.MediaResolution):
+            Optional. If specified, the media resolution
+            specified will be used.
+
+            This field is a member of `oneof`_ ``_media_resolution``.
     """
 
     class Modality(proto.Enum):
@@ -463,6 +548,25 @@ class GenerationConfig(proto.Message):
         TEXT = 1
         IMAGE = 2
         AUDIO = 3
+
+    class MediaResolution(proto.Enum):
+        r"""Media resolution for the input media.
+
+        Values:
+            MEDIA_RESOLUTION_UNSPECIFIED (0):
+                Media resolution has not been set.
+            MEDIA_RESOLUTION_LOW (1):
+                Media resolution set to low (64 tokens).
+            MEDIA_RESOLUTION_MEDIUM (2):
+                Media resolution set to medium (256 tokens).
+            MEDIA_RESOLUTION_HIGH (3):
+                Media resolution set to high (zoomed
+                reframing with 256 tokens).
+        """
+        MEDIA_RESOLUTION_UNSPECIFIED = 0
+        MEDIA_RESOLUTION_LOW = 1
+        MEDIA_RESOLUTION_MEDIUM = 2
+        MEDIA_RESOLUTION_HIGH = 3
 
     candidate_count: int = proto.Field(
         proto.INT32,
@@ -491,6 +595,11 @@ class GenerationConfig(proto.Message):
     top_k: int = proto.Field(
         proto.INT32,
         number=7,
+        optional=True,
+    )
+    seed: int = proto.Field(
+        proto.INT32,
+        number=8,
         optional=True,
     )
     response_mime_type: str = proto.Field(
@@ -537,6 +646,18 @@ class GenerationConfig(proto.Message):
         number=21,
         optional=True,
         message="SpeechConfig",
+    )
+    thinking_config: "ThinkingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        optional=True,
+        message="ThinkingConfig",
+    )
+    media_resolution: MediaResolution = proto.Field(
+        proto.ENUM,
+        number=23,
+        optional=True,
+        enum=MediaResolution,
     )
 
 
@@ -690,9 +811,27 @@ class GenerateContentResponse(proto.Message):
             candidates_token_count (int):
                 Total number of tokens across all the
                 generated response candidates.
+            tool_use_prompt_token_count (int):
+                Output only. Number of tokens present in
+                tool-use prompt(s).
+            thoughts_token_count (int):
+                Output only. Number of tokens of thoughts for
+                thinking models.
             total_token_count (int):
                 Total token count for the generation request
                 (prompt + response candidates).
+            prompt_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+                Output only. List of modalities that were
+                processed in the request input.
+            cache_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+                Output only. List of modalities of the cached
+                content in the request input.
+            candidates_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+                Output only. List of modalities that were
+                returned in the response.
+            tool_use_prompt_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+                Output only. List of modalities that were
+                processed for tool-use request inputs.
         """
 
         prompt_token_count: int = proto.Field(
@@ -707,9 +846,45 @@ class GenerateContentResponse(proto.Message):
             proto.INT32,
             number=2,
         )
+        tool_use_prompt_token_count: int = proto.Field(
+            proto.INT32,
+            number=8,
+        )
+        thoughts_token_count: int = proto.Field(
+            proto.INT32,
+            number=10,
+        )
         total_token_count: int = proto.Field(
             proto.INT32,
             number=3,
+        )
+        prompt_tokens_details: MutableSequence[
+            gag_content.ModalityTokenCount
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=gag_content.ModalityTokenCount,
+        )
+        cache_tokens_details: MutableSequence[
+            gag_content.ModalityTokenCount
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=gag_content.ModalityTokenCount,
+        )
+        candidates_tokens_details: MutableSequence[
+            gag_content.ModalityTokenCount
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gag_content.ModalityTokenCount,
+        )
+        tool_use_prompt_tokens_details: MutableSequence[
+            gag_content.ModalityTokenCount
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=9,
+            message=gag_content.ModalityTokenCount,
         )
 
     candidates: MutableSequence["Candidate"] = proto.RepeatedField(
@@ -1552,7 +1727,8 @@ class EmbedContentRequest(proto.Message):
             fields will be counted.
         task_type (google.ai.generativelanguage_v1beta.types.TaskType):
             Optional. Optional task type for which the embeddings will
-            be used. Can only be set for ``models/embedding-001``.
+            be used. Not supported on earlier models
+            (``models/embedding-001``).
 
             This field is a member of `oneof`_ ``_task_type``.
         title (str):
@@ -1736,6 +1912,12 @@ class CountTokensResponse(proto.Message):
         cached_content_token_count (int):
             Number of tokens in the cached part of the
             prompt (the cached content).
+        prompt_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+            Output only. List of modalities that were
+            processed in the request input.
+        cache_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+            Output only. List of modalities that were
+            processed in the cached content.
     """
 
     total_tokens: int = proto.Field(
@@ -1745,6 +1927,1011 @@ class CountTokensResponse(proto.Message):
     cached_content_token_count: int = proto.Field(
         proto.INT32,
         number=5,
+    )
+    prompt_tokens_details: MutableSequence[
+        gag_content.ModalityTokenCount
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=gag_content.ModalityTokenCount,
+    )
+    cache_tokens_details: MutableSequence[
+        gag_content.ModalityTokenCount
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=gag_content.ModalityTokenCount,
+    )
+
+
+class RealtimeInputConfig(proto.Message):
+    r"""Configures the realtime input behavior in ``BidiGenerateContent``.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        automatic_activity_detection (google.ai.generativelanguage_v1beta.types.RealtimeInputConfig.AutomaticActivityDetection):
+            Optional. If not set, automatic activity
+            detection is enabled by default. If automatic
+            voice detection is disabled, the client must
+            send activity signals.
+        activity_handling (google.ai.generativelanguage_v1beta.types.RealtimeInputConfig.ActivityHandling):
+            Optional. Defines what effect activity has.
+
+            This field is a member of `oneof`_ ``_activity_handling``.
+        turn_coverage (google.ai.generativelanguage_v1beta.types.RealtimeInputConfig.TurnCoverage):
+            Optional. Defines which input is included in
+            the user's turn.
+
+            This field is a member of `oneof`_ ``_turn_coverage``.
+    """
+
+    class ActivityHandling(proto.Enum):
+        r"""The different ways of handling user activity.
+
+        Values:
+            ACTIVITY_HANDLING_UNSPECIFIED (0):
+                If unspecified, the default behavior is
+                ``START_OF_ACTIVITY_INTERRUPTS``.
+            START_OF_ACTIVITY_INTERRUPTS (1):
+                If true, start of activity will interrupt the
+                model's response (also called "barge in"). The
+                model's current response will be cut-off in the
+                moment of the interruption. This is the default
+                behavior.
+            NO_INTERRUPTION (2):
+                The model's response will not be interrupted.
+        """
+        ACTIVITY_HANDLING_UNSPECIFIED = 0
+        START_OF_ACTIVITY_INTERRUPTS = 1
+        NO_INTERRUPTION = 2
+
+    class TurnCoverage(proto.Enum):
+        r"""Options about which input is included in the user's turn.
+
+        Values:
+            TURN_COVERAGE_UNSPECIFIED (0):
+                If unspecified, the default behavior is
+                ``TURN_INCLUDES_ONLY_ACTIVITY``.
+            TURN_INCLUDES_ONLY_ACTIVITY (1):
+                The users turn only includes activity since
+                the last turn, excluding inactivity (e.g.
+                silence on the audio stream). This is the
+                default behavior.
+            TURN_INCLUDES_ALL_INPUT (2):
+                The users turn includes all realtime input
+                since the last turn, including inactivity (e.g.
+                silence on the audio stream).
+        """
+        TURN_COVERAGE_UNSPECIFIED = 0
+        TURN_INCLUDES_ONLY_ACTIVITY = 1
+        TURN_INCLUDES_ALL_INPUT = 2
+
+    class AutomaticActivityDetection(proto.Message):
+        r"""Configures automatic detection of activity.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            disabled (bool):
+                Optional. If enabled (the default), detected
+                voice and text input count as activity. If
+                disabled, the client must send activity signals.
+
+                This field is a member of `oneof`_ ``_disabled``.
+            start_of_speech_sensitivity (google.ai.generativelanguage_v1beta.types.RealtimeInputConfig.AutomaticActivityDetection.StartSensitivity):
+                Optional. Determines how likely speech is to
+                be detected.
+
+                This field is a member of `oneof`_ ``_start_of_speech_sensitivity``.
+            prefix_padding_ms (int):
+                Optional. The required duration of detected
+                speech before start-of-speech is committed. The
+                lower this value, the more sensitive the
+                start-of-speech detection is and shorter speech
+                can be recognized. However, this also increases
+                the probability of false positives.
+
+                This field is a member of `oneof`_ ``_prefix_padding_ms``.
+            end_of_speech_sensitivity (google.ai.generativelanguage_v1beta.types.RealtimeInputConfig.AutomaticActivityDetection.EndSensitivity):
+                Optional. Determines how likely detected
+                speech is ended.
+
+                This field is a member of `oneof`_ ``_end_of_speech_sensitivity``.
+            silence_duration_ms (int):
+                Optional. The required duration of detected
+                non-speech (e.g. silence) before end-of-speech
+                is committed. The larger this value, the longer
+                speech gaps can be without interrupting the
+                user's activity but this will increase the
+                model's latency.
+
+                This field is a member of `oneof`_ ``_silence_duration_ms``.
+        """
+
+        class StartSensitivity(proto.Enum):
+            r"""Determines how start of speech is detected.
+
+            Values:
+                START_SENSITIVITY_UNSPECIFIED (0):
+                    The default is START_SENSITIVITY_HIGH.
+                START_SENSITIVITY_HIGH (1):
+                    Automatic detection will detect the start of
+                    speech more often.
+                START_SENSITIVITY_LOW (2):
+                    Automatic detection will detect the start of
+                    speech less often.
+            """
+            START_SENSITIVITY_UNSPECIFIED = 0
+            START_SENSITIVITY_HIGH = 1
+            START_SENSITIVITY_LOW = 2
+
+        class EndSensitivity(proto.Enum):
+            r"""Determines how end of speech is detected.
+
+            Values:
+                END_SENSITIVITY_UNSPECIFIED (0):
+                    The default is END_SENSITIVITY_HIGH.
+                END_SENSITIVITY_HIGH (1):
+                    Automatic detection ends speech more often.
+                END_SENSITIVITY_LOW (2):
+                    Automatic detection ends speech less often.
+            """
+            END_SENSITIVITY_UNSPECIFIED = 0
+            END_SENSITIVITY_HIGH = 1
+            END_SENSITIVITY_LOW = 2
+
+        disabled: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+            optional=True,
+        )
+        start_of_speech_sensitivity: "RealtimeInputConfig.AutomaticActivityDetection.StartSensitivity" = proto.Field(
+            proto.ENUM,
+            number=3,
+            optional=True,
+            enum="RealtimeInputConfig.AutomaticActivityDetection.StartSensitivity",
+        )
+        prefix_padding_ms: int = proto.Field(
+            proto.INT32,
+            number=4,
+            optional=True,
+        )
+        end_of_speech_sensitivity: "RealtimeInputConfig.AutomaticActivityDetection.EndSensitivity" = proto.Field(
+            proto.ENUM,
+            number=5,
+            optional=True,
+            enum="RealtimeInputConfig.AutomaticActivityDetection.EndSensitivity",
+        )
+        silence_duration_ms: int = proto.Field(
+            proto.INT32,
+            number=6,
+            optional=True,
+        )
+
+    automatic_activity_detection: AutomaticActivityDetection = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=AutomaticActivityDetection,
+    )
+    activity_handling: ActivityHandling = proto.Field(
+        proto.ENUM,
+        number=3,
+        optional=True,
+        enum=ActivityHandling,
+    )
+    turn_coverage: TurnCoverage = proto.Field(
+        proto.ENUM,
+        number=4,
+        optional=True,
+        enum=TurnCoverage,
+    )
+
+
+class SessionResumptionConfig(proto.Message):
+    r"""Session resumption configuration.
+
+    This message is included in the session configuration as
+    ``BidiGenerateContentSetup.session_resumption``. If configured, the
+    server will send ``SessionResumptionUpdate`` messages.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        handle (str):
+            The handle of a previous session. If not present then a new
+            session is created.
+
+            Session handles come from ``SessionResumptionUpdate.token``
+            values in previous connections.
+
+            This field is a member of `oneof`_ ``_handle``.
+    """
+
+    handle: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+
+
+class ContextWindowCompressionConfig(proto.Message):
+    r"""Enables context window compression — a mechanism for managing
+    the model's context window so that it does not exceed a given
+    length.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        sliding_window (google.ai.generativelanguage_v1beta.types.ContextWindowCompressionConfig.SlidingWindow):
+            A sliding-window mechanism.
+
+            This field is a member of `oneof`_ ``compression_mechanism``.
+        trigger_tokens (int):
+            The number of tokens (before running a turn)
+            required to trigger a context window
+            compression.
+
+            This can be used to balance quality against
+            latency as shorter context windows may result in
+            faster model responses. However, any compression
+            operation will cause a temporary latency
+            increase, so they should not be triggered
+            frequently.
+
+            If not set, the default is 80% of the model's
+            context window limit. This leaves 20% for the
+            next user request/model response.
+
+            This field is a member of `oneof`_ ``_trigger_tokens``.
+    """
+
+    class SlidingWindow(proto.Message):
+        r"""The SlidingWindow method operates by discarding content at the
+        beginning of the context window. The resulting context will always
+        begin at the start of a USER role turn. System instructions and any
+        ``BidiGenerateContentSetup.prefix_turns`` will always remain at the
+        beginning of the result.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            target_tokens (int):
+                The target number of tokens to keep. The default value is
+                trigger_tokens/2.
+
+                Discarding parts of the context window causes a temporary
+                latency increase so this value should be calibrated to avoid
+                frequent compression operations.
+
+                This field is a member of `oneof`_ ``_target_tokens``.
+        """
+
+        target_tokens: int = proto.Field(
+            proto.INT64,
+            number=1,
+            optional=True,
+        )
+
+    sliding_window: SlidingWindow = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="compression_mechanism",
+        message=SlidingWindow,
+    )
+    trigger_tokens: int = proto.Field(
+        proto.INT64,
+        number=1,
+        optional=True,
+    )
+
+
+class AudioTranscriptionConfig(proto.Message):
+    r"""The audio transcription configuration."""
+
+
+class BidiGenerateContentSetup(proto.Message):
+    r"""Message to be sent in the first (and only in the first)
+    ``BidiGenerateContentClientMessage``. Contains configuration that
+    will apply for the duration of the streaming RPC.
+
+    Clients should wait for a ``BidiGenerateContentSetupComplete``
+    message before sending any additional messages.
+
+    Attributes:
+        model (str):
+            Required. The model's resource name. This serves as an ID
+            for the Model to use.
+
+            Format: ``models/{model}``
+        generation_config (google.ai.generativelanguage_v1beta.types.GenerationConfig):
+            Optional. Generation config.
+
+            The following fields are not supported:
+
+            -  ``response_logprobs``
+            -  ``response_mime_type``
+            -  ``logprobs``
+            -  ``response_schema``
+            -  ``stop_sequence``
+            -  ``routing_config``
+            -  ``audio_timestamp``
+        system_instruction (google.ai.generativelanguage_v1beta.types.Content):
+            Optional. The user provided system
+            instructions for the model.
+            Note: Only text should be used in parts and
+            content in each part will be in a separate
+            paragraph.
+        tools (MutableSequence[google.ai.generativelanguage_v1beta.types.Tool]):
+            Optional. A list of ``Tools`` the model may use to generate
+            the next response.
+
+            A ``Tool`` is a piece of code that enables the system to
+            interact with external systems to perform an action, or set
+            of actions, outside of knowledge and scope of the model.
+        realtime_input_config (google.ai.generativelanguage_v1beta.types.RealtimeInputConfig):
+            Optional. Configures the handling of realtime
+            input.
+        session_resumption (google.ai.generativelanguage_v1beta.types.SessionResumptionConfig):
+            Optional. Configures session resumption mechanism.
+
+            If included, the server will send
+            ``SessionResumptionUpdate`` messages.
+        context_window_compression (google.ai.generativelanguage_v1beta.types.ContextWindowCompressionConfig):
+            Optional. Configures a context window
+            compression mechanism.
+            If included, the server will automatically
+            reduce the size of the context when it exceeds
+            the configured length.
+        output_audio_transcription (google.ai.generativelanguage_v1beta.types.AudioTranscriptionConfig):
+            Optional. If set, enables transcription of
+            the model's audio output. The transcription
+            aligns with the language code specified for the
+            output audio, if configured.
+    """
+
+    model: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    generation_config: "GenerationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="GenerationConfig",
+    )
+    system_instruction: gag_content.Content = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gag_content.Content,
+    )
+    tools: MutableSequence[gag_content.Tool] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=gag_content.Tool,
+    )
+    realtime_input_config: "RealtimeInputConfig" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="RealtimeInputConfig",
+    )
+    session_resumption: "SessionResumptionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="SessionResumptionConfig",
+    )
+    context_window_compression: "ContextWindowCompressionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="ContextWindowCompressionConfig",
+    )
+    output_audio_transcription: "AudioTranscriptionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="AudioTranscriptionConfig",
+    )
+
+
+class BidiGenerateContentClientContent(proto.Message):
+    r"""Incremental update of the current conversation delivered from
+    the client. All of the content here is unconditionally appended
+    to the conversation history and used as part of the prompt to
+    the model to generate content.
+
+    A message here will interrupt any current model generation.
+
+    Attributes:
+        turns (MutableSequence[google.ai.generativelanguage_v1beta.types.Content]):
+            Optional. The content appended to the current
+            conversation with the model.
+            For single-turn queries, this is a single
+            instance. For multi-turn queries, this is a
+            repeated field that contains conversation
+            history and the latest request.
+        turn_complete (bool):
+            Optional. If true, indicates that the server
+            content generation should start with the
+            currently accumulated prompt. Otherwise, the
+            server awaits additional messages before
+            starting generation.
+    """
+
+    turns: MutableSequence[gag_content.Content] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gag_content.Content,
+    )
+    turn_complete: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class BidiGenerateContentRealtimeInput(proto.Message):
+    r"""User input that is sent in real time.
+
+    The different modalities (audio, video and text) are handled as
+    concurrent streams. The ordering across these streams is not
+    guaranteed.
+
+    This is different from
+    [BidiGenerateContentClientContent][google.ai.generativelanguage.v1beta.BidiGenerateContentClientContent]
+    in a few ways:
+
+    -  Can be sent continuously without interruption to model
+       generation.
+    -  If there is a need to mix data interleaved across the
+       [BidiGenerateContentClientContent][google.ai.generativelanguage.v1beta.BidiGenerateContentClientContent]
+       and the
+       [BidiGenerateContentRealtimeInput][google.ai.generativelanguage.v1beta.BidiGenerateContentRealtimeInput],
+       the server attempts to optimize for best response, but there are
+       no guarantees.
+    -  End of turn is not explicitly specified, but is rather derived
+       from user activity (for example, end of speech).
+    -  Even before the end of turn, the data is processed incrementally
+       to optimize for a fast start of the response from the model.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        media_chunks (MutableSequence[google.ai.generativelanguage_v1beta.types.Blob]):
+            Optional. Inlined bytes data for media input. Multiple
+            ``media_chunks`` are not supported, all but the first will
+            be ignored.
+
+            DEPRECATED: Use one of ``audio``, ``video``, or ``text``
+            instead.
+        audio (google.ai.generativelanguage_v1beta.types.Blob):
+            Optional. These form the realtime audio input
+            stream.
+        audio_stream_end (bool):
+            Optional. Indicates that the audio stream has
+            ended, e.g. because the microphone was turned
+            off.
+
+            This should only be sent when automatic activity
+            detection is enabled (which is the default).
+
+            The client can reopen the stream by sending an
+            audio message.
+
+            This field is a member of `oneof`_ ``_audio_stream_end``.
+        video (google.ai.generativelanguage_v1beta.types.Blob):
+            Optional. These form the realtime video input
+            stream.
+        text (str):
+            Optional. These form the realtime text input
+            stream.
+
+            This field is a member of `oneof`_ ``_text``.
+        activity_start (google.ai.generativelanguage_v1beta.types.BidiGenerateContentRealtimeInput.ActivityStart):
+            Optional. Marks the start of user activity.
+            This can only be sent if automatic (i.e.
+            server-side) activity detection is disabled.
+        activity_end (google.ai.generativelanguage_v1beta.types.BidiGenerateContentRealtimeInput.ActivityEnd):
+            Optional. Marks the end of user activity.
+            This can only be sent if automatic (i.e.
+            server-side) activity detection is disabled.
+    """
+
+    class ActivityStart(proto.Message):
+        r"""Marks the start of user activity."""
+
+    class ActivityEnd(proto.Message):
+        r"""Marks the end of user activity."""
+
+    media_chunks: MutableSequence[gag_content.Blob] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gag_content.Blob,
+    )
+    audio: gag_content.Blob = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gag_content.Blob,
+    )
+    audio_stream_end: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        optional=True,
+    )
+    video: gag_content.Blob = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=gag_content.Blob,
+    )
+    text: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    activity_start: ActivityStart = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=ActivityStart,
+    )
+    activity_end: ActivityEnd = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=ActivityEnd,
+    )
+
+
+class BidiGenerateContentToolResponse(proto.Message):
+    r"""Client generated response to a ``ToolCall`` received from the
+    server. Individual ``FunctionResponse`` objects are matched to the
+    respective ``FunctionCall`` objects by the ``id`` field.
+
+    Note that in the unary and server-streaming GenerateContent APIs
+    function calling happens by exchanging the ``Content`` parts, while
+    in the bidi GenerateContent APIs function calling happens over these
+    dedicated set of messages.
+
+    Attributes:
+        function_responses (MutableSequence[google.ai.generativelanguage_v1beta.types.FunctionResponse]):
+            Optional. The response to the function calls.
+    """
+
+    function_responses: MutableSequence[
+        gag_content.FunctionResponse
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gag_content.FunctionResponse,
+    )
+
+
+class BidiGenerateContentClientMessage(proto.Message):
+    r"""Messages sent by the client in the BidiGenerateContent call.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        setup (google.ai.generativelanguage_v1beta.types.BidiGenerateContentSetup):
+            Optional. Session configuration sent in the
+            first and only first client message.
+
+            This field is a member of `oneof`_ ``message_type``.
+        client_content (google.ai.generativelanguage_v1beta.types.BidiGenerateContentClientContent):
+            Optional. Incremental update of the current
+            conversation delivered from the client.
+
+            This field is a member of `oneof`_ ``message_type``.
+        realtime_input (google.ai.generativelanguage_v1beta.types.BidiGenerateContentRealtimeInput):
+            Optional. User input that is sent in real
+            time.
+
+            This field is a member of `oneof`_ ``message_type``.
+        tool_response (google.ai.generativelanguage_v1beta.types.BidiGenerateContentToolResponse):
+            Optional. Response to a ``ToolCallMessage`` received from
+            the server.
+
+            This field is a member of `oneof`_ ``message_type``.
+    """
+
+    setup: "BidiGenerateContentSetup" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="message_type",
+        message="BidiGenerateContentSetup",
+    )
+    client_content: "BidiGenerateContentClientContent" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="message_type",
+        message="BidiGenerateContentClientContent",
+    )
+    realtime_input: "BidiGenerateContentRealtimeInput" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="message_type",
+        message="BidiGenerateContentRealtimeInput",
+    )
+    tool_response: "BidiGenerateContentToolResponse" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="message_type",
+        message="BidiGenerateContentToolResponse",
+    )
+
+
+class BidiGenerateContentSetupComplete(proto.Message):
+    r"""Sent in response to a ``BidiGenerateContentSetup`` message from the
+    client.
+
+    """
+
+
+class BidiGenerateContentServerContent(proto.Message):
+    r"""Incremental server update generated by the model in response
+    to client messages.
+
+    Content is generated as quickly as possible, and not in real
+    time. Clients may choose to buffer and play it out in real time.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        model_turn (google.ai.generativelanguage_v1beta.types.Content):
+            Output only. The content that the model has
+            generated as part of the current conversation
+            with the user.
+
+            This field is a member of `oneof`_ ``_model_turn``.
+        generation_complete (bool):
+            Output only. If true, indicates that the model is done
+            generating.
+
+            When model is interrupted while generating there will be no
+            'generation_complete' message in interrupted turn, it will
+            go through 'interrupted > turn_complete'.
+
+            When model assumes realtime playback there will be delay
+            between generation_complete and turn_complete that is caused
+            by model waiting for playback to finish.
+        turn_complete (bool):
+            Output only. If true, indicates that the
+            model has completed its turn. Generation will
+            only start in response to additional client
+            messages.
+        interrupted (bool):
+            Output only. If true, indicates that a client
+            message has interrupted current model
+            generation. If the client is playing out the
+            content in real time, this is a good signal to
+            stop and empty the current playback queue.
+        grounding_metadata (google.ai.generativelanguage_v1beta.types.GroundingMetadata):
+            Output only. Grounding metadata for the
+            generated content.
+        output_transcription (google.ai.generativelanguage_v1beta.types.BidiGenerateContentTranscription):
+            Output only. Output audio transcription. The transcription
+            is sent independently of the other server messages and there
+            is no guaranteed ordering, in particular not between
+            ``server_content`` and this ``output_transcription``.
+    """
+
+    model_turn: gag_content.Content = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        optional=True,
+        message=gag_content.Content,
+    )
+    generation_complete: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    turn_complete: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    interrupted: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    grounding_metadata: "GroundingMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="GroundingMetadata",
+    )
+    output_transcription: "BidiGenerateContentTranscription" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="BidiGenerateContentTranscription",
+    )
+
+
+class BidiGenerateContentToolCall(proto.Message):
+    r"""Request for the client to execute the ``function_calls`` and return
+    the responses with the matching ``id``\ s.
+
+    Attributes:
+        function_calls (MutableSequence[google.ai.generativelanguage_v1beta.types.FunctionCall]):
+            Output only. The function call to be
+            executed.
+    """
+
+    function_calls: MutableSequence[gag_content.FunctionCall] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=gag_content.FunctionCall,
+    )
+
+
+class BidiGenerateContentToolCallCancellation(proto.Message):
+    r"""Notification for the client that a previously issued
+    ``ToolCallMessage`` with the specified ``id``\ s should not have
+    been executed and should be cancelled. If there were side-effects to
+    those tool calls, clients may attempt to undo the tool calls. This
+    message occurs only in cases where the clients interrupt server
+    turns.
+
+    Attributes:
+        ids (MutableSequence[str]):
+            Output only. The ids of the tool calls to be
+            cancelled.
+    """
+
+    ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GoAway(proto.Message):
+    r"""A notice that the server will soon disconnect.
+
+    Attributes:
+        time_left (google.protobuf.duration_pb2.Duration):
+            The remaining time before the connection will
+            be terminated as ABORTED.
+            This duration will never be less than a
+            model-specific minimum, which will be specified
+            together with the rate limits for the model.
+    """
+
+    time_left: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+
+
+class SessionResumptionUpdate(proto.Message):
+    r"""Update of the session resumption state.
+
+    Only sent if ``BidiGenerateContentSetup.session_resumption`` was
+    set.
+
+    Attributes:
+        new_handle (str):
+            New handle that represents a state that can be resumed.
+            Empty if ``resumable``\ =false.
+        resumable (bool):
+            True if the current session can be resumed at this point.
+
+            Resumption is not possible at some points in the session.
+            For example, when the model is executing function calls or
+            generating. Resuming the session (using a previous session
+            token) in such a state will result in some data loss. In
+            these cases, ``new_handle`` will be empty and ``resumable``
+            will be false.
+    """
+
+    new_handle: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resumable: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class BidiGenerateContentTranscription(proto.Message):
+    r"""Transcription of audio (input or output).
+
+    Attributes:
+        text (str):
+            Transcription text.
+    """
+
+    text: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class BidiGenerateContentServerMessage(proto.Message):
+    r"""Response message for the BidiGenerateContent call.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        setup_complete (google.ai.generativelanguage_v1beta.types.BidiGenerateContentSetupComplete):
+            Output only. Sent in response to a
+            ``BidiGenerateContentSetup`` message from the client when
+            setup is complete.
+
+            This field is a member of `oneof`_ ``message_type``.
+        server_content (google.ai.generativelanguage_v1beta.types.BidiGenerateContentServerContent):
+            Output only. Content generated by the model
+            in response to client messages.
+
+            This field is a member of `oneof`_ ``message_type``.
+        tool_call (google.ai.generativelanguage_v1beta.types.BidiGenerateContentToolCall):
+            Output only. Request for the client to execute the
+            ``function_calls`` and return the responses with the
+            matching ``id``\ s.
+
+            This field is a member of `oneof`_ ``message_type``.
+        tool_call_cancellation (google.ai.generativelanguage_v1beta.types.BidiGenerateContentToolCallCancellation):
+            Output only. Notification for the client that a previously
+            issued ``ToolCallMessage`` with the specified ``id``\ s
+            should be cancelled.
+
+            This field is a member of `oneof`_ ``message_type``.
+        go_away (google.ai.generativelanguage_v1beta.types.GoAway):
+            Output only. A notice that the server will
+            soon disconnect.
+
+            This field is a member of `oneof`_ ``message_type``.
+        session_resumption_update (google.ai.generativelanguage_v1beta.types.SessionResumptionUpdate):
+            Output only. Update of the session resumption
+            state.
+
+            This field is a member of `oneof`_ ``message_type``.
+        usage_metadata (google.ai.generativelanguage_v1beta.types.UsageMetadata):
+            Output only. Usage metadata about the
+            response(s).
+    """
+
+    setup_complete: "BidiGenerateContentSetupComplete" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="message_type",
+        message="BidiGenerateContentSetupComplete",
+    )
+    server_content: "BidiGenerateContentServerContent" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="message_type",
+        message="BidiGenerateContentServerContent",
+    )
+    tool_call: "BidiGenerateContentToolCall" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="message_type",
+        message="BidiGenerateContentToolCall",
+    )
+    tool_call_cancellation: "BidiGenerateContentToolCallCancellation" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="message_type",
+        message="BidiGenerateContentToolCallCancellation",
+    )
+    go_away: "GoAway" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="message_type",
+        message="GoAway",
+    )
+    session_resumption_update: "SessionResumptionUpdate" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="message_type",
+        message="SessionResumptionUpdate",
+    )
+    usage_metadata: "UsageMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="UsageMetadata",
+    )
+
+
+class UsageMetadata(proto.Message):
+    r"""Usage metadata about response(s).
+
+    Attributes:
+        prompt_token_count (int):
+            Output only. Number of tokens in the prompt. When
+            ``cached_content`` is set, this is still the total effective
+            prompt size meaning this includes the number of tokens in
+            the cached content.
+        cached_content_token_count (int):
+            Number of tokens in the cached part of the
+            prompt (the cached content)
+        response_token_count (int):
+            Output only. Total number of tokens across
+            all the generated response candidates.
+        tool_use_prompt_token_count (int):
+            Output only. Number of tokens present in
+            tool-use prompt(s).
+        thoughts_token_count (int):
+            Output only. Number of tokens of thoughts for
+            thinking models.
+        total_token_count (int):
+            Output only. Total token count for the
+            generation request (prompt + response
+            candidates).
+        prompt_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+            Output only. List of modalities that were
+            processed in the request input.
+        cache_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+            Output only. List of modalities of the cached
+            content in the request input.
+        response_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+            Output only. List of modalities that were
+            returned in the response.
+        tool_use_prompt_tokens_details (MutableSequence[google.ai.generativelanguage_v1beta.types.ModalityTokenCount]):
+            Output only. List of modalities that were
+            processed for tool-use request inputs.
+    """
+
+    prompt_token_count: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    cached_content_token_count: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    response_token_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    tool_use_prompt_token_count: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    thoughts_token_count: int = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    total_token_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    prompt_tokens_details: MutableSequence[
+        gag_content.ModalityTokenCount
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=gag_content.ModalityTokenCount,
+    )
+    cache_tokens_details: MutableSequence[
+        gag_content.ModalityTokenCount
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=gag_content.ModalityTokenCount,
+    )
+    response_tokens_details: MutableSequence[
+        gag_content.ModalityTokenCount
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=gag_content.ModalityTokenCount,
+    )
+    tool_use_prompt_tokens_details: MutableSequence[
+        gag_content.ModalityTokenCount
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message=gag_content.ModalityTokenCount,
     )
 
 

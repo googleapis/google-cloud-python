@@ -724,6 +724,25 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 )
             return resp
 
+    class _BidiGenerateContent(
+        _BaseGenerativeServiceRestTransport._BaseBidiGenerateContent,
+        GenerativeServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("GenerativeServiceRestTransport.BidiGenerateContent")
+
+        def __call__(
+            self,
+            request: generative_service.BidiGenerateContentClientMessage,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            raise NotImplementedError(
+                "Method BidiGenerateContent is not available over REST transport"
+            )
+
     class _CountTokens(
         _BaseGenerativeServiceRestTransport._BaseCountTokens, GenerativeServiceRestStub
     ):
@@ -1526,6 +1545,17 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchEmbedContents(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def bidi_generate_content(
+        self,
+    ) -> Callable[
+        [generative_service.BidiGenerateContentClientMessage],
+        generative_service.BidiGenerateContentServerMessage,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BidiGenerateContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def count_tokens(

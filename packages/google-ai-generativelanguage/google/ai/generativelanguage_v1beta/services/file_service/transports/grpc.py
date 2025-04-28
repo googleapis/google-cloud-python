@@ -424,6 +424,34 @@ class FileServiceGrpcTransport(FileServiceTransport):
             )
         return self._stubs["delete_file"]
 
+    @property
+    def download_file(
+        self,
+    ) -> Callable[
+        [file_service.DownloadFileRequest], file_service.DownloadFileResponse
+    ]:
+        r"""Return a callable for the download file method over gRPC.
+
+        Download the ``File``.
+
+        Returns:
+            Callable[[~.DownloadFileRequest],
+                    ~.DownloadFileResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "download_file" not in self._stubs:
+            self._stubs["download_file"] = self._logged_channel.unary_unary(
+                "/google.ai.generativelanguage.v1beta.FileService/DownloadFile",
+                request_serializer=file_service.DownloadFileRequest.serialize,
+                response_deserializer=file_service.DownloadFileResponse.deserialize,
+            )
+        return self._stubs["download_file"]
+
     def close(self):
         self._logged_channel.close()
 
