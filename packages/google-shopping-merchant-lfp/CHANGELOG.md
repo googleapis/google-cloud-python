@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-lfp-v0.1.9...google-shopping-merchant-lfp-v0.1.10) (2025-04-29)
+
+
+### Documentation
+
+* [google-shopping-merchant-lfp] Add clarification to GetLfpMerchantState documentation ([#13850](https://github.com/googleapis/google-cloud-python/issues/13850)) ([90177f3](https://github.com/googleapis/google-cloud-python/commit/90177f3ea4fcf43de896666d1ac850f5b7457a53))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-lfp-v0.1.8...google-shopping-merchant-lfp-v0.1.9) (2025-04-15)
 
 

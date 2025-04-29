@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.9...google-cloud-oracledatabase-v0.1.10) (2025-04-29)
+
+
+### Features
+
+* [google-cloud-oracledatabase] re-enable gRPC support ([#13851](https://github.com/googleapis/google-cloud-python/issues/13851)) ([ffa6af9](https://github.com/googleapis/google-cloud-python/commit/ffa6af9d8acaa04ea7abc143a0138679dd423d8a))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.8...google-cloud-oracledatabase-v0.1.9) (2025-04-12)
 
 

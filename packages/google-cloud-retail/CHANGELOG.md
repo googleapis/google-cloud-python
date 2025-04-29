@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.0.0...google-cloud-retail-v2.1.0) (2025-04-29)
+
+
+### Features
+
+* add conversational search API ([4fea9f8](https://github.com/googleapis/google-cloud-python/commit/4fea9f8c052d77834534505332961cebce61a9c8))
+* add language_code, region_code and place_id to SearchRequest ([4fea9f8](https://github.com/googleapis/google-cloud-python/commit/4fea9f8c052d77834534505332961cebce61a9c8))
+* add pin_control_metadata to SearchResponse ([4fea9f8](https://github.com/googleapis/google-cloud-python/commit/4fea9f8c052d77834534505332961cebce61a9c8))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([4fea9f8](https://github.com/googleapis/google-cloud-python/commit/4fea9f8c052d77834534505332961cebce61a9c8))
+
 ## [2.0.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.25.1...google-cloud-retail-v2.0.0) (2025-04-23)
 
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.4.0...google-cloud-documentai-v3.5.0) (2025-04-29)
+
+
+### Features
+
+* **v1beta3:** [google-cloud-documentai] Added config options to enable table annotation and image extraction ([#13847](https://github.com/googleapis/google-cloud-python/issues/13847)) ([cd64ac0](https://github.com/googleapis/google-cloud-python/commit/cd64ac0e4653abd812e190343499e7fb95473fe9))
+* **v1beta3:** Add image block and blob asset in Document proto ([3c829a0](https://github.com/googleapis/google-cloud-python/commit/3c829a0e14848fd084ceb1fcdaf5c5336e261df8))
+* **v1beta3:** Added config options to enable image annotation ([3c829a0](https://github.com/googleapis/google-cloud-python/commit/3c829a0e14848fd084ceb1fcdaf5c5336e261df8))
+
 ## [3.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.3.0...google-cloud-documentai-v3.4.0) (2025-04-23)
 
 
