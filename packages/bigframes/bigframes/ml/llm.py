@@ -72,6 +72,8 @@ _GEMINI_PREVIEW_ENDPOINTS = (
 _GEMINI_FINE_TUNE_SCORE_ENDPOINTS = (
     _GEMINI_1P5_PRO_002_ENDPOINT,
     _GEMINI_1P5_FLASH_002_ENDPOINT,
+    _GEMINI_2_FLASH_001_ENDPOINT,
+    _GEMINI_2_FLASH_LITE_001_ENDPOINT,
 )
 _GEMINI_MULTIMODAL_ENDPOINTS = (
     _GEMINI_1P5_PRO_001_ENDPOINT,
@@ -79,6 +81,7 @@ _GEMINI_MULTIMODAL_ENDPOINTS = (
     _GEMINI_1P5_FLASH_001_ENDPOINT,
     _GEMINI_1P5_FLASH_002_ENDPOINT,
     _GEMINI_2_FLASH_EXP_ENDPOINT,
+    _GEMINI_2_FLASH_001_ENDPOINT,
 )
 
 _CLAUDE_3_SONNET_ENDPOINT = "claude-3-sonnet"
@@ -712,7 +715,8 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         ] = "text_generation",
     ) -> bigframes.dataframe.DataFrame:
         """Calculate evaluation metrics of the model. Only support
-            "gemini-1.5-pro-002", and "gemini-1.5-flash-002".
+            "gemini-1.5-pro-002", "gemini-1.5-flash-002",
+            "gemini-2.0-flash-lite-001", and "gemini-2.0-flash-001".
 
         .. note::
 
@@ -746,7 +750,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
 
         if self.model_name not in _GEMINI_FINE_TUNE_SCORE_ENDPOINTS:
             raise NotImplementedError(
-                "score() only supports gemini-1.5-pro-002, and gemini-1.5-flash-2 model."
+                "score() only supports gemini-1.5-pro-002, gemini-1.5-flash-2, gemini-2.0-flash-001, and gemini-2.0-flash-lite-001 model."
             )
 
         X, y = utils.batch_convert_to_dataframe(X, y, session=self._bqml_model.session)

@@ -47,6 +47,7 @@ def test_multimodal_embedding_generator_predict_default_params_success(
         "gemini-1.5-flash-001",
         "gemini-1.5-flash-002",
         "gemini-2.0-flash-exp",
+        "gemini-2.0-flash-001",
     ),
 )
 @pytest.mark.flaky(retries=2)
