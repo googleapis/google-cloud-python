@@ -41,9 +41,13 @@ class LfpMerchantState(proto.Message):
             merchant has access to.
         store_states (MutableSequence[google.shopping.merchant_lfp_v1beta.types.LfpMerchantState.LfpStoreState]):
             Output only. The state per store from the
-            specified merchant.
+            specified merchant. The field will be absent if
+            the merchant has no stores submitted through
+            LFP.
         inventory_stats (google.shopping.merchant_lfp_v1beta.types.LfpMerchantState.InventoryStats):
             The inventory statistics for the merchant.
+            The field will be absent if the merchant has no
+            inventory submitted through LFP.
         country_settings (MutableSequence[google.shopping.merchant_lfp_v1beta.types.LfpMerchantState.CountrySettings]):
             Country-specific settings for the merchant.
     """
