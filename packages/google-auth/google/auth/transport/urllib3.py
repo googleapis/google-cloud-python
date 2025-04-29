@@ -50,6 +50,7 @@ except ImportError as caught_exc:  # pragma: NO COVER
     ) from caught_exc
 
 
+from google.auth import _helpers
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import transport
@@ -144,10 +145,11 @@ class Request(transport.Request):
             kwargs["timeout"] = timeout
 
         try:
-            _LOGGER.debug("Making request: %s %s", method, url)
+            _helpers.request_log(_LOGGER, method, url, body, headers)
             response = self.http.request(
                 method, url, body=body, headers=headers, **kwargs
             )
+            _helpers.response_log(_LOGGER, response)
             return _Response(response)
         except urllib3.exceptions.HTTPError as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)

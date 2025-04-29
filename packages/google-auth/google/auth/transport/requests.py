@@ -34,6 +34,7 @@ from requests.packages.urllib3.util.ssl_ import (  # type: ignore
     create_urllib3_context,
 )  # pylint: disable=ungrouped-imports
 
+from google.auth import _helpers
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import transport
@@ -182,10 +183,11 @@ class Request(transport.Request):
             google.auth.exceptions.TransportError: If any exception occurred.
         """
         try:
-            _LOGGER.debug("Making request: %s %s", method, url)
+            _helpers.request_log(_LOGGER, method, url, body, headers)
             response = self.session.request(
                 method, url, data=body, headers=headers, timeout=timeout, **kwargs
             )
+            _helpers.response_log(_LOGGER, response)
             return _Response(response)
         except requests.exceptions.RequestException as caught_exc:
             new_exc = exceptions.TransportError(caught_exc)
@@ -534,6 +536,7 @@ class AuthorizedSession(requests.Session):
         remaining_time = guard.remaining_timeout
 
         with TimeoutGuard(remaining_time) as guard:
+            _helpers.request_log(_LOGGER, method, url, data, headers)
             response = super(AuthorizedSession, self).request(
                 method,
                 url,
@@ -542,6 +545,7 @@ class AuthorizedSession(requests.Session):
                 timeout=timeout,
                 **kwargs
             )
+            _helpers.response_log(_LOGGER, response)
         remaining_time = guard.remaining_timeout
 
         # If the response indicated that the credentials needed to be

@@ -19,6 +19,7 @@ import logging
 import socket
 import urllib
 
+from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import transport
 
@@ -99,10 +100,11 @@ class Request(transport.Request):
         connection = http_client.HTTPConnection(parts.netloc, timeout=timeout)
 
         try:
-            _LOGGER.debug("Making request: %s %s", method, url)
 
+            _helpers.request_log(_LOGGER, method, url, body, headers)
             connection.request(method, path, body=body, headers=headers, **kwargs)
             response = connection.getresponse()
+            _helpers.response_log(_LOGGER, response)
             return Response(response)
 
         except (http_client.HTTPException, socket.error) as caught_exc:

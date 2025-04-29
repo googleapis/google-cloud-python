@@ -22,13 +22,19 @@ from __future__ import absolute_import
 
 import asyncio
 import functools
+import logging
 
 import aiohttp  # type: ignore
 import urllib3  # type: ignore
 
+from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import transport
+from google.auth.aio import _helpers as _helpers_async
 from google.auth.transport import requests
+
+
+_LOGGER = logging.getLogger(__name__)
 
 # Timeout can be re-defined depending on async requirement. Currently made 60s more than
 # sync timeout.
@@ -182,10 +188,11 @@ class Request(transport.Request):
                 self.session = aiohttp.ClientSession(
                     auto_decompress=False
                 )  # pragma: NO COVER
-            requests._LOGGER.debug("Making request: %s %s", method, url)
+            _helpers.request_log(_LOGGER, method, url, body, headers)
             response = await self.session.request(
                 method, url, data=body, headers=headers, timeout=timeout, **kwargs
             )
+            await _helpers_async.response_log_async(_LOGGER, response)
             return _CombinedResponse(response)
 
         except aiohttp.ClientError as caught_exc:
