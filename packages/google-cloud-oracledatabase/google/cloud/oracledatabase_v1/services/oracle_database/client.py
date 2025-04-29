@@ -87,6 +87,8 @@ from google.cloud.oracledatabase_v1.types import (
 from google.cloud.oracledatabase_v1.types import autonomous_database
 
 from .transports.base import DEFAULT_CLIENT_INFO, OracleDatabaseTransport
+from .transports.grpc import OracleDatabaseGrpcTransport
+from .transports.grpc_asyncio import OracleDatabaseGrpcAsyncIOTransport
 from .transports.rest import OracleDatabaseRestTransport
 
 
@@ -101,6 +103,8 @@ class OracleDatabaseClientMeta(type):
     _transport_registry = (
         OrderedDict()
     )  # type: Dict[str, Type[OracleDatabaseTransport]]
+    _transport_registry["grpc"] = OracleDatabaseGrpcTransport
+    _transport_registry["grpc_asyncio"] = OracleDatabaseGrpcAsyncIOTransport
     _transport_registry["rest"] = OracleDatabaseRestTransport
 
     def get_transport_class(
