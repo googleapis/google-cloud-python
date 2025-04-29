@@ -221,6 +221,21 @@ def test_get_column_nonstring(scalars_dfs):
     assert_series_equal(bf_result, pd_result)
 
 
+@pytest.mark.parametrize(
+    "row_slice",
+    [
+        (slice(1, 7, 2)),
+        (slice(1, 7, None)),
+        (slice(None, -3, None)),
+    ],
+)
+def test_get_rows_with_slice(scalars_dfs, row_slice):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df[row_slice].to_pandas()
+    pd_result = scalars_pandas_df[row_slice]
+    assert_pandas_df_equal(bf_result, pd_result)
+
+
 def test_hasattr(scalars_dfs):
     scalars_df, _ = scalars_dfs
     assert hasattr(scalars_df, "int64_col")

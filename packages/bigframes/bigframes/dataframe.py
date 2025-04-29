@@ -576,6 +576,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if isinstance(key, bigframes.series.Series):
             return self._getitem_bool_series(key)
 
+        if isinstance(key, slice):
+            return self.iloc[key]
+
         if isinstance(key, typing.Hashable):
             return self._getitem_label(key)
         # Select a subset of columns or re-order columns.
