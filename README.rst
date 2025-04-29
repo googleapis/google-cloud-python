@@ -973,6 +973,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Chronicle API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-chronicle>`_
+     - preview
+     - |PyPI-google-cloud-chronicle|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1387895>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1387895>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Commerce Consumer Procurement API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-commerce-consumer-procurement>`_
      - preview
      - |PyPI-google-cloud-commerce-consumer-procurement|
@@ -1141,6 +1147,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Managed Lustre API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-lustre>`_
+     - preview
+     - |PyPI-google-cloud-lustre|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1625664>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1625664>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Managed Service for Apache Kafka <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-managedkafka>`_
      - preview
      - |PyPI-google-cloud-managedkafka|
@@ -1218,6 +1230,12 @@ Libraries
      - |PyPI-google-shopping-merchant-notifications|
      -
      -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-ordertracking>`_
+     - preview
+     - |PyPI-google-shopping-merchant-ordertracking|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:171084>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=171084&template=555201>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-products>`_
      - preview
@@ -1784,6 +1802,8 @@ Libraries
      :target: https://pypi.org/project/google-shopping-css
 .. |PyPI-google-apps-chat| image:: https://img.shields.io/pypi/v/google-apps-chat.svg
      :target: https://pypi.org/project/google-apps-chat
+.. |PyPI-google-cloud-chronicle| image:: https://img.shields.io/pypi/v/google-cloud-chronicle.svg
+     :target: https://pypi.org/project/google-cloud-chronicle
 .. |PyPI-google-cloud-commerce-consumer-procurement| image:: https://img.shields.io/pypi/v/google-cloud-commerce-consumer-procurement.svg
      :target: https://pypi.org/project/google-cloud-commerce-consumer-procurement
 .. |PyPI-google-cloud-confidentialcomputing| image:: https://img.shields.io/pypi/v/google-cloud-confidentialcomputing.svg
@@ -1840,6 +1860,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-maps-fleetengine| image:: https://img.shields.io/pypi/v/google-maps-fleetengine.svg
      :target: https://pypi.org/project/google-maps-fleetengine
+.. |PyPI-google-cloud-lustre| image:: https://img.shields.io/pypi/v/google-cloud-lustre.svg
+     :target: https://pypi.org/project/google-cloud-lustre
 .. |PyPI-google-cloud-managedkafka| image:: https://img.shields.io/pypi/v/google-cloud-managedkafka.svg
      :target: https://pypi.org/project/google-cloud-managedkafka
 .. |PyPI-google-maps-mapsplatformdatasets| image:: https://img.shields.io/pypi/v/google-maps-mapsplatformdatasets.svg
@@ -1866,6 +1888,8 @@ Libraries
      :target: https://pypi.org/project/google-shopping-merchant-lfp
 .. |PyPI-google-shopping-merchant-notifications| image:: https://img.shields.io/pypi/v/google-shopping-merchant-notifications.svg
      :target: https://pypi.org/project/google-shopping-merchant-notifications
+.. |PyPI-google-shopping-merchant-ordertracking| image:: https://img.shields.io/pypi/v/google-shopping-merchant-ordertracking.svg
+     :target: https://pypi.org/project/google-shopping-merchant-ordertracking
 .. |PyPI-google-shopping-merchant-products| image:: https://img.shields.io/pypi/v/google-shopping-merchant-products.svg
      :target: https://pypi.org/project/google-shopping-merchant-products
 .. |PyPI-google-shopping-merchant-promotions| image:: https://img.shields.io/pypi/v/google-shopping-merchant-promotions.svg
