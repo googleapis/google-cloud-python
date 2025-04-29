@@ -18,6 +18,9 @@ from google.cloud.oracledatabase import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.oracledatabase_v1.services.oracle_database.async_client import (
+    OracleDatabaseAsyncClient,
+)
 from google.cloud.oracledatabase_v1.services.oracle_database.client import (
     OracleDatabaseClient,
 )
@@ -109,6 +112,7 @@ from google.cloud.oracledatabase_v1.types.vm_cluster import (
 
 __all__ = (
     "OracleDatabaseClient",
+    "OracleDatabaseAsyncClient",
     "AllConnectionStrings",
     "AutonomousDatabase",
     "AutonomousDatabaseApex",

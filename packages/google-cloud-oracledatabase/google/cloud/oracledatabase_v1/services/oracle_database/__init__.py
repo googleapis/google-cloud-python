@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .async_client import OracleDatabaseAsyncClient
 from .client import OracleDatabaseClient
 
-__all__ = ("OracleDatabaseClient",)
+__all__ = (
+    "OracleDatabaseClient",
+    "OracleDatabaseAsyncClient",
+)
