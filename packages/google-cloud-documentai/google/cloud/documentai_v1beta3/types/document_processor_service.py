@@ -147,9 +147,15 @@ class ProcessOptions(proto.Message):
             enable_image_annotation (bool):
                 Optional. Whether to include image
                 annotations in layout parser response.
+            enable_image_extraction (bool):
+                Optional. Whether to extract images in layout
+                parser response.
             enable_llm_layout_parsing (bool):
                 Optional. Whether to refine PDF layout using
                 LLM.
+            enable_table_annotation (bool):
+                Optional. Whether to include table
+                annotations in layout parser response.
         """
 
         class ChunkingConfig(proto.Message):
@@ -208,9 +214,17 @@ class ProcessOptions(proto.Message):
             proto.BOOL,
             number=4,
         )
+        enable_image_extraction: bool = proto.Field(
+            proto.BOOL,
+            number=7,
+        )
         enable_llm_layout_parsing: bool = proto.Field(
             proto.BOOL,
             number=5,
+        )
+        enable_table_annotation: bool = proto.Field(
+            proto.BOOL,
+            number=6,
         )
 
     class IndividualPageSelector(proto.Message):
