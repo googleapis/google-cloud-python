@@ -37,7 +37,7 @@ class GcsFilesetSpec(proto.Message):
         file_patterns (MutableSequence[str]):
             Required. Patterns to identify a set of files in Google
             Cloud Storage. See `Cloud Storage
-            documentation <https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames>`__
+            documentation <https://cloud.google.com/storage/docs/wildcards>`__
             for more information. Note that bucket wildcards are
             currently not supported.
 
