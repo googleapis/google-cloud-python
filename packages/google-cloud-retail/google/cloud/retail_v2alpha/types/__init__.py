@@ -71,6 +71,10 @@ from .control_service import (
     ListControlsResponse,
     UpdateControlRequest,
 )
+from .conversational_search_service import (
+    ConversationalSearchRequest,
+    ConversationalSearchResponse,
+)
 from .export_config import (
     BigQueryOutputResult,
     ExportAnalyticsMetricsRequest,
@@ -273,6 +277,8 @@ __all__ = (
     "ListControlsRequest",
     "ListControlsResponse",
     "UpdateControlRequest",
+    "ConversationalSearchRequest",
+    "ConversationalSearchResponse",
     "BigQueryOutputResult",
     "ExportAnalyticsMetricsRequest",
     "ExportAnalyticsMetricsResponse",

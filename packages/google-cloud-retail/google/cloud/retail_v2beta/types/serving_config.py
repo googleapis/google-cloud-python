@@ -56,7 +56,7 @@ class ServingConfig(proto.Message):
             Required when
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+            [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
         price_reranking_level (str):
             How much price ranking we want in serving results. Price
             reranking causes product items with a similar recommendation
@@ -75,7 +75,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+            [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
         facet_control_ids (MutableSequence[str]):
             Facet specifications for faceted search. If empty, no facets
             are returned. The ids refer to the ids of
@@ -90,7 +90,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         dynamic_facet_spec (google.cloud.retail_v2beta.types.SearchRequest.DynamicFacetSpec):
             The specification for dynamically generated facets. Notice
             that only textual facets can be dynamically generated.
@@ -98,7 +98,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         boost_control_ids (MutableSequence[str]):
             Condition boost specifications. If a product matches
             multiple conditions in the specifications, boost scores from
@@ -117,7 +117,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         filter_control_ids (MutableSequence[str]):
             Condition filter specifications. If a product matches
             multiple conditions in the specifications, filters from
@@ -127,7 +127,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         redirect_control_ids (MutableSequence[str]):
             Condition redirect specifications. Only the first triggered
             redirect action is applied, even if multiple apply. Maximum
@@ -136,7 +136,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         twoway_synonyms_control_ids (MutableSequence[str]):
             Condition synonyms specifications. If multiple syonyms
             conditions match, all matching synonyms control in the list
@@ -146,7 +146,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         oneway_synonyms_control_ids (MutableSequence[str]):
             Condition oneway synonyms specifications. If multiple oneway
             synonyms conditions match, all matching oneway synonyms
@@ -157,7 +157,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         do_not_associate_control_ids (MutableSequence[str]):
             Condition do not associate specifications. If multiple do
             not associate conditions match, all matching do not
@@ -169,7 +169,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         replacement_control_ids (MutableSequence[str]):
             Condition replacement specifications.
 
@@ -180,7 +180,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         ignore_control_ids (MutableSequence[str]):
             Condition ignore specifications. If multiple ignore
             conditions match, all matching ignore controls in the list
@@ -192,7 +192,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
         diversity_level (str):
             How much diversity to use in recommendation model results
             e.g. ``medium-diversity`` or ``high-diversity``. Currently
@@ -210,7 +210,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+            [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
         diversity_type (google.cloud.retail_v2beta.types.ServingConfig.DiversityType):
             What kind of diversity to use - data driven or rule based.
             If unset, the server behavior defaults to
@@ -234,7 +234,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+            [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
         ignore_recs_denylist (bool):
             When the flag is enabled, the products in the
             denylist will not be filtered out in the
@@ -245,7 +245,7 @@ class ServingConfig(proto.Message):
             Can only be set if
             [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
             is
-            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+            [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
 
             Notice that if both
             [ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec]

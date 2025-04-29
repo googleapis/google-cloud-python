@@ -54,13 +54,16 @@ from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 
-from google.cloud.retail_v2beta.services.search_service import (
-    SearchServiceAsyncClient,
-    SearchServiceClient,
-    pagers,
+from google.cloud.retail_v2alpha.services.conversational_search_service import (
+    ConversationalSearchServiceAsyncClient,
+    ConversationalSearchServiceClient,
     transports,
 )
-from google.cloud.retail_v2beta.types import common, search_service
+from google.cloud.retail_v2alpha.types import (
+    common,
+    conversational_search_service,
+    search_service,
+)
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -117,36 +120,47 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert SearchServiceClient._get_default_mtls_endpoint(None) is None
+    assert ConversationalSearchServiceClient._get_default_mtls_endpoint(None) is None
     assert (
-        SearchServiceClient._get_default_mtls_endpoint(api_endpoint)
+        ConversationalSearchServiceClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        SearchServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        ConversationalSearchServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        SearchServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        ConversationalSearchServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        SearchServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        ConversationalSearchServiceClient._get_default_mtls_endpoint(
+            sandbox_mtls_endpoint
+        )
         == sandbox_mtls_endpoint
     )
     assert (
-        SearchServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+        ConversationalSearchServiceClient._get_default_mtls_endpoint(non_googleapi)
+        == non_googleapi
     )
 
 
 def test__read_environment_variables():
-    assert SearchServiceClient._read_environment_variables() == (False, "auto", None)
+    assert ConversationalSearchServiceClient._read_environment_variables() == (
+        False,
+        "auto",
+        None,
+    )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert SearchServiceClient._read_environment_variables() == (True, "auto", None)
+        assert ConversationalSearchServiceClient._read_environment_variables() == (
+            True,
+            "auto",
+            None,
+        )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert SearchServiceClient._read_environment_variables() == (
+        assert ConversationalSearchServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -156,28 +170,28 @@ def test__read_environment_variables():
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError) as excinfo:
-            SearchServiceClient._read_environment_variables()
+            ConversationalSearchServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert SearchServiceClient._read_environment_variables() == (
+        assert ConversationalSearchServiceClient._read_environment_variables() == (
             False,
             "never",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert SearchServiceClient._read_environment_variables() == (
+        assert ConversationalSearchServiceClient._read_environment_variables() == (
             False,
             "always",
             None,
         )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert SearchServiceClient._read_environment_variables() == (
+        assert ConversationalSearchServiceClient._read_environment_variables() == (
             False,
             "auto",
             None,
@@ -185,14 +199,14 @@ def test__read_environment_variables():
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            SearchServiceClient._read_environment_variables()
+            ConversationalSearchServiceClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert SearchServiceClient._read_environment_variables() == (
+        assert ConversationalSearchServiceClient._read_environment_variables() == (
             False,
             "auto",
             "foo.com",
@@ -203,13 +217,19 @@ def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert SearchServiceClient._get_client_cert_source(None, False) is None
     assert (
-        SearchServiceClient._get_client_cert_source(mock_provided_cert_source, False)
+        ConversationalSearchServiceClient._get_client_cert_source(None, False) is None
+    )
+    assert (
+        ConversationalSearchServiceClient._get_client_cert_source(
+            mock_provided_cert_source, False
+        )
         is None
     )
     assert (
-        SearchServiceClient._get_client_cert_source(mock_provided_cert_source, True)
+        ConversationalSearchServiceClient._get_client_cert_source(
+            mock_provided_cert_source, True
+        )
         == mock_provided_cert_source
     )
 
@@ -221,11 +241,11 @@ def test__get_client_cert_source():
             return_value=mock_default_cert_source,
         ):
             assert (
-                SearchServiceClient._get_client_cert_source(None, True)
+                ConversationalSearchServiceClient._get_client_cert_source(None, True)
                 is mock_default_cert_source
             )
             assert (
-                SearchServiceClient._get_client_cert_source(
+                ConversationalSearchServiceClient._get_client_cert_source(
                     mock_provided_cert_source, "true"
                 )
                 is mock_provided_cert_source
@@ -233,64 +253,74 @@ def test__get_client_cert_source():
 
 
 @mock.patch.object(
-    SearchServiceClient,
+    ConversationalSearchServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SearchServiceClient),
+    modify_default_endpoint_template(ConversationalSearchServiceClient),
 )
 @mock.patch.object(
-    SearchServiceAsyncClient,
+    ConversationalSearchServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SearchServiceAsyncClient),
+    modify_default_endpoint_template(ConversationalSearchServiceAsyncClient),
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = SearchServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = SearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
+    default_universe = ConversationalSearchServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = (
+        ConversationalSearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            UNIVERSE_DOMAIN=default_universe
+        )
     )
     mock_universe = "bar.com"
-    mock_endpoint = SearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = ConversationalSearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
     assert (
-        SearchServiceClient._get_api_endpoint(
+        ConversationalSearchServiceClient._get_api_endpoint(
             api_override, mock_client_cert_source, default_universe, "always"
         )
         == api_override
     )
     assert (
-        SearchServiceClient._get_api_endpoint(
+        ConversationalSearchServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "auto"
         )
-        == SearchServiceClient.DEFAULT_MTLS_ENDPOINT
+        == ConversationalSearchServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        SearchServiceClient._get_api_endpoint(None, None, default_universe, "auto")
+        ConversationalSearchServiceClient._get_api_endpoint(
+            None, None, default_universe, "auto"
+        )
         == default_endpoint
     )
     assert (
-        SearchServiceClient._get_api_endpoint(None, None, default_universe, "always")
-        == SearchServiceClient.DEFAULT_MTLS_ENDPOINT
+        ConversationalSearchServiceClient._get_api_endpoint(
+            None, None, default_universe, "always"
+        )
+        == ConversationalSearchServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        SearchServiceClient._get_api_endpoint(
+        ConversationalSearchServiceClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "always"
         )
-        == SearchServiceClient.DEFAULT_MTLS_ENDPOINT
+        == ConversationalSearchServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        SearchServiceClient._get_api_endpoint(None, None, mock_universe, "never")
+        ConversationalSearchServiceClient._get_api_endpoint(
+            None, None, mock_universe, "never"
+        )
         == mock_endpoint
     )
     assert (
-        SearchServiceClient._get_api_endpoint(None, None, default_universe, "never")
+        ConversationalSearchServiceClient._get_api_endpoint(
+            None, None, default_universe, "never"
+        )
         == default_endpoint
     )
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        SearchServiceClient._get_api_endpoint(
+        ConversationalSearchServiceClient._get_api_endpoint(
             None, mock_client_cert_source, mock_universe, "auto"
         )
     assert (
@@ -304,22 +334,24 @@ def test__get_universe_domain():
     universe_domain_env = "bar.com"
 
     assert (
-        SearchServiceClient._get_universe_domain(
+        ConversationalSearchServiceClient._get_universe_domain(
             client_universe_domain, universe_domain_env
         )
         == client_universe_domain
     )
     assert (
-        SearchServiceClient._get_universe_domain(None, universe_domain_env)
+        ConversationalSearchServiceClient._get_universe_domain(
+            None, universe_domain_env
+        )
         == universe_domain_env
     )
     assert (
-        SearchServiceClient._get_universe_domain(None, None)
-        == SearchServiceClient._DEFAULT_UNIVERSE
+        ConversationalSearchServiceClient._get_universe_domain(None, None)
+        == ConversationalSearchServiceClient._DEFAULT_UNIVERSE
     )
 
     with pytest.raises(ValueError) as excinfo:
-        SearchServiceClient._get_universe_domain("", None)
+        ConversationalSearchServiceClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
@@ -339,7 +371,7 @@ def test__get_universe_domain():
 def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
     cred = mock.Mock(["get_cred_info"])
     cred.get_cred_info = mock.Mock(return_value=cred_info_json)
-    client = SearchServiceClient(credentials=cred)
+    client = ConversationalSearchServiceClient(credentials=cred)
     client._transport._credentials = cred
 
     error = core_exceptions.GoogleAPICallError("message", details=["foo"])
@@ -356,7 +388,7 @@ def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_in
 def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     cred = mock.Mock([])
     assert not hasattr(cred, "get_cred_info")
-    client = SearchServiceClient(credentials=cred)
+    client = ConversationalSearchServiceClient(credentials=cred)
     client._transport._credentials = cred
 
     error = core_exceptions.GoogleAPICallError("message", details=[])
@@ -369,12 +401,14 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (SearchServiceClient, "grpc"),
-        (SearchServiceAsyncClient, "grpc_asyncio"),
-        (SearchServiceClient, "rest"),
+        (ConversationalSearchServiceClient, "grpc"),
+        (ConversationalSearchServiceAsyncClient, "grpc_asyncio"),
+        (ConversationalSearchServiceClient, "rest"),
     ],
 )
-def test_search_service_client_from_service_account_info(client_class, transport_name):
+def test_conversational_search_service_client_from_service_account_info(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -395,12 +429,12 @@ def test_search_service_client_from_service_account_info(client_class, transport
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.SearchServiceGrpcTransport, "grpc"),
-        (transports.SearchServiceGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.SearchServiceRestTransport, "rest"),
+        (transports.ConversationalSearchServiceGrpcTransport, "grpc"),
+        (transports.ConversationalSearchServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.ConversationalSearchServiceRestTransport, "rest"),
     ],
 )
-def test_search_service_client_service_account_always_use_jwt(
+def test_conversational_search_service_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -421,12 +455,14 @@ def test_search_service_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (SearchServiceClient, "grpc"),
-        (SearchServiceAsyncClient, "grpc_asyncio"),
-        (SearchServiceClient, "rest"),
+        (ConversationalSearchServiceClient, "grpc"),
+        (ConversationalSearchServiceAsyncClient, "grpc_asyncio"),
+        (ConversationalSearchServiceClient, "rest"),
     ],
 )
-def test_search_service_client_from_service_account_file(client_class, transport_name):
+def test_conversational_search_service_client_from_service_account_file(
+    client_class, transport_name
+):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -451,51 +487,63 @@ def test_search_service_client_from_service_account_file(client_class, transport
         )
 
 
-def test_search_service_client_get_transport_class():
-    transport = SearchServiceClient.get_transport_class()
+def test_conversational_search_service_client_get_transport_class():
+    transport = ConversationalSearchServiceClient.get_transport_class()
     available_transports = [
-        transports.SearchServiceGrpcTransport,
-        transports.SearchServiceRestTransport,
+        transports.ConversationalSearchServiceGrpcTransport,
+        transports.ConversationalSearchServiceRestTransport,
     ]
     assert transport in available_transports
 
-    transport = SearchServiceClient.get_transport_class("grpc")
-    assert transport == transports.SearchServiceGrpcTransport
+    transport = ConversationalSearchServiceClient.get_transport_class("grpc")
+    assert transport == transports.ConversationalSearchServiceGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (SearchServiceClient, transports.SearchServiceGrpcTransport, "grpc"),
         (
-            SearchServiceAsyncClient,
-            transports.SearchServiceGrpcAsyncIOTransport,
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            ConversationalSearchServiceAsyncClient,
+            transports.ConversationalSearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (SearchServiceClient, transports.SearchServiceRestTransport, "rest"),
+        (
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceRestTransport,
+            "rest",
+        ),
     ],
 )
 @mock.patch.object(
-    SearchServiceClient,
+    ConversationalSearchServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SearchServiceClient),
+    modify_default_endpoint_template(ConversationalSearchServiceClient),
 )
 @mock.patch.object(
-    SearchServiceAsyncClient,
+    ConversationalSearchServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SearchServiceAsyncClient),
+    modify_default_endpoint_template(ConversationalSearchServiceAsyncClient),
 )
-def test_search_service_client_client_options(
+def test_conversational_search_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(SearchServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(
+        ConversationalSearchServiceClient, "get_transport_class"
+    ) as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(SearchServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(
+        ConversationalSearchServiceClient, "get_transport_class"
+    ) as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -618,36 +666,56 @@ def test_search_service_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (SearchServiceClient, transports.SearchServiceGrpcTransport, "grpc", "true"),
         (
-            SearchServiceAsyncClient,
-            transports.SearchServiceGrpcAsyncIOTransport,
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceGrpcTransport,
+            "grpc",
+            "true",
+        ),
+        (
+            ConversationalSearchServiceAsyncClient,
+            transports.ConversationalSearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
-        (SearchServiceClient, transports.SearchServiceGrpcTransport, "grpc", "false"),
         (
-            SearchServiceAsyncClient,
-            transports.SearchServiceGrpcAsyncIOTransport,
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceGrpcTransport,
+            "grpc",
+            "false",
+        ),
+        (
+            ConversationalSearchServiceAsyncClient,
+            transports.ConversationalSearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
-        (SearchServiceClient, transports.SearchServiceRestTransport, "rest", "true"),
-        (SearchServiceClient, transports.SearchServiceRestTransport, "rest", "false"),
+        (
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceRestTransport,
+            "rest",
+            "true",
+        ),
+        (
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceRestTransport,
+            "rest",
+            "false",
+        ),
     ],
 )
 @mock.patch.object(
-    SearchServiceClient,
+    ConversationalSearchServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SearchServiceClient),
+    modify_default_endpoint_template(ConversationalSearchServiceClient),
 )
 @mock.patch.object(
-    SearchServiceAsyncClient,
+    ConversationalSearchServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SearchServiceAsyncClient),
+    modify_default_endpoint_template(ConversationalSearchServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_search_service_client_mtls_env_auto(
+def test_conversational_search_service_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -750,19 +818,22 @@ def test_search_service_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
-    "client_class", [SearchServiceClient, SearchServiceAsyncClient]
+    "client_class",
+    [ConversationalSearchServiceClient, ConversationalSearchServiceAsyncClient],
 )
 @mock.patch.object(
-    SearchServiceClient,
+    ConversationalSearchServiceClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(SearchServiceClient),
+    modify_default_endpoint(ConversationalSearchServiceClient),
 )
 @mock.patch.object(
-    SearchServiceAsyncClient,
+    ConversationalSearchServiceAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(SearchServiceAsyncClient),
+    modify_default_endpoint(ConversationalSearchServiceAsyncClient),
 )
-def test_search_service_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_conversational_search_service_client_get_mtls_endpoint_and_cert_source(
+    client_class,
+):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -854,27 +925,30 @@ def test_search_service_client_get_mtls_endpoint_and_cert_source(client_class):
 
 
 @pytest.mark.parametrize(
-    "client_class", [SearchServiceClient, SearchServiceAsyncClient]
+    "client_class",
+    [ConversationalSearchServiceClient, ConversationalSearchServiceAsyncClient],
 )
 @mock.patch.object(
-    SearchServiceClient,
+    ConversationalSearchServiceClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SearchServiceClient),
+    modify_default_endpoint_template(ConversationalSearchServiceClient),
 )
 @mock.patch.object(
-    SearchServiceAsyncClient,
+    ConversationalSearchServiceAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(SearchServiceAsyncClient),
+    modify_default_endpoint_template(ConversationalSearchServiceAsyncClient),
 )
-def test_search_service_client_client_api_endpoint(client_class):
+def test_conversational_search_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = SearchServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = SearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
+    default_universe = ConversationalSearchServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = (
+        ConversationalSearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            UNIVERSE_DOMAIN=default_universe
+        )
     )
     mock_universe = "bar.com"
-    mock_endpoint = SearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = ConversationalSearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
@@ -942,16 +1016,24 @@ def test_search_service_client_client_api_endpoint(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (SearchServiceClient, transports.SearchServiceGrpcTransport, "grpc"),
         (
-            SearchServiceAsyncClient,
-            transports.SearchServiceGrpcAsyncIOTransport,
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            ConversationalSearchServiceAsyncClient,
+            transports.ConversationalSearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (SearchServiceClient, transports.SearchServiceRestTransport, "rest"),
+        (
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceRestTransport,
+            "rest",
+        ),
     ],
 )
-def test_search_service_client_client_options_scopes(
+def test_conversational_search_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -980,21 +1062,26 @@ def test_search_service_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            SearchServiceClient,
-            transports.SearchServiceGrpcTransport,
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            SearchServiceAsyncClient,
-            transports.SearchServiceGrpcAsyncIOTransport,
+            ConversationalSearchServiceAsyncClient,
+            transports.ConversationalSearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
-        (SearchServiceClient, transports.SearchServiceRestTransport, "rest", None),
+        (
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceRestTransport,
+            "rest",
+            None,
+        ),
     ],
 )
-def test_search_service_client_client_options_credentials_file(
+def test_conversational_search_service_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1018,12 +1105,12 @@ def test_search_service_client_client_options_credentials_file(
         )
 
 
-def test_search_service_client_client_options_from_dict():
+def test_conversational_search_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.retail_v2beta.services.search_service.transports.SearchServiceGrpcTransport.__init__"
+        "google.cloud.retail_v2alpha.services.conversational_search_service.transports.ConversationalSearchServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -1043,20 +1130,20 @@ def test_search_service_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            SearchServiceClient,
-            transports.SearchServiceGrpcTransport,
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            SearchServiceAsyncClient,
-            transports.SearchServiceGrpcAsyncIOTransport,
+            ConversationalSearchServiceAsyncClient,
+            transports.ConversationalSearchServiceGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_search_service_client_create_channel_credentials_file(
+def test_conversational_search_service_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1111,12 +1198,12 @@ def test_search_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        search_service.SearchRequest,
+        conversational_search_service.ConversationalSearchRequest,
         dict,
     ],
 )
-def test_search(request_type, transport: str = "grpc"):
-    client = SearchServiceClient(
+def test_conversational_search(request_type, transport: str = "grpc"):
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1126,38 +1213,32 @@ def test_search(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.conversational_search), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = search_service.SearchResponse(
-            total_size=1086,
-            corrected_query="corrected_query_value",
-            attribution_token="attribution_token_value",
-            next_page_token="next_page_token_value",
-            redirect_uri="redirect_uri_value",
-            applied_controls=["applied_controls_value"],
+        call.return_value = iter(
+            [conversational_search_service.ConversationalSearchResponse()]
         )
-        response = client.search(request)
+        response = client.conversational_search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = search_service.SearchRequest()
+        request = conversational_search_service.ConversationalSearchRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchPager)
-    assert response.total_size == 1086
-    assert response.corrected_query == "corrected_query_value"
-    assert response.attribution_token == "attribution_token_value"
-    assert response.next_page_token == "next_page_token_value"
-    assert response.redirect_uri == "redirect_uri_value"
-    assert response.applied_controls == ["applied_controls_value"]
+    for message in response:
+        assert isinstance(
+            message, conversational_search_service.ConversationalSearchResponse
+        )
 
 
-def test_search_non_empty_request_with_auto_populated_field():
+def test_conversational_search_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1165,50 +1246,38 @@ def test_search_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = search_service.SearchRequest(
+    request = conversational_search_service.ConversationalSearchRequest(
         placement="placement_value",
         branch="branch_value",
         query="query_value",
+        conversation_id="conversation_id_value",
         visitor_id="visitor_id_value",
-        page_token="page_token_value",
-        filter="filter_value",
-        canonical_filter="canonical_filter_value",
-        order_by="order_by_value",
-        entity="entity_value",
-        language_code="language_code_value",
-        region_code="region_code_value",
-        place_id="place_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.conversational_search), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.search(request=request)
+        client.conversational_search(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == search_service.SearchRequest(
+        assert args[0] == conversational_search_service.ConversationalSearchRequest(
             placement="placement_value",
             branch="branch_value",
             query="query_value",
+            conversation_id="conversation_id_value",
             visitor_id="visitor_id_value",
-            page_token="page_token_value",
-            filter="filter_value",
-            canonical_filter="canonical_filter_value",
-            order_by="order_by_value",
-            entity="entity_value",
-            language_code="language_code_value",
-            region_code="region_code_value",
-            place_id="place_id_value",
         )
 
 
-def test_search_use_cached_wrapped_rpc():
+def test_conversational_search_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1218,21 +1287,26 @@ def test_search_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.search in client._transport._wrapped_methods
+        assert (
+            client._transport.conversational_search
+            in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.search] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.conversational_search
+        ] = mock_rpc
         request = {}
-        client.search(request)
+        client.conversational_search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.search(request)
+        client.conversational_search(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1240,11 +1314,13 @@ def test_search_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_search_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
+async def test_conversational_search_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = SearchServiceAsyncClient(
+        client = ConversationalSearchServiceAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -1255,7 +1331,7 @@ async def test_search_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
 
         # Ensure method has been cached
         assert (
-            client._client._transport.search
+            client._client._transport.conversational_search
             in client._client._transport._wrapped_methods
         )
 
@@ -1263,16 +1339,16 @@ async def test_search_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.search
+            client._client._transport.conversational_search
         ] = mock_rpc
 
         request = {}
-        await client.search(request)
+        await client.conversational_search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.search(request)
+        await client.conversational_search(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1280,10 +1356,11 @@ async def test_search_async_use_cached_wrapped_rpc(transport: str = "grpc_asynci
 
 
 @pytest.mark.asyncio
-async def test_search_async(
-    transport: str = "grpc_asyncio", request_type=search_service.SearchRequest
+async def test_conversational_search_async(
+    transport: str = "grpc_asyncio",
+    request_type=conversational_search_service.ConversationalSearchRequest,
 ):
-    client = SearchServiceAsyncClient(
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -1293,56 +1370,53 @@ async def test_search_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.conversational_search), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            search_service.SearchResponse(
-                total_size=1086,
-                corrected_query="corrected_query_value",
-                attribution_token="attribution_token_value",
-                next_page_token="next_page_token_value",
-                redirect_uri="redirect_uri_value",
-                applied_controls=["applied_controls_value"],
-            )
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[conversational_search_service.ConversationalSearchResponse()]
         )
-        response = await client.search(request)
+        response = await client.conversational_search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = search_service.SearchRequest()
+        request = conversational_search_service.ConversationalSearchRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchAsyncPager)
-    assert response.total_size == 1086
-    assert response.corrected_query == "corrected_query_value"
-    assert response.attribution_token == "attribution_token_value"
-    assert response.next_page_token == "next_page_token_value"
-    assert response.redirect_uri == "redirect_uri_value"
-    assert response.applied_controls == ["applied_controls_value"]
+    message = await response.read()
+    assert isinstance(
+        message, conversational_search_service.ConversationalSearchResponse
+    )
 
 
 @pytest.mark.asyncio
-async def test_search_async_from_dict():
-    await test_search_async(request_type=dict)
+async def test_conversational_search_async_from_dict():
+    await test_conversational_search_async(request_type=dict)
 
 
-def test_search_field_headers():
-    client = SearchServiceClient(
+def test_conversational_search_field_headers():
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = search_service.SearchRequest()
+    request = conversational_search_service.ConversationalSearchRequest()
 
     request.placement = "placement_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
-        call.return_value = search_service.SearchResponse()
-        client.search(request)
+    with mock.patch.object(
+        type(client.transport.conversational_search), "__call__"
+    ) as call:
+        call.return_value = iter(
+            [conversational_search_service.ConversationalSearchResponse()]
+        )
+        client.conversational_search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1358,23 +1432,26 @@ def test_search_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_search_field_headers_async():
-    client = SearchServiceAsyncClient(
+async def test_conversational_search_field_headers_async():
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = search_service.SearchRequest()
+    request = conversational_search_service.ConversationalSearchRequest()
 
     request.placement = "placement_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            search_service.SearchResponse()
+    with mock.patch.object(
+        type(client.transport.conversational_search), "__call__"
+    ) as call:
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[conversational_search_service.ConversationalSearchResponse()]
         )
-        await client.search(request)
+        await client.conversational_search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1389,207 +1466,11 @@ async def test_search_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_search_pager(transport_name: str = "grpc"):
-    client = SearchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="abc",
-            ),
-            search_service.SearchResponse(
-                results=[],
-                next_page_token="def",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="ghi",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-            ),
-            RuntimeError,
-        )
-
-        expected_metadata = ()
-        retry = retries.Retry()
-        timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("placement", ""),)),
-        )
-        pager = client.search(request={}, retry=retry, timeout=timeout)
-
-        assert pager._metadata == expected_metadata
-        assert pager._retry == retry
-        assert pager._timeout == timeout
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(i, search_service.SearchResponse.SearchResult) for i in results
-        )
-
-
-def test_search_pages(transport_name: str = "grpc"):
-    client = SearchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport_name,
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="abc",
-            ),
-            search_service.SearchResponse(
-                results=[],
-                next_page_token="def",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="ghi",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.search(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_search_async_pager():
-    client = SearchServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="abc",
-            ),
-            search_service.SearchResponse(
-                results=[],
-                next_page_token="def",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="ghi",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.search(
-            request={},
-        )
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:  # pragma: no branch
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(
-            isinstance(i, search_service.SearchResponse.SearchResult) for i in responses
-        )
-
-
-@pytest.mark.asyncio
-async def test_search_async_pages():
-    client = SearchServiceAsyncClient(
-        credentials=async_anonymous_credentials(),
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="abc",
-            ),
-            search_service.SearchResponse(
-                results=[],
-                next_page_token="def",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="ghi",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (await client.search(request={})).pages:  # pragma: no branch
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-def test_search_rest_use_cached_wrapped_rpc():
+def test_conversational_search_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -1599,33 +1480,41 @@ def test_search_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.search in client._transport._wrapped_methods
+        assert (
+            client._transport.conversational_search
+            in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.search] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.conversational_search
+        ] = mock_rpc
 
         request = {}
-        client.search(request)
+        client.conversational_search(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.search(request)
+        client.conversational_search(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_search_rest_required_fields(request_type=search_service.SearchRequest):
-    transport_class = transports.SearchServiceRestTransport
+def test_conversational_search_rest_required_fields(
+    request_type=conversational_search_service.ConversationalSearchRequest,
+):
+    transport_class = transports.ConversationalSearchServiceRestTransport
 
     request_init = {}
     request_init["placement"] = ""
+    request_init["branch"] = ""
     request_init["visitor_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
@@ -1637,33 +1526,36 @@ def test_search_rest_required_fields(request_type=search_service.SearchRequest):
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).search._get_unset_required_fields(jsonified_request)
+    ).conversational_search._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["placement"] = "placement_value"
+    jsonified_request["branch"] = "branch_value"
     jsonified_request["visitorId"] = "visitor_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).search._get_unset_required_fields(jsonified_request)
+    ).conversational_search._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "placement" in jsonified_request
     assert jsonified_request["placement"] == "placement_value"
+    assert "branch" in jsonified_request
+    assert jsonified_request["branch"] == "branch_value"
     assert "visitorId" in jsonified_request
     assert jsonified_request["visitorId"] == "visitor_id_value"
 
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = search_service.SearchResponse()
+    return_value = conversational_search_service.ConversationalSearchResponse()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -1685,131 +1577,74 @@ def test_search_rest_required_fields(request_type=search_service.SearchRequest):
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = search_service.SearchResponse.pb(return_value)
+            return_value = (
+                conversational_search_service.ConversationalSearchResponse.pb(
+                    return_value
+                )
+            )
             json_return_value = json_format.MessageToJson(return_value)
+            json_return_value = "[{}]".format(json_return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
             req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-            response = client.search(request)
+            with mock.patch.object(response_value, "iter_content") as iter_content:
+                iter_content.return_value = iter(json_return_value)
+                response = client.conversational_search(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_search_rest_unset_required_fields():
-    transport = transports.SearchServiceRestTransport(
+def test_conversational_search_rest_unset_required_fields():
+    transport = transports.ConversationalSearchServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.search._get_unset_required_fields({})
+    unset_fields = transport.conversational_search._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(())
         & set(
             (
                 "placement",
+                "branch",
                 "visitorId",
             )
         )
     )
 
 
-def test_search_rest_pager(transport: str = "rest"):
-    client = SearchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="abc",
-            ),
-            search_service.SearchResponse(
-                results=[],
-                next_page_token="def",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                ],
-                next_page_token="ghi",
-            ),
-            search_service.SearchResponse(
-                results=[
-                    search_service.SearchResponse.SearchResult(),
-                    search_service.SearchResponse.SearchResult(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(search_service.SearchResponse.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {
-            "placement": "projects/sample1/locations/sample2/catalogs/sample3/placements/sample4"
-        }
-
-        pager = client.search(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(i, search_service.SearchResponse.SearchResult) for i in results
-        )
-
-        pages = list(client.search(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.SearchServiceGrpcTransport(
+    transport = transports.ConversationalSearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.SearchServiceGrpcTransport(
+    transport = transports.ConversationalSearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.SearchServiceGrpcTransport(
+    transport = transports.ConversationalSearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             client_options=options,
             transport=transport,
         )
@@ -1818,16 +1653,16 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.SearchServiceGrpcTransport(
+    transport = transports.ConversationalSearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -1835,22 +1670,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.SearchServiceGrpcTransport(
+    transport = transports.ConversationalSearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = SearchServiceClient(transport=transport)
+    client = ConversationalSearchServiceClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.SearchServiceGrpcTransport(
+    transport = transports.ConversationalSearchServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.SearchServiceGrpcAsyncIOTransport(
+    transport = transports.ConversationalSearchServiceGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -1860,9 +1695,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.SearchServiceGrpcTransport,
-        transports.SearchServiceGrpcAsyncIOTransport,
-        transports.SearchServiceRestTransport,
+        transports.ConversationalSearchServiceGrpcTransport,
+        transports.ConversationalSearchServiceGrpcAsyncIOTransport,
+        transports.ConversationalSearchServiceRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -1874,14 +1709,14 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = SearchServiceClient.get_transport_class("grpc")(
+    transport = ConversationalSearchServiceClient.get_transport_class("grpc")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     assert client is not None
@@ -1889,34 +1724,38 @@ def test_initialize_client_w_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_search_empty_call_grpc():
-    client = SearchServiceClient(
+def test_conversational_search_empty_call_grpc():
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
-        call.return_value = search_service.SearchResponse()
-        client.search(request=None)
+    with mock.patch.object(
+        type(client.transport.conversational_search), "__call__"
+    ) as call:
+        call.return_value = iter(
+            [conversational_search_service.ConversationalSearchResponse()]
+        )
+        client.conversational_search(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = search_service.SearchRequest()
+        request_msg = conversational_search_service.ConversationalSearchRequest()
 
         assert args[0] == request_msg
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = SearchServiceAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = ConversationalSearchServiceAsyncClient.get_transport_class(
+        "grpc_asyncio"
+    )(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = SearchServiceAsyncClient(
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(), transport="grpc_asyncio"
     )
     assert client is not None
@@ -1925,44 +1764,42 @@ def test_initialize_client_w_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_search_empty_call_grpc_asyncio():
-    client = SearchServiceAsyncClient(
+async def test_conversational_search_empty_call_grpc_asyncio():
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.conversational_search), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            search_service.SearchResponse(
-                total_size=1086,
-                corrected_query="corrected_query_value",
-                attribution_token="attribution_token_value",
-                next_page_token="next_page_token_value",
-                redirect_uri="redirect_uri_value",
-                applied_controls=["applied_controls_value"],
-            )
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[conversational_search_service.ConversationalSearchResponse()]
         )
-        await client.search(request=None)
+        await client.conversational_search(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = search_service.SearchRequest()
+        request_msg = conversational_search_service.ConversationalSearchRequest()
 
         assert args[0] == request_msg
 
 
 def test_transport_kind_rest():
-    transport = SearchServiceClient.get_transport_class("rest")(
+    transport = ConversationalSearchServiceClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
 
 
-def test_search_rest_bad_request(request_type=search_service.SearchRequest):
-    client = SearchServiceClient(
+def test_conversational_search_rest_bad_request(
+    request_type=conversational_search_service.ConversationalSearchRequest,
+):
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
@@ -1983,18 +1820,18 @@ def test_search_rest_bad_request(request_type=search_service.SearchRequest):
         response_value.request = mock.Mock()
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.search(request)
+        client.conversational_search(request)
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        search_service.SearchRequest,
+        conversational_search_service.ConversationalSearchRequest,
         dict,
     ],
 )
-def test_search_rest_call_success(request_type):
-    client = SearchServiceClient(
+def test_conversational_search_rest_call_success(request_type):
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -2007,13 +1844,8 @@ def test_search_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = search_service.SearchResponse(
-            total_size=1086,
-            corrected_query="corrected_query_value",
-            attribution_token="attribution_token_value",
-            next_page_token="next_page_token_value",
-            redirect_uri="redirect_uri_value",
-            applied_controls=["applied_controls_value"],
+        return_value = conversational_search_service.ConversationalSearchResponse(
+            conversation_id="conversation_id_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2021,48 +1853,56 @@ def test_search_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = search_service.SearchResponse.pb(return_value)
+        return_value = conversational_search_service.ConversationalSearchResponse.pb(
+            return_value
+        )
         json_return_value = json_format.MessageToJson(return_value)
-        response_value.content = json_return_value.encode("UTF-8")
+        json_return_value = "[{}]".format(json_return_value)
+        response_value.iter_content = mock.Mock(return_value=iter(json_return_value))
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.search(request)
+        response = client.conversational_search(request)
+
+    assert isinstance(response, Iterable)
+    response = next(response)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchPager)
-    assert response.total_size == 1086
-    assert response.corrected_query == "corrected_query_value"
-    assert response.attribution_token == "attribution_token_value"
-    assert response.next_page_token == "next_page_token_value"
-    assert response.redirect_uri == "redirect_uri_value"
-    assert response.applied_controls == ["applied_controls_value"]
+    assert isinstance(
+        response, conversational_search_service.ConversationalSearchResponse
+    )
+    assert response.conversation_id == "conversation_id_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_rest_interceptors(null_interceptor):
-    transport = transports.SearchServiceRestTransport(
+def test_conversational_search_rest_interceptors(null_interceptor):
+    transport = transports.ConversationalSearchServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.SearchServiceRestInterceptor(),
+        else transports.ConversationalSearchServiceRestInterceptor(),
     )
-    client = SearchServiceClient(transport=transport)
+    client = ConversationalSearchServiceClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.SearchServiceRestInterceptor, "post_search"
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_conversational_search",
     ) as post, mock.patch.object(
-        transports.SearchServiceRestInterceptor, "post_search_with_metadata"
+        transports.ConversationalSearchServiceRestInterceptor,
+        "post_conversational_search_with_metadata",
     ) as post_with_metadata, mock.patch.object(
-        transports.SearchServiceRestInterceptor, "pre_search"
+        transports.ConversationalSearchServiceRestInterceptor,
+        "pre_conversational_search",
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = search_service.SearchRequest.pb(search_service.SearchRequest())
+        pb_message = conversational_search_service.ConversationalSearchRequest.pb(
+            conversational_search_service.ConversationalSearchRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -2073,21 +1913,26 @@ def test_search_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = search_service.SearchResponse.to_json(
-            search_service.SearchResponse()
+        return_value = (
+            conversational_search_service.ConversationalSearchResponse.to_json(
+                conversational_search_service.ConversationalSearchResponse()
+            )
         )
-        req.return_value.content = return_value
+        req.return_value.iter_content = mock.Mock(return_value=iter(return_value))
 
-        request = search_service.SearchRequest()
+        request = conversational_search_service.ConversationalSearchRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = search_service.SearchResponse()
-        post_with_metadata.return_value = search_service.SearchResponse(), metadata
+        post.return_value = conversational_search_service.ConversationalSearchResponse()
+        post_with_metadata.return_value = (
+            conversational_search_service.ConversationalSearchResponse(),
+            metadata,
+        )
 
-        client.search(
+        client.conversational_search(
             request,
             metadata=[
                 ("key", "val"),
@@ -2103,7 +1948,7 @@ def test_search_rest_interceptors(null_interceptor):
 def test_get_operation_rest_bad_request(
     request_type=operations_pb2.GetOperationRequest,
 ):
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2138,7 +1983,7 @@ def test_get_operation_rest_bad_request(
     ],
 )
 def test_get_operation_rest(request_type):
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2170,7 +2015,7 @@ def test_get_operation_rest(request_type):
 def test_list_operations_rest_bad_request(
     request_type=operations_pb2.ListOperationsRequest,
 ):
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2202,7 +2047,7 @@ def test_list_operations_rest_bad_request(
     ],
 )
 def test_list_operations_rest(request_type):
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2230,7 +2075,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_initialize_client_w_rest():
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     assert client is not None
@@ -2238,58 +2083,60 @@ def test_initialize_client_w_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_search_empty_call_rest():
-    client = SearchServiceClient(
+def test_conversational_search_empty_call_rest():
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.search), "__call__") as call:
-        client.search(request=None)
+    with mock.patch.object(
+        type(client.transport.conversational_search), "__call__"
+    ) as call:
+        client.conversational_search(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = search_service.SearchRequest()
+        request_msg = conversational_search_service.ConversationalSearchRequest()
 
         assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.SearchServiceGrpcTransport,
+        transports.ConversationalSearchServiceGrpcTransport,
     )
 
 
-def test_search_service_base_transport_error():
+def test_conversational_search_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.SearchServiceTransport(
+        transport = transports.ConversationalSearchServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_search_service_base_transport():
+def test_conversational_search_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.retail_v2beta.services.search_service.transports.SearchServiceTransport.__init__"
+        "google.cloud.retail_v2alpha.services.conversational_search_service.transports.ConversationalSearchServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.SearchServiceTransport(
+        transport = transports.ConversationalSearchServiceTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "search",
+        "conversational_search",
         "get_operation",
         "list_operations",
     )
@@ -2309,16 +2156,16 @@ def test_search_service_base_transport():
             getattr(transport, r)()
 
 
-def test_search_service_base_transport_with_credentials_file():
+def test_conversational_search_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.retail_v2beta.services.search_service.transports.SearchServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2alpha.services.conversational_search_service.transports.ConversationalSearchServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.SearchServiceTransport(
+        transport = transports.ConversationalSearchServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -2330,22 +2177,22 @@ def test_search_service_base_transport_with_credentials_file():
         )
 
 
-def test_search_service_base_transport_with_adc():
+def test_conversational_search_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.retail_v2beta.services.search_service.transports.SearchServiceTransport._prep_wrapped_messages"
+        "google.cloud.retail_v2alpha.services.conversational_search_service.transports.ConversationalSearchServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.SearchServiceTransport()
+        transport = transports.ConversationalSearchServiceTransport()
         adc.assert_called_once()
 
 
-def test_search_service_auth_adc():
+def test_conversational_search_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        SearchServiceClient()
+        ConversationalSearchServiceClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -2356,11 +2203,11 @@ def test_search_service_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.SearchServiceGrpcTransport,
-        transports.SearchServiceGrpcAsyncIOTransport,
+        transports.ConversationalSearchServiceGrpcTransport,
+        transports.ConversationalSearchServiceGrpcAsyncIOTransport,
     ],
 )
-def test_search_service_transport_auth_adc(transport_class):
+def test_conversational_search_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -2376,12 +2223,12 @@ def test_search_service_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.SearchServiceGrpcTransport,
-        transports.SearchServiceGrpcAsyncIOTransport,
-        transports.SearchServiceRestTransport,
+        transports.ConversationalSearchServiceGrpcTransport,
+        transports.ConversationalSearchServiceGrpcAsyncIOTransport,
+        transports.ConversationalSearchServiceRestTransport,
     ],
 )
-def test_search_service_transport_auth_gdch_credentials(transport_class):
+def test_conversational_search_service_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -2399,11 +2246,16 @@ def test_search_service_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.SearchServiceGrpcTransport, grpc_helpers),
-        (transports.SearchServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.ConversationalSearchServiceGrpcTransport, grpc_helpers),
+        (
+            transports.ConversationalSearchServiceGrpcAsyncIOTransport,
+            grpc_helpers_async,
+        ),
     ],
 )
-def test_search_service_transport_create_channel(transport_class, grpc_helpers):
+def test_conversational_search_service_transport_create_channel(
+    transport_class, grpc_helpers
+):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -2434,11 +2286,13 @@ def test_search_service_transport_create_channel(transport_class, grpc_helpers):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.SearchServiceGrpcTransport,
-        transports.SearchServiceGrpcAsyncIOTransport,
+        transports.ConversationalSearchServiceGrpcTransport,
+        transports.ConversationalSearchServiceGrpcAsyncIOTransport,
     ],
 )
-def test_search_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_conversational_search_service_grpc_transport_client_cert_source_for_mtls(
+    transport_class,
+):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -2476,12 +2330,12 @@ def test_search_service_grpc_transport_client_cert_source_for_mtls(transport_cla
             )
 
 
-def test_search_service_http_transport_client_cert_source_for_mtls():
+def test_conversational_search_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.SearchServiceRestTransport(
+        transports.ConversationalSearchServiceRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
@@ -2495,8 +2349,8 @@ def test_search_service_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_search_service_host_no_port(transport_name):
-    client = SearchServiceClient(
+def test_conversational_search_service_host_no_port(transport_name):
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com"
@@ -2518,8 +2372,8 @@ def test_search_service_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_search_service_host_with_port(transport_name):
-    client = SearchServiceClient(
+def test_conversational_search_service_host_with_port(transport_name):
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="retail.googleapis.com:8000"
@@ -2539,27 +2393,29 @@ def test_search_service_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_search_service_client_transport_session_collision(transport_name):
+def test_conversational_search_service_client_transport_session_collision(
+    transport_name,
+):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = SearchServiceClient(
+    client1 = ConversationalSearchServiceClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = SearchServiceClient(
+    client2 = ConversationalSearchServiceClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.search._session
-    session2 = client2.transport.search._session
+    session1 = client1.transport.conversational_search._session
+    session2 = client2.transport.conversational_search._session
     assert session1 != session2
 
 
-def test_search_service_grpc_transport_channel():
+def test_conversational_search_service_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.SearchServiceGrpcTransport(
+    transport = transports.ConversationalSearchServiceGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -2568,11 +2424,11 @@ def test_search_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_search_service_grpc_asyncio_transport_channel():
+def test_conversational_search_service_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.SearchServiceGrpcAsyncIOTransport(
+    transport = transports.ConversationalSearchServiceGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -2586,11 +2442,13 @@ def test_search_service_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.SearchServiceGrpcTransport,
-        transports.SearchServiceGrpcAsyncIOTransport,
+        transports.ConversationalSearchServiceGrpcTransport,
+        transports.ConversationalSearchServiceGrpcAsyncIOTransport,
     ],
 )
-def test_search_service_transport_channel_mtls_with_client_cert_source(transport_class):
+def test_conversational_search_service_transport_channel_mtls_with_client_cert_source(
+    transport_class,
+):
     with mock.patch(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
@@ -2638,11 +2496,11 @@ def test_search_service_transport_channel_mtls_with_client_cert_source(transport
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.SearchServiceGrpcTransport,
-        transports.SearchServiceGrpcAsyncIOTransport,
+        transports.ConversationalSearchServiceGrpcTransport,
+        transports.ConversationalSearchServiceGrpcAsyncIOTransport,
     ],
 )
-def test_search_service_transport_channel_mtls_with_adc(transport_class):
+def test_conversational_search_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -2690,7 +2548,9 @@ def test_branch_path():
         catalog=catalog,
         branch=branch,
     )
-    actual = SearchServiceClient.branch_path(project, location, catalog, branch)
+    actual = ConversationalSearchServiceClient.branch_path(
+        project, location, catalog, branch
+    )
     assert expected == actual
 
 
@@ -2701,207 +2561,115 @@ def test_parse_branch_path():
         "catalog": "cuttlefish",
         "branch": "mussel",
     }
-    path = SearchServiceClient.branch_path(**expected)
+    path = ConversationalSearchServiceClient.branch_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = SearchServiceClient.parse_branch_path(path)
-    assert expected == actual
-
-
-def test_experiment_path():
-    project = "winkle"
-    location = "nautilus"
-    catalog = "scallop"
-    experiment = "abalone"
-    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/experiments/{experiment}".format(
-        project=project,
-        location=location,
-        catalog=catalog,
-        experiment=experiment,
-    )
-    actual = SearchServiceClient.experiment_path(project, location, catalog, experiment)
-    assert expected == actual
-
-
-def test_parse_experiment_path():
-    expected = {
-        "project": "squid",
-        "location": "clam",
-        "catalog": "whelk",
-        "experiment": "octopus",
-    }
-    path = SearchServiceClient.experiment_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = SearchServiceClient.parse_experiment_path(path)
-    assert expected == actual
-
-
-def test_product_path():
-    project = "oyster"
-    location = "nudibranch"
-    catalog = "cuttlefish"
-    branch = "mussel"
-    product = "winkle"
-    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}".format(
-        project=project,
-        location=location,
-        catalog=catalog,
-        branch=branch,
-        product=product,
-    )
-    actual = SearchServiceClient.product_path(
-        project, location, catalog, branch, product
-    )
-    assert expected == actual
-
-
-def test_parse_product_path():
-    expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "catalog": "abalone",
-        "branch": "squid",
-        "product": "clam",
-    }
-    path = SearchServiceClient.product_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = SearchServiceClient.parse_product_path(path)
-    assert expected == actual
-
-
-def test_serving_config_path():
-    project = "whelk"
-    location = "octopus"
-    catalog = "oyster"
-    serving_config = "nudibranch"
-    expected = "projects/{project}/locations/{location}/catalogs/{catalog}/servingConfigs/{serving_config}".format(
-        project=project,
-        location=location,
-        catalog=catalog,
-        serving_config=serving_config,
-    )
-    actual = SearchServiceClient.serving_config_path(
-        project, location, catalog, serving_config
-    )
-    assert expected == actual
-
-
-def test_parse_serving_config_path():
-    expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "catalog": "winkle",
-        "serving_config": "nautilus",
-    }
-    path = SearchServiceClient.serving_config_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = SearchServiceClient.parse_serving_config_path(path)
+    actual = ConversationalSearchServiceClient.parse_branch_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = SearchServiceClient.common_billing_account_path(billing_account)
+    actual = ConversationalSearchServiceClient.common_billing_account_path(
+        billing_account
+    )
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nautilus",
     }
-    path = SearchServiceClient.common_billing_account_path(**expected)
+    path = ConversationalSearchServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = SearchServiceClient.parse_common_billing_account_path(path)
+    actual = ConversationalSearchServiceClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = SearchServiceClient.common_folder_path(folder)
+    actual = ConversationalSearchServiceClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "abalone",
     }
-    path = SearchServiceClient.common_folder_path(**expected)
+    path = ConversationalSearchServiceClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = SearchServiceClient.parse_common_folder_path(path)
+    actual = ConversationalSearchServiceClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = SearchServiceClient.common_organization_path(organization)
+    actual = ConversationalSearchServiceClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "clam",
     }
-    path = SearchServiceClient.common_organization_path(**expected)
+    path = ConversationalSearchServiceClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = SearchServiceClient.parse_common_organization_path(path)
+    actual = ConversationalSearchServiceClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = SearchServiceClient.common_project_path(project)
+    actual = ConversationalSearchServiceClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "octopus",
     }
-    path = SearchServiceClient.common_project_path(**expected)
+    path = ConversationalSearchServiceClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = SearchServiceClient.parse_common_project_path(path)
+    actual = ConversationalSearchServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
     )
-    actual = SearchServiceClient.common_location_path(project, location)
+    actual = ConversationalSearchServiceClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
-    path = SearchServiceClient.common_location_path(**expected)
+    path = ConversationalSearchServiceClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = SearchServiceClient.parse_common_location_path(path)
+    actual = ConversationalSearchServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -2909,18 +2677,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.SearchServiceTransport, "_prep_wrapped_messages"
+        transports.ConversationalSearchServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.SearchServiceTransport, "_prep_wrapped_messages"
+        transports.ConversationalSearchServiceTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = SearchServiceClient.get_transport_class()
+        transport_class = ConversationalSearchServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -2929,7 +2697,7 @@ def test_client_with_default_client_info():
 
 
 def test_get_operation(transport: str = "grpc"):
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2954,7 +2722,7 @@ def test_get_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
-    client = SearchServiceAsyncClient(
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -2980,7 +2748,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_operation_field_headers():
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -3009,7 +2777,7 @@ def test_get_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
-    client = SearchServiceAsyncClient(
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
@@ -3038,7 +2806,7 @@ async def test_get_operation_field_headers_async():
 
 
 def test_get_operation_from_dict():
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3056,7 +2824,7 @@ def test_get_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
-    client = SearchServiceAsyncClient(
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3074,7 +2842,7 @@ async def test_get_operation_from_dict_async():
 
 
 def test_list_operations(transport: str = "grpc"):
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3099,7 +2867,7 @@ def test_list_operations(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
-    client = SearchServiceAsyncClient(
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -3125,7 +2893,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_operations_field_headers():
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -3154,7 +2922,7 @@ def test_list_operations_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
-    client = SearchServiceAsyncClient(
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
@@ -3183,7 +2951,7 @@ async def test_list_operations_field_headers_async():
 
 
 def test_list_operations_from_dict():
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3201,7 +2969,7 @@ def test_list_operations_from_dict():
 
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
-    client = SearchServiceAsyncClient(
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3219,7 +2987,7 @@ async def test_list_operations_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
@@ -3232,7 +3000,7 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = SearchServiceAsyncClient(
+    client = ConversationalSearchServiceAsyncClient(
         credentials=async_anonymous_credentials(), transport="grpc_asyncio"
     )
     with mock.patch.object(
@@ -3244,7 +3012,7 @@ async def test_transport_close_grpc_asyncio():
 
 
 def test_transport_close_rest():
-    client = SearchServiceClient(
+    client = ConversationalSearchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     with mock.patch.object(
@@ -3261,7 +3029,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = SearchServiceClient(
+        client = ConversationalSearchServiceClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -3275,8 +3043,14 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (SearchServiceClient, transports.SearchServiceGrpcTransport),
-        (SearchServiceAsyncClient, transports.SearchServiceGrpcAsyncIOTransport),
+        (
+            ConversationalSearchServiceClient,
+            transports.ConversationalSearchServiceGrpcTransport,
+        ),
+        (
+            ConversationalSearchServiceAsyncClient,
+            transports.ConversationalSearchServiceGrpcAsyncIOTransport,
+        ),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

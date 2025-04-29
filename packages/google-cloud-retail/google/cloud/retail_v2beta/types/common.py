@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "Rating",
         "UserInfo",
         "LocalInventory",
+        "PinControlMetadata",
     },
 )
 
@@ -56,7 +57,7 @@ class AttributeConfigLevel(proto.Enum):
             [Product.attributes][google.cloud.retail.v2beta.Product.attributes].
         CATALOG_LEVEL_ATTRIBUTE_CONFIG (2):
             At this level, we honor the attribute configurations set in
-            [CatalogConfig.attribute_configs][].
+            ``CatalogConfig.attribute_configs``.
     """
     ATTRIBUTE_CONFIG_LEVEL_UNSPECIFIED = 0
     PRODUCT_LEVEL_ATTRIBUTE_CONFIG = 1
@@ -269,6 +270,11 @@ class Rule(proto.Message):
         remove_facet_action (google.cloud.retail_v2beta.types.Rule.RemoveFacetAction):
             Remove an attribute as a facet in the request
             (if present).
+
+            This field is a member of `oneof`_ ``action``.
+        pin_action (google.cloud.retail_v2beta.types.Rule.PinAction):
+            Pins one or more specified products to a
+            specific position in the results.
 
             This field is a member of `oneof`_ ``action``.
         condition (google.cloud.retail_v2beta.types.Condition):
@@ -613,6 +619,59 @@ class Rule(proto.Message):
             number=1,
         )
 
+    class PinAction(proto.Message):
+        r"""Pins one or more specified products to a specific position in the
+        results.
+
+        -  Rule Condition: Must specify non-empty
+           [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+           (for search only) or
+           [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
+           (for browse only), but can't specify both.
+
+        -  Action Input: mapping of ``[pin_position, product_id]`` pairs
+           (pin position uses 1-based indexing).
+
+        -  Action Result: Will pin products with matching ids to the
+           position specified in the final result order.
+
+        Example: Suppose the query is ``shoes``, the
+        [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+        is ``shoes`` and the pin_map has ``{1, "pid1"}``, then product with
+        ``pid1`` will be pinned to the top position in the final results.
+
+        If multiple PinActions are matched to a single request the actions
+        will be processed from most to least recently updated.
+
+        Pins to positions larger than the max allowed page size of 120 are
+        not allowed.
+
+        Attributes:
+            pin_map (MutableMapping[int, str]):
+                Required. A map of positions to product_ids.
+
+                Partial matches per action are allowed, if a certain
+                position in the map is already filled that
+                ``[position, product_id]`` pair will be ignored but the rest
+                may still be applied. This case will only occur if multiple
+                pin actions are matched to a single request, as the map
+                guarantees that pin positions are unique within the same
+                action.
+
+                Duplicate product_ids are not permitted within a single pin
+                map.
+
+                The max size of this map is 120, equivalent to the max
+                `request page
+                size <https://cloud.google.com/retail/docs/reference/rest/v2/projects.locations.catalogs.placements/search#request-body>`__.
+        """
+
+        pin_map: MutableMapping[int, str] = proto.MapField(
+            proto.INT64,
+            proto.STRING,
+            number=1,
+        )
+
     boost_action: BoostAction = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -672,6 +731,12 @@ class Rule(proto.Message):
         number=13,
         oneof="action",
         message=RemoveFacetAction,
+    )
+    pin_action: PinAction = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="action",
+        message=PinAction,
     )
     condition: "Condition" = proto.Field(
         proto.MESSAGE,
@@ -746,6 +811,11 @@ class ColorInfo(proto.Message):
             `color <https://support.google.com/merchants/answer/6324487>`__.
             Schema.org property
             `Product.color <https://schema.org/color>`__.
+
+            The colorFamilies field as a system attribute is not a
+            required field but strongly recommended to be specified.
+            Google Search models treat this field as more important than
+            a custom product attribute when specified.
         colors (MutableSequence[str]):
             The color display names, which may be different from
             standard color family names, such as the color aliases used
@@ -918,10 +988,11 @@ class FulfillmentInfo(proto.Message):
 
 class Image(proto.Message):
     r"""[Product][google.cloud.retail.v2beta.Product] image. Recommendations
-    AI and Retail Search do not use product images to improve prediction
-    and search results. However, product images can be returned in
-    results, and are shown in prediction or search previews in the
-    console.
+    AI and Retail Search use product images to improve prediction and
+    search results. Product images can be returned in results, and are
+    shown in prediction or search previews in the console. Please try to
+    provide correct product images and avoid using images with size too
+    small.
 
     Attributes:
         uri (str):
@@ -1256,12 +1327,9 @@ class UserInfo(proto.Message):
                [direct_user_request][google.cloud.retail.v2beta.UserInfo.direct_user_request]
                is set.
         user_agent (str):
-            User agent as included in the HTTP header. Required for
-            getting
-            [SearchResponse.sponsored_results][google.cloud.retail.v2beta.SearchResponse.sponsored_results].
-
-            The field must be a UTF-8 encoded string with a length limit
-            of 1,000 characters. Otherwise, an INVALID_ARGUMENT error is
+            User agent as included in the HTTP header. The field must be
+            a UTF-8 encoded string with a length limit of 1,000
+            characters. Otherwise, an INVALID_ARGUMENT error is
             returned.
 
             This should not be set when using the client side event
@@ -1309,16 +1377,16 @@ class LocalInventory(proto.Message):
 
     Attributes:
         place_id (str):
-            The place ID for the current set of inventory
-            information.
+            Optional. The place ID for the current set of
+            inventory information.
         price_info (google.cloud.retail_v2beta.types.PriceInfo):
-            Product price and cost information.
+            Optional. Product price and cost information.
 
             Google Merchant Center property
             `price <https://support.google.com/merchants/answer/6324371>`__.
         attributes (MutableMapping[str, google.cloud.retail_v2beta.types.CustomAttribute]):
-            Additional local inventory attributes, for example, store
-            name, promotion tags, etc.
+            Optional. Additional local inventory attributes, for
+            example, store name, promotion tags, etc.
 
             This field needs to pass all below criteria, otherwise an
             INVALID_ARGUMENT error is returned:
@@ -1339,7 +1407,7 @@ class LocalInventory(proto.Message):
             -  The max summed total bytes of custom attribute keys and
                values per product is 5MiB.
         fulfillment_types (MutableSequence[str]):
-            Input only. Supported fulfillment types. Valid fulfillment
+            Optional. Supported fulfillment types. Valid fulfillment
             type values include commonly used types (such as pickup in
             store and same day delivery), and custom types. Customers
             have to map custom types to their display names before
@@ -1382,6 +1450,47 @@ class LocalInventory(proto.Message):
     fulfillment_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
+    )
+
+
+class PinControlMetadata(proto.Message):
+    r"""Metadata for pinning to be returned in the response.
+    This is used for distinguishing between applied vs dropped pins.
+
+    Attributes:
+        all_matched_pins (MutableMapping[int, google.cloud.retail_v2beta.types.PinControlMetadata.ProductPins]):
+            Map of all matched pins, keyed by pin
+            position.
+        dropped_pins (MutableMapping[int, google.cloud.retail_v2beta.types.PinControlMetadata.ProductPins]):
+            Map of pins that were dropped due to overlap
+            with other matching pins, keyed by pin position.
+    """
+
+    class ProductPins(proto.Message):
+        r"""List of product ids which have associated pins.
+
+        Attributes:
+            product_id (MutableSequence[str]):
+                List of product ids which have associated
+                pins.
+        """
+
+        product_id: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    all_matched_pins: MutableMapping[int, ProductPins] = proto.MapField(
+        proto.INT64,
+        proto.MESSAGE,
+        number=1,
+        message=ProductPins,
+    )
+    dropped_pins: MutableMapping[int, ProductPins] = proto.MapField(
+        proto.INT64,
+        proto.MESSAGE,
+        number=2,
+        message=ProductPins,
     )
 
 

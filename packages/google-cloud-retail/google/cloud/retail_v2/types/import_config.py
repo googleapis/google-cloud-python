@@ -114,9 +114,6 @@ class BigQuerySource(proto.Message):
             BigQuery time partitioned table's \_PARTITIONDATE in
             YYYY-MM-DD format.
 
-            Only supported in
-            [ImportProductsRequest][google.cloud.retail.v2.ImportProductsRequest].
-
             This field is a member of `oneof`_ ``partition``.
         project_id (str):
             The project ID (can be project # or ID) that
