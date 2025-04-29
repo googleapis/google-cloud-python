@@ -298,12 +298,15 @@ class AccessEntry(object):
         role: Optional[str] = None,
         entity_type: Optional[str] = None,
         entity_id: Optional[Union[Dict[str, Any], str]] = None,
+        **kwargs,
     ):
-        self._properties = {}
+        self._properties: Dict[str, Any] = {}
         if entity_type is not None:
             self._properties[entity_type] = entity_id
         self._properties["role"] = role
-        self._entity_type = entity_type
+        self._entity_type: Optional[str] = entity_type
+        for prop, val in kwargs.items():
+            setattr(self, prop, val)
 
     @property
     def role(self) -> Optional[str]:
@@ -329,6 +332,9 @@ class AccessEntry(object):
 
         if isinstance(value, str):
             value = DatasetReference.from_string(value).to_api_repr()
+
+        if isinstance(value, DatasetReference):
+            value = value.to_api_repr()
 
         if isinstance(value, (Dataset, DatasetListItem)):
             value = value.reference.to_api_repr()
@@ -438,14 +444,64 @@ class AccessEntry(object):
         self._properties["specialGroup"] = value
 
     @property
+    def condition(self) -> Optional["Condition"]:
+        """Optional[Condition]: The IAM condition associated with this entry."""
+        value = typing.cast(Dict[str, Any], self._properties.get("condition"))
+        return Condition.from_api_repr(value) if value else None
+
+    @condition.setter
+    def condition(self, value: Union["Condition", dict, None]):
+        """Set the IAM condition for this entry."""
+        if value is None:
+            self._properties["condition"] = None
+        elif isinstance(value, Condition):
+            self._properties["condition"] = value.to_api_repr()
+        elif isinstance(value, dict):
+            self._properties["condition"] = value
+        else:
+            raise TypeError("condition must be a Condition object, dict, or None")
+
+    @property
     def entity_type(self) -> Optional[str]:
         """The entity_type of the entry."""
+
+        # The api_repr for an AccessEntry object is expected to be a dict with
+        # only a few keys. Two keys that may be present are role and condition.
+        # Any additional key is going to have one of ~eight different names:
+        #   userByEmail, groupByEmail, domain, dataset, specialGroup, view,
+        #   routine, iamMember
+
+        # if self._entity_type is None, see if it needs setting
+        # i.e. is there a key: value pair that should be associated with
+        # entity_type and entity_id?
+        if self._entity_type is None:
+            resource = self._properties.copy()
+            # we are empyting the dict to get to the last `key: value`` pair
+            # so we don't keep these first entries
+            _ = resource.pop("role", None)
+            _ = resource.pop("condition", None)
+
+            try:
+                # we only need entity_type, because entity_id gets set elsewhere.
+                entity_type, _ = resource.popitem()
+            except KeyError:
+                entity_type = None
+
+            self._entity_type = entity_type
+
         return self._entity_type
 
     @property
     def entity_id(self) -> Optional[Union[Dict[str, Any], str]]:
         """The entity_id of the entry."""
-        return self._properties.get(self._entity_type) if self._entity_type else None
+        if self.entity_type:
+            entity_type = self.entity_type
+        else:
+            return None
+        return typing.cast(
+            Optional[Union[Dict[str, Any], str]],
+            self._properties.get(entity_type, None),
+        )
 
     def __eq__(self, other):
         if not isinstance(other, AccessEntry):
@@ -464,7 +520,16 @@ class AccessEntry(object):
         Returns:
             Tuple: The contents of this :class:`~google.cloud.bigquery.dataset.AccessEntry`.
         """
+
         properties = self._properties.copy()
+
+        # Dicts are not hashable.
+        # Convert condition to a hashable datatype(s)
+        condition = properties.get("condition")
+        if isinstance(condition, dict):
+            condition_key = tuple(sorted(condition.items()))
+            properties["condition"] = condition_key
+
         prop_tup = tuple(sorted(properties.items()))
         return (self.role, self._entity_type, self.entity_id, prop_tup)
 
@@ -491,19 +556,11 @@ class AccessEntry(object):
         Returns:
             google.cloud.bigquery.dataset.AccessEntry:
                 Access entry parsed from ``resource``.
-
-        Raises:
-            ValueError:
-                If the resource has more keys than ``role`` and one additional
-                key.
         """
-        entry = resource.copy()
-        role = entry.pop("role", None)
-        entity_type, entity_id = entry.popitem()
-        if len(entry) != 0:
-            raise ValueError("Entry has unexpected keys remaining.", entry)
 
-        return cls(role, entity_type, entity_id)
+        access_entry = cls()
+        access_entry._properties = resource.copy()
+        return access_entry
 
 
 class Dataset(object):
@@ -1160,6 +1217,43 @@ class Condition(object):
 
         return cls(
             expression=resource["expression"],
-            title=resource.get("title"),
-            description=resource.get("description"),
+            title=resource.get("title", None),
+            description=resource.get("description", None),
         )
+
+    def __eq__(self, other: object) -> bool:
+        """Check for equality based on expression, title, and description."""
+        if not isinstance(other, Condition):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def _key(self):
+        """A tuple key that uniquely describes this field.
+        Used to compute this instance's hashcode and evaluate equality.
+        Returns:
+            Tuple: The contents of this :class:`~google.cloud.bigquery.dataset.AccessEntry`.
+        """
+
+        properties = self._properties.copy()
+
+        # Dicts are not hashable.
+        # Convert object to a hashable datatype(s)
+        prop_tup = tuple(sorted(properties.items()))
+        return prop_tup
+
+    def __ne__(self, other: object) -> bool:
+        """Check for inequality."""
+        return not self == other
+
+    def __hash__(self) -> int:
+        """Generate a hash based on expression, title, and description."""
+        return hash(self._key())
+
+    def __repr__(self) -> str:
+        """Return a string representation of the Condition object."""
+        parts = [f"expression={self.expression!r}"]
+        if self.title is not None:
+            parts.append(f"title={self.title!r}")
+        if self.description is not None:
+            parts.append(f"description={self.description!r}")
+        return f"Condition({', '.join(parts)})"
