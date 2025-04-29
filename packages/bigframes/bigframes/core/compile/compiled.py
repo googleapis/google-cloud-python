@@ -288,13 +288,7 @@ class UnorderedIR:
     def from_polars(
         cls, pa_table: pa.Table, schema: Sequence[bigquery.SchemaField]
     ) -> UnorderedIR:
-        # TODO: add offsets
-        """
-        Builds an in-memory only (SQL only) expr from a pandas dataframe.
-
-        Assumed that the dataframe has unique string column names and bigframes-suppported
-        dtypes.
-        """
+        """Builds an in-memory only (SQL only) expr from a pyarrow table."""
         import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 
         # derive the ibis schema from the original pandas schema

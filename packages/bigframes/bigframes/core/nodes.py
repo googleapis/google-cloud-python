@@ -1636,11 +1636,11 @@ class ResultNode(UnaryNode):
     def remap_refs(
         self, mappings: Mapping[identifiers.ColumnId, identifiers.ColumnId]
     ) -> ResultNode:
-        output_names = tuple(
+        output_cols = tuple(
             (ref.remap_column_refs(mappings), name) for ref, name in self.output_cols
         )
         order_by = self.order_by.remap_column_refs(mappings) if self.order_by else None
-        return dataclasses.replace(self, output_names=output_names, order_by=order_by)  # type: ignore
+        return dataclasses.replace(self, output_cols=output_cols, order_by=order_by)  # type: ignore
 
     @property
     def consumed_ids(self) -> COLUMN_SET:

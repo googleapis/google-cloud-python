@@ -13,12 +13,16 @@
 # limitations under the License.
 
 import pandas as pd
+import pytest
 
 import bigframes
 import bigframes.pandas as bpd
 
+pytest.importorskip("pytest_snapshot")
 
-def test_compile_local(all_types_df: pd.DataFrame, compiler_session: bigframes.Session):
+
+def test_compile_readlocal(
+    all_types_df: pd.DataFrame, compiler_session: bigframes.Session, snapshot
+):
     bf_df = bpd.DataFrame(all_types_df, session=compiler_session)
-    sql = bf_df.sql
-    assert sql == "SELECT"
+    snapshot.assert_match(bf_df.sql, "out.sql")

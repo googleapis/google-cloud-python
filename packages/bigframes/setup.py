@@ -72,7 +72,7 @@ dependencies = [
 ]
 extras = {
     # Optional test dependencies packages. If they're missed, may skip some tests.
-    "tests": [],
+    "tests": ["freezegun", "pytest-snapshot"],
     # used for local engine, which is only needed for unit tests at present.
     "polars": ["polars >= 1.7.0"],
     "scikit-learn": ["scikit-learn>=1.2.2"],
@@ -82,7 +82,6 @@ extras = {
         "pre-commit",
         "nox",
         "google-cloud-testutils",
-        "freezegun",
     ],
 }
 extras["all"] = list(sorted(frozenset(itertools.chain.from_iterable(extras.values()))))

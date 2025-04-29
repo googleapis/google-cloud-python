@@ -32,7 +32,7 @@ class SQLGlotType:
         bigframes_dtype: typing.Union[
             bigframes.dtypes.DtypeString, bigframes.dtypes.Dtype, np.dtype[typing.Any]
         ],
-    ):
+    ) -> str:
         if bigframes_dtype == bigframes.dtypes.INT_DTYPE:
             return "INT64"
         elif bigframes_dtype == bigframes.dtypes.FLOAT_DTYPE:

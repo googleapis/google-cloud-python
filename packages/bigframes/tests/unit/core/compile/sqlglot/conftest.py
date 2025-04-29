@@ -26,4 +26,15 @@ def compiler_session():
 @pytest.fixture(scope="module")
 def all_types_df() -> pd.DataFrame:
     # TODO: all types pandas dataframes
-    return pd.DataFrame({})
+    # TODO: add tests for empty dataframes
+    df = pd.DataFrame(
+        {
+            "int1": pd.Series([1, 2, 3], dtype="Int64"),
+            "int2": pd.Series([-10, 20, 30], dtype="Int64"),
+            "bools": pd.Series([True, None, False], dtype="boolean"),
+            "strings": pd.Series(["b", "aa", "ccc"], dtype="string[pyarrow]"),
+        },
+    )
+    # add more complexity index.
+    df.index = df.index.astype("Int64")
+    return df

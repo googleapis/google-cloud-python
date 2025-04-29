@@ -76,7 +76,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
 ]
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
-UNIT_TEST_EXTRAS: List[str] = []
+UNIT_TEST_EXTRAS: List[str] = ["tests"]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     "3.12": ["polars", "scikit-learn"],
 }
@@ -203,7 +203,7 @@ def install_unittest_dependencies(session, install_test_extra, *constraints):
 
     if install_test_extra and UNIT_TEST_EXTRAS_BY_PYTHON:
         extras = UNIT_TEST_EXTRAS_BY_PYTHON.get(session.python, [])
-    elif install_test_extra and UNIT_TEST_EXTRAS:
+    if install_test_extra and UNIT_TEST_EXTRAS:
         extras = UNIT_TEST_EXTRAS
     else:
         extras = []
