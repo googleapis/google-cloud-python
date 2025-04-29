@@ -22,11 +22,38 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1",
     manifest={
+        "Modality",
         "Content",
         "Part",
         "Blob",
+        "ModalityTokenCount",
     },
 )
+
+
+class Modality(proto.Enum):
+    r"""Content Part modality
+
+    Values:
+        MODALITY_UNSPECIFIED (0):
+            Unspecified modality.
+        TEXT (1):
+            Plain text.
+        IMAGE (2):
+            Image.
+        VIDEO (3):
+            Video.
+        AUDIO (4):
+            Audio.
+        DOCUMENT (5):
+            Document, e.g. PDF.
+    """
+    MODALITY_UNSPECIFIED = 0
+    TEXT = 1
+    IMAGE = 2
+    VIDEO = 3
+    AUDIO = 4
+    DOCUMENT = 5
 
 
 class Content(proto.Message):
@@ -126,6 +153,28 @@ class Blob(proto.Message):
     )
     data: bytes = proto.Field(
         proto.BYTES,
+        number=2,
+    )
+
+
+class ModalityTokenCount(proto.Message):
+    r"""Represents token counting info for a single modality.
+
+    Attributes:
+        modality (google.ai.generativelanguage_v1.types.Modality):
+            The modality associated with this token
+            count.
+        token_count (int):
+            Number of tokens.
+    """
+
+    modality: "Modality" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="Modality",
+    )
+    token_count: int = proto.Field(
+        proto.INT32,
         number=2,
     )
 

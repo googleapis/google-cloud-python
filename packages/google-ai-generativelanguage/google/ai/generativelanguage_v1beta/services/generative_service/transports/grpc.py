@@ -512,6 +512,37 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
             )
         return self._stubs["count_tokens"]
 
+    @property
+    def bidi_generate_content(
+        self,
+    ) -> Callable[
+        [generative_service.BidiGenerateContentClientMessage],
+        generative_service.BidiGenerateContentServerMessage,
+    ]:
+        r"""Return a callable for the bidi generate content method over gRPC.
+
+        Low-Latency bidirectional streaming API that supports
+        audio and video streaming inputs can produce multimodal
+        output streams (audio and text).
+
+        Returns:
+            Callable[[~.BidiGenerateContentClientMessage],
+                    ~.BidiGenerateContentServerMessage]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "bidi_generate_content" not in self._stubs:
+            self._stubs["bidi_generate_content"] = self._logged_channel.stream_stream(
+                "/google.ai.generativelanguage.v1beta.GenerativeService/BidiGenerateContent",
+                request_serializer=generative_service.BidiGenerateContentClientMessage.serialize,
+                response_deserializer=generative_service.BidiGenerateContentServerMessage.deserialize,
+            )
+        return self._stubs["bidi_generate_content"]
+
     def close(self):
         self._logged_channel.close()
 

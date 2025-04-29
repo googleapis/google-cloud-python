@@ -163,6 +163,11 @@
                 "delete_file"
               ]
             },
+            "DownloadFile": {
+              "methods": [
+                "download_file"
+              ]
+            },
             "GetFile": {
               "methods": [
                 "get_file"
@@ -186,6 +191,11 @@
             "DeleteFile": {
               "methods": [
                 "delete_file"
+              ]
+            },
+            "DownloadFile": {
+              "methods": [
+                "download_file"
               ]
             },
             "GetFile": {
@@ -213,6 +223,11 @@
                 "delete_file"
               ]
             },
+            "DownloadFile": {
+              "methods": [
+                "download_file"
+              ]
+            },
             "GetFile": {
               "methods": [
                 "get_file"
@@ -235,6 +250,11 @@
             "BatchEmbedContents": {
               "methods": [
                 "batch_embed_contents"
+              ]
+            },
+            "BidiGenerateContent": {
+              "methods": [
+                "bidi_generate_content"
               ]
             },
             "CountTokens": {
@@ -272,6 +292,11 @@
                 "batch_embed_contents"
               ]
             },
+            "BidiGenerateContent": {
+              "methods": [
+                "bidi_generate_content"
+              ]
+            },
             "CountTokens": {
               "methods": [
                 "count_tokens"
@@ -305,6 +330,11 @@
             "BatchEmbedContents": {
               "methods": [
                 "batch_embed_contents"
+              ]
+            },
+            "BidiGenerateContent": {
+              "methods": [
+                "bidi_generate_content"
               ]
             },
             "CountTokens": {
@@ -578,6 +608,11 @@
               "methods": [
                 "predict"
               ]
+            },
+            "PredictLongRunning": {
+              "methods": [
+                "predict_long_running"
+              ]
             }
           }
         },
@@ -588,6 +623,11 @@
               "methods": [
                 "predict"
               ]
+            },
+            "PredictLongRunning": {
+              "methods": [
+                "predict_long_running"
+              ]
             }
           }
         },
@@ -597,6 +637,11 @@
             "Predict": {
               "methods": [
                 "predict"
+              ]
+            },
+            "PredictLongRunning": {
+              "methods": [
+                "predict_long_running"
               ]
             }
           }

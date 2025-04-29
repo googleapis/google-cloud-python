@@ -18,7 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -134,6 +134,11 @@ class PredictionServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.predict_long_running: gapic_v1.method.wrap_method(
+                self.predict_long_running,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -156,6 +161,11 @@ class PredictionServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
+
+    @property
     def predict(
         self,
     ) -> Callable[
@@ -164,6 +174,15 @@ class PredictionServiceTransport(abc.ABC):
             prediction_service.PredictResponse,
             Awaitable[prediction_service.PredictResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def predict_long_running(
+        self,
+    ) -> Callable[
+        [prediction_service.PredictLongRunningRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

@@ -145,6 +145,10 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseBidiGenerateContent:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
     class _BaseCountTokens:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -343,6 +347,11 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                     "uri": "/v1beta/{model=tunedModels/*}:generateContent",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{model=dynamic/*}:generateContent",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -403,6 +412,11 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1beta/{model=tunedModels/*}:streamGenerateContent",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{model=dynamic/*}:streamGenerateContent",
                     "body": "*",
                 },
             ]

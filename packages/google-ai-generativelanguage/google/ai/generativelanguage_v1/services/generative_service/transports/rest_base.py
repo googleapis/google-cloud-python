@@ -286,6 +286,11 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                     "uri": "/v1/{model=tunedModels/*}:generateContent",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{model=dynamic/*}:generateContent",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -346,6 +351,11 @@ class _BaseGenerativeServiceRestTransport(GenerativeServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{model=tunedModels/*}:streamGenerateContent",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{model=dynamic/*}:streamGenerateContent",
                     "body": "*",
                 },
             ]

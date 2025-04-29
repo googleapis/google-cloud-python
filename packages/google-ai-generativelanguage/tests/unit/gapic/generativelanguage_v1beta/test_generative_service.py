@@ -3230,6 +3230,167 @@ async def test_count_tokens_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        generative_service.BidiGenerateContentClientMessage,
+        dict,
+    ],
+)
+def test_bidi_generate_content(request_type, transport: str = "grpc"):
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bidi_generate_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter(
+            [generative_service.BidiGenerateContentServerMessage()]
+        )
+        response = client.bidi_generate_content(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, generative_service.BidiGenerateContentServerMessage)
+
+
+def test_bidi_generate_content_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = GenerativeServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.bidi_generate_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.bidi_generate_content
+        ] = mock_rpc
+        request = [{}]
+        client.bidi_generate_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.bidi_generate_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_bidi_generate_content_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = GenerativeServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.bidi_generate_content
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.bidi_generate_content
+        ] = mock_rpc
+
+        request = [{}]
+        await client.bidi_generate_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.bidi_generate_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_bidi_generate_content_async(
+    transport: str = "grpc_asyncio",
+    request_type=generative_service.BidiGenerateContentClientMessage,
+):
+    client = GenerativeServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.bidi_generate_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[generative_service.BidiGenerateContentServerMessage()]
+        )
+        response = await client.bidi_generate_content(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, generative_service.BidiGenerateContentServerMessage)
+
+
+@pytest.mark.asyncio
+async def test_bidi_generate_content_async_from_dict():
+    await test_bidi_generate_content_async(request_type=dict)
+
+
 def test_generate_content_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4378,6 +4539,30 @@ def test_count_tokens_rest_flattened_error(transport: str = "rest"):
             model="model_value",
             contents=[content.Content(parts=[content.Part(text="text_value")])],
         )
+
+
+def test_bidi_generate_content_rest_no_http_options():
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = generative_service.BidiGenerateContentClientMessage()
+    requests = [request]
+    with pytest.raises(RuntimeError):
+        client.bidi_generate_content(requests)
+
+
+def test_bidi_generate_content_rest_error():
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.bidi_generate_content({})
+    assert "Method BidiGenerateContent is not available over REST transport" in str(
+        not_implemented_error.value
+    )
 
 
 def test_credentials_transport_error():
@@ -5595,6 +5780,18 @@ def test_count_tokens_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_bidi_generate_content_rest_error():
+    client = GenerativeServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.bidi_generate_content({})
+    assert "Method BidiGenerateContent is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
 def test_get_operation_rest_bad_request(
     request_type=operations_pb2.GetOperationRequest,
 ):
@@ -5887,6 +6084,7 @@ def test_generative_service_base_transport():
         "embed_content",
         "batch_embed_contents",
         "count_tokens",
+        "bidi_generate_content",
         "get_operation",
         "list_operations",
     )
@@ -6164,6 +6362,9 @@ def test_generative_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.count_tokens._session
     session2 = client2.transport.count_tokens._session
+    assert session1 != session2
+    session1 = client1.transport.bidi_generate_content._session
+    session2 = client2.transport.bidi_generate_content._session
     assert session1 != session2
 
 
