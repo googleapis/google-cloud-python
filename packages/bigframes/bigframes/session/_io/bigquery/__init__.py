@@ -27,7 +27,6 @@ from typing import Dict, Iterable, Mapping, Optional, Tuple, Union
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
-import google.cloud.bigquery.table
 
 from bigframes.core import log_adapter
 import bigframes.core.compile.googlesql as googlesql
@@ -249,7 +248,7 @@ def start_query_with_client(
                 max_results=max_results,
             )
             if metrics is not None:
-                metrics.count_job_stats(query=sql)
+                metrics.count_job_stats(row_iterator=results_iterator)
             return results_iterator, None
 
         query_job = bq_client.query(
@@ -278,7 +277,7 @@ def start_query_with_client(
         )
 
     if metrics is not None:
-        metrics.count_job_stats(query_job)
+        metrics.count_job_stats(query_job=query_job)
     return results_iterator, query_job
 
 

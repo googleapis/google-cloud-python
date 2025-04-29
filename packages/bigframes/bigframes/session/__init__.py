@@ -336,13 +336,6 @@ class Session(
     @property
     def bytes_processed_sum(self):
         """The sum of all bytes processed by bigquery jobs using this session."""
-        msg = bfe.format_message(
-            "Queries executed with `allow_large_results=False` within the session will not "
-            "have their bytes processed counted in this sum. If you need precise "
-            "bytes processed information, query the `INFORMATION_SCHEMA` tables "
-            "to get relevant metrics.",
-        )
-        warnings.warn(msg, UserWarning)
         return self._metrics.bytes_processed
 
     @property

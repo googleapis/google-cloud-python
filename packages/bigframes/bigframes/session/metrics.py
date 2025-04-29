@@ -20,6 +20,7 @@ from typing import Optional, Tuple
 
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery.job as bq_job
+import google.cloud.bigquery.table as bq_table
 
 LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
 
@@ -33,14 +34,22 @@ class ExecutionMetrics:
     query_char_count: int = 0
 
     def count_job_stats(
-        self, query_job: Optional[bq_job.QueryJob] = None, query: str = ""
+        self,
+        query_job: Optional[bq_job.QueryJob] = None,
+        row_iterator: Optional[bq_table.RowIterator] = None,
     ):
         if query_job is None:
-            query_char_count = len(query)
+            assert row_iterator is not None
+            if (row_iterator.total_bytes_processed is None) or (
+                row_iterator.query is None
+            ):
+                return
+            query_char_count = len(row_iterator.query)
+            bytes_processed = row_iterator.total_bytes_processed
             self.execution_count += 1
             self.query_char_count += query_char_count
-            if LOGGING_NAME_ENV_VAR in os.environ:
-                write_stats_to_disk(query_char_count)
+            self.bytes_processed += bytes_processed
+            write_stats_to_disk(query_char_count, bytes_processed)
             return
 
         stats = get_performance_stats(query_job)
@@ -51,11 +60,9 @@ class ExecutionMetrics:
             self.bytes_processed += bytes_processed
             self.slot_millis += slot_millis
             self.execution_secs += execution_secs
-            if LOGGING_NAME_ENV_VAR in os.environ:
-                # when running notebooks via pytest nbmake
-                write_stats_to_disk(
-                    query_char_count, bytes_processed, slot_millis, execution_secs
-                )
+            write_stats_to_disk(
+                query_char_count, bytes_processed, slot_millis, execution_secs
+            )
 
 
 def get_performance_stats(
@@ -88,7 +95,7 @@ def get_performance_stats(
 
 def write_stats_to_disk(
     query_char_count: int,
-    bytes_processed: Optional[int] = None,
+    bytes_processed: int,
     slot_millis: Optional[int] = None,
     exec_seconds: Optional[float] = None,
 ):
@@ -96,24 +103,13 @@ def write_stats_to_disk(
     to a file in order to create a performance report.
     """
     if LOGGING_NAME_ENV_VAR not in os.environ:
-        raise EnvironmentError(
-            "Environment variable {env_var} is not set".format(
-                env_var=LOGGING_NAME_ENV_VAR
-            )
-        )
+        return
+
+    # when running notebooks via pytest nbmake and running benchmarks
     test_name = os.environ[LOGGING_NAME_ENV_VAR]
     current_directory = os.getcwd()
 
-    if (
-        (bytes_processed is not None)
-        and (slot_millis is not None)
-        and (exec_seconds is not None)
-    ):
-        # store bytes processed
-        bytes_file = os.path.join(current_directory, test_name + ".bytesprocessed")
-        with open(bytes_file, "a") as f:
-            f.write(str(bytes_processed) + "\n")
-
+    if (slot_millis is not None) and (exec_seconds is not None):
         # store slot milliseconds
         slot_file = os.path.join(current_directory, test_name + ".slotmillis")
         with open(slot_file, "a") as f:
@@ -132,3 +128,8 @@ def write_stats_to_disk(
     )
     with open(query_char_count_file, "a") as f:
         f.write(str(query_char_count) + "\n")
+
+    # store bytes processed
+    bytes_file = os.path.join(current_directory, test_name + ".bytesprocessed")
+    with open(bytes_file, "a") as f:
+        f.write(str(bytes_processed) + "\n")

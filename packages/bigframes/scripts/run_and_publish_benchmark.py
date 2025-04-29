@@ -93,10 +93,10 @@ def collect_benchmark_result(
         error_files = sorted(path.rglob("*.error"))
 
         if not (
-            len(bytes_files)
-            == len(millis_files)
+            len(millis_files)
             == len(bq_seconds_files)
-            <= len(query_char_count_files)
+            <= len(bytes_files)
+            == len(query_char_count_files)
             == len(local_seconds_files)
         ):
             raise ValueError(
@@ -108,10 +108,13 @@ def collect_benchmark_result(
         for idx in range(len(local_seconds_files)):
             query_char_count_file = query_char_count_files[idx]
             local_seconds_file = local_seconds_files[idx]
+            bytes_file = bytes_files[idx]
             filename = query_char_count_file.relative_to(path).with_suffix("")
-            if filename != local_seconds_file.relative_to(path).with_suffix(""):
+            if filename != local_seconds_file.relative_to(path).with_suffix(
+                ""
+            ) or filename != bytes_file.relative_to(path).with_suffix(""):
                 raise ValueError(
-                    "File name mismatch between query_char_count and seconds reports."
+                    "File name mismatch among query_char_count, bytes and seconds reports."
                 )
 
             with open(query_char_count_file, "r") as file:
@@ -123,26 +126,22 @@ def collect_benchmark_result(
                 lines = file.read().splitlines()
                 local_seconds = sum(float(line) for line in lines) / iterations
 
+            with open(bytes_file, "r") as file:
+                lines = file.read().splitlines()
+                total_bytes = sum(int(line) for line in lines) / iterations
+
             if not has_full_metrics:
-                total_bytes = None
                 total_slot_millis = None
                 bq_seconds = None
             else:
-                bytes_file = bytes_files[idx]
                 millis_file = millis_files[idx]
                 bq_seconds_file = bq_seconds_files[idx]
-                if (
-                    filename != bytes_file.relative_to(path).with_suffix("")
-                    or filename != millis_file.relative_to(path).with_suffix("")
-                    or filename != bq_seconds_file.relative_to(path).with_suffix("")
-                ):
+                if filename != millis_file.relative_to(path).with_suffix(
+                    ""
+                ) or filename != bq_seconds_file.relative_to(path).with_suffix(""):
                     raise ValueError(
                         "File name mismatch among query_char_count, bytes, millis, and seconds reports."
                     )
-
-                with open(bytes_file, "r") as file:
-                    lines = file.read().splitlines()
-                    total_bytes = sum(int(line) for line in lines) / iterations
 
                 with open(millis_file, "r") as file:
                     lines = file.read().splitlines()
@@ -202,11 +201,7 @@ def collect_benchmark_result(
         print(
             f"{index} - query count: {row['Query_Count']},"
             + f" query char count: {row['Query_Char_Count']},"
-            + (
-                f" bytes processed sum: {row['Bytes_Processed']},"
-                if has_full_metrics
-                else ""
-            )
+            + f" bytes processed sum: {row['Bytes_Processed']},"
             + (f" slot millis sum: {row['Slot_Millis']}," if has_full_metrics else "")
             + f" local execution time: {formatted_local_exec_time} seconds"
             + (
@@ -238,11 +233,7 @@ def collect_benchmark_result(
     print(
         f"---Geometric mean of queries: {geometric_mean_queries},"
         + f" Geometric mean of queries char counts: {geometric_mean_query_char_count},"
-        + (
-            f" Geometric mean of bytes processed: {geometric_mean_bytes},"
-            if has_full_metrics
-            else ""
-        )
+        + f" Geometric mean of bytes processed: {geometric_mean_bytes},"
         + (
             f" Geometric mean of slot millis: {geometric_mean_slot_millis},"
             if has_full_metrics
