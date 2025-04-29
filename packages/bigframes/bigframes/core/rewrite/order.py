@@ -211,11 +211,6 @@ def _pull_up_order(
             )
             new_order = child_order.remap_column_refs(new_select_node.get_id_mapping())
             return new_select_node, new_order
-        elif isinstance(node, bigframes.core.nodes.RowCountNode):
-            child_result = remove_order(node.child)
-            return node.replace_child(
-                child_result
-            ), bigframes.core.ordering.TotalOrdering.from_primary_key([node.col_id])
         elif isinstance(node, bigframes.core.nodes.AggregateNode):
             if node.has_ordered_ops:
                 child_result, child_order = pull_up_order_inner(node.child)

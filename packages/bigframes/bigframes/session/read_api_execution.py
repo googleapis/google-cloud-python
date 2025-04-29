@@ -16,6 +16,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 from google.cloud import bigquery_storage_v1
+import pyarrow as pa
 
 from bigframes.core import bigframe_node, rewrite
 from bigframes.session import executor, semi_executor
@@ -89,7 +90,14 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
                 session.streams[0].name, retry=None
             )
             rowstream = reader.rows()
-            return map(lambda page: page.to_arrow(), rowstream.pages)
+
+            def process_page(page):
+                pa_batch = page.to_arrow()
+                return pa.RecordBatch.from_arrays(
+                    pa_batch.columns, names=[id.sql for id in node.ids]
+                )
+
+            return map(process_page, rowstream.pages)
 
         return executor.ExecuteResult(
             arrow_batches=iterator_supplier,

@@ -39,7 +39,6 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
-    TYPE_CHECKING,
     Union,
 )
 import warnings
@@ -68,13 +67,8 @@ import bigframes.core.utils as utils
 import bigframes.core.window_spec as windows
 import bigframes.dtypes
 import bigframes.exceptions as bfe
-import bigframes.features
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-import bigframes.session._io.pandas as io_pandas
-
-if TYPE_CHECKING:
-    import bigframes.session.executor
 
 # Type constraint for wherever column labels are used
 Label = typing.Hashable
@@ -221,7 +215,7 @@ class Block:
             except Exception:
                 pass
 
-        row_count = self.session._executor.get_row_count(self.expr)
+        row_count = self.session._executor.execute(self.expr.row_count()).to_py_scalar()
         return (row_count, len(self.value_columns))
 
     @property
@@ -485,7 +479,7 @@ class Block:
         *,
         ordered: bool = True,
         allow_large_results: Optional[bool] = None,
-    ) -> Tuple[pa.Table, bigquery.QueryJob]:
+    ) -> Tuple[pa.Table, Optional[bigquery.QueryJob]]:
         """Run query and download results as a pyarrow Table."""
         execute_result = self.session._executor.execute(
             self.expr, ordered=ordered, use_explicit_destination=allow_large_results
@@ -580,7 +574,7 @@ class Block:
             result = self.session._executor.peek(
                 self.expr, n, use_explicit_destination=allow_large_results
             )
-            df = io_pandas.arrow_to_pandas(result.to_arrow_table(), self.expr.schema)
+            df = result.to_pandas()
             self._copy_index_to_pandas(df)
             return df
         else:
@@ -604,8 +598,7 @@ class Block:
             page_size=page_size,
             max_results=max_results,
         )
-        for record_batch in execute_result.arrow_batches():
-            df = io_pandas.arrow_to_pandas(record_batch, self.expr.schema)
+        for df in execute_result.to_pandas_batches():
             self._copy_index_to_pandas(df)
             if squeeze:
                 yield df.squeeze(axis=1)
@@ -659,7 +652,7 @@ class Block:
 
         # TODO: Maybe materialize before downsampling
         # Some downsampling methods
-        if fraction < 1:
+        if fraction < 1 and (execute_result.total_rows is not None):
             if not sample_config.enable_downsampling:
                 raise RuntimeError(
                     f"The data size ({table_mb:.2f} MB) exceeds the maximum download limit of "
@@ -690,9 +683,7 @@ class Block:
                 MaterializationOptions(ordered=materialize_options.ordered)
             )
         else:
-            total_rows = execute_result.total_rows
-            arrow = execute_result.to_arrow_table()
-            df = io_pandas.arrow_to_pandas(arrow, schema=self.expr.schema)
+            df = execute_result.to_pandas()
             self._copy_index_to_pandas(df)
 
         return df, execute_result.query_job
@@ -1570,12 +1561,11 @@ class Block:
 
         # head caches full underlying expression, so row_count will be free after
         head_result = self.session._executor.head(self.expr, max_results)
-        count = self.session._executor.get_row_count(self.expr)
+        row_count = self.session._executor.execute(self.expr.row_count()).to_py_scalar()
 
-        arrow = head_result.to_arrow_table()
-        df = io_pandas.arrow_to_pandas(arrow, schema=self.expr.schema)
+        df = head_result.to_pandas()
         self._copy_index_to_pandas(df)
-        return df, count, head_result.query_job
+        return df, row_count, head_result.query_job
 
     def promote_offsets(self, label: Label = None) -> typing.Tuple[Block, str]:
         expr, result_id = self._expr.promote_offsets()

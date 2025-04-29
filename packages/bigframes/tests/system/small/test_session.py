@@ -871,6 +871,7 @@ def test_read_pandas_tokyo(
     result = session_tokyo._executor.execute(
         df._block.expr, use_explicit_destination=True
     )
+    assert result.query_job is not None
     assert result.query_job.location == tokyo_location
 
     assert len(expected) == result.total_rows

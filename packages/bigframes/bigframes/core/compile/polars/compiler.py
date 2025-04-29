@@ -253,11 +253,6 @@ class PolarsCompiler:
         return self.compile_node(node.child).with_columns(new_cols)
 
     @compile_node.register
-    def compile_rowcount(self, node: nodes.RowCountNode):
-        df = cast(pl.LazyFrame, self.compile_node(node.child))
-        return df.select(pl.len().alias(node.col_id.sql))
-
-    @compile_node.register
     def compile_offsets(self, node: nodes.PromoteOffsetsNode):
         return self.compile_node(node.child).with_columns(
             [pl.int_range(pl.len(), dtype=pl.Int64).alias(node.col_id.sql)]

@@ -204,7 +204,17 @@ class ArrayValue:
 
     def row_count(self) -> ArrayValue:
         """Get number of rows in ArrayValue as a single-entry ArrayValue."""
-        return ArrayValue(nodes.RowCountNode(child=self.node))
+        return ArrayValue(
+            nodes.AggregateNode(
+                child=self.node,
+                aggregations=(
+                    (
+                        ex.NullaryAggregation(agg_ops.size_op),
+                        ids.ColumnId(bigframes.core.guid.generate_guid()),
+                    ),
+                ),
+            )
+        )
 
     # Operations
     def filter_by_id(self, predicate_id: str, keep_null: bool = False) -> ArrayValue:

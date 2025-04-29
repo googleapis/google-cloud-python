@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from bigframes.core.rewrite.fold_row_count import fold_row_counts
 from bigframes.core.rewrite.identifiers import remap_variables
 from bigframes.core.rewrite.implicit_align import try_row_join
 from bigframes.core.rewrite.legacy_align import legacy_join_as_projection
@@ -38,4 +39,5 @@ __all__ = [
     "try_reduce_to_table_scan",
     "bake_order",
     "try_reduce_to_local_scan",
+    "fold_row_counts",
 ]

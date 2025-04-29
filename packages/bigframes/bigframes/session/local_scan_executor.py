@@ -50,9 +50,7 @@ class LocalScanExecutor(semi_executor.SemiExecutor):
                 needed_cols.append(offsets_col)
 
             arrow_table = arrow_table.select(needed_cols)
-            arrow_table = arrow_table.rename_columns(
-                {item.source_id: item.id.sql for item in node.scan_list.items}
-            )
+            arrow_table = arrow_table.rename_columns([id.sql for id in node.ids])
             yield from arrow_table.to_batches()
 
         total_rows = node.row_count

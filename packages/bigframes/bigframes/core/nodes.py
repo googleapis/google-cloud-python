@@ -1256,55 +1256,6 @@ class ProjectionNode(UnaryNode, AdditiveNode):
         return dataclasses.replace(self, assignments=new_fields)
 
 
-# TODO: Merge RowCount into Aggregate Node?
-# Row count can be compute from table metadata sometimes, so it is a bit special.
-@dataclasses.dataclass(frozen=True, eq=False)
-class RowCountNode(UnaryNode):
-    col_id: identifiers.ColumnId = identifiers.ColumnId("count")
-
-    @property
-    def row_preserving(self) -> bool:
-        return False
-
-    @property
-    def non_local(self) -> bool:
-        return True
-
-    @property
-    def fields(self) -> Sequence[Field]:
-        return (Field(self.col_id, bigframes.dtypes.INT_DTYPE, nullable=False),)
-
-    @property
-    def variables_introduced(self) -> int:
-        return 1
-
-    @property
-    def defines_namespace(self) -> bool:
-        return True
-
-    @property
-    def row_count(self) -> Optional[int]:
-        return 1
-
-    @property
-    def node_defined_ids(self) -> Tuple[identifiers.ColumnId, ...]:
-        return (self.col_id,)
-
-    @property
-    def consumed_ids(self) -> COLUMN_SET:
-        return frozenset()
-
-    def remap_vars(
-        self, mappings: Mapping[identifiers.ColumnId, identifiers.ColumnId]
-    ) -> RowCountNode:
-        return dataclasses.replace(self, col_id=mappings.get(self.col_id, self.col_id))
-
-    def remap_refs(
-        self, mappings: Mapping[identifiers.ColumnId, identifiers.ColumnId]
-    ) -> RowCountNode:
-        return self
-
-
 @dataclasses.dataclass(frozen=True, eq=False)
 class AggregateNode(UnaryNode):
     aggregations: typing.Tuple[typing.Tuple[ex.Aggregation, identifiers.ColumnId], ...]
@@ -1641,6 +1592,19 @@ class ResultNode(UnaryNode):
         )
         order_by = self.order_by.remap_column_refs(mappings) if self.order_by else None
         return dataclasses.replace(self, output_cols=output_cols, order_by=order_by)  # type: ignore
+
+    @property
+    def fields(self) -> Sequence[Field]:
+        # Fields property here is for output schema, not to be consumed by a parent node.
+        input_fields_by_id = {field.id: field for field in self.child.fields}
+        return tuple(
+            Field(
+                identifiers.ColumnId(output),
+                input_fields_by_id[ref.id].dtype,
+                input_fields_by_id[ref.id].nullable,
+            )
+            for ref, output in self.output_cols
+        )
 
     @property
     def consumed_ids(self) -> COLUMN_SET:

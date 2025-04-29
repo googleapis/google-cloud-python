@@ -169,9 +169,7 @@ def compile_readlocal(node: nodes.ReadLocalNode, *args):
     bq_schema = node.schema.to_bigquery()
 
     pa_table = pa_table.select([item.source_id for item in node.scan_list.items])
-    pa_table = pa_table.rename_columns(
-        {item.source_id: item.id.sql for item in node.scan_list.items}
-    )
+    pa_table = pa_table.rename_columns([item.id.sql for item in node.scan_list.items])
 
     if offsets:
         pa_table = pa_table.append_column(
@@ -252,11 +250,6 @@ def compile_projection(node: nodes.ProjectionNode, child: compiled.UnorderedIR):
 def compile_concat(node: nodes.ConcatNode, *children: compiled.UnorderedIR):
     output_ids = [id.sql for id in node.output_ids]
     return concat_impl.concat_unordered(children, output_ids)
-
-
-@_compile_node.register
-def compile_rowcount(node: nodes.RowCountNode, child: compiled.UnorderedIR):
-    return child.row_count(name=node.col_id.sql)
 
 
 @_compile_node.register

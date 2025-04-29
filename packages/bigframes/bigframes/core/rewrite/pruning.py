@@ -51,9 +51,17 @@ def prune_columns(node: nodes.BigFrameNode):
     if isinstance(node, nodes.SelectionNode):
         result = prune_selection_child(node)
     elif isinstance(node, nodes.ResultNode):
-        result = node.replace_child(prune_node(node.child, node.consumed_ids))
+        result = node.replace_child(
+            prune_node(
+                node.child, node.consumed_ids or frozenset(list(node.child.ids)[0:1])
+            )
+        )
     elif isinstance(node, nodes.AggregateNode):
-        result = node.replace_child(prune_node(node.child, node.consumed_ids))
+        result = node.replace_child(
+            prune_node(
+                node.child, node.consumed_ids or frozenset(list(node.child.ids)[0:1])
+            )
+        )
     elif isinstance(node, nodes.InNode):
         result = dataclasses.replace(
             node,
@@ -71,7 +79,9 @@ def prune_selection_child(
 
     # Important to check this first
     if list(selection.ids) == list(child.ids):
-        return child
+        if (ref.ref.id == ref.id for ref in selection.input_output_pairs):
+            # selection is no-op so just remove it entirely
+            return child
 
     if isinstance(child, nodes.SelectionNode):
         return selection.remap_refs(
@@ -96,6 +106,9 @@ def prune_selection_child(
         indices = [
             list(child.ids).index(ref.id) for ref, _ in selection.input_output_pairs
         ]
+        if len(indices) == 0:
+            # pushing zero-column selection into concat messes up emitter for now, which doesn't like zero columns
+            return selection
         new_children = []
         for concat_node in child.child_nodes:
             cc_ids = tuple(concat_node.ids)
@@ -146,7 +159,10 @@ def prune_aggregate(
     node: nodes.AggregateNode,
     used_cols: AbstractSet[identifiers.ColumnId],
 ) -> nodes.AggregateNode:
-    pruned_aggs = tuple(agg for agg in node.aggregations if agg[1] in used_cols)
+    pruned_aggs = (
+        tuple(agg for agg in node.aggregations if agg[1] in used_cols)
+        or node.aggregations[0:1]
+    )
     return dataclasses.replace(node, aggregations=pruned_aggs)
 
 
