@@ -4,6 +4,49 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.2.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.1.0...v2.2.0) (2025-04-30)
+
+
+### Features
+
+* Add gemini-2.0-flash-001 and gemini-2.0-flash-lite-001 to fine tune score endponts and multimodal endpoints ([#1650](https://github.com/googleapis/python-bigquery-dataframes/issues/1650)) ([4fb54df](https://github.com/googleapis/python-bigquery-dataframes/commit/4fb54dfe448604a90fc1818cf18b1e77e1e7227b))
+* Add GeminiTextGenerator.predict structured output ([#1653](https://github.com/googleapis/python-bigquery-dataframes/issues/1653)) ([6199023](https://github.com/googleapis/python-bigquery-dataframes/commit/6199023a6a71e72e926f5879e74a15215bc6e4a0))
+* DataFrames.__getitem__ support for slice input ([#1668](https://github.com/googleapis/python-bigquery-dataframes/issues/1668)) ([563f0cb](https://github.com/googleapis/python-bigquery-dataframes/commit/563f0cbdf4a18c3cd1bd2a4b52de823165638911))
+* Print right origin of `PreviewWarning` for the `bpd.udf` ([#1629](https://github.com/googleapis/python-bigquery-dataframes/issues/1629)) ([48d10d1](https://github.com/googleapis/python-bigquery-dataframes/commit/48d10d1f0150a29dd3b91f505f8d3874e0b88c42))
+* Session.bytes_processed_sum will be updated when allow_large_re… ([#1669](https://github.com/googleapis/python-bigquery-dataframes/issues/1669)) ([ae312db](https://github.com/googleapis/python-bigquery-dataframes/commit/ae312dbed25da6da5e2817d5c9838654c2a1ad1c))
+* Short circuit query for local scan ([#1618](https://github.com/googleapis/python-bigquery-dataframes/issues/1618)) ([e84f232](https://github.com/googleapis/python-bigquery-dataframes/commit/e84f232b0fc5e2167a7cddb355cf0c8837ae5422))
+* Support names parameter in read_csv for bigquery engine ([#1659](https://github.com/googleapis/python-bigquery-dataframes/issues/1659)) ([3388191](https://github.com/googleapis/python-bigquery-dataframes/commit/33881914ab5b8d0e701eabd9c731aed1deab3d49))
+* Support passing list of values to bigframes.core.sql.simple_literal ([#1641](https://github.com/googleapis/python-bigquery-dataframes/issues/1641)) ([102d363](https://github.com/googleapis/python-bigquery-dataframes/commit/102d363aa7e3245ff262c817bc756ea0eaee57e7))
+* Support write api as loading option ([#1617](https://github.com/googleapis/python-bigquery-dataframes/issues/1617)) ([c46ad06](https://github.com/googleapis/python-bigquery-dataframes/commit/c46ad0647785a9207359eba0fb5b6f7a16610f2a))
+
+
+### Bug Fixes
+
+* DataFrame accessors is not pupulated ([#1639](https://github.com/googleapis/python-bigquery-dataframes/issues/1639)) ([28afa2c](https://github.com/googleapis/python-bigquery-dataframes/commit/28afa2c73c0517f9365fab05193706631b656551))
+* Prefer remote schema instead of throwing on materialize conflicts ([#1644](https://github.com/googleapis/python-bigquery-dataframes/issues/1644)) ([53fc25b](https://github.com/googleapis/python-bigquery-dataframes/commit/53fc25bfc86e166b91e5001506051b1cac34c996))
+* Remove itertools.pairwise usage ([#1638](https://github.com/googleapis/python-bigquery-dataframes/issues/1638)) ([9662745](https://github.com/googleapis/python-bigquery-dataframes/commit/9662745265c8c6e42f372629bd2c7806542cee1a))
+* Resolve issue where pre-release versions of google-auth are installed ([#1491](https://github.com/googleapis/python-bigquery-dataframes/issues/1491)) ([ebb7a5e](https://github.com/googleapis/python-bigquery-dataframes/commit/ebb7a5e2b24fa57d6fe6a76d9b857ad44c67d194))
+* Resolve some of the typo errors ([#1655](https://github.com/googleapis/python-bigquery-dataframes/issues/1655)) ([cd7fbde](https://github.com/googleapis/python-bigquery-dataframes/commit/cd7fbde026522f53a23a4bb6585ad8629769fad1))
+
+
+### Performance Improvements
+
+* Fold row count ops when known ([#1656](https://github.com/googleapis/python-bigquery-dataframes/issues/1656)) ([c958dbe](https://github.com/googleapis/python-bigquery-dataframes/commit/c958dbea32b77cec9fddfc09e3b40d1da220a42c))
+* Use flyweight for node fields ([#1654](https://github.com/googleapis/python-bigquery-dataframes/issues/1654)) ([8482bfc](https://github.com/googleapis/python-bigquery-dataframes/commit/8482bfc1d4caa91a35c4fbf0be420301d05ad544))
+
+
+### Dependencies
+
+* Support shapely 1.8.5+ again ([#1651](https://github.com/googleapis/python-bigquery-dataframes/issues/1651)) ([ae83e61](https://github.com/googleapis/python-bigquery-dataframes/commit/ae83e61c49ade64d6f727e9f364bd2f1aeec6e19))
+
+
+### Documentation
+
+* Add JSON data types notebook ([#1647](https://github.com/googleapis/python-bigquery-dataframes/issues/1647)) ([9128c4a](https://github.com/googleapis/python-bigquery-dataframes/commit/9128c4a31dab487bc23f67c43380abd0beda5b1c))
+* Add sample code snippets for `udf` ([#1649](https://github.com/googleapis/python-bigquery-dataframes/issues/1649)) ([53caa8d](https://github.com/googleapis/python-bigquery-dataframes/commit/53caa8d689e64436f5313095ee27479a06d8e8a8))
+* Fix `bq_dataframes_template` notebook to work if partial ordering mode is enabled ([#1665](https://github.com/googleapis/python-bigquery-dataframes/issues/1665)) ([f442e7a](https://github.com/googleapis/python-bigquery-dataframes/commit/f442e7a07ff273ba3af74eeabafb62110b78f692))
+* Note that `udf` is in preview and must be python 3.11 compatible ([#1629](https://github.com/googleapis/python-bigquery-dataframes/issues/1629)) ([48d10d1](https://github.com/googleapis/python-bigquery-dataframes/commit/48d10d1f0150a29dd3b91f505f8d3874e0b88c42))
+
 ## [2.1.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.0.0...v2.1.0) (2025-04-22)
 
 
