@@ -109,13 +109,8 @@ CLUSTERED_OR_PARTITIONED_TABLES = [
     ("kwargs", "match"),
     [
         pytest.param(
-            {"engine": "bigquery", "names": []},
-            "BigQuery engine does not support these arguments",
-            id="with_names",
-        ),
-        pytest.param(
             {"engine": "bigquery", "dtype": {}},
-            "BigQuery engine does not support these arguments",
+            "BigQuery engine does not support the `dtype` argument",
             id="with_dtype",
         ),
         pytest.param(
@@ -201,6 +196,23 @@ def test_read_csv_with_incompatible_write_engine(engine, write_engine):
             engine=engine,
             write_engine=write_engine,
         )
+
+
+@pytest.mark.parametrize(
+    ("names", "error_message"),
+    (
+        pytest.param("abc", "Names should be an ordered collection."),
+        pytest.param({"a", "b", "c"}, "Names should be an ordered collection."),
+        pytest.param(["a", "a"], "Duplicated names are not allowed."),
+    ),
+)
+def test_read_csv_w_bigquery_engine_raises_error_for_invalid_names(
+    names, error_message
+):
+    session = mocks.create_bigquery_session()
+
+    with pytest.raises(ValueError, match=error_message):
+        session.read_csv("path/to/csv.csv", engine="bigquery", names=names)
 
 
 @pytest.mark.parametrize("missing_parts_table_id", [(""), ("table")])

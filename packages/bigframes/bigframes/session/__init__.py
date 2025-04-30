@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+from collections import abc
 import datetime
 import logging
 import os
@@ -569,7 +570,7 @@ class Session(
             columns = col_order
 
         return self._loader.read_gbq_table(
-            query=query,
+            table_id=query,
             index_col=index_col,
             columns=columns,
             max_results=max_results,
@@ -953,13 +954,20 @@ class Session(
         native CSV loading capabilities, making it suitable for large datasets
         that may not fit into local memory.
         """
-
-        if any(param is not None for param in (dtype, names)):
-            not_supported = ("dtype", "names")
+        if dtype is not None:
             raise NotImplementedError(
-                f"BigQuery engine does not support these arguments: {not_supported}. "
+                f"BigQuery engine does not support the `dtype` argument."
                 f"{constants.FEEDBACK_LINK}"
             )
+
+        if names is not None:
+            if len(names) != len(set(names)):
+                raise ValueError("Duplicated names are not allowed.")
+            if not (
+                bigframes.core.utils.is_list_like(names, allow_sets=False)
+                or isinstance(names, abc.KeysView)
+            ):
+                raise ValueError("Names should be an ordered collection.")
 
         if index_col is True:
             raise ValueError("The value of index_col couldn't be 'True'")
@@ -1004,11 +1012,9 @@ class Session(
         elif header > 0:
             job_config.skip_leading_rows = header + 1
 
-        return self._loader.read_bigquery_load_job(
-            filepath_or_buffer,
-            job_config=job_config,
-            index_col=index_col,
-            columns=columns,
+        table_id = self._loader.load_file(filepath_or_buffer, job_config=job_config)
+        return self._loader.read_gbq_table(
+            table_id, index_col=index_col, columns=columns, names=names
         )
 
     def read_pickle(
@@ -1049,8 +1055,8 @@ class Session(
             job_config = bigquery.LoadJobConfig()
             job_config.source_format = bigquery.SourceFormat.PARQUET
             job_config.labels = {"bigframes-api": "read_parquet"}
-
-            return self._loader.read_bigquery_load_job(path, job_config=job_config)
+            table_id = self._loader.load_file(path, job_config=job_config)
+            return self._loader.read_gbq_table(table_id)
         else:
             if "*" in path:
                 raise ValueError(
@@ -1121,10 +1127,8 @@ class Session(
             job_config.encoding = encoding
             job_config.labels = {"bigframes-api": "read_json"}
 
-            return self._loader.read_bigquery_load_job(
-                path_or_buf,
-                job_config=job_config,
-            )
+            table_id = self._loader.load_file(path_or_buf, job_config=job_config)
+            return self._loader.read_gbq_table(table_id)
         else:
             if any(arg in kwargs for arg in ("chunksize", "iterator")):
                 raise NotImplementedError(

@@ -235,6 +235,8 @@ def get_index_cols(
     | Iterable[int]
     | int
     | bigframes.enums.DefaultIndexKind,
+    *,
+    names: Optional[Iterable[str]] = None,
 ) -> List[str]:
     """
     If we can get a total ordering from the table, such as via primary key
@@ -245,6 +247,14 @@ def get_index_cols(
     # Transform index_col -> index_cols so we have a variable that is
     # always a list of column names (possibly empty).
     schema_len = len(table.schema)
+
+    # If the `names` is provided, the index_col provided by the user is the new
+    # name, so we need to rename it to the original name in the table schema.
+    renamed_schema: Optional[Dict[str, str]] = None
+    if names is not None:
+        assert len(list(names)) == schema_len
+        renamed_schema = {name: field.name for name, field in zip(names, table.schema)}
+
     index_cols: List[str] = []
     if isinstance(index_col, bigframes.enums.DefaultIndexKind):
         if index_col == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
@@ -261,6 +271,8 @@ def get_index_cols(
                 f"Got unexpected index_col {repr(index_col)}. {constants.FEEDBACK_LINK}"
             )
     elif isinstance(index_col, str):
+        if renamed_schema is not None:
+            index_col = renamed_schema.get(index_col, index_col)
         index_cols = [index_col]
     elif isinstance(index_col, int):
         if not 0 <= index_col < schema_len:
@@ -272,6 +284,8 @@ def get_index_cols(
     elif isinstance(index_col, Iterable):
         for item in index_col:
             if isinstance(item, str):
+                if renamed_schema is not None:
+                    item = renamed_schema.get(item, item)
                 index_cols.append(item)
             elif isinstance(item, int):
                 if not 0 <= item < schema_len:

@@ -59,7 +59,7 @@ def df_and_local_csv(scalars_df_index):
 
     with tempfile.TemporaryDirectory() as dir:
         # Prepares local CSV file for reading
-        path = dir + "/write_df_to_local_csv_file.csv"
+        path = dir + "/test_read_csv_w_local_csv.csv"
         scalars_df_index.to_csv(path, index=True)
         yield scalars_df_index, path
 
@@ -71,7 +71,19 @@ def df_and_gcs_csv(scalars_df_index, gcs_folder):
     drop_columns = ["bytes_col", "datetime_col", "numeric_col", "geography_col"]
     scalars_df_index = scalars_df_index.drop(columns=drop_columns)
 
-    path = gcs_folder + "test_read_csv_w_write_engine*.csv"
+    path = gcs_folder + "test_read_csv_w_gcs_csv*.csv"
+    read_path = utils.get_first_file_from_wildcard(path)
+    scalars_df_index.to_csv(path, index=True)
+    return scalars_df_index, read_path
+
+
+@pytest.fixture(scope="module")
+def df_and_gcs_csv_for_two_columns(scalars_df_index, gcs_folder):
+    # Some tests require only two columns to be present in the CSV file.
+    selected_cols = ["bool_col", "int64_col"]
+    scalars_df_index = scalars_df_index[selected_cols]
+
+    path = gcs_folder + "df_and_gcs_csv_for_two_columns*.csv"
     read_path = utils.get_first_file_from_wildcard(path)
     scalars_df_index.to_csv(path, index=True)
     return scalars_df_index, read_path
@@ -1258,6 +1270,98 @@ def test_read_csv_raises_error_for_invalid_index_col(
         match=error_msg,
     ):
         session.read_csv(path, engine="bigquery", index_col=index_col)
+
+
+def test_read_csv_for_names(session, df_and_gcs_csv_for_two_columns):
+    _, path = df_and_gcs_csv_for_two_columns
+
+    names = ["a", "b", "c"]
+    bf_df = session.read_csv(path, engine="bigquery", names=names)
+
+    # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+    pd_df = session.read_csv(path, names=names, dtype=bf_df.dtypes.to_dict())
+
+    assert bf_df.shape == pd_df.shape
+    assert bf_df.columns.tolist() == pd_df.columns.tolist()
+
+    # BigFrames requires `sort_index()` because BigQuery doesn't preserve row IDs
+    # (b/280889935) or guarantee row ordering.
+    bf_df = bf_df.set_index(names[0]).sort_index()
+    pd_df = pd_df.set_index(names[0])
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+
+
+def test_read_csv_for_names_more_than_columns_can_raise_error(
+    session, df_and_gcs_csv_for_two_columns
+):
+    _, path = df_and_gcs_csv_for_two_columns
+    names = ["a", "b", "c", "d"]
+    with pytest.raises(
+        ValueError,
+        match="Too many columns specified: expected 3 and found 4",
+    ):
+        session.read_csv(path, engine="bigquery", names=names)
+
+
+def test_read_csv_for_names_less_than_columns(session, df_and_gcs_csv_for_two_columns):
+    _, path = df_and_gcs_csv_for_two_columns
+
+    names = ["b", "c"]
+    bf_df = session.read_csv(path, engine="bigquery", names=names)
+
+    # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+    pd_df = session.read_csv(path, names=names, dtype=bf_df.dtypes.to_dict())
+
+    assert bf_df.shape == pd_df.shape
+    assert bf_df.columns.tolist() == pd_df.columns.tolist()
+
+    # BigFrames requires `sort_index()` because BigQuery doesn't preserve row IDs
+    # (b/280889935) or guarantee row ordering.
+    bf_df = bf_df.sort_index()
+
+    # Pandas's index name is None, while BigFrames's index name is "rowindex".
+    pd_df.index.name = "rowindex"
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+
+
+def test_read_csv_for_names_less_than_columns_raise_error_when_index_col_set(
+    session, df_and_gcs_csv_for_two_columns
+):
+    _, path = df_and_gcs_csv_for_two_columns
+
+    names = ["b", "c"]
+    with pytest.raises(
+        KeyError,
+        match="ensure the number of `names` matches the number of columns in your data.",
+    ):
+        session.read_csv(path, engine="bigquery", names=names, index_col="rowindex")
+
+
+@pytest.mark.parametrize(
+    "index_col",
+    [
+        pytest.param("a", id="single_str"),
+        pytest.param(["a", "b"], id="multi_str"),
+        pytest.param(0, id="single_int"),
+    ],
+)
+def test_read_csv_for_names_and_index_col(
+    session, df_and_gcs_csv_for_two_columns, index_col
+):
+    _, path = df_and_gcs_csv_for_two_columns
+    names = ["a", "b", "c"]
+    bf_df = session.read_csv(path, engine="bigquery", index_col=index_col, names=names)
+
+    # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+    pd_df = session.read_csv(
+        path, index_col=index_col, names=names, dtype=bf_df.dtypes.to_dict()
+    )
+
+    assert bf_df.shape == pd_df.shape
+    assert bf_df.columns.tolist() == pd_df.columns.tolist()
+    pd.testing.assert_frame_equal(
+        bf_df.to_pandas(), pd_df.to_pandas(), check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(

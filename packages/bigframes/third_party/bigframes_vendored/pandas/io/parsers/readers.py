@@ -114,7 +114,7 @@ class ReaderIOMixin:
             names (default None):
                 a list of column names to use. If the file contains a header row and you
                 want to pass this parameter, then `header=0` should be passed as well so the
-                first (header) row is ignored. Only to be used with default engine.
+                first (header) row is ignored.
             index_col (default None):
                 column(s) to use as the row labels of the DataFrame, either given as
                 string name or column index. `index_col=False` can be used with the default
