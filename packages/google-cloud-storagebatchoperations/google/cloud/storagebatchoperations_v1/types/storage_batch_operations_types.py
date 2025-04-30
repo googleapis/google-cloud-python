@@ -449,7 +449,7 @@ class PutMetadata(proto.Message):
         content_type (str):
             Optional. Updates objects Content-Type fixed
             metadata. Unset values will be ignored.
-             Set empty values to clear the metadata. Refer
+            Set empty values to clear the metadata. Refer
             to documentation in
             https://cloud.google.com/storage/docs/metadata#content-type
 
