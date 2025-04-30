@@ -15840,6 +15840,11 @@ def test_get_backup_vault(request_type, transport: str = "grpc"):
             name="name_value",
             state=backup_vault.BackupVault.State.CREATING,
             description="description_value",
+            backup_vault_type=backup_vault.BackupVault.BackupVaultType.IN_REGION,
+            source_region="source_region_value",
+            backup_region="backup_region_value",
+            source_backup_vault="source_backup_vault_value",
+            destination_backup_vault="destination_backup_vault_value",
         )
         response = client.get_backup_vault(request)
 
@@ -15854,6 +15859,13 @@ def test_get_backup_vault(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == backup_vault.BackupVault.State.CREATING
     assert response.description == "description_value"
+    assert (
+        response.backup_vault_type == backup_vault.BackupVault.BackupVaultType.IN_REGION
+    )
+    assert response.source_region == "source_region_value"
+    assert response.backup_region == "backup_region_value"
+    assert response.source_backup_vault == "source_backup_vault_value"
+    assert response.destination_backup_vault == "destination_backup_vault_value"
 
 
 def test_get_backup_vault_non_empty_request_with_auto_populated_field():
@@ -15984,6 +15996,11 @@ async def test_get_backup_vault_async(
                 name="name_value",
                 state=backup_vault.BackupVault.State.CREATING,
                 description="description_value",
+                backup_vault_type=backup_vault.BackupVault.BackupVaultType.IN_REGION,
+                source_region="source_region_value",
+                backup_region="backup_region_value",
+                source_backup_vault="source_backup_vault_value",
+                destination_backup_vault="destination_backup_vault_value",
             )
         )
         response = await client.get_backup_vault(request)
@@ -15999,6 +16016,13 @@ async def test_get_backup_vault_async(
     assert response.name == "name_value"
     assert response.state == backup_vault.BackupVault.State.CREATING
     assert response.description == "description_value"
+    assert (
+        response.backup_vault_type == backup_vault.BackupVault.BackupVaultType.IN_REGION
+    )
+    assert response.source_region == "source_region_value"
+    assert response.backup_region == "backup_region_value"
+    assert response.source_backup_vault == "source_backup_vault_value"
+    assert response.destination_backup_vault == "destination_backup_vault_value"
 
 
 @pytest.mark.asyncio
@@ -17779,6 +17803,8 @@ def test_get_backup(request_type, transport: str = "grpc"):
             chain_storage_bytes=2013,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            volume_region="volume_region_value",
+            backup_region="backup_region_value",
         )
         response = client.get_backup(request)
 
@@ -17800,6 +17826,8 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.chain_storage_bytes == 2013
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.volume_region == "volume_region_value"
+    assert response.backup_region == "backup_region_value"
 
 
 def test_get_backup_non_empty_request_with_auto_populated_field():
@@ -17933,6 +17961,8 @@ async def test_get_backup_async(
                 chain_storage_bytes=2013,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                volume_region="volume_region_value",
+                backup_region="backup_region_value",
             )
         )
         response = await client.get_backup(request)
@@ -17955,6 +17985,8 @@ async def test_get_backup_async(
     assert response.chain_storage_bytes == 2013
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.volume_region == "volume_region_value"
+    assert response.backup_region == "backup_region_value"
 
 
 @pytest.mark.asyncio
@@ -37369,6 +37401,11 @@ async def test_get_backup_vault_empty_call_grpc_asyncio():
                 name="name_value",
                 state=backup_vault.BackupVault.State.CREATING,
                 description="description_value",
+                backup_vault_type=backup_vault.BackupVault.BackupVaultType.IN_REGION,
+                source_region="source_region_value",
+                backup_region="backup_region_value",
+                source_backup_vault="source_backup_vault_value",
+                destination_backup_vault="destination_backup_vault_value",
             )
         )
         await client.get_backup_vault(request=None)
@@ -37514,6 +37551,8 @@ async def test_get_backup_empty_call_grpc_asyncio():
                 chain_storage_bytes=2013,
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                volume_region="volume_region_value",
+                backup_region="backup_region_value",
             )
         )
         await client.get_backup(request=None)
@@ -44325,6 +44364,11 @@ def test_create_backup_vault_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "description": "description_value",
         "labels": {},
+        "backup_vault_type": 1,
+        "source_region": "source_region_value",
+        "backup_region": "backup_region_value",
+        "source_backup_vault": "source_backup_vault_value",
+        "destination_backup_vault": "destination_backup_vault_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -44523,6 +44567,11 @@ def test_get_backup_vault_rest_call_success(request_type):
             name="name_value",
             state=backup_vault.BackupVault.State.CREATING,
             description="description_value",
+            backup_vault_type=backup_vault.BackupVault.BackupVaultType.IN_REGION,
+            source_region="source_region_value",
+            backup_region="backup_region_value",
+            source_backup_vault="source_backup_vault_value",
+            destination_backup_vault="destination_backup_vault_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -44542,6 +44591,13 @@ def test_get_backup_vault_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.state == backup_vault.BackupVault.State.CREATING
     assert response.description == "description_value"
+    assert (
+        response.backup_vault_type == backup_vault.BackupVault.BackupVaultType.IN_REGION
+    )
+    assert response.source_region == "source_region_value"
+    assert response.backup_region == "backup_region_value"
+    assert response.source_backup_vault == "source_backup_vault_value"
+    assert response.destination_backup_vault == "destination_backup_vault_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -44789,6 +44845,11 @@ def test_update_backup_vault_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "description": "description_value",
         "labels": {},
+        "backup_vault_type": 1,
+        "source_region": "source_region_value",
+        "backup_region": "backup_region_value",
+        "source_backup_vault": "source_backup_vault_value",
+        "destination_backup_vault": "destination_backup_vault_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -45110,6 +45171,8 @@ def test_create_backup_rest_call_success(request_type):
         "chain_storage_bytes": 2013,
         "satisfies_pzs": True,
         "satisfies_pzi": True,
+        "volume_region": "volume_region_value",
+        "backup_region": "backup_region_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -45315,6 +45378,8 @@ def test_get_backup_rest_call_success(request_type):
             chain_storage_bytes=2013,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            volume_region="volume_region_value",
+            backup_region="backup_region_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -45341,6 +45406,8 @@ def test_get_backup_rest_call_success(request_type):
     assert response.chain_storage_bytes == 2013
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.volume_region == "volume_region_value"
+    assert response.backup_region == "backup_region_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -45703,6 +45770,8 @@ def test_update_backup_rest_call_success(request_type):
         "chain_storage_bytes": 2013,
         "satisfies_pzs": True,
         "satisfies_pzi": True,
+        "volume_region": "volume_region_value",
+        "backup_region": "backup_region_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
