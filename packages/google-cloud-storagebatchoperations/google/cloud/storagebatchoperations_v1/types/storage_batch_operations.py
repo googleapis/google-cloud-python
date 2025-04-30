@@ -42,8 +42,7 @@ class ListJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Format:
-            projects/{project_id}/locations/{location_id} .
+            Required. Format: projects/{project_id}/locations/global.
         filter (str):
             Optional. Filters results as defined by
             https://google.aip.dev/160.
@@ -116,8 +115,7 @@ class GetJobRequest(proto.Message):
     Attributes:
         name (str):
             Required. ``name`` of the job to retrieve. Format:
-            projects/{project_id}/locations/{location_id}/jobs/{job_id}
-            .
+            projects/{project_id}/locations/global/jobs/{job_id} .
     """
 
     name: str = proto.Field(
@@ -173,7 +171,7 @@ class CancelJobRequest(proto.Message):
     Attributes:
         name (str):
             Required. The ``name`` of the job to cancel. Format:
-            projects/{project_id}/locations/{location_id}/jobs/{job_id}.
+            projects/{project_id}/locations/global/jobs/{job_id}.
         request_id (str):
             Optional. An optional request ID to identify requests.
             Specify a unique request ID in case you need to retry your
@@ -199,8 +197,7 @@ class DeleteJobRequest(proto.Message):
     Attributes:
         name (str):
             Required. The ``name`` of the job to delete. Format:
-            projects/{project_id}/locations/{location_id}/jobs/{job_id}
-            .
+            projects/{project_id}/locations/global/jobs/{job_id} .
         request_id (str):
             Optional. An optional request ID to identify requests.
             Specify a unique request ID in case you need to retry your
@@ -231,7 +228,7 @@ class OperationMetadata(proto.Message):
         operation (str):
             Output only. The unique operation resource
             name. Format:
-            projects/{project}/locations/{location}/operations/{operation}.
+            projects/{project}/locations/global/operations/{operation}.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the operation was
             created.

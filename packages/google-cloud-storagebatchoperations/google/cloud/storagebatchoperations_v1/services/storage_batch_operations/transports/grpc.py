@@ -355,7 +355,7 @@ class StorageBatchOperationsGrpcTransport(StorageBatchOperationsTransport):
     ]:
         r"""Return a callable for the list jobs method over gRPC.
 
-        Lists Jobs in a given project and location.
+        Lists Jobs in a given project.
 
         Returns:
             Callable[[~.ListJobsRequest],
