@@ -20,9 +20,11 @@ import typing
 
 from google.cloud import bigquery
 import pyarrow as pa
+import sqlglot.expressions as sge
 
 from bigframes.core import expression, identifiers, nodes, rewrite
 from bigframes.core.compile import configs
+import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 import bigframes.core.compile.sqlglot.sqlglot_ir as ir
 import bigframes.core.ordering as bf_ordering
 
@@ -38,7 +40,7 @@ class SQLGlotCompiler:
         ordered: bool = True,
         limit: typing.Optional[int] = None,
     ) -> str:
-        """Compile node into sql where rows are sorted with ORDER BY."""
+        """Compiles node into sql where rows are sorted with ORDER BY."""
         request = configs.CompileRequest(node, sort_rows=ordered, peek_count=limit)
         return self._compile_sql(request).sql
 
@@ -48,7 +50,7 @@ class SQLGlotCompiler:
     ) -> typing.Tuple[
         str, typing.Sequence[bigquery.SchemaField], bf_ordering.RowOrdering
     ]:
-        """Compile node into sql that exposes all columns, including hidden
+        """Compiles node into sql that exposes all columns, including hidden
         ordering-only columns."""
         request = configs.CompileRequest(
             node, sort_rows=False, materialize_all_order_keys=True
@@ -163,6 +165,9 @@ def compile_readlocal(node: nodes.ReadLocalNode, *args) -> ir.SQLGlotIR:
 
 
 @_compile_node.register
-def compile_selection(node: nodes.SelectionNode, child: ir.SQLGlotIR):
-    # TODO: add support for selection
-    return child
+def compile_selection(node: nodes.SelectionNode, child: ir.SQLGlotIR) -> ir.SQLGlotIR:
+    select_cols: typing.Dict[str, sge.Expression] = {
+        id.name: scalar_compiler.compile_scalar_expression(expr)
+        for expr, id in node.input_output_pairs
+    }
+    return child.select(select_cols)

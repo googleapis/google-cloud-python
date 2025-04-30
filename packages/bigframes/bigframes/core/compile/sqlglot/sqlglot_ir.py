@@ -30,7 +30,7 @@ import bigframes.core.compile.sqlglot.sqlglot_types as sgt
 class SQLGlotIR:
     """Helper class to build SQLGlot Query and generate SQL string."""
 
-    expr: sge.Expression = sge.Expression()
+    expr: sge.Select = sg.select()
     """The SQLGlot expression representing the query."""
 
     dialect = sqlglot.dialects.bigquery.BigQuery
@@ -89,6 +89,20 @@ class SQLGlotIR:
             ],
         )
         return cls(expr=sg.select(sge.Star()).from_(expr))
+
+    def select(
+        self,
+        select_cols: typing.Dict[str, sge.Expression],
+    ) -> SQLGlotIR:
+        selected_cols = [
+            sge.Alias(
+                this=expr,
+                alias=sge.to_identifier(id, quoted=self.quoted),
+            )
+            for id, expr in select_cols.items()
+        ]
+        expr = self.expr.select(*selected_cols, append=False)
+        return SQLGlotIR(expr=expr)
 
 
 def _literal(value: typing.Any, dtype: str) -> sge.Expression:
