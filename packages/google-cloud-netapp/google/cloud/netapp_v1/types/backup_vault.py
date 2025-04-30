@@ -51,6 +51,23 @@ class BackupVault(proto.Message):
         labels (MutableMapping[str, str]):
             Resource labels to represent user provided
             metadata.
+        backup_vault_type (google.cloud.netapp_v1.types.BackupVault.BackupVaultType):
+            Optional. Type of backup vault to be created. Default is
+            IN_REGION.
+        source_region (str):
+            Output only. Region in which the backup vault is created.
+            Format: ``projects/{project_id}/locations/{location}``
+        backup_region (str):
+            Optional. Region where the backups are stored. Format:
+            ``projects/{project_id}/locations/{location}``
+        source_backup_vault (str):
+            Output only. Name of the Backup vault created in source
+            region. Format:
+            ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}``
+        destination_backup_vault (str):
+            Output only. Name of the Backup vault created in backup
+            region. Format:
+            ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}``
     """
 
     class State(proto.Enum):
@@ -77,6 +94,21 @@ class BackupVault(proto.Message):
         ERROR = 4
         UPDATING = 5
 
+    class BackupVaultType(proto.Enum):
+        r"""Backup Vault Type.
+
+        Values:
+            BACKUP_VAULT_TYPE_UNSPECIFIED (0):
+                BackupVault type not set.
+            IN_REGION (1):
+                BackupVault type is IN_REGION.
+            CROSS_REGION (2):
+                BackupVault type is CROSS_REGION.
+        """
+        BACKUP_VAULT_TYPE_UNSPECIFIED = 0
+        IN_REGION = 1
+        CROSS_REGION = 2
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -99,6 +131,27 @@ class BackupVault(proto.Message):
         proto.STRING,
         proto.STRING,
         number=5,
+    )
+    backup_vault_type: BackupVaultType = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=BackupVaultType,
+    )
+    source_region: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    backup_region: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    source_backup_vault: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    destination_backup_vault: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 

@@ -82,6 +82,13 @@ class Backup(proto.Message):
             Output only. Reserved for future use
         satisfies_pzi (bool):
             Output only. Reserved for future use
+        volume_region (str):
+            Output only. Region of the volume from which the backup was
+            created. Format:
+            ``projects/{project_id}/locations/{location}``
+        backup_region (str):
+            Output only. Region in which backup is stored. Format:
+            ``projects/{project_id}/locations/{location}``
     """
 
     class State(proto.Enum):
@@ -185,6 +192,14 @@ class Backup(proto.Message):
     satisfies_pzi: bool = proto.Field(
         proto.BOOL,
         number=12,
+    )
+    volume_region: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    backup_region: str = proto.Field(
+        proto.STRING,
+        number=14,
     )
 
 
