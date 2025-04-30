@@ -740,7 +740,8 @@ class TaskRetryPolicy(proto.Message):
     delay between consecutive task restarts may not always precisely
     match the configured settings. This can happen when the
     ConnectCluster is in rebalancing state or if the ConnectCluster is
-    unresponsive etc.
+    unresponsive etc. The default values for minimum and maximum
+    backoffs are 60 seconds and 30 minutes respectively.
 
     Attributes:
         minimum_backoff (google.protobuf.duration_pb2.Duration):
