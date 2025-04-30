@@ -321,7 +321,7 @@ class StorageBatchOperationsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListJobsAsyncPager:
-        r"""Lists Jobs in a given project and location.
+        r"""Lists Jobs in a given project.
 
         .. code-block:: python
 
@@ -355,7 +355,7 @@ class StorageBatchOperationsAsyncClient:
                 The request object. Message for request to list Jobs
             parent (:class:`str`):
                 Required. Format:
-                projects/{project_id}/locations/{location_id} .
+                projects/{project_id}/locations/global.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -479,8 +479,7 @@ class StorageBatchOperationsAsyncClient:
                 The request object. Message for getting a Job
             name (:class:`str`):
                 Required. ``name`` of the job to retrieve. Format:
-                projects/{project_id}/locations/{location_id}/jobs/{job_id}
-                .
+                projects/{project_id}/locations/global/jobs/{job_id} .
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -740,8 +739,7 @@ class StorageBatchOperationsAsyncClient:
                 The request object. Message for deleting a Job
             name (:class:`str`):
                 Required. The ``name`` of the job to delete. Format:
-                projects/{project_id}/locations/{location_id}/jobs/{job_id}
-                .
+                projects/{project_id}/locations/global/jobs/{job_id} .
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -844,7 +842,7 @@ class StorageBatchOperationsAsyncClient:
                 The request object. Message for Job to Cancel
             name (:class:`str`):
                 Required. The ``name`` of the job to cancel. Format:
-                projects/{project_id}/locations/{location_id}/jobs/{job_id}.
+                projects/{project_id}/locations/global/jobs/{job_id}.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
