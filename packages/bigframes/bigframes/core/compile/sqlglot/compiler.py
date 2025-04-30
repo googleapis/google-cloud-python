@@ -146,22 +146,17 @@ def _compile_node(
 
 @_compile_node.register
 def compile_readlocal(node: nodes.ReadLocalNode, *args) -> ir.SQLGlotIR:
-    offsets = node.offsets_col.sql if node.offsets_col else None
-    schema_names = node.schema.names
-    schema_dtypes = node.schema.dtypes
-
     pa_table = node.local_data_source.data
     pa_table = pa_table.select([item.source_id for item in node.scan_list.items])
-    pa_table = pa_table.rename_columns(
-        {item.source_id: item.id.sql for item in node.scan_list.items}
-    )
+    pa_table = pa_table.rename_columns([item.id.sql for item in node.scan_list.items])
 
+    offsets = node.offsets_col.sql if node.offsets_col else None
     if offsets:
         pa_table = pa_table.append_column(
             offsets, pa.array(range(pa_table.num_rows), type=pa.int64())
         )
 
-    return ir.SQLGlotIR.from_pandas(pa_table.to_pandas(), schema_names, schema_dtypes)
+    return ir.SQLGlotIR.from_pyarrow(pa_table, node.schema)
 
 
 @_compile_node.register

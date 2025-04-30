@@ -17,13 +17,23 @@ from __future__ import annotations
 import dataclasses
 import typing
 
-import pandas as pd
+import pyarrow as pa
 import sqlglot as sg
 import sqlglot.dialects.bigquery
 import sqlglot.expressions as sge
 
 from bigframes import dtypes
 import bigframes.core.compile.sqlglot.sqlglot_types as sgt
+import bigframes.core.local_data as local_data
+import bigframes.core.schema as schemata
+
+# shapely.wkt.dumps was moved to shapely.io.to_wkt in 2.0.
+try:
+    from shapely.io import to_wkt  # type: ignore
+except ImportError:
+    from shapely.wkt import dumps  # type: ignore
+
+    to_wkt = dumps
 
 
 @dataclasses.dataclass(frozen=True)
@@ -48,35 +58,32 @@ class SQLGlotIR:
         return self.expr.sql(dialect=self.dialect, pretty=self.pretty)
 
     @classmethod
-    def from_pandas(
-        cls,
-        pd_df: pd.DataFrame,
-        schema_names: typing.Sequence[str],
-        schema_dtypes: typing.Sequence[dtypes.Dtype],
+    def from_pyarrow(
+        cls, pa_table: pa.Table, schema: schemata.ArraySchema
     ) -> SQLGlotIR:
         """Builds SQLGlot expression from pyarrow table."""
         dtype_expr = sge.DataType(
             this=sge.DataType.Type.STRUCT,
             expressions=[
                 sge.ColumnDef(
-                    this=sge.to_identifier(name, quoted=True),
-                    kind=sgt.SQLGlotType.from_bigframes_dtype(dtype),
+                    this=sge.to_identifier(field.column, quoted=True),
+                    kind=sgt.SQLGlotType.from_bigframes_dtype(field.dtype),
                 )
-                for name, dtype in zip(schema_names, schema_dtypes)
+                for field in schema.items
             ],
             nested=True,
         )
         data_expr = [
-            sge.Tuple(
+            sge.Struct(
                 expressions=tuple(
                     _literal(
                         value=value,
-                        dtype=sgt.SQLGlotType.from_bigframes_dtype(dtype),
+                        dtype=field.dtype,
                     )
-                    for value, dtype in zip(row, schema_dtypes)
+                    for value, field in zip(tuple(row_dict.values()), schema.items)
                 )
             )
-            for _, row in pd_df.iterrows()
+            for row_dict in local_data._iter_table(pa_table, schema)
         ]
         expr = sge.Unnest(
             expressions=[
@@ -105,13 +112,36 @@ class SQLGlotIR:
         return SQLGlotIR(expr=expr)
 
 
-def _literal(value: typing.Any, dtype: str) -> sge.Expression:
+def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
+    sqlglot_type = sgt.SQLGlotType.from_bigframes_dtype(dtype)
     if value is None:
-        return _cast(sge.Null(), dtype)
+        return _cast(sge.Null(), sqlglot_type)
+    elif dtype == dtypes.BYTES_DTYPE:
+        return _cast(str(value), sqlglot_type)
+    elif dtypes.is_time_like(dtype):
+        return _cast(sge.convert(value.isoformat()), sqlglot_type)
+    elif dtypes.is_geo_like(dtype):
+        wkt = value if isinstance(value, str) else to_wkt(value)
+        return sge.func("ST_GEOGFROMTEXT", sge.convert(wkt))
+    elif dtype == dtypes.JSON_DTYPE:
+        return sge.ParseJSON(this=sge.convert(str(value)))
+    elif dtypes.is_struct_like(dtype):
+        items = [
+            _literal(value=value[field_name], dtype=field_dtype).as_(
+                field_name, quoted=True
+            )
+            for field_name, field_dtype in dtypes.get_struct_fields(dtype).items()
+        ]
+        return sge.Struct.from_arg_list(items)
+    elif dtypes.is_array_like(dtype):
+        value_type = dtypes.get_array_inner_type(dtype)
+        values = sge.Array(
+            expressions=[_literal(value=v, dtype=value_type) for v in value]
+        )
+        return values if len(value) > 0 else _cast(values, sqlglot_type)
+    else:
+        return sge.convert(value)
 
-    # TODO: handle other types like visit_DefaultLiteral
-    return sge.convert(value)
 
-
-def _cast(arg, to) -> sge.Cast:
+def _cast(arg: typing.Any, to: str) -> sge.Cast:
     return sge.Cast(this=arg, to=to)

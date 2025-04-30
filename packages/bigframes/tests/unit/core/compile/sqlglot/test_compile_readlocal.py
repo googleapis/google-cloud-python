@@ -22,7 +22,34 @@ pytest.importorskip("pytest_snapshot")
 
 
 def test_compile_readlocal(
-    all_types_df: pd.DataFrame, compiler_session: bigframes.Session, snapshot
+    scalars_types_pandas_df: pd.DataFrame, compiler_session: bigframes.Session, snapshot
 ):
-    bf_df = bpd.DataFrame(all_types_df, session=compiler_session)
+    bf_df = bpd.DataFrame(scalars_types_pandas_df, session=compiler_session)
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_compile_readlocal_w_structs_df(
+    nested_structs_pandas_df: pd.DataFrame,
+    compiler_session: bigframes.Session,
+    snapshot,
+):
+    bf_df = bpd.DataFrame(nested_structs_pandas_df, session=compiler_session)
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_compile_readlocal_w_lists_df(
+    repeated_pandas_df: pd.DataFrame,
+    compiler_session: bigframes.Session,
+    snapshot,
+):
+    bf_df = bpd.DataFrame(repeated_pandas_df, session=compiler_session)
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_compile_readlocal_w_json_df(
+    json_pandas_df: pd.DataFrame,
+    compiler_session: bigframes.Session,
+    snapshot,
+):
+    bf_df = bpd.DataFrame(json_pandas_df, session=compiler_session)
     snapshot.assert_match(bf_df.sql, "out.sql")

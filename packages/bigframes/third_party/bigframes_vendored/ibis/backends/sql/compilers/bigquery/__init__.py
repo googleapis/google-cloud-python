@@ -1067,7 +1067,6 @@ class BigQueryCompiler(SQLGlotCompiler):
                 columns=columns,
             ),
         )
-        # return expr
         return sg.select(sge.Star()).from_(expr)
 
     def visit_ArrayAggregate(self, op, *, arg, order_by, where):
