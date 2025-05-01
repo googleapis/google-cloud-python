@@ -73,6 +73,17 @@ class ExecuteResult:
         return column[0]
 
 
+@dataclasses.dataclass(frozen=True)
+class HierarchicalKey:
+    columns: tuple[str, ...]
+
+
+@dataclasses.dataclass(frozen=True)
+class CacheConfig(abc.ABC):
+    optimize_for: Union[Literal["auto", "head"], HierarchicalKey] = "auto"
+    if_cached: Literal["reuse-strict", "reuse-any", "replace"] = "reuse-any"
+
+
 class Executor(abc.ABC):
     """
     Interface for an executor, which compiles and executes ArrayValue objects.
@@ -149,21 +160,10 @@ class Executor(abc.ABC):
         """
         raise NotImplementedError("peek not implemented for this executor")
 
-    # TODO: Remove this and replace with efficient slice operator that can use execute()
-    def head(
-        self, array_value: bigframes.core.ArrayValue, n_rows: int
-    ) -> ExecuteResult:
-        """
-        Preview the first n rows of the dataframe. This is less efficient than the unordered peek preview op.
-        """
-        raise NotImplementedError("head not implemented for this executor")
-
     def cached(
         self,
         array_value: bigframes.core.ArrayValue,
         *,
-        force: bool = False,
-        use_session: bool = False,
-        cluster_cols: Sequence[str] = (),
+        config: CacheConfig,
     ) -> None:
         raise NotImplementedError("cached not implemented for this executor")

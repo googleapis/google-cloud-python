@@ -243,46 +243,37 @@ class BigQueryCachingExecutor(executor.Executor):
             plan, ordered=False, destination=destination_table, peek=n_rows
         )
 
-    def head(
-        self, array_value: bigframes.core.ArrayValue, n_rows: int
-    ) -> executor.ExecuteResult:
-        plan = self.logical_plan(array_value.node)
-        if (plan.row_count is not None) and (plan.row_count <= n_rows):
-            return self._execute_plan(plan, ordered=True)
-
-        if not self.strictly_ordered and not array_value.node.explicitly_ordered:
-            # No user-provided ordering, so just get any N rows, its faster!
-            return self.peek(array_value, n_rows)
-
-        if not tree_properties.can_fast_head(plan):
-            # If can't get head fast, we are going to need to execute the whole query
-            # Will want to do this in a way such that the result is reusable, but the first
-            # N values can be easily extracted.
-            # This currently requires clustering on offsets.
-            self._cache_with_offsets(array_value)
-            # Get a new optimized plan after caching
-            plan = self.logical_plan(array_value.node)
-            assert tree_properties.can_fast_head(plan)
-
-        head_plan = generate_head_plan(plan, n_rows)
-        return self._execute_plan(head_plan, ordered=True)
-
     def cached(
-        self,
-        array_value: bigframes.core.ArrayValue,
-        *,
-        force: bool = False,
-        use_session: bool = False,
-        cluster_cols: Sequence[str] = (),
+        self, array_value: bigframes.core.ArrayValue, *, config: executor.CacheConfig
     ) -> None:
         """Write the block to a session table."""
-        # use a heuristic for whether something needs to be cached
-        if (not force) and self._is_trivially_executable(array_value):
-            return
-        if use_session:
+        # First, see if we can reuse the existing cache
+        # TODO(b/415105423): Provide feedback to user on whether new caching action was deemed necessary
+        # TODO(b/415105218): Make cached a deferred action
+        if config.if_cached == "reuse-any":
+            if self._is_trivially_executable(array_value):
+                return
+        elif config.if_cached == "reuse-strict":
+            # This path basically exists to make sure that repr in head mode is optimized for subsequent repr operations.
+            if config.optimize_for == "head":
+                if tree_properties.can_fast_head(array_value.node):
+                    return
+            else:
+                raise NotImplementedError(
+                    "if_cached='reuse-strict' currently only supported with optimize_for='head'"
+                )
+        elif config.if_cached != "replace":
+            raise ValueError(f"Unexpected 'if_cached' arg: {config.if_cached}")
+
+        if config.optimize_for == "auto":
             self._cache_with_session_awareness(array_value)
+        elif config.optimize_for == "head":
+            self._cache_with_offsets(array_value)
         else:
-            self._cache_with_cluster_cols(array_value, cluster_cols=cluster_cols)
+            assert isinstance(config.optimize_for, executor.HierarchicalKey)
+            self._cache_with_cluster_cols(
+                array_value, cluster_cols=config.optimize_for.columns
+            )
 
     # Helpers
     def _run_execute_query(
@@ -571,7 +562,3 @@ def _sanitize(
         )
         for f in schema
     )
-
-
-def generate_head_plan(node: nodes.BigFrameNode, n: int):
-    return nodes.SliceNode(node, start=None, stop=n)
