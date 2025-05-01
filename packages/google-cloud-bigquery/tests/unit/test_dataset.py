@@ -1049,6 +1049,7 @@ class TestDataset(unittest.TestCase):
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.location)
         self.assertEqual(dataset.is_case_insensitive, False)
+        self.assertIsNone(dataset.access_policy_version)
 
     def test_ctor_string(self):
         dataset = self._make_one("some-project.some_dset")
@@ -1422,6 +1423,35 @@ class TestDataset(unittest.TestCase):
         result = dataset.to_api_repr()["externalCatalogDatasetOptions"]
         expected = api_repr["externalCatalogDatasetOptions"]
         assert result == expected
+
+    def test_access_policy_version_valid_input(self):
+        dataset = self._make_one(self.DS_REF)
+        # Valid inputs for access_policy_version are currently
+        # ints 1, 2, 3, and None
+        # We rely upon the BQ backend to validate acceptable integer
+        # values, rather than perform that validation in the client.
+        for expected in [1, 2, 3, None]:
+            # set property using setter and integer
+            dataset.access_policy_version = expected
+
+            # check getter and _properties dict
+            assert (
+                dataset.access_policy_version == expected
+            ), f"Expected {expected} but got {dataset.access_policy_version}"
+            assert dataset._properties["accessPolicyVersion"] == expected
+
+    def test_access_policy_version_invalid_input(self):
+        dataset = self._make_one(self.DS_REF)
+        # Valid inputs for access_policy_version are currently
+        # ints 1, 2, 3, and None
+
+        with pytest.raises(ValueError):
+            invalid_value = "a string"
+            dataset.access_policy_version = invalid_value
+
+        with pytest.raises(ValueError):
+            invalid_value = 42.0
+            dataset.access_policy_version = invalid_value
 
 
 class TestDatasetListItem(unittest.TestCase):
