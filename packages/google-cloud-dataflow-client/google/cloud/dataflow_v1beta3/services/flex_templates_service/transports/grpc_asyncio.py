@@ -116,8 +116,7 @@ class _LoggingClientAIOInterceptor(
 class FlexTemplatesServiceGrpcAsyncIOTransport(FlexTemplatesServiceTransport):
     """gRPC AsyncIO backend transport for FlexTemplatesService.
 
-    Provides a service for Flex templates. This feature is not
-    ready yet.
+    Provides a service for Flex templates.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

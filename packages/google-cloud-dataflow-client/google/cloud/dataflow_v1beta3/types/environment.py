@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "AutoscalingAlgorithm",
         "WorkerIPAddressConfiguration",
         "ShuffleMode",
+        "StreamingMode",
         "Environment",
         "Package",
         "Disk",
@@ -39,6 +40,7 @@ __protobuf__ = proto.module(
         "AutoscalingSettings",
         "SdkHarnessContainerImage",
         "WorkerPool",
+        "DataSamplingConfig",
         "DebugOptions",
     },
 )
@@ -155,8 +157,10 @@ class AutoscalingAlgorithm(proto.Enum):
 
 
 class WorkerIPAddressConfiguration(proto.Enum):
-    r"""Specifies how IP addresses should be allocated to the worker
-    machines.
+    r"""Specifies how to allocate IP addresses to worker machines. You can
+    also use `pipeline
+    options <https://cloud.google.com/dataflow/docs/reference/pipeline-options#security_and_networking>`__
+    to specify whether Dataflow workers use external IP addresses.
 
     Values:
         WORKER_IP_UNSPECIFIED (0):
@@ -190,6 +194,35 @@ class ShuffleMode(proto.Enum):
     SERVICE_BASED = 2
 
 
+class StreamingMode(proto.Enum):
+    r"""Specifies the Streaming Engine message processing guarantees.
+    Reduces cost and latency but might result in duplicate messages
+    written to storage. Designed to run simple mapping streaming ETL
+    jobs at the lowest cost. For example, Change Data Capture (CDC) to
+    BigQuery is a canonical use case. For more information, see `Set the
+    pipeline streaming
+    mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
+
+    Values:
+        STREAMING_MODE_UNSPECIFIED (0):
+            Run in the default mode.
+        STREAMING_MODE_EXACTLY_ONCE (1):
+            In this mode, message deduplication is
+            performed against persistent state to make sure
+            each message is processed and committed to
+            storage exactly once.
+        STREAMING_MODE_AT_LEAST_ONCE (2):
+            Message deduplication is not performed.
+            Messages might be processed multiple times, and
+            the results are applied multiple times. Note:
+            Setting this value also enables Streaming Engine
+            and Streaming Engine resource-based billing.
+    """
+    STREAMING_MODE_UNSPECIFIED = 0
+    STREAMING_MODE_EXACTLY_ONCE = 1
+    STREAMING_MODE_AT_LEAST_ONCE = 2
+
+
 class Environment(proto.Message):
     r"""Describes the environment in which a Dataflow Job runs.
 
@@ -220,16 +253,16 @@ class Environment(proto.Message):
             experiments. The proper field for service related
             experiments is service_options.
         service_options (MutableSequence[str]):
-            The list of service options to enable. This
-            field should be used for service related
-            experiments only. These experiments, when
-            graduating to GA, should be replaced by
+            Optional. The list of service options to
+            enable. This field should be used for service
+            related experiments only. These experiments,
+            when graduating to GA, should be replaced by
             dedicated fields or become default (i.e. always
             on).
         service_kms_key_name (str):
-            If set, contains the Cloud KMS key identifier used to
-            encrypt data at rest, AKA a Customer Managed Encryption Key
-            (CMEK).
+            Optional. If set, contains the Cloud KMS key identifier used
+            to encrypt data at rest, AKA a Customer Managed Encryption
+            Key (CMEK).
 
             Format:
             projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
@@ -245,8 +278,9 @@ class Environment(proto.Message):
             their versions of the service are required in
             order to run the job.
         dataset (str):
-            The dataset for the current project where
-            various workflow related tables are stored.
+            Optional. The dataset for the current project
+            where various workflow related tables are
+            stored.
 
             The supported resource type is:
 
@@ -262,20 +296,20 @@ class Environment(proto.Message):
         internal_experiments (google.protobuf.any_pb2.Any):
             Experimental settings.
         service_account_email (str):
-            Identity to run virtual machines as. Defaults
-            to the default account.
+            Optional. Identity to run virtual machines
+            as. Defaults to the default account.
         flex_resource_scheduling_goal (google.cloud.dataflow_v1beta3.types.FlexResourceSchedulingGoal):
-            Which Flexible Resource Scheduling mode to
-            run in.
+            Optional. Which Flexible Resource Scheduling
+            mode to run in.
         worker_region (str):
-            The Compute Engine region
+            Optional. The Compute Engine region
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
             in which worker processing should occur, e.g. "us-west1".
             Mutually exclusive with worker_zone. If neither
             worker_region nor worker_zone is specified, default to the
             control plane's region.
         worker_zone (str):
-            The Compute Engine zone
+            Optional. The Compute Engine zone
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
             in which worker processing should occur, e.g. "us-west1-a".
             Mutually exclusive with worker_region. If neither
@@ -286,8 +320,20 @@ class Environment(proto.Message):
             Output only. The shuffle mode used for the
             job.
         debug_options (google.cloud.dataflow_v1beta3.types.DebugOptions):
-            Any debugging options to be supplied to the
-            job.
+            Optional. Any debugging options to be
+            supplied to the job.
+        use_streaming_engine_resource_based_billing (bool):
+            Output only. Whether the job uses the
+            Streaming Engine resource-based billing model.
+        streaming_mode (google.cloud.dataflow_v1beta3.types.StreamingMode):
+            Optional. Specifies the Streaming Engine message processing
+            guarantees. Reduces cost and latency but might result in
+            duplicate messages committed to storage. Designed to run
+            simple mapping streaming ETL jobs at the lowest cost. For
+            example, Change Data Capture (CDC) to BigQuery is a
+            canonical use case. For more information, see `Set the
+            pipeline streaming
+            mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
     """
 
     temp_storage_prefix: str = proto.Field(
@@ -365,6 +411,15 @@ class Environment(proto.Message):
         proto.MESSAGE,
         number=17,
         message="DebugOptions",
+    )
+    use_streaming_engine_resource_based_billing: bool = proto.Field(
+        proto.BOOL,
+        number=18,
+    )
+    streaming_mode: "StreamingMode" = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum="StreamingMode",
     )
 
 
@@ -699,7 +754,7 @@ class AutoscalingSettings(proto.Message):
 
 
 class SdkHarnessContainerImage(proto.Message):
-    r"""Defines a SDK harness container for executing Dataflow
+    r"""Defines an SDK harness container for executing Dataflow
     pipelines.
 
     Attributes:
@@ -721,7 +776,7 @@ class SdkHarnessContainerImage(proto.Message):
         capabilities (MutableSequence[str]):
             The set of capabilities enumerated in the above Environment
             proto. See also
-            https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/beam_runner_api.proto
+            `beam_runner_api.proto <https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/org/apache/beam/model/pipeline/v1/beam_runner_api.proto>`__
     """
 
     container_image: str = proto.Field(
@@ -953,19 +1008,74 @@ class WorkerPool(proto.Message):
     )
 
 
+class DataSamplingConfig(proto.Message):
+    r"""Configuration options for sampling elements.
+
+    Attributes:
+        behaviors (MutableSequence[google.cloud.dataflow_v1beta3.types.DataSamplingConfig.DataSamplingBehavior]):
+            List of given sampling behaviors to enable. For example,
+            specifying behaviors = [ALWAYS_ON] samples in-flight
+            elements but does not sample exceptions. Can be used to
+            specify multiple behaviors like, behaviors = [ALWAYS_ON,
+            EXCEPTIONS] for specifying periodic sampling and exception
+            sampling.
+
+            If DISABLED is in the list, then sampling will be disabled
+            and ignore the other given behaviors.
+
+            Ordering does not matter.
+    """
+
+    class DataSamplingBehavior(proto.Enum):
+        r"""The following enum defines what to sample for a running job.
+
+        Values:
+            DATA_SAMPLING_BEHAVIOR_UNSPECIFIED (0):
+                If given, has no effect on sampling behavior.
+                Used as an unknown or unset sentinel value.
+            DISABLED (1):
+                When given, disables element sampling. Has
+                same behavior as not setting the behavior.
+            ALWAYS_ON (2):
+                When given, enables sampling in-flight from
+                all PCollections.
+            EXCEPTIONS (3):
+                When given, enables sampling input elements
+                when a user-defined DoFn causes an exception.
+        """
+        DATA_SAMPLING_BEHAVIOR_UNSPECIFIED = 0
+        DISABLED = 1
+        ALWAYS_ON = 2
+        EXCEPTIONS = 3
+
+    behaviors: MutableSequence[DataSamplingBehavior] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum=DataSamplingBehavior,
+    )
+
+
 class DebugOptions(proto.Message):
     r"""Describes any options that have an effect on the debugging of
     pipelines.
 
     Attributes:
         enable_hot_key_logging (bool):
-            When true, enables the logging of the literal
-            hot key to the user's Cloud Logging.
+            Optional. When true, enables the logging of
+            the literal hot key to the user's Cloud Logging.
+        data_sampling (google.cloud.dataflow_v1beta3.types.DataSamplingConfig):
+            Configuration options for sampling elements
+            from a running pipeline.
     """
 
     enable_hot_key_logging: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+    data_sampling: "DataSamplingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DataSamplingConfig",
     )
 
 

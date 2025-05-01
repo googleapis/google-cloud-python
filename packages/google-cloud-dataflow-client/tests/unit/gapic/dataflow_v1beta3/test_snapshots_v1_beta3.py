@@ -1133,8 +1133,6 @@ def test_snapshots_v1_beta3_client_create_channel_credentials_file(
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             scopes=None,
             default_host="dataflow.googleapis.com",
@@ -2820,8 +2818,6 @@ def test_snapshots_v1_beta3_base_transport_with_credentials_file():
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             quota_project_id="octopus",
         )
@@ -2848,8 +2844,6 @@ def test_snapshots_v1_beta3_auth_adc():
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             quota_project_id=None,
         )
@@ -2873,8 +2867,6 @@ def test_snapshots_v1_beta3_transport_auth_adc(transport_class):
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             quota_project_id="octopus",
         )
@@ -2930,8 +2922,6 @@ def test_snapshots_v1_beta3_transport_create_channel(transport_class, grpc_helpe
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             scopes=["1", "2"],
             default_host="dataflow.googleapis.com",

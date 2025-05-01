@@ -333,6 +333,9 @@ class JobsV1Beta3GrpcTransport(JobsV1Beta3Transport):
         Using ``projects.jobs.create`` is not recommended, as your job
         will always start in ``us-central1``.
 
+        Do not enter confidential information when you supply string
+        values using the API.
+
         Returns:
             Callable[[~.CreateJobRequest],
                     ~.Job]:
@@ -423,8 +426,12 @@ class JobsV1Beta3GrpcTransport(JobsV1Beta3Transport):
         (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints).
         To list the all jobs across all regions, use
         ``projects.jobs.aggregated``. Using ``projects.jobs.list`` is
-        not recommended, as you can only get the list of jobs that are
-        running in ``us-central1``.
+        not recommended, because you can only get the list of jobs that
+        are running in ``us-central1``.
+
+        ``projects.locations.jobs.list`` and ``projects.jobs.list``
+        support filtering the list of jobs by name. Filtering by name
+        isn't supported by ``projects.jobs.aggregated``.
 
         Returns:
             Callable[[~.ListJobsRequest],
@@ -451,6 +458,9 @@ class JobsV1Beta3GrpcTransport(JobsV1Beta3Transport):
         r"""Return a callable for the aggregated list jobs method over gRPC.
 
         List the jobs of a project across all regions.
+
+        **Note:** This method doesn't support filtering the list of jobs
+        by name.
 
         Returns:
             Callable[[~.ListJobsRequest],

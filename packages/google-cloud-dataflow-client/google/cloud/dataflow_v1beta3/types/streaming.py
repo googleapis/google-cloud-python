@@ -115,6 +115,9 @@ class PubsubLocation(proto.Message):
         with_attributes (bool):
             If true, then the client has requested to get
             pubsub attributes.
+        dynamic_destinations (bool):
+            If true, then this location represents
+            dynamic topics.
     """
 
     topic: str = proto.Field(
@@ -144,6 +147,10 @@ class PubsubLocation(proto.Message):
     with_attributes: bool = proto.Field(
         proto.BOOL,
         number=7,
+    )
+    dynamic_destinations: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 

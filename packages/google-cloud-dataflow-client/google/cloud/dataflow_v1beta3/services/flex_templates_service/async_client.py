@@ -60,9 +60,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class FlexTemplatesServiceAsyncClient:
-    """Provides a service for Flex templates. This feature is not
-    ready yet.
-    """
+    """Provides a service for Flex templates."""
 
     _client: FlexTemplatesServiceClient
 

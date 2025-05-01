@@ -106,9 +106,7 @@ class FlexTemplatesServiceClientMeta(type):
 
 
 class FlexTemplatesServiceClient(metaclass=FlexTemplatesServiceClientMeta):
-    """Provides a service for Flex templates. This feature is not
-    ready yet.
-    """
+    """Provides a service for Flex templates."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):

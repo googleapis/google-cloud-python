@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "FlexTemplateRuntimeEnvironment",
         "LaunchFlexTemplateRequest",
         "RuntimeEnvironment",
+        "ParameterMetadataEnumOption",
         "ParameterMetadata",
         "TemplateMetadata",
         "SDKInfo",
@@ -81,6 +82,41 @@ class ParameterType(proto.Enum):
         PUBSUB_SUBSCRIPTION (9):
             The parameter specifies a Pub/Sub
             Subscription.
+        BIGQUERY_TABLE (10):
+            The parameter specifies a BigQuery table.
+        JAVASCRIPT_UDF_FILE (11):
+            The parameter specifies a JavaScript UDF in
+            Cloud Storage.
+        SERVICE_ACCOUNT (12):
+            The parameter specifies a Service Account
+            email.
+        MACHINE_TYPE (13):
+            The parameter specifies a Machine Type.
+        KMS_KEY_NAME (14):
+            The parameter specifies a KMS Key name.
+        WORKER_REGION (15):
+            The parameter specifies a Worker Region.
+        WORKER_ZONE (16):
+            The parameter specifies a Worker Zone.
+        BOOLEAN (17):
+            The parameter specifies a boolean input.
+        ENUM (18):
+            The parameter specifies an enum input.
+        NUMBER (19):
+            The parameter specifies a number input.
+        KAFKA_TOPIC (20):
+            Deprecated. Please use KAFKA_READ_TOPIC instead.
+        KAFKA_READ_TOPIC (21):
+            The parameter specifies the fully-qualified
+            name of an Apache Kafka topic. This can be
+            either a Google Managed Kafka topic or a
+            non-managed Kafka topic.
+        KAFKA_WRITE_TOPIC (22):
+            The parameter specifies the fully-qualified
+            name of an Apache Kafka topic. This can be an
+            existing Google Managed Kafka topic, the name
+            for a new Google Managed Kafka topic, or an
+            existing non-managed Kafka topic.
     """
     DEFAULT = 0
     TEXT = 1
@@ -92,6 +128,19 @@ class ParameterType(proto.Enum):
     GCS_WRITE_FOLDER = 7
     PUBSUB_TOPIC = 8
     PUBSUB_SUBSCRIPTION = 9
+    BIGQUERY_TABLE = 10
+    JAVASCRIPT_UDF_FILE = 11
+    SERVICE_ACCOUNT = 12
+    MACHINE_TYPE = 13
+    KMS_KEY_NAME = 14
+    WORKER_REGION = 15
+    WORKER_ZONE = 16
+    BOOLEAN = 17
+    ENUM = 18
+    NUMBER = 19
+    KAFKA_TOPIC = 20
+    KAFKA_READ_TOPIC = 21
+    KAFKA_WRITE_TOPIC = 22
 
 
 class LaunchFlexTemplateResponse(proto.Message):
@@ -125,6 +174,15 @@ class ContainerSpec(proto.Message):
             Required. SDK info of the Flex Template.
         default_environment (google.cloud.dataflow_v1beta3.types.FlexTemplateRuntimeEnvironment):
             Default runtime environment for the job.
+        image_repository_username_secret_id (str):
+            Secret Manager secret id for username to
+            authenticate to private registry.
+        image_repository_password_secret_id (str):
+            Secret Manager secret id for password to
+            authenticate to private registry.
+        image_repository_cert_path (str):
+            Cloud Storage path to self-signed certificate
+            of private registry.
     """
 
     image: str = proto.Field(
@@ -145,6 +203,18 @@ class ContainerSpec(proto.Message):
         proto.MESSAGE,
         number=4,
         message="FlexTemplateRuntimeEnvironment",
+    )
+    image_repository_username_secret_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    image_repository_password_secret_id: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    image_repository_cert_path: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -236,6 +306,9 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
     r"""The environment values to be set at runtime for flex
     template.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         num_workers (int):
             The initial number of Google Compute Engine
@@ -321,19 +394,37 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
         autoscaling_algorithm (google.cloud.dataflow_v1beta3.types.AutoscalingAlgorithm):
             The algorithm to use for autoscaling
         dump_heap_on_oom (bool):
-            If true, save a heap dump before killing a
-            thread or process which is GC thrashing or out
-            of memory. The location of the heap file will
-            either be echoed back to the user, or the user
-            will be given the opportunity to download the
-            heap file.
+            If true, when processing time is spent almost
+            entirely on garbage collection (GC), saves a
+            heap dump before ending the thread or process.
+            If false, ends the thread or process without
+            saving a heap dump. Does not save a heap dump
+            when the Java Virtual Machine (JVM) has an out
+            of memory error during processing. The location
+            of the heap file is either echoed back to the
+            user, or the user is given the opportunity to
+            download the heap file.
         save_heap_dumps_to_gcs_path (str):
-            Cloud Storage bucket (directory) to upload heap dumps to the
-            given location. Enabling this implies that heap dumps should
-            be generated on OOM (dump_heap_on_oom is set to true).
+            Cloud Storage bucket (directory) to upload heap dumps to.
+            Enabling this field implies that ``dump_heap_on_oom`` is set
+            to true.
         launcher_machine_type (str):
             The machine type to use for launching the
             job. The default is n1-standard-1.
+        enable_launcher_vm_serial_port_logging (bool):
+            If true serial port logging will be enabled
+            for the launcher VM.
+        streaming_mode (google.cloud.dataflow_v1beta3.types.StreamingMode):
+            Optional. Specifies the Streaming Engine message processing
+            guarantees. Reduces cost and latency but might result in
+            duplicate messages committed to storage. Designed to run
+            simple mapping streaming ETL jobs at the lowest cost. For
+            example, Change Data Capture (CDC) to BigQuery is a
+            canonical use case. For more information, see `Set the
+            pipeline streaming
+            mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
+
+            This field is a member of `oneof`_ ``_streaming_mode``.
     """
 
     num_workers: int = proto.Field(
@@ -432,6 +523,16 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
         proto.STRING,
         number=24,
     )
+    enable_launcher_vm_serial_port_logging: bool = proto.Field(
+        proto.BOOL,
+        number=25,
+    )
+    streaming_mode: gd_environment.StreamingMode = proto.Field(
+        proto.ENUM,
+        number=26,
+        optional=True,
+        enum=gd_environment.StreamingMode,
+    )
 
 
 class LaunchFlexTemplateRequest(proto.Message):
@@ -475,69 +576,76 @@ class LaunchFlexTemplateRequest(proto.Message):
 class RuntimeEnvironment(proto.Message):
     r"""The environment values to set at runtime.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         num_workers (int):
-            The initial number of Google Compute Engine
-            instnaces for the job.
+            Optional. The initial number of Google
+            Compute Engine instances for the job. The
+            default value is 11.
         max_workers (int):
-            The maximum number of Google Compute Engine
-            instances to be made available to your pipeline
-            during execution, from 1 to 1000.
+            Optional. The maximum number of Google
+            Compute Engine instances to be made available to
+            your pipeline during execution, from 1 to 1000.
+            The default value is 1.
         zone (str):
-            The Compute Engine `availability
+            Optional. The Compute Engine `availability
             zone <https://cloud.google.com/compute/docs/regions-zones/regions-zones>`__
             for launching worker instances to run your pipeline. In the
             future, worker_zone will take precedence.
         service_account_email (str):
-            The email address of the service account to
-            run the job as.
+            Optional. The email address of the service
+            account to run the job as.
         temp_location (str):
-            The Cloud Storage path to use for temporary files. Must be a
-            valid Cloud Storage URL, beginning with ``gs://``.
+            Required. The Cloud Storage path to use for temporary files.
+            Must be a valid Cloud Storage URL, beginning with ``gs://``.
         bypass_temp_dir_validation (bool):
-            Whether to bypass the safety checks for the
-            job's temporary directory. Use with caution.
+            Optional. Whether to bypass the safety checks
+            for the job's temporary directory. Use with
+            caution.
         machine_type (str):
-            The machine type to use for the job. Defaults
-            to the value from the template if not specified.
+            Optional. The machine type to use for the
+            job. Defaults to the value from the template if
+            not specified.
         additional_experiments (MutableSequence[str]):
-            Additional experiment flags for the job, specified with the
-            ``--experiments`` option.
+            Optional. Additional experiment flags for the job, specified
+            with the ``--experiments`` option.
         network (str):
-            Network to which VMs will be assigned.  If
-            empty or unspecified, the service will use the
-            network "default".
+            Optional. Network to which VMs will be
+            assigned.  If empty or unspecified, the service
+            will use the network "default".
         subnetwork (str):
-            Subnetwork to which VMs will be assigned, if desired. You
-            can specify a subnetwork using either a complete URL or an
-            abbreviated path. Expected to be of the form
+            Optional. Subnetwork to which VMs will be assigned, if
+            desired. You can specify a subnetwork using either a
+            complete URL or an abbreviated path. Expected to be of the
+            form
             "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
             or "regions/REGION/subnetworks/SUBNETWORK". If the
             subnetwork is located in a Shared VPC network, you must use
             the complete URL.
         additional_user_labels (MutableMapping[str, str]):
-            Additional user labels to be specified for the job. Keys and
-            values should follow the restrictions specified in the
-            `labeling
+            Optional. Additional user labels to be specified for the
+            job. Keys and values should follow the restrictions
+            specified in the `labeling
             restrictions <https://cloud.google.com/compute/docs/labeling-resources#restrictions>`__
             page. An object containing a list of "key": value pairs.
             Example: { "name": "wrench", "mass": "1kg", "count": "3" }.
         kms_key_name (str):
-            Name for the Cloud KMS key for the job.
-            Key format is:
+            Optional. Name for the Cloud KMS key for the
+            job. Key format is:
 
             projects/<project>/locations/<location>/keyRings/<keyring>/cryptoKeys/<key>
         ip_configuration (google.cloud.dataflow_v1beta3.types.WorkerIPAddressConfiguration):
-            Configuration for VM IPs.
+            Optional. Configuration for VM IPs.
         worker_region (str):
-            The Compute Engine region
+            Required. The Compute Engine region
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
             in which worker processing should occur, e.g. "us-west1".
             Mutually exclusive with worker_zone. If neither
             worker_region nor worker_zone is specified, default to the
             control plane's region.
         worker_zone (str):
-            The Compute Engine zone
+            Optional. The Compute Engine zone
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
             in which worker processing should occur, e.g. "us-west1-a".
             Mutually exclusive with worker_region. If neither
@@ -546,8 +654,22 @@ class RuntimeEnvironment(proto.Message):
             capacity. If both ``worker_zone`` and ``zone`` are set,
             ``worker_zone`` takes precedence.
         enable_streaming_engine (bool):
-            Whether to enable Streaming Engine for the
-            job.
+            Optional. Whether to enable Streaming Engine
+            for the job.
+        disk_size_gb (int):
+            Optional. The disk size, in gigabytes, to use
+            on each remote Compute Engine worker instance.
+        streaming_mode (google.cloud.dataflow_v1beta3.types.StreamingMode):
+            Optional. Specifies the Streaming Engine message processing
+            guarantees. Reduces cost and latency but might result in
+            duplicate messages committed to storage. Designed to run
+            simple mapping streaming ETL jobs at the lowest cost. For
+            example, Change Data Capture (CDC) to BigQuery is a
+            canonical use case. For more information, see `Set the
+            pipeline streaming
+            mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
+
+            This field is a member of `oneof`_ ``_streaming_mode``.
     """
 
     num_workers: int = proto.Field(
@@ -616,6 +738,45 @@ class RuntimeEnvironment(proto.Message):
         proto.BOOL,
         number=17,
     )
+    disk_size_gb: int = proto.Field(
+        proto.INT32,
+        number=18,
+    )
+    streaming_mode: gd_environment.StreamingMode = proto.Field(
+        proto.ENUM,
+        number=19,
+        optional=True,
+        enum=gd_environment.StreamingMode,
+    )
+
+
+class ParameterMetadataEnumOption(proto.Message):
+    r"""ParameterMetadataEnumOption specifies the option shown in the
+    enum form.
+
+    Attributes:
+        value (str):
+            Required. The value of the enum option.
+        label (str):
+            Optional. The label to display for the enum
+            option.
+        description (str):
+            Optional. The description to display for the
+            enum option.
+    """
+
+    value: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    label: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ParameterMetadata(proto.Message):
@@ -642,6 +803,33 @@ class ParameterMetadata(proto.Message):
         custom_metadata (MutableMapping[str, str]):
             Optional. Additional metadata for describing
             this parameter.
+        group_name (str):
+            Optional. Specifies a group name for this parameter to be
+            rendered under. Group header text will be rendered exactly
+            as specified in this field. Only considered when parent_name
+            is NOT provided.
+        parent_name (str):
+            Optional. Specifies the name of the parent parameter. Used
+            in conjunction with 'parent_trigger_values' to make this
+            parameter conditional (will only be rendered conditionally).
+            Should be mappable to a ParameterMetadata.name field.
+        parent_trigger_values (MutableSequence[str]):
+            Optional. The value(s) of the 'parent_name' parameter which
+            will trigger this parameter to be shown. If left empty, ANY
+            non-empty value in parent_name will trigger this parameter
+            to be shown. Only considered when this parameter is
+            conditional (when 'parent_name' has been provided).
+        enum_options (MutableSequence[google.cloud.dataflow_v1beta3.types.ParameterMetadataEnumOption]):
+            Optional. The options shown when ENUM
+            ParameterType is specified.
+        default_value (str):
+            Optional. The default values will pre-populate the parameter
+            with the given value from the proto. If default_value is
+            left empty, the parameter will be populated with a default
+            of the relevant type, e.g. false for a boolean.
+        hidden_ui (bool):
+            Optional. Whether the parameter should be
+            hidden in the UI.
     """
 
     name: str = proto.Field(
@@ -674,6 +862,31 @@ class ParameterMetadata(proto.Message):
         proto.STRING,
         number=7,
     )
+    group_name: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    parent_name: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    parent_trigger_values: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=10,
+    )
+    enum_options: MutableSequence["ParameterMetadataEnumOption"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message="ParameterMetadataEnumOption",
+    )
+    default_value: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    hidden_ui: bool = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
 
 
 class TemplateMetadata(proto.Message):
@@ -686,6 +899,20 @@ class TemplateMetadata(proto.Message):
             Optional. A description of the template.
         parameters (MutableSequence[google.cloud.dataflow_v1beta3.types.ParameterMetadata]):
             The parameters for the template.
+        streaming (bool):
+            Optional. Indicates if the template is
+            streaming or not.
+        supports_at_least_once (bool):
+            Optional. Indicates if the streaming template
+            supports at least once mode.
+        supports_exactly_once (bool):
+            Optional. Indicates if the streaming template
+            supports exactly once mode.
+        default_streaming_mode (str):
+            Optional. Indicates the default streaming mode for a
+            streaming template. Only valid if both
+            supports_at_least_once and supports_exactly_once are true.
+            Possible values: UNSPECIFIED, EXACTLY_ONCE and AT_LEAST_ONCE
     """
 
     name: str = proto.Field(
@@ -700,6 +927,22 @@ class TemplateMetadata(proto.Message):
         proto.MESSAGE,
         number=3,
         message="ParameterMetadata",
+    )
+    streaming: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    supports_at_least_once: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    supports_exactly_once: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    default_streaming_mode: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -723,10 +966,13 @@ class SDKInfo(proto.Message):
                 Java.
             PYTHON (2):
                 Python.
+            GO (3):
+                Go.
         """
         UNKNOWN = 0
         JAVA = 1
         PYTHON = 2
+        GO = 3
 
     language: Language = proto.Field(
         proto.ENUM,
@@ -927,12 +1173,17 @@ class GetTemplateResponse(proto.Message):
 
 
 class LaunchTemplateParameters(proto.Message):
-    r"""Parameters to provide to the template being launched.
+    r"""Parameters to provide to the template being launched. Note that the
+    [metadata in the pipeline code]
+    (https://cloud.google.com/dataflow/docs/guides/templates/creating-templates#metadata)
+    determines which runtime parameters are valid.
 
     Attributes:
         job_name (str):
-            Required. The job name to use for the created
-            job.
+            Required. The job name to use for the created job.
+
+            The name must match the regular expression
+            ``[a-z]([-a-z0-9]{0,1022}[a-z0-9])?``
         parameters (MutableMapping[str, str]):
             The runtime parameters to pass to the job.
         environment (google.cloud.dataflow_v1beta3.types.RuntimeEnvironment):
@@ -991,20 +1242,18 @@ class LaunchTemplateRequest(proto.Message):
             If true, the request is validated but not
             actually executed. Defaults to false.
         gcs_path (str):
-            A Cloud Storage path to the template from
-            which to create the job.
-            Must be valid Cloud Storage URL, beginning with
-            'gs://'.
+            A Cloud Storage path to the template to use to create the
+            job. Must be valid Cloud Storage URL, beginning with
+            ``gs://``.
 
             This field is a member of `oneof`_ ``template``.
         dynamic_template (google.cloud.dataflow_v1beta3.types.DynamicTemplateLaunchParams):
-            Params for launching a dynamic template.
+            Parameters for launching a dynamic template.
 
             This field is a member of `oneof`_ ``template``.
         launch_parameters (google.cloud.dataflow_v1beta3.types.LaunchTemplateParameters):
             The parameters of the template to launch.
-            This should be part of the body of the POST
-            request.
+            Part of the body of the POST request.
         location (str):
             The [regional endpoint]
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
@@ -1096,14 +1345,13 @@ class InvalidTemplateParameters(proto.Message):
 
 
 class DynamicTemplateLaunchParams(proto.Message):
-    r"""Params which should be passed when launching a dynamic
-    template.
+    r"""Parameters to pass when launching a dynamic template.
 
     Attributes:
         gcs_path (str):
-            Path to dynamic template spec file on Cloud
-            Storage. The file must be a Json serialized
-            DynamicTemplateFieSpec object.
+            Path to the dynamic template specification file on Cloud
+            Storage. The file must be a JSON serialized
+            ``DynamicTemplateFileSpec`` object.
         staging_location (str):
             Cloud Storage path for staging dependencies. Must be a valid
             Cloud Storage URL, beginning with ``gs://``.

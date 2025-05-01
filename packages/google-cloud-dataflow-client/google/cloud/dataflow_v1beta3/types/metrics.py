@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -31,6 +32,11 @@ __protobuf__ = proto.module(
         "JobMetrics",
         "GetJobExecutionDetailsRequest",
         "ProgressTimeseries",
+        "StragglerInfo",
+        "StreamingStragglerInfo",
+        "Straggler",
+        "HotKeyDebuggingInfo",
+        "StragglerSummary",
         "StageSummary",
         "JobExecutionDetails",
         "GetStageExecutionDetailsRequest",
@@ -106,6 +112,7 @@ class MetricStructuredName(proto.Message):
 
 class MetricUpdate(proto.Message):
     r"""Describes the state of a metric.
+    Next ID: 14
 
     Attributes:
         name (google.cloud.dataflow_v1beta3.types.MetricStructuredName):
@@ -146,9 +153,13 @@ class MetricUpdate(proto.Message):
             Worker-computed aggregate value for the "Set"
             aggregation kind.  The only possible value type
             is a list of Values whose type can be Long,
-            Double, or String, according to the metric's
-            type.  All Values in the list must be of the
-            same type.
+            Double, String, or BoundedTrie according to the
+            metric's type.  All Values in the list must be
+            of the same type.
+        trie (google.protobuf.struct_pb2.Value):
+            Worker-computed aggregate value for the
+            "Trie" aggregation kind.  The only possible
+            value type is a BoundedTrieNode.
         distribution (google.protobuf.struct_pb2.Value):
             A struct value describing properties of a
             distribution of numeric values.
@@ -198,6 +209,11 @@ class MetricUpdate(proto.Message):
     set_: struct_pb2.Value = proto.Field(
         proto.MESSAGE,
         number=7,
+        message=struct_pb2.Value,
+    )
+    trie: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=13,
         message=struct_pb2.Value,
     )
     distribution: struct_pb2.Value = proto.Field(
@@ -260,13 +276,15 @@ class GetJobMetricsRequest(proto.Message):
 
 
 class JobMetrics(proto.Message):
-    r"""JobMetrics contains a collection of metrics describing the
-    detailed progress of a Dataflow job. Metrics correspond to
-    user-defined and system-defined metrics in the job.
+    r"""JobMetrics contains a collection of metrics describing the detailed
+    progress of a Dataflow job. Metrics correspond to user-defined and
+    system-defined metrics in the job. For more information, see
+    [Dataflow job metrics]
+    (https://cloud.google.com/dataflow/docs/guides/using-monitoring-intf).
 
-    This resource captures only the most recent values of each
-    metric; time-series data can be queried for them (under the same
-    metric names) from Cloud Monitoring.
+    This resource captures only the most recent values of each metric;
+    time-series data can be queried for them (under the same metric
+    names) from Cloud Monitoring.
 
     Attributes:
         metric_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -378,6 +396,218 @@ class ProgressTimeseries(proto.Message):
     )
 
 
+class StragglerInfo(proto.Message):
+    r"""Information useful for straggler identification and
+    debugging.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the work item attempt became a
+            straggler.
+        causes (MutableMapping[str, google.cloud.dataflow_v1beta3.types.StragglerInfo.StragglerDebuggingInfo]):
+            The straggler causes, keyed by the string
+            representation of the StragglerCause enum and
+            contains specialized debugging information for
+            each straggler cause.
+    """
+
+    class StragglerDebuggingInfo(proto.Message):
+        r"""Information useful for debugging a straggler. Each type will
+        provide specialized debugging information relevant for a
+        particular cause. The StragglerDebuggingInfo will be 1:1 mapping
+        to the StragglerCause enum.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            hot_key (google.cloud.dataflow_v1beta3.types.HotKeyDebuggingInfo):
+                Hot key debugging details.
+
+                This field is a member of `oneof`_ ``straggler_debugging_info_value``.
+        """
+
+        hot_key: "HotKeyDebuggingInfo" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="straggler_debugging_info_value",
+            message="HotKeyDebuggingInfo",
+        )
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    causes: MutableMapping[str, StragglerDebuggingInfo] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message=StragglerDebuggingInfo,
+    )
+
+
+class StreamingStragglerInfo(proto.Message):
+    r"""Information useful for streaming straggler identification and
+    debugging.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Start time of this straggler.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            End time of this straggler.
+        worker_name (str):
+            Name of the worker where the straggler was
+            detected.
+        data_watermark_lag (google.protobuf.duration_pb2.Duration):
+            The event-time watermark lag at the time of
+            the straggler detection.
+        system_watermark_lag (google.protobuf.duration_pb2.Duration):
+            The system watermark lag at the time of the
+            straggler detection.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    worker_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    data_watermark_lag: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
+    system_watermark_lag: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
+    )
+
+
+class Straggler(proto.Message):
+    r"""Information for a straggler.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        batch_straggler (google.cloud.dataflow_v1beta3.types.StragglerInfo):
+            Batch straggler identification and debugging
+            information.
+
+            This field is a member of `oneof`_ ``straggler_info``.
+        streaming_straggler (google.cloud.dataflow_v1beta3.types.StreamingStragglerInfo):
+            Streaming straggler identification and
+            debugging information.
+
+            This field is a member of `oneof`_ ``straggler_info``.
+    """
+
+    batch_straggler: "StragglerInfo" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="straggler_info",
+        message="StragglerInfo",
+    )
+    streaming_straggler: "StreamingStragglerInfo" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="straggler_info",
+        message="StreamingStragglerInfo",
+    )
+
+
+class HotKeyDebuggingInfo(proto.Message):
+    r"""Information useful for debugging a hot key detection.
+
+    Attributes:
+        detected_hot_keys (MutableMapping[int, google.cloud.dataflow_v1beta3.types.HotKeyDebuggingInfo.HotKeyInfo]):
+            Debugging information for each detected hot
+            key. Keyed by a hash of the key.
+    """
+
+    class HotKeyInfo(proto.Message):
+        r"""Information about a hot key.
+
+        Attributes:
+            hot_key_age (google.protobuf.duration_pb2.Duration):
+                The age of the hot key measured from when it
+                was first detected.
+            key (str):
+                A detected hot key that is causing limited parallelism. This
+                field will be populated only if the following flag is set to
+                true: "--enable_hot_key_logging".
+            key_truncated (bool):
+                If true, then the above key is truncated and
+                cannot be deserialized. This occurs if the key
+                above is populated and the key size is >5MB.
+        """
+
+        hot_key_age: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
+        key: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        key_truncated: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+
+    detected_hot_keys: MutableMapping[int, HotKeyInfo] = proto.MapField(
+        proto.UINT64,
+        proto.MESSAGE,
+        number=1,
+        message=HotKeyInfo,
+    )
+
+
+class StragglerSummary(proto.Message):
+    r"""Summarized straggler identification details.
+
+    Attributes:
+        total_straggler_count (int):
+            The total count of stragglers.
+        straggler_cause_count (MutableMapping[str, int]):
+            Aggregated counts of straggler causes, keyed
+            by the string representation of the
+            StragglerCause enum.
+        recent_stragglers (MutableSequence[google.cloud.dataflow_v1beta3.types.Straggler]):
+            The most recent stragglers.
+    """
+
+    total_straggler_count: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    straggler_cause_count: MutableMapping[str, int] = proto.MapField(
+        proto.STRING,
+        proto.INT64,
+        number=2,
+    )
+    recent_stragglers: MutableSequence["Straggler"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Straggler",
+    )
+
+
 class StageSummary(proto.Message):
     r"""Information about a particular execution stage of a job.
 
@@ -399,6 +629,8 @@ class StageSummary(proto.Message):
             Only applicable to Batch jobs.
         metrics (MutableSequence[google.cloud.dataflow_v1beta3.types.MetricUpdate]):
             Metrics for this stage.
+        straggler_summary (google.cloud.dataflow_v1beta3.types.StragglerSummary):
+            Straggler summary for this stage.
     """
 
     stage_id: str = proto.Field(
@@ -429,6 +661,11 @@ class StageSummary(proto.Message):
         proto.MESSAGE,
         number=6,
         message="MetricUpdate",
+    )
+    straggler_summary: "StragglerSummary" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="StragglerSummary",
     )
 
 
@@ -550,6 +787,9 @@ class WorkItemDetails(proto.Message):
             Progress of this work item.
         metrics (MutableSequence[google.cloud.dataflow_v1beta3.types.MetricUpdate]):
             Metrics for this work item.
+        straggler_info (google.cloud.dataflow_v1beta3.types.StragglerInfo):
+            Information about straggler detections for
+            this work item.
     """
 
     task_id: str = proto.Field(
@@ -584,6 +824,11 @@ class WorkItemDetails(proto.Message):
         proto.MESSAGE,
         number=7,
         message="MetricUpdate",
+    )
+    straggler_info: "StragglerInfo" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="StragglerInfo",
     )
 
 
