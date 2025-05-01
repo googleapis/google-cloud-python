@@ -17,17 +17,61 @@ import pandas as pd
 import pytest
 
 import bigframes.bigquery as bbq
+import bigframes.dtypes
 import bigframes.pandas as bpd
 
 
-def test_array_length():
-    series = bpd.Series([["A", "AA", "AAA"], ["BB", "B"], np.nan, [], ["C"]])
-    # TODO(b/336880368): Allow for NULL values to be input for ARRAY columns.
-    # Once we actually store NULL values, this will be NULL where the input is NULL.
-    expected = bpd.Series([3, 2, 0, 0, 1])
+@pytest.mark.parametrize(
+    ["input_data", "expected"],
+    [
+        pytest.param(
+            [["A", "AA", "AAA"], ["BB", "B"], np.nan, [], ["C"]],
+            [
+                3,
+                2,
+                # TODO(b/336880368): Allow for NULL values to be input for ARRAY
+                # columns.  Once we actually store NULL values, this will be
+                # NULL where the input is NULL.
+                0,
+                0,
+                1,
+            ],
+            id="small-string",
+        ),
+        pytest.param(
+            [[1, 2, 3], [4, 5], [], [], [6]], [3, 2, 0, 0, 1], id="small-int64"
+        ),
+        pytest.param(
+            [
+                # Regression test for b/414374215 where the Series constructor
+                # returns empty lists when the lists are too big to embed in
+                # SQL.
+                list(np.random.randint(-1_000_000, 1_000_000, size=1000)),
+                list(np.random.randint(-1_000_000, 1_000_000, size=967)),
+                list(np.random.randint(-1_000_000, 1_000_000, size=423)),
+                list(np.random.randint(-1_000_000, 1_000_000, size=5000)),
+                list(np.random.randint(-1_000_000, 1_000_000, size=1003)),
+                list(np.random.randint(-1_000_000, 1_000_000, size=9999)),
+            ],
+            [
+                1000,
+                967,
+                423,
+                5000,
+                1003,
+                9999,
+            ],
+            id="larger-int64",
+        ),
+    ],
+)
+def test_array_length(input_data, expected):
+    series = bpd.Series(input_data)
+    expected = pd.Series(expected, dtype=bigframes.dtypes.INT_DTYPE)
     pd.testing.assert_series_equal(
         bbq.array_length(series).to_pandas(),
-        expected.to_pandas(),
+        expected,
+        check_index_type=False,
     )
 
 

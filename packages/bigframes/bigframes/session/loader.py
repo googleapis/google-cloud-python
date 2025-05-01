@@ -217,6 +217,13 @@ class GbqDataLoader:
 
         job_config = bigquery.LoadJobConfig()
         job_config.source_format = bigquery.SourceFormat.PARQUET
+
+        # Ensure we can load pyarrow.list_ / BQ ARRAY type.
+        # See internal issue 414374215.
+        parquet_options = bigquery.ParquetOptions()
+        parquet_options.enable_list_inference = True
+        job_config.parquet_options = parquet_options
+
         job_config.schema = bq_schema
         if api_name:
             job_config.labels = {"bigframes-api": api_name}
