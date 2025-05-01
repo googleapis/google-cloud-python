@@ -338,6 +338,10 @@ class WriteDisposition(object):
     WRITE_TRUNCATE = "WRITE_TRUNCATE"
     """If the table already exists, BigQuery overwrites the table data."""
 
+    WRITE_TRUNCATE_DATA = "WRITE_TRUNCATE_DATA"
+    """For existing tables, truncate data but preserve existing schema
+    and constraints."""
+
     WRITE_EMPTY = "WRITE_EMPTY"
     """If the table already exists and contains data, a 'duplicate' error is
     returned in the job result."""
