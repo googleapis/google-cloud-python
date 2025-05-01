@@ -17,6 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -41,6 +43,17 @@ __protobuf__ = proto.module(
         "DeleteManagedFolderRequest",
         "ListManagedFoldersRequest",
         "ListManagedFoldersResponse",
+        "CreateAnywhereCacheMetadata",
+        "UpdateAnywhereCacheMetadata",
+        "AnywhereCache",
+        "CreateAnywhereCacheRequest",
+        "UpdateAnywhereCacheRequest",
+        "DisableAnywhereCacheRequest",
+        "PauseAnywhereCacheRequest",
+        "ResumeAnywhereCacheRequest",
+        "GetAnywhereCacheRequest",
+        "ListAnywhereCachesRequest",
+        "ListAnywhereCachesResponse",
     },
 )
 
@@ -540,7 +553,7 @@ class StorageLayout(proto.Message):
         r"""Configuration for Custom Dual Regions. It should specify precisely
         two eligible regions within the same Multiregion. More information
         on regions may be found
-        [https://cloud.google.com/storage/docs/locations][here].
+        `here <https://cloud.google.com/storage/docs/locations>`__.
 
         Attributes:
             data_locations (MutableSequence[str]):
@@ -874,6 +887,443 @@ class ListManagedFoldersResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message="ManagedFolder",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateAnywhereCacheMetadata(proto.Message):
+    r"""Message returned in the metadata field of the Operation
+    resource for CreateAnywhereCache operations.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        common_metadata (google.cloud.storage_control_v2.types.CommonLongRunningOperationMetadata):
+            Generic metadata for the long running
+            operation.
+        anywhere_cache_id (str):
+            Anywhere Cache ID.
+
+            This field is a member of `oneof`_ ``_anywhere_cache_id``.
+        zone (str):
+            The zone in which the cache instance is
+            running. For example, us-central1-a.
+
+            This field is a member of `oneof`_ ``_zone``.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Anywhere Cache entry's TTL. A cache-level
+            config that is applied to all new cache entries
+            on admission. Default ttl value (24hrs) is
+            applied if not specified in the create request.
+
+            This field is a member of `oneof`_ ``_ttl``.
+        admission_policy (str):
+            Anywhere Cache entry Admission Policy in
+            kebab-case (e.g., "admit-on-first-miss").
+            Default admission policy (admit-on-first-miss)
+            is applied if not specified in the create
+            request.
+
+            This field is a member of `oneof`_ ``_admission_policy``.
+    """
+
+    common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CommonLongRunningOperationMetadata",
+    )
+    anywhere_cache_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=duration_pb2.Duration,
+    )
+    admission_policy: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+
+
+class UpdateAnywhereCacheMetadata(proto.Message):
+    r"""Message returned in the metadata field of the Operation
+    resource for UpdateAnywhereCache operation.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        common_metadata (google.cloud.storage_control_v2.types.CommonLongRunningOperationMetadata):
+            Generic metadata for the long running
+            operation.
+        anywhere_cache_id (str):
+            Anywhere Cache ID.
+
+            This field is a member of `oneof`_ ``_anywhere_cache_id``.
+        zone (str):
+            The zone in which the cache instance is
+            running. For example, us-central1-a.
+
+            This field is a member of `oneof`_ ``_zone``.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Anywhere Cache entry's TTL between 1h and 7days. A
+            cache-level config that is applied to all new cache entries
+            on admission. If ``ttl`` is pending update, this field
+            equals to the new value specified in the Update request.
+
+            This field is a member of `oneof`_ ``_ttl``.
+        admission_policy (str):
+            L4 Cache entry Admission Policy in kebab-case (e.g.,
+            "admit-on-first-miss"). If ``admission_policy`` is pending
+            update, this field equals to the new value specified in the
+            Update request.
+
+            This field is a member of `oneof`_ ``_admission_policy``.
+    """
+
+    common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CommonLongRunningOperationMetadata",
+    )
+    anywhere_cache_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=duration_pb2.Duration,
+    )
+    admission_policy: str = proto.Field(
+        proto.STRING,
+        number=4,
+        optional=True,
+    )
+
+
+class AnywhereCache(proto.Message):
+    r"""An Anywhere Cache Instance.
+
+    Attributes:
+        name (str):
+            Immutable. The resource name of this AnywhereCache. Format:
+            ``projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}``
+        zone (str):
+            Immutable. The zone in which the cache
+            instance is running. For example, us-central1-a.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Cache entry TTL (ranges between 1h to 7d).
+            This is a cache-level config that defines how
+            long a cache entry can live. Default ttl value
+            (24hrs) is applied if not specified in the
+            create request. TTL must be in whole seconds.
+        admission_policy (str):
+            Cache admission policy. Valid policies includes:
+            ``admit-on-first-miss`` and ``admit-on-second-miss``.
+            Defaults to ``admit-on-first-miss``. Default value is
+            applied if not specified in the create request.
+        state (str):
+            Output only. Cache state including RUNNING,
+            CREATING, DISABLED and PAUSED.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when Anywhere cache
+            instance is allocated.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when Anywhere cache
+            instance is last updated, including creation.
+        pending_update (bool):
+            Output only. True if there is an active
+            update operation against this cache instance.
+            Subsequential update requests will be rejected
+            if this field is true. Output only.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+    admission_policy: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    pending_update: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+
+
+class CreateAnywhereCacheRequest(proto.Message):
+    r"""Request message for CreateAnywhereCache.
+
+    Attributes:
+        parent (str):
+            Required. The bucket to which this cache belongs. Format:
+            ``projects/{project}/buckets/{bucket}``
+        anywhere_cache (google.cloud.storage_control_v2.types.AnywhereCache):
+            Required. Properties of the Anywhere Cache instance being
+            created. The parent bucket name is specified in the
+            ``parent`` field. Server uses the default value of ``ttl``
+            or ``admission_policy`` if not specified in request.
+        request_id (str):
+            Optional. A unique identifier for this request. UUID is the
+            recommended format, but other formats are still accepted.
+            This request is only idempotent if a ``request_id`` is
+            provided.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    anywhere_cache: "AnywhereCache" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AnywhereCache",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class UpdateAnywhereCacheRequest(proto.Message):
+    r"""Request message for UpdateAnywhereCache.
+
+    Attributes:
+        anywhere_cache (google.cloud.storage_control_v2.types.AnywhereCache):
+            Required. The Anywhere Cache instance to be
+            updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. List of fields to be updated. Mutable fields of
+            AnywhereCache include ``ttl`` and ``admission_policy``.
+
+            To specify ALL fields, specify a single field with the value
+            ``*``. Note: We recommend against doing this. If a new field
+            is introduced at a later time, an older client updating with
+            the ``*`` may accidentally reset the new field's value.
+
+            Not specifying any fields is an error.
+        request_id (str):
+            Optional. A unique identifier for this request. UUID is the
+            recommended format, but other formats are still accepted.
+            This request is only idempotent if a ``request_id`` is
+            provided.
+    """
+
+    anywhere_cache: "AnywhereCache" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="AnywhereCache",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DisableAnywhereCacheRequest(proto.Message):
+    r"""Request message for DisableAnywhereCache.
+
+    Attributes:
+        name (str):
+            Required. The name field in the request should be:
+            ``projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}``
+        request_id (str):
+            Optional. A unique identifier for this request. UUID is the
+            recommended format, but other formats are still accepted.
+            This request is only idempotent if a ``request_id`` is
+            provided.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class PauseAnywhereCacheRequest(proto.Message):
+    r"""Request message for PauseAnywhereCache.
+
+    Attributes:
+        name (str):
+            Required. The name field in the request should be:
+            ``projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}``
+        request_id (str):
+            Optional. A unique identifier for this request. UUID is the
+            recommended format, but other formats are still accepted.
+            This request is only idempotent if a ``request_id`` is
+            provided.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ResumeAnywhereCacheRequest(proto.Message):
+    r"""Request message for ResumeAnywhereCache.
+
+    Attributes:
+        name (str):
+            Required. The name field in the request should be:
+            ``projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}``
+        request_id (str):
+            Optional. A unique identifier for this request. UUID is the
+            recommended format, but other formats are still accepted.
+            This request is only idempotent if a ``request_id`` is
+            provided.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetAnywhereCacheRequest(proto.Message):
+    r"""Request message for GetAnywhereCache.
+
+    Attributes:
+        name (str):
+            Required. The name field in the request should be:
+            ``projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}``
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListAnywhereCachesRequest(proto.Message):
+    r"""Request message for ListAnywhereCaches.
+
+    Attributes:
+        parent (str):
+            Required. The bucket to which this cache
+            belongs.
+        page_size (int):
+            Maximum number of caches to return in a
+            single response. The service will use this
+            parameter or 1,000 items, whichever is smaller.
+        page_token (str):
+            A previously-returned page token representing
+            part of the larger set of results to view.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListAnywhereCachesResponse(proto.Message):
+    r"""Response message for ListAnywhereCaches.
+
+    Attributes:
+        anywhere_caches (MutableSequence[google.cloud.storage_control_v2.types.AnywhereCache]):
+            The list of items.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    anywhere_caches: MutableSequence["AnywhereCache"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AnywhereCache",
     )
     next_page_token: str = proto.Field(
         proto.STRING,

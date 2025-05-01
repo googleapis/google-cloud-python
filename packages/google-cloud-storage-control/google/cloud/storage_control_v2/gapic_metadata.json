@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "StorageControlClient",
           "rpcs": {
+            "CreateAnywhereCache": {
+              "methods": [
+                "create_anywhere_cache"
+              ]
+            },
             "CreateFolder": {
               "methods": [
                 "create_folder"
@@ -30,6 +35,16 @@
                 "delete_managed_folder"
               ]
             },
+            "DisableAnywhereCache": {
+              "methods": [
+                "disable_anywhere_cache"
+              ]
+            },
+            "GetAnywhereCache": {
+              "methods": [
+                "get_anywhere_cache"
+              ]
+            },
             "GetFolder": {
               "methods": [
                 "get_folder"
@@ -45,6 +60,11 @@
                 "get_storage_layout"
               ]
             },
+            "ListAnywhereCaches": {
+              "methods": [
+                "list_anywhere_caches"
+              ]
+            },
             "ListFolders": {
               "methods": [
                 "list_folders"
@@ -55,9 +75,24 @@
                 "list_managed_folders"
               ]
             },
+            "PauseAnywhereCache": {
+              "methods": [
+                "pause_anywhere_cache"
+              ]
+            },
             "RenameFolder": {
               "methods": [
                 "rename_folder"
+              ]
+            },
+            "ResumeAnywhereCache": {
+              "methods": [
+                "resume_anywhere_cache"
+              ]
+            },
+            "UpdateAnywhereCache": {
+              "methods": [
+                "update_anywhere_cache"
               ]
             }
           }
@@ -65,6 +100,11 @@
         "grpc-async": {
           "libraryClient": "StorageControlAsyncClient",
           "rpcs": {
+            "CreateAnywhereCache": {
+              "methods": [
+                "create_anywhere_cache"
+              ]
+            },
             "CreateFolder": {
               "methods": [
                 "create_folder"
@@ -85,6 +125,16 @@
                 "delete_managed_folder"
               ]
             },
+            "DisableAnywhereCache": {
+              "methods": [
+                "disable_anywhere_cache"
+              ]
+            },
+            "GetAnywhereCache": {
+              "methods": [
+                "get_anywhere_cache"
+              ]
+            },
             "GetFolder": {
               "methods": [
                 "get_folder"
@@ -100,6 +150,11 @@
                 "get_storage_layout"
               ]
             },
+            "ListAnywhereCaches": {
+              "methods": [
+                "list_anywhere_caches"
+              ]
+            },
             "ListFolders": {
               "methods": [
                 "list_folders"
@@ -110,9 +165,24 @@
                 "list_managed_folders"
               ]
             },
+            "PauseAnywhereCache": {
+              "methods": [
+                "pause_anywhere_cache"
+              ]
+            },
             "RenameFolder": {
               "methods": [
                 "rename_folder"
+              ]
+            },
+            "ResumeAnywhereCache": {
+              "methods": [
+                "resume_anywhere_cache"
+              ]
+            },
+            "UpdateAnywhereCache": {
+              "methods": [
+                "update_anywhere_cache"
               ]
             }
           }

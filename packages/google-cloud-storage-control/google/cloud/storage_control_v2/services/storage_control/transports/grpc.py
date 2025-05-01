@@ -622,6 +622,208 @@ class StorageControlGrpcTransport(StorageControlTransport):
             )
         return self._stubs["list_managed_folders"]
 
+    @property
+    def create_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.CreateAnywhereCacheRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create anywhere cache method over gRPC.
+
+        Creates an Anywhere Cache instance.
+
+        Returns:
+            Callable[[~.CreateAnywhereCacheRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_anywhere_cache" not in self._stubs:
+            self._stubs["create_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/CreateAnywhereCache",
+                request_serializer=storage_control.CreateAnywhereCacheRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_anywhere_cache"]
+
+    @property
+    def update_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateAnywhereCacheRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update anywhere cache method over gRPC.
+
+        Updates an Anywhere Cache instance. Mutable fields include
+        ``ttl`` and ``admission_policy``.
+
+        Returns:
+            Callable[[~.UpdateAnywhereCacheRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_anywhere_cache" not in self._stubs:
+            self._stubs["update_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateAnywhereCache",
+                request_serializer=storage_control.UpdateAnywhereCacheRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_anywhere_cache"]
+
+    @property
+    def disable_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.DisableAnywhereCacheRequest], storage_control.AnywhereCache
+    ]:
+        r"""Return a callable for the disable anywhere cache method over gRPC.
+
+        Disables an Anywhere Cache instance. A disabled
+        instance is read-only. The disablement could be revoked
+        by calling ResumeAnywhereCache. The cache instance will
+        be deleted automatically if it remains in the disabled
+        state for at least one hour.
+
+        Returns:
+            Callable[[~.DisableAnywhereCacheRequest],
+                    ~.AnywhereCache]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "disable_anywhere_cache" not in self._stubs:
+            self._stubs["disable_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/DisableAnywhereCache",
+                request_serializer=storage_control.DisableAnywhereCacheRequest.serialize,
+                response_deserializer=storage_control.AnywhereCache.deserialize,
+            )
+        return self._stubs["disable_anywhere_cache"]
+
+    @property
+    def pause_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.PauseAnywhereCacheRequest], storage_control.AnywhereCache
+    ]:
+        r"""Return a callable for the pause anywhere cache method over gRPC.
+
+        Pauses an Anywhere Cache instance.
+
+        Returns:
+            Callable[[~.PauseAnywhereCacheRequest],
+                    ~.AnywhereCache]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "pause_anywhere_cache" not in self._stubs:
+            self._stubs["pause_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/PauseAnywhereCache",
+                request_serializer=storage_control.PauseAnywhereCacheRequest.serialize,
+                response_deserializer=storage_control.AnywhereCache.deserialize,
+            )
+        return self._stubs["pause_anywhere_cache"]
+
+    @property
+    def resume_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.ResumeAnywhereCacheRequest], storage_control.AnywhereCache
+    ]:
+        r"""Return a callable for the resume anywhere cache method over gRPC.
+
+        Resumes a disabled or paused Anywhere Cache instance.
+
+        Returns:
+            Callable[[~.ResumeAnywhereCacheRequest],
+                    ~.AnywhereCache]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "resume_anywhere_cache" not in self._stubs:
+            self._stubs["resume_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ResumeAnywhereCache",
+                request_serializer=storage_control.ResumeAnywhereCacheRequest.serialize,
+                response_deserializer=storage_control.AnywhereCache.deserialize,
+            )
+        return self._stubs["resume_anywhere_cache"]
+
+    @property
+    def get_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.GetAnywhereCacheRequest], storage_control.AnywhereCache
+    ]:
+        r"""Return a callable for the get anywhere cache method over gRPC.
+
+        Gets an Anywhere Cache instance.
+
+        Returns:
+            Callable[[~.GetAnywhereCacheRequest],
+                    ~.AnywhereCache]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_anywhere_cache" not in self._stubs:
+            self._stubs["get_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetAnywhereCache",
+                request_serializer=storage_control.GetAnywhereCacheRequest.serialize,
+                response_deserializer=storage_control.AnywhereCache.deserialize,
+            )
+        return self._stubs["get_anywhere_cache"]
+
+    @property
+    def list_anywhere_caches(
+        self,
+    ) -> Callable[
+        [storage_control.ListAnywhereCachesRequest],
+        storage_control.ListAnywhereCachesResponse,
+    ]:
+        r"""Return a callable for the list anywhere caches method over gRPC.
+
+        Lists Anywhere Cache instances for a given bucket.
+
+        Returns:
+            Callable[[~.ListAnywhereCachesRequest],
+                    ~.ListAnywhereCachesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_anywhere_caches" not in self._stubs:
+            self._stubs["list_anywhere_caches"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ListAnywhereCaches",
+                request_serializer=storage_control.ListAnywhereCachesRequest.serialize,
+                response_deserializer=storage_control.ListAnywhereCachesResponse.deserialize,
+            )
+        return self._stubs["list_anywhere_caches"]
+
     def close(self):
         self._logged_channel.close()
 
