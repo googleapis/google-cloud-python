@@ -143,8 +143,7 @@ class FlexTemplatesServiceRestStub:
 class FlexTemplatesServiceRestTransport(_BaseFlexTemplatesServiceRestTransport):
     """REST backend synchronous transport for FlexTemplatesService.
 
-    Provides a service for Flex templates. This feature is not
-    ready yet.
+    Provides a service for Flex templates.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

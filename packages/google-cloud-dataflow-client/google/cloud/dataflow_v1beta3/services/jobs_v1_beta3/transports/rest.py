@@ -703,7 +703,9 @@ class JobsV1Beta3RestTransport(_BaseJobsV1Beta3RestTransport):
             Returns:
                 ~.jobs.Job:
                     Defines a job to be run by the Cloud
-                Dataflow service.
+                Dataflow service. Do not enter
+                confidential information when you supply
+                string values using the API.
 
             """
 
@@ -857,7 +859,9 @@ class JobsV1Beta3RestTransport(_BaseJobsV1Beta3RestTransport):
             Returns:
                 ~.jobs.Job:
                     Defines a job to be run by the Cloud
-                Dataflow service.
+                Dataflow service. Do not enter
+                confidential information when you supply
+                string values using the API.
 
             """
 
@@ -1316,7 +1320,9 @@ class JobsV1Beta3RestTransport(_BaseJobsV1Beta3RestTransport):
             Returns:
                 ~.jobs.Job:
                     Defines a job to be run by the Cloud
-                Dataflow service.
+                Dataflow service. Do not enter
+                confidential information when you supply
+                string values using the API.
 
             """
 

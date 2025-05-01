@@ -1133,8 +1133,6 @@ def test_templates_service_client_create_channel_credentials_file(
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             scopes=None,
             default_host="dataflow.googleapis.com",
@@ -1183,6 +1181,7 @@ def test_create_job_from_template(request_type, transport: str = "grpc"):
             location="location_value",
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.create_job_from_template(request)
 
@@ -1208,6 +1207,7 @@ def test_create_job_from_template(request_type, transport: str = "grpc"):
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_create_job_from_template_non_empty_request_with_auto_populated_field():
@@ -1362,6 +1362,7 @@ async def test_create_job_from_template_async(
                 location="location_value",
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.create_job_from_template(request)
@@ -1388,6 +1389,7 @@ async def test_create_job_from_template_async(
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -2276,6 +2278,7 @@ async def test_create_job_from_template_empty_call_grpc_asyncio():
                 location="location_value",
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.create_job_from_template(request=None)
@@ -2406,6 +2409,7 @@ def test_create_job_from_template_rest_call_success(request_type):
             location="location_value",
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -2436,6 +2440,7 @@ def test_create_job_from_template_rest_call_success(request_type):
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2561,6 +2566,8 @@ def test_launch_template_rest_call_success(request_type):
             "worker_region": "worker_region_value",
             "worker_zone": "worker_zone_value",
             "enable_streaming_engine": True,
+            "disk_size_gb": 1261,
+            "streaming_mode": 1,
         },
         "update": True,
         "transform_name_mapping": {},
@@ -2985,8 +2992,6 @@ def test_templates_service_base_transport_with_credentials_file():
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             quota_project_id="octopus",
         )
@@ -3013,8 +3018,6 @@ def test_templates_service_auth_adc():
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             quota_project_id=None,
         )
@@ -3038,8 +3041,6 @@ def test_templates_service_transport_auth_adc(transport_class):
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             quota_project_id="octopus",
         )
@@ -3095,8 +3096,6 @@ def test_templates_service_transport_create_channel(transport_class, grpc_helper
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             scopes=["1", "2"],
             default_host="dataflow.googleapis.com",

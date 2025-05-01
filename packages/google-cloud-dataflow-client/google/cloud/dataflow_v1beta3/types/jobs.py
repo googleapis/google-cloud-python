@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -31,6 +32,8 @@ __protobuf__ = proto.module(
         "JobState",
         "JobView",
         "Job",
+        "ServiceResources",
+        "RuntimeUpdatableParams",
         "DatastoreIODetails",
         "PubSubIODetails",
         "FileIODetails",
@@ -38,6 +41,7 @@ __protobuf__ = proto.module(
         "BigQueryIODetails",
         "SpannerIODetails",
         "SdkVersion",
+        "SdkBug",
         "JobMetadata",
         "ExecutionStageState",
         "PipelineDescription",
@@ -204,8 +208,12 @@ class JobView(proto.Enum):
             status, start/end time, and Cloud SDK version
             details.
         JOB_VIEW_ALL (2):
-            Request all information available for this
-            job.
+            Request all information available for this job. When the job
+            is in ``JOB_STATE_PENDING``, the job has been created but is
+            not yet running, and not all job information is available.
+            For complete job information, wait until the job in is
+            ``JOB_STATE_RUNNING``. For more information, see
+            `JobState <https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#jobstate>`__.
         JOB_VIEW_DESCRIPTION (3):
             Request summary info and limited job
             description data for steps, labels and
@@ -218,32 +226,38 @@ class JobView(proto.Enum):
 
 
 class Job(proto.Message):
-    r"""Defines a job to be run by the Cloud Dataflow service.
+    r"""Defines a job to be run by the Cloud Dataflow service. Do not
+    enter confidential information when you supply string values
+    using the API.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         id (str):
             The unique ID of this job.
 
-            This field is set by the Cloud Dataflow service
-            when the Job is created, and is immutable for
-            the life of the job.
+            This field is set by the Dataflow service when
+            the job is created, and is immutable for the
+            life of the job.
         project_id (str):
-            The ID of the Cloud Platform project that the
+            The ID of the Google Cloud project that the
             job belongs to.
         name (str):
-            The user-specified Cloud Dataflow job name.
+            Optional. The user-specified Dataflow job name.
 
-            Only one Job with a given name may exist in a project at any
-            given time. If a caller attempts to create a Job with the
-            same name as an already-existing Job, the attempt returns
-            the existing Job.
+            Only one active job with a given name can exist in a project
+            within one region at any given time. Jobs in different
+            regions can have the same name. If a caller attempts to
+            create a job with the same name as an active job that
+            already exists, the attempt returns the existing job.
 
             The name must match the regular expression
             ``[a-z]([-a-z0-9]{0,1022}[a-z0-9])?``
         type_ (google.cloud.dataflow_v1beta3.types.JobType):
-            The type of Cloud Dataflow job.
+            Optional. The type of Dataflow job.
         environment (google.cloud.dataflow_v1beta3.types.Environment):
-            The environment for the job.
+            Optional. The environment for the job.
         steps (MutableSequence[google.cloud.dataflow_v1beta3.types.Step]):
             Exactly one of step or steps_location should be specified.
 
@@ -262,21 +276,24 @@ class Job(proto.Message):
             enter a terminal state. After a job has reached a terminal
             state, no further state updates may be made.
 
-            This field may be mutated by the Cloud Dataflow service;
-            callers cannot mutate it.
+            This field might be mutated by the Dataflow service; callers
+            cannot mutate it.
         current_state_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp associated with the current
             state.
         requested_state (google.cloud.dataflow_v1beta3.types.JobState):
-            The job's requested state.
+            The job's requested state. Applies to ``UpdateJob``
+            requests.
 
-            ``UpdateJob`` may be used to switch between the
-            ``JOB_STATE_STOPPED`` and ``JOB_STATE_RUNNING`` states, by
-            setting requested_state. ``UpdateJob`` may also be used to
-            directly set a job's requested state to
-            ``JOB_STATE_CANCELLED`` or ``JOB_STATE_DONE``, irrevocably
-            terminating the job if it has not already reached a terminal
-            state.
+            Set ``requested_state`` with ``UpdateJob`` requests to
+            switch between the states ``JOB_STATE_STOPPED`` and
+            ``JOB_STATE_RUNNING``. You can also use ``UpdateJob``
+            requests to change a job's state from ``JOB_STATE_RUNNING``
+            to ``JOB_STATE_CANCELLED``, ``JOB_STATE_DONE``, or
+            ``JOB_STATE_DRAINED``. These states irrevocably terminate
+            the job if it hasn't already reached a terminal state.
+
+            This field has no effect on ``CreateJob`` requests.
         execution_info (google.cloud.dataflow_v1beta3.types.JobExecutionInfo):
             Deprecated.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -291,9 +308,9 @@ class Job(proto.Message):
             specifying it here. The job named here is stopped, and its
             intermediate state is transferred to this job.
         transform_name_mapping (MutableMapping[str, str]):
-            The map of transform name prefixes of the job
-            to be replaced to the corresponding name
-            prefixes of the new job.
+            Optional. The map of transform name prefixes
+            of the job to be replaced to the corresponding
+            name prefixes of the new job.
         client_request_id (str):
             The client's unique identifier of the job,
             re-used across retried attempts. If this field
@@ -337,7 +354,7 @@ class Job(proto.Message):
             -  Both keys and values are additionally constrained to be
                <= 128 bytes in size.
         location (str):
-            The [regional endpoint]
+            Optional. The [regional endpoint]
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
             that contains this job.
         pipeline_description (google.cloud.dataflow_v1beta3.types.PipelineDescription):
@@ -369,6 +386,24 @@ class Job(proto.Message):
             Reserved for future use. This field is set
             only in responses from the server; it is ignored
             if it is set in any requests.
+        runtime_updatable_params (google.cloud.dataflow_v1beta3.types.RuntimeUpdatableParams):
+            This field may ONLY be modified at runtime
+            using the projects.jobs.update method to adjust
+            job behavior. This field has no effect when
+            specified at job creation.
+
+            This field is a member of `oneof`_ ``_runtime_updatable_params``.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use. This
+            field is set only in responses from the server;
+            it is ignored if it is set in any requests.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
+        service_resources (google.cloud.dataflow_v1beta3.types.ServiceResources):
+            Output only. Resources used by the Dataflow
+            Service to run the job.
+
+            This field is a member of `oneof`_ ``_service_resources``.
     """
 
     id: str = proto.Field(
@@ -484,6 +519,87 @@ class Job(proto.Message):
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=25,
+    )
+    runtime_updatable_params: "RuntimeUpdatableParams" = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        optional=True,
+        message="RuntimeUpdatableParams",
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=27,
+        optional=True,
+    )
+    service_resources: "ServiceResources" = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        optional=True,
+        message="ServiceResources",
+    )
+
+
+class ServiceResources(proto.Message):
+    r"""Resources used by the Dataflow Service to run the job.
+
+    Attributes:
+        zones (MutableSequence[str]):
+            Output only. List of Cloud Zones being used
+            by the Dataflow Service for this job. Example:
+            us-central1-c
+    """
+
+    zones: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RuntimeUpdatableParams(proto.Message):
+    r"""Additional job parameters that can only be updated during
+    runtime using the projects.jobs.update method. These fields have
+    no effect when specified during job creation.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        max_num_workers (int):
+            The maximum number of workers to cap
+            autoscaling at. This field is currently only
+            supported for Streaming Engine jobs.
+
+            This field is a member of `oneof`_ ``_max_num_workers``.
+        min_num_workers (int):
+            The minimum number of workers to scale down
+            to. This field is currently only supported for
+            Streaming Engine jobs.
+
+            This field is a member of `oneof`_ ``_min_num_workers``.
+        worker_utilization_hint (float):
+            Target worker utilization, compared against the aggregate
+            utilization of the worker pool by autoscaler, to determine
+            upscaling and downscaling when absent other constraints such
+            as backlog. For more information, see `Update an existing
+            pipeline <https://cloud.google.com/dataflow/docs/guides/updating-a-pipeline>`__.
+
+            This field is a member of `oneof`_ ``_worker_utilization_hint``.
+    """
+
+    max_num_workers: int = proto.Field(
+        proto.INT32,
+        number=1,
+        optional=True,
+    )
+    min_num_workers: int = proto.Field(
+        proto.INT32,
+        number=2,
+        optional=True,
+    )
+    worker_utilization_hint: float = proto.Field(
+        proto.DOUBLE,
+        number=3,
+        optional=True,
     )
 
 
@@ -637,6 +753,9 @@ class SdkVersion(proto.Message):
             the SDK.
         sdk_support_status (google.cloud.dataflow_v1beta3.types.SdkVersion.SdkSupportStatus):
             The support status for this SDK version.
+        bugs (MutableSequence[google.cloud.dataflow_v1beta3.types.SdkBug]):
+            Output only. Known bugs found in this SDK
+            version.
     """
 
     class SdkSupportStatus(proto.Enum):
@@ -677,6 +796,89 @@ class SdkVersion(proto.Message):
         number=3,
         enum=SdkSupportStatus,
     )
+    bugs: MutableSequence["SdkBug"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="SdkBug",
+    )
+
+
+class SdkBug(proto.Message):
+    r"""A bug found in the Dataflow SDK.
+
+    Attributes:
+        type_ (google.cloud.dataflow_v1beta3.types.SdkBug.Type):
+            Output only. Describes the impact of this SDK
+            bug.
+        severity (google.cloud.dataflow_v1beta3.types.SdkBug.Severity):
+            Output only. How severe the SDK bug is.
+        uri (str):
+            Output only. Link to more information on the
+            bug.
+    """
+
+    class Type(proto.Enum):
+        r"""Nature of the issue, ordered from least severe to most. Other
+        bug types may be added to this list in the future.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Unknown issue with this SDK.
+            GENERAL (1):
+                Catch-all for SDK bugs that don't fit in the
+                below categories.
+            PERFORMANCE (2):
+                Using this version of the SDK may result in
+                degraded performance.
+            DATALOSS (3):
+                Using this version of the SDK may cause data
+                loss.
+        """
+        TYPE_UNSPECIFIED = 0
+        GENERAL = 1
+        PERFORMANCE = 2
+        DATALOSS = 3
+
+    class Severity(proto.Enum):
+        r"""Indicates the severity of the bug. Other severities may be
+        added to this list in the future.
+
+        Values:
+            SEVERITY_UNSPECIFIED (0):
+                A bug of unknown severity.
+            NOTICE (1):
+                A minor bug that that may reduce reliability
+                or performance for some jobs. Impact will be
+                minimal or non-existent for most jobs.
+            WARNING (2):
+                A bug that has some likelihood of causing
+                performance degradation, data loss, or job
+                failures.
+            SEVERE (3):
+                A bug with extremely significant impact. Jobs
+                may fail erroneously, performance may be
+                severely degraded, and data loss may be very
+                likely.
+        """
+        SEVERITY_UNSPECIFIED = 0
+        NOTICE = 1
+        WARNING = 2
+        SEVERE = 3
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    severity: Severity = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Severity,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class JobMetadata(proto.Message):
@@ -704,6 +906,9 @@ class JobMetadata(proto.Message):
         datastore_details (MutableSequence[google.cloud.dataflow_v1beta3.types.DatastoreIODetails]):
             Identification of a Datastore source used in
             the Dataflow job.
+        user_display_properties (MutableMapping[str, str]):
+            List of display properties to help UI filter
+            jobs.
     """
 
     sdk_version: "SdkVersion" = proto.Field(
@@ -740,6 +945,11 @@ class JobMetadata(proto.Message):
         proto.MESSAGE,
         number=7,
         message="DatastoreIODetails",
+    )
+    user_display_properties: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
     )
 
 
@@ -789,6 +999,9 @@ class PipelineDescription(proto.Message):
             pipeline.
         display_data (MutableSequence[google.cloud.dataflow_v1beta3.types.DisplayData]):
             Pipeline level display data.
+        step_names_hash (str):
+            A hash value of the submitted pipeline
+            portable graph step names if exists.
     """
 
     original_pipeline_transform: MutableSequence[
@@ -809,6 +1022,10 @@ class PipelineDescription(proto.Message):
         proto.MESSAGE,
         number=3,
         message="DisplayData",
+    )
+    step_names_hash: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -1161,6 +1378,9 @@ class Step(proto.Message):
     specific operation as part of the overall job. Data is typically
     passed from one step to another as part of the job.
 
+    **Note:** The properties of this object are not stable and might
+    change.
+
     Here's an example of a sequence of steps which together implement a
     Map-Reduce job:
 
@@ -1331,6 +1551,8 @@ class GetJobRequest(proto.Message):
 class UpdateJobRequest(proto.Message):
     r"""Request to update a Cloud Dataflow job.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project_id (str):
             The ID of the Cloud Platform project that the
@@ -1345,6 +1567,16 @@ class UpdateJobRequest(proto.Message):
             The [regional endpoint]
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
             that contains this job.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The list of fields to update relative to Job. If empty, only
+            RequestedJobState will be considered for update. If the
+            FieldMask is not empty and RequestedJobState is none/empty,
+            The fields specified in the update mask will be the only
+            ones considered for update. If both RequestedJobState and
+            update_mask are specified, an error will be returned as we
+            cannot update both state and mask.
+
+            This field is a member of `oneof`_ ``_update_mask``.
     """
 
     project_id: str = proto.Field(
@@ -1364,10 +1596,18 @@ class UpdateJobRequest(proto.Message):
         proto.STRING,
         number=4,
     )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        optional=True,
+        message=field_mask_pb2.FieldMask,
+    )
 
 
 class ListJobsRequest(proto.Message):
     r"""Request to list Cloud Dataflow jobs.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         filter (google.cloud.dataflow_v1beta3.types.ListJobsRequest.Filter):
@@ -1388,6 +1628,10 @@ class ListJobsRequest(proto.Message):
             The [regional endpoint]
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
             that contains this job.
+        name (str):
+            Optional. The job name.
+
+            This field is a member of `oneof`_ ``_name``.
     """
 
     class Filter(proto.Enum):
@@ -1442,6 +1686,11 @@ class ListJobsRequest(proto.Message):
     location: str = proto.Field(
         proto.STRING,
         number=17,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=11,
+        optional=True,
     )
 
 

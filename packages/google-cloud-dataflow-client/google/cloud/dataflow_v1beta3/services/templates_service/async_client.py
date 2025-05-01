@@ -298,7 +298,16 @@ class TemplatesServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> jobs.Job:
-        r"""Creates a Cloud Dataflow job from a template.
+        r"""Creates a Cloud Dataflow job from a template. Do not enter
+        confidential information when you supply string values using the
+        API.
+
+        To create a job, we recommend using
+        ``projects.locations.templates.create`` with a [regional
+        endpoint]
+        (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints).
+        Using ``projects.templates.create`` is not recommended, because
+        your job will always start in ``us-central1``.
 
         .. code-block:: python
 
@@ -341,7 +350,9 @@ class TemplatesServiceAsyncClient:
         Returns:
             google.cloud.dataflow_v1beta3.types.Job:
                 Defines a job to be run by the Cloud
-                Dataflow service.
+                Dataflow service. Do not enter
+                confidential information when you supply
+                string values using the API.
 
         """
         # Create or coerce a protobuf request object.
@@ -389,7 +400,15 @@ class TemplatesServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> templates.LaunchTemplateResponse:
-        r"""Launch a template.
+        r"""Launches a template.
+
+        To launch a template, we recommend using
+        ``projects.locations.templates.launch`` with a [regional
+        endpoint]
+        (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints).
+        Using ``projects.templates.launch`` is not recommended, because
+        jobs launched from the template will always start in
+        ``us-central1``.
 
         .. code-block:: python
 
@@ -480,6 +499,13 @@ class TemplatesServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> templates.GetTemplateResponse:
         r"""Get the template associated with a template.
+
+        To get the template, we recommend using
+        ``projects.locations.templates.get`` with a [regional endpoint]
+        (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints).
+        Using ``projects.templates.get`` is not recommended, because
+        only templates that are running in ``us-central1`` are
+        retrieved.
 
         .. code-block:: python
 

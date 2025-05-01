@@ -53,6 +53,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -1069,8 +1070,6 @@ def test_jobs_v1_beta3_client_create_channel_credentials_file(
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             scopes=None,
             default_host="dataflow.googleapis.com",
@@ -1117,6 +1116,7 @@ def test_create_job(request_type, transport: str = "grpc"):
             location="location_value",
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.create_job(request)
 
@@ -1142,6 +1142,7 @@ def test_create_job(request_type, transport: str = "grpc"):
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_create_job_non_empty_request_with_auto_populated_field():
@@ -1283,6 +1284,7 @@ async def test_create_job_async(
                 location="location_value",
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.create_job(request)
@@ -1309,6 +1311,7 @@ async def test_create_job_async(
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -1412,6 +1415,7 @@ def test_get_job(request_type, transport: str = "grpc"):
             location="location_value",
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_job(request)
 
@@ -1437,6 +1441,7 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_job_non_empty_request_with_auto_populated_field():
@@ -1578,6 +1583,7 @@ async def test_get_job_async(
                 location="location_value",
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_job(request)
@@ -1604,6 +1610,7 @@ async def test_get_job_async(
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -1709,6 +1716,7 @@ def test_update_job(request_type, transport: str = "grpc"):
             location="location_value",
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.update_job(request)
 
@@ -1734,6 +1742,7 @@ def test_update_job(request_type, transport: str = "grpc"):
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_update_job_non_empty_request_with_auto_populated_field():
@@ -1875,6 +1884,7 @@ async def test_update_job_async(
                 location="location_value",
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.update_job(request)
@@ -1901,6 +1911,7 @@ async def test_update_job_async(
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -2022,6 +2033,7 @@ def test_list_jobs_non_empty_request_with_auto_populated_field():
         project_id="project_id_value",
         page_token="page_token_value",
         location="location_value",
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2036,6 +2048,7 @@ def test_list_jobs_non_empty_request_with_auto_populated_field():
             project_id="project_id_value",
             page_token="page_token_value",
             location="location_value",
+            name="name_value",
         )
 
 
@@ -2468,6 +2481,7 @@ def test_aggregated_list_jobs_non_empty_request_with_auto_populated_field():
         project_id="project_id_value",
         page_token="page_token_value",
         location="location_value",
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2484,6 +2498,7 @@ def test_aggregated_list_jobs_non_empty_request_with_auto_populated_field():
             project_id="project_id_value",
             page_token="page_token_value",
             location="location_value",
+            name="name_value",
         )
 
 
@@ -4001,6 +4016,7 @@ async def test_create_job_empty_call_grpc_asyncio():
                 location="location_value",
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.create_job(request=None)
@@ -4041,6 +4057,7 @@ async def test_get_job_empty_call_grpc_asyncio():
                 location="location_value",
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.get_job(request=None)
@@ -4081,6 +4098,7 @@ async def test_update_job_empty_call_grpc_asyncio():
                 location="location_value",
                 created_from_snapshot_id="created_from_snapshot_id_value",
                 satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.update_job(request=None)
@@ -4348,7 +4366,12 @@ def test_create_job_rest_call_success(request_type):
             "worker_region": "worker_region_value",
             "worker_zone": "worker_zone_value",
             "shuffle_mode": 1,
-            "debug_options": {"enable_hot_key_logging": True},
+            "debug_options": {
+                "enable_hot_key_logging": True,
+                "data_sampling": {"behaviors": [1]},
+            },
+            "use_streaming_engine_resource_based_billing": True,
+            "streaming_mode": 1,
         },
         "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
         "steps_location": "steps_location_value",
@@ -4431,6 +4454,7 @@ def test_create_job_rest_call_success(request_type):
                 }
             ],
             "display_data": {},
+            "step_names_hash": "step_names_hash_value",
         },
         "stage_states": [
             {
@@ -4444,6 +4468,7 @@ def test_create_job_rest_call_success(request_type):
                 "version": "version_value",
                 "version_display_name": "version_display_name_value",
                 "sdk_support_status": 1,
+                "bugs": [{"type_": 1, "severity": 1, "uri": "uri_value"}],
             },
             "spanner_details": [
                 {
@@ -4474,10 +4499,18 @@ def test_create_job_rest_call_success(request_type):
             "datastore_details": [
                 {"namespace": "namespace_value", "project_id": "project_id_value"}
             ],
+            "user_display_properties": {},
         },
         "start_time": {},
         "created_from_snapshot_id": "created_from_snapshot_id_value",
         "satisfies_pzs": True,
+        "runtime_updatable_params": {
+            "max_num_workers": 1633,
+            "min_num_workers": 1631,
+            "worker_utilization_hint": 0.2503,
+        },
+        "satisfies_pzi": True,
+        "service_resources": {"zones": ["zones_value1", "zones_value2"]},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4566,6 +4599,7 @@ def test_create_job_rest_call_success(request_type):
             location="location_value",
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4596,6 +4630,7 @@ def test_create_job_rest_call_success(request_type):
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4715,6 +4750,7 @@ def test_get_job_rest_call_success(request_type):
             location="location_value",
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4745,6 +4781,7 @@ def test_get_job_rest_call_success(request_type):
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4937,7 +4974,12 @@ def test_update_job_rest_call_success(request_type):
             "worker_region": "worker_region_value",
             "worker_zone": "worker_zone_value",
             "shuffle_mode": 1,
-            "debug_options": {"enable_hot_key_logging": True},
+            "debug_options": {
+                "enable_hot_key_logging": True,
+                "data_sampling": {"behaviors": [1]},
+            },
+            "use_streaming_engine_resource_based_billing": True,
+            "streaming_mode": 1,
         },
         "steps": [{"kind": "kind_value", "name": "name_value", "properties": {}}],
         "steps_location": "steps_location_value",
@@ -5020,6 +5062,7 @@ def test_update_job_rest_call_success(request_type):
                 }
             ],
             "display_data": {},
+            "step_names_hash": "step_names_hash_value",
         },
         "stage_states": [
             {
@@ -5033,6 +5076,7 @@ def test_update_job_rest_call_success(request_type):
                 "version": "version_value",
                 "version_display_name": "version_display_name_value",
                 "sdk_support_status": 1,
+                "bugs": [{"type_": 1, "severity": 1, "uri": "uri_value"}],
             },
             "spanner_details": [
                 {
@@ -5063,10 +5107,18 @@ def test_update_job_rest_call_success(request_type):
             "datastore_details": [
                 {"namespace": "namespace_value", "project_id": "project_id_value"}
             ],
+            "user_display_properties": {},
         },
         "start_time": {},
         "created_from_snapshot_id": "created_from_snapshot_id_value",
         "satisfies_pzs": True,
+        "runtime_updatable_params": {
+            "max_num_workers": 1633,
+            "min_num_workers": 1631,
+            "worker_utilization_hint": 0.2503,
+        },
+        "satisfies_pzi": True,
+        "service_resources": {"zones": ["zones_value1", "zones_value2"]},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5155,6 +5207,7 @@ def test_update_job_rest_call_success(request_type):
             location="location_value",
             created_from_snapshot_id="created_from_snapshot_id_value",
             satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -5185,6 +5238,7 @@ def test_update_job_rest_call_success(request_type):
     assert response.location == "location_value"
     assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
     assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5867,8 +5921,6 @@ def test_jobs_v1_beta3_base_transport_with_credentials_file():
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             quota_project_id="octopus",
         )
@@ -5895,8 +5947,6 @@ def test_jobs_v1_beta3_auth_adc():
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             quota_project_id=None,
         )
@@ -5920,8 +5970,6 @@ def test_jobs_v1_beta3_transport_auth_adc(transport_class):
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             quota_project_id="octopus",
         )
@@ -5977,8 +6025,6 @@ def test_jobs_v1_beta3_transport_create_channel(transport_class, grpc_helpers):
             default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/compute.readonly",
-                "https://www.googleapis.com/auth/userinfo.email",
             ),
             scopes=["1", "2"],
             default_host="dataflow.googleapis.com",
