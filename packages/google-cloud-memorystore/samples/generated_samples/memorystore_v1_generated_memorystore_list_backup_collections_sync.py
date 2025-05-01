@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateInstance
+# Snippet for ListBackupCollections
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-memorystore
 
 
-# [START memorystore_v1_generated_Memorystore_CreateInstance_sync]
+# [START memorystore_v1_generated_Memorystore_ListBackupCollections_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,24 +34,20 @@
 from google.cloud import memorystore_v1
 
 
-def sample_create_instance():
+def sample_list_backup_collections():
     # Create a client
     client = memorystore_v1.MemorystoreClient()
 
     # Initialize request argument(s)
-    request = memorystore_v1.CreateInstanceRequest(
+    request = memorystore_v1.ListBackupCollectionsRequest(
         parent="parent_value",
-        instance_id="instance_id_value",
     )
 
     # Make the request
-    operation = client.create_instance(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    page_result = client.list_backup_collections(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
-# [END memorystore_v1_generated_Memorystore_CreateInstance_sync]
+# [END memorystore_v1_generated_Memorystore_ListBackupCollections_sync]

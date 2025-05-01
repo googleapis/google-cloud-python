@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateInstance
+# Snippet for DeleteBackup
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-memorystore
 
 
-# [START memorystore_v1_generated_Memorystore_CreateInstance_sync]
+# [START memorystore_v1_generated_Memorystore_DeleteBackup_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,18 +34,17 @@
 from google.cloud import memorystore_v1
 
 
-def sample_create_instance():
+def sample_delete_backup():
     # Create a client
     client = memorystore_v1.MemorystoreClient()
 
     # Initialize request argument(s)
-    request = memorystore_v1.CreateInstanceRequest(
-        parent="parent_value",
-        instance_id="instance_id_value",
+    request = memorystore_v1.DeleteBackupRequest(
+        name="name_value",
     )
 
     # Make the request
-    operation = client.create_instance(request=request)
+    operation = client.delete_backup(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -54,4 +53,4 @@ def sample_create_instance():
     # Handle the response
     print(response)
 
-# [END memorystore_v1_generated_Memorystore_CreateInstance_sync]
+# [END memorystore_v1_generated_Memorystore_DeleteBackup_sync]
