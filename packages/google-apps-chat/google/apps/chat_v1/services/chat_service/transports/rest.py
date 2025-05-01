@@ -93,6 +93,14 @@ class ChatServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_custom_emoji(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_custom_emoji(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_membership(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -124,6 +132,10 @@ class ChatServiceRestInterceptor:
             def post_create_space(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
+            def pre_delete_custom_emoji(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
 
             def pre_delete_membership(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -158,6 +170,14 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def post_get_attachment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_custom_emoji(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_custom_emoji(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -214,6 +234,14 @@ class ChatServiceRestInterceptor:
                 return request, metadata
 
             def post_get_thread_read_state(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_custom_emojis(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_custom_emojis(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -374,6 +402,54 @@ class ChatServiceRestInterceptor:
         `post_complete_import_space` interceptor. The (possibly modified) response returned by
         `post_complete_import_space` will be passed to
         `post_complete_import_space_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_custom_emoji(
+        self,
+        request: reaction.CreateCustomEmojiRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reaction.CreateCustomEmojiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_custom_emoji
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_create_custom_emoji(
+        self, response: reaction.CustomEmoji
+    ) -> reaction.CustomEmoji:
+        """Post-rpc interceptor for create_custom_emoji
+
+        DEPRECATED. Please use the `post_create_custom_emoji_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_create_custom_emoji` interceptor runs
+        before the `post_create_custom_emoji_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_custom_emoji_with_metadata(
+        self,
+        response: reaction.CustomEmoji,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reaction.CustomEmoji, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_custom_emoji
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_create_custom_emoji_with_metadata`
+        interceptor in new development instead of the `post_create_custom_emoji` interceptor.
+        When both interceptors are used, this `post_create_custom_emoji_with_metadata` interceptor runs after the
+        `post_create_custom_emoji` interceptor. The (possibly modified) response returned by
+        `post_create_custom_emoji` will be passed to
+        `post_create_custom_emoji_with_metadata`.
         """
         return response, metadata
 
@@ -563,6 +639,20 @@ class ChatServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_custom_emoji(
+        self,
+        request: reaction.DeleteCustomEmojiRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reaction.DeleteCustomEmojiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_custom_emoji
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
     def pre_delete_membership(
         self,
         request: membership.DeleteMembershipRequest,
@@ -734,6 +824,52 @@ class ChatServiceRestInterceptor:
         `post_get_attachment` interceptor. The (possibly modified) response returned by
         `post_get_attachment` will be passed to
         `post_get_attachment_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_custom_emoji(
+        self,
+        request: reaction.GetCustomEmojiRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reaction.GetCustomEmojiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_custom_emoji
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_get_custom_emoji(
+        self, response: reaction.CustomEmoji
+    ) -> reaction.CustomEmoji:
+        """Post-rpc interceptor for get_custom_emoji
+
+        DEPRECATED. Please use the `post_get_custom_emoji_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_get_custom_emoji` interceptor runs
+        before the `post_get_custom_emoji_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_custom_emoji_with_metadata(
+        self,
+        response: reaction.CustomEmoji,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reaction.CustomEmoji, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_custom_emoji
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_get_custom_emoji_with_metadata`
+        interceptor in new development instead of the `post_get_custom_emoji` interceptor.
+        When both interceptors are used, this `post_get_custom_emoji_with_metadata` interceptor runs after the
+        `post_get_custom_emoji` interceptor. The (possibly modified) response returned by
+        `post_get_custom_emoji` will be passed to
+        `post_get_custom_emoji_with_metadata`.
         """
         return response, metadata
 
@@ -1070,6 +1206,56 @@ class ChatServiceRestInterceptor:
         `post_get_thread_read_state` interceptor. The (possibly modified) response returned by
         `post_get_thread_read_state` will be passed to
         `post_get_thread_read_state_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_custom_emojis(
+        self,
+        request: reaction.ListCustomEmojisRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reaction.ListCustomEmojisRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_custom_emojis
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ChatService server.
+        """
+        return request, metadata
+
+    def post_list_custom_emojis(
+        self, response: reaction.ListCustomEmojisResponse
+    ) -> reaction.ListCustomEmojisResponse:
+        """Post-rpc interceptor for list_custom_emojis
+
+        DEPRECATED. Please use the `post_list_custom_emojis_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ChatService server but before
+        it is returned to user code. This `post_list_custom_emojis` interceptor runs
+        before the `post_list_custom_emojis_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_custom_emojis_with_metadata(
+        self,
+        response: reaction.ListCustomEmojisResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        reaction.ListCustomEmojisResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_custom_emojis
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ChatService server but before it is returned to user code.
+
+        We recommend only using this `post_list_custom_emojis_with_metadata`
+        interceptor in new development instead of the `post_list_custom_emojis` interceptor.
+        When both interceptors are used, this `post_list_custom_emojis_with_metadata` interceptor runs after the
+        `post_list_custom_emojis` interceptor. The (possibly modified) response returned by
+        `post_list_custom_emojis` will be passed to
+        `post_list_custom_emojis_with_metadata`.
         """
         return response, metadata
 
@@ -1935,6 +2121,160 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 )
             return resp
 
+    class _CreateCustomEmoji(
+        _BaseChatServiceRestTransport._BaseCreateCustomEmoji, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.CreateCustomEmoji")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: reaction.CreateCustomEmojiRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> reaction.CustomEmoji:
+            r"""Call the create custom emoji method over HTTP.
+
+            Args:
+                request (~.reaction.CreateCustomEmojiRequest):
+                    The request object. A request to create a custom emoji.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.reaction.CustomEmoji:
+                    Represents a `custom
+                emoji <https://support.google.com/chat/answer/12800149>`__.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseCreateCustomEmoji._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_custom_emoji(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseCreateCustomEmoji._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseChatServiceRestTransport._BaseCreateCustomEmoji._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseCreateCustomEmoji._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.CreateCustomEmoji",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateCustomEmoji",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._CreateCustomEmoji._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = reaction.CustomEmoji()
+            pb_resp = reaction.CustomEmoji.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_custom_emoji(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_custom_emoji_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = reaction.CustomEmoji.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.create_custom_emoji",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateCustomEmoji",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateMembership(
         _BaseChatServiceRestTransport._BaseCreateMembership, ChatServiceRestStub
     ):
@@ -2556,6 +2896,114 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     },
                 )
             return resp
+
+    class _DeleteCustomEmoji(
+        _BaseChatServiceRestTransport._BaseDeleteCustomEmoji, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.DeleteCustomEmoji")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: reaction.DeleteCustomEmojiRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete custom emoji method over HTTP.
+
+            Args:
+                request (~.reaction.DeleteCustomEmojiRequest):
+                    The request object. Request for deleting a custom emoji.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseDeleteCustomEmoji._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_custom_emoji(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseDeleteCustomEmoji._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseDeleteCustomEmoji._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.DeleteCustomEmoji",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "DeleteCustomEmoji",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._DeleteCustomEmoji._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _DeleteMembership(
         _BaseChatServiceRestTransport._BaseDeleteMembership, ChatServiceRestStub
@@ -3323,6 +3771,155 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     extra={
                         "serviceName": "google.chat.v1.ChatService",
                         "rpcName": "GetAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetCustomEmoji(
+        _BaseChatServiceRestTransport._BaseGetCustomEmoji, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.GetCustomEmoji")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: reaction.GetCustomEmojiRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> reaction.CustomEmoji:
+            r"""Call the get custom emoji method over HTTP.
+
+            Args:
+                request (~.reaction.GetCustomEmojiRequest):
+                    The request object. A request to return a single custom
+                emoji.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.reaction.CustomEmoji:
+                    Represents a `custom
+                emoji <https://support.google.com/chat/answer/12800149>`__.
+
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetCustomEmoji._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_custom_emoji(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseGetCustomEmoji._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseGetCustomEmoji._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetCustomEmoji",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetCustomEmoji",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._GetCustomEmoji._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = reaction.CustomEmoji()
+            pb_resp = reaction.CustomEmoji.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_custom_emoji(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_custom_emoji_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = reaction.CustomEmoji.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_custom_emoji",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetCustomEmoji",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -4387,6 +4984,155 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     extra={
                         "serviceName": "google.chat.v1.ChatService",
                         "rpcName": "GetThreadReadState",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListCustomEmojis(
+        _BaseChatServiceRestTransport._BaseListCustomEmojis, ChatServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("ChatServiceRestTransport.ListCustomEmojis")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: reaction.ListCustomEmojisRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> reaction.ListCustomEmojisResponse:
+            r"""Call the list custom emojis method over HTTP.
+
+            Args:
+                request (~.reaction.ListCustomEmojisRequest):
+                    The request object. A request to return a list of custom
+                emojis.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.reaction.ListCustomEmojisResponse:
+                    A response to list custom emojis.
+            """
+
+            http_options = (
+                _BaseChatServiceRestTransport._BaseListCustomEmojis._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_custom_emojis(
+                request, metadata
+            )
+            transcoded_request = _BaseChatServiceRestTransport._BaseListCustomEmojis._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseChatServiceRestTransport._BaseListCustomEmojis._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.ListCustomEmojis",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListCustomEmojis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ChatServiceRestTransport._ListCustomEmojis._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = reaction.ListCustomEmojisResponse()
+            pb_resp = reaction.ListCustomEmojisResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_custom_emojis(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_custom_emojis_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = reaction.ListCustomEmojisResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.list_custom_emojis",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListCustomEmojis",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -6416,6 +7162,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         return self._CompleteImportSpace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_custom_emoji(
+        self,
+    ) -> Callable[[reaction.CreateCustomEmojiRequest], reaction.CustomEmoji]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateCustomEmoji(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_membership(
         self,
     ) -> Callable[[gc_membership.CreateMembershipRequest], gc_membership.Membership]:
@@ -6444,6 +7198,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSpace(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_custom_emoji(
+        self,
+    ) -> Callable[[reaction.DeleteCustomEmojiRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteCustomEmoji(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_membership(
@@ -6490,6 +7252,14 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAttachment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_custom_emoji(
+        self,
+    ) -> Callable[[reaction.GetCustomEmojiRequest], reaction.CustomEmoji]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetCustomEmoji(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_membership(
@@ -6549,6 +7319,16 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetThreadReadState(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_custom_emojis(
+        self,
+    ) -> Callable[
+        [reaction.ListCustomEmojisRequest], reaction.ListCustomEmojisResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListCustomEmojis(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_memberships(

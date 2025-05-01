@@ -59,6 +59,8 @@ class ChatServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/chat.admin.spaces",
         "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
         "https://www.googleapis.com/auth/chat.bot",
+        "https://www.googleapis.com/auth/chat.customemojis",
+        "https://www.googleapis.com/auth/chat.customemojis.readonly",
         "https://www.googleapis.com/auth/chat.delete",
         "https://www.googleapis.com/auth/chat.import",
         "https://www.googleapis.com/auth/chat.memberships",
@@ -505,6 +507,62 @@ class ChatServiceTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.create_custom_emoji: gapic_v1.method.wrap_method(
+                self.create_custom_emoji,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_custom_emoji: gapic_v1.method.wrap_method(
+                self.get_custom_emoji,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_custom_emojis: gapic_v1.method.wrap_method(
+                self.list_custom_emojis,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.delete_custom_emoji: gapic_v1.method.wrap_method(
+                self.delete_custom_emoji,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
             self.get_space_read_state: gapic_v1.method.wrap_method(
                 self.get_space_read_state,
                 default_retry=retries.Retry(
@@ -828,6 +886,45 @@ class ChatServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [reaction.DeleteReactionRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_custom_emoji(
+        self,
+    ) -> Callable[
+        [reaction.CreateCustomEmojiRequest],
+        Union[reaction.CustomEmoji, Awaitable[reaction.CustomEmoji]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_custom_emoji(
+        self,
+    ) -> Callable[
+        [reaction.GetCustomEmojiRequest],
+        Union[reaction.CustomEmoji, Awaitable[reaction.CustomEmoji]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_custom_emojis(
+        self,
+    ) -> Callable[
+        [reaction.ListCustomEmojisRequest],
+        Union[
+            reaction.ListCustomEmojisResponse,
+            Awaitable[reaction.ListCustomEmojisResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_custom_emoji(
+        self,
+    ) -> Callable[
+        [reaction.DeleteCustomEmojiRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()

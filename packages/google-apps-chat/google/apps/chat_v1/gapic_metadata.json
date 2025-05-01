@@ -15,6 +15,11 @@
                 "complete_import_space"
               ]
             },
+            "CreateCustomEmoji": {
+              "methods": [
+                "create_custom_emoji"
+              ]
+            },
             "CreateMembership": {
               "methods": [
                 "create_membership"
@@ -33,6 +38,11 @@
             "CreateSpace": {
               "methods": [
                 "create_space"
+              ]
+            },
+            "DeleteCustomEmoji": {
+              "methods": [
+                "delete_custom_emoji"
               ]
             },
             "DeleteMembership": {
@@ -63,6 +73,11 @@
             "GetAttachment": {
               "methods": [
                 "get_attachment"
+              ]
+            },
+            "GetCustomEmoji": {
+              "methods": [
+                "get_custom_emoji"
               ]
             },
             "GetMembership": {
@@ -98,6 +113,11 @@
             "GetThreadReadState": {
               "methods": [
                 "get_thread_read_state"
+              ]
+            },
+            "ListCustomEmojis": {
+              "methods": [
+                "list_custom_emojis"
               ]
             },
             "ListMemberships": {
@@ -175,6 +195,11 @@
                 "complete_import_space"
               ]
             },
+            "CreateCustomEmoji": {
+              "methods": [
+                "create_custom_emoji"
+              ]
+            },
             "CreateMembership": {
               "methods": [
                 "create_membership"
@@ -193,6 +218,11 @@
             "CreateSpace": {
               "methods": [
                 "create_space"
+              ]
+            },
+            "DeleteCustomEmoji": {
+              "methods": [
+                "delete_custom_emoji"
               ]
             },
             "DeleteMembership": {
@@ -223,6 +253,11 @@
             "GetAttachment": {
               "methods": [
                 "get_attachment"
+              ]
+            },
+            "GetCustomEmoji": {
+              "methods": [
+                "get_custom_emoji"
               ]
             },
             "GetMembership": {
@@ -258,6 +293,11 @@
             "GetThreadReadState": {
               "methods": [
                 "get_thread_read_state"
+              ]
+            },
+            "ListCustomEmojis": {
+              "methods": [
+                "list_custom_emojis"
               ]
             },
             "ListMemberships": {
@@ -335,6 +375,11 @@
                 "complete_import_space"
               ]
             },
+            "CreateCustomEmoji": {
+              "methods": [
+                "create_custom_emoji"
+              ]
+            },
             "CreateMembership": {
               "methods": [
                 "create_membership"
@@ -353,6 +398,11 @@
             "CreateSpace": {
               "methods": [
                 "create_space"
+              ]
+            },
+            "DeleteCustomEmoji": {
+              "methods": [
+                "delete_custom_emoji"
               ]
             },
             "DeleteMembership": {
@@ -383,6 +433,11 @@
             "GetAttachment": {
               "methods": [
                 "get_attachment"
+              ]
+            },
+            "GetCustomEmoji": {
+              "methods": [
+                "get_custom_emoji"
               ]
             },
             "GetMembership": {
@@ -418,6 +473,11 @@
             "GetThreadReadState": {
               "methods": [
                 "get_thread_read_state"
+              ]
+            },
+            "ListCustomEmojis": {
+              "methods": [
+                "list_custom_emojis"
               ]
             },
             "ListMemberships": {
