@@ -1102,6 +1102,8 @@ def test_chat_service_client_create_channel_credentials_file(
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
+                "https://www.googleapis.com/auth/chat.customemojis",
+                "https://www.googleapis.com/auth/chat.customemojis.readonly",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",
                 "https://www.googleapis.com/auth/chat.memberships",
@@ -9536,6 +9538,1347 @@ async def test_delete_reaction_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        reaction.CreateCustomEmojiRequest,
+        dict,
+    ],
+)
+def test_create_custom_emoji(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = reaction.CustomEmoji(
+            name="name_value",
+            uid="uid_value",
+            emoji_name="emoji_name_value",
+            temporary_image_uri="temporary_image_uri_value",
+        )
+        response = client.create_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = reaction.CreateCustomEmojiRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reaction.CustomEmoji)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.emoji_name == "emoji_name_value"
+    assert response.temporary_image_uri == "temporary_image_uri_value"
+
+
+def test_create_custom_emoji_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reaction.CreateCustomEmojiRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_emoji), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_custom_emoji(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reaction.CreateCustomEmojiRequest()
+
+
+def test_create_custom_emoji_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_custom_emoji in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_custom_emoji
+        ] = mock_rpc
+        request = {}
+        client.create_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_custom_emoji(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_custom_emoji_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_custom_emoji
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_custom_emoji
+        ] = mock_rpc
+
+        request = {}
+        await client.create_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.create_custom_emoji(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_custom_emoji_async(
+    transport: str = "grpc_asyncio", request_type=reaction.CreateCustomEmojiRequest
+):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reaction.CustomEmoji(
+                name="name_value",
+                uid="uid_value",
+                emoji_name="emoji_name_value",
+                temporary_image_uri="temporary_image_uri_value",
+            )
+        )
+        response = await client.create_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = reaction.CreateCustomEmojiRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reaction.CustomEmoji)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.emoji_name == "emoji_name_value"
+    assert response.temporary_image_uri == "temporary_image_uri_value"
+
+
+@pytest.mark.asyncio
+async def test_create_custom_emoji_async_from_dict():
+    await test_create_custom_emoji_async(request_type=dict)
+
+
+def test_create_custom_emoji_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = reaction.CustomEmoji()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_custom_emoji(
+            custom_emoji=reaction.CustomEmoji(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].custom_emoji
+        mock_val = reaction.CustomEmoji(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_custom_emoji_flattened_error():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_custom_emoji(
+            reaction.CreateCustomEmojiRequest(),
+            custom_emoji=reaction.CustomEmoji(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_custom_emoji_flattened_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = reaction.CustomEmoji()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reaction.CustomEmoji()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_custom_emoji(
+            custom_emoji=reaction.CustomEmoji(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].custom_emoji
+        mock_val = reaction.CustomEmoji(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_custom_emoji_flattened_error_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_custom_emoji(
+            reaction.CreateCustomEmojiRequest(),
+            custom_emoji=reaction.CustomEmoji(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.GetCustomEmojiRequest,
+        dict,
+    ],
+)
+def test_get_custom_emoji(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = reaction.CustomEmoji(
+            name="name_value",
+            uid="uid_value",
+            emoji_name="emoji_name_value",
+            temporary_image_uri="temporary_image_uri_value",
+        )
+        response = client.get_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = reaction.GetCustomEmojiRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reaction.CustomEmoji)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.emoji_name == "emoji_name_value"
+    assert response.temporary_image_uri == "temporary_image_uri_value"
+
+
+def test_get_custom_emoji_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reaction.GetCustomEmojiRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_custom_emoji(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reaction.GetCustomEmojiRequest(
+            name="name_value",
+        )
+
+
+def test_get_custom_emoji_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_custom_emoji in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_custom_emoji
+        ] = mock_rpc
+        request = {}
+        client.get_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_custom_emoji(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_custom_emoji_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_custom_emoji
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_custom_emoji
+        ] = mock_rpc
+
+        request = {}
+        await client.get_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_custom_emoji(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_custom_emoji_async(
+    transport: str = "grpc_asyncio", request_type=reaction.GetCustomEmojiRequest
+):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reaction.CustomEmoji(
+                name="name_value",
+                uid="uid_value",
+                emoji_name="emoji_name_value",
+                temporary_image_uri="temporary_image_uri_value",
+            )
+        )
+        response = await client.get_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = reaction.GetCustomEmojiRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reaction.CustomEmoji)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.emoji_name == "emoji_name_value"
+    assert response.temporary_image_uri == "temporary_image_uri_value"
+
+
+@pytest.mark.asyncio
+async def test_get_custom_emoji_async_from_dict():
+    await test_get_custom_emoji_async(request_type=dict)
+
+
+def test_get_custom_emoji_field_headers():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = reaction.GetCustomEmojiRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        call.return_value = reaction.CustomEmoji()
+        client.get_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_custom_emoji_field_headers_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = reaction.GetCustomEmojiRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reaction.CustomEmoji()
+        )
+        await client.get_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_custom_emoji_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = reaction.CustomEmoji()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_custom_emoji(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_custom_emoji_flattened_error():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_custom_emoji(
+            reaction.GetCustomEmojiRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_custom_emoji_flattened_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = reaction.CustomEmoji()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reaction.CustomEmoji()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_custom_emoji(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_custom_emoji_flattened_error_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_custom_emoji(
+            reaction.GetCustomEmojiRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.ListCustomEmojisRequest,
+        dict,
+    ],
+)
+def test_list_custom_emojis(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = reaction.ListCustomEmojisResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_custom_emojis(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = reaction.ListCustomEmojisRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomEmojisPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_custom_emojis_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reaction.ListCustomEmojisRequest(
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_custom_emojis(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reaction.ListCustomEmojisRequest(
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+def test_list_custom_emojis_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_custom_emojis in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_custom_emojis
+        ] = mock_rpc
+        request = {}
+        client.list_custom_emojis(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_custom_emojis(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_custom_emojis_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_custom_emojis
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_custom_emojis
+        ] = mock_rpc
+
+        request = {}
+        await client.list_custom_emojis(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_custom_emojis(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_custom_emojis_async(
+    transport: str = "grpc_asyncio", request_type=reaction.ListCustomEmojisRequest
+):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reaction.ListCustomEmojisResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_custom_emojis(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = reaction.ListCustomEmojisRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomEmojisAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_custom_emojis_async_from_dict():
+    await test_list_custom_emojis_async(request_type=dict)
+
+
+def test_list_custom_emojis_pager(transport_name: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="abc",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[],
+                next_page_token="def",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="ghi",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.list_custom_emojis(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, reaction.CustomEmoji) for i in results)
+
+
+def test_list_custom_emojis_pages(transport_name: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="abc",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[],
+                next_page_token="def",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="ghi",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_custom_emojis(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_custom_emojis_async_pager():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="abc",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[],
+                next_page_token="def",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="ghi",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_custom_emojis(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, reaction.CustomEmoji) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_custom_emojis_async_pages():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="abc",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[],
+                next_page_token="def",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="ghi",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_custom_emojis(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.DeleteCustomEmojiRequest,
+        dict,
+    ],
+)
+def test_delete_custom_emoji(request_type, transport: str = "grpc"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = reaction.DeleteCustomEmojiRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_custom_emoji_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reaction.DeleteCustomEmojiRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_custom_emoji(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reaction.DeleteCustomEmojiRequest(
+            name="name_value",
+        )
+
+
+def test_delete_custom_emoji_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_custom_emoji in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_custom_emoji
+        ] = mock_rpc
+        request = {}
+        client.delete_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_custom_emoji(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_emoji_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ChatServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_custom_emoji
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_custom_emoji
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.delete_custom_emoji(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_emoji_async(
+    transport: str = "grpc_asyncio", request_type=reaction.DeleteCustomEmojiRequest
+):
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = reaction.DeleteCustomEmojiRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_emoji_async_from_dict():
+    await test_delete_custom_emoji_async(request_type=dict)
+
+
+def test_delete_custom_emoji_field_headers():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = reaction.DeleteCustomEmojiRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_emoji_field_headers_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = reaction.DeleteCustomEmojiRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_custom_emoji_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_custom_emoji(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_custom_emoji_flattened_error():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_custom_emoji(
+            reaction.DeleteCustomEmojiRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_emoji_flattened_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_custom_emoji(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_emoji_flattened_error_async():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_custom_emoji(
+            reaction.DeleteCustomEmojiRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         space_read_state.GetSpaceReadStateRequest,
         dict,
     ],
@@ -16523,6 +17866,636 @@ def test_delete_reaction_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_create_custom_emoji_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_custom_emoji in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_custom_emoji
+        ] = mock_rpc
+
+        request = {}
+        client.create_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_custom_emoji(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_custom_emoji_rest_required_fields(
+    request_type=reaction.CreateCustomEmojiRequest,
+):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_emoji._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_custom_emoji._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reaction.CustomEmoji()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = reaction.CustomEmoji.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_custom_emoji(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_custom_emoji_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_custom_emoji._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("customEmoji",)))
+
+
+def test_create_custom_emoji_rest_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reaction.CustomEmoji()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            custom_emoji=reaction.CustomEmoji(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = reaction.CustomEmoji.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_custom_emoji(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/customEmojis" % client.transport._host, args[1]
+        )
+
+
+def test_create_custom_emoji_rest_flattened_error(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_custom_emoji(
+            reaction.CreateCustomEmojiRequest(),
+            custom_emoji=reaction.CustomEmoji(name="name_value"),
+        )
+
+
+def test_get_custom_emoji_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_custom_emoji in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_custom_emoji
+        ] = mock_rpc
+
+        request = {}
+        client.get_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_custom_emoji(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_custom_emoji_rest_required_fields(
+    request_type=reaction.GetCustomEmojiRequest,
+):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_emoji._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_custom_emoji._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = reaction.CustomEmoji()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = reaction.CustomEmoji.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_custom_emoji(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_custom_emoji_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_custom_emoji._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_custom_emoji_rest_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reaction.CustomEmoji()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "customEmojis/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = reaction.CustomEmoji.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_custom_emoji(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=customEmojis/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_custom_emoji_rest_flattened_error(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_custom_emoji(
+            reaction.GetCustomEmojiRequest(),
+            name="name_value",
+        )
+
+
+def test_list_custom_emojis_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_custom_emojis in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_custom_emojis
+        ] = mock_rpc
+
+        request = {}
+        client.list_custom_emojis(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_custom_emojis(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_custom_emojis_rest_pager(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="abc",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[],
+                next_page_token="def",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                ],
+                next_page_token="ghi",
+            ),
+            reaction.ListCustomEmojisResponse(
+                custom_emojis=[
+                    reaction.CustomEmoji(),
+                    reaction.CustomEmoji(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(reaction.ListCustomEmojisResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.list_custom_emojis(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, reaction.CustomEmoji) for i in results)
+
+        pages = list(client.list_custom_emojis(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_delete_custom_emoji_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ChatServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_custom_emoji in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_custom_emoji
+        ] = mock_rpc
+
+        request = {}
+        client.delete_custom_emoji(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_custom_emoji(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_custom_emoji_rest_required_fields(
+    request_type=reaction.DeleteCustomEmojiRequest,
+):
+    transport_class = transports.ChatServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_custom_emoji._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_custom_emoji._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_custom_emoji(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_custom_emoji_rest_unset_required_fields():
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_custom_emoji._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_custom_emoji_rest_flattened():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "customEmojis/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_custom_emoji(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=customEmojis/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_custom_emoji_rest_flattened_error(transport: str = "rest"):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_custom_emoji(
+            reaction.DeleteCustomEmojiRequest(),
+            name="name_value",
+        )
+
+
 def test_get_space_read_state_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -18558,6 +20531,96 @@ def test_delete_reaction_empty_call_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_create_custom_emoji_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_emoji), "__call__"
+    ) as call:
+        call.return_value = reaction.CustomEmoji()
+        client.create_custom_emoji(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.CreateCustomEmojiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_custom_emoji_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        call.return_value = reaction.CustomEmoji()
+        client.get_custom_emoji(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.GetCustomEmojiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_custom_emojis_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis), "__call__"
+    ) as call:
+        call.return_value = reaction.ListCustomEmojisResponse()
+        client.list_custom_emojis(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.ListCustomEmojisRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_custom_emoji_empty_call_grpc():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_custom_emoji(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.DeleteCustomEmojiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_space_read_state_empty_call_grpc():
     client = ChatServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19465,6 +21528,122 @@ async def test_delete_reaction_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
+async def test_create_custom_emoji_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reaction.CustomEmoji(
+                name="name_value",
+                uid="uid_value",
+                emoji_name="emoji_name_value",
+                temporary_image_uri="temporary_image_uri_value",
+            )
+        )
+        await client.create_custom_emoji(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.CreateCustomEmojiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_custom_emoji_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reaction.CustomEmoji(
+                name="name_value",
+                uid="uid_value",
+                emoji_name="emoji_name_value",
+                temporary_image_uri="temporary_image_uri_value",
+            )
+        )
+        await client.get_custom_emoji(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.GetCustomEmojiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_custom_emojis_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reaction.ListCustomEmojisResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_custom_emojis(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.ListCustomEmojisRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_custom_emoji_empty_call_grpc_asyncio():
+    client = ChatServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_custom_emoji(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.DeleteCustomEmojiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
 async def test_get_space_read_state_empty_call_grpc_asyncio():
     client = ChatServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20008,7 +22187,18 @@ def test_create_message_rest_call_success(request_type):
                         "message": "message_value",
                     },
                 },
-                "custom_emoji_metadata": {"custom_emoji": {"uid": "uid_value"}},
+                "custom_emoji_metadata": {
+                    "custom_emoji": {
+                        "name": "name_value",
+                        "uid": "uid_value",
+                        "emoji_name": "emoji_name_value",
+                        "temporary_image_uri": "temporary_image_uri_value",
+                        "payload": {
+                            "file_content": b"file_content_blob",
+                            "filename": "filename_value",
+                        },
+                    }
+                },
             }
         ],
         "thread": {"name": "name_value", "thread_key": "thread_key_value"},
@@ -21113,7 +23303,18 @@ def test_update_message_rest_call_success(request_type):
                         "message": "message_value",
                     },
                 },
-                "custom_emoji_metadata": {"custom_emoji": {"uid": "uid_value"}},
+                "custom_emoji_metadata": {
+                    "custom_emoji": {
+                        "name": "name_value",
+                        "uid": "uid_value",
+                        "emoji_name": "emoji_name_value",
+                        "temporary_image_uri": "temporary_image_uri_value",
+                        "payload": {
+                            "file_content": b"file_content_blob",
+                            "filename": "filename_value",
+                        },
+                    }
+                },
             }
         ],
         "thread": {"name": "name_value", "thread_key": "thread_key_value"},
@@ -23784,7 +25985,19 @@ def test_create_reaction_rest_call_success(request_type):
             "type_": 1,
             "is_anonymous": True,
         },
-        "emoji": {"unicode": "unicode_value", "custom_emoji": {"uid": "uid_value"}},
+        "emoji": {
+            "unicode": "unicode_value",
+            "custom_emoji": {
+                "name": "name_value",
+                "uid": "uid_value",
+                "emoji_name": "emoji_name_value",
+                "temporary_image_uri": "temporary_image_uri_value",
+                "payload": {
+                    "file_content": b"file_content_blob",
+                    "filename": "filename_value",
+                },
+            },
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -24161,6 +26374,580 @@ def test_delete_reaction_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
 
         client.delete_reaction(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_custom_emoji_rest_bad_request(
+    request_type=reaction.CreateCustomEmojiRequest,
+):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_custom_emoji(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.CreateCustomEmojiRequest,
+        dict,
+    ],
+)
+def test_create_custom_emoji_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request_init["custom_emoji"] = {
+        "name": "name_value",
+        "uid": "uid_value",
+        "emoji_name": "emoji_name_value",
+        "temporary_image_uri": "temporary_image_uri_value",
+        "payload": {"file_content": b"file_content_blob", "filename": "filename_value"},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = reaction.CreateCustomEmojiRequest.meta.fields["custom_emoji"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["custom_emoji"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["custom_emoji"][field])):
+                    del request_init["custom_emoji"][field][i][subfield]
+            else:
+                del request_init["custom_emoji"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reaction.CustomEmoji(
+            name="name_value",
+            uid="uid_value",
+            emoji_name="emoji_name_value",
+            temporary_image_uri="temporary_image_uri_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = reaction.CustomEmoji.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_custom_emoji(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reaction.CustomEmoji)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.emoji_name == "emoji_name_value"
+    assert response.temporary_image_uri == "temporary_image_uri_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_custom_emoji_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "post_create_custom_emoji"
+    ) as post, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "post_create_custom_emoji_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "pre_create_custom_emoji"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = reaction.CreateCustomEmojiRequest.pb(
+            reaction.CreateCustomEmojiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = reaction.CustomEmoji.to_json(reaction.CustomEmoji())
+        req.return_value.content = return_value
+
+        request = reaction.CreateCustomEmojiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reaction.CustomEmoji()
+        post_with_metadata.return_value = reaction.CustomEmoji(), metadata
+
+        client.create_custom_emoji(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_custom_emoji_rest_bad_request(request_type=reaction.GetCustomEmojiRequest):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "customEmojis/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_custom_emoji(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.GetCustomEmojiRequest,
+        dict,
+    ],
+)
+def test_get_custom_emoji_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "customEmojis/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reaction.CustomEmoji(
+            name="name_value",
+            uid="uid_value",
+            emoji_name="emoji_name_value",
+            temporary_image_uri="temporary_image_uri_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = reaction.CustomEmoji.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_custom_emoji(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, reaction.CustomEmoji)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.emoji_name == "emoji_name_value"
+    assert response.temporary_image_uri == "temporary_image_uri_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_custom_emoji_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "post_get_custom_emoji"
+    ) as post, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "post_get_custom_emoji_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "pre_get_custom_emoji"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = reaction.GetCustomEmojiRequest.pb(reaction.GetCustomEmojiRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = reaction.CustomEmoji.to_json(reaction.CustomEmoji())
+        req.return_value.content = return_value
+
+        request = reaction.GetCustomEmojiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reaction.CustomEmoji()
+        post_with_metadata.return_value = reaction.CustomEmoji(), metadata
+
+        client.get_custom_emoji(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_list_custom_emojis_rest_bad_request(
+    request_type=reaction.ListCustomEmojisRequest,
+):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_custom_emojis(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.ListCustomEmojisRequest,
+        dict,
+    ],
+)
+def test_list_custom_emojis_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = reaction.ListCustomEmojisResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = reaction.ListCustomEmojisResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_custom_emojis(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomEmojisPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_custom_emojis_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "post_list_custom_emojis"
+    ) as post, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "post_list_custom_emojis_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "pre_list_custom_emojis"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = reaction.ListCustomEmojisRequest.pb(
+            reaction.ListCustomEmojisRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = reaction.ListCustomEmojisResponse.to_json(
+            reaction.ListCustomEmojisResponse()
+        )
+        req.return_value.content = return_value
+
+        request = reaction.ListCustomEmojisRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = reaction.ListCustomEmojisResponse()
+        post_with_metadata.return_value = reaction.ListCustomEmojisResponse(), metadata
+
+        client.list_custom_emojis(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_delete_custom_emoji_rest_bad_request(
+    request_type=reaction.DeleteCustomEmojiRequest,
+):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "customEmojis/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_custom_emoji(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        reaction.DeleteCustomEmojiRequest,
+        dict,
+    ],
+)
+def test_delete_custom_emoji_rest_call_success(request_type):
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "customEmojis/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_custom_emoji(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_custom_emoji_rest_interceptors(null_interceptor):
+    transport = transports.ChatServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ChatServiceRestInterceptor(),
+    )
+    client = ChatServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ChatServiceRestInterceptor, "pre_delete_custom_emoji"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = reaction.DeleteCustomEmojiRequest.pb(
+            reaction.DeleteCustomEmojiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        request = reaction.DeleteCustomEmojiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_custom_emoji(
             request,
             metadata=[
                 ("key", "val"),
@@ -25783,6 +28570,92 @@ def test_delete_reaction_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_create_custom_emoji_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_emoji), "__call__"
+    ) as call:
+        client.create_custom_emoji(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.CreateCustomEmojiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_custom_emoji_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_emoji), "__call__") as call:
+        client.get_custom_emoji(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.GetCustomEmojiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_custom_emojis_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_emojis), "__call__"
+    ) as call:
+        client.list_custom_emojis(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.ListCustomEmojisRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_custom_emoji_empty_call_rest():
+    client = ChatServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_emoji), "__call__"
+    ) as call:
+        client.delete_custom_emoji(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = reaction.DeleteCustomEmojiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_space_read_state_empty_call_rest():
     client = ChatServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25992,6 +28865,10 @@ def test_chat_service_base_transport():
         "create_reaction",
         "list_reactions",
         "delete_reaction",
+        "create_custom_emoji",
+        "get_custom_emoji",
+        "list_custom_emojis",
+        "delete_custom_emoji",
         "get_space_read_state",
         "update_space_read_state",
         "get_thread_read_state",
@@ -26039,6 +28916,8 @@ def test_chat_service_base_transport_with_credentials_file():
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
+                "https://www.googleapis.com/auth/chat.customemojis",
+                "https://www.googleapis.com/auth/chat.customemojis.readonly",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",
                 "https://www.googleapis.com/auth/chat.memberships",
@@ -26086,6 +28965,8 @@ def test_chat_service_auth_adc():
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
+                "https://www.googleapis.com/auth/chat.customemojis",
+                "https://www.googleapis.com/auth/chat.customemojis.readonly",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",
                 "https://www.googleapis.com/auth/chat.memberships",
@@ -26130,6 +29011,8 @@ def test_chat_service_transport_auth_adc(transport_class):
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
+                "https://www.googleapis.com/auth/chat.customemojis",
+                "https://www.googleapis.com/auth/chat.customemojis.readonly",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",
                 "https://www.googleapis.com/auth/chat.memberships",
@@ -26206,6 +29089,8 @@ def test_chat_service_transport_create_channel(transport_class, grpc_helpers):
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.bot",
+                "https://www.googleapis.com/auth/chat.customemojis",
+                "https://www.googleapis.com/auth/chat.customemojis.readonly",
                 "https://www.googleapis.com/auth/chat.delete",
                 "https://www.googleapis.com/auth/chat.import",
                 "https://www.googleapis.com/auth/chat.memberships",
@@ -26420,6 +29305,18 @@ def test_chat_service_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_reaction._session
     session2 = client2.transport.delete_reaction._session
     assert session1 != session2
+    session1 = client1.transport.create_custom_emoji._session
+    session2 = client2.transport.create_custom_emoji._session
+    assert session1 != session2
+    session1 = client1.transport.get_custom_emoji._session
+    session2 = client2.transport.get_custom_emoji._session
+    assert session1 != session2
+    session1 = client1.transport.list_custom_emojis._session
+    session2 = client2.transport.list_custom_emojis._session
+    assert session1 != session2
+    session1 = client1.transport.delete_custom_emoji._session
+    session2 = client2.transport.delete_custom_emoji._session
+    assert session1 != session2
     session1 = client1.transport.get_space_read_state._session
     session2 = client2.transport.get_space_read_state._session
     assert session1 != session2
@@ -26587,9 +29484,29 @@ def test_parse_attachment_path():
     assert expected == actual
 
 
+def test_custom_emoji_path():
+    custom_emoji = "cuttlefish"
+    expected = "customEmojis/{custom_emoji}".format(
+        custom_emoji=custom_emoji,
+    )
+    actual = ChatServiceClient.custom_emoji_path(custom_emoji)
+    assert expected == actual
+
+
+def test_parse_custom_emoji_path():
+    expected = {
+        "custom_emoji": "mussel",
+    }
+    path = ChatServiceClient.custom_emoji_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ChatServiceClient.parse_custom_emoji_path(path)
+    assert expected == actual
+
+
 def test_membership_path():
-    space = "cuttlefish"
-    member = "mussel"
+    space = "winkle"
+    member = "nautilus"
     expected = "spaces/{space}/members/{member}".format(
         space=space,
         member=member,
@@ -26600,8 +29517,8 @@ def test_membership_path():
 
 def test_parse_membership_path():
     expected = {
-        "space": "winkle",
-        "member": "nautilus",
+        "space": "scallop",
+        "member": "abalone",
     }
     path = ChatServiceClient.membership_path(**expected)
 
@@ -26611,8 +29528,8 @@ def test_parse_membership_path():
 
 
 def test_message_path():
-    space = "scallop"
-    message = "abalone"
+    space = "squid"
+    message = "clam"
     expected = "spaces/{space}/messages/{message}".format(
         space=space,
         message=message,
@@ -26623,8 +29540,8 @@ def test_message_path():
 
 def test_parse_message_path():
     expected = {
-        "space": "squid",
-        "message": "clam",
+        "space": "whelk",
+        "message": "octopus",
     }
     path = ChatServiceClient.message_path(**expected)
 
@@ -26634,9 +29551,9 @@ def test_parse_message_path():
 
 
 def test_quoted_message_metadata_path():
-    space = "whelk"
-    message = "octopus"
-    quoted_message_metadata = "oyster"
+    space = "oyster"
+    message = "nudibranch"
+    quoted_message_metadata = "cuttlefish"
     expected = "spaces/{space}/messages/{message}/quotedMessageMetadata/{quoted_message_metadata}".format(
         space=space,
         message=message,
@@ -26650,9 +29567,9 @@ def test_quoted_message_metadata_path():
 
 def test_parse_quoted_message_metadata_path():
     expected = {
-        "space": "nudibranch",
-        "message": "cuttlefish",
-        "quoted_message_metadata": "mussel",
+        "space": "mussel",
+        "message": "winkle",
+        "quoted_message_metadata": "nautilus",
     }
     path = ChatServiceClient.quoted_message_metadata_path(**expected)
 
@@ -26662,9 +29579,9 @@ def test_parse_quoted_message_metadata_path():
 
 
 def test_reaction_path():
-    space = "winkle"
-    message = "nautilus"
-    reaction = "scallop"
+    space = "scallop"
+    message = "abalone"
+    reaction = "squid"
     expected = "spaces/{space}/messages/{message}/reactions/{reaction}".format(
         space=space,
         message=message,
@@ -26676,9 +29593,9 @@ def test_reaction_path():
 
 def test_parse_reaction_path():
     expected = {
-        "space": "abalone",
-        "message": "squid",
-        "reaction": "clam",
+        "space": "clam",
+        "message": "whelk",
+        "reaction": "octopus",
     }
     path = ChatServiceClient.reaction_path(**expected)
 
@@ -26688,7 +29605,7 @@ def test_parse_reaction_path():
 
 
 def test_space_path():
-    space = "whelk"
+    space = "oyster"
     expected = "spaces/{space}".format(
         space=space,
     )
@@ -26698,7 +29615,7 @@ def test_space_path():
 
 def test_parse_space_path():
     expected = {
-        "space": "octopus",
+        "space": "nudibranch",
     }
     path = ChatServiceClient.space_path(**expected)
 
@@ -26708,8 +29625,8 @@ def test_parse_space_path():
 
 
 def test_space_event_path():
-    space = "oyster"
-    space_event = "nudibranch"
+    space = "cuttlefish"
+    space_event = "mussel"
     expected = "spaces/{space}/spaceEvents/{space_event}".format(
         space=space,
         space_event=space_event,
@@ -26720,8 +29637,8 @@ def test_space_event_path():
 
 def test_parse_space_event_path():
     expected = {
-        "space": "cuttlefish",
-        "space_event": "mussel",
+        "space": "winkle",
+        "space_event": "nautilus",
     }
     path = ChatServiceClient.space_event_path(**expected)
 
@@ -26731,8 +29648,8 @@ def test_parse_space_event_path():
 
 
 def test_space_notification_setting_path():
-    user = "winkle"
-    space = "nautilus"
+    user = "scallop"
+    space = "abalone"
     expected = "users/{user}/spaces/{space}/spaceNotificationSetting".format(
         user=user,
         space=space,
@@ -26743,8 +29660,8 @@ def test_space_notification_setting_path():
 
 def test_parse_space_notification_setting_path():
     expected = {
-        "user": "scallop",
-        "space": "abalone",
+        "user": "squid",
+        "space": "clam",
     }
     path = ChatServiceClient.space_notification_setting_path(**expected)
 
@@ -26754,8 +29671,8 @@ def test_parse_space_notification_setting_path():
 
 
 def test_space_read_state_path():
-    user = "squid"
-    space = "clam"
+    user = "whelk"
+    space = "octopus"
     expected = "users/{user}/spaces/{space}/spaceReadState".format(
         user=user,
         space=space,
@@ -26766,8 +29683,8 @@ def test_space_read_state_path():
 
 def test_parse_space_read_state_path():
     expected = {
-        "user": "whelk",
-        "space": "octopus",
+        "user": "oyster",
+        "space": "nudibranch",
     }
     path = ChatServiceClient.space_read_state_path(**expected)
 
@@ -26777,8 +29694,8 @@ def test_parse_space_read_state_path():
 
 
 def test_thread_path():
-    space = "oyster"
-    thread = "nudibranch"
+    space = "cuttlefish"
+    thread = "mussel"
     expected = "spaces/{space}/threads/{thread}".format(
         space=space,
         thread=thread,
@@ -26789,8 +29706,8 @@ def test_thread_path():
 
 def test_parse_thread_path():
     expected = {
-        "space": "cuttlefish",
-        "thread": "mussel",
+        "space": "winkle",
+        "thread": "nautilus",
     }
     path = ChatServiceClient.thread_path(**expected)
 
@@ -26800,9 +29717,9 @@ def test_parse_thread_path():
 
 
 def test_thread_read_state_path():
-    user = "winkle"
-    space = "nautilus"
-    thread = "scallop"
+    user = "scallop"
+    space = "abalone"
+    thread = "squid"
     expected = "users/{user}/spaces/{space}/threads/{thread}/threadReadState".format(
         user=user,
         space=space,
@@ -26814,9 +29731,9 @@ def test_thread_read_state_path():
 
 def test_parse_thread_read_state_path():
     expected = {
-        "user": "abalone",
-        "space": "squid",
-        "thread": "clam",
+        "user": "clam",
+        "space": "whelk",
+        "thread": "octopus",
     }
     path = ChatServiceClient.thread_read_state_path(**expected)
 
@@ -26826,7 +29743,7 @@ def test_parse_thread_read_state_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -26836,7 +29753,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nudibranch",
     }
     path = ChatServiceClient.common_billing_account_path(**expected)
 
@@ -26846,7 +29763,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -26856,7 +29773,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "mussel",
     }
     path = ChatServiceClient.common_folder_path(**expected)
 
@@ -26866,7 +29783,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -26876,7 +29793,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nautilus",
     }
     path = ChatServiceClient.common_organization_path(**expected)
 
@@ -26886,7 +29803,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -26896,7 +29813,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "abalone",
     }
     path = ChatServiceClient.common_project_path(**expected)
 
@@ -26906,8 +29823,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -26918,8 +29835,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = ChatServiceClient.common_location_path(**expected)
 

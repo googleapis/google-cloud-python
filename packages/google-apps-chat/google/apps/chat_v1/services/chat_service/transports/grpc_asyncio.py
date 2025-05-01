@@ -1397,6 +1397,161 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["delete_reaction"]
 
     @property
+    def create_custom_emoji(
+        self,
+    ) -> Callable[[reaction.CreateCustomEmojiRequest], Awaitable[reaction.CustomEmoji]]:
+        r"""Return a callable for the create custom emoji method over gRPC.
+
+        Creates a custom emoji.
+
+        Custom emojis are only available for Google Workspace accounts,
+        and the administrator must turn custom emojis on for the
+        organization. For more information, see `Learn about custom
+        emojis in Google
+        Chat <https://support.google.com/chat/answer/12800149>`__ and
+        `Manage custom emoji
+        permissions <https://support.google.com/a/answer/12850085>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+        Returns:
+            Callable[[~.CreateCustomEmojiRequest],
+                    Awaitable[~.CustomEmoji]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_custom_emoji" not in self._stubs:
+            self._stubs["create_custom_emoji"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/CreateCustomEmoji",
+                request_serializer=reaction.CreateCustomEmojiRequest.serialize,
+                response_deserializer=reaction.CustomEmoji.deserialize,
+            )
+        return self._stubs["create_custom_emoji"]
+
+    @property
+    def get_custom_emoji(
+        self,
+    ) -> Callable[[reaction.GetCustomEmojiRequest], Awaitable[reaction.CustomEmoji]]:
+        r"""Return a callable for the get custom emoji method over gRPC.
+
+        Returns details about a custom emoji.
+
+        Custom emojis are only available for Google Workspace accounts,
+        and the administrator must turn custom emojis on for the
+        organization. For more information, see `Learn about custom
+        emojis in Google
+        Chat <https://support.google.com/chat/answer/12800149>`__ and
+        `Manage custom emoji
+        permissions <https://support.google.com/a/answer/12850085>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+        Returns:
+            Callable[[~.GetCustomEmojiRequest],
+                    Awaitable[~.CustomEmoji]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_custom_emoji" not in self._stubs:
+            self._stubs["get_custom_emoji"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/GetCustomEmoji",
+                request_serializer=reaction.GetCustomEmojiRequest.serialize,
+                response_deserializer=reaction.CustomEmoji.deserialize,
+            )
+        return self._stubs["get_custom_emoji"]
+
+    @property
+    def list_custom_emojis(
+        self,
+    ) -> Callable[
+        [reaction.ListCustomEmojisRequest], Awaitable[reaction.ListCustomEmojisResponse]
+    ]:
+        r"""Return a callable for the list custom emojis method over gRPC.
+
+        Lists custom emojis visible to the authenticated user.
+
+        Custom emojis are only available for Google Workspace accounts,
+        and the administrator must turn custom emojis on for the
+        organization. For more information, see `Learn about custom
+        emojis in Google
+        Chat <https://support.google.com/chat/answer/12800149>`__ and
+        `Manage custom emoji
+        permissions <https://support.google.com/a/answer/12850085>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+        Returns:
+            Callable[[~.ListCustomEmojisRequest],
+                    Awaitable[~.ListCustomEmojisResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_custom_emojis" not in self._stubs:
+            self._stubs["list_custom_emojis"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/ListCustomEmojis",
+                request_serializer=reaction.ListCustomEmojisRequest.serialize,
+                response_deserializer=reaction.ListCustomEmojisResponse.deserialize,
+            )
+        return self._stubs["list_custom_emojis"]
+
+    @property
+    def delete_custom_emoji(
+        self,
+    ) -> Callable[[reaction.DeleteCustomEmojiRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete custom emoji method over gRPC.
+
+        Deletes a custom emoji. By default, users can only delete custom
+        emoji they created. `Emoji
+        managers <https://support.google.com/a/answer/12850085>`__
+        assigned by the administrator can delete any custom emoji in the
+        organization. See `Learn about custom emojis in Google
+        Chat <https://support.google.com/chat/answer/12800149>`__.
+
+        Custom emojis are only available for Google Workspace accounts,
+        and the administrator must turn custom emojis on for the
+        organization. For more information, see `Learn about custom
+        emojis in Google
+        Chat <https://support.google.com/chat/answer/12800149>`__ and
+        `Manage custom emoji
+        permissions <https://support.google.com/a/answer/12850085>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+
+        Returns:
+            Callable[[~.DeleteCustomEmojiRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_custom_emoji" not in self._stubs:
+            self._stubs["delete_custom_emoji"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/DeleteCustomEmoji",
+                request_serializer=reaction.DeleteCustomEmojiRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_custom_emoji"]
+
+    @property
     def get_space_read_state(
         self,
     ) -> Callable[
@@ -1990,6 +2145,62 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             ),
             self.delete_reaction: self._wrap_method(
                 self.delete_reaction,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.create_custom_emoji: self._wrap_method(
+                self.create_custom_emoji,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_custom_emoji: self._wrap_method(
+                self.get_custom_emoji,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.list_custom_emojis: self._wrap_method(
+                self.list_custom_emojis,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.delete_custom_emoji: self._wrap_method(
+                self.delete_custom_emoji,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=10.0,
