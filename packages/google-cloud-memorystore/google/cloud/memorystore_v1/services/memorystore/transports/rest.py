@@ -70,6 +70,14 @@ class MemorystoreRestInterceptor:
 
     .. code-block:: python
         class MyCustomMemorystoreInterceptor(MemorystoreRestInterceptor):
+            def pre_backup_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_backup_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -78,11 +86,43 @@ class MemorystoreRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_delete_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_export_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_backup(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_backup_collection(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup_collection(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -102,11 +142,35 @@ class MemorystoreRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_backup_collections(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backup_collections(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_backups(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backups(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_reschedule_maintenance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_reschedule_maintenance(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -123,6 +187,54 @@ class MemorystoreRestInterceptor:
 
 
     """
+
+    def pre_backup_instance(
+        self,
+        request: memorystore.BackupInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.BackupInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for backup_instance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_backup_instance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for backup_instance
+
+        DEPRECATED. Please use the `post_backup_instance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_backup_instance` interceptor runs
+        before the `post_backup_instance_with_metadata` interceptor.
+        """
+        return response
+
+    def post_backup_instance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for backup_instance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_backup_instance_with_metadata`
+        interceptor in new development instead of the `post_backup_instance` interceptor.
+        When both interceptors are used, this `post_backup_instance_with_metadata` interceptor runs after the
+        `post_backup_instance` interceptor. The (possibly modified) response returned by
+        `post_backup_instance` will be passed to
+        `post_backup_instance_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_instance(
         self,
@@ -172,6 +284,54 @@ class MemorystoreRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_backup(
+        self,
+        request: memorystore.DeleteBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_delete_backup(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_backup
+
+        DEPRECATED. Please use the `post_delete_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_delete_backup` interceptor runs
+        before the `post_delete_backup_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_backup_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_delete_backup_with_metadata`
+        interceptor in new development instead of the `post_delete_backup` interceptor.
+        When both interceptors are used, this `post_delete_backup_with_metadata` interceptor runs after the
+        `post_delete_backup` interceptor. The (possibly modified) response returned by
+        `post_delete_backup` will be passed to
+        `post_delete_backup_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_instance(
         self,
         request: memorystore.DeleteInstanceRequest,
@@ -217,6 +377,146 @@ class MemorystoreRestInterceptor:
         `post_delete_instance` interceptor. The (possibly modified) response returned by
         `post_delete_instance` will be passed to
         `post_delete_instance_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_export_backup(
+        self,
+        request: memorystore.ExportBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.ExportBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for export_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_export_backup(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_backup
+
+        DEPRECATED. Please use the `post_export_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_export_backup` interceptor runs
+        before the `post_export_backup_with_metadata` interceptor.
+        """
+        return response
+
+    def post_export_backup_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_export_backup_with_metadata`
+        interceptor in new development instead of the `post_export_backup` interceptor.
+        When both interceptors are used, this `post_export_backup_with_metadata` interceptor runs after the
+        `post_export_backup` interceptor. The (possibly modified) response returned by
+        `post_export_backup` will be passed to
+        `post_export_backup_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_backup(
+        self,
+        request: memorystore.GetBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[memorystore.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_backup
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_get_backup(self, response: memorystore.Backup) -> memorystore.Backup:
+        """Post-rpc interceptor for get_backup
+
+        DEPRECATED. Please use the `post_get_backup_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_get_backup` interceptor runs
+        before the `post_get_backup_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_backup_with_metadata(
+        self,
+        response: memorystore.Backup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[memorystore.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_with_metadata`
+        interceptor in new development instead of the `post_get_backup` interceptor.
+        When both interceptors are used, this `post_get_backup_with_metadata` interceptor runs after the
+        `post_get_backup` interceptor. The (possibly modified) response returned by
+        `post_get_backup` will be passed to
+        `post_get_backup_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_backup_collection(
+        self,
+        request: memorystore.GetBackupCollectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.GetBackupCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_backup_collection
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_get_backup_collection(
+        self, response: memorystore.BackupCollection
+    ) -> memorystore.BackupCollection:
+        """Post-rpc interceptor for get_backup_collection
+
+        DEPRECATED. Please use the `post_get_backup_collection_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_get_backup_collection` interceptor runs
+        before the `post_get_backup_collection_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_backup_collection_with_metadata(
+        self,
+        response: memorystore.BackupCollection,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[memorystore.BackupCollection, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup_collection
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_collection_with_metadata`
+        interceptor in new development instead of the `post_get_backup_collection` interceptor.
+        When both interceptors are used, this `post_get_backup_collection_with_metadata` interceptor runs after the
+        `post_get_backup_collection` interceptor. The (possibly modified) response returned by
+        `post_get_backup_collection` will be passed to
+        `post_get_backup_collection_with_metadata`.
         """
         return response, metadata
 
@@ -315,6 +615,106 @@ class MemorystoreRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_backup_collections(
+        self,
+        request: memorystore.ListBackupCollectionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.ListBackupCollectionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_backup_collections
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_list_backup_collections(
+        self, response: memorystore.ListBackupCollectionsResponse
+    ) -> memorystore.ListBackupCollectionsResponse:
+        """Post-rpc interceptor for list_backup_collections
+
+        DEPRECATED. Please use the `post_list_backup_collections_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_list_backup_collections` interceptor runs
+        before the `post_list_backup_collections_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_backup_collections_with_metadata(
+        self,
+        response: memorystore.ListBackupCollectionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.ListBackupCollectionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_backup_collections
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_list_backup_collections_with_metadata`
+        interceptor in new development instead of the `post_list_backup_collections` interceptor.
+        When both interceptors are used, this `post_list_backup_collections_with_metadata` interceptor runs after the
+        `post_list_backup_collections` interceptor. The (possibly modified) response returned by
+        `post_list_backup_collections` will be passed to
+        `post_list_backup_collections_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_backups(
+        self,
+        request: memorystore.ListBackupsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[memorystore.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for list_backups
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_list_backups(
+        self, response: memorystore.ListBackupsResponse
+    ) -> memorystore.ListBackupsResponse:
+        """Post-rpc interceptor for list_backups
+
+        DEPRECATED. Please use the `post_list_backups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_list_backups` interceptor runs
+        before the `post_list_backups_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_backups_with_metadata(
+        self,
+        response: memorystore.ListBackupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_backups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_list_backups_with_metadata`
+        interceptor in new development instead of the `post_list_backups` interceptor.
+        When both interceptors are used, this `post_list_backups_with_metadata` interceptor runs after the
+        `post_list_backups` interceptor. The (possibly modified) response returned by
+        `post_list_backups` will be passed to
+        `post_list_backups_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_instances(
         self,
         request: memorystore.ListInstancesRequest,
@@ -362,6 +762,55 @@ class MemorystoreRestInterceptor:
         `post_list_instances` interceptor. The (possibly modified) response returned by
         `post_list_instances` will be passed to
         `post_list_instances_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_reschedule_maintenance(
+        self,
+        request: memorystore.RescheduleMaintenanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.RescheduleMaintenanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for reschedule_maintenance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_reschedule_maintenance(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for reschedule_maintenance
+
+        DEPRECATED. Please use the `post_reschedule_maintenance_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_reschedule_maintenance` interceptor runs
+        before the `post_reschedule_maintenance_with_metadata` interceptor.
+        """
+        return response
+
+    def post_reschedule_maintenance_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reschedule_maintenance
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_reschedule_maintenance_with_metadata`
+        interceptor in new development instead of the `post_reschedule_maintenance` interceptor.
+        When both interceptors are used, this `post_reschedule_maintenance_with_metadata` interceptor runs after the
+        `post_reschedule_maintenance` interceptor. The (possibly modified) response returned by
+        `post_reschedule_maintenance` will be passed to
+        `post_reschedule_maintenance_with_metadata`.
         """
         return response, metadata
 
@@ -699,6 +1148,157 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _BackupInstance(
+        _BaseMemorystoreRestTransport._BaseBackupInstance, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.BackupInstance")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.BackupInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the backup instance method over HTTP.
+
+            Args:
+                request (~.memorystore.BackupInstanceRequest):
+                    The request object. Request for [BackupInstance].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseBackupInstance._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_backup_instance(request, metadata)
+            transcoded_request = _BaseMemorystoreRestTransport._BaseBackupInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseMemorystoreRestTransport._BaseBackupInstance._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseBackupInstance._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.BackupInstance",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "BackupInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._BackupInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_backup_instance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_backup_instance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.backup_instance",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "BackupInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateInstance(
         _BaseMemorystoreRestTransport._BaseCreateInstance, MemorystoreRestStub
     ):
@@ -850,6 +1450,155 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
+    class _DeleteBackup(
+        _BaseMemorystoreRestTransport._BaseDeleteBackup, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.DeleteBackup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.DeleteBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete backup method over HTTP.
+
+            Args:
+                request (~.memorystore.DeleteBackupRequest):
+                    The request object. Request for [DeleteBackup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseDeleteBackup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_backup(request, metadata)
+            transcoded_request = (
+                _BaseMemorystoreRestTransport._BaseDeleteBackup._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseMemorystoreRestTransport._BaseDeleteBackup._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.DeleteBackup",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "DeleteBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._DeleteBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.delete_backup",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "DeleteBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteInstance(
         _BaseMemorystoreRestTransport._BaseDeleteInstance, MemorystoreRestStub
     ):
@@ -989,6 +1738,455 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     extra={
                         "serviceName": "google.cloud.memorystore.v1.Memorystore",
                         "rpcName": "DeleteInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ExportBackup(
+        _BaseMemorystoreRestTransport._BaseExportBackup, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.ExportBackup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.ExportBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export backup method over HTTP.
+
+            Args:
+                request (~.memorystore.ExportBackupRequest):
+                    The request object. Request for [ExportBackup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseExportBackup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_export_backup(request, metadata)
+            transcoded_request = (
+                _BaseMemorystoreRestTransport._BaseExportBackup._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseMemorystoreRestTransport._BaseExportBackup._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseMemorystoreRestTransport._BaseExportBackup._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.ExportBackup",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ExportBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._ExportBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_export_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_backup_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.export_backup",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ExportBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetBackup(_BaseMemorystoreRestTransport._BaseGetBackup, MemorystoreRestStub):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.GetBackup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.GetBackupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> memorystore.Backup:
+            r"""Call the get backup method over HTTP.
+
+            Args:
+                request (~.memorystore.GetBackupRequest):
+                    The request object. Request for [GetBackup].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.memorystore.Backup:
+                    Backup of an instance.
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseGetBackup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_backup(request, metadata)
+            transcoded_request = (
+                _BaseMemorystoreRestTransport._BaseGetBackup._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseMemorystoreRestTransport._BaseGetBackup._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.GetBackup",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._GetBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = memorystore.Backup()
+            pb_resp = memorystore.Backup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_backup(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = memorystore.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.get_backup",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetBackupCollection(
+        _BaseMemorystoreRestTransport._BaseGetBackupCollection, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.GetBackupCollection")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.GetBackupCollectionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> memorystore.BackupCollection:
+            r"""Call the get backup collection method over HTTP.
+
+            Args:
+                request (~.memorystore.GetBackupCollectionRequest):
+                    The request object. Request for [GetBackupCollection].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.memorystore.BackupCollection:
+                    BackupCollection of an instance.
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_backup_collection(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseGetBackupCollection._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.GetBackupCollection",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetBackupCollection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._GetBackupCollection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = memorystore.BackupCollection()
+            pb_resp = memorystore.BackupCollection.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_backup_collection(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_collection_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = memorystore.BackupCollection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.get_backup_collection",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetBackupCollection",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1293,6 +2491,302 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
+    class _ListBackupCollections(
+        _BaseMemorystoreRestTransport._BaseListBackupCollections, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.ListBackupCollections")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.ListBackupCollectionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> memorystore.ListBackupCollectionsResponse:
+            r"""Call the list backup collections method over HTTP.
+
+            Args:
+                request (~.memorystore.ListBackupCollectionsRequest):
+                    The request object. Request for [ListBackupCollections]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.memorystore.ListBackupCollectionsResponse:
+                    Response for [ListBackupCollections].
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseListBackupCollections._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_backup_collections(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.ListBackupCollections",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ListBackupCollections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._ListBackupCollections._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = memorystore.ListBackupCollectionsResponse()
+            pb_resp = memorystore.ListBackupCollectionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_backup_collections(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backup_collections_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        memorystore.ListBackupCollectionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.list_backup_collections",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ListBackupCollections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListBackups(
+        _BaseMemorystoreRestTransport._BaseListBackups, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.ListBackups")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.ListBackupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> memorystore.ListBackupsResponse:
+            r"""Call the list backups method over HTTP.
+
+            Args:
+                request (~.memorystore.ListBackupsRequest):
+                    The request object. Request for [ListBackups].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.memorystore.ListBackupsResponse:
+                    Response for [ListBackups].
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseListBackups._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_backups(request, metadata)
+            transcoded_request = (
+                _BaseMemorystoreRestTransport._BaseListBackups._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseMemorystoreRestTransport._BaseListBackups._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.ListBackups",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ListBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._ListBackups._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = memorystore.ListBackupsResponse()
+            pb_resp = memorystore.ListBackupsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_backups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backups_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = memorystore.ListBackupsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.list_backups",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ListBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListInstances(
         _BaseMemorystoreRestTransport._BaseListInstances, MemorystoreRestStub
     ):
@@ -1435,6 +2929,160 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     extra={
                         "serviceName": "google.cloud.memorystore.v1.Memorystore",
                         "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _RescheduleMaintenance(
+        _BaseMemorystoreRestTransport._BaseRescheduleMaintenance, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.RescheduleMaintenance")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.RescheduleMaintenanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the reschedule maintenance method over HTTP.
+
+            Args:
+                request (~.memorystore.RescheduleMaintenanceRequest):
+                    The request object. Request for rescheduling instance
+                maintenance.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_reschedule_maintenance(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseRescheduleMaintenance._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.RescheduleMaintenance",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "RescheduleMaintenance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._RescheduleMaintenance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_reschedule_maintenance(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reschedule_maintenance_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.reschedule_maintenance",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "RescheduleMaintenance",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1593,6 +3241,14 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             return resp
 
     @property
+    def backup_instance(
+        self,
+    ) -> Callable[[memorystore.BackupInstanceRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BackupInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_instance(
         self,
     ) -> Callable[[memorystore.CreateInstanceRequest], operations_pb2.Operation]:
@@ -1601,12 +3257,46 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_backup(
+        self,
+    ) -> Callable[[memorystore.DeleteBackupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_instance(
         self,
     ) -> Callable[[memorystore.DeleteInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def export_backup(
+        self,
+    ) -> Callable[[memorystore.ExportBackupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[[memorystore.GetBackupRequest], memorystore.Backup]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_backup_collection(
+        self,
+    ) -> Callable[
+        [memorystore.GetBackupCollectionRequest], memorystore.BackupCollection
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackupCollection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_certificate_authority(
@@ -1627,6 +3317,25 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_backup_collections(
+        self,
+    ) -> Callable[
+        [memorystore.ListBackupCollectionsRequest],
+        memorystore.ListBackupCollectionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackupCollections(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[[memorystore.ListBackupsRequest], memorystore.ListBackupsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_instances(
         self,
     ) -> Callable[
@@ -1635,6 +3344,14 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def reschedule_maintenance(
+        self,
+    ) -> Callable[[memorystore.RescheduleMaintenanceRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RescheduleMaintenance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_instance(

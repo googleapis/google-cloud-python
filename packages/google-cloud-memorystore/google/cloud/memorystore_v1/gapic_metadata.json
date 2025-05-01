@@ -10,14 +10,39 @@
         "rest": {
           "libraryClient": "MemorystoreClient",
           "rpcs": {
+            "BackupInstance": {
+              "methods": [
+                "backup_instance"
+              ]
+            },
             "CreateInstance": {
               "methods": [
                 "create_instance"
               ]
             },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
             "DeleteInstance": {
               "methods": [
                 "delete_instance"
+              ]
+            },
+            "ExportBackup": {
+              "methods": [
+                "export_backup"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetBackupCollection": {
+              "methods": [
+                "get_backup_collection"
               ]
             },
             "GetCertificateAuthority": {
@@ -30,9 +55,24 @@
                 "get_instance"
               ]
             },
+            "ListBackupCollections": {
+              "methods": [
+                "list_backup_collections"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
             "ListInstances": {
               "methods": [
                 "list_instances"
+              ]
+            },
+            "RescheduleMaintenance": {
+              "methods": [
+                "reschedule_maintenance"
               ]
             },
             "UpdateInstance": {

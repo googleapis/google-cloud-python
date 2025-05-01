@@ -39,13 +39,7 @@ def sample_update_instance():
     client = memorystore_v1.MemorystoreClient()
 
     # Initialize request argument(s)
-    instance = memorystore_v1.Instance()
-    instance.psc_auto_connections.port = 453
-    instance.psc_auto_connections.project_id = "project_id_value"
-    instance.psc_auto_connections.network = "network_value"
-
     request = memorystore_v1.UpdateInstanceRequest(
-        instance=instance,
     )
 
     # Make the request

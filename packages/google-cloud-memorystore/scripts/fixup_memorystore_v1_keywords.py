@@ -39,11 +39,19 @@ def partition(
 class memorystoreCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'backup_instance': ('name', 'ttl', 'backup_id', ),
         'create_instance': ('parent', 'instance_id', 'instance', 'request_id', ),
+        'delete_backup': ('name', 'request_id', ),
         'delete_instance': ('name', 'request_id', ),
+        'export_backup': ('name', 'gcs_bucket', ),
+        'get_backup': ('name', ),
+        'get_backup_collection': ('name', ),
         'get_certificate_authority': ('name', ),
         'get_instance': ('name', ),
+        'list_backup_collections': ('parent', 'page_size', 'page_token', ),
+        'list_backups': ('parent', 'page_size', 'page_token', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'reschedule_maintenance': ('name', 'reschedule_type', 'schedule_time', ),
         'update_instance': ('instance', 'update_mask', 'request_id', ),
     }
 

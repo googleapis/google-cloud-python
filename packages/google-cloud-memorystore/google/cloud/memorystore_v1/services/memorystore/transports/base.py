@@ -187,6 +187,46 @@ class MemorystoreTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.reschedule_maintenance: gapic_v1.method.wrap_method(
+                self.reschedule_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backup_collections: gapic_v1.method.wrap_method(
+                self.list_backup_collections,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_backup_collection: gapic_v1.method.wrap_method(
+                self.get_backup_collection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_backups: gapic_v1.method.wrap_method(
+                self.list_backups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_backup: gapic_v1.method.wrap_method(
+                self.get_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_backup: gapic_v1.method.wrap_method(
+                self.delete_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_backup: gapic_v1.method.wrap_method(
+                self.export_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.backup_instance: gapic_v1.method.wrap_method(
+                self.backup_instance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -290,6 +330,83 @@ class MemorystoreTransport(abc.ABC):
             memorystore.CertificateAuthority,
             Awaitable[memorystore.CertificateAuthority],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def reschedule_maintenance(
+        self,
+    ) -> Callable[
+        [memorystore.RescheduleMaintenanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backup_collections(
+        self,
+    ) -> Callable[
+        [memorystore.ListBackupCollectionsRequest],
+        Union[
+            memorystore.ListBackupCollectionsResponse,
+            Awaitable[memorystore.ListBackupCollectionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup_collection(
+        self,
+    ) -> Callable[
+        [memorystore.GetBackupCollectionRequest],
+        Union[memorystore.BackupCollection, Awaitable[memorystore.BackupCollection]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_backups(
+        self,
+    ) -> Callable[
+        [memorystore.ListBackupsRequest],
+        Union[
+            memorystore.ListBackupsResponse, Awaitable[memorystore.ListBackupsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_backup(
+        self,
+    ) -> Callable[
+        [memorystore.GetBackupRequest],
+        Union[memorystore.Backup, Awaitable[memorystore.Backup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_backup(
+        self,
+    ) -> Callable[
+        [memorystore.DeleteBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_backup(
+        self,
+    ) -> Callable[
+        [memorystore.ExportBackupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def backup_instance(
+        self,
+    ) -> Callable[
+        [memorystore.BackupInstanceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
