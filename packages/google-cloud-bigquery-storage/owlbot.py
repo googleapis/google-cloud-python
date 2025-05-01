@@ -34,7 +34,7 @@ for library in s.get_staging_dirs(default_version):
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
 
-    if library.name != "v1alpha":
+    if library.name not in ("v1alpha", "v1beta"):
         # We don't want the generated client to be accessible through
         # "google.cloud.bigquery_storage", replace it with the hand written client that
         # wraps it.
