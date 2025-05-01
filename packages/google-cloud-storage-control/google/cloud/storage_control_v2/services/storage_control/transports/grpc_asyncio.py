@@ -642,12 +642,233 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             )
         return self._stubs["list_managed_folders"]
 
+    @property
+    def create_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.CreateAnywhereCacheRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create anywhere cache method over gRPC.
+
+        Creates an Anywhere Cache instance.
+
+        Returns:
+            Callable[[~.CreateAnywhereCacheRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_anywhere_cache" not in self._stubs:
+            self._stubs["create_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/CreateAnywhereCache",
+                request_serializer=storage_control.CreateAnywhereCacheRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_anywhere_cache"]
+
+    @property
+    def update_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateAnywhereCacheRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update anywhere cache method over gRPC.
+
+        Updates an Anywhere Cache instance. Mutable fields include
+        ``ttl`` and ``admission_policy``.
+
+        Returns:
+            Callable[[~.UpdateAnywhereCacheRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_anywhere_cache" not in self._stubs:
+            self._stubs["update_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateAnywhereCache",
+                request_serializer=storage_control.UpdateAnywhereCacheRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_anywhere_cache"]
+
+    @property
+    def disable_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.DisableAnywhereCacheRequest],
+        Awaitable[storage_control.AnywhereCache],
+    ]:
+        r"""Return a callable for the disable anywhere cache method over gRPC.
+
+        Disables an Anywhere Cache instance. A disabled
+        instance is read-only. The disablement could be revoked
+        by calling ResumeAnywhereCache. The cache instance will
+        be deleted automatically if it remains in the disabled
+        state for at least one hour.
+
+        Returns:
+            Callable[[~.DisableAnywhereCacheRequest],
+                    Awaitable[~.AnywhereCache]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "disable_anywhere_cache" not in self._stubs:
+            self._stubs["disable_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/DisableAnywhereCache",
+                request_serializer=storage_control.DisableAnywhereCacheRequest.serialize,
+                response_deserializer=storage_control.AnywhereCache.deserialize,
+            )
+        return self._stubs["disable_anywhere_cache"]
+
+    @property
+    def pause_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.PauseAnywhereCacheRequest],
+        Awaitable[storage_control.AnywhereCache],
+    ]:
+        r"""Return a callable for the pause anywhere cache method over gRPC.
+
+        Pauses an Anywhere Cache instance.
+
+        Returns:
+            Callable[[~.PauseAnywhereCacheRequest],
+                    Awaitable[~.AnywhereCache]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "pause_anywhere_cache" not in self._stubs:
+            self._stubs["pause_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/PauseAnywhereCache",
+                request_serializer=storage_control.PauseAnywhereCacheRequest.serialize,
+                response_deserializer=storage_control.AnywhereCache.deserialize,
+            )
+        return self._stubs["pause_anywhere_cache"]
+
+    @property
+    def resume_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.ResumeAnywhereCacheRequest],
+        Awaitable[storage_control.AnywhereCache],
+    ]:
+        r"""Return a callable for the resume anywhere cache method over gRPC.
+
+        Resumes a disabled or paused Anywhere Cache instance.
+
+        Returns:
+            Callable[[~.ResumeAnywhereCacheRequest],
+                    Awaitable[~.AnywhereCache]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "resume_anywhere_cache" not in self._stubs:
+            self._stubs["resume_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ResumeAnywhereCache",
+                request_serializer=storage_control.ResumeAnywhereCacheRequest.serialize,
+                response_deserializer=storage_control.AnywhereCache.deserialize,
+            )
+        return self._stubs["resume_anywhere_cache"]
+
+    @property
+    def get_anywhere_cache(
+        self,
+    ) -> Callable[
+        [storage_control.GetAnywhereCacheRequest],
+        Awaitable[storage_control.AnywhereCache],
+    ]:
+        r"""Return a callable for the get anywhere cache method over gRPC.
+
+        Gets an Anywhere Cache instance.
+
+        Returns:
+            Callable[[~.GetAnywhereCacheRequest],
+                    Awaitable[~.AnywhereCache]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_anywhere_cache" not in self._stubs:
+            self._stubs["get_anywhere_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetAnywhereCache",
+                request_serializer=storage_control.GetAnywhereCacheRequest.serialize,
+                response_deserializer=storage_control.AnywhereCache.deserialize,
+            )
+        return self._stubs["get_anywhere_cache"]
+
+    @property
+    def list_anywhere_caches(
+        self,
+    ) -> Callable[
+        [storage_control.ListAnywhereCachesRequest],
+        Awaitable[storage_control.ListAnywhereCachesResponse],
+    ]:
+        r"""Return a callable for the list anywhere caches method over gRPC.
+
+        Lists Anywhere Cache instances for a given bucket.
+
+        Returns:
+            Callable[[~.ListAnywhereCachesRequest],
+                    Awaitable[~.ListAnywhereCachesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_anywhere_caches" not in self._stubs:
+            self._stubs["list_anywhere_caches"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ListAnywhereCaches",
+                request_serializer=storage_control.ListAnywhereCachesRequest.serialize,
+                response_deserializer=storage_control.ListAnywhereCachesResponse.deserialize,
+            )
+        return self._stubs["list_anywhere_caches"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.create_folder: self._wrap_method(
                 self.create_folder,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_folder: self._wrap_method(
@@ -757,6 +978,132 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             ),
             self.list_managed_folders: self._wrap_method(
                 self.list_managed_folders,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_anywhere_cache: self._wrap_method(
+                self.create_anywhere_cache,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_anywhere_cache: self._wrap_method(
+                self.update_anywhere_cache,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.disable_anywhere_cache: self._wrap_method(
+                self.disable_anywhere_cache,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.pause_anywhere_cache: self._wrap_method(
+                self.pause_anywhere_cache,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.resume_anywhere_cache: self._wrap_method(
+                self.resume_anywhere_cache,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_anywhere_cache: self._wrap_method(
+                self.get_anywhere_cache,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_anywhere_caches: self._wrap_method(
+                self.list_anywhere_caches,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=60.0,
