@@ -603,7 +603,7 @@ def _metadata_with_span_context(metadata: List[Tuple[str, str]], **kw) -> None:
     Returns:
         None
     """
-    if HAS_OPENTELEMETRY_INSTALLED:
+    if HAS_OPENTELEMETRY_INSTALLED and metadata is not None:
         metadata.append(("x-goog-spanner-end-to-end-tracing", "true"))
         inject(setter=OpenTelemetryContextSetter(), carrier=metadata)
 

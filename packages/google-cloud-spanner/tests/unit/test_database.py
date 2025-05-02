@@ -1401,7 +1401,7 @@ class TestDatabase(_BaseTest):
         import datetime
 
         NOW = datetime.datetime.now()
-        client = _Client()
+        client = _Client(observability_options=dict(enable_end_to_end_tracing=True))
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         session = _Session()
@@ -3121,6 +3121,7 @@ class _Client(object):
         route_to_leader_enabled=True,
         directed_read_options=None,
         default_transaction_options=DefaultTransactionOptions(),
+        observability_options=None,
     ):
         from google.cloud.spanner_v1 import ExecuteSqlRequest
 
@@ -3135,6 +3136,7 @@ class _Client(object):
         self.route_to_leader_enabled = route_to_leader_enabled
         self.directed_read_options = directed_read_options
         self.default_transaction_options = default_transaction_options
+        self.observability_options = observability_options
 
 
 class _Instance(object):
