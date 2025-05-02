@@ -759,6 +759,9 @@ class LogicalView(proto.Message):
             that the client has an up-to-date value before
             proceeding. The server returns an ABORTED error
             on a mismatched etag.
+        deletion_protection (bool):
+            Optional. Set to true to make the LogicalView
+            protected against deletion.
     """
 
     name: str = proto.Field(
@@ -772,6 +775,10 @@ class LogicalView(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    deletion_protection: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 

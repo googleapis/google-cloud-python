@@ -9000,6 +9000,7 @@ def test_get_logical_view(request_type, transport: str = "grpc"):
             name="name_value",
             query="query_value",
             etag="etag_value",
+            deletion_protection=True,
         )
         response = client.get_logical_view(request)
 
@@ -9014,6 +9015,7 @@ def test_get_logical_view(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.query == "query_value"
     assert response.etag == "etag_value"
+    assert response.deletion_protection is True
 
 
 def test_get_logical_view_non_empty_request_with_auto_populated_field():
@@ -9145,6 +9147,7 @@ async def test_get_logical_view_async(
                 name="name_value",
                 query="query_value",
                 etag="etag_value",
+                deletion_protection=True,
             )
         )
         response = await client.get_logical_view(request)
@@ -9160,6 +9163,7 @@ async def test_get_logical_view_async(
     assert response.name == "name_value"
     assert response.query == "query_value"
     assert response.etag == "etag_value"
+    assert response.deletion_protection is True
 
 
 @pytest.mark.asyncio
@@ -19861,6 +19865,7 @@ async def test_get_logical_view_empty_call_grpc_asyncio():
                 name="name_value",
                 query="query_value",
                 etag="etag_value",
+                deletion_protection=True,
             )
         )
         await client.get_logical_view(request=None)
@@ -23249,6 +23254,7 @@ def test_create_logical_view_rest_call_success(request_type):
         "name": "name_value",
         "query": "query_value",
         "etag": "etag_value",
+        "deletion_protection": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23452,6 +23458,7 @@ def test_get_logical_view_rest_call_success(request_type):
             name="name_value",
             query="query_value",
             etag="etag_value",
+            deletion_protection=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -23471,6 +23478,7 @@ def test_get_logical_view_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.query == "query_value"
     assert response.etag == "etag_value"
+    assert response.deletion_protection is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -23720,6 +23728,7 @@ def test_update_logical_view_rest_call_success(request_type):
         "name": "projects/sample1/instances/sample2/logicalViews/sample3",
         "query": "query_value",
         "etag": "etag_value",
+        "deletion_protection": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
