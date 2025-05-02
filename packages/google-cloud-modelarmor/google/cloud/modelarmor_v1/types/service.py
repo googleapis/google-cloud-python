@@ -135,7 +135,7 @@ class DetectionConfidenceLevel(proto.Enum):
 
     Values:
         DETECTION_CONFIDENCE_LEVEL_UNSPECIFIED (0):
-            Same as MEDIUM_AND_ABOVE.
+            Same as LOW_AND_ABOVE.
         LOW_AND_ABOVE (1):
             Highest chance of a false positive.
         MEDIUM_AND_ABOVE (2):
@@ -1023,6 +1023,10 @@ class SanitizationResult(proto.Message):
                 Error code if any.
             error_message (str):
                 Error message if any.
+            ignore_partial_invocation_failures (bool):
+                Passthrough field defined in TemplateMetadata
+                to indicate whether to ignore partial invocation
+                failures.
         """
 
         error_code: int = proto.Field(
@@ -1032,6 +1036,10 @@ class SanitizationResult(proto.Message):
         error_message: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        ignore_partial_invocation_failures: bool = proto.Field(
+            proto.BOOL,
+            number=3,
         )
 
     filter_match_state: "FilterMatchState" = proto.Field(
@@ -1357,10 +1365,19 @@ class ByteDataItem(proto.Message):
                 plain text
             PDF (2):
                 PDF
+            WORD_DOCUMENT (3):
+                DOCX, DOCM, DOTX, DOTM
+            EXCEL_DOCUMENT (4):
+                XLSX, XLSM, XLTX, XLYM
+            POWERPOINT_DOCUMENT (5):
+                PPTX, PPTM, POTX, POTM, POT
         """
         BYTE_ITEM_TYPE_UNSPECIFIED = 0
         PLAINTEXT_UTF8 = 1
         PDF = 2
+        WORD_DOCUMENT = 3
+        EXCEL_DOCUMENT = 4
+        POWERPOINT_DOCUMENT = 5
 
     byte_data_type: ByteItemType = proto.Field(
         proto.ENUM,
