@@ -125,9 +125,7 @@ LIMIT 1
     def test_insert_row(self):
         from test.mockserver_tests.auto_increment_model import Singer
 
-        self.add_insert_result(
-            "INSERT INTO singers (name) VALUES (@a0) THEN RETURN singers.id"
-        )
+        self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
         engine = create_engine(
             "spanner:///projects/p/instances/i/databases/d",
             connect_args={"client": self.client, "pool": FixedSizePool(size=10)},

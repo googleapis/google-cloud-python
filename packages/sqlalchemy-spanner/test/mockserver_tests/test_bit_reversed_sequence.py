@@ -110,7 +110,7 @@ LIMIT 1
         add_result(
             "INSERT INTO singers (id, name) "
             "VALUES ( GET_NEXT_SEQUENCE_VALUE(SEQUENCE singer_id), @a0) "
-            "THEN RETURN singers.id",
+            "THEN RETURN id",
             result,
         )
         engine = create_engine(

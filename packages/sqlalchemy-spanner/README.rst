@@ -465,7 +465,6 @@ Other limitations
 ~~~~~~~~~~~~~~~~~
 
 -  WITH RECURSIVE statement is not supported.
--  Named schemas are not supported.
 -  Temporary tables are not supported.
 -  Numeric type dimensions (scale and precision) are constant. See the
    `docs <https://cloud.google.com/spanner/docs/data-types#numeric_types>`__.

@@ -25,6 +25,8 @@ from sqlalchemy import (
     Boolean,
     BIGINT,
     select,
+    update,
+    delete,
 )
 from sqlalchemy.orm import Session, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.types import REAL
@@ -56,6 +58,16 @@ class TestBasics(fixtures.TablesTest):
             metadata,
             Column("ID", Integer, primary_key=True),
             Column("name", String(20)),
+        )
+
+        with cls.bind.begin() as conn:
+            conn.execute(text("CREATE SCHEMA IF NOT EXISTS schema"))
+        Table(
+            "users",
+            metadata,
+            Column("ID", Integer, primary_key=True),
+            Column("name", String(20)),
+            schema="schema",
         )
 
     def test_hello_world(self, connection):
@@ -139,6 +151,12 @@ class TestBasics(fixtures.TablesTest):
             ID: Mapped[int] = mapped_column(primary_key=True)
             name: Mapped[str] = mapped_column(String(20))
 
+        class SchemaUser(Base):
+            __tablename__ = "users"
+            __table_args__ = {"schema": "schema"}
+            ID: Mapped[int] = mapped_column(primary_key=True)
+            name: Mapped[str] = mapped_column(String(20))
+
         engine = connection.engine
         with Session(engine) as session:
             number = Number(
@@ -156,3 +174,35 @@ class TestBasics(fixtures.TablesTest):
             users = session.scalars(statement).all()
             eq_(1, len(users))
             is_true(users[0].ID > 0)
+
+        with Session(engine) as session:
+            user = SchemaUser(name="SchemaTest")
+            session.add(user)
+            session.commit()
+
+            users = session.scalars(
+                select(SchemaUser).where(SchemaUser.name == "SchemaTest")
+            ).all()
+            eq_(1, len(users))
+            is_true(users[0].ID > 0)
+
+            session.execute(
+                update(SchemaUser)
+                .where(SchemaUser.name == "SchemaTest")
+                .values(name="NewName")
+            )
+            session.commit()
+
+            users = session.scalars(
+                select(SchemaUser).where(SchemaUser.name == "NewName")
+            ).all()
+            eq_(1, len(users))
+            is_true(users[0].ID > 0)
+
+            session.execute(delete(SchemaUser).where(SchemaUser.name == "NewName"))
+            session.commit()
+
+            users = session.scalars(
+                select(SchemaUser).where(SchemaUser.name == "NewName")
+            ).all()
+            eq_(0, len(users))

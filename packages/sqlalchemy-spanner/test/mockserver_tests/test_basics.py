@@ -262,3 +262,53 @@ LIMIT 1
             singer.name = "New Name"
             session.add(singer)
             session.commit()
+
+    def test_select_table_in_named_schema(self):
+        class Base(DeclarativeBase):
+            pass
+
+        class Singer(Base):
+            __tablename__ = "singers"
+            __table_args__ = {"schema": "my_schema"}
+            id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+            name: Mapped[str] = mapped_column(String)
+
+        query = (
+            "SELECT"
+            " singers_1.id AS my_schema_singers_id,"
+            " singers_1.name AS my_schema_singers_name\n"
+            "FROM my_schema.singers AS singers_1\n"
+            "WHERE singers_1.id = @a0\n"
+            " LIMIT @a1"
+        )
+        add_singer_query_result(query)
+        engine = create_engine(
+            "spanner:///projects/p/instances/i/databases/d",
+            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
+        )
+
+        insert = "INSERT INTO my_schema.singers (name) VALUES (@a0) THEN RETURN id"
+        add_single_result(insert, "id", TypeCode.INT64, [("1",)])
+        with Session(engine) as session:
+            singer = Singer(name="New Name")
+            session.add(singer)
+            session.commit()
+
+        update = (
+            "UPDATE my_schema.singers AS singers_1 "
+            "SET name=@a0 "
+            "WHERE singers_1.id = @a1"
+        )
+        add_update_count(update, 1)
+        with Session(engine) as session:
+            singer = session.query(Singer).filter(Singer.id == 1).first()
+            singer.name = "New Name"
+            session.add(singer)
+            session.commit()
+
+        delete = "DELETE FROM my_schema.singers AS singers_1 WHERE singers_1.id = @a0"
+        add_update_count(delete, 1)
+        with Session(engine) as session:
+            singer = session.query(Singer).filter(Singer.id == 1).first()
+            session.delete(singer)
+            session.commit()
