@@ -144,7 +144,7 @@ def generate_library(api_root: str, generator_input: str, output: str, library_i
                 generator_options = []
                 for key in config_keys:
                     config_value = api_specific_config.get(key, None)
-                    if config_value:
+                    if config_value is not None:
                         if key == "service-yaml" or key == "retry-config":
                             generator_options.append(
                                 f"{key}={api_path}/{config_value},"
