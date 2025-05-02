@@ -79,6 +79,7 @@ from grafeas.grafeas_v1.types import (
     package,
     provenance,
     sbom,
+    secret,
     severity,
     slsa_provenance,
     slsa_provenance_zero_two,
@@ -9567,7 +9568,24 @@ def test_create_occurrence_rest_call_success(request_type):
                     "fix_available": True,
                     "package_type": "package_type_value",
                     "effective_severity": 1,
-                    "file_location": [{"file_path": "file_path_value"}],
+                    "file_location": [
+                        {
+                            "file_path": "file_path_value",
+                            "layer_details": {
+                                "index": 536,
+                                "diff_id": "diff_id_value",
+                                "chain_id": "chain_id_value",
+                                "command": "command_value",
+                                "base_images": [
+                                    {
+                                        "name": "name_value",
+                                        "repository": "repository_value",
+                                        "layer_count": 1189,
+                                    }
+                                ],
+                            },
+                        }
+                    ],
                 }
             ],
             "short_description": "short_description_value",
@@ -9890,6 +9908,11 @@ def test_create_occurrence_rest_call_success(request_type):
             },
             "payload_type": "payload_type_value",
             "signatures": {},
+        },
+        "secret": {
+            "kind": 1,
+            "locations": [{"file_location": {}}],
+            "statuses": [{"status": 1, "update_time": {}, "message": "message_value"}],
         },
         "envelope": {},
     }
@@ -10264,7 +10287,24 @@ def test_update_occurrence_rest_call_success(request_type):
                     "fix_available": True,
                     "package_type": "package_type_value",
                     "effective_severity": 1,
-                    "file_location": [{"file_path": "file_path_value"}],
+                    "file_location": [
+                        {
+                            "file_path": "file_path_value",
+                            "layer_details": {
+                                "index": 536,
+                                "diff_id": "diff_id_value",
+                                "chain_id": "chain_id_value",
+                                "command": "command_value",
+                                "base_images": [
+                                    {
+                                        "name": "name_value",
+                                        "repository": "repository_value",
+                                        "layer_count": 1189,
+                                    }
+                                ],
+                            },
+                        }
+                    ],
                 }
             ],
             "short_description": "short_description_value",
@@ -10587,6 +10627,11 @@ def test_update_occurrence_rest_call_success(request_type):
             },
             "payload_type": "payload_type_value",
             "signatures": {},
+        },
+        "secret": {
+            "kind": 1,
+            "locations": [{"file_location": {}}],
+            "statuses": [{"status": 1, "update_time": {}, "message": "message_value"}],
         },
         "envelope": {},
     }
@@ -11466,6 +11511,7 @@ def test_create_note_rest_call_success(request_type):
             },
         },
         "sbom_reference": {"format_": "format__value", "version": "version_value"},
+        "secret": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11979,6 +12025,7 @@ def test_update_note_rest_call_success(request_type):
             },
         },
         "sbom_reference": {"format_": "format__value", "version": "version_value"},
+        "secret": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

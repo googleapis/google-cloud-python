@@ -31,6 +31,7 @@ from grafeas.grafeas_v1.types import dsse_attestation as g_dsse_attestation
 from grafeas.grafeas_v1.types import image as g_image
 from grafeas.grafeas_v1.types import package as g_package
 from grafeas.grafeas_v1.types import sbom
+from grafeas.grafeas_v1.types import secret as g_secret
 from grafeas.grafeas_v1.types import upgrade as g_upgrade
 from grafeas.grafeas_v1.types import vex
 from grafeas.grafeas_v1.types import vulnerability as g_vulnerability
@@ -152,6 +153,10 @@ class Occurrence(proto.Message):
             occurrences.
 
             This field is a member of `oneof`_ ``details``.
+        secret (grafeas.grafeas_v1.types.SecretOccurrence):
+            Describes a secret.
+
+            This field is a member of `oneof`_ ``details``.
         envelope (grafeas.grafeas_v1.types.Envelope):
             https://github.com/secure-systems-lab/dsse
     """
@@ -253,6 +258,12 @@ class Occurrence(proto.Message):
         oneof="details",
         message=sbom.SBOMReferenceOccurrence,
     )
+    secret: g_secret.SecretOccurrence = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        oneof="details",
+        message=g_secret.SecretOccurrence,
+    )
     envelope: common.Envelope = proto.Field(
         proto.MESSAGE,
         number=18,
@@ -346,6 +357,10 @@ class Note(proto.Message):
             This field is a member of `oneof`_ ``type``.
         sbom_reference (grafeas.grafeas_v1.types.SBOMReferenceNote):
             A note describing an SBOM reference.
+
+            This field is a member of `oneof`_ ``type``.
+        secret (grafeas.grafeas_v1.types.SecretNote):
+            A note describing a secret.
 
             This field is a member of `oneof`_ ``type``.
     """
@@ -462,6 +477,12 @@ class Note(proto.Message):
         number=21,
         oneof="type",
         message=sbom.SBOMReferenceNote,
+    )
+    secret: g_secret.SecretNote = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        oneof="type",
+        message=g_secret.SecretNote,
     )
 
 

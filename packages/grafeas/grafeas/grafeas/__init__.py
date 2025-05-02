@@ -27,10 +27,12 @@ from grafeas.grafeas_v1.types.attestation import (
 )
 from grafeas.grafeas_v1.types.build import BuildNote, BuildOccurrence
 from grafeas.grafeas_v1.types.common import (
+    BaseImage,
     Digest,
     Envelope,
     EnvelopeSignature,
     FileLocation,
+    LayerDetails,
     License,
     NoteKind,
     RelatedUrl,
@@ -119,6 +121,13 @@ from grafeas.grafeas_v1.types.sbom import (
     SBOMReferenceNote,
     SBOMReferenceOccurrence,
 )
+from grafeas.grafeas_v1.types.secret import (
+    SecretKind,
+    SecretLocation,
+    SecretNote,
+    SecretOccurrence,
+    SecretStatus,
+)
 from grafeas.grafeas_v1.types.severity import Severity
 from grafeas.grafeas_v1.types.slsa_provenance import SlsaProvenance
 from grafeas.grafeas_v1.types.slsa_provenance_zero_two import SlsaProvenanceZeroTwo
@@ -142,10 +151,12 @@ __all__ = (
     "Jwt",
     "BuildNote",
     "BuildOccurrence",
+    "BaseImage",
     "Digest",
     "Envelope",
     "EnvelopeSignature",
     "FileLocation",
+    "LayerDetails",
     "License",
     "RelatedUrl",
     "Signature",
@@ -219,6 +230,11 @@ __all__ = (
     "SbomReferenceIntotoPredicate",
     "SBOMReferenceNote",
     "SBOMReferenceOccurrence",
+    "SecretLocation",
+    "SecretNote",
+    "SecretOccurrence",
+    "SecretStatus",
+    "SecretKind",
     "Severity",
     "SlsaProvenance",
     "SlsaProvenanceZeroTwo",

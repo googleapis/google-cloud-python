@@ -16,10 +16,12 @@
 from .attestation import AttestationNote, AttestationOccurrence, Jwt
 from .build import BuildNote, BuildOccurrence
 from .common import (
+    BaseImage,
     Digest,
     Envelope,
     EnvelopeSignature,
     FileLocation,
+    LayerDetails,
     License,
     NoteKind,
     RelatedUrl,
@@ -96,6 +98,13 @@ from .sbom import (
     SBOMReferenceNote,
     SBOMReferenceOccurrence,
 )
+from .secret import (
+    SecretKind,
+    SecretLocation,
+    SecretNote,
+    SecretOccurrence,
+    SecretStatus,
+)
 from .severity import Severity
 from .slsa_provenance import SlsaProvenance
 from .slsa_provenance_zero_two import SlsaProvenanceZeroTwo
@@ -109,10 +118,12 @@ __all__ = (
     "Jwt",
     "BuildNote",
     "BuildOccurrence",
+    "BaseImage",
     "Digest",
     "Envelope",
     "EnvelopeSignature",
     "FileLocation",
+    "LayerDetails",
     "License",
     "RelatedUrl",
     "Signature",
@@ -186,6 +197,11 @@ __all__ = (
     "SbomReferenceIntotoPredicate",
     "SBOMReferenceNote",
     "SBOMReferenceOccurrence",
+    "SecretLocation",
+    "SecretNote",
+    "SecretOccurrence",
+    "SecretStatus",
+    "SecretKind",
     "Severity",
     "SlsaProvenance",
     "SlsaProvenanceZeroTwo",

@@ -17,20 +17,19 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
 from grafeas.grafeas_v1.types import common
 
-
 __protobuf__ = proto.module(
-    package='grafeas.v1',
+    package="grafeas.v1",
     manifest={
-        'SecretKind',
-        'SecretNote',
-        'SecretOccurrence',
-        'SecretLocation',
-        'SecretStatus',
+        "SecretKind",
+        "SecretNote",
+        "SecretOccurrence",
+        "SecretLocation",
+        "SecretStatus",
     },
 )
 
@@ -54,8 +53,7 @@ class SecretKind(proto.Enum):
 
 
 class SecretNote(proto.Message):
-    r"""The note representing a secret.
-    """
+    r"""The note representing a secret."""
 
 
 class SecretOccurrence(proto.Message):
@@ -70,20 +68,20 @@ class SecretOccurrence(proto.Message):
             Status of the secret.
     """
 
-    kind: 'SecretKind' = proto.Field(
+    kind: "SecretKind" = proto.Field(
         proto.ENUM,
         number=1,
-        enum='SecretKind',
+        enum="SecretKind",
     )
-    locations: MutableSequence['SecretLocation'] = proto.RepeatedField(
+    locations: MutableSequence["SecretLocation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='SecretLocation',
+        message="SecretLocation",
     )
-    statuses: MutableSequence['SecretStatus'] = proto.RepeatedField(
+    statuses: MutableSequence["SecretStatus"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message='SecretStatus',
+        message="SecretStatus",
     )
 
 
@@ -102,7 +100,7 @@ class SecretLocation(proto.Message):
     file_location: common.FileLocation = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof='location',
+        oneof="location",
         message=common.FileLocation,
     )
 
@@ -118,6 +116,7 @@ class SecretStatus(proto.Message):
         message (str):
             Optional message about the status code.
     """
+
     class Status(proto.Enum):
         r"""The status of the secret.
 
