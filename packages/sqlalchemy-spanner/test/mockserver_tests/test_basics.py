@@ -218,7 +218,11 @@ LIMIT 1
         add_update_count(sql, 100, AutocommitDmlMode.PARTITIONED_NON_ATOMIC)
         engine = create_engine(
             "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": PingingPool(size=10)},
+            connect_args={
+                "client": self.client,
+                "pool": PingingPool(size=10),
+                "ignore_transaction_warnings": True,
+            },
         )
         # TODO: Support autocommit_dml_mode as a connection variable in execution
         #       options.
