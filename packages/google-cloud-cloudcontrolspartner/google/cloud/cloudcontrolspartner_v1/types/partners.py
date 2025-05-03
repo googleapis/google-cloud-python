@@ -166,7 +166,7 @@ class EkmMetadata(proto.Message):
             THALES (3):
                 EKM Partner Thales
             VIRTRU (4):
-                EKM Partner Virtu
+                This enum value is never used.
         """
         EKM_SOLUTION_UNSPECIFIED = 0
         FORTANIX = 1
