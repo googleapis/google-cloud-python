@@ -27,7 +27,7 @@ import bigframes.session.metrics
 class SQLCompilerExecutor(bigframes.session.executor.Executor):
     """Executor for SQL compilation using sqlglot."""
 
-    compiler = sqlglot.SQLGlotCompiler()
+    compiler = sqlglot
 
     def to_sql(
         self,
@@ -41,7 +41,9 @@ class SQLCompilerExecutor(bigframes.session.executor.Executor):
 
         # Compared with BigQueryCachingExecutor, SQLCompilerExecutor skips
         # caching the subtree.
-        return self.compiler.compile(array_value.node, ordered=ordered)
+        return self.compiler.SQLGlotCompiler().compile(
+            array_value.node, ordered=ordered
+        )
 
 
 class SQLCompilerSession(bigframes.session.Session):

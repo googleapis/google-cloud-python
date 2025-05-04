@@ -13,22 +13,20 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Generator, Tuple
+import typing
 
-import bigframes.core.identifiers
-import bigframes.core.nodes
+from bigframes.core import identifiers, nodes
 
 
 # TODO: May as well just outright remove selection nodes in this process.
 def remap_variables(
-    root: bigframes.core.nodes.BigFrameNode,
-    id_generator: Generator[bigframes.core.identifiers.ColumnId, None, None],
-) -> Tuple[
-    bigframes.core.nodes.BigFrameNode,
-    dict[bigframes.core.identifiers.ColumnId, bigframes.core.identifiers.ColumnId],
+    root: nodes.BigFrameNode,
+    id_generator: typing.Iterator[identifiers.ColumnId],
+) -> typing.Tuple[
+    nodes.BigFrameNode,
+    dict[identifiers.ColumnId, identifiers.ColumnId],
 ]:
-    """
-    Remap all variables in the BFET using the id_generator.
+    """Remaps `ColumnId`s in the BFET to produce deterministic and sequential UIDs.
 
     Note: this will convert a DAG to a tree.
     """

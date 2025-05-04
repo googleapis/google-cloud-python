@@ -23,6 +23,7 @@ import sqlglot.dialects.bigquery
 import sqlglot.expressions as sge
 
 from bigframes import dtypes
+from bigframes.core import guid
 import bigframes.core.compile.sqlglot.sqlglot_types as sgt
 import bigframes.core.local_data as local_data
 import bigframes.core.schema as schemata
@@ -52,6 +53,9 @@ class SQLGlotIR:
     pretty: bool = True
     """Whether to pretty-print the generated SQL."""
 
+    uid_gen: guid.SequentialUIDGenerator = guid.SequentialUIDGenerator()
+    """Generator for unique identifiers."""
+
     @property
     def sql(self) -> str:
         """Generate SQL string from the given expression."""
@@ -59,7 +63,10 @@ class SQLGlotIR:
 
     @classmethod
     def from_pyarrow(
-        cls, pa_table: pa.Table, schema: schemata.ArraySchema
+        cls,
+        pa_table: pa.Table,
+        schema: schemata.ArraySchema,
+        uid_gen: guid.SequentialUIDGenerator,
     ) -> SQLGlotIR:
         """Builds SQLGlot expression from pyarrow table."""
         dtype_expr = sge.DataType(
@@ -95,21 +102,44 @@ class SQLGlotIR:
                 ),
             ],
         )
-        return cls(expr=sg.select(sge.Star()).from_(expr))
+        return cls(expr=sg.select(sge.Star()).from_(expr), uid_gen=uid_gen)
 
     def select(
         self,
-        select_cols: typing.Dict[str, sge.Expression],
+        selected_cols: tuple[tuple[str, sge.Expression], ...],
     ) -> SQLGlotIR:
-        selected_cols = [
+        cols_expr = [
             sge.Alias(
                 this=expr,
                 alias=sge.to_identifier(id, quoted=self.quoted),
             )
-            for id, expr in select_cols.items()
+            for id, expr in selected_cols
         ]
-        expr = self.expr.select(*selected_cols, append=False)
-        return SQLGlotIR(expr=expr)
+        new_expr = self._encapsulate_as_cte().select(*cols_expr, append=False)
+        return SQLGlotIR(expr=new_expr)
+
+    def _encapsulate_as_cte(
+        self,
+    ) -> sge.Select:
+        """Transforms a given sge.Select query by pushing its main SELECT statement
+        into a new CTE and then generates a 'SELECT * FROM new_cte_name'
+        for the new query."""
+        select_expr = self.expr.copy()
+
+        existing_ctes = select_expr.args.pop("with", [])
+        new_cte_name = sge.to_identifier(
+            next(self.uid_gen.get_uid_stream("bfcte_")), quoted=self.quoted
+        )
+        new_cte = sge.CTE(
+            this=select_expr,
+            alias=new_cte_name,
+        )
+        new_with_clause = sge.With(expressions=existing_ctes + [new_cte])
+        new_select_expr = (
+            sge.Select().select(sge.Star()).from_(sge.Table(this=new_cte_name))
+        )
+        new_select_expr.set("with", new_with_clause)
+        return new_select_expr
 
 
 def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
