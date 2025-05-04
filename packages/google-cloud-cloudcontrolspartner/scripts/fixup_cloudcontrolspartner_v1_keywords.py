@@ -39,6 +39,8 @@ def partition(
 class cloudcontrolspartnerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_customer': ('parent', 'customer', 'customer_id', ),
+        'delete_customer': ('name', ),
         'get_customer': ('name', ),
         'get_ekm_connections': ('name', ),
         'get_partner': ('name', ),
@@ -49,6 +51,7 @@ class cloudcontrolspartnerCallTransformer(cst.CSTTransformer):
         'list_customers': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_violations': ('parent', 'page_size', 'page_token', 'filter', 'order_by', 'interval', ),
         'list_workloads': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'update_customer': ('customer', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

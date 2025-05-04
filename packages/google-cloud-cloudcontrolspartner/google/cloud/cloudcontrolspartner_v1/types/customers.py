@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -30,9 +31,12 @@ __protobuf__ = proto.module(
         "Customer",
         "ListCustomersRequest",
         "ListCustomersResponse",
+        "CreateCustomerRequest",
         "GetCustomerRequest",
         "CustomerOnboardingState",
         "CustomerOnboardingStep",
+        "UpdateCustomerRequest",
+        "DeleteCustomerRequest",
     },
 )
 
@@ -52,6 +56,10 @@ class Customer(proto.Message):
         is_onboarded (bool):
             Output only. Indicates whether a customer is
             fully onboarded
+        organization_domain (str):
+            Output only. The customer organization domain, extracted
+            from CRM Organization’s display_name field. e.g.
+            "google.com".
     """
 
     name: str = proto.Field(
@@ -70,6 +78,10 @@ class Customer(proto.Message):
     is_onboarded: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    organization_domain: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -144,6 +156,38 @@ class ListCustomersResponse(proto.Message):
         number=2,
     )
     unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CreateCustomerRequest(proto.Message):
+    r"""Request to create a customer
+
+    Attributes:
+        parent (str):
+            Required. Parent resource Format:
+            ``organizations/{organization}/locations/{location}``
+        customer (google.cloud.cloudcontrolspartner_v1.types.Customer):
+            Required. The customer to create.
+        customer_id (str):
+            Required. The customer id to use for the
+            customer, which will become the final component
+            of the customer's resource name. The specified
+            value must be a valid Google cloud organization
+            id.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    customer: "Customer" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Customer",
+    )
+    customer_id: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -227,6 +271,44 @@ class CustomerOnboardingStep(proto.Message):
         proto.ENUM,
         number=4,
         enum=gcc_completion_state.CompletionState,
+    )
+
+
+class UpdateCustomerRequest(proto.Message):
+    r"""Request to update a customer
+
+    Attributes:
+        customer (google.cloud.cloudcontrolspartner_v1.types.Customer):
+            Required. The customer to update Format:
+            ``organizations/{organization}/locations/{location}/customers/{customer}``
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to update
+    """
+
+    customer: "Customer" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Customer",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteCustomerRequest(proto.Message):
+    r"""Message for deleting customer
+
+    Attributes:
+        name (str):
+            Required. name of the resource to be deleted format:
+            name=organizations/\ */locations/*/customers/\*
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
