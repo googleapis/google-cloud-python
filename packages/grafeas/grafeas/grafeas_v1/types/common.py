@@ -28,6 +28,8 @@ __protobuf__ = proto.module(
         "Envelope",
         "EnvelopeSignature",
         "FileLocation",
+        "BaseImage",
+        "LayerDetails",
         "License",
         "Digest",
     },
@@ -70,6 +72,8 @@ class NoteKind(proto.Enum):
             This represents a Vulnerability Assessment.
         SBOM_REFERENCE (12):
             This represents an SBOM Reference.
+        SECRET (13):
+            This represents a secret.
     """
     NOTE_KIND_UNSPECIFIED = 0
     VULNERABILITY = 1
@@ -84,6 +88,7 @@ class NoteKind(proto.Enum):
     DSSE_ATTESTATION = 10
     VULNERABILITY_ASSESSMENT = 11
     SBOM_REFERENCE = 12
+    SECRET = 13
 
 
 class RelatedUrl(proto.Message):
@@ -236,11 +241,94 @@ class FileLocation(proto.Message):
             For jars that are contained inside .war
             files, this filepath can indicate the path to
             war file combined with the path to jar file.
+        layer_details (grafeas.grafeas_v1.types.LayerDetails):
+            Each package found in a file should have its
+            own layer metadata (that is, information from
+            the origin layer of the package).
     """
 
     file_path: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    layer_details: "LayerDetails" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="LayerDetails",
+    )
+
+
+class BaseImage(proto.Message):
+    r"""BaseImage describes a base image of a container image.
+
+    Attributes:
+        name (str):
+            The name of the base image.
+        repository (str):
+            The repository name in which the base image
+            is from.
+        layer_count (int):
+            The number of layers that the base image is
+            composed of.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    repository: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    layer_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class LayerDetails(proto.Message):
+    r"""Details about the layer a package was found in.
+
+    Attributes:
+        index (int):
+            The index of the layer in the container
+            image.
+        diff_id (str):
+            The diff ID (typically a sha256 hash) of the
+            layer in the container image.
+        chain_id (str):
+            The layer chain ID (sha256 hash) of the layer
+            in the container image.
+            https://github.com/opencontainers/image-spec/blob/main/config.md#layer-chainid
+        command (str):
+            The layer build command that was used to
+            build the layer. This may not be found in all
+            layers depending on how the container image is
+            built.
+        base_images (MutableSequence[grafeas.grafeas_v1.types.BaseImage]):
+            The base images the layer is found within.
+    """
+
+    index: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    diff_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    chain_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    command: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    base_images: MutableSequence["BaseImage"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="BaseImage",
     )
 
 

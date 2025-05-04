@@ -59,6 +59,7 @@ from grafeas.grafeas_v1.types import (
     image,
     package,
     sbom,
+    secret,
     upgrade,
     vex,
     vulnerability,
