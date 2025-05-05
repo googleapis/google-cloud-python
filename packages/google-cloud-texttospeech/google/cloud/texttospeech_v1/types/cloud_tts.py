@@ -297,10 +297,39 @@ class CustomPronunciationParams(proto.Message):
             PHONETIC_ENCODING_X_SAMPA (2):
                 X-SAMPA, such as apple -> "{p@l".
                 https://en.wikipedia.org/wiki/X-SAMPA
+            PHONETIC_ENCODING_JAPANESE_YOMIGANA (3):
+                For reading-to-pron conversion to work well, the
+                ``pronunciation`` field should only contain Kanji, Hiragana,
+                and Katakana.
+
+                The pronunciation can also contain pitch accents. The start
+                of a pitch phrase is specified with ``^`` and the down-pitch
+                position is specified with ``!``, for example:
+
+                ::
+
+                    phrase:端  pronunciation:^はし
+                    phrase:箸  pronunciation:^は!し
+                    phrase:橋  pronunciation:^はし!
+
+                We currently only support the Tokyo dialect, which allows at
+                most one down-pitch per phrase (i.e. at most one ``!``
+                between ``^``).
+            PHONETIC_ENCODING_PINYIN (4):
+                Used to specify pronunciations for Mandarin
+                words. See https://en.wikipedia.org/wiki/Pinyin.
+
+                For example: 朝阳, the pronunciation is "chao2
+                yang2". The number represents the tone, and
+                there is a space between syllables. Neutral
+                tones are represented by 5, for example 孩子 "hai2
+                zi5".
         """
         PHONETIC_ENCODING_UNSPECIFIED = 0
         PHONETIC_ENCODING_IPA = 1
         PHONETIC_ENCODING_X_SAMPA = 2
+        PHONETIC_ENCODING_JAPANESE_YOMIGANA = 3
+        PHONETIC_ENCODING_PINYIN = 4
 
     phrase: str = proto.Field(
         proto.STRING,
@@ -389,6 +418,11 @@ class SynthesisInput(proto.Message):
             The raw text to be synthesized.
 
             This field is a member of `oneof`_ ``input_source``.
+        markup (str):
+            Markup for HD voices specifically. This field
+            may not be used with any other voices.
+
+            This field is a member of `oneof`_ ``input_source``.
         ssml (str):
             The SSML document to be synthesized. The SSML document must
             be valid and well-formed. Otherwise the RPC will fail and
@@ -422,6 +456,11 @@ class SynthesisInput(proto.Message):
     text: str = proto.Field(
         proto.STRING,
         number=1,
+        oneof="input_source",
+    )
+    markup: str = proto.Field(
+        proto.STRING,
+        number=5,
         oneof="input_source",
     )
     ssml: str = proto.Field(
@@ -743,6 +782,11 @@ class StreamingSynthesizeConfig(proto.Message):
 class StreamingSynthesisInput(proto.Message):
     r"""Input to be synthesized.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -753,11 +797,21 @@ class StreamingSynthesisInput(proto.Message):
             prosody in the output audio.
 
             This field is a member of `oneof`_ ``input_source``.
+        markup (str):
+            Markup for HD voices specifically. This field
+            may not be used with any other voices.
+
+            This field is a member of `oneof`_ ``input_source``.
     """
 
     text: str = proto.Field(
         proto.STRING,
         number=1,
+        oneof="input_source",
+    )
+    markup: str = proto.Field(
+        proto.STRING,
+        number=5,
         oneof="input_source",
     )
 
