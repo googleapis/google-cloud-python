@@ -52,7 +52,7 @@ def to_datetime(
             f"to datetime is not implemented. {constants.FEEDBACK_LINK}"
         )
 
-    arg = bigframes.series.Series(arg)._cached()
+    arg = bigframes.series.Series(arg)
 
     if format and unit and arg.dtype in (bigframes.dtypes.INT_DTYPE, bigframes.dtypes.FLOAT_DTYPE):  # type: ignore
         raise ValueError("cannot specify both format and unit")
@@ -74,6 +74,11 @@ def to_datetime(
             )
 
         assert unit is None
+
+        # The following operations evaluate individual values to infer a format,
+        # so cache if needed.
+        arg = arg._cached(force=False)
+
         as_datetime = arg._apply_unary_op(  # type: ignore
             ops.ToDatetimeOp(
                 format=format,
