@@ -84,7 +84,7 @@ class UnixSeconds(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "unix_seconds"
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if input_types[0] is not dtypes.TIMESTAMP_DTYPE:
+        if input_types[0] != dtypes.TIMESTAMP_DTYPE:
             raise TypeError("expected timestamp input")
         return dtypes.INT_DTYPE
 
@@ -94,7 +94,7 @@ class UnixMillis(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "unix_millis"
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if input_types[0] is not dtypes.TIMESTAMP_DTYPE:
+        if input_types[0] != dtypes.TIMESTAMP_DTYPE:
             raise TypeError("expected timestamp input")
         return dtypes.INT_DTYPE
 
@@ -104,7 +104,7 @@ class UnixMicros(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "unix_micros"
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if input_types[0] is not dtypes.TIMESTAMP_DTYPE:
+        if input_types[0] != dtypes.TIMESTAMP_DTYPE:
             raise TypeError("expected timestamp input")
         return dtypes.INT_DTYPE
 
@@ -114,7 +114,7 @@ class TimestampDiff(base_ops.BinaryOp):
     name: typing.ClassVar[str] = "timestamp_diff"
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        if input_types[0] is not input_types[1]:
+        if input_types[0] != input_types[1]:
             raise TypeError(
                 f"two inputs have different types. left: {input_types[0]}, right: {input_types[1]}"
             )

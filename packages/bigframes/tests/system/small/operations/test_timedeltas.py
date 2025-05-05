@@ -60,6 +60,7 @@ def temporal_dfs(session):
             ],
             "float_col": [1.5, 2, -3],
             "int_col": [1, 2, -3],
+            "positive_int_col": [1, 2, 3],
         }
     )
 
@@ -607,3 +608,24 @@ def test_timedelta_agg__int_result(temporal_dfs, agg_func):
 
     expected_result = agg_func(pd_df["timedelta_col_1"])
     assert actual_result == expected_result
+
+
+def test_timestamp_diff_after_type_casting(temporal_dfs):
+    if version.Version(pd.__version__) <= version.Version("2.1.0"):
+        pytest.skip(
+            "Temporal type casting is not well-supported in older verions of Pandas."
+        )
+
+    bf_df, pd_df = temporal_dfs
+    dtype = pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
+
+    actual_result = (
+        bf_df["timestamp_col"] - bf_df["positive_int_col"].astype(dtype)
+    ).to_pandas()
+
+    expected_result = pd_df["timestamp_col"] - pd_df["positive_int_col"].astype(
+        "datetime64[us, UTC]"
+    )
+    pandas.testing.assert_series_equal(
+        actual_result, expected_result, check_index_type=False, check_dtype=False
+    )
