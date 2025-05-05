@@ -1304,9 +1304,9 @@ class SpannerDialect(DefaultDialect):
         table_type_query = self._get_table_type_query(kind, True)
 
         sql = """
-            SELECT tc.table_schema, tc.table_name, ccu.COLUMN_NAME
+            SELECT tc.table_schema, tc.table_name, kcu.column_name
             FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
-            JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
+            JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS kcu
                 USING (TABLE_CATALOG, TABLE_SCHEMA, CONSTRAINT_NAME)
             JOIN information_schema.tables AS t
                 ON  tc.TABLE_CATALOG = t.TABLE_CATALOG
@@ -1314,6 +1314,8 @@ class SpannerDialect(DefaultDialect):
                 AND tc.TABLE_NAME = t.TABLE_NAME
             WHERE {table_filter_query} {table_type_query}
             {schema_filter_query} tc.CONSTRAINT_TYPE = "PRIMARY KEY"
+            ORDER BY tc.table_catalog ASC, tc.table_schema ASC,
+                     tc.table_name ASC, kcu.ordinal_position ASC
         """.format(
             table_filter_query=table_filter_query,
             table_type_query=table_type_query,

@@ -1014,22 +1014,6 @@ class CompositeKeyReflectionTest(_CompositeKeyReflectionTest):
         eq_(set(fkey1.get("referred_columns")), {"name", "id", "attr"})
         eq_(set(fkey1.get("constrained_columns")), {"pname", "pid", "pattr"})
 
-    @testing.requires.primary_key_constraint_reflection
-    def test_pk_column_order(self, connection):
-        """
-        SPANNER OVERRIDE:
-        Emultor doesn't support returning pk sorted by ordinal value
-        of columns.
-        """
-        insp = inspect(connection)
-        primary_key = insp.get_pk_constraint(self.tables.tb1.name)
-        exp = (
-            ["id", "name", "attr"]
-            if bool(os.environ.get("SPANNER_EMULATOR_HOST"))
-            else ["name", "id", "attr"]
-        )
-        eq_(primary_key.get("constrained_columns"), exp)
-
 
 class RowFetchTest(_RowFetchTest):
     def test_row_w_scalar_select(self):
