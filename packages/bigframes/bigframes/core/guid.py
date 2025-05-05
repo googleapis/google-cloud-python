@@ -11,16 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import threading
 import typing
 
+_GUID_LOCK = threading.Lock()
 _GUID_COUNTER = 0
 
 
 def generate_guid(prefix="col_"):
-    global _GUID_COUNTER
-    _GUID_COUNTER += 1
-    return f"bfuid_{prefix}{_GUID_COUNTER}"
+    global _GUID_LOCK
+    with _GUID_LOCK:
+        global _GUID_COUNTER
+        _GUID_COUNTER += 1
+        return f"bfuid_{prefix}{_GUID_COUNTER}"
 
 
 class SequentialUIDGenerator:
