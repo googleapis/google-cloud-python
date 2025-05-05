@@ -18,10 +18,14 @@ def test_kmeans_sample(project_id: str, random_model_id_eu: str) -> None:
     your_model_id = random_model_id_eu
     # [START bigquery_dataframes_bqml_kmeans]
     import datetime
+    import typing
 
     import pandas as pd
+    from shapely.geometry import Point
 
     import bigframes
+    import bigframes.bigquery as bbq
+    import bigframes.geopandas
     import bigframes.pandas as bpd
 
     bigframes.options.bigquery.project = your_gcp_project_id
@@ -41,21 +45,21 @@ def test_kmeans_sample(project_id: str, random_model_id_eu: str) -> None:
         }
     )
 
-    s = bpd.read_gbq(
-        # Use ST_GEOPOINT and ST_DISTANCE to analyze geographical
-        # data. These functions determine spatial relationships between
-        # geographical features.
-        """
-        SELECT
-        id,
-        ST_DISTANCE(
-            ST_GEOGPOINT(s.longitude, s.latitude),
-            ST_GEOGPOINT(-0.1, 51.5)
-        ) / 1000 AS distance_from_city_center
-        FROM
-        `bigquery-public-data.london_bicycles.cycle_stations` s
-        """
+    # Use GeoSeries.from_xy and BigQuery.st_distance to analyze geographical
+    # data. These functions determine spatial relationships between
+    # geographical features.
+
+    cycle_stations = bpd.read_gbq("bigquery-public-data.london_bicycles.cycle_stations")
+    s = bpd.DataFrame(
+        {
+            "id": cycle_stations["id"],
+            "xy": bigframes.geopandas.GeoSeries.from_xy(
+                cycle_stations["longitude"], cycle_stations["latitude"]
+            ),
+        }
     )
+    s_distance = bbq.st_distance(s["xy"], Point(-0.1, 51.5), use_spheroid=False) / 1000
+    s = bpd.DataFrame({"id": s["id"], "distance_from_city_center": s_distance})
 
     # Define Python datetime objects in the UTC timezone for range comparison,
     # because BigQuery stores timestamp data in the UTC timezone.
@@ -91,8 +95,11 @@ def test_kmeans_sample(project_id: str, random_model_id_eu: str) -> None:
 
     # Engineer features to cluster the stations. For each station, find the
     # average trip duration, number of trips, and distance from city center.
-    stationstats = merged_df.groupby(["station_name", "isweekday"]).agg(
-        {"duration": ["mean", "count"], "distance_from_city_center": "max"}
+    stationstats = typing.cast(
+        bpd.DataFrame,
+        merged_df.groupby(["station_name", "isweekday"]).agg(
+            {"duration": ["mean", "count"], "distance_from_city_center": "max"}
+        ),
     )
     stationstats.columns = pd.Index(
         ["duration", "num_trips", "distance_from_city_center"]
