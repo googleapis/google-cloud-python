@@ -22,7 +22,6 @@ circular dependencies.
 from __future__ import annotations
 
 import ast
-import copy
 import dataclasses
 import datetime
 import functools
@@ -30,17 +29,7 @@ import itertools
 import random
 import textwrap
 import typing
-from typing import (
-    Any,
-    Iterable,
-    List,
-    Literal,
-    Mapping,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Iterable, List, Literal, Mapping, Optional, Sequence, Tuple, Union
 import warnings
 
 import bigframes_vendored.constants as constants
@@ -69,6 +58,7 @@ import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+from bigframes.session import dry_runs
 from bigframes.session import executor as executors
 
 # Type constraint for wherever column labels are used
@@ -822,59 +812,18 @@ class Block:
         if sampling.enable_downsampling:
             raise NotImplementedError("Dry run with sampling is not supported")
 
-        index: List[Any] = []
-        values: List[Any] = []
-
-        index.append("columnCount")
-        values.append(len(self.value_columns))
-        index.append("columnDtypes")
-        values.append(
-            {
-                col: self.expr.get_column_type(self.resolve_label_exact_or_error(col))
-                for col in self.column_labels
-            }
-        )
-
-        index.append("indexLevel")
-        values.append(self.index.nlevels)
-        index.append("indexDtypes")
-        values.append(self.index.dtypes)
-
         expr = self._apply_value_keys_to_expr(value_keys=value_keys)
         query_job = self.session._executor.dry_run(expr, ordered)
-        job_api_repr = copy.deepcopy(query_job._properties)
 
-        job_ref = job_api_repr["jobReference"]
-        for key, val in job_ref.items():
-            index.append(key)
-            values.append(val)
+        column_dtypes = {
+            col: self.expr.get_column_type(self.resolve_label_exact_or_error(col))
+            for col in self.column_labels
+        }
 
-        index.append("jobType")
-        values.append(job_api_repr["configuration"]["jobType"])
-
-        query_config = job_api_repr["configuration"]["query"]
-        for key in ("destinationTable", "useLegacySql"):
-            index.append(key)
-            values.append(query_config.get(key))
-
-        query_stats = job_api_repr["statistics"]["query"]
-        for key in (
-            "referencedTables",
-            "totalBytesProcessed",
-            "cacheHit",
-            "statementType",
-        ):
-            index.append(key)
-            values.append(query_stats.get(key))
-
-        index.append("creationTime")
-        values.append(
-            pd.Timestamp(
-                job_api_repr["statistics"]["creationTime"], unit="ms", tz="UTC"
-            )
+        dry_run_stats = dry_runs.get_query_stats_with_dtypes(
+            query_job, column_dtypes, self.index.dtypes
         )
-
-        return pd.Series(values, index=index), query_job
+        return dry_run_stats, query_job
 
     def _apply_value_keys_to_expr(self, value_keys: Optional[Iterable[str]] = None):
         expr = self._expr

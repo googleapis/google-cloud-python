@@ -31,6 +31,7 @@ from typing import (
     Literal,
     MutableSequence,
     Optional,
+    overload,
     Sequence,
     Tuple,
     Union,
@@ -382,6 +383,38 @@ class Session(
                 self.bqclient, self.cloudfunctionsclient, self.session_id
             )
 
+    @overload
+    def read_gbq(  # type: ignore[overload-overlap]
+        self,
+        query_or_table: str,
+        *,
+        index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = ...,
+        columns: Iterable[str] = ...,
+        configuration: Optional[Dict] = ...,
+        max_results: Optional[int] = ...,
+        filters: third_party_pandas_gbq.FiltersType = ...,
+        use_cache: Optional[bool] = ...,
+        col_order: Iterable[str] = ...,
+        dry_run: Literal[False] = ...,
+    ) -> dataframe.DataFrame:
+        ...
+
+    @overload
+    def read_gbq(
+        self,
+        query_or_table: str,
+        *,
+        index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = ...,
+        columns: Iterable[str] = ...,
+        configuration: Optional[Dict] = ...,
+        max_results: Optional[int] = ...,
+        filters: third_party_pandas_gbq.FiltersType = ...,
+        use_cache: Optional[bool] = ...,
+        col_order: Iterable[str] = ...,
+        dry_run: Literal[True] = ...,
+    ) -> pandas.Series:
+        ...
+
     def read_gbq(
         self,
         query_or_table: str,
@@ -393,8 +426,9 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = (),
         use_cache: Optional[bool] = None,
         col_order: Iterable[str] = (),
+        dry_run: bool = False
         # Add a verify index argument that fails if the index is not unique.
-    ) -> dataframe.DataFrame:
+    ) -> dataframe.DataFrame | pandas.Series:
         # TODO(b/281571214): Generate prompt to show the progress of read_gbq.
         if columns and col_order:
             raise ValueError(
@@ -404,7 +438,7 @@ class Session(
             columns = col_order
 
         if bf_io_bigquery.is_query(query_or_table):
-            return self._loader.read_gbq_query(
+            return self._loader.read_gbq_query(  # type: ignore # for dry_run overload
                 query_or_table,
                 index_col=index_col,
                 columns=columns,
@@ -413,6 +447,7 @@ class Session(
                 api_name="read_gbq",
                 use_cache=use_cache,
                 filters=filters,
+                dry_run=dry_run,
             )
         else:
             if configuration is not None:
@@ -422,7 +457,7 @@ class Session(
                     "'configuration' or use a query."
                 )
 
-            return self._loader.read_gbq_table(
+            return self._loader.read_gbq_table(  # type: ignore # for dry_run overload
                 query_or_table,
                 index_col=index_col,
                 columns=columns,
@@ -430,6 +465,7 @@ class Session(
                 api_name="read_gbq",
                 use_cache=use_cache if use_cache is not None else True,
                 filters=filters,
+                dry_run=dry_run,
             )
 
     def _register_object(
@@ -439,6 +475,38 @@ class Session(
         ],
     ):
         self._objects.append(weakref.ref(object))
+
+    @overload
+    def read_gbq_query(  # type: ignore[overload-overlap]
+        self,
+        query: str,
+        *,
+        index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = ...,
+        columns: Iterable[str] = ...,
+        configuration: Optional[Dict] = ...,
+        max_results: Optional[int] = ...,
+        use_cache: Optional[bool] = ...,
+        col_order: Iterable[str] = ...,
+        filters: third_party_pandas_gbq.FiltersType = ...,
+        dry_run: Literal[False] = ...,
+    ) -> dataframe.DataFrame:
+        ...
+
+    @overload
+    def read_gbq_query(
+        self,
+        query: str,
+        *,
+        index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = ...,
+        columns: Iterable[str] = ...,
+        configuration: Optional[Dict] = ...,
+        max_results: Optional[int] = ...,
+        use_cache: Optional[bool] = ...,
+        col_order: Iterable[str] = ...,
+        filters: third_party_pandas_gbq.FiltersType = ...,
+        dry_run: Literal[True] = ...,
+    ) -> pandas.Series:
+        ...
 
     def read_gbq_query(
         self,
@@ -451,7 +519,8 @@ class Session(
         use_cache: Optional[bool] = None,
         col_order: Iterable[str] = (),
         filters: third_party_pandas_gbq.FiltersType = (),
-    ) -> dataframe.DataFrame:
+        dry_run: bool = False,
+    ) -> dataframe.DataFrame | pandas.Series:
         """Turn a SQL query into a DataFrame.
 
         Note: Because the results are written to a temporary table, ordering by
@@ -517,7 +586,7 @@ class Session(
         elif col_order:
             columns = col_order
 
-        return self._loader.read_gbq_query(
+        return self._loader.read_gbq_query(  # type: ignore # for dry_run overload
             query=query,
             index_col=index_col,
             columns=columns,
@@ -526,7 +595,38 @@ class Session(
             api_name="read_gbq_query",
             use_cache=use_cache,
             filters=filters,
+            dry_run=dry_run,
         )
+
+    @overload
+    def read_gbq_table(  # type: ignore[overload-overlap]
+        self,
+        query: str,
+        *,
+        index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = ...,
+        columns: Iterable[str] = ...,
+        max_results: Optional[int] = ...,
+        filters: third_party_pandas_gbq.FiltersType = ...,
+        use_cache: bool = ...,
+        col_order: Iterable[str] = ...,
+        dry_run: Literal[False] = ...,
+    ) -> dataframe.DataFrame:
+        ...
+
+    @overload
+    def read_gbq_table(
+        self,
+        query: str,
+        *,
+        index_col: Iterable[str] | str | bigframes.enums.DefaultIndexKind = ...,
+        columns: Iterable[str] = ...,
+        max_results: Optional[int] = ...,
+        filters: third_party_pandas_gbq.FiltersType = ...,
+        use_cache: bool = ...,
+        col_order: Iterable[str] = ...,
+        dry_run: Literal[True] = ...,
+    ) -> pandas.Series:
+        ...
 
     def read_gbq_table(
         self,
@@ -538,7 +638,8 @@ class Session(
         filters: third_party_pandas_gbq.FiltersType = (),
         use_cache: bool = True,
         col_order: Iterable[str] = (),
-    ) -> dataframe.DataFrame:
+        dry_run: bool = False,
+    ) -> dataframe.DataFrame | pandas.Series:
         """Turn a BigQuery table into a DataFrame.
 
         **Examples:**
@@ -569,7 +670,7 @@ class Session(
         elif col_order:
             columns = col_order
 
-        return self._loader.read_gbq_table(
+        return self._loader.read_gbq_table(  # type: ignore # for dry_run overload
             table_id=query,
             index_col=index_col,
             columns=columns,
@@ -577,6 +678,7 @@ class Session(
             api_name="read_gbq_table",
             use_cache=use_cache,
             filters=filters,
+            dry_run=dry_run,
         )
 
     def read_gbq_table_streaming(
