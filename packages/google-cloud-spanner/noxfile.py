@@ -51,6 +51,9 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest-cov",
     "pytest-asyncio",
 ]
+MOCK_SERVER_ADDITIONAL_DEPENDENCIES = [
+    "google-cloud-testutils",
+]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
@@ -242,8 +245,11 @@ def mockserver(session):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    # install_unittest_dependencies(session, "-c", constraints_path)
-    standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
+    standard_deps = (
+        UNIT_TEST_STANDARD_DEPENDENCIES
+        + UNIT_TEST_DEPENDENCIES
+        + MOCK_SERVER_ADDITIONAL_DEPENDENCIES
+    )
     session.install(*standard_deps, "-c", constraints_path)
     session.install("-e", ".", "-c", constraints_path)
 

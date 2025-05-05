@@ -763,12 +763,15 @@ class TestDbApi:
         dbapi_database._method_abort_interceptor.set_method_to_abort(
             COMMIT_METHOD, self._conn
         )
-        # called 2 times
+        # called (at least) 2 times
         self._conn.commit()
         dbapi_database._method_abort_interceptor.reset()
-        assert method_count_interceptor._counts[COMMIT_METHOD] == 2
-        assert method_count_interceptor._counts[EXECUTE_BATCH_DML_METHOD] == 4
-        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] == 10
+        # Verify the number of calls.
+        # We don't know the exact number of calls, as Spanner could also
+        # abort the transaction.
+        assert method_count_interceptor._counts[COMMIT_METHOD] >= 2
+        assert method_count_interceptor._counts[EXECUTE_BATCH_DML_METHOD] >= 4
+        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] >= 10
 
         self._cursor.execute("SELECT * FROM contacts")
         got_rows = self._cursor.fetchall()
@@ -829,10 +832,12 @@ class TestDbApi:
         self._cursor.fetchmany(2)
         dbapi_database._method_abort_interceptor.reset()
         self._conn.commit()
-        # Check that all rpcs except commit should be called 3 times the original
-        assert method_count_interceptor._counts[COMMIT_METHOD] == 1
-        assert method_count_interceptor._counts[EXECUTE_BATCH_DML_METHOD] == 3
-        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] == 3
+        # Check that all RPCs except commit should be called at least 3 times
+        # We don't know the exact number of attempts, as the transaction could
+        # also be aborted by Spanner (and not only the test interceptor).
+        assert method_count_interceptor._counts[COMMIT_METHOD] >= 1
+        assert method_count_interceptor._counts[EXECUTE_BATCH_DML_METHOD] >= 3
+        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] >= 3
 
         self._cursor.execute("SELECT * FROM contacts")
         got_rows = self._cursor.fetchall()

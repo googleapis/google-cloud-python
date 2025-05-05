@@ -74,8 +74,8 @@ retry_503 = retry.RetryErrors(exceptions.ServiceUnavailable)
 retry_429_503 = retry.RetryErrors(
     exceptions.TooManyRequests, exceptions.ServiceUnavailable, 8
 )
-retry_mabye_aborted_txn = retry.RetryErrors(exceptions.ServerError, exceptions.Aborted)
-retry_mabye_conflict = retry.RetryErrors(exceptions.ServerError, exceptions.Conflict)
+retry_maybe_aborted_txn = retry.RetryErrors(exceptions.Aborted)
+retry_maybe_conflict = retry.RetryErrors(exceptions.Conflict)
 
 
 def _has_all_ddl(database):

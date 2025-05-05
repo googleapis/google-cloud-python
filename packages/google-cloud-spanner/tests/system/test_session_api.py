@@ -578,7 +578,7 @@ def test_batch_insert_w_commit_timestamp(sessions_database, not_postgres):
     assert not deleted
 
 
-@_helpers.retry_mabye_aborted_txn
+@_helpers.retry_maybe_aborted_txn
 def test_transaction_read_and_insert_then_rollback(
     sessions_database,
     ot_exporter,
@@ -687,7 +687,7 @@ def test_transaction_read_and_insert_then_rollback(
         )
 
 
-@_helpers.retry_mabye_conflict
+@_helpers.retry_maybe_conflict
 def test_transaction_read_and_insert_then_exception(sessions_database):
     class CustomException(Exception):
         pass
@@ -714,7 +714,7 @@ def test_transaction_read_and_insert_then_exception(sessions_database):
     assert rows == []
 
 
-@_helpers.retry_mabye_conflict
+@_helpers.retry_maybe_conflict
 def test_transaction_read_and_insert_or_update_then_commit(
     sessions_database,
     sessions_to_delete,
@@ -771,8 +771,8 @@ def _generate_insert_returning_statement(row, database_dialect):
     return f"INSERT INTO {table} ({column_list}) VALUES ({row_data}) {returning}"
 
 
-@_helpers.retry_mabye_conflict
-@_helpers.retry_mabye_aborted_txn
+@_helpers.retry_maybe_conflict
+@_helpers.retry_maybe_aborted_txn
 def test_transaction_execute_sql_w_dml_read_rollback(
     sessions_database,
     sessions_to_delete,
@@ -809,7 +809,7 @@ def test_transaction_execute_sql_w_dml_read_rollback(
     # [END spanner_test_dml_rollback_txn_not_committed]
 
 
-@_helpers.retry_mabye_conflict
+@_helpers.retry_maybe_conflict
 def test_transaction_execute_update_read_commit(sessions_database, sessions_to_delete):
     # [START spanner_test_dml_read_your_writes]
     sd = _sample_data
@@ -838,7 +838,7 @@ def test_transaction_execute_update_read_commit(sessions_database, sessions_to_d
     # [END spanner_test_dml_read_your_writes]
 
 
-@_helpers.retry_mabye_conflict
+@_helpers.retry_maybe_conflict
 def test_transaction_execute_update_then_insert_commit(
     sessions_database, sessions_to_delete
 ):
@@ -870,7 +870,7 @@ def test_transaction_execute_update_then_insert_commit(
     # [END spanner_test_dml_with_mutation]
 
 
-@_helpers.retry_mabye_conflict
+@_helpers.retry_maybe_conflict
 @pytest.mark.skipif(
     _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
 )
@@ -901,7 +901,7 @@ def test_transaction_execute_sql_dml_returning(
     sd._check_rows_data(rows)
 
 
-@_helpers.retry_mabye_conflict
+@_helpers.retry_maybe_conflict
 @pytest.mark.skipif(
     _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
 )
@@ -929,7 +929,7 @@ def test_transaction_execute_update_dml_returning(
     sd._check_rows_data(rows)
 
 
-@_helpers.retry_mabye_conflict
+@_helpers.retry_maybe_conflict
 @pytest.mark.skipif(
     _helpers.USE_EMULATOR, reason="Emulator does not support DML Returning."
 )

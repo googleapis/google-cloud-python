@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import random
 
 from google.cloud.spanner_v1 import (
     BatchCreateSessionsRequest,
@@ -28,6 +29,12 @@ from tests.mockserver_tests.mock_server_test_base import (
     aborted_status,
     add_update_count,
     add_single_result,
+)
+from google.api_core import exceptions
+from test_utils import retry
+
+retry_maybe_aborted_txn = retry.RetryErrors(
+    exceptions.Aborted, max_tries=5, delay=0, backoff=1
 )
 
 
@@ -118,6 +125,18 @@ class TestAbortedTransaction(MockServerTestBase):
         self.assertTrue(isinstance(requests[1], CommitRequest))
         # The transaction is aborted and retried.
         self.assertTrue(isinstance(requests[2], CommitRequest))
+
+    @retry_maybe_aborted_txn
+    def test_retry_helper(self):
+        # Randomly add an Aborted error for the Commit method on the mock server.
+        if random.random() < 0.5:
+            add_error(SpannerServicer.Commit.__name__, aborted_status())
+        session = self.database.session()
+        session.create()
+        transaction = session.transaction()
+        transaction.begin()
+        transaction.insert("my_table", ["col1, col2"], [{"col1": 1, "col2": "One"}])
+        transaction.commit()
 
 
 def _insert_mutations(transaction: Transaction):
