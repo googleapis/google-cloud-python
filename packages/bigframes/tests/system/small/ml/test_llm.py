@@ -16,6 +16,7 @@ from typing import Callable
 from unittest import mock
 
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 import bigframes
@@ -253,21 +254,26 @@ def test_gemini_text_generator_predict_output_schema_success(
         "int_output": "int64",
         "float_output": "float64",
         "str_output": "string",
+        "array_output": "array<int64>",
+        "struct_output": "struct<number int64>",
     }
-    df = gemini_text_generator_model.predict(
-        llm_text_df, output_schema=output_schema
-    ).to_pandas()
-    utils.check_pandas_df_schema_and_index(
-        df,
-        columns=list(output_schema.keys()) + ["prompt", "full_response", "status"],
-        index=3,
-        col_exact=False,
-    )
-
+    df = gemini_text_generator_model.predict(llm_text_df, output_schema=output_schema)
     assert df["bool_output"].dtype == pd.BooleanDtype()
     assert df["int_output"].dtype == pd.Int64Dtype()
     assert df["float_output"].dtype == pd.Float64Dtype()
     assert df["str_output"].dtype == pd.StringDtype(storage="pyarrow")
+    assert df["array_output"].dtype == pd.ArrowDtype(pa.list_(pa.int64()))
+    assert df["struct_output"].dtype == pd.ArrowDtype(
+        pa.struct([("number", pa.int64())])
+    )
+
+    pd_df = df.to_pandas()
+    utils.check_pandas_df_schema_and_index(
+        pd_df,
+        columns=list(output_schema.keys()) + ["prompt", "full_response", "status"],
+        index=3,
+        col_exact=False,
+    )
 
 
 # Overrides __eq__ function for comparing as mock.call parameter
@@ -305,8 +311,7 @@ def test_text_generator_retry_success(
     session,
     model_class,
     options,
-    bqml_gemini_text_generator: llm.GeminiTextGenerator,
-    bqml_claude3_text_generator: llm.Claude3TextGenerator,
+    bq_connection,
 ):
     # Requests.
     df0 = EqCmpAllDataFrame(
@@ -387,11 +392,7 @@ def test_text_generator_retry_success(
         ),
     ]
 
-    text_generator_model = (
-        bqml_gemini_text_generator
-        if (model_class == llm.GeminiTextGenerator)
-        else bqml_claude3_text_generator
-    )
+    text_generator_model = model_class(connection_name=bq_connection, session=session)
     text_generator_model._bqml_model = mock_bqml_model
 
     with mock.patch.object(core.BqmlModel, "generate_text_tvf", generate_text_tvf):
@@ -448,13 +449,7 @@ def test_text_generator_retry_success(
         ),
     ],
 )
-def test_text_generator_retry_no_progress(
-    session,
-    model_class,
-    options,
-    bqml_gemini_text_generator: llm.GeminiTextGenerator,
-    bqml_claude3_text_generator: llm.Claude3TextGenerator,
-):
+def test_text_generator_retry_no_progress(session, model_class, options, bq_connection):
     # Requests.
     df0 = EqCmpAllDataFrame(
         {
@@ -514,11 +509,7 @@ def test_text_generator_retry_no_progress(
         ),
     ]
 
-    text_generator_model = (
-        bqml_gemini_text_generator
-        if (model_class == llm.GeminiTextGenerator)
-        else bqml_claude3_text_generator
-    )
+    text_generator_model = model_class(connection_name=bq_connection, session=session)
     text_generator_model._bqml_model = mock_bqml_model
 
     with mock.patch.object(core.BqmlModel, "generate_text_tvf", generate_text_tvf):

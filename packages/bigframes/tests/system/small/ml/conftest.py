@@ -29,7 +29,6 @@ from bigframes.ml import (
     globals,
     imported,
     linear_model,
-    llm,
     remote,
 )
 
@@ -338,21 +337,4 @@ def imported_xgboost_model(
         },
         output={"predicted_label": "float64"},
         model_path=imported_xgboost_array_model_path,
-    )
-
-
-@pytest.fixture(scope="session")
-def bqml_gemini_text_generator(bq_connection, session) -> llm.GeminiTextGenerator:
-    return llm.GeminiTextGenerator(
-        model_name="gemini-1.5-flash-002",
-        connection_name=bq_connection,
-        session=session,
-    )
-
-
-@pytest.fixture(scope="session")
-def bqml_claude3_text_generator(bq_connection, session) -> llm.Claude3TextGenerator:
-    return llm.Claude3TextGenerator(
-        connection_name=bq_connection,
-        session=session,
     )

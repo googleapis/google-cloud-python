@@ -617,7 +617,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
                 It creates a struct column of the items of the iterable, and use the concatenated result as the input prompt. No-op if set to None.
             output_schema (Mapping[str, str] or None, default None):
                 The schema used to generate structured output as a bigframes DataFrame. The schema is a string key-value pair of <column_name>:<type>.
-                Supported types are int64, float64, bool and string. If None, output text result.
+                Supported types are int64, float64, bool, string, array<type> and struct<column type>. If None, output text result.
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_input_columns + n_prediction_columns). Returns predicted values.
         """
