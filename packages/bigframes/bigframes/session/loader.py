@@ -518,11 +518,7 @@ class GbqDataLoader:
         # clustered tables, so fallback to a query. We do this here so that
         # the index is consistent with tables that have primary keys, even
         # when max_results is set.
-        # TODO(b/338419730): We don't need to fallback to a query for wildcard
-        # tables if we allow some non-determinism when time travel isn't supported.
-        if max_results is not None or bf_io_bigquery.is_table_with_wildcard_suffix(
-            table_id
-        ):
+        if max_results is not None:
             # TODO(b/338111344): If we are running a query anyway, we might as
             # well generate ROW_NUMBER() at the same time.
             all_columns: Iterable[str] = (
@@ -540,7 +536,7 @@ class GbqDataLoader:
                 time_travel_timestamp=None,
             )
 
-            return self.read_gbq_query(  # type: ignore # for dry_run overload
+            df = self.read_gbq_query(  # type: ignore # for dry_run overload
                 query,
                 index_col=index_cols,
                 columns=columns,
@@ -548,6 +544,7 @@ class GbqDataLoader:
                 use_cache=use_cache,
                 dry_run=dry_run,
             )
+            return df
 
         if dry_run:
             return dry_runs.get_table_stats(table)

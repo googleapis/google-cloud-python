@@ -449,11 +449,15 @@ def test_read_gbq_twice_with_same_timestamp(session, penguins_table_id):
 @pytest.mark.parametrize(
     "source_table",
     [
+        # Wildcard tables
+        "bigquery-public-data.noaa_gsod.gsod194*",
+        # Linked datasets
         "bigframes-dev.thelook_ecommerce.orders",
+        # Materialized views
         "bigframes-dev.bigframes_tests_sys.base_table_mat_view",
     ],
 )
-def test_read_gbq_on_linked_dataset_warns(session, source_table):
+def test_read_gbq_warns_time_travel_disabled(session, source_table):
     with warnings.catch_warnings(record=True) as warned:
         session.read_gbq(source_table, use_cache=False)
         assert len(warned) == 1
