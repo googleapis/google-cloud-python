@@ -1,2 +1,2 @@
-# New boringssl requires C++14
-build --repo_env=BAZEL_CXXOPTS="-std=c++14"
+# New protobuf requires C++17
+build --repo_env=BAZEL_CXXOPTS="-std=c++17"
