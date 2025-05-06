@@ -147,6 +147,26 @@ def label_to_identifier(label: typing.Hashable, strict: bool = False) -> str:
         elif identifier[0].isdigit():
             # first character must be letter or underscore
             identifier = "_" + identifier
+
+    # Except in special circumstances (true anonymous query results tables),
+    # field names are not allowed to start with these (case-insensitive)
+    # prefixes.
+    # _PARTITION, _TABLE_, _FILE_, _ROW_TIMESTAMP, __ROOT__ and _COLIDENTIFIER
+    if any(
+        identifier.casefold().startswith(invalid_prefix.casefold())
+        for invalid_prefix in (
+            "_PARTITION",
+            "_TABLE_",
+            "_FILE_",
+            "_ROW_TIMESTAMP",
+            "__ROOT__",
+            "_COLIDENTIFIER",
+        )
+    ):
+        # Remove leading _ character(s) to avoid collisions with preserved
+        # prefixes.
+        identifier = re.sub("^_+", "", identifier)
+
     return identifier
 
 
