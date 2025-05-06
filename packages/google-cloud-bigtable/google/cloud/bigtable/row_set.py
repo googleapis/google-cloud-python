@@ -22,7 +22,7 @@ class RowSet(object):
     """Convenience wrapper of google.bigtable.v2.RowSet
 
     Useful for creating a set of row keys and row ranges, which can
-    be passed to yield_rows method of class:`.Table.yield_rows`.
+    be passed to read_rows method of class:`.Table.read_rows`.
     """
 
     def __init__(self):
