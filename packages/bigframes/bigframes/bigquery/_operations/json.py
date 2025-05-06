@@ -231,6 +231,40 @@ def json_extract_string_array(
     return array_series
 
 
+def json_value(
+    input: series.Series,
+    json_path: str,
+) -> series.Series:
+    """Extracts a JSON scalar value and converts it to a SQL ``STRING`` value. In
+    addtion, this function:
+    - Removes the outermost quotes and unescapes the values.
+    - Returns a SQL ``NULL`` if a non-scalar value is selected.
+    - Uses double quotes to escape invalid ``JSON_PATH`` characters in JSON keys.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+
+        >>> s = bpd.Series(['{"name": "Jakob", "age": "6"}', '{"name": "Jakob", "age": []}'])
+        >>> bbq.json_value(s, json_path="$.age")
+        0    6
+        1  <NA>
+        dtype: string
+
+    Args:
+        input (bigframes.series.Series):
+            The Series containing JSON data (as native JSON objects or JSON-formatted strings).
+        json_path (str):
+            The JSON path identifying the data that you want to obtain from the input.
+
+    Returns:
+        bigframes.series.Series: A new Series with the JSON-formatted STRING.
+    """
+    return input._apply_unary_op(ops.JSONValue(json_path=json_path))
+
+
 @utils.preview(name="The JSON-related API `parse_json`")
 def parse_json(
     input: series.Series,

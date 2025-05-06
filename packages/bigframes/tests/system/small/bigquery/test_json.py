@@ -212,6 +212,34 @@ def test_json_extract_string_array_w_invalid_series_type():
         bbq.json_extract_string_array(s)
 
 
+def test_json_value_from_json():
+    s = bpd.Series(
+        ['{"a": {"b": [1, 2]}}', '{"a": {"c": 1}}', '{"a": {"b": 0}}'],
+        dtype=dtypes.JSON_DTYPE,
+    )
+    actual = bbq.json_value(s, "$.a.b")
+    expected = bpd.Series([None, None, "0"], dtype=dtypes.STRING_DTYPE)
+
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
+
+
+def test_json_value_from_string():
+    s = bpd.Series(
+        ['{"a": {"b": [1, 2]}}', '{"a": {"c": 1}}', '{"a": {"b": 0}}'],
+        dtype=pd.StringDtype(storage="pyarrow"),
+    )
+    actual = bbq.json_value(s, "$.a.b")
+    expected = bpd.Series([None, None, "0"], dtype=dtypes.STRING_DTYPE)
+
+    pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
+
+
+def test_json_value_w_invalid_series_type():
+    s = bpd.Series([1, 2])
+    with pytest.raises(TypeError):
+        bbq.json_value(s, "$.a")
+
+
 def test_parse_json_w_invalid_series_type():
     s = bpd.Series([1, 2])
     with pytest.raises(TypeError):
