@@ -42,6 +42,7 @@ from bigframes.operations.date_ops import (
     date_diff_op,
     day_op,
     dayofweek_op,
+    dayofyear_op,
     month_op,
     quarter_op,
     year_op,
@@ -261,6 +262,7 @@ __all__ = [
     "month_op",
     "year_op",
     "dayofweek_op",
+    "dayofyear_op",
     "quarter_op",
     # Time ops
     "hour_op",

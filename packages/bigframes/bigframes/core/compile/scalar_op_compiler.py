@@ -676,6 +676,13 @@ def dayofweek_op_impl(x: ibis_types.Value):
     )
 
 
+@scalar_op_compiler.register_unary_op(ops.dayofyear_op)
+def dayofyear_op_impl(x: ibis_types.Value):
+    return (
+        typing.cast(ibis_types.TimestampValue, x).day_of_year().cast(ibis_dtypes.int64)
+    )
+
+
 @scalar_op_compiler.register_unary_op(ops.hour_op)
 def hour_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.TimestampValue, x).hour().cast(ibis_dtypes.int64)

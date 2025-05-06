@@ -44,6 +44,10 @@ class DatetimeMethods(
         return self._apply_unary_op(ops.dayofweek_op)
 
     @property
+    def dayofyear(self) -> series.Series:
+        return self._apply_unary_op(ops.dayofyear_op)
+
+    @property
     def date(self) -> series.Series:
         return self._apply_unary_op(ops.date_op)
 

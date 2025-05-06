@@ -39,6 +39,11 @@ dayofweek_op = base_ops.create_unary_op(
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
 
+dayofyear_op = base_ops.create_unary_op(
+    name="dayofyear",
+    type_signature=op_typing.DATELIKE_ACCESSOR,
+)
+
 quarter_op = base_ops.create_unary_op(
     name="quarter",
     type_signature=op_typing.DATELIKE_ACCESSOR,

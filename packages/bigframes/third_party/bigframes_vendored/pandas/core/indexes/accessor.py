@@ -67,6 +67,35 @@ class DatetimeProperties:
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
+    def dayofyear(self):
+        """The ordinal day of the year.
+
+        **Examples:**
+
+            >>> import pandas as pd
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series(
+            ...     pd.date_range('2016-12-28', '2017-01-03', freq='D').to_series()
+            ... )
+            >>> s.dt.dayofyear
+            2016-12-28 00:00:00    363
+            2016-12-29 00:00:00    364
+            2016-12-30 00:00:00    365
+            2016-12-31 00:00:00    366
+            2017-01-01 00:00:00      1
+            2017-01-02 00:00:00      2
+            2017-01-03 00:00:00      3
+            dtype: Int64
+            dtype: Int64
+
+        Returns:
+            Series: Containing integers indicating the day number.
+        """
+
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
     def date(self):
         """Returns a Series with the date part of Timestamps without time and
         timezone information.
