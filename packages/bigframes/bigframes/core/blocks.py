@@ -586,10 +586,10 @@ class Block:
             self.expr,
             ordered=True,
             use_explicit_destination=allow_large_results,
-            page_size=page_size,
-            max_results=max_results,
         )
-        for df in execute_result.to_pandas_batches():
+        for df in execute_result.to_pandas_batches(
+            page_size=page_size, max_results=max_results
+        ):
             self._copy_index_to_pandas(df)
             if squeeze:
                 yield df.squeeze(axis=1)

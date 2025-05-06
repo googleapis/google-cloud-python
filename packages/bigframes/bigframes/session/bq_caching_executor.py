@@ -106,8 +106,6 @@ class BigQueryCachingExecutor(executor.Executor):
         *,
         ordered: bool = True,
         use_explicit_destination: Optional[bool] = None,
-        page_size: Optional[int] = None,
-        max_results: Optional[int] = None,
     ) -> executor.ExecuteResult:
         if use_explicit_destination is None:
             use_explicit_destination = bigframes.options.bigquery.allow_large_results
@@ -127,8 +125,6 @@ class BigQueryCachingExecutor(executor.Executor):
         return self._execute_plan(
             plan,
             ordered=ordered,
-            page_size=page_size,
-            max_results=max_results,
             destination=destination_table,
         )
 
@@ -281,8 +277,6 @@ class BigQueryCachingExecutor(executor.Executor):
         sql: str,
         job_config: Optional[bq_job.QueryJobConfig] = None,
         api_name: Optional[str] = None,
-        page_size: Optional[int] = None,
-        max_results: Optional[int] = None,
         query_with_job: bool = True,
     ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
         """
@@ -303,8 +297,6 @@ class BigQueryCachingExecutor(executor.Executor):
                 sql,
                 job_config=job_config,
                 api_name=api_name,
-                max_results=max_results,
-                page_size=page_size,
                 metrics=self.metrics,
                 query_with_job=query_with_job,
             )
@@ -479,16 +471,13 @@ class BigQueryCachingExecutor(executor.Executor):
         self,
         plan: nodes.BigFrameNode,
         ordered: bool,
-        page_size: Optional[int] = None,
-        max_results: Optional[int] = None,
         destination: Optional[bq_table.TableReference] = None,
         peek: Optional[int] = None,
     ):
         """Just execute whatever plan as is, without further caching or decomposition."""
 
         # First try to execute fast-paths
-        # TODO: Allow page_size and max_results by rechunking/truncating results
-        if (not page_size) and (not max_results) and (not destination) and (not peek):
+        if (not destination) and (not peek):
             for semi_executor in self._semi_executors:
                 maybe_result = semi_executor.execute(plan, ordered=ordered)
                 if maybe_result:
@@ -504,20 +493,12 @@ class BigQueryCachingExecutor(executor.Executor):
         iterator, query_job = self._run_execute_query(
             sql=sql,
             job_config=job_config,
-            page_size=page_size,
-            max_results=max_results,
             query_with_job=(destination is not None),
         )
 
         # Though we provide the read client, iterator may or may not use it based on what is efficient for the result
         def iterator_supplier():
-            # Workaround issue fixed by: https://github.com/googleapis/python-bigquery/pull/2154
-            if iterator._page_size is not None or iterator.max_results is not None:
-                return iterator.to_arrow_iterable(bqstorage_client=None)
-            else:
-                return iterator.to_arrow_iterable(
-                    bqstorage_client=self.bqstoragereadclient
-                )
+            return iterator.to_arrow_iterable(bqstorage_client=self.bqstoragereadclient)
 
         if query_job:
             size_bytes = self.bqclient.get_table(query_job.destination).num_bytes

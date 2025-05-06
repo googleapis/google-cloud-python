@@ -25,6 +25,7 @@ import pandas as pd
 import pyarrow
 
 import bigframes.core
+from bigframes.core import pyarrow_utils
 import bigframes.core.schema
 import bigframes.session._io.pandas as io_pandas
 
@@ -55,10 +56,28 @@ class ExecuteResult:
     def to_pandas(self) -> pd.DataFrame:
         return io_pandas.arrow_to_pandas(self.to_arrow_table(), self.schema)
 
-    def to_pandas_batches(self) -> Iterator[pd.DataFrame]:
+    def to_pandas_batches(
+        self, page_size: Optional[int] = None, max_results: Optional[int] = None
+    ) -> Iterator[pd.DataFrame]:
+        assert (page_size is None) or (page_size > 0)
+        assert (max_results is None) or (max_results > 0)
+        batch_iter: Iterator[
+            Union[pyarrow.Table, pyarrow.RecordBatch]
+        ] = self.arrow_batches()
+        if max_results is not None:
+            batch_iter = pyarrow_utils.truncate_pyarrow_iterable(
+                batch_iter, max_results
+            )
+
+        if page_size is not None:
+            batches_iter = pyarrow_utils.chunk_by_row_count(batch_iter, page_size)
+            batch_iter = map(
+                lambda batches: pyarrow.Table.from_batches(batches), batches_iter
+            )
+
         yield from map(
             functools.partial(io_pandas.arrow_to_pandas, schema=self.schema),
-            self.arrow_batches(),
+            batch_iter,
         )
 
     def to_py_scalar(self):
@@ -107,8 +126,6 @@ class Executor(abc.ABC):
         *,
         ordered: bool = True,
         use_explicit_destination: Optional[bool] = False,
-        page_size: Optional[int] = None,
-        max_results: Optional[int] = None,
     ) -> ExecuteResult:
         """
         Execute the ArrayValue, storing the result to a temporary session-owned table.

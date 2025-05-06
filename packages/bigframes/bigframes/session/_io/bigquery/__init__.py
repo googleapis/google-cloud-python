@@ -222,8 +222,6 @@ def start_query_with_client(
     job_config: bigquery.job.QueryJobConfig,
     location: Optional[str] = None,
     project: Optional[str] = None,
-    max_results: Optional[int] = None,
-    page_size: Optional[int] = None,
     timeout: Optional[float] = None,
     api_name: Optional[str] = None,
     metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
@@ -244,8 +242,6 @@ def start_query_with_client(
                 location=location,
                 project=project,
                 api_timeout=timeout,
-                page_size=page_size,
-                max_results=max_results,
             )
             if metrics is not None:
                 metrics.count_job_stats(row_iterator=results_iterator)
@@ -267,14 +263,10 @@ def start_query_with_client(
     if opts.progress_bar is not None and not query_job.configuration.dry_run:
         results_iterator = formatting_helpers.wait_for_query_job(
             query_job,
-            max_results=max_results,
             progress_bar=opts.progress_bar,
-            page_size=page_size,
         )
     else:
-        results_iterator = query_job.result(
-            max_results=max_results, page_size=page_size
-        )
+        results_iterator = query_job.result()
 
     if metrics is not None:
         metrics.count_job_stats(query_job=query_job)
