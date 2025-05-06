@@ -48,7 +48,6 @@ def test_kmeans_sample(project_id: str, random_model_id_eu: str) -> None:
     # Use GeoSeries.from_xy and BigQuery.st_distance to analyze geographical
     # data. These functions determine spatial relationships between
     # geographical features.
-
     cycle_stations = bpd.read_gbq("bigquery-public-data.london_bicycles.cycle_stations")
     s = bpd.DataFrame(
         {
