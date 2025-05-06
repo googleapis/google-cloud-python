@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.3.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.2.0...v2.3.0) (2025-05-06)
+
+
+### Features
+
+* Add dry_run parameter to `read_gbq()`, `read_gbq_table()` and `read_gbq_query()` ([#1674](https://github.com/googleapis/python-bigquery-dataframes/issues/1674)) ([4c5dee5](https://github.com/googleapis/python-bigquery-dataframes/commit/4c5dee5e6f4b30deb01e258670aa21dbf3ac9aa5))
+
+
+### Bug Fixes
+
+* Guarantee guid thread safety across threads ([#1684](https://github.com/googleapis/python-bigquery-dataframes/issues/1684)) ([cb0267d](https://github.com/googleapis/python-bigquery-dataframes/commit/cb0267deea227ea85f20d6dbef8c29cf03526d7a))
+* Support large lists of lists in bpd.Series() constructor ([#1662](https://github.com/googleapis/python-bigquery-dataframes/issues/1662)) ([0f4024c](https://github.com/googleapis/python-bigquery-dataframes/commit/0f4024c84508c17657a9104ef1f8718094827ada))
+* Use value equality to check types for unix epoch functions and timestamp diff ([#1690](https://github.com/googleapis/python-bigquery-dataframes/issues/1690)) ([81e8fb8](https://github.com/googleapis/python-bigquery-dataframes/commit/81e8fb8627f1d35423dbbdcc99d02ab0ad362d11))
+
+
+### Performance Improvements
+
+* `to_datetime()` now avoids caching inputs unless data is inspected to infer format ([#1667](https://github.com/googleapis/python-bigquery-dataframes/issues/1667)) ([dd08857](https://github.com/googleapis/python-bigquery-dataframes/commit/dd08857f65140cbe5c524050d2d538949897c3cc))
+
+
+### Documentation
+
+* Add a visualization notebook to BigFrame samples ([#1675](https://github.com/googleapis/python-bigquery-dataframes/issues/1675)) ([ee062bf](https://github.com/googleapis/python-bigquery-dataframes/commit/ee062bfc29c27949205ca21d6c1dcd6125300e5e))
+* Fix spacing of k-means code snippet ([#1687](https://github.com/googleapis/python-bigquery-dataframes/issues/1687)) ([99f45dd](https://github.com/googleapis/python-bigquery-dataframes/commit/99f45dd14bd9632d209389a5fef009f18c57adbf))
+* Update snippet for `Create a k-means` model tutorial ([#1664](https://github.com/googleapis/python-bigquery-dataframes/issues/1664)) ([761c364](https://github.com/googleapis/python-bigquery-dataframes/commit/761c364f4df045b9e9d8d3d5fee91d9a87b772db))
+
 ## [2.2.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.1.0...v2.2.0) (2025-04-30)
 
 
