@@ -365,6 +365,14 @@ def showcase_library(
                     "-r",
                     constraints_path,
                 )
+                # Exclude `google-auth==2.40.0` which contains a regression
+                # https://github.com/googleapis/gapic-generator-python/issues/2385
+                session.install(
+                    "--no-cache-dir",
+                    "--force-reinstall",
+                    "--upgrade",
+                    "google-auth[aiohttp]!=2.40.0",
+                )
         else:
             # The ads templates do not have constraints files.
             # See https://github.com/googleapis/gapic-generator-python/issues/1788
