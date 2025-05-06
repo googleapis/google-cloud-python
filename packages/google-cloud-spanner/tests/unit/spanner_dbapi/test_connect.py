@@ -131,3 +131,17 @@ class Test_connect(unittest.TestCase):
         client_info = factory.call_args_list[0][1]["client_info"]
         self.assertEqual(client_info.user_agent, USER_AGENT)
         self.assertEqual(client_info.python_version, PY_VERSION)
+
+    def test_with_kwargs(self, mock_client):
+        from google.cloud.spanner_dbapi import connect
+        from google.cloud.spanner_dbapi import Connection
+
+        client = mock_client.return_value
+        instance = client.instance.return_value
+        database = instance.database.return_value
+        self.assertIsNotNone(database)
+
+        connection = connect(INSTANCE, DATABASE, ignore_transaction_warnings=True)
+
+        self.assertIsInstance(connection, Connection)
+        self.assertTrue(connection._ignore_transaction_warnings)
