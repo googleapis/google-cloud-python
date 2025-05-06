@@ -65,17 +65,13 @@ async def test_response_log_debug_disabled(logger, caplog, base_logger):
 
 @pytest.mark.asyncio
 async def test_response_log_debug_enabled_response_json(logger, caplog, base_logger):
-    class MockResponse:
-        async def json(self):
-            return {"key1": "value1", "key2": "value2", "key3": "value3"}
-
-    response = MockResponse()
+    response = None
     caplog.set_level(logging.DEBUG, logger=_MOCK_CHILD_LOGGER_NAME)
     await _helpers.response_log_async(logger, response)
     assert len(caplog.records) == 1
     record = caplog.records[0]
     assert record.message == "Response received..."
-    assert record.httpResponse == {"key1": "value1", "key2": "value2", "key3": "value3"}
+    assert record.httpResponse == "<class 'NoneType'>"
 
 
 @pytest.mark.asyncio

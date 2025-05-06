@@ -53,5 +53,10 @@ async def response_log_async(logger: logging.Logger, response: Any) -> None:
         response: The HTTP response object to log.
     """
     if _helpers.is_logging_enabled(logger):
-        json_response = await _parse_response_async(response)
+        # TODO(https://github.com/googleapis/google-auth-library-python/issues/1755):
+        # Parsing the response for async streaming logging results in
+        # the stream to be empty downstream. For now, we will not be logging
+        # the response for async responses until we investigate further.
+        # json_response = await _parse_response_async(response)
+        json_response = None
         _helpers._response_log_base(logger, json_response)
