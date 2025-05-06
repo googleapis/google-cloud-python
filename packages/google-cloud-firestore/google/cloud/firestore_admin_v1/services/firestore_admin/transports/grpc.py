@@ -37,6 +37,8 @@ from google.cloud.firestore_admin_v1.types import field
 from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
 from google.cloud.firestore_admin_v1.types import schedule
+from google.cloud.firestore_admin_v1.types import user_creds
+from google.cloud.firestore_admin_v1.types import user_creds as gfa_user_creds
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -79,12 +81,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
                 f"Sending request for {client_call_details.method}",
                 extra={
                     "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
-                    "rpcName": client_call_details.method,
+                    "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
                 },
             )
-
         response = continuation(client_call_details, request)
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
@@ -826,6 +827,195 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_database"]
+
+    @property
+    def create_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.CreateUserCredsRequest], gfa_user_creds.UserCreds]:
+        r"""Return a callable for the create user creds method over gRPC.
+
+        Create a user creds.
+
+        Returns:
+            Callable[[~.CreateUserCredsRequest],
+                    ~.UserCreds]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_user_creds" not in self._stubs:
+            self._stubs["create_user_creds"] = self._logged_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/CreateUserCreds",
+                request_serializer=firestore_admin.CreateUserCredsRequest.serialize,
+                response_deserializer=gfa_user_creds.UserCreds.deserialize,
+            )
+        return self._stubs["create_user_creds"]
+
+    @property
+    def get_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.GetUserCredsRequest], user_creds.UserCreds]:
+        r"""Return a callable for the get user creds method over gRPC.
+
+        Gets a user creds resource. Note that the returned
+        resource does not contain the secret value itself.
+
+        Returns:
+            Callable[[~.GetUserCredsRequest],
+                    ~.UserCreds]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_user_creds" not in self._stubs:
+            self._stubs["get_user_creds"] = self._logged_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/GetUserCreds",
+                request_serializer=firestore_admin.GetUserCredsRequest.serialize,
+                response_deserializer=user_creds.UserCreds.deserialize,
+            )
+        return self._stubs["get_user_creds"]
+
+    @property
+    def list_user_creds(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListUserCredsRequest], firestore_admin.ListUserCredsResponse
+    ]:
+        r"""Return a callable for the list user creds method over gRPC.
+
+        List all user creds in the database. Note that the
+        returned resource does not contain the secret value
+        itself.
+
+        Returns:
+            Callable[[~.ListUserCredsRequest],
+                    ~.ListUserCredsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_user_creds" not in self._stubs:
+            self._stubs["list_user_creds"] = self._logged_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/ListUserCreds",
+                request_serializer=firestore_admin.ListUserCredsRequest.serialize,
+                response_deserializer=firestore_admin.ListUserCredsResponse.deserialize,
+            )
+        return self._stubs["list_user_creds"]
+
+    @property
+    def enable_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.EnableUserCredsRequest], user_creds.UserCreds]:
+        r"""Return a callable for the enable user creds method over gRPC.
+
+        Enables a user creds. No-op if the user creds are
+        already enabled.
+
+        Returns:
+            Callable[[~.EnableUserCredsRequest],
+                    ~.UserCreds]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "enable_user_creds" not in self._stubs:
+            self._stubs["enable_user_creds"] = self._logged_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/EnableUserCreds",
+                request_serializer=firestore_admin.EnableUserCredsRequest.serialize,
+                response_deserializer=user_creds.UserCreds.deserialize,
+            )
+        return self._stubs["enable_user_creds"]
+
+    @property
+    def disable_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.DisableUserCredsRequest], user_creds.UserCreds]:
+        r"""Return a callable for the disable user creds method over gRPC.
+
+        Disables a user creds. No-op if the user creds are
+        already disabled.
+
+        Returns:
+            Callable[[~.DisableUserCredsRequest],
+                    ~.UserCreds]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "disable_user_creds" not in self._stubs:
+            self._stubs["disable_user_creds"] = self._logged_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/DisableUserCreds",
+                request_serializer=firestore_admin.DisableUserCredsRequest.serialize,
+                response_deserializer=user_creds.UserCreds.deserialize,
+            )
+        return self._stubs["disable_user_creds"]
+
+    @property
+    def reset_user_password(
+        self,
+    ) -> Callable[[firestore_admin.ResetUserPasswordRequest], user_creds.UserCreds]:
+        r"""Return a callable for the reset user password method over gRPC.
+
+        Resets the password of a user creds.
+
+        Returns:
+            Callable[[~.ResetUserPasswordRequest],
+                    ~.UserCreds]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "reset_user_password" not in self._stubs:
+            self._stubs["reset_user_password"] = self._logged_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/ResetUserPassword",
+                request_serializer=firestore_admin.ResetUserPasswordRequest.serialize,
+                response_deserializer=user_creds.UserCreds.deserialize,
+            )
+        return self._stubs["reset_user_password"]
+
+    @property
+    def delete_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.DeleteUserCredsRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete user creds method over gRPC.
+
+        Deletes a user creds.
+
+        Returns:
+            Callable[[~.DeleteUserCredsRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_user_creds" not in self._stubs:
+            self._stubs["delete_user_creds"] = self._logged_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/DeleteUserCreds",
+                request_serializer=firestore_admin.DeleteUserCredsRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_user_creds"]
 
     @property
     def get_backup(self) -> Callable[[firestore_admin.GetBackupRequest], backup.Backup]:

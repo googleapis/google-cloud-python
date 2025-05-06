@@ -33,6 +33,8 @@ from google.cloud.firestore_admin_v1.types import field
 from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
 from google.cloud.firestore_admin_v1.types import schedule
+from google.cloud.firestore_admin_v1.types import user_creds
+from google.cloud.firestore_admin_v1.types import user_creds as gfa_user_creds
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -271,6 +273,41 @@ class FirestoreAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_user_creds: gapic_v1.method.wrap_method(
+                self.create_user_creds,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_user_creds: gapic_v1.method.wrap_method(
+                self.get_user_creds,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_user_creds: gapic_v1.method.wrap_method(
+                self.list_user_creds,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.enable_user_creds: gapic_v1.method.wrap_method(
+                self.enable_user_creds,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.disable_user_creds: gapic_v1.method.wrap_method(
+                self.disable_user_creds,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.reset_user_password: gapic_v1.method.wrap_method(
+                self.reset_user_password,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_user_creds: gapic_v1.method.wrap_method(
+                self.delete_user_creds,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_backup: gapic_v1.method.wrap_method(
                 self.get_backup,
                 default_timeout=None,
@@ -491,6 +528,72 @@ class FirestoreAdminTransport(abc.ABC):
     ) -> Callable[
         [firestore_admin.DeleteDatabaseRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_user_creds(
+        self,
+    ) -> Callable[
+        [firestore_admin.CreateUserCredsRequest],
+        Union[gfa_user_creds.UserCreds, Awaitable[gfa_user_creds.UserCreds]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_user_creds(
+        self,
+    ) -> Callable[
+        [firestore_admin.GetUserCredsRequest],
+        Union[user_creds.UserCreds, Awaitable[user_creds.UserCreds]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_user_creds(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListUserCredsRequest],
+        Union[
+            firestore_admin.ListUserCredsResponse,
+            Awaitable[firestore_admin.ListUserCredsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def enable_user_creds(
+        self,
+    ) -> Callable[
+        [firestore_admin.EnableUserCredsRequest],
+        Union[user_creds.UserCreds, Awaitable[user_creds.UserCreds]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def disable_user_creds(
+        self,
+    ) -> Callable[
+        [firestore_admin.DisableUserCredsRequest],
+        Union[user_creds.UserCreds, Awaitable[user_creds.UserCreds]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def reset_user_password(
+        self,
+    ) -> Callable[
+        [firestore_admin.ResetUserPasswordRequest],
+        Union[user_creds.UserCreds, Awaitable[user_creds.UserCreds]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_user_creds(
+        self,
+    ) -> Callable[
+        [firestore_admin.DeleteUserCredsRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

@@ -34,6 +34,8 @@ __protobuf__ = proto.module(
 class Database(proto.Message):
     r"""A Cloud Firestore Database.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             The resource name of the Database. Format:
@@ -117,11 +119,31 @@ class Database(proto.Message):
         source_info (google.cloud.firestore_admin_v1.types.Database.SourceInfo):
             Output only. Information about the provenance
             of this database.
+        free_tier (bool):
+            Output only. Background: Free tier is the
+            ability of a Firestore database to use a small
+            amount of resources every day without being
+            charged. Once usage exceeds the free tier limit
+            further usage is charged.
+
+            Whether this database can make use of the free
+            tier. Only one database per project can be
+            eligible for the free tier.
+
+            The first (or next) database that is created in
+            a project without a free tier database will be
+            marked as eligible for the free tier. Databases
+            that are created while there is a free tier
+            database will not be eligible for the free tier.
+
+            This field is a member of `oneof`_ ``_free_tier``.
         etag (str):
             This checksum is computed by the server based
             on the value of other fields, and may be sent on
             update and delete requests to ensure the client
             has an up-to-date value before proceeding.
+        database_edition (google.cloud.firestore_admin_v1.types.Database.DatabaseEdition):
+            Immutable. The edition of the database.
     """
 
     class DatabaseType(proto.Enum):
@@ -237,6 +259,23 @@ class Database(proto.Message):
         DELETE_PROTECTION_STATE_UNSPECIFIED = 0
         DELETE_PROTECTION_DISABLED = 1
         DELETE_PROTECTION_ENABLED = 2
+
+    class DatabaseEdition(proto.Enum):
+        r"""The edition of the database.
+
+        Values:
+            DATABASE_EDITION_UNSPECIFIED (0):
+                Not used.
+            STANDARD (1):
+                Standard edition.
+
+                This is the default setting if not specified.
+            ENTERPRISE (2):
+                Enterprise edition.
+        """
+        DATABASE_EDITION_UNSPECIFIED = 0
+        STANDARD = 1
+        ENTERPRISE = 2
 
     class CmekConfig(proto.Message):
         r"""The CMEK (Customer Managed Encryption Key) configuration for
@@ -485,9 +524,19 @@ class Database(proto.Message):
         number=26,
         message=SourceInfo,
     )
+    free_tier: bool = proto.Field(
+        proto.BOOL,
+        number=30,
+        optional=True,
+    )
     etag: str = proto.Field(
         proto.STRING,
         number=99,
+    )
+    database_edition: DatabaseEdition = proto.Field(
+        proto.ENUM,
+        number=28,
+        enum=DatabaseEdition,
     )
 
 

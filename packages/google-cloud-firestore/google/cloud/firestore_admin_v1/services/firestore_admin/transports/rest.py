@@ -40,6 +40,8 @@ from google.cloud.firestore_admin_v1.types import field
 from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
 from google.cloud.firestore_admin_v1.types import schedule
+from google.cloud.firestore_admin_v1.types import user_creds
+from google.cloud.firestore_admin_v1.types import user_creds as gfa_user_creds
 from google.protobuf import empty_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
@@ -115,6 +117,14 @@ class FirestoreAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_user_creds(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_user_creds(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -134,6 +144,26 @@ class FirestoreAdminRestInterceptor:
             def pre_delete_index(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_delete_user_creds(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_disable_user_creds(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_disable_user_creds(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_enable_user_creds(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_enable_user_creds(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_export_documents(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -183,6 +213,14 @@ class FirestoreAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_user_creds(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_user_creds(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_import_documents(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -228,6 +266,22 @@ class FirestoreAdminRestInterceptor:
                 return request, metadata
 
             def post_list_indexes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_user_creds(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_user_creds(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_reset_user_password(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_reset_user_password(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -463,6 +517,54 @@ class FirestoreAdminRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_user_creds(
+        self,
+        request: firestore_admin.CreateUserCredsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.CreateUserCredsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_user_creds
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_create_user_creds(
+        self, response: gfa_user_creds.UserCreds
+    ) -> gfa_user_creds.UserCreds:
+        """Post-rpc interceptor for create_user_creds
+
+        DEPRECATED. Please use the `post_create_user_creds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code. This `post_create_user_creds` interceptor runs
+        before the `post_create_user_creds_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_user_creds_with_metadata(
+        self,
+        response: gfa_user_creds.UserCreds,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gfa_user_creds.UserCreds, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_user_creds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_create_user_creds_with_metadata`
+        interceptor in new development instead of the `post_create_user_creds` interceptor.
+        When both interceptors are used, this `post_create_user_creds_with_metadata` interceptor runs after the
+        `post_create_user_creds` interceptor. The (possibly modified) response returned by
+        `post_create_user_creds` will be passed to
+        `post_create_user_creds_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_backup(
         self,
         request: firestore_admin.DeleteBackupRequest,
@@ -553,6 +655,116 @@ class FirestoreAdminRestInterceptor:
         before they are sent to the FirestoreAdmin server.
         """
         return request, metadata
+
+    def pre_delete_user_creds(
+        self,
+        request: firestore_admin.DeleteUserCredsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.DeleteUserCredsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_user_creds
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def pre_disable_user_creds(
+        self,
+        request: firestore_admin.DisableUserCredsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.DisableUserCredsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for disable_user_creds
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_disable_user_creds(
+        self, response: user_creds.UserCreds
+    ) -> user_creds.UserCreds:
+        """Post-rpc interceptor for disable_user_creds
+
+        DEPRECATED. Please use the `post_disable_user_creds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code. This `post_disable_user_creds` interceptor runs
+        before the `post_disable_user_creds_with_metadata` interceptor.
+        """
+        return response
+
+    def post_disable_user_creds_with_metadata(
+        self,
+        response: user_creds.UserCreds,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[user_creds.UserCreds, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for disable_user_creds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_disable_user_creds_with_metadata`
+        interceptor in new development instead of the `post_disable_user_creds` interceptor.
+        When both interceptors are used, this `post_disable_user_creds_with_metadata` interceptor runs after the
+        `post_disable_user_creds` interceptor. The (possibly modified) response returned by
+        `post_disable_user_creds` will be passed to
+        `post_disable_user_creds_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_enable_user_creds(
+        self,
+        request: firestore_admin.EnableUserCredsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.EnableUserCredsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for enable_user_creds
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_enable_user_creds(
+        self, response: user_creds.UserCreds
+    ) -> user_creds.UserCreds:
+        """Post-rpc interceptor for enable_user_creds
+
+        DEPRECATED. Please use the `post_enable_user_creds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code. This `post_enable_user_creds` interceptor runs
+        before the `post_enable_user_creds_with_metadata` interceptor.
+        """
+        return response
+
+    def post_enable_user_creds_with_metadata(
+        self,
+        response: user_creds.UserCreds,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[user_creds.UserCreds, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for enable_user_creds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_enable_user_creds_with_metadata`
+        interceptor in new development instead of the `post_enable_user_creds` interceptor.
+        When both interceptors are used, this `post_enable_user_creds_with_metadata` interceptor runs after the
+        `post_enable_user_creds` interceptor. The (possibly modified) response returned by
+        `post_enable_user_creds` will be passed to
+        `post_enable_user_creds_with_metadata`.
+        """
+        return response, metadata
 
     def pre_export_documents(
         self,
@@ -826,6 +1038,54 @@ class FirestoreAdminRestInterceptor:
         `post_get_index` interceptor. The (possibly modified) response returned by
         `post_get_index` will be passed to
         `post_get_index_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_user_creds(
+        self,
+        request: firestore_admin.GetUserCredsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.GetUserCredsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_user_creds
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_get_user_creds(
+        self, response: user_creds.UserCreds
+    ) -> user_creds.UserCreds:
+        """Post-rpc interceptor for get_user_creds
+
+        DEPRECATED. Please use the `post_get_user_creds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code. This `post_get_user_creds` interceptor runs
+        before the `post_get_user_creds_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_user_creds_with_metadata(
+        self,
+        response: user_creds.UserCreds,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[user_creds.UserCreds, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_user_creds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_get_user_creds_with_metadata`
+        interceptor in new development instead of the `post_get_user_creds` interceptor.
+        When both interceptors are used, this `post_get_user_creds_with_metadata` interceptor runs after the
+        `post_get_user_creds` interceptor. The (possibly modified) response returned by
+        `post_get_user_creds` will be passed to
+        `post_get_user_creds_with_metadata`.
         """
         return response, metadata
 
@@ -1126,6 +1386,105 @@ class FirestoreAdminRestInterceptor:
         `post_list_indexes` interceptor. The (possibly modified) response returned by
         `post_list_indexes` will be passed to
         `post_list_indexes_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_user_creds(
+        self,
+        request: firestore_admin.ListUserCredsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.ListUserCredsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_user_creds
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_list_user_creds(
+        self, response: firestore_admin.ListUserCredsResponse
+    ) -> firestore_admin.ListUserCredsResponse:
+        """Post-rpc interceptor for list_user_creds
+
+        DEPRECATED. Please use the `post_list_user_creds_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code. This `post_list_user_creds` interceptor runs
+        before the `post_list_user_creds_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_user_creds_with_metadata(
+        self,
+        response: firestore_admin.ListUserCredsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.ListUserCredsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_user_creds
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_list_user_creds_with_metadata`
+        interceptor in new development instead of the `post_list_user_creds` interceptor.
+        When both interceptors are used, this `post_list_user_creds_with_metadata` interceptor runs after the
+        `post_list_user_creds` interceptor. The (possibly modified) response returned by
+        `post_list_user_creds` will be passed to
+        `post_list_user_creds_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_reset_user_password(
+        self,
+        request: firestore_admin.ResetUserPasswordRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        firestore_admin.ResetUserPasswordRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for reset_user_password
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the FirestoreAdmin server.
+        """
+        return request, metadata
+
+    def post_reset_user_password(
+        self, response: user_creds.UserCreds
+    ) -> user_creds.UserCreds:
+        """Post-rpc interceptor for reset_user_password
+
+        DEPRECATED. Please use the `post_reset_user_password_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the FirestoreAdmin server but before
+        it is returned to user code. This `post_reset_user_password` interceptor runs
+        before the `post_reset_user_password_with_metadata` interceptor.
+        """
+        return response
+
+    def post_reset_user_password_with_metadata(
+        self,
+        response: user_creds.UserCreds,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[user_creds.UserCreds, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for reset_user_password
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the FirestoreAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_reset_user_password_with_metadata`
+        interceptor in new development instead of the `post_reset_user_password` interceptor.
+        When both interceptors are used, this `post_reset_user_password_with_metadata` interceptor runs after the
+        `post_reset_user_password` interceptor. The (possibly modified) response returned by
+        `post_reset_user_password` will be passed to
+        `post_reset_user_password_with_metadata`.
         """
         return response, metadata
 
@@ -2216,6 +2575,159 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
                 )
             return resp
 
+    class _CreateUserCreds(
+        _BaseFirestoreAdminRestTransport._BaseCreateUserCreds, FirestoreAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("FirestoreAdminRestTransport.CreateUserCreds")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firestore_admin.CreateUserCredsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gfa_user_creds.UserCreds:
+            r"""Call the create user creds method over HTTP.
+
+            Args:
+                request (~.firestore_admin.CreateUserCredsRequest):
+                    The request object. The request for
+                [FirestoreAdmin.CreateUserCreds][google.firestore.admin.v1.FirestoreAdmin.CreateUserCreds].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.gfa_user_creds.UserCreds:
+                    A Cloud Firestore User Creds.
+            """
+
+            http_options = (
+                _BaseFirestoreAdminRestTransport._BaseCreateUserCreds._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_user_creds(
+                request, metadata
+            )
+            transcoded_request = _BaseFirestoreAdminRestTransport._BaseCreateUserCreds._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseFirestoreAdminRestTransport._BaseCreateUserCreds._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirestoreAdminRestTransport._BaseCreateUserCreds._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.firestore.admin_v1.FirestoreAdminClient.CreateUserCreds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "CreateUserCreds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirestoreAdminRestTransport._CreateUserCreds._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gfa_user_creds.UserCreds()
+            pb_resp = gfa_user_creds.UserCreds.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_user_creds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_user_creds_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gfa_user_creds.UserCreds.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore.admin_v1.FirestoreAdminClient.create_user_creds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "CreateUserCreds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteBackup(
         _BaseFirestoreAdminRestTransport._BaseDeleteBackup, FirestoreAdminRestStub
     ):
@@ -2685,6 +3197,421 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _DeleteUserCreds(
+        _BaseFirestoreAdminRestTransport._BaseDeleteUserCreds, FirestoreAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("FirestoreAdminRestTransport.DeleteUserCreds")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firestore_admin.DeleteUserCredsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete user creds method over HTTP.
+
+            Args:
+                request (~.firestore_admin.DeleteUserCredsRequest):
+                    The request object. The request for
+                [FirestoreAdmin.DeleteUserCreds][google.firestore.admin.v1.FirestoreAdmin.DeleteUserCreds].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseFirestoreAdminRestTransport._BaseDeleteUserCreds._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_user_creds(
+                request, metadata
+            )
+            transcoded_request = _BaseFirestoreAdminRestTransport._BaseDeleteUserCreds._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirestoreAdminRestTransport._BaseDeleteUserCreds._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.firestore.admin_v1.FirestoreAdminClient.DeleteUserCreds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "DeleteUserCreds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirestoreAdminRestTransport._DeleteUserCreds._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DisableUserCreds(
+        _BaseFirestoreAdminRestTransport._BaseDisableUserCreds, FirestoreAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("FirestoreAdminRestTransport.DisableUserCreds")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firestore_admin.DisableUserCredsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> user_creds.UserCreds:
+            r"""Call the disable user creds method over HTTP.
+
+            Args:
+                request (~.firestore_admin.DisableUserCredsRequest):
+                    The request object. The request for
+                [FirestoreAdmin.DisableUserCreds][google.firestore.admin.v1.FirestoreAdmin.DisableUserCreds].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.user_creds.UserCreds:
+                    A Cloud Firestore User Creds.
+            """
+
+            http_options = (
+                _BaseFirestoreAdminRestTransport._BaseDisableUserCreds._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_disable_user_creds(
+                request, metadata
+            )
+            transcoded_request = _BaseFirestoreAdminRestTransport._BaseDisableUserCreds._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseFirestoreAdminRestTransport._BaseDisableUserCreds._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirestoreAdminRestTransport._BaseDisableUserCreds._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.firestore.admin_v1.FirestoreAdminClient.DisableUserCreds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "DisableUserCreds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirestoreAdminRestTransport._DisableUserCreds._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = user_creds.UserCreds()
+            pb_resp = user_creds.UserCreds.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_disable_user_creds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_disable_user_creds_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = user_creds.UserCreds.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore.admin_v1.FirestoreAdminClient.disable_user_creds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "DisableUserCreds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _EnableUserCreds(
+        _BaseFirestoreAdminRestTransport._BaseEnableUserCreds, FirestoreAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("FirestoreAdminRestTransport.EnableUserCreds")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firestore_admin.EnableUserCredsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> user_creds.UserCreds:
+            r"""Call the enable user creds method over HTTP.
+
+            Args:
+                request (~.firestore_admin.EnableUserCredsRequest):
+                    The request object. The request for
+                [FirestoreAdmin.EnableUserCreds][google.firestore.admin.v1.FirestoreAdmin.EnableUserCreds].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.user_creds.UserCreds:
+                    A Cloud Firestore User Creds.
+            """
+
+            http_options = (
+                _BaseFirestoreAdminRestTransport._BaseEnableUserCreds._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_enable_user_creds(
+                request, metadata
+            )
+            transcoded_request = _BaseFirestoreAdminRestTransport._BaseEnableUserCreds._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseFirestoreAdminRestTransport._BaseEnableUserCreds._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirestoreAdminRestTransport._BaseEnableUserCreds._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.firestore.admin_v1.FirestoreAdminClient.EnableUserCreds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "EnableUserCreds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirestoreAdminRestTransport._EnableUserCreds._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = user_creds.UserCreds()
+            pb_resp = user_creds.UserCreds.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_enable_user_creds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_enable_user_creds_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = user_creds.UserCreds.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore.admin_v1.FirestoreAdminClient.enable_user_creds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "EnableUserCreds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _ExportDocuments(
         _BaseFirestoreAdminRestTransport._BaseExportDocuments, FirestoreAdminRestStub
@@ -3598,6 +4525,151 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
                 )
             return resp
 
+    class _GetUserCreds(
+        _BaseFirestoreAdminRestTransport._BaseGetUserCreds, FirestoreAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("FirestoreAdminRestTransport.GetUserCreds")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firestore_admin.GetUserCredsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> user_creds.UserCreds:
+            r"""Call the get user creds method over HTTP.
+
+            Args:
+                request (~.firestore_admin.GetUserCredsRequest):
+                    The request object. The request for
+                [FirestoreAdmin.GetUserCreds][google.firestore.admin.v1.FirestoreAdmin.GetUserCreds].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.user_creds.UserCreds:
+                    A Cloud Firestore User Creds.
+            """
+
+            http_options = (
+                _BaseFirestoreAdminRestTransport._BaseGetUserCreds._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_user_creds(request, metadata)
+            transcoded_request = _BaseFirestoreAdminRestTransport._BaseGetUserCreds._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirestoreAdminRestTransport._BaseGetUserCreds._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.firestore.admin_v1.FirestoreAdminClient.GetUserCreds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "GetUserCreds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirestoreAdminRestTransport._GetUserCreds._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = user_creds.UserCreds()
+            pb_resp = user_creds.UserCreds.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_user_creds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_user_creds_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = user_creds.UserCreds.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore.admin_v1.FirestoreAdminClient.get_user_creds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "GetUserCreds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ImportDocuments(
         _BaseFirestoreAdminRestTransport._BaseImportDocuments, FirestoreAdminRestStub
     ):
@@ -4501,6 +5573,308 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
                 )
             return resp
 
+    class _ListUserCreds(
+        _BaseFirestoreAdminRestTransport._BaseListUserCreds, FirestoreAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("FirestoreAdminRestTransport.ListUserCreds")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firestore_admin.ListUserCredsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> firestore_admin.ListUserCredsResponse:
+            r"""Call the list user creds method over HTTP.
+
+            Args:
+                request (~.firestore_admin.ListUserCredsRequest):
+                    The request object. The request for
+                [FirestoreAdmin.ListUserCreds][google.firestore.admin.v1.FirestoreAdmin.ListUserCreds].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.firestore_admin.ListUserCredsResponse:
+                    The response for
+                [FirestoreAdmin.ListUserCreds][google.firestore.admin.v1.FirestoreAdmin.ListUserCreds].
+
+            """
+
+            http_options = (
+                _BaseFirestoreAdminRestTransport._BaseListUserCreds._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_user_creds(request, metadata)
+            transcoded_request = _BaseFirestoreAdminRestTransport._BaseListUserCreds._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirestoreAdminRestTransport._BaseListUserCreds._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.firestore.admin_v1.FirestoreAdminClient.ListUserCreds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "ListUserCreds",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirestoreAdminRestTransport._ListUserCreds._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = firestore_admin.ListUserCredsResponse()
+            pb_resp = firestore_admin.ListUserCredsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_user_creds(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_user_creds_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = firestore_admin.ListUserCredsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore.admin_v1.FirestoreAdminClient.list_user_creds",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "ListUserCreds",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ResetUserPassword(
+        _BaseFirestoreAdminRestTransport._BaseResetUserPassword, FirestoreAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("FirestoreAdminRestTransport.ResetUserPassword")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: firestore_admin.ResetUserPasswordRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> user_creds.UserCreds:
+            r"""Call the reset user password method over HTTP.
+
+            Args:
+                request (~.firestore_admin.ResetUserPasswordRequest):
+                    The request object. The request for
+                [FirestoreAdmin.ResetUserPassword][google.firestore.admin.v1.FirestoreAdmin.ResetUserPassword].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.user_creds.UserCreds:
+                    A Cloud Firestore User Creds.
+            """
+
+            http_options = (
+                _BaseFirestoreAdminRestTransport._BaseResetUserPassword._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_reset_user_password(
+                request, metadata
+            )
+            transcoded_request = _BaseFirestoreAdminRestTransport._BaseResetUserPassword._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseFirestoreAdminRestTransport._BaseResetUserPassword._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseFirestoreAdminRestTransport._BaseResetUserPassword._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.firestore.admin_v1.FirestoreAdminClient.ResetUserPassword",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "ResetUserPassword",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = FirestoreAdminRestTransport._ResetUserPassword._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = user_creds.UserCreds()
+            pb_resp = user_creds.UserCreds.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_reset_user_password(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_reset_user_password_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = user_creds.UserCreds.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.firestore.admin_v1.FirestoreAdminClient.reset_user_password",
+                    extra={
+                        "serviceName": "google.firestore.admin.v1.FirestoreAdmin",
+                        "rpcName": "ResetUserPassword",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _RestoreDatabase(
         _BaseFirestoreAdminRestTransport._BaseRestoreDatabase, FirestoreAdminRestStub
     ):
@@ -5156,6 +6530,14 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
         return self._CreateIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.CreateUserCredsRequest], gfa_user_creds.UserCreds]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateUserCreds(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_backup(
         self,
     ) -> Callable[[firestore_admin.DeleteBackupRequest], empty_pb2.Empty]:
@@ -5186,6 +6568,30 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteIndex(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.DeleteUserCredsRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteUserCreds(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def disable_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.DisableUserCredsRequest], user_creds.UserCreds]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DisableUserCreds(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def enable_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.EnableUserCredsRequest], user_creds.UserCreds]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._EnableUserCreds(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def export_documents(
@@ -5228,6 +6634,14 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIndex(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_user_creds(
+        self,
+    ) -> Callable[[firestore_admin.GetUserCredsRequest], user_creds.UserCreds]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetUserCreds(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def import_documents(
@@ -5287,6 +6701,24 @@ class FirestoreAdminRestTransport(_BaseFirestoreAdminRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIndexes(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_user_creds(
+        self,
+    ) -> Callable[
+        [firestore_admin.ListUserCredsRequest], firestore_admin.ListUserCredsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListUserCreds(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def reset_user_password(
+        self,
+    ) -> Callable[[firestore_admin.ResetUserPasswordRequest], user_creds.UserCreds]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ResetUserPassword(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def restore_database(

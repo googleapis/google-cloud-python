@@ -30,6 +30,11 @@
                 "create_index"
               ]
             },
+            "CreateUserCreds": {
+              "methods": [
+                "create_user_creds"
+              ]
+            },
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
@@ -48,6 +53,21 @@
             "DeleteIndex": {
               "methods": [
                 "delete_index"
+              ]
+            },
+            "DeleteUserCreds": {
+              "methods": [
+                "delete_user_creds"
+              ]
+            },
+            "DisableUserCreds": {
+              "methods": [
+                "disable_user_creds"
+              ]
+            },
+            "EnableUserCreds": {
+              "methods": [
+                "enable_user_creds"
               ]
             },
             "ExportDocuments": {
@@ -80,6 +100,11 @@
                 "get_index"
               ]
             },
+            "GetUserCreds": {
+              "methods": [
+                "get_user_creds"
+              ]
+            },
             "ImportDocuments": {
               "methods": [
                 "import_documents"
@@ -108,6 +133,16 @@
             "ListIndexes": {
               "methods": [
                 "list_indexes"
+              ]
+            },
+            "ListUserCreds": {
+              "methods": [
+                "list_user_creds"
+              ]
+            },
+            "ResetUserPassword": {
+              "methods": [
+                "reset_user_password"
               ]
             },
             "RestoreDatabase": {
@@ -155,6 +190,11 @@
                 "create_index"
               ]
             },
+            "CreateUserCreds": {
+              "methods": [
+                "create_user_creds"
+              ]
+            },
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
@@ -173,6 +213,21 @@
             "DeleteIndex": {
               "methods": [
                 "delete_index"
+              ]
+            },
+            "DeleteUserCreds": {
+              "methods": [
+                "delete_user_creds"
+              ]
+            },
+            "DisableUserCreds": {
+              "methods": [
+                "disable_user_creds"
+              ]
+            },
+            "EnableUserCreds": {
+              "methods": [
+                "enable_user_creds"
               ]
             },
             "ExportDocuments": {
@@ -205,6 +260,11 @@
                 "get_index"
               ]
             },
+            "GetUserCreds": {
+              "methods": [
+                "get_user_creds"
+              ]
+            },
             "ImportDocuments": {
               "methods": [
                 "import_documents"
@@ -233,6 +293,16 @@
             "ListIndexes": {
               "methods": [
                 "list_indexes"
+              ]
+            },
+            "ListUserCreds": {
+              "methods": [
+                "list_user_creds"
+              ]
+            },
+            "ResetUserPassword": {
+              "methods": [
+                "reset_user_password"
               ]
             },
             "RestoreDatabase": {
@@ -280,6 +350,11 @@
                 "create_index"
               ]
             },
+            "CreateUserCreds": {
+              "methods": [
+                "create_user_creds"
+              ]
+            },
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
@@ -298,6 +373,21 @@
             "DeleteIndex": {
               "methods": [
                 "delete_index"
+              ]
+            },
+            "DeleteUserCreds": {
+              "methods": [
+                "delete_user_creds"
+              ]
+            },
+            "DisableUserCreds": {
+              "methods": [
+                "disable_user_creds"
+              ]
+            },
+            "EnableUserCreds": {
+              "methods": [
+                "enable_user_creds"
               ]
             },
             "ExportDocuments": {
@@ -330,6 +420,11 @@
                 "get_index"
               ]
             },
+            "GetUserCreds": {
+              "methods": [
+                "get_user_creds"
+              ]
+            },
             "ImportDocuments": {
               "methods": [
                 "import_documents"
@@ -358,6 +453,16 @@
             "ListIndexes": {
               "methods": [
                 "list_indexes"
+              ]
+            },
+            "ListUserCreds": {
+              "methods": [
+                "list_user_creds"
+              ]
+            },
+            "ResetUserPassword": {
+              "methods": [
+                "reset_user_password"
               ]
             },
             "RestoreDatabase": {
