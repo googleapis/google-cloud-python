@@ -40,7 +40,6 @@ class SubscriptionsServiceTransport(abc.ABC):
     """Abstract transport class for SubscriptionsService."""
 
     AUTH_SCOPES = (
-        "https://www.googleapis.com/auth/chat.bot",
         "https://www.googleapis.com/auth/chat.memberships",
         "https://www.googleapis.com/auth/chat.memberships.readonly",
         "https://www.googleapis.com/auth/chat.messages",
