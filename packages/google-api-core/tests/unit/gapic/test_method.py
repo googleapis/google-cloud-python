@@ -76,6 +76,7 @@ def test_wrap_method_with_custom_client_info():
         api_core_version=3,
         gapic_version=4,
         client_library_version=5,
+        protobuf_runtime_version=6,
     )
     method = mock.Mock(spec=["__call__"])
 

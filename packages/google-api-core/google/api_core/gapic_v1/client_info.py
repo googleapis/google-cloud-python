@@ -47,6 +47,7 @@ class ClientInfo(client_info.ClientInfo):
             Recommended format: ``application-or-tool-ID/major.minor.version``.
         rest_version (Optional[str]): A string with labeled versions of the
             dependencies used for REST transport.
+        protobuf_runtime_version (Optional[str]): The protobuf runtime version.
     """
 
     def to_grpc_metadata(self):

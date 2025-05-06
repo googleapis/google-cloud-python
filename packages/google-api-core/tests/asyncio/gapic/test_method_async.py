@@ -81,6 +81,7 @@ async def test_wrap_method_with_custom_client_info():
         api_core_version=3,
         gapic_version=4,
         client_library_version=5,
+        protobuf_runtime_version=6,
     )
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall()
     method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)

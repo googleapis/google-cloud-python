@@ -46,6 +46,7 @@ def test_constructor_options():
         client_library_version="5",
         user_agent="6",
         rest_version="7",
+        protobuf_runtime_version="8",
     )
 
     assert info.python_version == "1"
@@ -55,11 +56,15 @@ def test_constructor_options():
     assert info.client_library_version == "5"
     assert info.user_agent == "6"
     assert info.rest_version == "7"
+    assert info.protobuf_runtime_version == "8"
 
 
 def test_to_user_agent_minimal():
     info = client_info.ClientInfo(
-        python_version="1", api_core_version="2", grpc_version=None
+        python_version="1",
+        api_core_version="2",
+        grpc_version=None,
+        protobuf_runtime_version=None,
     )
 
     user_agent = info.to_user_agent()
@@ -75,11 +80,12 @@ def test_to_user_agent_full():
         gapic_version="4",
         client_library_version="5",
         user_agent="app-name/1.0",
+        protobuf_runtime_version="6",
     )
 
     user_agent = info.to_user_agent()
 
-    assert user_agent == "app-name/1.0 gl-python/1 grpc/2 gax/3 gapic/4 gccl/5"
+    assert user_agent == "app-name/1.0 gl-python/1 grpc/2 gax/3 gapic/4 gccl/5 pb/6"
 
 
 def test_to_user_agent_rest():

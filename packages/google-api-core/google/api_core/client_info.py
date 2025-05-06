@@ -59,6 +59,7 @@ class ClientInfo(object):
             Recommended format: ``application-or-tool-ID/major.minor.version``.
         rest_version (Optional[str]): A string with labeled versions of the
             dependencies used for REST transport.
+        protobuf_runtime_version (Optional[str]): The protobuf runtime version.
     """
 
     def __init__(
@@ -70,6 +71,7 @@ class ClientInfo(object):
         client_library_version=None,
         user_agent=None,
         rest_version=None,
+        protobuf_runtime_version=None,
     ):
         self.python_version = python_version
         self.grpc_version = grpc_version
@@ -78,6 +80,7 @@ class ClientInfo(object):
         self.client_library_version = client_library_version
         self.user_agent = user_agent
         self.rest_version = rest_version
+        self.protobuf_runtime_version = protobuf_runtime_version
 
     def to_user_agent(self):
         """Returns the user-agent string for this client info."""
@@ -104,5 +107,8 @@ class ClientInfo(object):
 
         if self.client_library_version is not None:
             ua += "gccl/{client_library_version} "
+
+        if self.protobuf_runtime_version is not None:
+            ua += "pb/{protobuf_runtime_version} "
 
         return ua.format(**self.__dict__).strip()
