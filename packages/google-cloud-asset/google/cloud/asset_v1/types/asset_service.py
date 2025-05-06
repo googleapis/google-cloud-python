@@ -897,7 +897,7 @@ class PartitionSpec(proto.Message):
                 using non-partitioned table.
             READ_TIME (1):
                 The time when the snapshot is taken. If specified as
-                partition key, the result table(s) is partitoned by the
+                partition key, the result table(s) is partitioned by the
                 additional timestamp column, readTime. If [read_time] in
                 ExportAssetsRequest is specified, the readTime column's
                 value will be the same as it. Otherwise, its value will be
@@ -905,10 +905,10 @@ class PartitionSpec(proto.Message):
             REQUEST_TIME (2):
                 The time when the request is received and
                 started to be processed. If specified as
-                partition key, the result table(s) is partitoned
-                by the requestTime column, an additional
-                timestamp column representing when the request
-                was received.
+                partition key, the result table(s) is
+                partitioned by the requestTime column, an
+                additional timestamp column representing when
+                the request was received.
         """
         PARTITION_KEY_UNSPECIFIED = 0
         READ_TIME = 1
@@ -2031,7 +2031,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
                 REQUEST_TIME (1):
                     The time when the request is received. If
                     specified as partition key, the result table(s)
-                    is partitoned by the RequestTime column, an
+                    is partitioned by the RequestTime column, an
                     additional timestamp column representing when
                     the request was received.
             """
@@ -2426,8 +2426,8 @@ class AnalyzeMoveRequest(proto.Message):
             organization to reparent the target resource.
             The analysis will be performed against
             hypothetically moving the resource to this
-            specified desitination parent. This can only be
-            a folder number (such as "folders/123") or an
+            specified destination parent. This can only be a
+            folder number (such as "folders/123") or an
             organization number (such as
             "organizations/123").
         view (google.cloud.asset_v1.types.AnalyzeMoveRequest.AnalysisView):
