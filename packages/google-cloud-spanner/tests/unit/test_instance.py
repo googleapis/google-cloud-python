@@ -14,6 +14,8 @@
 
 import unittest
 import mock
+from google.auth.credentials import AnonymousCredentials
+
 from google.cloud.spanner_v1 import DefaultTransactionOptions
 
 
@@ -586,7 +588,7 @@ class TestInstance(unittest.TestCase):
         from google.cloud.spanner_admin_database_v1 import ListDatabasesRequest
         from google.cloud.spanner_admin_database_v1 import ListDatabasesResponse
 
-        api = DatabaseAdminClient()
+        api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
         client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
@@ -625,7 +627,7 @@ class TestInstance(unittest.TestCase):
         from google.cloud.spanner_admin_database_v1 import ListDatabasesRequest
         from google.cloud.spanner_admin_database_v1 import ListDatabasesResponse
 
-        api = DatabaseAdminClient()
+        api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
         client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
@@ -704,7 +706,7 @@ class TestInstance(unittest.TestCase):
         from google.cloud.spanner_admin_database_v1 import ListBackupsRequest
         from google.cloud.spanner_admin_database_v1 import ListBackupsResponse
 
-        api = DatabaseAdminClient()
+        api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
         client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
@@ -743,7 +745,7 @@ class TestInstance(unittest.TestCase):
         from google.cloud.spanner_admin_database_v1 import ListBackupsRequest
         from google.cloud.spanner_admin_database_v1 import ListBackupsResponse
 
-        api = DatabaseAdminClient()
+        api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
         client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
@@ -787,7 +789,7 @@ class TestInstance(unittest.TestCase):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
 
-        api = DatabaseAdminClient()
+        api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
         client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
@@ -832,7 +834,7 @@ class TestInstance(unittest.TestCase):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
 
-        api = DatabaseAdminClient()
+        api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
         client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
@@ -884,7 +886,7 @@ class TestInstance(unittest.TestCase):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
 
-        api = DatabaseAdminClient()
+        api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
         client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)
@@ -941,7 +943,7 @@ class TestInstance(unittest.TestCase):
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
 
-        api = DatabaseAdminClient()
+        api = DatabaseAdminClient(credentials=AnonymousCredentials())
         client = _Client(self.PROJECT)
         client.database_admin_api = api
         instance = self._make_one(self.INSTANCE_ID, client)

@@ -162,7 +162,7 @@ class TransactionRetryHelper:
         self._last_statement_details_per_cursor[cursor] = last_statement_result_details
         self._statement_result_details_list.append(last_statement_result_details)
 
-    def retry_transaction(self):
+    def retry_transaction(self, default_retry_delay=None):
         """Retry the aborted transaction.
 
         All the statements executed in the original transaction
@@ -202,7 +202,9 @@ class TransactionRetryHelper:
                             raise RetryAborted(RETRY_ABORTED_ERROR, ex)
                 return
             except Aborted as ex:
-                delay = _get_retry_delay(ex.errors[0], attempt)
+                delay = _get_retry_delay(
+                    ex.errors[0], attempt, default_retry_delay=default_retry_delay
+                )
                 if delay:
                     time.sleep(delay)
 

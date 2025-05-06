@@ -510,6 +510,7 @@ def _metadata_with_prefix(prefix, **kw):
 def _retry_on_aborted_exception(
     func,
     deadline,
+    default_retry_delay=None,
 ):
     """
     Handles retry logic for Aborted exceptions, considering the deadline.
@@ -520,7 +521,12 @@ def _retry_on_aborted_exception(
             attempts += 1
             return func()
         except Aborted as exc:
-            _delay_until_retry(exc, deadline=deadline, attempts=attempts)
+            _delay_until_retry(
+                exc,
+                deadline=deadline,
+                attempts=attempts,
+                default_retry_delay=default_retry_delay,
+            )
             continue
 
 
@@ -608,7 +614,7 @@ def _metadata_with_span_context(metadata: List[Tuple[str, str]], **kw) -> None:
         inject(setter=OpenTelemetryContextSetter(), carrier=metadata)
 
 
-def _delay_until_retry(exc, deadline, attempts):
+def _delay_until_retry(exc, deadline, attempts, default_retry_delay=None):
     """Helper for :meth:`Session.run_in_transaction`.
 
     Detect retryable abort, and impose server-supplied delay.
@@ -628,7 +634,7 @@ def _delay_until_retry(exc, deadline, attempts):
     if now >= deadline:
         raise
 
-    delay = _get_retry_delay(cause, attempts)
+    delay = _get_retry_delay(cause, attempts, default_retry_delay=default_retry_delay)
     if delay is not None:
         if now + delay > deadline:
             raise
@@ -636,7 +642,7 @@ def _delay_until_retry(exc, deadline, attempts):
         time.sleep(delay)
 
 
-def _get_retry_delay(cause, attempts):
+def _get_retry_delay(cause, attempts, default_retry_delay=None):
     """Helper for :func:`_delay_until_retry`.
 
     :type exc: :class:`grpc.Call`
@@ -658,6 +664,8 @@ def _get_retry_delay(cause, attempts):
         retry_info.ParseFromString(retry_info_pb)
         nanos = retry_info.retry_delay.nanos
         return retry_info.retry_delay.seconds + nanos / 1.0e9
+    if default_retry_delay is not None:
+        return default_retry_delay
 
     return 2**attempts + random.random()
 

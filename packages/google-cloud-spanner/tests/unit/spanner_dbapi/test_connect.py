@@ -17,8 +17,8 @@
 import unittest
 from unittest import mock
 
-import google.auth.credentials
-
+import google
+from google.auth.credentials import AnonymousCredentials
 
 INSTANCE = "test-instance"
 DATABASE = "test-database"
@@ -45,7 +45,13 @@ class Test_connect(unittest.TestCase):
         instance = client.instance.return_value
         database = instance.database.return_value
 
-        connection = connect(INSTANCE, DATABASE)
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         self.assertIsInstance(connection, Connection)
 
@@ -55,6 +61,7 @@ class Test_connect(unittest.TestCase):
             project=mock.ANY,
             credentials=mock.ANY,
             client_info=mock.ANY,
+            client_options=mock.ANY,
             route_to_leader_enabled=True,
         )
 
@@ -92,6 +99,7 @@ class Test_connect(unittest.TestCase):
             project=PROJECT,
             credentials=credentials,
             client_info=mock.ANY,
+            client_options=mock.ANY,
             route_to_leader_enabled=False,
         )
         client_info = mock_client.call_args_list[0][1]["client_info"]

@@ -26,6 +26,7 @@ import logging
 from typing import Optional, List, Union, NoReturn, Tuple, Dict
 
 import google.auth
+from google.auth import credentials as ga_credentials
 from google.api.distribution_pb2 import (  # pylint: disable=no-name-in-module
     Distribution,
 )
@@ -111,6 +112,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
         self,
         project_id: Optional[str] = None,
         client: Optional["MetricServiceClient"] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
     ):
         """Initialize a custom exporter to send metrics for the Spanner Service Metrics."""
         # Default preferred_temporality is all CUMULATIVE so need to customize
@@ -121,6 +123,7 @@ class CloudMonitoringMetricsExporter(MetricExporter):
             transport=MetricServiceGrpcTransport(
                 channel=MetricServiceGrpcTransport.create_channel(
                     options=_OPTIONS,
+                    credentials=credentials,
                 )
             )
         )

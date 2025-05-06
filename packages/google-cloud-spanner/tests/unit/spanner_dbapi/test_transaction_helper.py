@@ -323,7 +323,7 @@ class TestTransactionHelper(unittest.TestCase):
             None,
         ]
 
-        self._under_test.retry_transaction()
+        self._under_test.retry_transaction(default_retry_delay=0)
 
         run_mock.assert_has_calls(
             (

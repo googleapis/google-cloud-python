@@ -17,6 +17,8 @@ import warnings
 
 from google.api_core.exceptions import Aborted
 from google.api_core.gapic_v1.client_info import ClientInfo
+from google.auth.credentials import AnonymousCredentials
+
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_dbapi import partition_helper
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode, BatchDmlExecutor
@@ -784,11 +786,15 @@ def connect(
                 route_to_leader_enabled=route_to_leader_enabled,
             )
         else:
+            client_options = None
+            if isinstance(credentials, AnonymousCredentials):
+                client_options = kwargs.get("client_options")
             client = spanner.Client(
                 project=project,
                 credentials=credentials,
                 client_info=client_info,
                 route_to_leader_enabled=route_to_leader_enabled,
+                client_options=client_options,
             )
     else:
         if project is not None and client.project != project:

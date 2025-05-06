@@ -257,9 +257,11 @@ class Batch(_BatchBase):
             deadline = time.time() + kwargs.get(
                 "timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS
             )
+            default_retry_delay = kwargs.get("default_retry_delay", None)
             response = _retry_on_aborted_exception(
                 method,
                 deadline=deadline,
+                default_retry_delay=default_retry_delay,
             )
         self.committed = response.commit_timestamp
         self.commit_stats = response.commit_stats

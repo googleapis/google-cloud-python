@@ -283,7 +283,7 @@ class TestFixedSizePool(OpenTelemetryBase):
             return
 
         # Tests trying to invoke pool.get() from an empty pool.
-        pool = self._make_one(size=0)
+        pool = self._make_one(size=0, default_timeout=0.1)
         database = _Database("name")
         session1 = _Session(database)
         with trace_call("pool.Get", session1):

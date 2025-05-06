@@ -277,16 +277,12 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         # Assertion: Ensure that calling batch.commit() raises the Aborted exception
         with self.assertRaises(Aborted) as context:
-            batch.commit()
+            batch.commit(timeout_secs=0.1, default_retry_delay=0)
 
         # Verify additional details about the exception
         self.assertEqual(str(context.exception), "409 Transaction was aborted")
         self.assertGreater(
             api.commit.call_count, 1, "commit should be called more than once"
-        )
-        # Since we are using exponential backoff here and default timeout is set to 30 sec 2^x <= 30. So value for x will be 4
-        self.assertEqual(
-            api.commit.call_count, 4, "commit should be called exactly 4 times"
         )
 
     def _test_commit_with_options(

@@ -16,6 +16,8 @@ import unittest
 
 import os
 import mock
+from google.auth.credentials import AnonymousCredentials
+
 from google.cloud.spanner_v1 import DirectedReadOptions, DefaultTransactionOptions
 
 
@@ -513,7 +515,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
-        api = InstanceAdminClient()
+        api = InstanceAdminClient(credentials=AnonymousCredentials())
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
@@ -560,8 +562,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
-        api = InstanceAdminClient()
         credentials = _make_credentials()
+        api = InstanceAdminClient(credentials=credentials)
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
@@ -636,8 +638,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
 
-        api = InstanceAdminClient()
         credentials = _make_credentials()
+        api = InstanceAdminClient(credentials=credentials)
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
@@ -684,8 +686,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
 
-        api = InstanceAdminClient()
         credentials = _make_credentials()
+        api = InstanceAdminClient(credentials=credentials)
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 

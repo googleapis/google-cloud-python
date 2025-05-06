@@ -241,7 +241,9 @@ class Client(ClientWithProject):
                 meter_provider = MeterProvider(
                     metric_readers=[
                         PeriodicExportingMetricReader(
-                            CloudMonitoringMetricsExporter(),
+                            CloudMonitoringMetricsExporter(
+                                project_id=project, credentials=credentials
+                            ),
                             export_interval_millis=METRIC_EXPORT_INTERVAL_MS,
                         )
                     ]

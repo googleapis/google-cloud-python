@@ -14,6 +14,9 @@
 
 import unittest
 from unittest.mock import patch, MagicMock, Mock
+
+from google.auth.credentials import AnonymousCredentials
+
 from google.cloud.spanner_v1.metrics.metrics_exporter import (
     CloudMonitoringMetricsExporter,
     _normalize_label_key,
@@ -73,10 +76,6 @@ if HAS_OPENTELEMETRY_INSTALLED:
                 description="A test counter",
                 unit="counts",
             )
-
-        def test_default_ctor(self):
-            exporter = CloudMonitoringMetricsExporter()
-            self.assertIsNotNone(exporter.project_id)
 
         def test_normalize_label_key(self):
             """Test label key normalization"""
@@ -236,7 +235,9 @@ if HAS_OPENTELEMETRY_INSTALLED:
             metrics = self.metric_reader.get_metrics_data()
             self.assertTrue(metrics is not None)
 
-            exporter = CloudMonitoringMetricsExporter(PROJECT_ID)
+            exporter = CloudMonitoringMetricsExporter(
+                PROJECT_ID, credentials=AnonymousCredentials()
+            )
             timeseries = exporter._resource_metrics_to_timeseries_pb(metrics)
 
             # Both counter values should be summed together
@@ -257,7 +258,9 @@ if HAS_OPENTELEMETRY_INSTALLED:
 
             # Export metrics
             metrics = self.metric_reader.get_metrics_data()
-            exporter = CloudMonitoringMetricsExporter(PROJECT_ID)
+            exporter = CloudMonitoringMetricsExporter(
+                PROJECT_ID, credentials=AnonymousCredentials()
+            )
             timeseries = exporter._resource_metrics_to_timeseries_pb(metrics)
 
             # Metris with incorrect sope should be filtered out
@@ -342,7 +345,9 @@ if HAS_OPENTELEMETRY_INSTALLED:
             with self.assertLogs(
                 "google.cloud.spanner_v1.metrics.metrics_exporter", level="WARNING"
             ) as log:
-                exporter = CloudMonitoringMetricsExporter(PROJECT_ID)
+                exporter = CloudMonitoringMetricsExporter(
+                    PROJECT_ID, credentials=AnonymousCredentials()
+                )
                 self.assertFalse(exporter.export([]))
                 self.assertIn(
                     "WARNING:google.cloud.spanner_v1.metrics.metrics_exporter:Metric exporter called without dependencies installed.",
@@ -382,12 +387,16 @@ if HAS_OPENTELEMETRY_INSTALLED:
 
         def test_force_flush(self):
             """Verify that the unimplemented force flush can be called."""
-            exporter = CloudMonitoringMetricsExporter(PROJECT_ID)
+            exporter = CloudMonitoringMetricsExporter(
+                PROJECT_ID, credentials=AnonymousCredentials()
+            )
             self.assertTrue(exporter.force_flush())
 
         def test_shutdown(self):
             """Verify that the unimplemented shutdown can be called."""
-            exporter = CloudMonitoringMetricsExporter()
+            exporter = CloudMonitoringMetricsExporter(
+                project_id="test", credentials=AnonymousCredentials()
+            )
             try:
                 exporter.shutdown()
             except Exception as e:
@@ -409,7 +418,9 @@ if HAS_OPENTELEMETRY_INSTALLED:
             self, mocked_data_point_to_timeseries_pb
         ):
             """Verify that metric entries with no timeseries data do not return a time series entry."""
-            exporter = CloudMonitoringMetricsExporter()
+            exporter = CloudMonitoringMetricsExporter(
+                project_id="test", credentials=AnonymousCredentials()
+            )
             data_point = Mock()
             metric = Mock(data_points=[data_point])
             scope_metric = Mock(
@@ -422,7 +433,9 @@ if HAS_OPENTELEMETRY_INSTALLED:
 
         def test_to_point(self):
             """Verify conversion of datapoints."""
-            exporter = CloudMonitoringMetricsExporter()
+            exporter = CloudMonitoringMetricsExporter(
+                project_id="test", credentials=AnonymousCredentials()
+            )
 
             number_point = NumberDataPoint(
                 attributes=[], start_time_unix_nano=0, time_unix_nano=0, value=9

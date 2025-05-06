@@ -15,6 +15,9 @@
 import pytest
 from unittest.mock import MagicMock
 from google.api_core.exceptions import ServiceUnavailable
+from google.auth import exceptions
+from google.auth.credentials import Credentials
+
 from google.cloud.spanner_v1.client import Client
 from unittest.mock import patch
 from grpc._interceptor import _UnaryOutcome
@@ -28,6 +31,26 @@ pytest.importorskip("opentelemetry")
 # pytest.importorskip("opentelemetry.semconv.attributes.otel_attributes")
 
 
+class TestCredentials(Credentials):
+    @property
+    def expired(self):
+        return False
+
+    @property
+    def valid(self):
+        return True
+
+    def refresh(self, request):
+        raise exceptions.InvalidOperation("Anonymous credentials cannot be refreshed.")
+
+    def apply(self, headers, token=None):
+        if token is not None:
+            raise exceptions.InvalidValue("Anonymous credentials don't support tokens.")
+
+    def before_request(self, request, method, url, headers):
+        """Anonymous credentials do nothing to the request."""
+
+
 @pytest.fixture(autouse=True)
 def patched_client(monkeypatch):
     monkeypatch.setenv("SPANNER_ENABLE_BUILTIN_METRICS", "true")
@@ -37,7 +60,11 @@ def patched_client(monkeypatch):
     if SpannerMetricsTracerFactory._metrics_tracer_factory is not None:
         SpannerMetricsTracerFactory._metrics_tracer_factory = None
 
-    client = Client()
+    client = Client(
+        project="test",
+        credentials=TestCredentials(),
+        # client_options={"api_endpoint": "none"}
+    )
     yield client
 
     # Resetting

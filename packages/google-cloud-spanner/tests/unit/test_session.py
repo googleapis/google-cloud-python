@@ -1031,7 +1031,9 @@ class TestSession(OpenTelemetryBase):
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
             return "answer"
 
-        return_value = session.run_in_transaction(unit_of_work, "abc", some_arg="def")
+        return_value = session.run_in_transaction(
+            unit_of_work, "abc", some_arg="def", default_retry_delay=0
+        )
 
         self.assertEqual(len(called_with), 2)
         for index, (txn, args, kw) in enumerate(called_with):
@@ -1858,7 +1860,7 @@ class TestSession(OpenTelemetryBase):
         # check if current time > deadline
         with mock.patch("time.time", _time_func):
             with self.assertRaises(Exception):
-                _delay_until_retry(exc_mock, 2, 1)
+                _delay_until_retry(exc_mock, 2, 1, default_retry_delay=0)
 
         with mock.patch("time.time", _time_func):
             with mock.patch(

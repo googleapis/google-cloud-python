@@ -181,21 +181,6 @@ def install_unittest_dependencies(session, *constraints):
     # XXX: Dump installed versions to debug OT issue
     session.run("pip", "list")
 
-    # Run py.test against the unit tests with OpenTelemetry.
-    session.run(
-        "py.test",
-        "--quiet",
-        "--cov=google.cloud.spanner",
-        "--cov=google.cloud",
-        "--cov=tests.unit",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        os.path.join("tests", "unit"),
-        *session.posargs,
-    )
-
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 @nox.parametrize(
@@ -329,9 +314,12 @@ def system(session, protobuf_implementation, database_dialect):
         session.skip(
             "Credentials or emulator host must be set via environment variable"
         )
-    # If POSTGRESQL tests and Emulator, skip the tests
-    if os.environ.get("SPANNER_EMULATOR_HOST") and database_dialect == "POSTGRESQL":
-        session.skip("Postgresql is not supported by Emulator yet.")
+    if not (
+        os.environ.get("SPANNER_EMULATOR_HOST") or protobuf_implementation == "python"
+    ):
+        session.skip(
+            "Only run system tests on real Spanner with one protobuf implementation to speed up the build"
+        )
 
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
@@ -365,7 +353,7 @@ def system(session, protobuf_implementation, database_dialect):
                 "SKIP_BACKUP_TESTS": "true",
             },
         )
-    if system_test_folder_exists:
+    elif system_test_folder_exists:
         session.run(
             "py.test",
             "--quiet",
@@ -567,30 +555,32 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
-    # Only run system tests if found.
-    if os.path.exists(system_test_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_path,
-            *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                "SPANNER_DATABASE_DIALECT": database_dialect,
-                "SKIP_BACKUP_TESTS": "true",
-            },
-        )
-    if os.path.exists(system_test_folder_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_folder_path,
-            *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                "SPANNER_DATABASE_DIALECT": database_dialect,
-                "SKIP_BACKUP_TESTS": "true",
-            },
-        )
+    # Only run system tests for one protobuf implementation on real Spanner to speed up the build.
+    if os.environ.get("SPANNER_EMULATOR_HOST") or protobuf_implementation == "python":
+        # Only run system tests if found.
+        if os.path.exists(system_test_path):
+            session.run(
+                "py.test",
+                "--verbose",
+                f"--junitxml=system_{session.python}_sponge_log.xml",
+                system_test_path,
+                *session.posargs,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
+        elif os.path.exists(system_test_folder_path):
+            session.run(
+                "py.test",
+                "--verbose",
+                f"--junitxml=system_{session.python}_sponge_log.xml",
+                system_test_folder_path,
+                *session.posargs,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )

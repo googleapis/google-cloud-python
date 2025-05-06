@@ -16,6 +16,8 @@
 from unittest import mock
 import sys
 import unittest
+
+from google.auth.credentials import AnonymousCredentials
 from google.rpc.code_pb2 import ABORTED
 
 from google.cloud.spanner_dbapi.parsed_statement import (
@@ -127,7 +129,13 @@ class TestCursor(unittest.TestCase):
 
         sql = "DELETE FROM table WHERE col1 = %s"
 
-        connection = connect("test-instance", "test-database")
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         connection.autocommit = True
         transaction = self._transaction_mock(mock_response=[1, 1, 1])
@@ -479,7 +487,13 @@ class TestCursor(unittest.TestCase):
     def test_executemany_client_statement(self):
         from google.cloud.spanner_dbapi import connect, ProgrammingError
 
-        connection = connect("test-instance", "test-database")
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         cursor = connection.cursor()
 
@@ -497,7 +511,13 @@ class TestCursor(unittest.TestCase):
         operation = """SELECT * FROM table1 WHERE "col1" = @a1"""
         params_seq = ((1,), (2,))
 
-        connection = connect("test-instance", "test-database")
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         cursor = connection.cursor()
         cursor._result_set = [1, 2, 3]
@@ -519,7 +539,13 @@ class TestCursor(unittest.TestCase):
 
         sql = "DELETE FROM table WHERE col1 = %s"
 
-        connection = connect("test-instance", "test-database")
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         connection.autocommit = True
         transaction = self._transaction_mock()
@@ -551,7 +577,13 @@ class TestCursor(unittest.TestCase):
 
         sql = "UPDATE table SET col1 = %s WHERE col2 = %s"
 
-        connection = connect("test-instance", "test-database")
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         connection.autocommit = True
         transaction = self._transaction_mock()
@@ -595,7 +627,13 @@ class TestCursor(unittest.TestCase):
 
         sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
 
-        connection = connect("test-instance", "test-database")
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         transaction = self._transaction_mock()
 
@@ -632,7 +670,13 @@ class TestCursor(unittest.TestCase):
 
         sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
 
-        connection = connect("test-instance", "test-database")
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         connection.autocommit = True
 
@@ -676,7 +720,13 @@ class TestCursor(unittest.TestCase):
         sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
         err_details = "Details here"
 
-        connection = connect("test-instance", "test-database")
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         connection.autocommit = True
         cursor = connection.cursor()
@@ -705,7 +755,13 @@ class TestCursor(unittest.TestCase):
         args = [(1, 2, 3, 4), (5, 6, 7, 8)]
         err_details = "Aborted details here"
 
-        connection = connect("test-instance", "test-database")
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
 
         transaction1 = mock.Mock()
         transaction1.batch_update = mock.Mock(

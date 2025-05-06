@@ -15,6 +15,7 @@
 
 import unittest
 import mock
+
 from google.cloud.spanner_v1 import TransactionOptions
 
 
@@ -824,7 +825,7 @@ class Test_retry(unittest.TestCase):
             True,
         ]
 
-        _retry(functools.partial(test_api.test_fxn))
+        _retry(functools.partial(test_api.test_fxn), delay=0)
 
         self.assertEqual(test_api.test_fxn.call_count, 3)
 
@@ -844,6 +845,7 @@ class Test_retry(unittest.TestCase):
             _retry(
                 functools.partial(test_api.test_fxn),
                 allowed_exceptions={NotFound: None},
+                delay=0,
             )
 
         self.assertEqual(test_api.test_fxn.call_count, 2)
@@ -860,7 +862,7 @@ class Test_retry(unittest.TestCase):
         ]
 
         with self.assertRaises(InternalServerError):
-            _retry(functools.partial(test_api.test_fxn), retry_count=1)
+            _retry(functools.partial(test_api.test_fxn), retry_count=1, delay=0)
 
         self.assertEqual(test_api.test_fxn.call_count, 2)
 
@@ -879,6 +881,7 @@ class Test_retry(unittest.TestCase):
         _retry(
             functools.partial(test_api.test_fxn),
             allowed_exceptions={InternalServerError: _check_rst_stream_error},
+            delay=0,
         )
 
         self.assertEqual(test_api.test_fxn.call_count, 3)
@@ -896,7 +899,7 @@ class Test_retry(unittest.TestCase):
         ]
         deadline = time.time() + 30
         result_after_retry = _retry_on_aborted_exception(
-            functools.partial(test_api.test_fxn), deadline
+            functools.partial(test_api.test_fxn), deadline, default_retry_delay=0
         )
 
         self.assertEqual(test_api.test_fxn.call_count, 2)
@@ -910,16 +913,18 @@ class Test_retry(unittest.TestCase):
 
         test_api = mock.create_autospec(self.test_class)
         # Case where aborted exception is thrown after other generic exceptions
+        aborted = Aborted("aborted exception", errors=["Aborted error"])
         test_api.test_fxn.side_effect = [
-            Aborted("aborted exception", errors=("Aborted error")),
-            Aborted("aborted exception", errors=("Aborted error")),
-            Aborted("aborted exception", errors=("Aborted error")),
+            aborted,
+            aborted,
+            aborted,
             "true",
         ]
         deadline = time.time() + 30
         _retry_on_aborted_exception(
             functools.partial(test_api.test_fxn),
             deadline=deadline,
+            default_retry_delay=0,
         )
 
         self.assertEqual(test_api.test_fxn.call_count, 4)
@@ -935,10 +940,12 @@ class Test_retry(unittest.TestCase):
             Aborted("aborted exception", errors=("Aborted error")),
             "true",
         ]
-        deadline = time.time() + 0.1
+        deadline = time.time() + 0.001
         with self.assertRaises(Aborted):
             _retry_on_aborted_exception(
-                functools.partial(test_api.test_fxn), deadline=deadline
+                functools.partial(test_api.test_fxn),
+                deadline=deadline,
+                default_retry_delay=0.01,
             )
 
         self.assertEqual(test_api.test_fxn.call_count, 1)
