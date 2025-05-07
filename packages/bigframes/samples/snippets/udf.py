@@ -112,10 +112,9 @@ def run_udf_and_read_gbq_function(
     df_redacted = df[["species", "island", "sex"]].map(get_hash)
     df_redacted.peek(10)
 
-    # [END bigquery_dataframes_udf]
-
-    # Clean up cloud artifacts
+    # If the BigQuery routine is no longer needed, we can clean it up
+    # to free up any cloud quota
     session = bpd.get_global_session()
-    session.bqclient.delete_routine(
-        f"{your_bq_dataset_id}.{your_bq_routine_id}", not_found_ok=True
-    )
+    session.bqclient.delete_routine(f"{your_bq_dataset_id}.{your_bq_routine_id}")
+
+    # [END bigquery_dataframes_udf]
