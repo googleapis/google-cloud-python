@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.25.0](https://github.com/googleapis/gapic-generator-python/compare/v1.24.1...v1.25.0) (2025-05-06)
+
+
+### Features
+
+* Add protobuf runtime version to `x-goog-api-client` header ([#2368](https://github.com/googleapis/gapic-generator-python/issues/2368)) ([9c05dbe](https://github.com/googleapis/gapic-generator-python/commit/9c05dbeb9285919f45924be09c445b707cb85b54))
+
 ## [1.24.1](https://github.com/googleapis/gapic-generator-python/compare/v1.24.0...v1.24.1) (2025-04-17)
 
 
