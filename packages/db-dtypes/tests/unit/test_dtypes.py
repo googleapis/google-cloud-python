@@ -14,13 +14,10 @@
 
 import datetime
 
-import packaging.version
 import pytest
 
 pd = pytest.importorskip("pandas")
 np = pytest.importorskip("numpy")
-
-pandas_release = packaging.version.parse(pd.__version__).release
 
 SAMPLE_RAW_VALUES = dict(
     dbdate=(datetime.date(2021, 2, 2), "2021-2-3", pd.NaT),
@@ -538,39 +535,37 @@ def test_min_max_median(dtype):
         a = cls(data)
         assert a.min() == sample_values[0]
         assert a.max() == sample_values[-1]
-        if pandas_release >= (1, 3):
-            assert (
-                a.median() == datetime.time(1, 2, 4)
-                if dtype == "dbtime"
-                else datetime.date(2021, 2, 3)
-            )
+
+        assert (
+            a.median() == datetime.time(1, 2, 4)
+            if dtype == "dbtime"
+            else datetime.date(2021, 2, 3)
+        )
 
     empty = cls([])
     assert empty.min() is pd.NaT
     assert empty.max() is pd.NaT
-    if pandas_release >= (1, 3):
-        assert empty.median() is pd.NaT
+    assert empty.median() is pd.NaT
     empty = cls([None])
     assert empty.min() is pd.NaT
     assert empty.max() is pd.NaT
     assert empty.min(skipna=False) is pd.NaT
     assert empty.max(skipna=False) is pd.NaT
-    if pandas_release >= (1, 3):
-        with pytest.warns(RuntimeWarning, match="empty slice"):
-            # It's weird that we get the warning here, and not
-            # below. :/
-            assert empty.median() is pd.NaT
-        assert empty.median(skipna=False) is pd.NaT
+
+    with pytest.warns(RuntimeWarning, match="empty slice"):
+        # It's weird that we get the warning here, and not
+        # below. :/
+        assert empty.median() is pd.NaT
+    assert empty.median(skipna=False) is pd.NaT
 
     a = _make_one(dtype)
     assert a.min() == sample_values[0]
     assert a.max() == sample_values[1]
-    if pandas_release >= (1, 3):
-        assert (
-            a.median() == datetime.time(1, 2, 2, 750000)
-            if dtype == "dbtime"
-            else datetime.date(2021, 2, 2)
-        )
+    assert (
+        a.median() == datetime.time(1, 2, 2, 750000)
+        if dtype == "dbtime"
+        else datetime.date(2021, 2, 2)
+    )
 
 
 def test_date_add():

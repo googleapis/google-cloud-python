@@ -35,3 +35,19 @@ def test_import_default_module_not_found(mock_import):
     default_class = type("OpsMixin", (), {})  # Dummy class
     result = pandas_backports.import_default("module_name", default=default_class)
     assert result == default_class
+
+
+@mock.patch("builtins.__import__")
+def test_import_default_force_true(mock_import):
+    """
+    Test that when force=True, the default is returned immediately
+    without attempting an import.
+    """
+    default_class = type("ForcedMixin", (), {})  # A dummy class
+
+    result = pandas_backports.import_default(
+        "any_module_name", force=True, default=default_class
+    )
+
+    # Assert that the returned value is the default class itself
+    assert result is default_class

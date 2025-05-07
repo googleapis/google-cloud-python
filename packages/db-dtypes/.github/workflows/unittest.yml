@@ -5,13 +5,11 @@ on:
 name: unittest
 jobs:
   unit:
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2303): use `ubuntu-latest` once this bug is fixed.
-    # Use ubuntu-22.04 until Python 3.7 is removed from the test matrix
-    # https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-    runs-on: ubuntu-22.04
+    # Use `ubuntu-latest` runner.
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
+        python: ['3.9', '3.10', '3.11', '3.12', '3.13']
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -103,7 +101,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
-        python-version: "3.8"
+        python-version: "3.9"
     - name: Install coverage
       run: |
         python -m pip install --upgrade setuptools pip wheel

@@ -32,11 +32,9 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "db_dtypes", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.8"
+DEFAULT_PYTHON_VERSION = "3.9"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.7",
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
@@ -56,7 +54,7 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.9"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -88,7 +86,10 @@ nox.options.sessions = [
 nox.options.error_on_missing_interpreters = True
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+# TODO: the linting process still uses python 3.8.
+# As soon as that gets upgraded, we should be able to revert this session
+# to using the DEFAULT_PYTHON_VERSION.
+@nox.session(python="3.8")
 def lint(session):
     """Run linters.
 
@@ -105,7 +106,11 @@ def lint(session):
     session.run("flake8", "db_dtypes", "tests")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+# TODO: the owlbot-python docker image still has python 3.8 installed (
+# and only 3.8).
+# As soon as that gets upgraded, we should be able to revert this session
+# to using the DEFAULT_PYTHON_VERSION.
+@nox.session(python="3.8")
 def blacken(session):
     """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
@@ -137,7 +142,10 @@ def format(session):
     )
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+# TODO: the linting process still uses python 3.8.
+# As soon as that gets upgraded, we should be able to revert this session
+# to using the DEFAULT_PYTHON_VERSION.
+@nox.session(python="3.8")
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments")

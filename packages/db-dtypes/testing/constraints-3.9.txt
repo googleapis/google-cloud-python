@@ -1,3 +1,5 @@
 # Make sure we test with pandas 1.5.3. The Python version isn't that relevant.
-pandas==1.5.3
 numpy==1.24.0
+packaging==24.2.0
+pandas==1.5.3
+pyarrow==13.0.0

@@ -20,6 +20,8 @@ import pyarrow as pa
 import pytest
 
 import db_dtypes
+import db_dtypes.json
+
 
 # Check for minimum Pandas version.
 pytest.importorskip("pandas", minversion="1.5.0")

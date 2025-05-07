@@ -1,2 +1,0 @@
-# Make sure we test with pandas 1.2.0. The Python version isn't that relevant.
-pandas==1.2.0

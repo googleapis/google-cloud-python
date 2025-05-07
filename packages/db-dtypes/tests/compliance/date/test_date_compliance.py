@@ -117,3 +117,9 @@ class TestReshaping(base.BaseReshapingTests):
 
 class TestSetitem(base.BaseSetitemTests):
     pass
+
+
+# NDArrayBacked2DTests suite added in https://github.com/pandas-dev/pandas/pull/44974
+# v1.4.0rc0
+class Test2DCompat(base.NDArrayBacked2DTests):
+    pass
