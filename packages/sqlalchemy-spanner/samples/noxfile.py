@@ -63,6 +63,11 @@ def transaction(session):
 
 
 @nox.session()
+def isolation_level(session):
+    _sample(session)
+
+
+@nox.session()
 def stale_read(session):
     _sample(session)
 

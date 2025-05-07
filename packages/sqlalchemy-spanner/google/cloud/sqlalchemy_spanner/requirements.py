@@ -102,7 +102,10 @@ class Requirements(SuiteRequirements):  # pragma: no cover
         Returns:
             dict: isolation levels description.
         """
-        return {"default": "SERIALIZABLE", "supported": ["SERIALIZABLE", "AUTOCOMMIT"]}
+        return {
+            "default": "SERIALIZABLE",
+            "supported": ["SERIALIZABLE", "REPEATABLE READ", "AUTOCOMMIT"],
+        }
 
     @property
     def precision_numerics_enotation_large(self):

@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import os
 from typing import Optional
 from sqlalchemy import (
     text,
@@ -165,7 +165,10 @@ class TestBasics(fixtures.TablesTest):
             session.add(number)
             session.commit()
 
-        with Session(engine) as session:
+        level = "serializable"
+        if os.environ.get("SPANNER_EMULATOR_HOST", ""):
+            level = "REPEATABLE READ"
+        with Session(engine.execution_options(isolation_level=level)) as session:
             user = User(name="Test")
             session.add(user)
             session.commit()
