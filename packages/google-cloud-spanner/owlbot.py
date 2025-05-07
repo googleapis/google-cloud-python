@@ -139,6 +139,7 @@ s.move(
         "README.rst",
         ".github/release-please.yml",
         ".kokoro/test-samples-impl.sh",
+        ".kokoro/presubmit/presubmit.cfg",
     ],
 )
 
