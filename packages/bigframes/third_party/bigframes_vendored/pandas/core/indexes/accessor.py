@@ -87,7 +87,6 @@ class DatetimeProperties:
             2017-01-02 00:00:00      2
             2017-01-03 00:00:00      3
             dtype: Int64
-            dtype: Int64
 
         Returns:
             Series: Containing integers indicating the day number.
