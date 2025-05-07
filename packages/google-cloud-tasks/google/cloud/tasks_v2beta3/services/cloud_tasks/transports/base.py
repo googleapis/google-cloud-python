@@ -26,6 +26,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.tasks_v2beta3 import gapic_version as package_version
@@ -38,6 +39,9 @@ from google.cloud.tasks_v2beta3.types import task as gct_task
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
+
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CloudTasksTransport(abc.ABC):
