@@ -36,6 +36,8 @@ _BQML_PARAMS_MAPPING = {
     "holiday_region": "holidayRegion",
     "clean_spikes_and_dips": "cleanSpikesAndDips",
     "adjust_step_changes": "adjustStepChanges",
+    "forecast_limit_upper_bound": "forecastLimitUpperBound",
+    "forecast_limit_lower_bound": "forecastLimitLowerBound",
     "time_series_length_fraction": "timeSeriesLengthFraction",
     "min_time_series_length": "minTimeSeriesLength",
     "max_time_series_length": "maxTimeSeriesLength",
@@ -78,6 +80,17 @@ class ARIMAPlus(base.SupervisedTrainableWithIdColPredictor):
         adjust_step_changes (bool, default True):
             Determines whether or not to perform automatic step change detection and adjustment in the model training pipeline.
 
+        forecast_limit_upper_bound (float or None, default None):
+            The upper bound of the forecasting values. When you specify the ``forecast_limit_upper_bound`` option, all of the forecast values must be less than the specified value.
+            For example, if you set ``forecast_limit_upper_bound`` to 100, then all of the forecast values are less than 100.
+            Also, all values greater than or equal to the ``forecast_limit_upper_bound`` value are excluded from modelling.
+            The forecasting limit ensures that forecasts stay within limits.
+
+        forecast_limit_lower_bound (float or None, default None):
+            The lower bound of the forecasting values where the minimum value allowed is 0. When you specify the ``forecast_limit_lower_bound`` option, all of the forecast values must be greater than the specified value.
+            For example, if you set ``forecast_limit_lower_bound`` to 0, then all of the forecast values are larger than 0. Also, all values less than or equal to the ``forecast_limit_lower_bound`` value are excluded from modelling.
+            The forecasting limit ensures that forecasts stay within limits.
+
         time_series_length_fraction (float or None, default None):
             The fraction of the interpolated length of the time series that's used to model the time series trend component. All of the time points of the time series are used to model the non-trend component.
 
@@ -106,6 +119,8 @@ class ARIMAPlus(base.SupervisedTrainableWithIdColPredictor):
         holiday_region: Optional[str] = None,
         clean_spikes_and_dips: bool = True,
         adjust_step_changes: bool = True,
+        forecast_limit_lower_bound: Optional[float] = None,
+        forecast_limit_upper_bound: Optional[float] = None,
         time_series_length_fraction: Optional[float] = None,
         min_time_series_length: Optional[int] = None,
         max_time_series_length: Optional[int] = None,
@@ -121,6 +136,8 @@ class ARIMAPlus(base.SupervisedTrainableWithIdColPredictor):
         self.holiday_region = holiday_region
         self.clean_spikes_and_dips = clean_spikes_and_dips
         self.adjust_step_changes = adjust_step_changes
+        self.forecast_limit_upper_bound = forecast_limit_upper_bound
+        self.forecast_limit_lower_bound = forecast_limit_lower_bound
         self.time_series_length_fraction = time_series_length_fraction
         self.min_time_series_length = min_time_series_length
         self.max_time_series_length = max_time_series_length
@@ -175,6 +192,10 @@ class ARIMAPlus(base.SupervisedTrainableWithIdColPredictor):
 
         if self.include_drift:
             options["include_drift"] = True
+        if self.forecast_limit_upper_bound is not None:
+            options["forecast_limit_upper_bound"] = self.forecast_limit_upper_bound
+        if self.forecast_limit_lower_bound is not None:
+            options["forecast_limit_lower_bound"] = self.forecast_limit_lower_bound
 
         return options
 
