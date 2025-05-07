@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.10.0...v1.11.0) (2025-05-07)
+
+
+### Features
+
+* Add isolation level support and sample ([#652](https://github.com/googleapis/python-spanner-sqlalchemy/issues/652)) ([0aba318](https://github.com/googleapis/python-spanner-sqlalchemy/commit/0aba31835bc581a0a05e29b5878ba0a665686414))
+* Add SpannerPickleType ([#655](https://github.com/googleapis/python-spanner-sqlalchemy/issues/655)) ([0837542](https://github.com/googleapis/python-spanner-sqlalchemy/commit/0837542e5606ab9ea7a8765bf54524ebf9b0dd71)), closes [#654](https://github.com/googleapis/python-spanner-sqlalchemy/issues/654)
+* Support schemas in queries and dml statements ([#639](https://github.com/googleapis/python-spanner-sqlalchemy/issues/639)) ([81c154a](https://github.com/googleapis/python-spanner-sqlalchemy/commit/81c154a37b82315a8bb57319ba11272626addad3))
+
+
+### Bug Fixes
+
+* Column order in get_multi_pk_constraint ([#640](https://github.com/googleapis/python-spanner-sqlalchemy/issues/640)) ([16c87e4](https://github.com/googleapis/python-spanner-sqlalchemy/commit/16c87e4fbf1b9d5dbac0e3279cce078a2d09e4b4))
+* Include schema when creating indices ([#637](https://github.com/googleapis/python-spanner-sqlalchemy/issues/637)) ([41905e2](https://github.com/googleapis/python-spanner-sqlalchemy/commit/41905e21b5b6473d5dbf75d40db765ebf48235dc))
+
 ## [1.10.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.9.0...v1.10.0) (2025-03-17)
 
 
