@@ -830,7 +830,14 @@ class TestConnection(unittest.TestCase):
         from google.cloud.spanner_dbapi import connect
 
         role = "some_role"
-        connection = connect("test-instance", "test-database", database_role=role)
+        connection = connect(
+            "test-instance",
+            "test-database",
+            project="test-project",
+            database_role=role,
+            credentials=AnonymousCredentials(),
+            client_options={"api_endpoint": "none"},
+        )
         self.assertEqual(connection.database.database_role, role)
 
     def test_invalid_custom_client_connection(self):
