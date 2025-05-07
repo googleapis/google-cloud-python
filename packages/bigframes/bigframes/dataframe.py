@@ -609,7 +609,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _getitem_label(self, key: blocks.Label):
         col_ids = self._block.cols_matching_label(key)
         if len(col_ids) == 0:
-            raise KeyError(key)
+            raise KeyError(
+                f"{key} not found in DataFrame columns: {self._block.column_labels}"
+            )
         block = self._block.select_columns(col_ids)
         if isinstance(self.columns, pandas.MultiIndex):
             # Multiindex should drop-level if not selecting entire

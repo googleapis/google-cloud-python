@@ -118,6 +118,21 @@ class SQLGlotIR:
         new_expr = self._encapsulate_as_cte().select(*cols_expr, append=False)
         return SQLGlotIR(expr=new_expr)
 
+    def project(
+        self,
+        projected_cols: tuple[tuple[str, sge.Expression], ...],
+    ) -> SQLGlotIR:
+        projected_cols_expr = [
+            sge.Alias(
+                this=expr,
+                alias=sge.to_identifier(id, quoted=self.quoted),
+            )
+            for id, expr in projected_cols
+        ]
+        # TODO: some columns are not able to be projected into the same select.
+        select_expr = self.expr.select(*projected_cols_expr, append=True)
+        return SQLGlotIR(expr=select_expr)
+
     def _encapsulate_as_cte(
         self,
     ) -> sge.Select:

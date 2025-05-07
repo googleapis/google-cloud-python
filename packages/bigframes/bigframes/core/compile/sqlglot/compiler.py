@@ -163,6 +163,16 @@ class SQLGlotCompiler:
         )
         return child.select(selected_cols)
 
+    @_compile_node.register
+    def compile_projection(
+        self, node: nodes.ProjectionNode, child: ir.SQLGlotIR
+    ) -> ir.SQLGlotIR:
+        projected_cols: tuple[tuple[str, sge.Expression], ...] = tuple(
+            (id.sql, scalar_compiler.compile_scalar_expression(expr))
+            for expr, id in node.assignments
+        )
+        return child.project(projected_cols)
+
 
 def _replace_unsupported_ops(node: nodes.BigFrameNode):
     node = nodes.bottom_up(node, rewrite.rewrite_slice)
