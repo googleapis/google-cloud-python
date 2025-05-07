@@ -1500,8 +1500,6 @@ def images_uris() -> list[str]:
 def images_mm_df(
     images_uris, test_session: bigframes.Session, bq_connection: str
 ) -> bpd.DataFrame:
-    bigframes.options.experiments.blob = True
-
     blob_series = bpd.Series(images_uris, session=test_session).str.to_blob(
         connection=bq_connection
     )
@@ -1526,8 +1524,6 @@ def pdf_gcs_path() -> str:
 def pdf_mm_df(
     pdf_gcs_path, test_session: bigframes.Session, bq_connection: str
 ) -> bpd.DataFrame:
-    bigframes.options.experiments.blob = True
-
     return test_session.from_glob_path(
         pdf_gcs_path, name="pdf", connection=bq_connection
     )

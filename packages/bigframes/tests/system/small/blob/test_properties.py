@@ -14,14 +14,11 @@
 
 import pandas as pd
 
-import bigframes
 import bigframes.dtypes as dtypes
 import bigframes.pandas as bpd
 
 
 def test_blob_uri(images_uris: list[str], images_mm_df: bpd.DataFrame):
-    bigframes.options.experiments.blob = True
-
     actual = images_mm_df["blob_col"].blob.uri().to_pandas()
     expected = pd.Series(images_uris, name="uri")
 
@@ -31,8 +28,6 @@ def test_blob_uri(images_uris: list[str], images_mm_df: bpd.DataFrame):
 
 
 def test_blob_authorizer(images_mm_df: bpd.DataFrame, bq_connection: str):
-    bigframes.options.experiments.blob = True
-
     actual = images_mm_df["blob_col"].blob.authorizer().to_pandas()
     expected = pd.Series(
         [bq_connection.casefold(), bq_connection.casefold()], name="authorizer"
@@ -44,8 +39,6 @@ def test_blob_authorizer(images_mm_df: bpd.DataFrame, bq_connection: str):
 
 
 def test_blob_version(images_mm_df: bpd.DataFrame):
-    bigframes.options.experiments.blob = True
-
     actual = images_mm_df["blob_col"].blob.version().to_pandas()
     expected = pd.Series(["1739574332294150", "1739574332271343"], name="version")
 
@@ -55,33 +48,30 @@ def test_blob_version(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_metadata(images_mm_df: bpd.DataFrame):
-    with bigframes.option_context("experiments.blob", True):
-        actual = images_mm_df["blob_col"].blob.metadata().to_pandas()
-        expected = pd.Series(
-            [
-                (
-                    '{"content_type":"image/jpeg",'
-                    '"md5_hash":"e130ad042261a1883cd2cc06831cf748",'
-                    '"size":338390,'
-                    '"updated":1739574332000000}'
-                ),
-                (
-                    '{"content_type":"image/jpeg",'
-                    '"md5_hash":"e2ae3191ff2b809fd0935f01a537c650",'
-                    '"size":43333,'
-                    '"updated":1739574332000000}'
-                ),
-            ],
-            name="metadata",
-            dtype=dtypes.JSON_DTYPE,
-        )
-        expected.index = expected.index.astype(dtypes.INT_DTYPE)
-        pd.testing.assert_series_equal(actual, expected)
+    actual = images_mm_df["blob_col"].blob.metadata().to_pandas()
+    expected = pd.Series(
+        [
+            (
+                '{"content_type":"image/jpeg",'
+                '"md5_hash":"e130ad042261a1883cd2cc06831cf748",'
+                '"size":338390,'
+                '"updated":1739574332000000}'
+            ),
+            (
+                '{"content_type":"image/jpeg",'
+                '"md5_hash":"e2ae3191ff2b809fd0935f01a537c650",'
+                '"size":43333,'
+                '"updated":1739574332000000}'
+            ),
+        ],
+        name="metadata",
+        dtype=dtypes.JSON_DTYPE,
+    )
+    expected.index = expected.index.astype(dtypes.INT_DTYPE)
+    pd.testing.assert_series_equal(actual, expected)
 
 
 def test_blob_content_type(images_mm_df: bpd.DataFrame):
-    bigframes.options.experiments.blob = True
-
     actual = images_mm_df["blob_col"].blob.content_type().to_pandas()
     expected = pd.Series(["image/jpeg", "image/jpeg"], name="content_type")
 
@@ -91,8 +81,6 @@ def test_blob_content_type(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_md5_hash(images_mm_df: bpd.DataFrame):
-    bigframes.options.experiments.blob = True
-
     actual = images_mm_df["blob_col"].blob.md5_hash().to_pandas()
     expected = pd.Series(
         ["e130ad042261a1883cd2cc06831cf748", "e2ae3191ff2b809fd0935f01a537c650"],
@@ -105,8 +93,6 @@ def test_blob_md5_hash(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_size(images_mm_df: bpd.DataFrame):
-    bigframes.options.experiments.blob = True
-
     actual = images_mm_df["blob_col"].blob.size().to_pandas()
     expected = pd.Series([338390, 43333], name="size")
 
@@ -116,8 +102,6 @@ def test_blob_size(images_mm_df: bpd.DataFrame):
 
 
 def test_blob_updated(images_mm_df: bpd.DataFrame):
-    bigframes.options.experiments.blob = True
-
     actual = images_mm_df["blob_col"].blob.updated().to_pandas()
     expected = pd.Series(
         [

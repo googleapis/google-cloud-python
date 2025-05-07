@@ -1905,7 +1905,10 @@ class Session(
         If you have an existing BQ Object Table, use read_gbq_object_table().
 
         .. note::
-            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+            BigFrames Blob is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+            and might have limited support. For more information, see the launch stage descriptions
+            (https://cloud.google.com/products#product-launch-stages).
 
         Args:
             path (str):
@@ -1920,9 +1923,6 @@ class Session(
             bigframes.pandas.DataFrame:
                 Result BigFrames DataFrame.
         """
-        if not bigframes.options.experiments.blob:
-            raise NotImplementedError()
-
         # TODO(garrettwu): switch to pseudocolumn when b/374988109 is done.
         connection = self._create_bq_connection(connection=connection)
 
@@ -1966,7 +1966,10 @@ class Session(
         This function dosen't retrieve the object table data. If you want to read the data, use read_gbq() instead.
 
         .. note::
-            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+            BigFrames Blob is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+            and might have limited support. For more information, see the launch stage descriptions
+            (https://cloud.google.com/products#product-launch-stages).
 
         Args:
             object_table (str): name of the object table of form <PROJECT_ID>.<DATASET_ID>.<TABLE_ID>.
@@ -1976,9 +1979,6 @@ class Session(
             bigframes.pandas.DataFrame:
                 Result BigFrames DataFrame.
         """
-        if not bigframes.options.experiments.blob:
-            raise NotImplementedError()
-
         # TODO(garrettwu): switch to pseudocolumn when b/374988109 is done.
         table = self.bqclient.get_table(object_table)
         connection = table._properties["externalDataConfiguration"]["connectionId"]

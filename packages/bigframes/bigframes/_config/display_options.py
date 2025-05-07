@@ -35,6 +35,10 @@ class DisplayOptions:
     max_info_rows: Optional[int] = 200000
     memory_usage: bool = True
 
+    blob_display: bool = True
+    blob_display_width: Optional[int] = None
+    blob_display_height: Optional[int] = None
+
 
 @contextlib.contextmanager
 def pandas_repr(display_options: DisplayOptions):

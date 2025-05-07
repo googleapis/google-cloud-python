@@ -12,21 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import bigframes
 import bigframes.pandas as bpd
 
 
 def test_blob_read_url(images_mm_df: bpd.DataFrame):
-    bigframes.options.experiments.blob = True
-
     urls = images_mm_df["blob_col"].blob.read_url()
 
     assert urls.str.startswith("https://storage.googleapis.com/").all()
 
 
 def test_blob_write_url(images_mm_df: bpd.DataFrame):
-    bigframes.options.experiments.blob = True
-
     urls = images_mm_df["blob_col"].blob.write_url()
 
     assert urls.str.startswith("https://storage.googleapis.com/").all()

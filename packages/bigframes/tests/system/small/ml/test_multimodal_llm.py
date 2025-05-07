@@ -16,7 +16,6 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-import bigframes
 from bigframes.ml import llm
 import bigframes.pandas as bpd
 from tests.system import utils
@@ -26,8 +25,6 @@ from tests.system import utils
 def test_multimodal_embedding_generator_predict_default_params_success(
     images_mm_df, test_session, bq_connection
 ):
-    bigframes.options.experiments.blob = True
-
     text_embedding_model = llm.MultimodalEmbeddingGenerator(
         connection_name=bq_connection, session=test_session
     )
@@ -56,8 +53,6 @@ def test_multimodal_embedding_generator_predict_default_params_success(
 def test_gemini_text_generator_multimodal_input(
     images_mm_df: bpd.DataFrame, model_name, test_session, bq_connection
 ):
-    bigframes.options.experiments.blob = True
-
     gemini_text_generator_model = llm.GeminiTextGenerator(
         model_name=model_name, connection_name=bq_connection, session=test_session
     )
@@ -87,8 +82,6 @@ def test_gemini_text_generator_multimodal_input(
 def test_gemini_text_generator_multimodal_structured_output(
     images_mm_df: bpd.DataFrame, model_name, test_session, bq_connection
 ):
-    bigframes.options.experiments.blob = True
-
     gemini_text_generator_model = llm.GeminiTextGenerator(
         model_name=model_name, connection_name=bq_connection, session=test_session
     )

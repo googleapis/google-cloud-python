@@ -21,8 +21,6 @@ import bigframes.pandas as bpd
 def test_blob_create_from_uri_str(
     bq_connection: str, test_session: bigframes.Session, images_uris
 ):
-    bigframes.options.experiments.blob = True
-
     uri_series = bpd.Series(images_uris, session=test_session)
     blob_series = uri_series.str.to_blob(connection=bq_connection)
 
@@ -44,8 +42,6 @@ def test_blob_create_from_uri_str(
 def test_blob_create_from_glob_path(
     bq_connection: str, test_session: bigframes.Session, images_gcs_path, images_uris
 ):
-    bigframes.options.experiments.blob = True
-
     blob_df = test_session.from_glob_path(
         images_gcs_path, connection=bq_connection, name="blob_col"
     )
@@ -74,8 +70,6 @@ def test_blob_create_from_glob_path(
 def test_blob_create_read_gbq_object_table(
     bq_connection: str, test_session: bigframes.Session, images_gcs_path, images_uris
 ):
-    bigframes.options.experiments.blob = True
-
     obj_table = test_session._create_object_table(images_gcs_path, bq_connection)
 
     blob_df = test_session.read_gbq_object_table(obj_table, name="blob_col")

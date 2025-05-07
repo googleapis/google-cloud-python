@@ -15,6 +15,7 @@
 from typing import Optional
 import warnings
 
+import bigframes
 import bigframes.exceptions as bfe
 
 
@@ -26,10 +27,6 @@ class ExperimentOptions:
     def __init__(self):
         self._semantic_operators: bool = False
         self._ai_operators: bool = False
-        self._blob: bool = False
-        self._blob_display: bool = True
-        self._blob_display_width: Optional[int] = None
-        self._blob_display_height: Optional[int] = None
 
     @property
     def semantic_operators(self) -> bool:
@@ -60,41 +57,72 @@ class ExperimentOptions:
 
     @property
     def blob(self) -> bool:
-        return self._blob
+        msg = bfe.format_message(
+            "BigFrames Blob is in preview now. This flag is no longer needed."
+        )
+        warnings.warn(msg, category=bfe.ApiDeprecationWarning)
+        return True
 
     @blob.setter
     def blob(self, value: bool):
-        if value is True:
-            msg = bfe.format_message(
-                "BigFrames Blob is still under experiments. It may not work and "
-                "subject to change in the future."
-            )
-            warnings.warn(msg, category=bfe.PreviewWarning)
-        self._blob = value
+        msg = bfe.format_message(
+            "BigFrames Blob is in preview now. This flag is no longer needed."
+        )
+        warnings.warn(msg, category=bfe.ApiDeprecationWarning)
 
     @property
     def blob_display(self) -> bool:
         """Whether to display the blob content in notebook DataFrame preview. Default True."""
-        return self._blob_display
+        msg = bfe.format_message(
+            "BigFrames Blob is in preview now. The option has been moved to bigframes.options.display.blob_display."
+        )
+        warnings.warn(msg, category=bfe.ApiDeprecationWarning)
+
+        return bigframes.options.display.blob_display
 
     @blob_display.setter
     def blob_display(self, value: bool):
-        self._blob_display = value
+        msg = bfe.format_message(
+            "BigFrames Blob is in preview now. The option has been moved to bigframes.options.display.blob_display."
+        )
+        warnings.warn(msg, category=bfe.ApiDeprecationWarning)
+
+        bigframes.options.display.blob_display = value
 
     @property
     def blob_display_width(self) -> Optional[int]:
         """Width in pixels that the blob constrained to."""
-        return self._blob_display_width
+        msg = bfe.format_message(
+            "BigFrames Blob is in preview now. The option has been moved to bigframes.options.display.blob_display_width."
+        )
+        warnings.warn(msg, category=bfe.ApiDeprecationWarning)
+
+        return bigframes.options.display.blob_display_width
 
     @blob_display_width.setter
     def blob_display_width(self, value: Optional[int]):
-        self._blob_display_width = value
+        msg = bfe.format_message(
+            "BigFrames Blob is in preview now. The option has been moved to bigframes.options.display.blob_display_width."
+        )
+        warnings.warn(msg, category=bfe.ApiDeprecationWarning)
+
+        bigframes.options.display.blob_display_width = value
 
     @property
     def blob_display_height(self) -> Optional[int]:
         """Height in pixels that the blob constrained to."""
-        return self._blob_display_height
+        msg = bfe.format_message(
+            "BigFrames Blob is in preview now. The option has been moved to bigframes.options.display.blob_display_height."
+        )
+        warnings.warn(msg, category=bfe.ApiDeprecationWarning)
+
+        return bigframes.options.display.blob_display_height
 
     @blob_display_height.setter
     def blob_display_height(self, value: Optional[int]):
-        self._blob_display_height = value
+        msg = bfe.format_message(
+            "BigFrames Blob is in preview now. The option has been moved to bigframes.options.display.blob_display_height."
+        )
+        warnings.warn(msg, category=bfe.ApiDeprecationWarning)
+
+        bigframes.options.display.blob_display_height = value

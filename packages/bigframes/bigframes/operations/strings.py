@@ -288,7 +288,10 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         """Create a BigFrames Blob series from a series of URIs.
 
         .. note::
-            BigFrames Blob is still under experiments. It may not work and subject to change in the future.
+            BigFrames Blob is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+            and might have limited support. For more information, see the launch stage descriptions
+            (https://cloud.google.com/products#product-launch-stages).
 
 
         Args:
@@ -301,9 +304,6 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
             bigframes.series.Series: Blob Series.
 
         """
-        if not bigframes.options.experiments.blob:
-            raise NotImplementedError()
-
         session = self._block.session
         connection = session._create_bq_connection(connection=connection)
         return self._apply_binary_op(connection, ops.obj_make_ref_op)

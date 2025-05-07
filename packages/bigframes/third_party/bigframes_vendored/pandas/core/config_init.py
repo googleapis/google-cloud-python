@@ -84,6 +84,12 @@ Attributes:
     memory_usage (bool):
         This specifies if the memory usage of a DataFrame should be displayed when
         df.info() is called. Valid values True,False,
+    blob_display (bool):
+        Whether to display the blob content in notebook DataFrame preview. Default True.
+    blob_display_width (int or None):
+        Width in pixels that the blob constrained to.
+    blob_display_height (int or None):
+        Height in pixels that the blob constrained to.
 """
 
 sampling_options_doc = """

@@ -46,18 +46,3 @@ def test_ai_operators_set_true_shows_warning():
         options.ai_operators = True
 
     assert options.ai_operators is True
-
-
-def test_blob_default_false():
-    options = experiment_options.ExperimentOptions()
-
-    assert options.blob is False
-
-
-def test_blob_set_true_shows_warning():
-    options = experiment_options.ExperimentOptions()
-
-    with pytest.warns(bfe.PreviewWarning):
-        options.blob = True
-
-    assert options.blob is True

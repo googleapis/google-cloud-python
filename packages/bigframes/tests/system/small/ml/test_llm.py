@@ -19,7 +19,6 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-import bigframes
 from bigframes import exceptions
 from bigframes.ml import core, llm
 import bigframes.pandas as bpd
@@ -92,8 +91,6 @@ def test_text_embedding_generator_multi_cols_predict_success(
 def test_create_load_multimodal_embedding_generator_model(
     dataset_id, session, bq_connection
 ):
-    bigframes.options.experiments.blob = True
-
     mm_embedding_model = llm.MultimodalEmbeddingGenerator(
         connection_name=bq_connection, session=session
     )
@@ -840,6 +837,5 @@ def test_gemini_preview_model_warnings(model_name):
 )
 def test_text_embedding_generator_no_default_model_warning(model_class):
     message = "Since upgrading the default model can cause unintended breakages, the\ndefault model will be removed in BigFrames 3.0. Please supply an\nexplicit model to avoid this message."
-    bigframes.options.experiments.blob = True
     with pytest.warns(FutureWarning, match=message):
         model_class(model_name=None)
