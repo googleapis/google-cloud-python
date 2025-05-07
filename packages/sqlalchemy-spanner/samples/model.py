@@ -32,8 +32,10 @@ from sqlalchemy import (
     Sequence,
     TextClause,
     Index,
+    PickleType,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import SpannerPickleType
 
 
 class Base(DeclarativeBase):
@@ -64,6 +66,9 @@ class Singer(Base):
     )
     birthdate: Mapped[Optional[datetime.date]] = mapped_column(Date, nullable=True)
     picture: Mapped[Optional[bytes]] = mapped_column(LargeBinary, nullable=True)
+    preferences: Mapped[Optional[object]] = mapped_column(
+        PickleType(impl=SpannerPickleType), nullable=True
+    )
     albums: Mapped[List["Album"]] = relationship(
         back_populates="singer", cascade="all, delete-orphan"
     )

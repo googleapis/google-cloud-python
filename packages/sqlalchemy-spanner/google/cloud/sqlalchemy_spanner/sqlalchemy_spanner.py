@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import base64
 
 import pkg_resources
 import re
@@ -27,7 +28,7 @@ from google.auth.credentials import AnonymousCredentials
 from google.cloud.spanner_v1 import Client
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.sql import elements
-from sqlalchemy import ForeignKeyConstraint, types
+from sqlalchemy import ForeignKeyConstraint, types, TypeDecorator, PickleType
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.event import listens_for
@@ -76,6 +77,35 @@ def reset_connection(dbapi_conn, connection_record, reset_state=None):
 
 # register a method to get a single value of a JSON object
 OPERATORS[json_getitem_op] = operator_lookup["json_getitem_op"]
+
+
+# PickleType that can be used with Spanner.
+# Binary values are automatically encoded/decoded to/from base64.
+# Usage:
+# class User(Base):
+#     __tablename__ = 'users'
+#
+#     user_id = Column(Integer, primary_key=True)
+#     username = Column(String(50), nullable=False)
+#     preferences = Column(PickleType(impl=SpannerPickleType))
+class SpannerPickleType(TypeDecorator):
+    impl = PickleType
+
+    def bind_processor(self, dialect):
+        def process(value):
+            if value is None:
+                return None
+            return base64.standard_b64encode(value)
+
+        return process
+
+    def result_processor(self, dialect, coltype):
+        def process(value):
+            if value is None:
+                return None
+            return base64.standard_b64decode(value)
+
+        return process
 
 
 # Spanner-to-SQLAlchemy types map
