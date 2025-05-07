@@ -260,9 +260,29 @@ class FloorDivOp(base_ops.BinaryOp):
 
 floordiv_op = FloorDivOp()
 
-pow_op = base_ops.create_binary_op(name="pow", type_signature=op_typing.BINARY_NUMERIC)
 
-mod_op = base_ops.create_binary_op(name="mod", type_signature=op_typing.BINARY_NUMERIC)
+@dataclasses.dataclass(frozen=True)
+class ModOp(base_ops.BinaryOp):
+    name: typing.ClassVar[str] = "mod"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        left_type = input_types[0]
+        right_type = input_types[1]
+
+        if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
+
+        if (left_type is None or dtypes.is_numeric(left_type)) and (
+            right_type is None or dtypes.is_numeric(right_type)
+        ):
+            return dtypes.coerce_to_common(left_type, right_type)
+
+        raise TypeError(f"Cannot mod dtypes {left_type} and {right_type}")
+
+
+mod_op = ModOp()
+
+pow_op = base_ops.create_binary_op(name="pow", type_signature=op_typing.BINARY_NUMERIC)
 
 arctan2_op = base_ops.create_binary_op(
     name="arctan2", type_signature=op_typing.BINARY_REAL_NUMERIC

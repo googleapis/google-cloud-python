@@ -98,6 +98,7 @@ def _assert_series_equal(actual: pd.Series, expected: pd.Series):
         (operator.floordiv, "timedelta_col_1", "float_col"),
         (operator.mul, "timedelta_col_1", "float_col"),
         (operator.mul, "float_col", "timedelta_col_1"),
+        (operator.mod, "timedelta_col_1", "timedelta_col_2"),
     ],
 )
 def test_timedelta_binary_ops_between_series(temporal_dfs, op, col_1, col_2):
@@ -120,6 +121,7 @@ def test_timedelta_binary_ops_between_series(temporal_dfs, op, col_1, col_2):
         (operator.floordiv, "timedelta_col_1", 3),
         (operator.mul, "timedelta_col_1", 3),
         (operator.mul, "float_col", pd.Timedelta(1, "s")),
+        (operator.mod, "timedelta_col_1", pd.Timedelta(7, "s")),
     ],
 )
 def test_timedelta_binary_ops_series_and_literal(temporal_dfs, op, col, literal):
@@ -142,6 +144,7 @@ def test_timedelta_binary_ops_series_and_literal(temporal_dfs, op, col, literal)
         (operator.floordiv, "float_col", pd.Timedelta(2, "s")),
         (operator.mul, "timedelta_col_1", 3),
         (operator.mul, "float_col", pd.Timedelta(1, "s")),
+        (operator.mod, "timedelta_col_1", pd.Timedelta(7, "s")),
     ],
 )
 def test_timedelta_binary_ops_literal_and_series(temporal_dfs, op, col, literal):
