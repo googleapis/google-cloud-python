@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.40.1](https://github.com/googleapis/google-auth-library-python/compare/v2.40.0...v2.40.1) (2025-05-06)
+
+
+### Bug Fixes
+
+* Disable logging response body for async logs ([#1756](https://github.com/googleapis/google-auth-library-python/issues/1756)) ([2f0ddfe](https://github.com/googleapis/google-auth-library-python/commit/2f0ddfeb9f6c726c68beebd7eefd32c86f7f0963))
+
 ## [2.40.0](https://github.com/googleapis/google-auth-library-python/compare/v2.39.0...v2.40.0) (2025-04-29)
 
 
