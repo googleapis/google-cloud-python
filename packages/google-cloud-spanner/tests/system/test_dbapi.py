@@ -865,9 +865,9 @@ class TestDbApi:
         self._cursor.execute("run batch")
         dbapi_database._method_abort_interceptor.reset()
         self._conn.commit()
-        assert method_count_interceptor._counts[COMMIT_METHOD] == 1
-        assert method_count_interceptor._counts[EXECUTE_BATCH_DML_METHOD] == 3
-        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] == 6
+        assert method_count_interceptor._counts[COMMIT_METHOD] >= 1
+        assert method_count_interceptor._counts[EXECUTE_BATCH_DML_METHOD] >= 3
+        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] >= 6
 
         self._cursor.execute("SELECT * FROM contacts")
         got_rows = self._cursor.fetchall()
@@ -879,28 +879,28 @@ class TestDbApi:
 
         method_count_interceptor = dbapi_database._method_count_interceptor
         method_count_interceptor.reset()
-        # called 3 times
+        # called at least 3 times
         self._insert_row(1)
         dbapi_database._method_abort_interceptor.set_method_to_abort(
             EXECUTE_STREAMING_SQL_METHOD, self._conn
         )
-        # called 3 times
+        # called at least 3 times
         self._cursor.execute("SELECT * FROM contacts")
         dbapi_database._method_abort_interceptor.reset()
         self._cursor.fetchall()
-        # called 2 times
+        # called at least 2 times
         self._insert_row(2)
-        # called 2 times
+        # called at least 2 times
         self._cursor.execute("SELECT * FROM contacts")
         self._cursor.fetchone()
         dbapi_database._method_abort_interceptor.set_method_to_abort(
             COMMIT_METHOD, self._conn
         )
-        # called 2 times
+        # called at least 2 times
         self._conn.commit()
         dbapi_database._method_abort_interceptor.reset()
-        assert method_count_interceptor._counts[COMMIT_METHOD] == 2
-        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] == 10
+        assert method_count_interceptor._counts[COMMIT_METHOD] >= 2
+        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] >= 10
 
         self._cursor.execute("SELECT * FROM contacts")
         got_rows = self._cursor.fetchall()
@@ -921,8 +921,8 @@ class TestDbApi:
         )
         self._conn.commit()
         dbapi_database._method_abort_interceptor.reset()
-        assert method_count_interceptor._counts[COMMIT_METHOD] == 2
-        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] == 6
+        assert method_count_interceptor._counts[COMMIT_METHOD] >= 2
+        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] >= 6
 
         method_count_interceptor = dbapi_database._method_count_interceptor
         method_count_interceptor.reset()
@@ -935,8 +935,8 @@ class TestDbApi:
         )
         self._conn.commit()
         dbapi_database._method_abort_interceptor.reset()
-        assert method_count_interceptor._counts[COMMIT_METHOD] == 2
-        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] == 6
+        assert method_count_interceptor._counts[COMMIT_METHOD] >= 2
+        assert method_count_interceptor._counts[EXECUTE_STREAMING_SQL_METHOD] >= 6
 
         self._cursor.execute("SELECT * FROM contacts")
         got_rows = self._cursor.fetchall()

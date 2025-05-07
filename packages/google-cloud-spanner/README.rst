@@ -252,6 +252,13 @@ Connection API represents a wrap-around for Python Spanner API, written in accor
    result = cursor.fetchall()
 
 
+If using [fine-grained access controls](https://cloud.google.com/spanner/docs/access-with-fgac) you can pass a ``database_role`` argument to connect as that role:
+
+.. code:: python
+
+   connection = connect("instance-id", "database-id", database_role='your-role')
+
+
 Aborted Transactions Retry Mechanism
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

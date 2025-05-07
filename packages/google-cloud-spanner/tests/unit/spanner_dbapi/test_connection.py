@@ -826,6 +826,13 @@ class TestConnection(unittest.TestCase):
         connection = connect("test-instance", "test-database", client=client)
         self.assertTrue(connection.instance._client == client)
 
+    def test_custom_database_role(self):
+        from google.cloud.spanner_dbapi import connect
+
+        role = "some_role"
+        connection = connect("test-instance", "test-database", database_role=role)
+        self.assertEqual(connection.database.database_role, role)
+
     def test_invalid_custom_client_connection(self):
         from google.cloud.spanner_dbapi import connect
 
@@ -874,8 +881,9 @@ class _Instance(object):
         database_id="database_id",
         pool=None,
         database_dialect=DatabaseDialect.GOOGLE_STANDARD_SQL,
+        database_role=None,
     ):
-        return _Database(database_id, pool, database_dialect)
+        return _Database(database_id, pool, database_dialect, database_role)
 
 
 class _Database(object):
@@ -884,7 +892,9 @@ class _Database(object):
         database_id="database_id",
         pool=None,
         database_dialect=DatabaseDialect.GOOGLE_STANDARD_SQL,
+        database_role=None,
     ):
         self.name = database_id
         self.pool = pool
         self.database_dialect = database_dialect
+        self.database_role = database_role
