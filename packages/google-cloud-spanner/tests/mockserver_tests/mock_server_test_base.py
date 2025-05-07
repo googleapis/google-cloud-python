@@ -153,6 +153,7 @@ class MockServerTestBase(unittest.TestCase):
     def teardown_class(cls):
         if MockServerTestBase.server is not None:
             MockServerTestBase.server.stop(grace=None)
+            Client.NTH_CLIENT.reset()
             MockServerTestBase.server = None
 
     def setup_method(self, *args, **kwargs):
@@ -186,6 +187,8 @@ class MockServerTestBase(unittest.TestCase):
     def database(self) -> Database:
         if self._database is None:
             self._database = self.instance.database(
-                "test-database", pool=FixedSizePool(size=10)
+                "test-database",
+                pool=FixedSizePool(size=10),
+                enable_interceptors_in_tests=True,
             )
         return self._database

@@ -37,6 +37,6 @@ REQ_RAND_PROCESS_ID = generate_rand_uint64()
 
 def with_request_id(client_id, channel_id, nth_request, attempt, other_metadata=[]):
     req_id = f"{REQ_ID_VERSION}.{REQ_RAND_PROCESS_ID}.{client_id}.{channel_id}.{nth_request}.{attempt}"
-    all_metadata = other_metadata.copy()
+    all_metadata = (other_metadata or []).copy()
     all_metadata.append((REQ_ID_HEADER_KEY, req_id))
     return all_metadata

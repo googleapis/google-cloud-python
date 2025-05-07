@@ -70,6 +70,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_CLOUD_MONITORING_INSTALLED = False
 
+from google.cloud.spanner_v1._helpers import AtomicCounter
 
 _CLIENT_INFO = client_info.ClientInfo(client_library_version=__version__)
 EMULATOR_ENV_VAR = "SPANNER_EMULATOR_HOST"
@@ -182,6 +183,8 @@ class Client(ClientWithProject):
     SCOPE = (SPANNER_ADMIN_SCOPE,)
     """The scopes required for Google Cloud Spanner."""
 
+    NTH_CLIENT = AtomicCounter()
+
     def __init__(
         self,
         project=None,
@@ -263,6 +266,12 @@ class Client(ClientWithProject):
                 "default_transaction_options must be an instance of DefaultTransactionOptions"
             )
         self._default_transaction_options = default_transaction_options
+        self._nth_client_id = Client.NTH_CLIENT.increment()
+        self._nth_request = AtomicCounter(0)
+
+    @property
+    def _next_nth_request(self):
+        return self._nth_request.increment()
 
     @property
     def credentials(self):

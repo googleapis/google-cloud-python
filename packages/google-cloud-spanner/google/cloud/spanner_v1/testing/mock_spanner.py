@@ -22,8 +22,6 @@ from grpc_status.rpc_status import _Status
 from google.cloud.spanner_v1 import (
     TransactionOptions,
     ResultSetMetadata,
-    ExecuteSqlRequest,
-    ExecuteBatchDmlRequest,
 )
 from google.cloud.spanner_v1.testing.mock_database_admin import DatabaseAdminServicer
 import google.cloud.spanner_v1.testing.spanner_database_admin_pb2_grpc as database_admin_grpc
@@ -107,6 +105,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
 
     def BatchCreateSessions(self, request, context):
         self._requests.append(request)
+        self.mock_spanner.pop_error(context)
         sessions = []
         for i in range(request.session_count):
             sessions.append(
@@ -186,9 +185,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         self._requests.append(request)
         return self.__create_transaction(request.session, request.options)
 
-    def __maybe_create_transaction(
-        self, request: ExecuteSqlRequest | ExecuteBatchDmlRequest
-    ):
+    def __maybe_create_transaction(self, request):
         started_transaction = None
         if not request.transaction.begin == TransactionOptions():
             started_transaction = self.__create_transaction(

@@ -707,6 +707,10 @@ class AtomicCounter:
         """
         return self.__add__(n)
 
+    def reset(self):
+        with self.__lock:
+            self.__value = 0
+
 
 def _metadata_with_request_id(*args, **kwargs):
     return with_request_id(*args, **kwargs)
