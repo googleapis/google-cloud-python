@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.6...google-cloud-cloudcontrolspartner-v0.2.7) (2025-05-08)
+
+
+### Features
+
+* A new field `organization_domain` is added to message `Customer` ([d4fc92b](https://github.com/googleapis/google-cloud-python/commit/d4fc92be46fffb329fc05d463ee039321b23c432))
+* Enable partners to create, update and delete their customers ([d4fc92b](https://github.com/googleapis/google-cloud-python/commit/d4fc92be46fffb329fc05d463ee039321b23c432))
+
+
+### Documentation
+
+* Mark the enum value `EkmSolution.VIRTRU` as deprecated ([d4fc92b](https://github.com/googleapis/google-cloud-python/commit/d4fc92be46fffb329fc05d463ee039321b23c432))
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-cloudcontrolspartner-v0.2.5...google-cloud-cloudcontrolspartner-v0.2.6) (2025-03-15)
 
 

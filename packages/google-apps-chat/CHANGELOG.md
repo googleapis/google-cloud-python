@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.5...google-apps-chat-v0.2.6) (2025-05-08)
+
+
+### Features
+
+* A new method `customEmojis.create` is added ([1781daa](https://github.com/googleapis/google-cloud-python/commit/1781daa266a787f8e51575c121f247b1451806a9))
+* A new method `customEmojis.delete` is added ([1781daa](https://github.com/googleapis/google-cloud-python/commit/1781daa266a787f8e51575c121f247b1451806a9))
+* A new method `customEmojis.get` is added ([1781daa](https://github.com/googleapis/google-cloud-python/commit/1781daa266a787f8e51575c121f247b1451806a9))
+* A new method `customEmojis.list` is added ([1781daa](https://github.com/googleapis/google-cloud-python/commit/1781daa266a787f8e51575c121f247b1451806a9))
+
+
+### Documentation
+
+* A comment for field `filter` in message `.google.chat.v1.ListReactionsRequest` is changed ([1781daa](https://github.com/googleapis/google-cloud-python/commit/1781daa266a787f8e51575c121f247b1451806a9))
+* A comment for message `CustomEmoji` is changed ([1781daa](https://github.com/googleapis/google-cloud-python/commit/1781daa266a787f8e51575c121f247b1451806a9))
+
 ## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.4...google-apps-chat-v0.2.5) (2025-03-15)
 
 

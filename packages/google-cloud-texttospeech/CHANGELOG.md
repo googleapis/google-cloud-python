@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.26.0...google-cloud-texttospeech-v2.27.0) (2025-05-08)
+
+
+### Features
+
+* Support markup input for Cloud TTS Chirp 3: HD voice synthesis ([c423602](https://github.com/googleapis/google-cloud-python/commit/c423602d3a0a40119526b751d30382b0b35952d1))
+* Support pinyin/yomigana custom pronunciation encodings for cmn-cn/ja-jp ([c423602](https://github.com/googleapis/google-cloud-python/commit/c423602d3a0a40119526b751d30382b0b35952d1))
+
 ## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.25.1...google-cloud-texttospeech-v2.26.0) (2025-04-12)
 
 

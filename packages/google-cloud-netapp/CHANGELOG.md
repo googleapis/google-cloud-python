@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.22](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.21...google-cloud-netapp-v0.3.22) (2025-05-08)
+
+
+### Features
+
+* add `source_region`, `backup_region`, `source_backup_vault`, `destination_backup_vault`, `backup_vault_type` to `BackupVault` message ([baa765a](https://github.com/googleapis/google-cloud-python/commit/baa765afd28c859df2e4003fd449d70ff7f424b1))
+* add `volume_region` and `backup_region` to backup `Backup` message ([baa765a](https://github.com/googleapis/google-cloud-python/commit/baa765afd28c859df2e4003fd449d70ff7f424b1))
+
 ## [0.3.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.20...google-cloud-netapp-v0.3.21) (2025-04-17)
 
 
