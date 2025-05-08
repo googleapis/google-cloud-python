@@ -541,15 +541,16 @@ class Standard(proto.Message):
 
     Attributes:
         verify (bool):
-            Optional. Whether to verify a deployment.
+            Optional. Whether to verify a deployment via
+            ``skaffold verify``.
         predeploy (google.cloud.deploy_v1.types.Predeploy):
             Optional. Configuration for the predeploy
-            job. If this is not configured, predeploy job
-            will not be present.
+            job. If this is not configured, the predeploy
+            job will not be present.
         postdeploy (google.cloud.deploy_v1.types.Postdeploy):
             Optional. Configuration for the postdeploy
-            job. If this is not configured, postdeploy job
-            will not be present.
+            job. If this is not configured, the postdeploy
+            job will not be present.
     """
 
     verify: bool = proto.Field(
@@ -630,8 +631,8 @@ class CanaryDeployment(proto.Message):
             GatewayServiceMesh is configured for Kubernetes, then the
             range for n is 0 <= n <= 100.
         verify (bool):
-            Optional. Whether to run verify tests after
-            each percentage deployment.
+            Optional. Whether to run verify tests after each percentage
+            deployment via ``skaffold verify``.
         predeploy (google.cloud.deploy_v1.types.Predeploy):
             Optional. Configuration for the predeploy job
             of the first phase. If this is not configured,
@@ -693,8 +694,8 @@ class CustomCanaryDeployment(proto.Message):
                 manifest for this phase. These are in addition to the
                 profiles list specified in the ``DeliveryPipeline`` stage.
             verify (bool):
-                Optional. Whether to run verify tests after
-                the deployment.
+                Optional. Whether to run verify tests after the deployment
+                via ``skaffold verify``.
             predeploy (google.cloud.deploy_v1.types.Predeploy):
                 Optional. Configuration for the predeploy job
                 of this phase. If this is not configured, there
@@ -2968,10 +2969,11 @@ class DeployPolicy(proto.Message):
             Required. Rules to apply. At least one rule
             must be present.
         etag (str):
-            The weak etag of the ``Automation`` resource. This checksum
-            is computed by the server based on the value of other
-            fields, and may be sent on update and delete requests to
-            ensure the client has an up-to-date value before proceeding.
+            The weak etag of the ``DeployPolicy`` resource. This
+            checksum is computed by the server based on the value of
+            other fields, and may be sent on update and delete requests
+            to ensure the client has an up-to-date value before
+            proceeding.
     """
 
     class Invoker(proto.Enum):
