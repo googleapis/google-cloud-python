@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.3...google-cloud-modelarmor-v0.2.4) (2025-05-08)
+
+
+### Features
+
+* add`ignore_partial_invocation_failures` to message `SanitizationMetadata` ([70701c3](https://github.com/googleapis/google-cloud-python/commit/70701c37f1a9f1b439b7c7bf886ddccc030856ef))
+
+
+### Documentation
+
+* fixed the documentation for DetectionConfidenceLevel ([70701c3](https://github.com/googleapis/google-cloud-python/commit/70701c37f1a9f1b439b7c7bf886ddccc030856ef))
+
 ## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.2...google-cloud-modelarmor-v0.2.3) (2025-04-23)
 
 

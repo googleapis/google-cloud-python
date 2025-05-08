@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.14.1...grafeas-v1.15.0) (2025-05-08)
+
+
+### Features
+
+* Add support for Layer Details ([f7fc9c4](https://github.com/googleapis/google-cloud-python/commit/f7fc9c4b7432ad60fa488d6a902ab35586543dc5))
+* Add support for Secrets ([f7fc9c4](https://github.com/googleapis/google-cloud-python/commit/f7fc9c4b7432ad60fa488d6a902ab35586543dc5))
+
 ## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.14.0...grafeas-v1.14.1) (2025-03-15)
 
 

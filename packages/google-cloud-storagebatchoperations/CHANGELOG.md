@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storagebatchoperations-v0.1.1...google-cloud-storagebatchoperations-v0.1.2) (2025-05-08)
+
+
+### Documentation
+
+* A comment for field `name` in message `.google.cloud.storagebatchoperations.v1.CancelJobRequest` is changed ([6067691](https://github.com/googleapis/google-cloud-python/commit/606769101b9cdba41cf994762a30895078d1854a))
+* A comment for field `name` in message `.google.cloud.storagebatchoperations.v1.DeleteJobRequest` is changed ([6067691](https://github.com/googleapis/google-cloud-python/commit/606769101b9cdba41cf994762a30895078d1854a))
+* A comment for field `name` in message `.google.cloud.storagebatchoperations.v1.GetJobRequest` is changed ([6067691](https://github.com/googleapis/google-cloud-python/commit/606769101b9cdba41cf994762a30895078d1854a))
+* A comment for field `operation` in message `.google.cloud.storagebatchoperations.v1.OperationMetadata` is changed ([6067691](https://github.com/googleapis/google-cloud-python/commit/606769101b9cdba41cf994762a30895078d1854a))
+* A comment for field `parent` in message `.google.cloud.storagebatchoperations.v1.ListJobsRequest` is changed ([6067691](https://github.com/googleapis/google-cloud-python/commit/606769101b9cdba41cf994762a30895078d1854a))
+* A comment for method `ListJobs` in service `StorageBatchOperations` is changed ([6067691](https://github.com/googleapis/google-cloud-python/commit/606769101b9cdba41cf994762a30895078d1854a))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storagebatchoperations-v0.1.0...google-cloud-storagebatchoperations-v0.1.1) (2025-04-24)
 
 

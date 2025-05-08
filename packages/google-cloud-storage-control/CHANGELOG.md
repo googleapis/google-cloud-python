@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.3.1...google-cloud-storage-control-v1.4.0) (2025-05-08)
+
+
+### Features
+
+* Add Anywhere cache control APIs ([b47ef05](https://github.com/googleapis/google-cloud-python/commit/b47ef056e2796ce8706391b29b65132f26be7040))
+
+
+### Documentation
+
+* Added comments for Anywhere cache messages ([b47ef05](https://github.com/googleapis/google-cloud-python/commit/b47ef056e2796ce8706391b29b65132f26be7040))
+
 ## [1.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.3.0...google-cloud-storage-control-v1.3.1) (2025-03-15)
 
 

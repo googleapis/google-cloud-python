@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.7.0...google-cloud-deploy-v2.7.1) (2025-05-08)
+
+
+### Bug Fixes
+
+* correct pattern of unused resource definition, Revision ([fe6f95f](https://github.com/googleapis/google-cloud-python/commit/fe6f95fbab89079a49bd7d48bd50d9a93ef2a963))
+
+
+### Documentation
+
+* Comments updated for fields in several different resources ([fe6f95f](https://github.com/googleapis/google-cloud-python/commit/fe6f95fbab89079a49bd7d48bd50d9a93ef2a963))
+
 ## [2.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.6.3...google-cloud-deploy-v2.7.0) (2025-04-12)
 
 

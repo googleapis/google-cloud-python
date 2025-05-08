@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.7...google-apps-events-subscriptions-v0.2.0) (2025-05-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing oauth_scope https://www.googleapis.com/auth/chat.bot is removed from SubscriptionsService
+
+### Bug Fixes
+
+* An existing oauth_scope https://www.googleapis.com/auth/chat.bot is removed from SubscriptionsService ([51d848a](https://github.com/googleapis/google-cloud-python/commit/51d848a096c6341c7f76701ee6895f313c25e4be))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.6...google-apps-events-subscriptions-v0.1.7) (2025-03-15)
 
 

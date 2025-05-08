@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.30.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.30.0...google-cloud-asset-v3.30.1) (2025-05-08)
+
+
+### Documentation
+
+* fix typos in documentation ([deb14f3](https://github.com/googleapis/google-cloud-python/commit/deb14f34f821ab238692e0597fd0f7b79833fc26))
+
 ## [3.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.29.2...google-cloud-asset-v3.30.0) (2025-04-24)
 
 
