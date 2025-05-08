@@ -476,6 +476,27 @@ class Session(
     ):
         self._objects.append(weakref.ref(object))
 
+    def _read_gbq_colab(
+        self,
+        query: str,
+        # TODO: Add a callback parameter that takes some kind of Event object.
+        # TODO: Add parameter for variables for string formatting.
+        # TODO: Add dry_run parameter.
+    ) -> dataframe.DataFrame:
+        """A version of read_gbq that has the necessary default values for use in colab integrations.
+
+        This includes, no ordering, no index, no progress bar, always use string
+        formatting for embedding local variables / dataframes.
+        """
+
+        # TODO: Allow for a table ID to avoid queries like read_gbq?
+        return self._loader.read_gbq_query(
+            query=query,
+            index_col=bigframes.enums.DefaultIndexKind.NULL,
+            api_name="read_gbq_colab",
+            force_total_order=False,
+        )
+
     @overload
     def read_gbq_query(  # type: ignore[overload-overlap]
         self,

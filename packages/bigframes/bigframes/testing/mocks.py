@@ -51,6 +51,9 @@ def create_bigquery_session(
         google.auth.credentials.Credentials, instance=True
     )
 
+    bq_time = datetime.datetime.now()
+    table_time = bq_time + datetime.timedelta(minutes=1)
+
     if anonymous_dataset is None:
         anonymous_dataset = google.cloud.bigquery.DatasetReference(
             "test-project",
@@ -65,6 +68,8 @@ def create_bigquery_session(
         # Mock the location.
         table = mock.create_autospec(google.cloud.bigquery.Table, instance=True)
         table._properties = {}
+        # TODO(tswast): support tables created before and after the session started.
+        type(table).created = mock.PropertyMock(return_value=table_time)
         type(table).location = mock.PropertyMock(return_value=location)
         type(table).schema = mock.PropertyMock(return_value=table_schema)
         type(table).reference = mock.PropertyMock(
@@ -73,7 +78,10 @@ def create_bigquery_session(
         type(table).num_rows = mock.PropertyMock(return_value=1000000000)
         bqclient.get_table.return_value = table
 
-    def query_mock(query, *args, **kwargs):
+    job_configs = []
+
+    def query_mock(query, *args, job_config=None, **kwargs):
+        job_configs.append(job_config)
         query_job = mock.create_autospec(google.cloud.bigquery.QueryJob)
         type(query_job).destination = mock.PropertyMock(
             return_value=anonymous_dataset.table("test_table"),
@@ -83,7 +91,7 @@ def create_bigquery_session(
         )
 
         if query.startswith("SELECT CURRENT_TIMESTAMP()"):
-            query_job.result = mock.MagicMock(return_value=[[datetime.datetime.now()]])
+            query_job.result = mock.MagicMock(return_value=[[bq_time]])
         else:
             type(query_job).schema = mock.PropertyMock(return_value=table_schema)
 
@@ -91,7 +99,8 @@ def create_bigquery_session(
 
     existing_query_and_wait = bqclient.query_and_wait
 
-    def query_and_wait_mock(query, *args, **kwargs):
+    def query_and_wait_mock(query, *args, job_config=None, **kwargs):
+        job_configs.append(job_config)
         if query.startswith("SELECT CURRENT_TIMESTAMP()"):
             return iter([[datetime.datetime.now()]])
         else:
@@ -109,6 +118,7 @@ def create_bigquery_session(
     session._bq_connection_manager = mock.create_autospec(
         bigframes.clients.BqConnectionManager, instance=True
     )
+    session._job_configs = job_configs  # type: ignore
     return session
 
 
