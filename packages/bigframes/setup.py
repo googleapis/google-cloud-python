@@ -39,8 +39,6 @@ dependencies = [
     "gcsfs >=2023.3.0",
     "geopandas >=0.12.2",
     "google-auth >=2.15.0,<3.0",
-    "google-cloud-bigtable >=2.24.0",
-    "google-cloud-pubsub >=2.21.4",
     "google-cloud-bigquery[bqstorage,pandas] >=3.31.0",
     # 2.30 needed for arrow support.
     "google-cloud-bigquery-storage >= 2.30.0, < 3.0.0",
@@ -72,7 +70,12 @@ dependencies = [
 ]
 extras = {
     # Optional test dependencies packages. If they're missed, may skip some tests.
-    "tests": ["freezegun", "pytest-snapshot"],
+    "tests": [
+        "freezegun",
+        "pytest-snapshot",
+        "google-cloud-bigtable >=2.24.0",
+        "google-cloud-pubsub >=2.21.4",
+    ],
     # used for local engine, which is only needed for unit tests at present.
     "polars": ["polars >= 1.7.0"],
     "scikit-learn": ["scikit-learn>=1.2.2"],
