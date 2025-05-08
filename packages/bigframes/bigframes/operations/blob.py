@@ -300,6 +300,46 @@ class BlobAccessor(base.SeriesMethods):
         runtime = self._get_runtime(mode=mode, with_metadata=with_metadata)
         return runtime._apply_unary_op(ops.ToJSONString())
 
+    def exif(
+        self,
+        *,
+        connection: Optional[str] = None,
+        max_batching_rows: int = 8192,
+        container_cpu: Union[float, int] = 0.33,
+        container_memory: str = "512Mi",
+    ) -> bigframes.series.Series:
+        """Extract EXIF data. Now only support image types.
+
+        Args:
+            connection (str or None, default None): BQ connection used for function internet transactions, and the output blob if "dst" is str. If None, uses default connection of the session.
+            max_batching_rows (int, default 8,192): Max number of rows per batch send to cloud run to execute the function.
+            container_cpu (int or float, default 0.33): number of container CPUs. Possible values are [0.33, 8]. Floats larger than 1 are cast to intergers.
+            container_memory (str, default "512Mi"): container memory size. String of the format <number><unit>. Possible values are from 512Mi to 32Gi.
+
+        Returns:
+            bigframes.series.Series: JSON series of key-value pairs.
+        """
+
+        import bigframes.bigquery as bbq
+        import bigframes.blob._functions as blob_func
+
+        connection = self._resolve_connection(connection)
+        df = self.get_runtime_json_str(mode="R").to_frame()
+
+        exif_udf = blob_func.TransformFunction(
+            blob_func.exif_func_def,
+            session=self._block.session,
+            connection=connection,
+            max_batching_rows=max_batching_rows,
+            container_cpu=container_cpu,
+            container_memory=container_memory,
+        ).udf()
+
+        res = self._df_apply_udf(df, exif_udf)
+        res = bbq.parse_json(res)
+
+        return res
+
     def image_blur(
         self,
         ksize: tuple[int, int],

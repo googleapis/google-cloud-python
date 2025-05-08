@@ -108,6 +108,38 @@ AS r\"\"\"
         return self._session.read_gbq_function(udf_name)
 
 
+def exif_func(src_obj_ref_rt: str) -> str:
+    import io
+    import json
+
+    from PIL import ExifTags, Image
+    import requests
+    from requests import adapters
+
+    session = requests.Session()
+    session.mount("https://", adapters.HTTPAdapter(max_retries=3))
+
+    src_obj_ref_rt_json = json.loads(src_obj_ref_rt)
+
+    src_url = src_obj_ref_rt_json["access_urls"]["read_url"]
+
+    response = session.get(src_url, timeout=30)
+    bts = response.content
+
+    image = Image.open(io.BytesIO(bts))
+    exif_data = image.getexif()
+    exif_dict = {}
+    if exif_data:
+        for tag, value in exif_data.items():
+            tag_name = ExifTags.TAGS.get(tag, tag)
+            exif_dict[tag_name] = value
+
+    return json.dumps(exif_dict)
+
+
+exif_func_def = FunctionDef(exif_func, ["pillow", "requests"])
+
+
 # Blur images. Takes ObjectRefRuntime as JSON string. Outputs ObjectRefRuntime JSON string.
 def image_blur_func(
     src_obj_ref_rt: str, dst_obj_ref_rt: str, ksize_x: int, ksize_y: int, ext: str
