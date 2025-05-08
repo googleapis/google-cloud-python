@@ -20,7 +20,7 @@ def test_multimodal_dataframe(gcs_dst_bucket: str) -> None:
     import bigframes
 
     # Flags to control preview image/video preview size
-    bigframes.options.experiments.blob_display_width = 300
+    bigframes.options.display.blob_display_width = 300
 
     import bigframes.pandas as bpd
 
