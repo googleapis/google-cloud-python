@@ -86,7 +86,7 @@ class ManagedArrowTable:
         columns: list[pa.ChunkedArray] = []
         fields: list[schemata.SchemaItem] = []
         for name, arr in zip(table.column_names, table.columns):
-            new_arr, bf_type = _adapt_arrow_array(arr)
+            new_arr, bf_type = _adapt_chunked_array(arr)
             columns.append(new_arr)
             fields.append(schemata.SchemaItem(name, bf_type))
 
@@ -279,10 +279,26 @@ def _adapt_pandas_series(
         raise e
 
 
-def _adapt_arrow_array(
-    array: Union[pa.ChunkedArray, pa.Array]
-) -> tuple[Union[pa.ChunkedArray, pa.Array], bigframes.dtypes.Dtype]:
+def _adapt_chunked_array(
+    chunked_array: pa.ChunkedArray,
+) -> tuple[pa.ChunkedArray, bigframes.dtypes.Dtype]:
+    if len(chunked_array.chunks) == 0:
+        return _adapt_arrow_array(chunked_array.combine_chunks())
+    dtype = None
+    arrays = []
+    for chunk in chunked_array.chunks:
+        array, arr_dtype = _adapt_arrow_array(chunk)
+        arrays.append(array)
+        dtype = dtype or arr_dtype
+    assert dtype is not None
+    return pa.chunked_array(arrays), dtype
+
+
+def _adapt_arrow_array(array: pa.Array) -> tuple[pa.Array, bigframes.dtypes.Dtype]:
     """Normalize the array to managed storage types. Preverse shapes, only transforms values."""
+    if array.offset != 0:  # Offset arrays don't have all operations implemented
+        return _adapt_arrow_array(pa.concat_arrays([array]))
+
     if pa.types.is_struct(array.type):
         assert isinstance(array, pa.StructArray)
         assert isinstance(array.type, pa.StructType)
