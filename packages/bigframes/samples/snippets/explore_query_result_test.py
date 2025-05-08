@@ -14,9 +14,9 @@
 
 
 def test_bigquery_dataframes_explore_query_result() -> None:
+    # [START bigquery_dataframes_explore_query_result]
     import bigframes.pandas as bpd
 
-    # [START bigquery_dataframes_explore_query_result]
     # Load data from BigQuery
     query_or_table = "bigquery-public-data.ml_datasets.penguins"
     bq_df = bpd.read_gbq(query_or_table)
