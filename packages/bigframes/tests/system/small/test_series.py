@@ -3339,6 +3339,19 @@ def test_sort_values(scalars_df_index, scalars_pandas_df_index, ascending, na_po
     )
 
 
+def test_series_sort_values_inplace(scalars_df_index, scalars_pandas_df_index):
+    # Test needs values to be unique
+    bf_series = scalars_df_index["int64_col"].copy()
+    bf_series.sort_values(ascending=False, inplace=True)
+    bf_result = bf_series.to_pandas()
+    pd_result = scalars_pandas_df_index["int64_col"].sort_values(ascending=False)
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
 @pytest.mark.parametrize(
     ("ascending"),
     [
@@ -3351,6 +3364,18 @@ def test_sort_index(scalars_df_index, scalars_pandas_df_index, ascending):
         scalars_df_index["int64_too"].sort_index(ascending=ascending).to_pandas()
     )
     pd_result = scalars_pandas_df_index["int64_too"].sort_index(ascending=ascending)
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_series_sort_index_inplace(scalars_df_index, scalars_pandas_df_index):
+    bf_series = scalars_df_index["int64_too"].copy()
+    bf_series.sort_index(ascending=False, inplace=True)
+    bf_result = bf_series.to_pandas()
+    pd_result = scalars_pandas_df_index["int64_too"].sort_index(ascending=False)
 
     pd.testing.assert_series_equal(
         bf_result,

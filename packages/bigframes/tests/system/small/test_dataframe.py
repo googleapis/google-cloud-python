@@ -2035,6 +2035,17 @@ def test_sort_index(scalars_dfs, ascending, na_position):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_dataframe_sort_index_inplace(scalars_dfs):
+    index_column = "int64_col"
+    scalars_df, scalars_pandas_df = scalars_dfs
+    df = scalars_df.copy().set_index(index_column)
+    df.sort_index(ascending=False, inplace=True)
+    bf_result = df.to_pandas()
+
+    pd_result = scalars_pandas_df.set_index(index_column).sort_index(ascending=False)
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
 def test_df_abs(scalars_dfs_maybe_ordered):
     scalars_df, scalars_pandas_df = scalars_dfs_maybe_ordered
     columns = ["int64_col", "int64_too", "float64_col"]
@@ -2807,6 +2818,32 @@ def test_dataframe_sort_values(
     bf_result = scalars_df_index.sort_values(
         by, ascending=ascending, na_position=na_position
     ).to_pandas()
+    pd_result = scalars_pandas_df_index.sort_values(
+        by, ascending=ascending, na_position=na_position
+    )
+
+    pandas.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+@pytest.mark.parametrize(
+    ("by", "ascending", "na_position"),
+    [
+        ("int64_col", True, "first"),
+        (["bool_col", "int64_col"], True, "last"),
+    ],
+)
+def test_dataframe_sort_values_inplace(
+    scalars_df_index, scalars_pandas_df_index, by, ascending, na_position
+):
+    # Test needs values to be unique
+    bf_sorted = scalars_df_index.copy()
+    bf_sorted.sort_values(
+        by, ascending=ascending, na_position=na_position, inplace=True
+    )
+    bf_result = bf_sorted.to_pandas()
     pd_result = scalars_pandas_df_index.sort_values(
         by, ascending=ascending, na_position=na_position
     )

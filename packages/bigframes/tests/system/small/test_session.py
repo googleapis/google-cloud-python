@@ -96,16 +96,17 @@ def test_read_gbq_tokyo(
     tokyo_location: str,
 ):
     df = session_tokyo.read_gbq(scalars_table_tokyo, index_col=["rowindex"])
-    result = df.sort_index().to_pandas()
+    df.sort_index(inplace=True)
     expected = scalars_pandas_df_index
 
     # use_explicit_destination=True, otherwise might use path with no query_job
-    result = session_tokyo._executor.execute(
+    exec_result = session_tokyo._executor.execute(
         df._block.expr, use_explicit_destination=True
     )
-    assert result.query_job.location == tokyo_location
+    assert exec_result.query_job is not None
+    assert exec_result.query_job.location == tokyo_location
 
-    assert len(expected) == result.total_rows
+    assert len(expected) == exec_result.total_rows
 
 
 @pytest.mark.parametrize(

@@ -298,7 +298,13 @@ class Index(vendored_pandas_index.Index):
     def transpose(self) -> Index:
         return self
 
-    def sort_values(self, *, ascending: bool = True, na_position: str = "last"):
+    def sort_values(
+        self,
+        *,
+        inplace: bool = False,
+        ascending: bool = True,
+        na_position: str = "last",
+    ) -> Index:
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
         na_last = na_position == "last"

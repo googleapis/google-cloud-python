@@ -240,7 +240,7 @@ def recall_score(
     unique_labels = (
         bpd.concat([y_true_series, y_pred_series], join="outer")
         .drop_duplicates()
-        .sort_values()
+        .sort_values(inplace=False)
     )
     index = unique_labels.to_list()
 
@@ -277,7 +277,7 @@ def precision_score(
     unique_labels = (
         bpd.concat([y_true_series, y_pred_series], join="outer")
         .drop_duplicates()
-        .sort_values()
+        .sort_values(inplace=False)
     )
     index = unique_labels.to_list()
 

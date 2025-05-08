@@ -2213,10 +2213,11 @@ class DataFrame(generic.NDFrame):
         self,
         by: str | Sequence[str],
         *,
+        inplace: bool = False,
         ascending: bool | Sequence[bool] = True,
         kind: str = "quicksort",
-        na_position="last",
-    ) -> DataFrame:
+        na_position: Literal["first", "last"] = "last",
+    ):
         """Sort by the values along row axis.
 
         **Examples:**
@@ -2300,6 +2301,8 @@ class DataFrame(generic.NDFrame):
                 Sort ascending vs. descending. Specify list for multiple sort
                 orders.  If this is a list of bools, must match the length of
                 the by.
+            inplace (bool, default False):
+                If True, perform operation in-place.
             kind (str, default 'quicksort'):
                 Choice of sorting algorithm. Accepts 'quicksort', 'mergesort',
                 'heapsort', 'stable'. Ignored except when determining whether to
@@ -2309,8 +2312,8 @@ class DataFrame(generic.NDFrame):
              if `first`; `last` puts NaNs at the end.
 
         Returns:
-            bigframes.pandas.DataFrame:
-                DataFrame with sorted values.
+            bigframes.pandas.DataFram or None:
+                DataFrame with sorted values or None if inplace=True.
 
         Raises:
             ValueError:
@@ -2320,12 +2323,25 @@ class DataFrame(generic.NDFrame):
 
     def sort_index(
         self,
-    ) -> DataFrame:
+        *,
+        ascending: bool = True,
+        inplace: bool = False,
+        na_position: Literal["first", "last"] = "last",
+    ):
         """Sort object by labels (along an axis).
+
+        Args:
+            ascending (bool, default True)
+                Sort ascending vs. descending.
+            inplace (bool, default False):
+                Whether to modify the DataFrame rather than creating a new one.
+            na_position ({'first', 'last'}, default 'last'):
+                Puts NaNs at the beginning if `first`; `last` puts NaNs at the end.
+                Not implemented for MultiIndex.
 
         Returns:
             bigframes.pandas.DataFrame:
-                The original DataFrame sorted by the labels.
+                DataFrame with sorted values or None if inplace=True.
 
         Raises:
             ValueError:

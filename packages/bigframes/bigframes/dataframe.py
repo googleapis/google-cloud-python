@@ -2234,10 +2234,34 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         col_ids_strs: List[str] = [col_id for col_id in col_ids if col_id is not None]
         return DataFrame(self._block.set_index(col_ids_strs, append=append, drop=drop))
 
+    @overload  # type: ignore[override]
+    def sort_index(
+        self,
+        *,
+        ascending: bool = ...,
+        inplace: Literal[False] = ...,
+        na_position: Literal["first", "last"] = ...,
+    ) -> DataFrame:
+        ...
+
+    @overload
+    def sort_index(
+        self,
+        *,
+        ascending: bool = ...,
+        inplace: Literal[True] = ...,
+        na_position: Literal["first", "last"] = ...,
+    ) -> None:
+        ...
+
     @validations.requires_index
     def sort_index(
-        self, ascending: bool = True, na_position: Literal["first", "last"] = "last"
-    ) -> DataFrame:
+        self,
+        *,
+        ascending: bool = True,
+        inplace: bool = False,
+        na_position: Literal["first", "last"] = "last",
+    ) -> Optional[DataFrame]:
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
         na_last = na_position == "last"
@@ -2248,16 +2272,46 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             else order.descending_over(column, na_last)
             for column in index_columns
         ]
-        return DataFrame(self._block.order_by(ordering))
+        block = self._block.order_by(ordering)
+        if inplace:
+            self._set_block(block)
+            return None
+        else:
+            return DataFrame(block)
+
+    @overload  # type: ignore[override]
+    def sort_values(
+        self,
+        by: str | typing.Sequence[str],
+        *,
+        inplace: Literal[False] = ...,
+        ascending: bool | typing.Sequence[bool] = ...,
+        kind: str = ...,
+        na_position: typing.Literal["first", "last"] = ...,
+    ) -> DataFrame:
+        ...
+
+    @overload
+    def sort_values(
+        self,
+        by: str | typing.Sequence[str],
+        *,
+        inplace: Literal[True] = ...,
+        ascending: bool | typing.Sequence[bool] = ...,
+        kind: str = ...,
+        na_position: typing.Literal["first", "last"] = ...,
+    ) -> None:
+        ...
 
     def sort_values(
         self,
         by: str | typing.Sequence[str],
         *,
+        inplace: bool = False,
         ascending: bool | typing.Sequence[bool] = True,
         kind: str = "quicksort",
         na_position: typing.Literal["first", "last"] = "last",
-    ) -> DataFrame:
+    ) -> Optional[DataFrame]:
         if isinstance(by, (bigframes.series.Series, indexes.Index, DataFrame)):
             raise KeyError(
                 f"Invalid key type: {type(by).__name__}. Please provide valid column name(s)."
@@ -2287,7 +2341,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 if is_ascending
                 else order.descending_over(column_id, na_last)
             )
-        return DataFrame(self._block.order_by(ordering))
+        block = self._block.order_by(ordering)
+        if inplace:
+            self._set_block(block)
+            return None
+        else:
+            return DataFrame(block)
 
     def eval(self, expr: str) -> DataFrame:
         import bigframes.core.eval as bf_eval

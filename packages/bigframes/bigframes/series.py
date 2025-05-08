@@ -1538,9 +1538,39 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         return Series(block)
 
+    @typing.overload  # type: ignore[override]
     def sort_values(
-        self, *, axis=0, ascending=True, kind: str = "quicksort", na_position="last"
+        self,
+        *,
+        axis=...,
+        inplace: Literal[True] = ...,
+        ascending: bool | typing.Sequence[bool] = ...,
+        kind: str = ...,
+        na_position: typing.Literal["first", "last"] = ...,
+    ) -> None:
+        ...
+
+    @typing.overload
+    def sort_values(
+        self,
+        *,
+        axis=...,
+        inplace: Literal[False] = ...,
+        ascending: bool | typing.Sequence[bool] = ...,
+        kind: str = ...,
+        na_position: typing.Literal["first", "last"] = ...,
     ) -> Series:
+        ...
+
+    def sort_values(
+        self,
+        *,
+        axis=0,
+        inplace: bool = False,
+        ascending=True,
+        kind: str = "quicksort",
+        na_position: typing.Literal["first", "last"] = "last",
+    ) -> Optional[Series]:
         if axis != 0 and axis != "index":
             raise ValueError(f"No axis named {axis} for object type Series")
         if na_position not in ["first", "last"]:
@@ -1552,10 +1582,28 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 else order.descending_over(self._value_column, (na_position == "last"))
             ],
         )
-        return Series(block)
+        if inplace:
+            self._set_block(block)
+            return None
+        else:
+            return Series(block)
+
+    @typing.overload  # type: ignore[override]
+    def sort_index(
+        self, *, axis=..., inplace: Literal[False] = ..., ascending=..., na_position=...
+    ) -> Series:
+        ...
+
+    @typing.overload
+    def sort_index(
+        self, *, axis=0, inplace: Literal[True] = ..., ascending=..., na_position=...
+    ) -> None:
+        ...
 
     @validations.requires_index
-    def sort_index(self, *, axis=0, ascending=True, na_position="last") -> Series:
+    def sort_index(
+        self, *, axis=0, inplace: bool = False, ascending=True, na_position="last"
+    ) -> Optional[Series]:
         # TODO(tbergeron): Support level parameter once multi-index introduced.
         if axis != 0 and axis != "index":
             raise ValueError(f"No axis named {axis} for object type Series")
@@ -1570,7 +1618,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             for column in block.index_columns
         ]
         block = block.order_by(ordering)
-        return Series(block)
+        if inplace:
+            self._set_block(block)
+            return None
+        else:
+            return Series(block)
 
     @validations.requires_ordering()
     def rolling(

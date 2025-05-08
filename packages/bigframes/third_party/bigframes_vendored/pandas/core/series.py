@@ -1504,10 +1504,11 @@ class Series(NDFrame):  # type: ignore[misc]
         self,
         *,
         axis: Axis = 0,
+        inplace: bool = False,
         ascending: bool | int | Sequence[bool] | Sequence[int] = True,
         kind: str = "quicksort",
         na_position: str = "last",
-    ) -> Series | None:
+    ):
         """
         Sort by the values.
 
@@ -1581,6 +1582,8 @@ class Series(NDFrame):  # type: ignore[misc]
         Args:
             axis (0 or 'index'):
                 Unused. Parameter needed for compatibility with DataFrame.
+            inplace (bool, default False):
+                Whether to modify the Series rather than creating a new one.
             ascending (bool or list of bools, default True):
                 If True, sort values in ascending order, otherwise descending.
             kind (str, default to 'quicksort'):
@@ -1601,9 +1604,10 @@ class Series(NDFrame):  # type: ignore[misc]
         self,
         *,
         axis: Axis = 0,
+        inplace: bool = False,
         ascending: bool | Sequence[bool] = True,
         na_position: NaPosition = "last",
-    ) -> Series | None:
+    ):
         """
         Sort Series by index labels.
 
@@ -1647,6 +1651,8 @@ class Series(NDFrame):  # type: ignore[misc]
         Args:
             axis ({0 or 'index'}):
                 Unused. Parameter needed for compatibility with DataFrame.
+            inplace (bool, default False):
+                Whether to modify the Series rather than creating a new one.
             ascending (bool or list-like of bools, default True):
                 Sort ascending vs. descending. When the index is a MultiIndex the
                 sort direction can be controlled for each level individually.
