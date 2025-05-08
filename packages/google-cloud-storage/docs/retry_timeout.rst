@@ -112,8 +112,8 @@ explicit policy in your code.
 
    from google.cloud.storage.retry import DEFAULT_RETRY
 
-   # Customize retry with a deadline of 500 seconds (default=120 seconds).
-   modified_retry = DEFAULT_RETRY.with_deadline(500.0)
+   # Customize retry with a timeout of 500 seconds (default=120 seconds).
+   modified_retry = DEFAULT_RETRY.with_timeout(500.0)
    # Customize retry with an initial wait time of 1.5 (default=1.0).
    # Customize retry with a wait time multiplier per iteration of 1.2 (default=2.0).
    # Customize retry with a maximum wait time of 45.0 (default=60.0).
