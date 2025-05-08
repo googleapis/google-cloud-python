@@ -239,7 +239,7 @@ class StringMethods:
 
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def strip(self):
+    def strip(self, to_strip: typing.Optional[str] = None):
         """Remove leading and trailing characters.
 
         Strip whitespaces (including newlines) or a set of specified characters
@@ -252,21 +252,34 @@ class StringMethods:
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
-            >>> s = bpd.Series(['Ant', '  Bee ', '\\tCat\\n', bpd.NA])
+            >>> s = bpd.Series(['1. Ant.', '  2. Bee? ', '\\t3. Cat!\\n', bpd.NA])
             >>> s
-            0       Ant
-            1      Bee
-            2       Cat
+            0        1. Ant.
+            1       2. Bee?
+            2       3. Cat!
             <BLANKLINE>
             3      <NA>
             dtype: string
 
             >>> s.str.strip()
+            0    1. Ant.
+            1    2. Bee?
+            2    3. Cat!
+            3       <NA>
+            dtype: string
+
+            >>> s.str.strip('123.!? \\n\\t')
             0     Ant
             1     Bee
             2     Cat
             3    <NA>
             dtype: string
+
+        Args:
+            to_strip (str, default None):
+                Specifying the set of characters to be removed. All combinations
+                of this set of characters will be stripped. If None then
+                whitespaces are removed.
 
         Returns:
             bigframes.series.Series: Series or Index without leading
@@ -529,7 +542,7 @@ class StringMethods:
 
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def rstrip(self):
+    def rstrip(self, to_strip: typing.Optional[str] = None):
         """Remove trailing characters.
 
         Strip whitespaces (including newlines) or a set of specified characters
@@ -558,13 +571,19 @@ class StringMethods:
             3     <NA>
             dtype: string
 
+        Args:
+            to_strip (str, default None):
+                Specifying the set of characters to be removed. All combinations
+                of this set of characters will be stripped. If None then
+                whitespaces are removed.
+
         Returns:
             bigframes.series.Series: Series without trailing characters.
         """
 
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def lstrip(self):
+    def lstrip(self, to_strip: typing.Optional[str] = None):
         """Remove leading characters.
 
         Strip whitespaces (including newlines) or a set of specified characters
@@ -593,6 +612,12 @@ class StringMethods:
             <BLANKLINE>
             3    <NA>
             dtype: string
+
+        Args:
+            to_strip (str, default None):
+                Specifying the set of characters to be removed. All combinations
+                of this set of characters will be stripped. If None then
+                whitespaces are removed.
 
         Returns:
             bigframes.series.Series: Series without leading characters.

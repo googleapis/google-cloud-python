@@ -41,10 +41,6 @@ upper_op = base_ops.create_unary_op(
     name="upper", type_signature=op_typing.STRING_TRANSFORM
 )
 
-strip_op = base_ops.create_unary_op(
-    name="strip", type_signature=op_typing.STRING_TRANSFORM
-)
-
 isalnum_op = base_ops.create_unary_op(
     name="isalnum", type_signature=op_typing.STRING_PREDICATE
 )
@@ -75,14 +71,6 @@ islower_op = base_ops.create_unary_op(
 
 isupper_op = base_ops.create_unary_op(
     name="isupper", type_signature=op_typing.STRING_PREDICATE
-)
-
-rstrip_op = base_ops.create_unary_op(
-    name="rstrip", type_signature=op_typing.STRING_TRANSFORM
-)
-
-lstrip_op = base_ops.create_unary_op(
-    name="lstrip", type_signature=op_typing.STRING_TRANSFORM
 )
 
 capitalize_op = base_ops.create_unary_op(
@@ -123,6 +111,33 @@ class StrPadOp(base_ops.UnaryOp):
     length: int
     fillchar: str
     side: typing.Literal["both", "left", "right"]
+
+    def output_type(self, *input_types):
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
+
+
+@dataclasses.dataclass(frozen=True)
+class StrStripOp(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "str_strip"
+    to_strip: str
+
+    def output_type(self, *input_types):
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
+
+
+@dataclasses.dataclass(frozen=True)
+class StrLstripOp(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "str_lstrip"
+    to_strip: str
+
+    def output_type(self, *input_types):
+        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
+
+
+@dataclasses.dataclass(frozen=True)
+class StrRstripOp(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "str_rstrip"
+    to_strip: str
 
     def output_type(self, *input_types):
         return op_typing.STRING_TRANSFORM.output_type(input_types[0])

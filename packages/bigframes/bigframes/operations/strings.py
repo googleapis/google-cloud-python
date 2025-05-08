@@ -91,8 +91,10 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
     ) -> series.Series:
         return self._apply_unary_op(ops.StrSliceOp(start=start, end=stop))
 
-    def strip(self) -> series.Series:
-        return self._apply_unary_op(ops.strip_op)
+    def strip(self, to_strip: Optional[str] = None) -> series.Series:
+        return self._apply_unary_op(
+            ops.StrStripOp(to_strip=" \n\t" if to_strip is None else to_strip)
+        )
 
     def upper(self) -> series.Series:
         return self._apply_unary_op(ops.upper_op)
@@ -135,11 +137,15 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
     ) -> series.Series:
         return self._apply_unary_op(ops.isupper_op)
 
-    def rstrip(self) -> series.Series:
-        return self._apply_unary_op(ops.rstrip_op)
+    def rstrip(self, to_strip: Optional[str] = None) -> series.Series:
+        return self._apply_unary_op(
+            ops.StrRstripOp(to_strip=" \n\t" if to_strip is None else to_strip)
+        )
 
-    def lstrip(self) -> series.Series:
-        return self._apply_unary_op(ops.lstrip_op)
+    def lstrip(self, to_strip: Optional[str] = None) -> series.Series:
+        return self._apply_unary_op(
+            ops.StrLstripOp(to_strip=" \n\t" if to_strip is None else to_strip)
+        )
 
     def repeat(self, repeats: int) -> series.Series:
         return self._apply_unary_op(ops.StrRepeatOp(repeats=repeats))

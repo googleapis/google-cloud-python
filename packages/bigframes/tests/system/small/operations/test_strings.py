@@ -265,6 +265,28 @@ def test_strip(scalars_dfs):
     )
 
 
+@pytest.mark.parametrize(
+    ("to_strip"),
+    [
+        pytest.param(None, id="none"),
+        pytest.param(" ", id="space"),
+        pytest.param(" \n", id="space_newline"),
+        pytest.param("123.!? \n\t", id="multiple_chars"),
+    ],
+)
+def test_strip_w_to_strip(to_strip):
+    s = bpd.Series(["1. Ant.  ", "2. Bee!\n", "3. Cat?\t", bpd.NA])
+    pd_s = s.to_pandas()
+
+    bf_result = s.str.strip(to_strip=to_strip).to_pandas()
+    pd_result = pd_s.str.strip(to_strip=to_strip)
+
+    assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
 def test_upper(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
@@ -387,12 +409,56 @@ def test_rstrip(scalars_dfs):
     )
 
 
+@pytest.mark.parametrize(
+    ("to_strip"),
+    [
+        pytest.param(None, id="none"),
+        pytest.param(" ", id="space"),
+        pytest.param(" \n", id="space_newline"),
+        pytest.param("123.!? \n\t", id="multiple_chars"),
+    ],
+)
+def test_rstrip_w_to_strip(to_strip):
+    s = bpd.Series(["1. Ant.  ", "2. Bee!\n", "3. Cat?\t", bpd.NA])
+    pd_s = s.to_pandas()
+
+    bf_result = s.str.rstrip(to_strip=to_strip).to_pandas()
+    pd_result = pd_s.str.rstrip(to_strip=to_strip)
+
+    assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
 def test_lstrip(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bpd.Series = scalars_df[col_name]
     bf_result = bf_series.str.lstrip().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.lstrip()
+
+    assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+@pytest.mark.parametrize(
+    ("to_strip"),
+    [
+        pytest.param(None, id="none"),
+        pytest.param(" ", id="space"),
+        pytest.param(" \n", id="space_newline"),
+        pytest.param("123.!? \n\t", id="multiple_chars"),
+    ],
+)
+def test_lstrip_w_to_strip(to_strip):
+    s = bpd.Series(["1. Ant.  ", "2. Bee!\n", "3. Cat?\t", bpd.NA])
+    pd_s = s.to_pandas()
+
+    bf_result = s.str.lstrip(to_strip=to_strip).to_pandas()
+    pd_result = pd_s.str.lstrip(to_strip=to_strip)
 
     assert_series_equal(
         pd_result,

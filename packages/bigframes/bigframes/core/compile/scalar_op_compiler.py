@@ -456,9 +456,19 @@ def upper_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.StringValue, x).upper()
 
 
-@scalar_op_compiler.register_unary_op(ops.strip_op)
-def strip_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.StringValue, x).strip()
+@scalar_op_compiler.register_unary_op(ops.StrLstripOp, pass_op=True)
+def str_lstrip_op_impl(x: ibis_types.Value, op: ops.StrStripOp):
+    return str_lstrip_op(x, to_strip=op.to_strip)
+
+
+@scalar_op_compiler.register_unary_op(ops.StrRstripOp, pass_op=True)
+def str_rstrip_op_impl(x: ibis_types.Value, op: ops.StrRstripOp):
+    return str_rstrip_op(x, to_strip=op.to_strip)
+
+
+@scalar_op_compiler.register_unary_op(ops.StrStripOp, pass_op=True)
+def str_strip_op_impl(x: ibis_types.Value, op: ops.StrStripOp):
+    return str_strip_op(x, to_strip=op.to_strip)
 
 
 @scalar_op_compiler.register_unary_op(ops.isnumeric_op)
@@ -517,16 +527,6 @@ def isupper_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.StringValue, x).re_search(r"\p{Lu}") & ~typing.cast(
         ibis_types.StringValue, x
     ).re_search(r"\p{Ll}|\p{Lt}")
-
-
-@scalar_op_compiler.register_unary_op(ops.rstrip_op)
-def rstrip_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.StringValue, x).rstrip()
-
-
-@scalar_op_compiler.register_unary_op(ops.lstrip_op)
-def lstrip_op_impl(x: ibis_types.Value):
-    return typing.cast(ibis_types.StringValue, x).lstrip()
 
 
 @scalar_op_compiler.register_unary_op(ops.capitalize_op)
@@ -2077,3 +2077,24 @@ def obj_make_ref(uri: str, authorizer: str) -> _OBJ_REF_IBIS_DTYPE:  # type: ign
 @ibis_udf.scalar.builtin(name="OBJ.GET_ACCESS_URL")
 def obj_get_access_url(obj_ref: _OBJ_REF_IBIS_DTYPE, mode: ibis_dtypes.String) -> ibis_dtypes.JSON:  # type: ignore
     """Get access url (as ObjectRefRumtime JSON) from ObjectRef."""
+
+
+@ibis_udf.scalar.builtin(name="ltrim")
+def str_lstrip_op(  # type: ignore[empty-body]
+    x: ibis_dtypes.String, to_strip: ibis_dtypes.String
+) -> ibis_dtypes.String:
+    """Remove leading and trailing characters."""
+
+
+@ibis_udf.scalar.builtin(name="rtrim")
+def str_rstrip_op(  # type: ignore[empty-body]
+    x: ibis_dtypes.String, to_strip: ibis_dtypes.String
+) -> ibis_dtypes.String:
+    """Remove leading and trailing characters."""
+
+
+@ibis_udf.scalar.builtin(name="trim")
+def str_strip_op(  # type: ignore[empty-body]
+    x: ibis_dtypes.String, to_strip: ibis_dtypes.String
+) -> ibis_dtypes.String:
+    """Remove leading and trailing characters."""
