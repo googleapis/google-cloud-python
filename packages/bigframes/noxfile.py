@@ -784,12 +784,12 @@ def notebook(session: nox.Session):
         # The experimental notebooks imagine features that don't yet
         # exist or only exist as temporary prototypes.
         "notebooks/experimental/ai_operators.ipynb",
-        "notebooks/experimental/multimodal_dataframe.ipynb",
         "notebooks/experimental/semantic_operators.ipynb",
         # The notebooks that are added for more use cases, such as backing a
         # blog post, which may take longer to execute and need not be
         # continuously tested.
         "notebooks/apps/synthetic_data_generation.ipynb",
+        "notebooks/multimodal/multimodal_dataframe.ipynb",  # too slow
     ]
 
     # TODO: remove exception for Python 3.13 cloud run adds a runtime for it (internal issue 333742751)
