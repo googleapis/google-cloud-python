@@ -630,7 +630,9 @@ def snippetgen(session):
 
 @nox.session(python="3.10")
 def docs(session):
-    """Build the docs."""
+    """Build the docs for this generator."""
+
+    session.install("-e", ".")
 
     session.install(
         # We need to pin to specific versions of the `sphinxcontrib-*` packages
@@ -643,21 +645,68 @@ def docs(session):
         "sphinxcontrib-qthelp==1.0.3",
         "sphinxcontrib-serializinghtml==1.1.5",
         "sphinx==4.5.0",
-        "sphinx_rtd_theme",
+        "sphinx-rtd-theme",
     )
-    session.install(".")
 
-    # Build the docs!
-    session.run("rm", "-rf", "docs/_build/")
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
         "sphinx-build",
-        "-W",
+        "-W",  # warnings as errors
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
         "-b",
-        "html",
+        "html",  # builder
         "-d",
-        "docs/_build/doctrees",
-        "docs/",
-        "docs/_build/html/",
+        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        # paths to build:
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )
+
+
+@nox.session(python="3.10")
+def docfx(session):
+    """Build the docfx yaml files for this library."""
+
+    session.install("-e", ".")
+    session.install(
+        # We need to pin to specific versions of the `sphinxcontrib-*` packages
+        # which still support sphinx 4.x.
+        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/344
+        # and https://github.com/googleapis/sphinx-docfx-yaml/issues/345.
+        "sphinxcontrib-applehelp==1.0.4",
+        "sphinxcontrib-devhelp==1.0.2",
+        "sphinxcontrib-htmlhelp==2.0.1",
+        "sphinxcontrib-qthelp==1.0.3",
+        "sphinxcontrib-serializinghtml==1.1.5",
+        "gcp-sphinx-docfx-yaml",
+        "sphinx-rtd-theme",
+    )
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-T",  # show full traceback on exception
+        "-N",  # no colors
+        "-D",  # Override configuration values set in the conf.py file
+        (
+            "extensions=sphinx.ext.autodoc,"
+            "sphinx.ext.autosummary,"
+            "docfx_yaml.extension,"
+            "sphinx.ext.intersphinx,"
+            "sphinx.ext.coverage,"
+            "sphinx.ext.napoleon,"
+            "sphinx.ext.todo,"
+            "sphinx.ext.viewcode,"
+            "recommonmark"
+        ),
+        "-b",
+        "html",  # builder
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        # paths to build:
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
     )
 
 
