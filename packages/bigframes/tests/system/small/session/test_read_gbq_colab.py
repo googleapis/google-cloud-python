@@ -14,6 +14,9 @@
 
 """System tests for read_gbq_colab helper functions."""
 
+import pandas
+import pandas.testing
+
 
 def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_session):
     df = maybe_ordered_session._read_gbq_colab(
@@ -39,3 +42,66 @@ def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_sessi
         total_rows += len(batch.index)
 
     assert total_rows > 0
+
+
+def test_read_gbq_colab_includes_formatted_scalars(session):
+    pyformat_args = {
+        "some_integer": 123,
+        "some_string": "This could be dangerous, but we esape it",
+        # This is not a supported type, but ignored if not referenced.
+        "some_object": object(),
+    }
+    df = session._read_gbq_colab(
+        """
+        SELECT {some_integer} as some_integer,
+        {some_string} as some_string,
+        '{{escaped}}' as escaped
+        """,
+        pyformat_args=pyformat_args,
+    )
+    result = df.to_pandas()
+    pandas.testing.assert_frame_equal(
+        result,
+        pandas.DataFrame(
+            {
+                "some_integer": pandas.Series([123], dtype=pandas.Int64Dtype()),
+                "some_string": pandas.Series(
+                    ["This could be dangerous, but we esape it"],
+                    dtype="string[pyarrow]",
+                ),
+                "escaped": pandas.Series(["{escaped}"], dtype="string[pyarrow]"),
+            }
+        ),
+    )
+
+
+def test_read_gbq_colab_includes_formatted_bigframes_dataframe(session):
+    pyformat_args = {
+        # TODO: put a bigframes DataFrame here.
+        "some_integer": 123,
+        "some_string": "This could be dangerous, but we esape it",
+        # This is not a supported type, but ignored if not referenced.
+        "some_object": object(),
+    }
+    df = session._read_gbq_colab(
+        """
+        SELECT {some_integer} as some_integer,
+        {some_string} as some_string,
+        '{{escaped}}' as escaped
+        """,
+        pyformat_args=pyformat_args,
+    )
+    result = df.to_pandas()
+    pandas.testing.assert_frame_equal(
+        result,
+        pandas.DataFrame(
+            {
+                "some_integer": pandas.Series([123], dtype=pandas.Int64Dtype()),
+                "some_string": pandas.Series(
+                    ["This could be dangerous, but we esape it"],
+                    dtype="string[pyarrow]",
+                ),
+                "escaped": pandas.Series(["{escaped}"], dtype="string[pyarrow]"),
+            }
+        ),
+    )
