@@ -83,7 +83,7 @@ def _get_transitive_schema_fields(fields):
     results = []
     for field in fields:
         results += [field]
-        if field.field_type in STRUCT_FIELD_TYPES:
+        if field.field_type in STRUCT_FIELD_TYPES and field.mode != "REPEATED":
             sub_fields = [
                 SchemaField.from_api_repr(
                     dict(f.to_api_repr(), name=f"{field.name}.{f.name}")
