@@ -35,30 +35,24 @@ class LocalScanExecutor(semi_executor.SemiExecutor):
             return None
 
         # TODO: Can support some slicing, sorting
-        def iterator_supplier():
-            offsets_col = (
-                node.offsets_col.sql if (node.offsets_col is not None) else None
-            )
-            arrow_table = node.local_data_source.to_pyarrow_table(
-                offsets_col=offsets_col
-            )
-            if peek:
-                arrow_table = arrow_table.slice(0, peek)
+        offsets_col = node.offsets_col.sql if (node.offsets_col is not None) else None
+        arrow_table = node.local_data_source.to_pyarrow_table(offsets_col=offsets_col)
+        if peek:
+            arrow_table = arrow_table.slice(0, peek)
 
-            needed_cols = [item.source_id for item in node.scan_list.items]
-            if offsets_col is not None:
-                needed_cols.append(offsets_col)
+        needed_cols = [item.source_id for item in node.scan_list.items]
+        if offsets_col is not None:
+            needed_cols.append(offsets_col)
 
-            arrow_table = arrow_table.select(needed_cols)
-            arrow_table = arrow_table.rename_columns([id.sql for id in node.ids])
-            yield from arrow_table.to_batches()
+        arrow_table = arrow_table.select(needed_cols)
+        arrow_table = arrow_table.rename_columns([id.sql for id in node.ids])
 
         total_rows = node.row_count
         if (peek is not None) and (total_rows is not None):
             total_rows = min(peek, total_rows)
 
         return executor.ExecuteResult(
-            arrow_batches=iterator_supplier,
+            arrow_batches=arrow_table.to_batches(),
             schema=plan.schema,
             query_job=None,
             total_bytes=None,

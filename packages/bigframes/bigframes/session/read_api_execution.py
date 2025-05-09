@@ -13,7 +13,7 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any, Iterator, Optional
 
 from google.cloud import bigquery_storage_v1
 import pyarrow as pa
@@ -66,26 +66,25 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
             table_mod_options["snapshot_time"] = snapshot_time = snapshot_time
         table_mods = bq_storage_types.ReadSession.TableModifiers(**table_mod_options)
 
-        def iterator_supplier():
-            requested_session = bq_storage_types.stream.ReadSession(
-                table=bq_table.to_bqstorage(),
-                data_format=bq_storage_types.DataFormat.ARROW,
-                read_options=read_options,
-                table_modifiers=table_mods,
-            )
-            # Single stream to maintain ordering
-            request = bq_storage_types.CreateReadSessionRequest(
-                parent=f"projects/{self.project}",
-                read_session=requested_session,
-                max_stream_count=1,
-            )
-            session = self.bqstoragereadclient.create_read_session(
-                request=request, retry=None
-            )
+        requested_session = bq_storage_types.stream.ReadSession(
+            table=bq_table.to_bqstorage(),
+            data_format=bq_storage_types.DataFormat.ARROW,
+            read_options=read_options,
+            table_modifiers=table_mods,
+        )
+        # Single stream to maintain ordering
+        request = bq_storage_types.CreateReadSessionRequest(
+            parent=f"projects/{self.project}",
+            read_session=requested_session,
+            max_stream_count=1,
+        )
+        session = self.bqstoragereadclient.create_read_session(
+            request=request, retry=None
+        )
 
-            if not session.streams:
-                return iter([])
-
+        if not session.streams:
+            batches: Iterator[pa.RecordBatch] = iter([])
+        else:
             reader = self.bqstoragereadclient.read_rows(
                 session.streams[0].name, retry=None
             )
@@ -97,10 +96,10 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
                     pa_batch.columns, names=[id.sql for id in node.ids]
                 )
 
-            return map(process_page, rowstream.pages)
+            batches = map(process_page, rowstream.pages)
 
         return executor.ExecuteResult(
-            arrow_batches=iterator_supplier,
+            arrow_batches=batches,
             schema=plan.schema,
             query_job=None,
             total_bytes=None,

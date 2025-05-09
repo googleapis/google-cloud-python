@@ -172,33 +172,6 @@ class ArrayValue:
     def supports_fast_peek(self) -> bool:
         return bigframes.core.tree_properties.can_fast_peek(self.node)
 
-    def as_cached(
-        self: ArrayValue,
-        cache_table: google.cloud.bigquery.Table,
-        ordering: Optional[orderings.RowOrdering],
-    ) -> ArrayValue:
-        """
-        Replace the node with an equivalent one that references a table where the value has been materialized to.
-        """
-        table = nodes.GbqTable.from_table(cache_table)
-        source = nodes.BigqueryDataSource(
-            table, ordering=ordering, n_rows=cache_table.num_rows
-        )
-        # Assumption: GBQ cached table uses field name as bq column name
-        scan_list = nodes.ScanList(
-            tuple(
-                nodes.ScanItem(field.id, field.dtype, field.id.name)
-                for field in self.node.fields
-            )
-        )
-        node = nodes.CachedTableNode(
-            original_node=self.node,
-            source=source,
-            table_session=self.session,
-            scan_list=scan_list,
-        )
-        return ArrayValue(node)
-
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
         return self.schema.get_type(key)
 

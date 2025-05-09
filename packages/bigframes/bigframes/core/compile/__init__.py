@@ -13,9 +13,13 @@
 # limitations under the License.
 from __future__ import annotations
 
-from bigframes.core.compile.api import SQLCompiler, test_only_ibis_inferred_schema
+from bigframes.core.compile.api import test_only_ibis_inferred_schema
+from bigframes.core.compile.compiler import compile_sql
+from bigframes.core.compile.configs import CompileRequest, CompileResult
 
 __all__ = [
-    "SQLCompiler",
     "test_only_ibis_inferred_schema",
+    "compile_sql",
+    "CompileRequest",
+    "CompileResult",
 ]

@@ -18,7 +18,7 @@ import abc
 import dataclasses
 import functools
 import itertools
-from typing import Callable, Iterator, Literal, Mapping, Optional, Sequence, Union
+from typing import Iterator, Literal, Mapping, Optional, Sequence, Union
 
 from google.cloud import bigquery
 import pandas as pd
@@ -32,7 +32,7 @@ import bigframes.session._io.pandas as io_pandas
 
 @dataclasses.dataclass(frozen=True)
 class ExecuteResult:
-    arrow_batches: Callable[[], Iterator[pyarrow.RecordBatch]]
+    arrow_batches: Iterator[pyarrow.RecordBatch]
     schema: bigframes.core.schema.ArraySchema
     query_job: Optional[bigquery.QueryJob] = None
     total_bytes: Optional[int] = None
@@ -42,7 +42,7 @@ class ExecuteResult:
         # Need to provide schema if no result rows, as arrow can't infer
         # If ther are rows, it is safest to infer schema from batches.
         # Any discrepencies between predicted schema and actual schema will produce errors.
-        batches = iter(self.arrow_batches())
+        batches = iter(self.arrow_batches)
         peek_it = itertools.islice(batches, 0, 1)
         peek_value = list(peek_it)
         # TODO: Enforce our internal schema on the table for consistency
@@ -63,7 +63,7 @@ class ExecuteResult:
         assert (max_results is None) or (max_results > 0)
         batch_iter: Iterator[
             Union[pyarrow.Table, pyarrow.RecordBatch]
-        ] = self.arrow_batches()
+        ] = self.arrow_batches
         if max_results is not None:
             batch_iter = pyarrow_utils.truncate_pyarrow_iterable(
                 batch_iter, max_results
