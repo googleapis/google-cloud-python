@@ -300,6 +300,77 @@ class DatetimeProperties:
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
+    def days(self):
+        """The numebr of days for each element
+
+        **Examples:**
+
+            >>> import pandas as pd
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series([pd.Timedelta("4d3m2s1us")])
+            >>> s
+            0    4 days 00:03:02.000001
+            dtype: duration[us][pyarrow]
+            >>> s.dt.days
+            0    4
+            dtype: Int64
+        """
+
+    @property
+    def seconds(self):
+        """Number of seconds (>= 0 and less than 1 day) for each element.
+
+        **Examples:**
+
+            >>> import pandas as pd
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series([pd.Timedelta("4d3m2s1us")])
+            >>> s
+            0    4 days 00:03:02.000001
+            dtype: duration[us][pyarrow]
+            >>> s.dt.seconds
+            0    182
+            dtype: Int64
+        """
+
+    @property
+    def microseconds(self):
+        """Number of microseconds (>= 0 and less than 1 second) for each element.
+
+        **Examples:**
+
+            >>> import pandas as pd
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series([pd.Timedelta("4d3m2s1us")])
+            >>> s
+            0    4 days 00:03:02.000001
+            dtype: duration[us][pyarrow]
+            >>> s.dt.microseconds
+            0    1
+            dtype: Int64
+        """
+
+    def total_seconds(self):
+        """Return total duration of each element expressed in seconds.
+
+        **Examples:**
+
+            >>> import pandas as pd
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series([pd.Timedelta("1d1m1s1us")])
+            >>> s
+            0    1 days 00:01:01.000001
+            dtype: duration[us][pyarrow]
+            >>> s.dt.total_seconds()
+            0    86461.000001
+            dtype: Float64
+        """
+
+    @property
     def tz(self):
         """Return the timezone.
 
