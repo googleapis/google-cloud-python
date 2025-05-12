@@ -978,6 +978,53 @@ class TestBigQuery(unittest.TestCase):
         )
         self.assertIsNone(reference_table3.table_constraints, None)
 
+    def test_update_table_autodetect_schema(self):
+        dataset = self.temp_dataset(_make_dataset_id("bq_update_table_test"))
+
+        # Create an external table, restrict schema to one field
+        TABLE_NAME = "test_table"
+        set_schema = [bigquery.SchemaField("username", "STRING", mode="NULLABLE")]
+        table_arg = Table(dataset.table(TABLE_NAME))
+
+        # Create an external_config and include it in the table arguments
+        external_config = bigquery.ExternalConfig(bigquery.ExternalSourceFormat.AVRO)
+        external_config.source_uris = SOURCE_URIS_AVRO
+        external_config.reference_file_schema_uri = REFERENCE_FILE_SCHEMA_URI_AVRO
+        external_config.schema = set_schema
+        table_arg.external_data_configuration = external_config
+
+        self.assertFalse(_table_exists(table_arg))
+
+        table = helpers.retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+        self.assertTrue(_table_exists(table))
+
+        self.assertEqual(table.schema, set_schema)
+
+        # Update table with schema autodetection
+        updated_table_arg = Table(dataset.table(TABLE_NAME))
+
+        # Update the external_config and include it in the table arguments
+        updated_external_config = copy.deepcopy(external_config)
+        updated_external_config.autodetect = True
+        updated_external_config.schema = None
+        updated_table_arg.external_data_configuration = updated_external_config
+
+        # PATCH call with autodetect_schema=True to trigger schema inference
+        updated_table = Config.CLIENT.update_table(
+            updated_table_arg, ["external_data_configuration"], autodetect_schema=True
+        )
+
+        # The updated table should have a schema inferred from the reference
+        # file, which has all four fields.
+        expected_schema = [
+            bigquery.SchemaField("username", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("tweet", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("timestamp", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("likes", "INTEGER", mode="NULLABLE"),
+        ]
+        self.assertEqual(updated_table.schema, expected_schema)
+
     @staticmethod
     def _fetch_single_page(table, selected_fields=None):
         iterator = Config.CLIENT.list_rows(table, selected_fields=selected_fields)

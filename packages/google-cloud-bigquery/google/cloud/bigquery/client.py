@@ -1389,6 +1389,7 @@ class Client(ClientWithProject):
         self,
         table: Table,
         fields: Sequence[str],
+        autodetect_schema: bool = False,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
     ) -> Table:
@@ -1419,6 +1420,10 @@ class Client(ClientWithProject):
             fields (Sequence[str]):
                 The fields of ``table`` to change, spelled as the
                 :class:`~google.cloud.bigquery.table.Table` properties.
+            autodetect_schema (bool):
+                Specifies if the schema of the table should be autodetected when
+                updating the table from the underlying source. Only applicable
+                for external tables.
             retry (Optional[google.api_core.retry.Retry]):
                 A description of how to retry the API call.
             timeout (Optional[float]):
@@ -1438,12 +1443,18 @@ class Client(ClientWithProject):
         path = table.path
         span_attributes = {"path": path, "fields": fields}
 
+        if autodetect_schema:
+            query_params = {"autodetect_schema": True}
+        else:
+            query_params = {}
+
         api_response = self._call_api(
             retry,
             span_name="BigQuery.updateTable",
             span_attributes=span_attributes,
             method="PATCH",
             path=path,
+            query_params=query_params,
             data=partial,
             headers=headers,
             timeout=timeout,

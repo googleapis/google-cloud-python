@@ -2385,7 +2385,7 @@ class TestClient(unittest.TestCase):
             "resourceTags": {"123456789012/key": "value"},
         }
         conn.api_request.assert_called_once_with(
-            method="PATCH", data=sent, path="/" + path, timeout=7.5
+            method="PATCH", data=sent, path="/" + path, timeout=7.5, query_params={}
         )
         self.assertEqual(updated_table.description, table.description)
         self.assertEqual(updated_table.friendly_name, table.friendly_name)
@@ -2439,6 +2439,7 @@ class TestClient(unittest.TestCase):
             path="/%s" % path,
             data={"newAlphaProperty": "unreleased property"},
             timeout=DEFAULT_TIMEOUT,
+            query_params={},
         )
         self.assertEqual(
             updated_table._properties["newAlphaProperty"], "unreleased property"
@@ -2475,6 +2476,7 @@ class TestClient(unittest.TestCase):
             path="/%s" % path,
             data={"view": {"useLegacySql": True}},
             timeout=DEFAULT_TIMEOUT,
+            query_params={},
         )
         self.assertEqual(updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
 
@@ -2567,9 +2569,10 @@ class TestClient(unittest.TestCase):
                 "schema": schema_resource,
             },
             timeout=DEFAULT_TIMEOUT,
+            query_params={},
         )
 
-    def test_update_table_w_schema_None(self):
+    def test_update_table_w_schema_None_autodetect_schema(self):
         # Simulate deleting schema:  not sure if back-end will actually
         # allow this operation, but the spec says it is optional.
         path = "projects/%s/datasets/%s/tables/%s" % (
@@ -2611,7 +2614,9 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            updated_table = client.update_table(table, ["schema"])
+            updated_table = client.update_table(
+                table, ["schema"], autodetect_schema=True
+            )
 
         final_attributes.assert_called_once_with(
             {"path": "/%s" % path, "fields": ["schema"]}, client, None
@@ -2623,6 +2628,7 @@ class TestClient(unittest.TestCase):
         sent = {"schema": {"fields": None}}
         self.assertEqual(req[1]["data"], sent)
         self.assertEqual(req[1]["path"], "/%s" % path)
+        self.assertEqual(req[1]["query_params"], {"autodetect_schema": True})
         self.assertEqual(len(updated_table.schema), 0)
 
     def test_update_table_delete_property(self):
