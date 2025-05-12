@@ -5,6 +5,25 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.32.0](https://github.com/googleapis/python-bigquery/compare/v3.31.0...v3.32.0) (2025-05-12)
+
+
+### Features
+
+* Add dataset access policy version attribute ([#2169](https://github.com/googleapis/python-bigquery/issues/2169)) ([b7656b9](https://github.com/googleapis/python-bigquery/commit/b7656b97c1bd6c204d0508b1851d114719686655))
+* Add preview support for incremental results ([#2145](https://github.com/googleapis/python-bigquery/issues/2145)) ([22b80bb](https://github.com/googleapis/python-bigquery/commit/22b80bba9d0bed319fd3102e567906c9b458dd02))
+* Add WRITE_TRUNCATE_DATA enum ([#2166](https://github.com/googleapis/python-bigquery/issues/2166)) ([4692747](https://github.com/googleapis/python-bigquery/commit/46927479085f13fd326e3f2388f60dfdd37f7f69))
+* Adds condition class and assoc. unit tests ([#2159](https://github.com/googleapis/python-bigquery/issues/2159)) ([a69d6b7](https://github.com/googleapis/python-bigquery/commit/a69d6b796d2edb6ba453980c9553bc9b206c5a6e))
+* Support BigLakeConfiguration (managed Iceberg tables) ([#2162](https://github.com/googleapis/python-bigquery/issues/2162)) ([a1c8e9a](https://github.com/googleapis/python-bigquery/commit/a1c8e9aaf60986924868d54a0ab0334e77002a39))
+* Update the AccessEntry class with a new condition attribute and unit tests ([#2163](https://github.com/googleapis/python-bigquery/issues/2163)) ([7301667](https://github.com/googleapis/python-bigquery/commit/7301667272dfbdd04b1a831418a9ad2d037171fb))
+
+
+### Bug Fixes
+
+* `query()` now warns when `job_id` is set and the default `job_retry` is ignored ([#2167](https://github.com/googleapis/python-bigquery/issues/2167)) ([ca1798a](https://github.com/googleapis/python-bigquery/commit/ca1798aaee2d5905fe688d3097f8ee5c989da333))
+* Empty record dtypes ([#2147](https://github.com/googleapis/python-bigquery/issues/2147)) ([77d7173](https://github.com/googleapis/python-bigquery/commit/77d71736fcc006d3ab8f8ba17955ad5f06e21876))
+* Table iterator should not use bqstorage when page_size is not None ([#2154](https://github.com/googleapis/python-bigquery/issues/2154)) ([e89a707](https://github.com/googleapis/python-bigquery/commit/e89a707b162182ededbf94cc9a0f7594bc2be475))
+
 ## [3.31.0](https://github.com/googleapis/python-bigquery/compare/v3.30.0...v3.31.0) (2025-03-20)
 
 
