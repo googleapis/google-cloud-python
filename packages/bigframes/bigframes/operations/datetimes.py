@@ -21,11 +21,11 @@ import bigframes_vendored.pandas.core.arrays.datetimelike as vendored_pandas_dat
 import bigframes_vendored.pandas.core.indexes.accessor as vendordt
 import pandas
 
-from bigframes import dtypes
+from bigframes import dataframe, dtypes, series
 from bigframes.core import log_adapter
+from bigframes.core.reshape import concat
 import bigframes.operations as ops
 import bigframes.operations.base
-import bigframes.series as series
 
 _ONE_DAY = pandas.Timedelta("1d")
 _ONE_SECOND = pandas.Timedelta("1s")
@@ -68,6 +68,15 @@ class DatetimeMethods(
     @property
     def month(self) -> series.Series:
         return self._apply_unary_op(ops.month_op)
+
+    def isocalendar(self) -> dataframe.DataFrame:
+        years = self._apply_unary_op(ops.iso_year_op)
+        weeks = self._apply_unary_op(ops.iso_week_op)
+        days = self._apply_unary_op(ops.iso_day_op)
+
+        result = concat.concat([years, weeks, days], axis=1)
+        result.columns = pandas.Index(["year", "week", "day"])
+        return result
 
     # Time accessors
     @property

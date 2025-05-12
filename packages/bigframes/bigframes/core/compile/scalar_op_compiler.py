@@ -667,6 +667,22 @@ def date_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.TimestampValue, x).date()
 
 
+@scalar_op_compiler.register_unary_op(ops.iso_day_op)
+def iso_day_op_impl(x: ibis_types.Value):
+    # Plus 1 because iso day of week uses 1-based indexing
+    return dayofweek_op_impl(x) + 1
+
+
+@scalar_op_compiler.register_unary_op(ops.iso_week_op)
+def iso_week_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.TimestampValue, x).week_of_year()
+
+
+@scalar_op_compiler.register_unary_op(ops.iso_year_op)
+def iso_year_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.TimestampValue, x).iso_year()
+
+
 @scalar_op_compiler.register_unary_op(ops.dayofweek_op)
 def dayofweek_op_impl(x: ibis_types.Value):
     return (
