@@ -137,8 +137,8 @@ def generate_library(api_root: str, generator_input: str, output: str, library_i
                     "service-yaml",
                     "retry-config",
                     "release-level",
-                    "default-version",
-                    "non-default-versions",
+                    "default-proto-package",
+                    "reference-doc-includes",
                     "documentation-uri",
                 ]
                 generator_options = []
