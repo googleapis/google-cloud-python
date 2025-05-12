@@ -1492,7 +1492,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             raise AttributeError(key)
         elif hasattr(pandas.Series, key):
             log_adapter.submit_pandas_labels(
-                self._block.expr.session.bqclient, self.__class__.__name__, key
+                self._block.session.bqclient, self.__class__.__name__, key
             )
             raise AttributeError(
                 textwrap.dedent(

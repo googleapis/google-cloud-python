@@ -172,7 +172,6 @@ class GbqDataLoader:
         self,
         pandas_dataframe: pandas.DataFrame,
         method: Literal["load", "stream", "write"],
-        api_name: str,
     ) -> dataframe.DataFrame:
         # TODO: Push this into from_pandas, along with index flag
         from bigframes import dataframe
@@ -186,7 +185,7 @@ class GbqDataLoader:
         managed_data = local_data.ManagedArrowTable.from_pandas(prepared_df)
 
         if method == "load":
-            array_value = self.load_data(managed_data, api_name=api_name)
+            array_value = self.load_data(managed_data)
         elif method == "stream":
             array_value = self.stream_data(managed_data)
         elif method == "write":
@@ -202,9 +201,7 @@ class GbqDataLoader:
         )
         return dataframe.DataFrame(block)
 
-    def load_data(
-        self, data: local_data.ManagedArrowTable, api_name: Optional[str] = None
-    ) -> core.ArrayValue:
+    def load_data(self, data: local_data.ManagedArrowTable) -> core.ArrayValue:
         """Load managed data into bigquery"""
         ordering_col = guid.generate_guid("load_offsets_")
 
@@ -227,8 +224,6 @@ class GbqDataLoader:
         job_config.parquet_options = parquet_options
 
         job_config.schema = bq_schema
-        if api_name:
-            job_config.labels = {"bigframes-api": api_name}
 
         load_table_destination = self._storage_manager.create_temp_table(
             bq_schema, [ordering_col]
@@ -368,7 +363,6 @@ class GbqDataLoader:
         columns: Iterable[str] = ...,
         names: Optional[Iterable[str]] = ...,
         max_results: Optional[int] = ...,
-        api_name: str = ...,
         use_cache: bool = ...,
         filters: third_party_pandas_gbq.FiltersType = ...,
         enable_snapshot: bool = ...,
@@ -390,7 +384,6 @@ class GbqDataLoader:
         columns: Iterable[str] = ...,
         names: Optional[Iterable[str]] = ...,
         max_results: Optional[int] = ...,
-        api_name: str = ...,
         use_cache: bool = ...,
         filters: third_party_pandas_gbq.FiltersType = ...,
         enable_snapshot: bool = ...,
@@ -411,7 +404,6 @@ class GbqDataLoader:
         columns: Iterable[str] = (),
         names: Optional[Iterable[str]] = None,
         max_results: Optional[int] = None,
-        api_name: str = "read_gbq_table",
         use_cache: bool = True,
         filters: third_party_pandas_gbq.FiltersType = (),
         enable_snapshot: bool = True,
@@ -543,7 +535,6 @@ class GbqDataLoader:
                 query,
                 index_col=index_cols,
                 columns=columns,
-                api_name=api_name,
                 use_cache=use_cache,
                 dry_run=dry_run,
             )
@@ -595,7 +586,6 @@ class GbqDataLoader:
             bqclient=self._bqclient,
             table=table,
             index_cols=index_cols,
-            api_name=api_name,
             # If non in strict ordering mode, don't go through overhead of scanning index column(s) to determine if unique
             metadata_only=not self._scan_index_uniqueness,
         )
@@ -718,7 +708,6 @@ class GbqDataLoader:
         columns: Iterable[str] = ...,
         configuration: Optional[Dict] = ...,
         max_results: Optional[int] = ...,
-        api_name: str = ...,
         use_cache: Optional[bool] = ...,
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[False] = ...,
@@ -735,7 +724,6 @@ class GbqDataLoader:
         columns: Iterable[str] = ...,
         configuration: Optional[Dict] = ...,
         max_results: Optional[int] = ...,
-        api_name: str = ...,
         use_cache: Optional[bool] = ...,
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[True] = ...,
@@ -751,7 +739,6 @@ class GbqDataLoader:
         columns: Iterable[str] = (),
         configuration: Optional[Dict] = None,
         max_results: Optional[int] = None,
-        api_name: str = "read_gbq_query",
         use_cache: Optional[bool] = None,
         filters: third_party_pandas_gbq.FiltersType = (),
         dry_run: bool = False,
@@ -817,7 +804,6 @@ class GbqDataLoader:
         destination, query_job = self._query_to_destination(
             query,
             cluster_candidates=[],
-            api_name=api_name,
             configuration=configuration,
         )
 
@@ -845,7 +831,6 @@ class GbqDataLoader:
             index_col=index_col,
             columns=columns,
             use_cache=configuration["query"]["useQueryCache"],
-            api_name=api_name,
             force_total_order=force_total_order,
             # max_results and filters are omitted because they are already
             # handled by to_query(), above.
@@ -855,7 +840,6 @@ class GbqDataLoader:
         self,
         query: str,
         cluster_candidates: List[str],
-        api_name: str,
         configuration: dict = {"query": {"useQueryCache": True}},
         do_clustering=True,
     ) -> Tuple[Optional[bigquery.TableReference], bigquery.QueryJob]:
@@ -863,11 +847,9 @@ class GbqDataLoader:
         # bother trying to do a CREATE TEMP TABLE ... AS SELECT ... statement.
         dry_run_config = bigquery.QueryJobConfig()
         dry_run_config.dry_run = True
-        _, dry_run_job = self._start_query(
-            query, job_config=dry_run_config, api_name=api_name
-        )
+        _, dry_run_job = self._start_query(query, job_config=dry_run_config)
         if dry_run_job.statement_type != "SELECT":
-            _, query_job = self._start_query(query, api_name=api_name)
+            _, query_job = self._start_query(query)
             return query_job.destination, query_job
 
         # Create a table to workaround BigQuery 10 GB query results limit. See:
@@ -905,7 +887,6 @@ class GbqDataLoader:
                 query,
                 job_config=job_config,
                 timeout=timeout,
-                api_name=api_name,
             )
             return query_job.destination, query_job
         except google.api_core.exceptions.BadRequest:
@@ -913,7 +894,7 @@ class GbqDataLoader:
             # tables as the destination. For example, if the query has a
             # top-level ORDER BY, this conflicts with our ability to cluster
             # the table by the index column(s).
-            _, query_job = self._start_query(query, timeout=timeout, api_name=api_name)
+            _, query_job = self._start_query(query, timeout=timeout)
             return query_job.destination, query_job
 
     def _start_query(
@@ -921,7 +902,6 @@ class GbqDataLoader:
         sql: str,
         job_config: Optional[google.cloud.bigquery.QueryJobConfig] = None,
         timeout: Optional[float] = None,
-        api_name: Optional[str] = None,
     ) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
         """
         Starts BigQuery query job and waits for results.
@@ -939,7 +919,6 @@ class GbqDataLoader:
             sql,
             job_config=job_config,
             timeout=timeout,
-            api_name=api_name,
         )
         assert query_job is not None
         return iterator, query_job

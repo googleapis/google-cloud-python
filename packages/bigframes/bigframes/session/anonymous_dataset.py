@@ -43,7 +43,6 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
         self.dataset = bf_io_bigquery.create_bq_dataset_reference(
             self.bqclient,
             location=self._location,
-            api_name="session-__init__",
         )
 
         self.session_id = session_id

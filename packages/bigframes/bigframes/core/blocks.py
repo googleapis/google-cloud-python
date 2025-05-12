@@ -2644,9 +2644,8 @@ T1 AS (
 SELECT {select_columns_csv} FROM T1
 """
         # The only ways this code is used is through df.apply(axis=1) cope path
-        # TODO: Stop using internal API
         destination, query_job = self.session._loader._query_to_destination(
-            json_sql, cluster_candidates=[ordering_column_name], api_name="apply"
+            json_sql, cluster_candidates=[ordering_column_name]
         )
         if not destination:
             raise ValueError(f"Query job {query_job} did not produce result table")

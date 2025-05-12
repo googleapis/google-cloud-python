@@ -48,7 +48,6 @@ _MAX_CLUSTER_COLUMNS = 4
 def create_job_configs_labels(
     job_configs_labels: Optional[Dict[str, str]],
     api_methods: typing.List[str],
-    api_name: Optional[str] = None,
 ) -> Dict[str, str]:
     if job_configs_labels is None:
         job_configs_labels = {}
@@ -57,9 +56,6 @@ def create_job_configs_labels(
     # they are preserved.
     for key, value in bigframes.options.compute.extra_query_labels.items():
         job_configs_labels[key] = value
-
-    if api_name is not None:
-        job_configs_labels["bigframes-api"] = api_name
 
     if api_methods and "bigframes-api" not in job_configs_labels:
         job_configs_labels["bigframes-api"] = api_methods[0]
@@ -202,7 +198,7 @@ def format_option(key: str, value: Union[bool, str]) -> str:
     return f"{key}={repr(value)}"
 
 
-def add_and_trim_labels(job_config, api_name: Optional[str] = None):
+def add_and_trim_labels(job_config):
     """
     Add additional labels to the job configuration and trim the total number of labels
     to ensure they do not exceed the maximum limit allowed by BigQuery, which is 64
@@ -212,7 +208,6 @@ def add_and_trim_labels(job_config, api_name: Optional[str] = None):
     job_config.labels = create_job_configs_labels(
         job_configs_labels=job_config.labels,
         api_methods=api_methods,
-        api_name=api_name,
     )
 
 
@@ -223,7 +218,6 @@ def start_query_with_client(
     location: Optional[str] = None,
     project: Optional[str] = None,
     timeout: Optional[float] = None,
-    api_name: Optional[str] = None,
     metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
     *,
     query_with_job: bool = True,
@@ -234,7 +228,7 @@ def start_query_with_client(
     try:
         # Note: Ensure no additional labels are added to job_config after this point,
         # as `add_and_trim_labels` ensures the label count does not exceed 64.
-        add_and_trim_labels(job_config, api_name=api_name)
+        add_and_trim_labels(job_config)
         if not query_with_job:
             results_iterator = bq_client.query_and_wait(
                 sql,
@@ -308,7 +302,6 @@ def create_bq_dataset_reference(
     bq_client: bigquery.Client,
     location=None,
     project=None,
-    api_name: str = "unknown",
 ) -> bigquery.DatasetReference:
     """Create and identify dataset(s) for temporary BQ resources.
 
@@ -337,7 +330,6 @@ def create_bq_dataset_reference(
         location=location,
         job_config=job_config,
         project=project,
-        api_name=api_name,
     )
 
     # The anonymous dataset is used by BigQuery to write query results and

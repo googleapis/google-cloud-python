@@ -44,11 +44,8 @@ from pandas._typing import (
 )
 
 import bigframes._config as config
-import bigframes.core.blocks
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
-import bigframes.core.reshape
-import bigframes.core.tools
 import bigframes.dataframe
 import bigframes.enums
 import bigframes.series

@@ -231,7 +231,6 @@ def test_start_query_with_client_labels_length_limit_met(
         sql,
         job_config,
         timeout=timeout,
-        api_name=api_name,
     )
 
     assert job_config.labels is not None

@@ -263,7 +263,6 @@ class BigQueryCachingExecutor(executor.Executor):
             self.bqclient,
             export_data_statement,
             job_config=bigquery.QueryJobConfig(),
-            api_name=f"dataframe-to_{format.lower()}",
             metrics=self.metrics,
         )
         return query_job
@@ -313,7 +312,6 @@ class BigQueryCachingExecutor(executor.Executor):
         self,
         sql: str,
         job_config: Optional[bq_job.QueryJobConfig] = None,
-        api_name: Optional[str] = None,
         query_with_job: bool = True,
     ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
         """
@@ -333,7 +331,6 @@ class BigQueryCachingExecutor(executor.Executor):
                 self.bqclient,
                 sql,
                 job_config=job_config,
-                api_name=api_name,
                 metrics=self.metrics,
                 query_with_job=query_with_job,
             )
@@ -477,7 +474,6 @@ class BigQueryCachingExecutor(executor.Executor):
         _, query_job = self._run_execute_query(
             sql,
             job_config=job_config,
-            api_name="cached",
         )
         assert query_job is not None
         query_job.result()

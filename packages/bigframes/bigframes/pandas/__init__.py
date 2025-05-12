@@ -27,6 +27,7 @@ import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetim
 import pandas
 
 import bigframes._config as config
+from bigframes.core import log_adapter
 import bigframes.core.blocks
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
@@ -199,6 +200,7 @@ def get_default_session_id() -> str:
     return get_global_session().session_id
 
 
+@log_adapter.method_logger
 def clean_up_by_session_id(
     session_id: str,
     location: Optional[str] = None,
@@ -245,7 +247,6 @@ def clean_up_by_session_id(
             session.bqclient,
             location=location,
             project=project,
-            api_name="clean_up_by_session_id",
         )
 
     bigframes.session._io.bigquery.delete_tables_matching_session_id(
@@ -322,31 +323,33 @@ if resource is not None:
         except Exception:
             pass
 
-# Use __all__ to let type checkers know what is part of the public API.
-__all__ = [
-    # Functions
-    "clean_up_by_session_id",
-    "concat",
-    "cut",
-    "get_default_session_id",
-    "get_dummies",
-    "merge",
-    "qcut",
-    "read_csv",
-    "read_gbq",
-    "read_gbq_function",
-    "read_gbq_model",
-    "read_gbq_object_table",
-    "read_gbq_query",
-    "read_gbq_table",
-    "read_json",
-    "read_pandas",
-    "read_parquet",
-    "read_pickle",
-    "remote_function",
-    "to_datetime",
-    "to_timedelta",
-    "from_glob_path",
+_functions = [
+    clean_up_by_session_id,
+    concat,
+    cut,
+    get_default_session_id,
+    get_dummies,
+    merge,
+    qcut,
+    read_csv,
+    read_gbq,
+    read_gbq_function,
+    read_gbq_model,
+    read_gbq_object_table,
+    read_gbq_query,
+    read_gbq_table,
+    read_json,
+    read_pandas,
+    read_parquet,
+    read_pickle,
+    remote_function,
+    to_datetime,
+    to_timedelta,
+    from_glob_path,
+]
+
+_function_names = [_function.__name__ for _function in _functions]
+_other_names = [
     # pandas dtype attributes
     "NA",
     "BooleanDtype",
@@ -371,3 +374,12 @@ __all__ = [
     "reset_session",
     "udf",
 ]
+
+# Use __all__ to let type checkers know what is part of the public API.
+__all__ = _function_names + _other_names
+
+_module = sys.modules[__name__]
+
+for _function in _functions:
+    _decorated_object = log_adapter.method_logger(_function, custom_base_name="pandas")
+    setattr(_module, _function.__name__, _decorated_object)

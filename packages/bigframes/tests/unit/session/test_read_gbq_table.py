@@ -91,6 +91,6 @@ def test_infer_unique_columns(index_cols, primary_keys, values_distinct, expecte
     )
     table._properties["location"] = session._location
 
-    result = bf_read_gbq_table.infer_unique_columns(bqclient, table, index_cols, "")
+    result = bf_read_gbq_table.infer_unique_columns(bqclient, table, index_cols)
 
     assert result == expected

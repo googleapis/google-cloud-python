@@ -29,7 +29,7 @@ def test_read_gbq_colab_includes_label():
             continue
         label_values.extend(config.labels.values())
 
-    assert "read_gbq_colab" in label_values
+    assert "session-read_gbq_colab" in label_values
 
 
 def test_read_gbq_colab_includes_formatted_values_in_dry_run():
