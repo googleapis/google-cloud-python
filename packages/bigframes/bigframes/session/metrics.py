@@ -40,16 +40,15 @@ class ExecutionMetrics:
     ):
         if query_job is None:
             assert row_iterator is not None
-            if (row_iterator.total_bytes_processed is None) or (
-                row_iterator.query is None
-            ):
+            total_bytes_processed = getattr(row_iterator, "total_bytes_processed", None)
+            query = getattr(row_iterator, "query", None)
+            if total_bytes_processed is None or query is None:
                 return
-            query_char_count = len(row_iterator.query)
-            bytes_processed = row_iterator.total_bytes_processed
+
             self.execution_count += 1
-            self.query_char_count += query_char_count
-            self.bytes_processed += bytes_processed
-            write_stats_to_disk(query_char_count, bytes_processed)
+            self.query_char_count += len(query)
+            self.bytes_processed += total_bytes_processed
+            write_stats_to_disk(len(query), total_bytes_processed)
             return
 
         stats = get_performance_stats(query_job)
