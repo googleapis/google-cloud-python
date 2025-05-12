@@ -25,7 +25,7 @@ def llm_remote_text_pandas_df():
     return pd.DataFrame(
         {
             "prompt": [
-                "Please do sentiment analysis on the following text and only output a number from 0 to 5where 0 means sadness, 1 means joy, 2 means love, 3 means anger, 4 means fear, and 5 means surprise. Text: i feel beautifully emotional knowing that these women of whom i knew just a handful were holding me and my baba on our journey",
+                "Please do sentiment analysis on the following text and only output a number from 0 to 5 where 0 means sadness, 1 means joy, 2 means love, 3 means anger, 4 means fear, and 5 means surprise. Text: i feel beautifully emotional knowing that these women of whom i knew just a handful were holding me and my baba on our journey",
                 "Please do sentiment analysis on the following text and only output a number from 0 to 5 where 0 means sadness, 1 means joy, 2 means love, 3 means anger, 4 means fear, and 5 means surprise. Text: i was feeling a little vain when i did this one",
                 "Please do sentiment analysis on the following text and only output a number from 0 to 5 where 0 means sadness, 1 means joy, 2 means love, 3 means anger, 4 means fear, and 5 means surprise. Text: a father of children killed in an accident",
             ],
@@ -43,6 +43,7 @@ def llm_remote_text_df(session, llm_remote_text_pandas_df):
     (
         "gemini-1.5-pro-002",
         "gemini-1.5-flash-002",
+        "gemini-2.0-flash-001",
     ),
 )
 def test_llm_gemini_configure_fit(
