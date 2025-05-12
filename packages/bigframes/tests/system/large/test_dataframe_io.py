@@ -18,7 +18,7 @@ import pytest
 import bigframes
 
 WIKIPEDIA_TABLE = "bigquery-public-data.samples.wikipedia"
-LARGE_TABLE_OPTION = "bigquery.allow_large_results"
+LARGE_TABLE_OPTION = "compute.allow_large_results"
 
 
 def test_to_pandas_batches_raise_when_large_result_not_allowed(session):

@@ -86,6 +86,12 @@ class ComputeOptions:
         ai_ops_threshold_autofail (bool):
             Guards against unexpected processing of large amount of rows by semantic operators.
             When set to True, the operation automatically fails without asking for user inputs.
+
+        allow_large_results (bool):
+            Specifies whether query results can exceed 10 GB. Defaults to False. Setting this
+            to False (the default) restricts results to 10 GB for potentially faster execution;
+            BigQuery will raise an error if this limit is exceeded. Setting to True removes
+            this result size limit.
     """
 
     maximum_bytes_billed: Optional[int] = None
@@ -97,7 +103,9 @@ class ComputeOptions:
     semantic_ops_threshold_autofail = False
 
     ai_ops_confirmation_threshold: Optional[int] = 0
-    ai_ops_threshold_autofail = False
+    ai_ops_threshold_autofail: bool = False
+
+    allow_large_results: Optional[bool] = None
 
     def assign_extra_query_labels(self, **kwargs: Any) -> None:
         """

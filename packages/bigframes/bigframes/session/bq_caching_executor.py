@@ -61,7 +61,7 @@ class OutputSpec:
 
 def _get_default_output_spec() -> OutputSpec:
     return OutputSpec(
-        require_bq_table=bigframes.options.bigquery.allow_large_results, cluster_cols=()
+        require_bq_table=bigframes.options._allow_large_results, cluster_cols=()
     )
 
 
@@ -157,9 +157,6 @@ class BigQueryCachingExecutor(executor.Executor):
         ordered: bool = True,
         use_explicit_destination: Optional[bool] = None,
     ) -> executor.ExecuteResult:
-        if use_explicit_destination is None:
-            use_explicit_destination = bigframes.options.bigquery.allow_large_results
-
         if bigframes.options.compute.enable_multi_query_execution:
             self._simplify_with_caching(array_value)
 
@@ -553,6 +550,14 @@ class BigQueryCachingExecutor(executor.Executor):
         else:
             size_bytes = None
 
+        if size_bytes is not None and size_bytes >= MAX_SMALL_RESULT_BYTES:
+            msg = bfe.format_message(
+                "The query result size has exceeded 10 GB. In BigFrames 2.0 and "
+                "later, you might need to manually set `allow_large_results=True` in "
+                "the IO method or adjust the BigFrames option: "
+                "`bigframes.options.compute.allow_large_results=True`."
+            )
+            warnings.warn(msg, FutureWarning)
         # Runs strict validations to ensure internal type predictions and ibis are completely in sync
         # Do not execute these validations outside of testing suite.
         if "PYTEST_CURRENT_TEST" in os.environ:

@@ -64,7 +64,7 @@ def test_progress_bar_scalar_allow_large_results(
     capsys.readouterr()  # clear output
 
     with bf.option_context(
-        "display.progress_bar", "terminal", "bigquery.allow_large_results", "True"
+        "display.progress_bar", "terminal", "compute.allow_large_results", "True"
     ):
         penguins_df_default_index["body_mass_g"].head(10).mean()
 

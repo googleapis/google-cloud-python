@@ -19,10 +19,8 @@ from __future__ import annotations
 from typing import Literal, Optional
 import warnings
 
-import google.api_core.exceptions
 import google.auth.credentials
 
-import bigframes.constants
 import bigframes.enums
 import bigframes.exceptions as bfe
 
@@ -239,21 +237,34 @@ class BigQueryOptions:
     @property
     def allow_large_results(self) -> bool:
         """
-        Sets the flag to allow or disallow query results larger than 10 GB.
+        DEPRECATED: Checks the legacy global setting for allowing large results.
+        Use ``bpd.options.compute.allow_large_results`` instead.
 
-        The default setting for this flag is True, which allows queries to return results
-        exceeding 10 GB by creating an explicit destination table. If set to False, it
-        restricts the result size to 10 GB, and BigQuery will raise an error if this limit
-        is exceeded.
+        Warning: Accessing ``bpd.options.bigquery.allow_large_results`` is deprecated
+        and this property will be removed in a future version. The configuration for
+        handling large results has moved.
 
         Returns:
-            bool: True if large results are allowed with an explicit destination table,
-            False if results are limited to 10 GB and errors are raised when exceeded.
+            bool: The value of the deprecated setting.
         """
         return self._allow_large_results
 
     @allow_large_results.setter
     def allow_large_results(self, value: bool):
+        warnings.warn(
+            "Setting `bpd.options.bigquery.allow_large_results` is deprecated, "
+            "and will be removed in the future. "
+            "Please use `bpd.options.compute.allow_large_results = <value>` instead. "
+            "The `bpd.options.bigquery.allow_large_results` option is ignored if "
+            "`bpd.options.compute.allow_large_results` is set.",
+            FutureWarning,
+            stacklevel=2,
+        )
+        if self._session_started and self._allow_large_results != value:
+            raise ValueError(
+                SESSION_STARTED_MESSAGE.format(attribute="allow_large_results")
+            )
+
         self._allow_large_results = value
 
     @property

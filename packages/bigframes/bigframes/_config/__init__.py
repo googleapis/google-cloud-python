@@ -150,6 +150,24 @@ class Options:
         """
         return self._local.bigquery_options is not None
 
+    @property
+    def _allow_large_results(self) -> bool:
+        """The effective 'allow_large_results' setting.
+
+        This value is `self.compute.allow_large_results` if set (not `None`),
+        otherwise it defaults to `self.bigquery.allow_large_results`.
+
+        Returns:
+            bool:
+                Whether large query results are permitted.
+                - `True`: The BigQuery result size limit (e.g., 10 GB) is removed.
+                - `False`: Results are restricted to this limit (potentially faster).
+                BigQuery will raise an error if this limit is exceeded.
+        """
+        if self.compute.allow_large_results is None:
+            return self.bigquery.allow_large_results
+        return self.compute.allow_large_results
+
 
 options = Options()
 """Global options for default session."""

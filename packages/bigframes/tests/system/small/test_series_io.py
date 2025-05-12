@@ -19,7 +19,7 @@ import bigframes.series
 
 
 def test_to_pandas_override_global_option(scalars_df_index):
-    with bigframes.option_context("bigquery.allow_large_results", True):
+    with bigframes.option_context("compute.allow_large_results", True):
 
         bf_series = scalars_df_index["int64_col"]
 

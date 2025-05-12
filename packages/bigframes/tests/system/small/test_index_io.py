@@ -15,7 +15,7 @@ import bigframes
 
 
 def test_to_pandas_override_global_option(scalars_df_index):
-    with bigframes.option_context("bigquery.allow_large_results", True):
+    with bigframes.option_context("compute.allow_large_results", True):
 
         bf_index = scalars_df_index.index
 
@@ -39,7 +39,7 @@ def test_to_pandas_dry_run(scalars_df_index):
 
 
 def test_to_numpy_override_global_option(scalars_df_index):
-    with bigframes.option_context("bigquery.allow_large_results", True):
+    with bigframes.option_context("compute.allow_large_results", True):
 
         bf_index = scalars_df_index.index
 

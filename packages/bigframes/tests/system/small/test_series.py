@@ -3960,7 +3960,7 @@ def test_series_bool_interpretation_error(scalars_df_index):
 
 def test_query_job_setters(scalars_dfs):
     # if allow_large_results=False, might not create query job
-    with bigframes.option_context("bigquery.allow_large_results", True):
+    with bigframes.option_context("compute.allow_large_results", True):
         job_ids = set()
         df, _ = scalars_dfs
         series = df["int64_col"]

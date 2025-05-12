@@ -5081,7 +5081,7 @@ def test_df_bool_interpretation_error(scalars_df_index):
 
 def test_query_job_setters(scalars_df_default_index: dataframe.DataFrame):
     # if allow_large_results=False, might not create query job
-    with bigframes.option_context("bigquery.allow_large_results", True):
+    with bigframes.option_context("compute.allow_large_results", True):
         job_ids = set()
         repr(scalars_df_default_index)
         assert scalars_df_default_index.query_job is not None
