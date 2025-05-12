@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.4.3](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.4.2...v1.4.3) (2025-05-12)
+
+
+### Bug Fixes
+
+* Remove setup.cfg configuration for creating universal wheels ([#333](https://github.com/googleapis/python-db-dtypes-pandas/issues/333)) ([44a5aa2](https://github.com/googleapis/python-db-dtypes-pandas/commit/44a5aa24ef3219849e9e0bedeeaebc4b9ee53d9e))
+* Updates noxfile with pip freeze and pandas 1.2 ([#331](https://github.com/googleapis/python-db-dtypes-pandas/issues/331)) ([5eb2a85](https://github.com/googleapis/python-db-dtypes-pandas/commit/5eb2a85acc8292e00eea994e5e5ab54d7d037fda))
+
+
+### Dependencies
+
+* Drop support for Python 3.7 and 3.8 ([66f3f0b](https://github.com/googleapis/python-db-dtypes-pandas/commit/66f3f0bed9ed0aa317519f039e8623b0715af38e))
+* Updates deprecation warning to FutureWarning re: 3.7 and 3.8 ([#338](https://github.com/googleapis/python-db-dtypes-pandas/issues/338)) ([158243b](https://github.com/googleapis/python-db-dtypes-pandas/commit/158243b2e039db108cec3fa395d3391161042c4e))
+
 ## [1.4.2](https://github.com/googleapis/python-db-dtypes-pandas/compare/v1.4.1...v1.4.2) (2025-03-04)
 
 
