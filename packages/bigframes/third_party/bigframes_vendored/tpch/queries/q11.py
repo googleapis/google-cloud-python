@@ -43,4 +43,4 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
 
     result_df = result_df.sort_values(by="VALUE", ascending=False)
 
-    result_df.to_pandas()
+    next(result_df.to_pandas_batches(max_results=1500))
