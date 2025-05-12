@@ -14,6 +14,19 @@
 
 
 def test_bigquery_dataframes_examples() -> None:
+    # [START bigquery_dataframes_bigquery_methods_array_agg]
+    import bigframes.bigquery as bbq
+    import bigframes.pandas as bpd
+
+    s = bpd.Series([0, 1, 2, 3, 4, 5])
+
+    # Group values by whether they are divisble by 2 and aggregate them into arrays
+    bbq.array_agg(s.groupby(s % 2 == 0))
+    # False    [1 3 5]
+    # True     [0 2 4]
+    # dtype: list<item: int64>[pyarrow]
+    # [END bigquery_dataframes_bigquery_methods_array_agg]
+
     # [START bigquery_dataframes_bigquery_methods_struct]
     import bigframes.bigquery as bbq
     import bigframes.pandas as bpd
@@ -35,6 +48,22 @@ def test_bigquery_dataframes_examples() -> None:
     # 185	{'culmen_length_mm': 50.1, 'culmen_depth_mm': ...
     # dtype: struct[pyarrow]
     # [END bigquery_dataframes_bigquery_methods_struct]
+
+    # [START bigquery_dataframes_bigquery_methods_unix_micros]
+    import pandas as pd
+
+    import bigframes.bigquery as bbq
+    import bigframes.pandas as bpd
+
+    # Create a series that consists of three timestamps: [1970-01-01, 1970-01-02, 1970-01-03]
+    s = bpd.Series(pd.date_range("1970-01-01", periods=3, freq="d", tz="UTC"))
+
+    bbq.unix_micros(s)
+    # 0               0
+    # 1     86400000000
+    # 2    172800000000
+    # dtype: Int64
+    # [END bigquery_dataframes_bigquery_methods_unix_micros]
 
     # [START bigquery_dataframes_bigquery_methods_scalar]
     import bigframes.bigquery as bbq
