@@ -1222,6 +1222,12 @@ class SQLGlotCompiler(abc.ABC):
         # not actually a table, but easier to quote individual namespace
         # components this way
         namespace = op.__udf_namespace__
+
+        # Function names prefixed with "SAFE.", such as `SAFE.PARSE_JSON`,
+        # are typically not quoted.
+        if funcname.startswith("SAFE."):
+            return funcname
+
         return sg.table(funcname, db=namespace.database, catalog=namespace.catalog).sql(
             self.dialect
         )
