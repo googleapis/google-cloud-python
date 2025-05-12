@@ -101,20 +101,23 @@ def get_query_stats(
 
     job_api_repr = copy.deepcopy(query_job._properties)
 
-    job_ref = job_api_repr["jobReference"]
+    # jobReference might not be populated for "job optional" queries.
+    job_ref = job_api_repr.get("jobReference", {})
     for key, val in job_ref.items():
         index.append(key)
         values.append(val)
 
+    configuration = job_api_repr.get("configuration", {})
     index.append("jobType")
-    values.append(job_api_repr["configuration"]["jobType"])
+    values.append(configuration.get("jobType", None))
 
-    query_config = job_api_repr["configuration"]["query"]
+    query_config = configuration.get("query", {})
     for key in ("destinationTable", "useLegacySql"):
         index.append(key)
-        values.append(query_config.get(key))
+        values.append(query_config.get(key, None))
 
-    query_stats = job_api_repr["statistics"]["query"]
+    statistics = job_api_repr.get("statistics", {})
+    query_stats = statistics.get("query", {})
     for key in (
         "referencedTables",
         "totalBytesProcessed",
@@ -122,13 +125,14 @@ def get_query_stats(
         "statementType",
     ):
         index.append(key)
-        values.append(query_stats.get(key))
+        values.append(query_stats.get(key, None))
 
+    creation_time = statistics.get("creationTime", None)
     index.append("creationTime")
     values.append(
-        pandas.Timestamp(
-            job_api_repr["statistics"]["creationTime"], unit="ms", tz="UTC"
-        )
+        pandas.Timestamp(creation_time, unit="ms", tz="UTC")
+        if creation_time is not None
+        else None
     )
 
     return pandas.Series(values, index=index)

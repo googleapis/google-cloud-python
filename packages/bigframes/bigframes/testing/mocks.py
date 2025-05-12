@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import datetime
 from typing import Optional, Sequence
 import unittest.mock as mock
@@ -78,11 +79,14 @@ def create_bigquery_session(
         type(table).num_rows = mock.PropertyMock(return_value=1000000000)
         bqclient.get_table.return_value = table
 
+    queries = []
     job_configs = []
 
     def query_mock(query, *args, job_config=None, **kwargs):
-        job_configs.append(job_config)
+        queries.append(query)
+        job_configs.append(copy.deepcopy(job_config))
         query_job = mock.create_autospec(google.cloud.bigquery.QueryJob)
+        query_job._properties = {}
         type(query_job).destination = mock.PropertyMock(
             return_value=anonymous_dataset.table("test_table"),
         )
@@ -100,7 +104,8 @@ def create_bigquery_session(
     existing_query_and_wait = bqclient.query_and_wait
 
     def query_and_wait_mock(query, *args, job_config=None, **kwargs):
-        job_configs.append(job_config)
+        queries.append(query)
+        job_configs.append(copy.deepcopy(job_config))
         if query.startswith("SELECT CURRENT_TIMESTAMP()"):
             return iter([[datetime.datetime.now()]])
         else:
@@ -118,6 +123,7 @@ def create_bigquery_session(
     session._bq_connection_manager = mock.create_autospec(
         bigframes.clients.BqConnectionManager, instance=True
     )
+    session._queries = queries  # type: ignore
     session._job_configs = job_configs  # type: ignore
     return session
 

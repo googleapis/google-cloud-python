@@ -477,14 +477,34 @@ class Session(
     ):
         self._objects.append(weakref.ref(object))
 
+    @overload
+    def _read_gbq_colab(
+        self,
+        query: str,
+        *,
+        pyformat_args: Optional[Dict[str, Any]] = None,
+        dry_run: Literal[False] = ...,
+    ) -> dataframe.DataFrame:
+        ...
+
+    @overload
+    def _read_gbq_colab(
+        self,
+        query: str,
+        *,
+        pyformat_args: Optional[Dict[str, Any]] = None,
+        dry_run: Literal[True] = ...,
+    ) -> pandas.Series:
+        ...
+
     def _read_gbq_colab(
         self,
         query: str,
         # TODO: Add a callback parameter that takes some kind of Event object.
-        # TODO: Add dry_run parameter.
         *,
         pyformat_args: Optional[Dict[str, Any]] = None,
-    ) -> dataframe.DataFrame:
+        dry_run: bool = False,
+    ) -> Union[dataframe.DataFrame, pandas.Series]:
         """A version of read_gbq that has the necessary default values for use in colab integrations.
 
         This includes, no ordering, no index, no progress bar, always use string
@@ -501,16 +521,13 @@ class Session(
                 None, this function always assumes {var} refers to a variable
                 that is supposed to be supplied in this dictionary.
         """
-        # TODO: Allow for a table ID to avoid queries like with read_gbq?
-
         if pyformat_args is None:
             pyformat_args = {}
 
-        # TODO: move this to read_gbq_query if/when we expose this feature
-        # beyond in _read_gbq_colab.
         query = bigframes.core.pyformat.pyformat(
             query,
             pyformat_args=pyformat_args,
+            # TODO: add dry_run parameter to avoid API calls for data in pyformat_args
         )
 
         return self._loader.read_gbq_query(
@@ -518,6 +535,7 @@ class Session(
             index_col=bigframes.enums.DefaultIndexKind.NULL,
             api_name="read_gbq_colab",
             force_total_order=False,
+            dry_run=typing.cast(Union[Literal[False], Literal[True]], dry_run),
         )
 
     @overload
