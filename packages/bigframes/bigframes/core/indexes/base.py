@@ -25,6 +25,7 @@ import google.cloud.bigquery as bigquery
 import numpy as np
 import pandas
 
+from bigframes import dtypes
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
@@ -90,12 +91,17 @@ class Index(vendored_pandas_index.Index):
             block = df.DataFrame(pd_df, session=session)._block
 
         # TODO: Support more index subtypes
-        from bigframes.core.indexes.multi import MultiIndex
 
-        if len(block._index_columns) <= 1:
-            klass = cls
+        if len(block._index_columns) > 1:
+            from bigframes.core.indexes.multi import MultiIndex
+
+            klass: type[Index] = MultiIndex  # type hint to make mypy happy
+        elif _should_create_datetime_index(block):
+            from bigframes.core.indexes.datetimes import DatetimeIndex
+
+            klass = DatetimeIndex
         else:
-            klass = MultiIndex
+            klass = cls
 
         result = typing.cast(Index, object.__new__(klass))
         result._query_job = None
@@ -555,3 +561,10 @@ class Index(vendored_pandas_index.Index):
 
     def __len__(self):
         return self.shape[0]
+
+
+def _should_create_datetime_index(block: blocks.Block) -> bool:
+    if len(block.index.dtypes) != 1:
+        return False
+
+    return dtypes.is_datetime_like(block.index.dtypes[0])
