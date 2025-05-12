@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.25.0](https://github.com/googleapis/python-api-core/compare/v2.24.2...v2.25.0) (2025-05-06)
+
+
+### Features
+
+* Add protobuf runtime version to `x-goog-api-client` header ([#812](https://github.com/googleapis/python-api-core/issues/812)) ([118bd96](https://github.com/googleapis/python-api-core/commit/118bd96f3907234351972409834ab5309cdfcee4))
+* Support dynamic retry backoff values ([#793](https://github.com/googleapis/python-api-core/issues/793)) ([70697a3](https://github.com/googleapis/python-api-core/commit/70697a3e39c389768e724fddacb3c9b97d609384))
+
+
+### Bug Fixes
+
+* Resolve issue where pre-release versions of dependencies are installed ([#808](https://github.com/googleapis/python-api-core/issues/808)) ([1ca7973](https://github.com/googleapis/python-api-core/commit/1ca7973a395099403be1a99c7c4583a8f22d5d8e))
+
 ## [2.24.2](https://github.com/googleapis/python-api-core/compare/v2.24.1...v2.24.2) (2025-03-06)
 
 
