@@ -14,6 +14,13 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.14.1](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.14.0...v1.14.1) (2025-05-09)
+
+
+### Bug Fixes
+
+* Updates _get_transitive_schema_fields and tests ([#1200](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/1200)) ([16712da](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/16712da4ba068b1b376eb81ab7d2961a81bbc23d))
+
 ## [1.14.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.13.0...v1.14.0) (2025-04-23)
 
 
