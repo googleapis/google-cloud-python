@@ -22,6 +22,14 @@ from google.cloud.alloydb_v1.services.alloy_db_admin.async_client import (
     AlloyDBAdminAsyncClient,
 )
 from google.cloud.alloydb_v1.services.alloy_db_admin.client import AlloyDBAdminClient
+from google.cloud.alloydb_v1.services.alloy_dbcsql_admin.async_client import (
+    AlloyDBCSQLAdminAsyncClient,
+)
+from google.cloud.alloydb_v1.services.alloy_dbcsql_admin.client import (
+    AlloyDBCSQLAdminClient,
+)
+from google.cloud.alloydb_v1.types.csql_resources import CloudSQLBackupRunSource
+from google.cloud.alloydb_v1.types.csql_service import RestoreFromCloudSQLRequest
 from google.cloud.alloydb_v1.types.data_model import (
     SqlResult,
     SqlResultColumn,
@@ -72,7 +80,10 @@ from google.cloud.alloydb_v1.types.service import (
     ExecuteSqlMetadata,
     ExecuteSqlRequest,
     ExecuteSqlResponse,
+    ExportClusterRequest,
+    ExportClusterResponse,
     FailoverInstanceRequest,
+    GcsDestination,
     GenerateClientCertificateRequest,
     GenerateClientCertificateResponse,
     GetBackupRequest,
@@ -80,6 +91,8 @@ from google.cloud.alloydb_v1.types.service import (
     GetConnectionInfoRequest,
     GetInstanceRequest,
     GetUserRequest,
+    ImportClusterRequest,
+    ImportClusterResponse,
     InjectFaultRequest,
     ListBackupsRequest,
     ListBackupsResponse,
@@ -102,11 +115,18 @@ from google.cloud.alloydb_v1.types.service import (
     UpdateClusterRequest,
     UpdateInstanceRequest,
     UpdateUserRequest,
+    UpgradeClusterRequest,
+    UpgradeClusterResponse,
+    UpgradeClusterStatus,
 )
 
 __all__ = (
     "AlloyDBAdminClient",
     "AlloyDBAdminAsyncClient",
+    "AlloyDBCSQLAdminClient",
+    "AlloyDBCSQLAdminAsyncClient",
+    "CloudSQLBackupRunSource",
+    "RestoreFromCloudSQLRequest",
     "SqlResult",
     "SqlResultColumn",
     "SqlResultRow",
@@ -152,7 +172,10 @@ __all__ = (
     "ExecuteSqlMetadata",
     "ExecuteSqlRequest",
     "ExecuteSqlResponse",
+    "ExportClusterRequest",
+    "ExportClusterResponse",
     "FailoverInstanceRequest",
+    "GcsDestination",
     "GenerateClientCertificateRequest",
     "GenerateClientCertificateResponse",
     "GetBackupRequest",
@@ -160,6 +183,8 @@ __all__ = (
     "GetConnectionInfoRequest",
     "GetInstanceRequest",
     "GetUserRequest",
+    "ImportClusterRequest",
+    "ImportClusterResponse",
     "InjectFaultRequest",
     "ListBackupsRequest",
     "ListBackupsResponse",
@@ -182,4 +207,7 @@ __all__ = (
     "UpdateClusterRequest",
     "UpdateInstanceRequest",
     "UpdateUserRequest",
+    "UpgradeClusterRequest",
+    "UpgradeClusterResponse",
+    "UpgradeClusterStatus",
 )

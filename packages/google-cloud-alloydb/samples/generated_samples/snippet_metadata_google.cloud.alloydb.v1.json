@@ -1929,12 +1929,12 @@
       "regionTag": "alloydb_v1_generated_AlloyDBAdmin_ExecuteSql_async",
       "segments": [
         {
-          "end": 55,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -1944,18 +1944,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 49,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 52,
-          "start": 50,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
-          "start": 53,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2025,12 +2025,12 @@
       "regionTag": "alloydb_v1_generated_AlloyDBAdmin_ExecuteSql_sync",
       "segments": [
         {
-          "end": 55,
+          "end": 54,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 54,
           "start": 27,
           "type": "SHORT"
         },
@@ -2040,22 +2040,215 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 49,
+          "end": 48,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 52,
-          "start": 50,
+          "end": 51,
+          "start": 49,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
-          "start": 53,
+          "end": 55,
+          "start": 52,
           "type": "RESPONSE_HANDLING"
         }
       ],
       "title": "alloydb_v1_generated_alloy_db_admin_execute_sql_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.export_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.ExportCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "ExportCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.ExportClusterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "gcs_destination",
+            "type": "google.cloud.alloydb_v1.types.GcsDestination"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "csv_export_options",
+            "type": "google.cloud.alloydb_v1.types.ExportClusterRequest.CsvExportOptions"
+          },
+          {
+            "name": "sql_export_options",
+            "type": "google.cloud.alloydb_v1.types.ExportClusterRequest.SqlExportOptions"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "export_cluster"
+      },
+      "description": "Sample for ExportCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_export_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_ExportCluster_async",
+      "segments": [
+        {
+          "end": 64,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 64,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 61,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 65,
+          "start": 62,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_export_cluster_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.export_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.ExportCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "ExportCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.ExportClusterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "gcs_destination",
+            "type": "google.cloud.alloydb_v1.types.GcsDestination"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "csv_export_options",
+            "type": "google.cloud.alloydb_v1.types.ExportClusterRequest.CsvExportOptions"
+          },
+          {
+            "name": "sql_export_options",
+            "type": "google.cloud.alloydb_v1.types.ExportClusterRequest.SqlExportOptions"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "export_cluster"
+      },
+      "description": "Sample for ExportCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_export_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_ExportCluster_sync",
+      "segments": [
+        {
+          "end": 64,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 64,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 61,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 65,
+          "start": 62,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_export_cluster_sync.py"
     },
     {
       "canonical": true,
@@ -3183,6 +3376,191 @@
         }
       ],
       "title": "alloydb_v1_generated_alloy_db_admin_get_user_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.import_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.ImportCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "ImportCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.ImportClusterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "gcs_uri",
+            "type": "str"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "user",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "import_cluster"
+      },
+      "description": "Sample for ImportCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_import_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_ImportCluster_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_import_cluster_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.import_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.ImportCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "ImportCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.ImportClusterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "gcs_uri",
+            "type": "str"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "user",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "import_cluster"
+      },
+      "description": "Sample for ImportCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_import_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_ImportCluster_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_import_cluster_sync.py"
     },
     {
       "canonical": true,
@@ -5630,6 +6008,344 @@
         }
       ],
       "title": "alloydb_v1_generated_alloy_db_admin_update_user_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient",
+          "shortName": "AlloyDBAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminAsyncClient.upgrade_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.UpgradeCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "UpgradeCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.UpgradeClusterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "version",
+            "type": "google.cloud.alloydb_v1.types.DatabaseVersion"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "upgrade_cluster"
+      },
+      "description": "Sample for UpgradeCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_upgrade_cluster_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_UpgradeCluster_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_upgrade_cluster_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient",
+          "shortName": "AlloyDBAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBAdminClient.upgrade_cluster",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin.UpgradeCluster",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBAdmin",
+            "shortName": "AlloyDBAdmin"
+          },
+          "shortName": "UpgradeCluster"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.UpgradeClusterRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "version",
+            "type": "google.cloud.alloydb_v1.types.DatabaseVersion"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "upgrade_cluster"
+      },
+      "description": "Sample for UpgradeCluster",
+      "file": "alloydb_v1_generated_alloy_db_admin_upgrade_cluster_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBAdmin_UpgradeCluster_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_db_admin_upgrade_cluster_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBCSQLAdminAsyncClient",
+          "shortName": "AlloyDBCSQLAdminAsyncClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBCSQLAdminAsyncClient.restore_from_cloud_sql",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBCSQLAdmin.RestoreFromCloudSQL",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBCSQLAdmin",
+            "shortName": "AlloyDBCSQLAdmin"
+          },
+          "shortName": "RestoreFromCloudSQL"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.RestoreFromCloudSQLRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "cluster_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "restore_from_cloud_sql"
+      },
+      "description": "Sample for RestoreFromCloudSQL",
+      "file": "alloydb_v1_generated_alloy_dbcsql_admin_restore_from_cloud_sql_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBCSQLAdmin_RestoreFromCloudSQL_async",
+      "segments": [
+        {
+          "end": 66,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 66,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 63,
+          "start": 57,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 67,
+          "start": 64,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_dbcsql_admin_restore_from_cloud_sql_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.alloydb_v1.AlloyDBCSQLAdminClient",
+          "shortName": "AlloyDBCSQLAdminClient"
+        },
+        "fullName": "google.cloud.alloydb_v1.AlloyDBCSQLAdminClient.restore_from_cloud_sql",
+        "method": {
+          "fullName": "google.cloud.alloydb.v1.AlloyDBCSQLAdmin.RestoreFromCloudSQL",
+          "service": {
+            "fullName": "google.cloud.alloydb.v1.AlloyDBCSQLAdmin",
+            "shortName": "AlloyDBCSQLAdmin"
+          },
+          "shortName": "RestoreFromCloudSQL"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.alloydb_v1.types.RestoreFromCloudSQLRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "cluster_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "restore_from_cloud_sql"
+      },
+      "description": "Sample for RestoreFromCloudSQL",
+      "file": "alloydb_v1_generated_alloy_dbcsql_admin_restore_from_cloud_sql_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "alloydb_v1_generated_AlloyDBCSQLAdmin_RestoreFromCloudSQL_sync",
+      "segments": [
+        {
+          "end": 66,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 66,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 63,
+          "start": 57,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 67,
+          "start": 64,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "alloydb_v1_generated_alloy_dbcsql_admin_restore_from_cloud_sql_sync.py"
     }
   ]
 }

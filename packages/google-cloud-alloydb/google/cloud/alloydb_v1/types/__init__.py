@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .csql_resources import CloudSQLBackupRunSource
+from .csql_service import RestoreFromCloudSQLRequest
 from .data_model import SqlResult, SqlResultColumn, SqlResultRow, SqlResultValue
 from .resources import (
     AutomatedBackupPolicy,
@@ -58,7 +60,10 @@ from .service import (
     ExecuteSqlMetadata,
     ExecuteSqlRequest,
     ExecuteSqlResponse,
+    ExportClusterRequest,
+    ExportClusterResponse,
     FailoverInstanceRequest,
+    GcsDestination,
     GenerateClientCertificateRequest,
     GenerateClientCertificateResponse,
     GetBackupRequest,
@@ -66,6 +71,8 @@ from .service import (
     GetConnectionInfoRequest,
     GetInstanceRequest,
     GetUserRequest,
+    ImportClusterRequest,
+    ImportClusterResponse,
     InjectFaultRequest,
     ListBackupsRequest,
     ListBackupsResponse,
@@ -88,9 +95,14 @@ from .service import (
     UpdateClusterRequest,
     UpdateInstanceRequest,
     UpdateUserRequest,
+    UpgradeClusterRequest,
+    UpgradeClusterResponse,
+    UpgradeClusterStatus,
 )
 
 __all__ = (
+    "CloudSQLBackupRunSource",
+    "RestoreFromCloudSQLRequest",
     "SqlResult",
     "SqlResultColumn",
     "SqlResultRow",
@@ -136,7 +148,10 @@ __all__ = (
     "ExecuteSqlMetadata",
     "ExecuteSqlRequest",
     "ExecuteSqlResponse",
+    "ExportClusterRequest",
+    "ExportClusterResponse",
     "FailoverInstanceRequest",
+    "GcsDestination",
     "GenerateClientCertificateRequest",
     "GenerateClientCertificateResponse",
     "GetBackupRequest",
@@ -144,6 +159,8 @@ __all__ = (
     "GetConnectionInfoRequest",
     "GetInstanceRequest",
     "GetUserRequest",
+    "ImportClusterRequest",
+    "ImportClusterResponse",
     "InjectFaultRequest",
     "ListBackupsRequest",
     "ListBackupsResponse",
@@ -166,4 +183,7 @@ __all__ = (
     "UpdateClusterRequest",
     "UpdateInstanceRequest",
     "UpdateUserRequest",
+    "UpgradeClusterRequest",
+    "UpgradeClusterResponse",
+    "UpgradeClusterStatus",
 )

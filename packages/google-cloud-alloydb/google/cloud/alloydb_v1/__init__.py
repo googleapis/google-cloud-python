@@ -19,6 +19,12 @@ __version__ = package_version.__version__
 
 
 from .services.alloy_db_admin import AlloyDBAdminAsyncClient, AlloyDBAdminClient
+from .services.alloy_dbcsql_admin import (
+    AlloyDBCSQLAdminAsyncClient,
+    AlloyDBCSQLAdminClient,
+)
+from .types.csql_resources import CloudSQLBackupRunSource
+from .types.csql_service import RestoreFromCloudSQLRequest
 from .types.data_model import SqlResult, SqlResultColumn, SqlResultRow, SqlResultValue
 from .types.resources import (
     AutomatedBackupPolicy,
@@ -64,7 +70,10 @@ from .types.service import (
     ExecuteSqlMetadata,
     ExecuteSqlRequest,
     ExecuteSqlResponse,
+    ExportClusterRequest,
+    ExportClusterResponse,
     FailoverInstanceRequest,
+    GcsDestination,
     GenerateClientCertificateRequest,
     GenerateClientCertificateResponse,
     GetBackupRequest,
@@ -72,6 +81,8 @@ from .types.service import (
     GetConnectionInfoRequest,
     GetInstanceRequest,
     GetUserRequest,
+    ImportClusterRequest,
+    ImportClusterResponse,
     InjectFaultRequest,
     ListBackupsRequest,
     ListBackupsResponse,
@@ -94,11 +105,16 @@ from .types.service import (
     UpdateClusterRequest,
     UpdateInstanceRequest,
     UpdateUserRequest,
+    UpgradeClusterRequest,
+    UpgradeClusterResponse,
+    UpgradeClusterStatus,
 )
 
 __all__ = (
     "AlloyDBAdminAsyncClient",
+    "AlloyDBCSQLAdminAsyncClient",
     "AlloyDBAdminClient",
+    "AlloyDBCSQLAdminClient",
     "AutomatedBackupPolicy",
     "Backup",
     "BackupSource",
@@ -106,6 +122,7 @@ __all__ = (
     "BatchCreateInstancesMetadata",
     "BatchCreateInstancesRequest",
     "BatchCreateInstancesResponse",
+    "CloudSQLBackupRunSource",
     "Cluster",
     "ClusterView",
     "ConnectionInfo",
@@ -130,7 +147,10 @@ __all__ = (
     "ExecuteSqlMetadata",
     "ExecuteSqlRequest",
     "ExecuteSqlResponse",
+    "ExportClusterRequest",
+    "ExportClusterResponse",
     "FailoverInstanceRequest",
+    "GcsDestination",
     "GenerateClientCertificateRequest",
     "GenerateClientCertificateResponse",
     "GetBackupRequest",
@@ -138,6 +158,8 @@ __all__ = (
     "GetConnectionInfoRequest",
     "GetInstanceRequest",
     "GetUserRequest",
+    "ImportClusterRequest",
+    "ImportClusterResponse",
     "InjectFaultRequest",
     "Instance",
     "InstanceView",
@@ -160,6 +182,7 @@ __all__ = (
     "PromoteClusterRequest",
     "RestartInstanceRequest",
     "RestoreClusterRequest",
+    "RestoreFromCloudSQLRequest",
     "SqlResult",
     "SqlResultColumn",
     "SqlResultRow",
@@ -172,6 +195,9 @@ __all__ = (
     "UpdateClusterRequest",
     "UpdateInstanceRequest",
     "UpdateUserRequest",
+    "UpgradeClusterRequest",
+    "UpgradeClusterResponse",
+    "UpgradeClusterStatus",
     "User",
     "UserPassword",
 )

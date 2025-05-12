@@ -34,6 +34,13 @@ __protobuf__ = proto.module(
         "CreateSecondaryClusterRequest",
         "CreateClusterRequest",
         "UpdateClusterRequest",
+        "GcsDestination",
+        "ExportClusterRequest",
+        "ExportClusterResponse",
+        "ImportClusterRequest",
+        "ImportClusterResponse",
+        "UpgradeClusterRequest",
+        "UpgradeClusterResponse",
         "DeleteClusterRequest",
         "SwitchoverClusterRequest",
         "PromoteClusterRequest",
@@ -68,6 +75,7 @@ __protobuf__ = proto.module(
         "GenerateClientCertificateResponse",
         "GetConnectionInfoRequest",
         "OperationMetadata",
+        "UpgradeClusterStatus",
         "ListUsersRequest",
         "ListUsersResponse",
         "GetUserRequest",
@@ -374,6 +382,610 @@ class UpdateClusterRequest(proto.Message):
     allow_missing: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+
+
+class GcsDestination(proto.Message):
+    r"""Destination for Export. Export will be done to cloud storage.
+
+    Attributes:
+        uri (str):
+            Required. The path to the file in Google Cloud Storage where
+            the export will be stored. The URI is in the form
+            ``gs://bucketName/fileName``.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ExportClusterRequest(proto.Message):
+    r"""Export cluster request.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_destination (google.cloud.alloydb_v1.types.GcsDestination):
+            Required. Option to export data to cloud
+            storage.
+
+            This field is a member of `oneof`_ ``destination``.
+        csv_export_options (google.cloud.alloydb_v1.types.ExportClusterRequest.CsvExportOptions):
+            Options for exporting data in CSV format.
+            Required field to be set for CSV file type.
+
+            This field is a member of `oneof`_ ``export_options``.
+        sql_export_options (google.cloud.alloydb_v1.types.ExportClusterRequest.SqlExportOptions):
+            Options for exporting data in SQL format.
+            Required field to be set for SQL file type.
+
+            This field is a member of `oneof`_ ``export_options``.
+        name (str):
+            Required. The resource name of the cluster.
+        database (str):
+            Required. Name of the database where the export command will
+            be executed. Note - Value provided should be the same as
+            expected from ``SELECT current_database();`` and NOT as a
+            resource reference.
+    """
+
+    class CsvExportOptions(proto.Message):
+        r"""Options for exporting data in CSV format.
+
+        Attributes:
+            select_query (str):
+                Required. The SELECT query used to extract
+                the data.
+            field_delimiter (str):
+                Optional. Specifies the character that
+                separates columns within each row (line) of the
+                file. The default is comma. The value of this
+                argument has to be a character in Hex ASCII
+                Code.
+            quote_character (str):
+                Optional. Specifies the quoting character to
+                be used when a data value is quoted. The default
+                is double-quote. The value of this argument has
+                to be a character in Hex ASCII Code.
+            escape_character (str):
+                Optional. Specifies the character that should
+                appear before a data character that needs to be
+                escaped. The default is the same as quote
+                character. The value of this argument has to be
+                a character in Hex ASCII Code.
+        """
+
+        select_query: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        field_delimiter: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        quote_character: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        escape_character: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    class SqlExportOptions(proto.Message):
+        r"""Options for exporting data in SQL format.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            tables (MutableSequence[str]):
+                Optional. Tables to export from.
+            schema_only (bool):
+                Optional. If true, only export the schema.
+
+                This field is a member of `oneof`_ ``_schema_only``.
+            clean_target_objects (bool):
+                Optional. If true, output commands to DROP
+                all the dumped database objects prior to
+                outputting the commands for creating them.
+
+                This field is a member of `oneof`_ ``_clean_target_objects``.
+            if_exist_target_objects (bool):
+                Optional. If true, use DROP ... IF EXISTS commands to check
+                for the object's existence before dropping it in
+                clean_target_objects mode.
+
+                This field is a member of `oneof`_ ``_if_exist_target_objects``.
+        """
+
+        tables: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        schema_only: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+            optional=True,
+        )
+        clean_target_objects: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+            optional=True,
+        )
+        if_exist_target_objects: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+            optional=True,
+        )
+
+    gcs_destination: "GcsDestination" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message="GcsDestination",
+    )
+    csv_export_options: CsvExportOptions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="export_options",
+        message=CsvExportOptions,
+    )
+    sql_export_options: SqlExportOptions = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="export_options",
+        message=SqlExportOptions,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    database: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ExportClusterResponse(proto.Message):
+    r"""Response of export cluster rpc.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_destination (google.cloud.alloydb_v1.types.GcsDestination):
+            Required. Option to export data to cloud
+            storage.
+
+            This field is a member of `oneof`_ ``destination``.
+    """
+
+    gcs_destination: "GcsDestination" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message="GcsDestination",
+    )
+
+
+class ImportClusterRequest(proto.Message):
+    r"""Import cluster request.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        sql_import_options (google.cloud.alloydb_v1.types.ImportClusterRequest.SqlImportOptions):
+            Options for importing data in SQL format.
+
+            This field is a member of `oneof`_ ``import_options``.
+        csv_import_options (google.cloud.alloydb_v1.types.ImportClusterRequest.CsvImportOptions):
+            Options for importing data in CSV format.
+
+            This field is a member of `oneof`_ ``import_options``.
+        name (str):
+            Required. The resource name of the cluster.
+        gcs_uri (str):
+            Required. The path to the file in Google Cloud Storage where
+            the source file for import will be stored. The URI is in the
+            form ``gs://bucketName/fileName``.
+        database (str):
+            Optional. Name of the database to which the import will be
+            done. For import from SQL file, this is required only if the
+            file does not specify a database. Note - Value provided
+            should be the same as expected from
+            ``SELECT current_database();`` and NOT as a resource
+            reference.
+        user (str):
+            Optional. Database user to be used for importing the data.
+            Note - Value provided should be the same as expected from
+            ``SELECT current_user;`` and NOT as a resource reference.
+    """
+
+    class SqlImportOptions(proto.Message):
+        r"""Options for importing data in SQL format."""
+
+    class CsvImportOptions(proto.Message):
+        r"""Options for importing data in CSV format.
+
+        Attributes:
+            table (str):
+                Required. The database table to import CSV
+                file into.
+            columns (MutableSequence[str]):
+                Optional. The columns to which CSV data is
+                imported. If not specified, all columns of the
+                database table are loaded with CSV data.
+            field_delimiter (str):
+                Optional. Specifies the character that
+                separates columns within each row (line) of the
+                file. The default is comma. The value of this
+                argument has to be a character in Hex ASCII
+                Code.
+            quote_character (str):
+                Optional. Specifies the quoting character to
+                be used when a data value is quoted. The default
+                is double-quote. The value of this argument has
+                to be a character in Hex ASCII Code.
+            escape_character (str):
+                Optional. Specifies the character that should
+                appear before a data character that needs to be
+                escaped. The default is same as quote character.
+                The value of this argument has to be a character
+                in Hex ASCII Code.
+        """
+
+        table: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        columns: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        field_delimiter: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        quote_character: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        escape_character: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
+    sql_import_options: SqlImportOptions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="import_options",
+        message=SqlImportOptions,
+    )
+    csv_import_options: CsvImportOptions = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="import_options",
+        message=CsvImportOptions,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    gcs_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    database: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    user: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ImportClusterResponse(proto.Message):
+    r"""Response of import rpc.
+
+    Attributes:
+        bytes_downloaded (int):
+            Required. Size of the object downloaded from
+            Google Cloud Storage in bytes.
+    """
+
+    bytes_downloaded: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+
+
+class UpgradeClusterRequest(proto.Message):
+    r"""Upgrades a cluster.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the cluster.
+        version (google.cloud.alloydb_v1.types.DatabaseVersion):
+            Required. The version the cluster is going to
+            be upgraded to.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server ignores
+            the request if it has already been completed.
+            The server guarantees that for at least 60
+            minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, ignores the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set, performs request
+            validation, for example, permission checks and
+            any other type of validation, but does not
+            actually execute the create request.
+        etag (str):
+            Optional. The current etag of the Cluster.
+            If an etag is provided and does not match the
+            current etag of the Cluster, upgrade will be
+            blocked and an ABORTED error will be returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version: resources.DatabaseVersion = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=resources.DatabaseVersion,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class UpgradeClusterResponse(proto.Message):
+    r"""UpgradeClusterResponse contains the response for upgrade
+    cluster operation.
+
+    Attributes:
+        status (google.cloud.alloydb_v1.types.UpgradeClusterResponse.Status):
+            Status of upgrade operation.
+        message (str):
+            A user friendly message summarising the
+            upgrade operation details and the next steps for
+            the user if there is any.
+        cluster_upgrade_details (MutableSequence[google.cloud.alloydb_v1.types.UpgradeClusterResponse.ClusterUpgradeDetails]):
+            Array of upgrade details for the current
+            cluster and all the secondary clusters
+            associated with this cluster.
+    """
+
+    class Status(proto.Enum):
+        r"""Status of upgrade operation.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Unspecified status.
+            NOT_STARTED (4):
+                Not started.
+            IN_PROGRESS (5):
+                In progress.
+            SUCCESS (1):
+                Operation succeeded.
+            FAILED (2):
+                Operation failed.
+            PARTIAL_SUCCESS (3):
+                Operation partially succeeded.
+            CANCEL_IN_PROGRESS (6):
+                Cancel is in progress.
+            CANCELLED (7):
+                Cancellation complete.
+        """
+        STATUS_UNSPECIFIED = 0
+        NOT_STARTED = 4
+        IN_PROGRESS = 5
+        SUCCESS = 1
+        FAILED = 2
+        PARTIAL_SUCCESS = 3
+        CANCEL_IN_PROGRESS = 6
+        CANCELLED = 7
+
+    class Stage(proto.Enum):
+        r"""Stage in the upgrade.
+
+        Values:
+            STAGE_UNSPECIFIED (0):
+                Unspecified stage.
+            ALLOYDB_PRECHECK (1):
+                Pre-upgrade custom checks, not covered by pg_upgrade.
+            PG_UPGRADE_CHECK (2):
+                Pre-upgrade pg_upgrade checks.
+            PREPARE_FOR_UPGRADE (5):
+                Clone the original cluster.
+            PRIMARY_INSTANCE_UPGRADE (3):
+                Upgrade the primary instance(downtime).
+            READ_POOL_INSTANCES_UPGRADE (4):
+                This stage is read pool upgrade.
+            ROLLBACK (6):
+                Rollback in case of critical failures.
+            CLEANUP (7):
+                Cleanup.
+        """
+        STAGE_UNSPECIFIED = 0
+        ALLOYDB_PRECHECK = 1
+        PG_UPGRADE_CHECK = 2
+        PREPARE_FOR_UPGRADE = 5
+        PRIMARY_INSTANCE_UPGRADE = 3
+        READ_POOL_INSTANCES_UPGRADE = 4
+        ROLLBACK = 6
+        CLEANUP = 7
+
+    class StageInfo(proto.Message):
+        r"""Stage information for different stages in the upgrade
+        process.
+
+        Attributes:
+            stage (google.cloud.alloydb_v1.types.UpgradeClusterResponse.Stage):
+                The stage.
+            status (google.cloud.alloydb_v1.types.UpgradeClusterResponse.Status):
+                Status of the stage.
+            logs_url (str):
+                logs_url is the URL for the logs associated with a stage if
+                that stage has logs. Right now, only three stages have logs:
+                ALLOYDB_PRECHECK, PG_UPGRADE_CHECK,
+                PRIMARY_INSTANCE_UPGRADE.
+        """
+
+        stage: "UpgradeClusterResponse.Stage" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="UpgradeClusterResponse.Stage",
+        )
+        status: "UpgradeClusterResponse.Status" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="UpgradeClusterResponse.Status",
+        )
+        logs_url: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    class InstanceUpgradeDetails(proto.Message):
+        r"""Details regarding the upgrade of instaces associated with a
+        cluster.
+
+        Attributes:
+            name (str):
+                Normalized name of the instance.
+            upgrade_status (google.cloud.alloydb_v1.types.UpgradeClusterResponse.Status):
+                Upgrade status of the instance.
+            instance_type (google.cloud.alloydb_v1.types.Instance.InstanceType):
+                Instance type.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        upgrade_status: "UpgradeClusterResponse.Status" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="UpgradeClusterResponse.Status",
+        )
+        instance_type: resources.Instance.InstanceType = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum=resources.Instance.InstanceType,
+        )
+
+    class ClusterUpgradeDetails(proto.Message):
+        r"""Upgrade details of a cluster. This cluster can be primary or
+        secondary.
+
+        Attributes:
+            name (str):
+                Normalized name of the cluster
+            upgrade_status (google.cloud.alloydb_v1.types.UpgradeClusterResponse.Status):
+                Upgrade status of the cluster.
+            cluster_type (google.cloud.alloydb_v1.types.Cluster.ClusterType):
+                Cluster type which can either be primary or
+                secondary.
+            database_version (google.cloud.alloydb_v1.types.DatabaseVersion):
+                Database version of the cluster after the
+                upgrade operation. This will be the target
+                version if the upgrade was successful otherwise
+                it remains the same as that before the upgrade
+                operation.
+            stage_info (MutableSequence[google.cloud.alloydb_v1.types.UpgradeClusterResponse.StageInfo]):
+                Array containing stage info associated with
+                this cluster.
+            instance_upgrade_details (MutableSequence[google.cloud.alloydb_v1.types.UpgradeClusterResponse.InstanceUpgradeDetails]):
+                Upgrade details of the instances directly
+                associated with this cluster.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        upgrade_status: "UpgradeClusterResponse.Status" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="UpgradeClusterResponse.Status",
+        )
+        cluster_type: resources.Cluster.ClusterType = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum=resources.Cluster.ClusterType,
+        )
+        database_version: resources.DatabaseVersion = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum=resources.DatabaseVersion,
+        )
+        stage_info: MutableSequence[
+            "UpgradeClusterResponse.StageInfo"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="UpgradeClusterResponse.StageInfo",
+        )
+        instance_upgrade_details: MutableSequence[
+            "UpgradeClusterResponse.InstanceUpgradeDetails"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message="UpgradeClusterResponse.InstanceUpgradeDetails",
+        )
+
+    status: Status = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Status,
+    )
+    message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    cluster_upgrade_details: MutableSequence[
+        ClusterUpgradeDetails
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=ClusterUpgradeDetails,
     )
 
 
@@ -1824,6 +2436,10 @@ class ListSupportedDatabaseFlagsRequest(proto.Message):
         page_token (str):
             A token identifying a page of results the
             server should return.
+        scope (google.cloud.alloydb_v1.types.SupportedDatabaseFlag.Scope):
+            Optional. The scope for which supported flags
+            are requested. If not specified, default is
+            DATABASE.
     """
 
     parent: str = proto.Field(
@@ -1837,6 +2453,11 @@ class ListSupportedDatabaseFlagsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    scope: resources.SupportedDatabaseFlag.Scope = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=resources.SupportedDatabaseFlag.Scope,
     )
 
 
@@ -1910,7 +2531,7 @@ class GenerateClientCertificateRequest(proto.Message):
             Optional. The public key from the client.
         use_metadata_exchange (bool):
             Optional. An optional hint to the endpoint to
-            generate a client ceritificate that can be used
+            generate a client certificate that can be used
             by AlloyDB connectors to exchange additional
             metadata with the server after TLS handshake.
     """
@@ -2005,11 +2626,21 @@ class GetConnectionInfoRequest(proto.Message):
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         batch_create_instances_metadata (google.cloud.alloydb_v1.types.BatchCreateInstancesMetadata):
             Output only. BatchCreateInstances related
+            metadata.
+
+            This field is a member of `oneof`_ ``request_specific``.
+        upgrade_cluster_status (google.cloud.alloydb_v1.types.UpgradeClusterStatus):
+            Output only. UpgradeClusterStatus related
             metadata.
 
             This field is a member of `oneof`_ ``request_specific``.
@@ -2031,9 +2662,11 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            successfully been cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.
@@ -2044,6 +2677,12 @@ class OperationMetadata(proto.Message):
         number=8,
         oneof="request_specific",
         message="BatchCreateInstancesMetadata",
+    )
+    upgrade_cluster_status: "UpgradeClusterStatus" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="request_specific",
+        message="UpgradeClusterStatus",
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -2074,6 +2713,131 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class UpgradeClusterStatus(proto.Message):
+    r"""Message for current status of the Major Version Upgrade
+    operation.
+
+    Attributes:
+        state (google.cloud.alloydb_v1.types.UpgradeClusterResponse.Status):
+            Cluster Major Version Upgrade state.
+        cancellable (bool):
+            Whether the operation is cancellable.
+        source_version (google.cloud.alloydb_v1.types.DatabaseVersion):
+            Source database major version.
+        target_version (google.cloud.alloydb_v1.types.DatabaseVersion):
+            Target database major version.
+        stages (MutableSequence[google.cloud.alloydb_v1.types.UpgradeClusterStatus.StageStatus]):
+            Status of all upgrade stages.
+    """
+
+    class StageStatus(proto.Message):
+        r"""Status of an upgrade stage.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            read_pool_instances_upgrade (google.cloud.alloydb_v1.types.UpgradeClusterStatus.ReadPoolInstancesUpgradeStageStatus):
+                Read pool instances upgrade metadata.
+
+                This field is a member of `oneof`_ ``stage_specific_status``.
+            stage (google.cloud.alloydb_v1.types.UpgradeClusterResponse.Stage):
+                Upgrade stage.
+            state (google.cloud.alloydb_v1.types.UpgradeClusterResponse.Status):
+                State of this stage.
+        """
+
+        read_pool_instances_upgrade: "UpgradeClusterStatus.ReadPoolInstancesUpgradeStageStatus" = proto.Field(
+            proto.MESSAGE,
+            number=11,
+            oneof="stage_specific_status",
+            message="UpgradeClusterStatus.ReadPoolInstancesUpgradeStageStatus",
+        )
+        stage: "UpgradeClusterResponse.Stage" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="UpgradeClusterResponse.Stage",
+        )
+        state: "UpgradeClusterResponse.Status" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="UpgradeClusterResponse.Status",
+        )
+
+    class ReadPoolInstancesUpgradeStageStatus(proto.Message):
+        r"""Read pool instances upgrade specific status.
+
+        Attributes:
+            upgrade_stats (google.cloud.alloydb_v1.types.UpgradeClusterStatus.ReadPoolInstancesUpgradeStageStatus.Stats):
+                Read pool instances upgrade statistics.
+        """
+
+        class Stats(proto.Message):
+            r"""Upgrade stats for read pool instances.
+
+            Attributes:
+                not_started (int):
+                    Number of read pool instances for which
+                    upgrade has not started.
+                ongoing (int):
+                    Number of read pool instances undergoing
+                    upgrade.
+                success (int):
+                    Number of read pool instances successfully
+                    upgraded.
+                failed (int):
+                    Number of read pool instances which failed to
+                    upgrade.
+            """
+
+            not_started: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            ongoing: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+            success: int = proto.Field(
+                proto.INT32,
+                number=3,
+            )
+            failed: int = proto.Field(
+                proto.INT32,
+                number=4,
+            )
+
+        upgrade_stats: "UpgradeClusterStatus.ReadPoolInstancesUpgradeStageStatus.Stats" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="UpgradeClusterStatus.ReadPoolInstancesUpgradeStageStatus.Stats",
+        )
+
+    state: "UpgradeClusterResponse.Status" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="UpgradeClusterResponse.Status",
+    )
+    cancellable: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    source_version: resources.DatabaseVersion = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=resources.DatabaseVersion,
+    )
+    target_version: resources.DatabaseVersion = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=resources.DatabaseVersion,
+    )
+    stages: MutableSequence[StageStatus] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=StageStatus,
     )
 
 
