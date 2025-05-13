@@ -186,22 +186,23 @@ def generate_library(api_root: str, generator_input: str, output: str, library_i
                     print(generator_command)
                     subprocess.run([generator_command], cwd=api_root, shell=True)
                     subprocess.run(
-                        f"isort --fss docs google tests noxfile.py setup.py",
+                        f"isort -q --fss docs google tests noxfile.py setup.py",
                         cwd=tmp_dir,
                         shell=True,
                     )
                     subprocess.run(
-                        f"black docs google tests noxfile.py setup.py",
+                        f"black -q docs google tests noxfile.py setup.py",
                         cwd=tmp_dir,
                         shell=True,
                     )
+                    subprocess.run(f"mkdir -p packages/{library_id}", cwd=output, shell=True)
                     subprocess.run(
                         f"cp -r {tmp_dir}/. packages/{library_id}", cwd=output, shell=True
                     )
-                    # TODO: Move to scripts to generator input directory
-                    apply_client_specific_post_processing(
-                        f"{output}/scripts/client-post-processing", library_id
-                    )
+    os.chdir(output)
+    apply_client_specific_post_processing(
+        f"/generator-input/client-post-processing", library_id
+    )
 
 
 @main.command()
