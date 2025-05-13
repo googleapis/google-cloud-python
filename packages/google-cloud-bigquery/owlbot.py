@@ -110,16 +110,6 @@ s.replace(
 python.py_samples()
 
 s.replace(
-    "docs/conf.py",
-    r'\{"members": True\}',
-    '{"members": True, "inherited-members": True}',
-)
-s.replace(
-    "docs/conf.py",
-    r"exclude_patterns = \[",
-    '\\g<0>\n    "google/cloud/bigquery_v2/**",  # Legacy proto-based types.',
-)
-s.replace(
     "samples/**/noxfile.py",
     'BLACK_VERSION = "black==22.3.0"',
     'BLACK_VERSION = "black==23.7.0"',
