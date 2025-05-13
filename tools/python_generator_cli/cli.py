@@ -203,11 +203,9 @@ def generate_library(api_root: str, generator_input: str, output: str, library_i
 def clean(repo_root: str, library_id: str):
     """Deletes all automatically generated files for a given library-id."""
 
-    pass
-    # Delete entire package directory
-    # subprocess.run(f"rm -rf {repo_root}/packages/{library_id}")
-    # subprocess.run(f"mkdir {repo_root}/packages/{library_id}")
-    # subprocess.run(f"git checkout {repo_root}/packages/{library_id}/tests/system")
+    subprocess.run(f"rm -rf {repo_root}/packages/{library_id}")
+    subprocess.run(f"mkdir {repo_root}/packages/{library_id}")
+    subprocess.run(f"git checkout {repo_root}/packages/{library_id}/tests/system")
 
 # Copied from synthtool
 # https://github.com/googleapis/synthtool/blob/6318601ed44bb99ec965bae0d46b54eba42aeb24/synthtool/languages/python_mono_repo.py#L147-L210
