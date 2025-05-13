@@ -142,3 +142,10 @@ replacements:
           "grpc-google-iam-v1 >=0.12.4, <1.0.0",
           "proto-plus >= 1.22.3, <2.0.0",
     count: 1
+  - paths: [
+      packages/google-cloud-compute/setup.py,
+    ]
+    before: extras = \{\}
+    after: |
+      extras = {"v1beta": "google-cloud-compute-v1beta"}
+    count: 1

@@ -17,7 +17,7 @@ deep-remove-regex:
   - /owl-bot-staging
 
 deep-copy-regex:
-  - source: /google/cloud/compute/(v.*)/compute-v.*-py
+  - source: /google/cloud/compute/(v1)/compute-v.*-py
     dest: /owl-bot-staging/google-cloud-compute/$1
 
 begin-after-commit-hash: 70f7f0525414fe4dfeb2fc2e81546b073f83a621
