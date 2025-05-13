@@ -14,9 +14,9 @@ Overview of the APIs available for BigQuery Connection API.
 Classes, methods and properties & attributes for
 BigQuery Connection API.
 
-[classes](https://cloud.google.com/python/docs/reference/bigqueryconnection/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/bigquery connection/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/bigqueryconnection/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/bigquery connection/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/bigqueryconnection/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/bigquery connection/latest/summary_property.html)
