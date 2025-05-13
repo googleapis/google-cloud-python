@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport
+from google.geo.type import viewport_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -448,7 +448,7 @@ class SearchTextRequest(proto.Message):
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
-            rectangle (google.geo.type.types.Viewport):
+            rectangle (google.geo.type.viewport_pb2.Viewport):
                 A rectangle box defined by northeast and southwest corner.
                 ``rectangle.high()`` must be the northeast point of the
                 rectangle viewport. ``rectangle.low()`` must be the
@@ -465,11 +465,11 @@ class SearchTextRequest(proto.Message):
                 This field is a member of `oneof`_ ``type``.
         """
 
-        rectangle: viewport.Viewport = proto.Field(
+        rectangle: viewport_pb2.Viewport = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="type",
-            message=viewport.Viewport,
+            message=viewport_pb2.Viewport,
         )
         circle: geometry.Circle = proto.Field(
             proto.MESSAGE,
@@ -486,7 +486,7 @@ class SearchTextRequest(proto.Message):
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
-            rectangle (google.geo.type.types.Viewport):
+            rectangle (google.geo.type.viewport_pb2.Viewport):
                 A rectangle box defined by northeast and southwest corner.
                 ``rectangle.high()`` must be the northeast point of the
                 rectangle viewport. ``rectangle.low()`` must be the
@@ -499,11 +499,11 @@ class SearchTextRequest(proto.Message):
                 This field is a member of `oneof`_ ``type``.
         """
 
-        rectangle: viewport.Viewport = proto.Field(
+        rectangle: viewport_pb2.Viewport = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="type",
-            message=viewport.Viewport,
+            message=viewport_pb2.Viewport,
         )
 
     class EVOptions(proto.Message):
@@ -967,7 +967,7 @@ class AutocompletePlacesRequest(proto.Message):
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
-            rectangle (google.geo.type.types.Viewport):
+            rectangle (google.geo.type.viewport_pb2.Viewport):
                 A viewport defined by a northeast and a
                 southwest corner.
 
@@ -979,11 +979,11 @@ class AutocompletePlacesRequest(proto.Message):
                 This field is a member of `oneof`_ ``type``.
         """
 
-        rectangle: viewport.Viewport = proto.Field(
+        rectangle: viewport_pb2.Viewport = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="type",
-            message=viewport.Viewport,
+            message=viewport_pb2.Viewport,
         )
         circle: geometry.Circle = proto.Field(
             proto.MESSAGE,
@@ -1004,7 +1004,7 @@ class AutocompletePlacesRequest(proto.Message):
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
-            rectangle (google.geo.type.types.Viewport):
+            rectangle (google.geo.type.viewport_pb2.Viewport):
                 A viewport defined by a northeast and a
                 southwest corner.
 
@@ -1016,11 +1016,11 @@ class AutocompletePlacesRequest(proto.Message):
                 This field is a member of `oneof`_ ``type``.
         """
 
-        rectangle: viewport.Viewport = proto.Field(
+        rectangle: viewport_pb2.Viewport = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="type",
-            message=viewport.Viewport,
+            message=viewport_pb2.Viewport,
         )
         circle: geometry.Circle = proto.Field(
             proto.MESSAGE,

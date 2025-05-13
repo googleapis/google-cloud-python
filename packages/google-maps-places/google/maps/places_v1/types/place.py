@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport as ggt_viewport
+from google.geo.type import viewport_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
@@ -26,11 +26,12 @@ from google.type import localized_text_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.maps.places_v1.types import address_descriptor as gmp_address_descriptor
 from google.maps.places_v1.types import content_block, ev_charging
 from google.maps.places_v1.types import fuel_options as gmp_fuel_options
 from google.maps.places_v1.types import photo
 from google.maps.places_v1.types import price_range as gmp_price_range
-from google.maps.places_v1.types import reference, review
+from google.maps.places_v1.types import review
 
 __protobuf__ = proto.module(
     package="google.maps.places.v1",
@@ -139,7 +140,7 @@ class Place(proto.Message):
             Plus code of the place location lat/long.
         location (google.type.latlng_pb2.LatLng):
             The position of this place.
-        viewport (google.geo.type.types.Viewport):
+        viewport (google.geo.type.viewport_pb2.Viewport):
             A viewport suitable for displaying the place
             on an average-sized map. This viewport should
             not be used as the physical boundary or the
@@ -165,10 +166,14 @@ class Place(proto.Message):
             always open (24 hours), the ``close`` field will not be set.
             Clients can rely on always open (24 hours) being represented
             as an
-            [open][google.maps.places.v1.Place.OpeningHours.Period.open]
-            period containing [day][Point.day] with value ``0``,
-            [hour][Point.hour] with value ``0``, and
-            [minute][Point.minute] with value ``0``.
+            ```open`` <https://developers.google.com/maps/documentation/places/web-service/reference/rest/v1/places#Period>`__
+            period containing
+            ```day`` <https://developers.google.com/maps/documentation/places/web-service/reference/rest/v1/places#Point>`__
+            with value ``0``,
+            ```hour`` <https://developers.google.com/maps/documentation/places/web-service/reference/rest/v1/places#Point>`__
+            with value ``0``, and
+            ```minute`` <https://developers.google.com/maps/documentation/places/web-service/reference/rest/v1/places#Point>`__
+            with value ``0``.
         utc_offset_minutes (int):
             Number of minutes this place's timezone is
             currently offset from UTC. This is expressed in
@@ -339,7 +344,7 @@ class Place(proto.Message):
         parking_options (google.maps.places_v1.types.Place.ParkingOptions):
             Options of parking provided by the place.
         sub_destinations (MutableSequence[google.maps.places_v1.types.Place.SubDestination]):
-            A list of sub destinations related to the
+            A list of sub-destinations related to the
             place.
         accessibility_options (google.maps.places_v1.types.Place.AccessibilityOptions):
             Information about the accessibility options a
@@ -353,18 +358,7 @@ class Place(proto.Message):
         ev_charge_options (google.maps.places_v1.types.EVChargeOptions):
             Information of ev charging options.
         generative_summary (google.maps.places_v1.types.Place.GenerativeSummary):
-            Experimental: See
-            https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
-            for more details.
-
             AI-generated summary of the place.
-        area_summary (google.maps.places_v1.types.Place.AreaSummary):
-            Experimental: See
-            https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
-            for more details.
-
-            AI-generated summary of the area that the place
-            is in.
         containing_places (MutableSequence[google.maps.places_v1.types.Place.ContainingPlace]):
             List of places in which the current place is
             located.
@@ -379,8 +373,24 @@ class Place(proto.Message):
             Google Maps.
 
             This field is a member of `oneof`_ ``_pure_service_area_business``.
+        address_descriptor (google.maps.places_v1.types.AddressDescriptor):
+            The address descriptor of the place. Address
+            descriptors include additional information that
+            help describe a location using landmarks and
+            areas. See address descriptor regional coverage
+            in
+            https://developers.google.com/maps/documentation/geocoding/address-descriptors/coverage.
         price_range (google.maps.places_v1.types.PriceRange):
             The price range associated with a Place.
+        review_summary (google.maps.places_v1.types.Place.ReviewSummary):
+            AI-generated summary of the place using user
+            reviews.
+        ev_charge_amenity_summary (google.maps.places_v1.types.Place.EvChargeAmenitySummary):
+            The summary of amenities near the EV charging
+            station.
+        neighborhood_summary (google.maps.places_v1.types.Place.NeighborhoodSummary):
+            A summary of points of interest near the
+            place.
     """
 
     class BusinessStatus(proto.Enum):
@@ -842,15 +852,21 @@ class Place(proto.Message):
         )
 
     class SubDestination(proto.Message):
-        r"""Place resource name and id of sub destinations that relate to
-        the place. For example, different terminals are different
-        destinations of an airport.
+        r"""Sub-destinations are specific places associated with a main
+        place. These provide more specific destinations for users who
+        are searching within a large or complex place, like an airport,
+        national park, university, or stadium. For example,
+        sub-destinations at an airport might include associated
+        terminals and parking lots. Sub-destinations return the place ID
+        and place resource name, which can be used in subsequent Place
+        Details (New) requests to fetch richer details, including the
+        sub-destination's display name and location.
 
         Attributes:
             name (str):
-                The resource name of the sub destination.
+                The resource name of the sub-destination.
             id (str):
-                The place id of the sub destination.
+                The place id of the sub-destination.
         """
 
         name: str = proto.Field(
@@ -908,20 +924,19 @@ class Place(proto.Message):
         )
 
     class GenerativeSummary(proto.Message):
-        r"""Experimental: See
-        https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
-        for more details.
-
-        AI-generated summary of the place.
+        r"""AI-generated summary of the place.
 
         Attributes:
             overview (google.type.localized_text_pb2.LocalizedText):
                 The overview of the place.
-            description (google.type.localized_text_pb2.LocalizedText):
-                The detailed description of the place.
-            references (google.maps.places_v1.types.References):
-                References that are used to generate the
-                summary description.
+            overview_flag_content_uri (str):
+                A link where users can flag a problem with
+                the overview summary.
+            disclosure_text (google.type.localized_text_pb2.LocalizedText):
+                The AI disclosure message "Summarized with
+                Gemini" (and its localized variants). This will
+                be in the language specified in the request if
+                available.
         """
 
         overview: localized_text_pb2.LocalizedText = proto.Field(
@@ -929,36 +944,14 @@ class Place(proto.Message):
             number=1,
             message=localized_text_pb2.LocalizedText,
         )
-        description: localized_text_pb2.LocalizedText = proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=localized_text_pb2.LocalizedText,
-        )
-        references: reference.References = proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=reference.References,
-        )
-
-    class AreaSummary(proto.Message):
-        r"""Experimental: See
-        https://developers.google.com/maps/documentation/places/web-service/experimental/places-generative
-        for more details.
-
-        AI-generated summary of the area that the place is in.
-
-        Attributes:
-            content_blocks (MutableSequence[google.maps.places_v1.types.ContentBlock]):
-                Content blocks that compose the area summary.
-                Each block has a separate topic about the area.
-        """
-
-        content_blocks: MutableSequence[
-            content_block.ContentBlock
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
+        overview_flag_content_uri: str = proto.Field(
+            proto.STRING,
             number=4,
-            message=content_block.ContentBlock,
+        )
+        disclosure_text: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=localized_text_pb2.LocalizedText,
         )
 
     class ContainingPlace(proto.Message):
@@ -980,6 +973,131 @@ class Place(proto.Message):
         id: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+
+    class ReviewSummary(proto.Message):
+        r"""AI-generated summary of the place using user reviews.
+
+        Attributes:
+            text (google.type.localized_text_pb2.LocalizedText):
+                The summary of user reviews.
+            flag_content_uri (str):
+                A link where users can flag a problem with
+                the summary.
+            disclosure_text (google.type.localized_text_pb2.LocalizedText):
+                The AI disclosure message "Summarized with
+                Gemini" (and its localized variants). This will
+                be in the language specified in the request if
+                available.
+        """
+
+        text: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=localized_text_pb2.LocalizedText,
+        )
+        flag_content_uri: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        disclosure_text: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=localized_text_pb2.LocalizedText,
+        )
+
+    class EvChargeAmenitySummary(proto.Message):
+        r"""The summary of amenities near the EV charging station. This only
+        applies to places with type ``electric_vehicle_charging_station``.
+        The ``overview`` field is guaranteed to be provided while the other
+        fields are optional.
+
+        Attributes:
+            overview (google.maps.places_v1.types.ContentBlock):
+                An overview of the available amenities. This
+                is guaranteed to be provided.
+            coffee (google.maps.places_v1.types.ContentBlock):
+                A summary of the nearby coffee options.
+            restaurant (google.maps.places_v1.types.ContentBlock):
+                A summary of the nearby restaurants.
+            store (google.maps.places_v1.types.ContentBlock):
+                A summary of the nearby gas stations.
+            flag_content_uri (str):
+                A link where users can flag a problem with
+                the summary.
+            disclosure_text (google.type.localized_text_pb2.LocalizedText):
+                The AI disclosure message "Summarized with
+                Gemini" (and its localized variants). This will
+                be in the language specified in the request if
+                available.
+        """
+
+        overview: content_block.ContentBlock = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=content_block.ContentBlock,
+        )
+        coffee: content_block.ContentBlock = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=content_block.ContentBlock,
+        )
+        restaurant: content_block.ContentBlock = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=content_block.ContentBlock,
+        )
+        store: content_block.ContentBlock = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=content_block.ContentBlock,
+        )
+        flag_content_uri: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        disclosure_text: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=localized_text_pb2.LocalizedText,
+        )
+
+    class NeighborhoodSummary(proto.Message):
+        r"""A summary of points of interest near the place.
+
+        Attributes:
+            overview (google.maps.places_v1.types.ContentBlock):
+                An overview summary of the neighborhood.
+            description (google.maps.places_v1.types.ContentBlock):
+                A detailed description of the neighborhood.
+            flag_content_uri (str):
+                A link where users can flag a problem with
+                the summary.
+            disclosure_text (google.type.localized_text_pb2.LocalizedText):
+                The AI disclosure message "Summarized with
+                Gemini" (and its localized variants). This will
+                be in the language specified in the request if
+                available.
+        """
+
+        overview: content_block.ContentBlock = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=content_block.ContentBlock,
+        )
+        description: content_block.ContentBlock = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=content_block.ContentBlock,
+        )
+        flag_content_uri: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        disclosure_text: localized_text_pb2.LocalizedText = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=localized_text_pb2.LocalizedText,
         )
 
     name: str = proto.Field(
@@ -1044,10 +1162,10 @@ class Place(proto.Message):
         number=12,
         message=latlng_pb2.LatLng,
     )
-    viewport: ggt_viewport.Viewport = proto.Field(
+    viewport: viewport_pb2.Viewport = proto.Field(
         proto.MESSAGE,
         number=13,
-        message=ggt_viewport.Viewport,
+        message=viewport_pb2.Viewport,
     )
     rating: float = proto.Field(
         proto.DOUBLE,
@@ -1293,11 +1411,6 @@ class Place(proto.Message):
         number=80,
         message=GenerativeSummary,
     )
-    area_summary: AreaSummary = proto.Field(
-        proto.MESSAGE,
-        number=81,
-        message=AreaSummary,
-    )
     containing_places: MutableSequence[ContainingPlace] = proto.RepeatedField(
         proto.MESSAGE,
         number=82,
@@ -1308,10 +1421,30 @@ class Place(proto.Message):
         number=83,
         optional=True,
     )
+    address_descriptor: gmp_address_descriptor.AddressDescriptor = proto.Field(
+        proto.MESSAGE,
+        number=84,
+        message=gmp_address_descriptor.AddressDescriptor,
+    )
     price_range: gmp_price_range.PriceRange = proto.Field(
         proto.MESSAGE,
         number=86,
         message=gmp_price_range.PriceRange,
+    )
+    review_summary: ReviewSummary = proto.Field(
+        proto.MESSAGE,
+        number=87,
+        message=ReviewSummary,
+    )
+    ev_charge_amenity_summary: EvChargeAmenitySummary = proto.Field(
+        proto.MESSAGE,
+        number=89,
+        message=EvChargeAmenitySummary,
+    )
+    neighborhood_summary: NeighborhoodSummary = proto.Field(
+        proto.MESSAGE,
+        number=91,
+        message=NeighborhoodSummary,
     )
 
 

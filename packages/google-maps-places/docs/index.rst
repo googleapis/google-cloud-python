@@ -21,3 +21,6 @@ For a list of all ``google-maps-places`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:

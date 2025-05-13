@@ -35,7 +35,6 @@ from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.maps.places_v1 import gapic_version as package_version
 
@@ -44,13 +43,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.geo.type.types import viewport
+from google.geo.type import viewport_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 from google.type import localized_text_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
 
 from google.maps.places_v1.types import (
+    address_descriptor,
     contextual_content,
     ev_charging,
     fuel_options,
@@ -777,9 +777,6 @@ class PlacesAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("PlacesAsyncClient",)

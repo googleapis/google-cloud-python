@@ -19,6 +19,7 @@ __version__ = package_version.__version__
 
 
 from .services.places import PlacesAsyncClient, PlacesClient
+from .types.address_descriptor import AddressDescriptor
 from .types.attribution import AuthorAttribution
 from .types.content_block import ContentBlock
 from .types.contextual_content import ContextualContent
@@ -50,6 +51,7 @@ from .types.travel_mode import TravelMode
 
 __all__ = (
     "PlacesAsyncClient",
+    "AddressDescriptor",
     "AuthorAttribution",
     "AutocompletePlacesRequest",
     "AutocompletePlacesResponse",
