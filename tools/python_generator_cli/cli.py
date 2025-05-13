@@ -196,7 +196,7 @@ def generate_library(api_root: str, generator_input: str, output: str, library_i
                         shell=True,
                     )
                     subprocess.run(
-                        f"cp -r {tmp_dir}/. {output}/packages/{library_id}", cwd=output, shell=True
+                        f"cp -r {tmp_dir}/. packages/{library_id}", cwd=output, shell=True
                     )
                     # TODO: Move to scripts to generator input directory
                     apply_client_specific_post_processing(
