@@ -1121,6 +1121,8 @@ def test_get_revision(request_type, transport: str = "grpc"):
             log_uri="log_uri_value",
             satisfies_pzs=True,
             session_affinity=True,
+            gpu_zonal_redundancy_disabled=True,
+            creator="creator_value",
             etag="etag_value",
         )
         response = client.get_revision(request)
@@ -1154,6 +1156,8 @@ def test_get_revision(request_type, transport: str = "grpc"):
     assert response.log_uri == "log_uri_value"
     assert response.satisfies_pzs is True
     assert response.session_affinity is True
+    assert response.gpu_zonal_redundancy_disabled is True
+    assert response.creator == "creator_value"
     assert response.etag == "etag_value"
 
 
@@ -1295,6 +1299,8 @@ async def test_get_revision_async(
                 log_uri="log_uri_value",
                 satisfies_pzs=True,
                 session_affinity=True,
+                gpu_zonal_redundancy_disabled=True,
+                creator="creator_value",
                 etag="etag_value",
             )
         )
@@ -1329,6 +1335,8 @@ async def test_get_revision_async(
     assert response.log_uri == "log_uri_value"
     assert response.satisfies_pzs is True
     assert response.session_affinity is True
+    assert response.gpu_zonal_redundancy_disabled is True
+    assert response.creator == "creator_value"
     assert response.etag == "etag_value"
 
 
@@ -3068,6 +3076,8 @@ async def test_get_revision_empty_call_grpc_asyncio():
                 log_uri="log_uri_value",
                 satisfies_pzs=True,
                 session_affinity=True,
+                gpu_zonal_redundancy_disabled=True,
+                creator="creator_value",
                 etag="etag_value",
             )
         )
@@ -3160,6 +3170,8 @@ async def test_get_revision_routing_parameters_request_1_grpc_asyncio():
                 log_uri="log_uri_value",
                 satisfies_pzs=True,
                 session_affinity=True,
+                gpu_zonal_redundancy_disabled=True,
+                creator="creator_value",
                 etag="etag_value",
             )
         )
@@ -3317,6 +3329,8 @@ def test_get_revision_rest_call_success(request_type):
             log_uri="log_uri_value",
             satisfies_pzs=True,
             session_affinity=True,
+            gpu_zonal_redundancy_disabled=True,
+            creator="creator_value",
             etag="etag_value",
         )
 
@@ -3355,6 +3369,8 @@ def test_get_revision_rest_call_success(request_type):
     assert response.log_uri == "log_uri_value"
     assert response.satisfies_pzs is True
     assert response.session_affinity is True
+    assert response.gpu_zonal_redundancy_disabled is True
+    assert response.creator == "creator_value"
     assert response.etag == "etag_value"
 
 

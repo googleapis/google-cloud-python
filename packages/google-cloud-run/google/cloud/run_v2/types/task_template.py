@@ -75,6 +75,9 @@ class TaskTemplate(proto.Message):
             Optional. VPC Access configuration to use for
             this Task. For more information, visit
             https://cloud.google.com/run/docs/configuring/connecting-vpc.
+        node_selector (google.cloud.run_v2.types.NodeSelector):
+            Optional. The node selector for the task
+            template.
     """
 
     containers: MutableSequence[k8s_min.Container] = proto.RepeatedField(
@@ -114,6 +117,11 @@ class TaskTemplate(proto.Message):
         proto.MESSAGE,
         number=8,
         message=vendor_settings.VpcAccess,
+    )
+    node_selector: vendor_settings.NodeSelector = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=vendor_settings.NodeSelector,
     )
 
 
