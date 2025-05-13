@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.3.3](https://github.com/googleapis/python-ndb/compare/v2.3.2...v2.3.3) (2025-05-09)
+
+
+### Bug Fixes
+
+* Support sub-meanings for datastore v2.20.3 ([#1014](https://github.com/googleapis/python-ndb/issues/1014)) ([88f14fa](https://github.com/googleapis/python-ndb/commit/88f14fa462b7f7caf72688374682bb1b7a2d933c))
+
 ## [2.3.2](https://github.com/googleapis/python-ndb/compare/v2.3.1...v2.3.2) (2024-07-15)
 
 
