@@ -27,7 +27,6 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.alloydb_v1beta import gapic_version as package_version
@@ -36,9 +35,6 @@ from google.cloud.alloydb_v1beta.types import resources, service
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AlloyDBAdminTransport(abc.ABC):
@@ -177,6 +173,11 @@ class AlloyDBAdminTransport(abc.ABC):
             ),
             self.export_cluster: gapic_v1.method.wrap_method(
                 self.export_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.import_cluster: gapic_v1.method.wrap_method(
+                self.import_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -512,6 +513,15 @@ class AlloyDBAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.ExportClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_cluster(
+        self,
+    ) -> Callable[
+        [service.ImportClusterRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

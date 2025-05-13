@@ -18,17 +18,33 @@ from google.cloud.alloydb import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.alloydb_v1.services.alloy_db_admin.async_client import (
+from google.cloud.alloydb_v1alpha.services.alloy_db_admin.async_client import (
     AlloyDBAdminAsyncClient,
 )
-from google.cloud.alloydb_v1.services.alloy_db_admin.client import AlloyDBAdminClient
-from google.cloud.alloydb_v1.types.data_model import (
+from google.cloud.alloydb_v1alpha.services.alloy_db_admin.client import (
+    AlloyDBAdminClient,
+)
+from google.cloud.alloydb_v1alpha.services.alloy_dbcsql_admin.async_client import (
+    AlloyDBCSQLAdminAsyncClient,
+)
+from google.cloud.alloydb_v1alpha.services.alloy_dbcsql_admin.client import (
+    AlloyDBCSQLAdminClient,
+)
+from google.cloud.alloydb_v1alpha.types.csql_resources import CloudSQLBackupRunSource
+from google.cloud.alloydb_v1alpha.types.csql_service import RestoreFromCloudSQLRequest
+from google.cloud.alloydb_v1alpha.types.data_model import (
     SqlResult,
     SqlResultColumn,
     SqlResultRow,
     SqlResultValue,
 )
-from google.cloud.alloydb_v1.types.resources import (
+from google.cloud.alloydb_v1alpha.types.gemini import (
+    GCAEntitlementType,
+    GCAInstanceConfig,
+    GeminiClusterConfig,
+    GeminiInstanceConfig,
+)
+from google.cloud.alloydb_v1alpha.types.resources import (
     AutomatedBackupPolicy,
     Backup,
     BackupSource,
@@ -53,7 +69,7 @@ from google.cloud.alloydb_v1.types.resources import (
     User,
     UserPassword,
 )
-from google.cloud.alloydb_v1.types.service import (
+from google.cloud.alloydb_v1alpha.types.service import (
     BatchCreateInstancesMetadata,
     BatchCreateInstancesRequest,
     BatchCreateInstancesResponse,
@@ -72,7 +88,10 @@ from google.cloud.alloydb_v1.types.service import (
     ExecuteSqlMetadata,
     ExecuteSqlRequest,
     ExecuteSqlResponse,
+    ExportClusterRequest,
+    ExportClusterResponse,
     FailoverInstanceRequest,
+    GcsDestination,
     GenerateClientCertificateRequest,
     GenerateClientCertificateResponse,
     GetBackupRequest,
@@ -80,6 +99,8 @@ from google.cloud.alloydb_v1.types.service import (
     GetConnectionInfoRequest,
     GetInstanceRequest,
     GetUserRequest,
+    ImportClusterRequest,
+    ImportClusterResponse,
     InjectFaultRequest,
     ListBackupsRequest,
     ListBackupsResponse,
@@ -95,6 +116,7 @@ from google.cloud.alloydb_v1.types.service import (
     ListUsersResponse,
     OperationMetadata,
     PromoteClusterRequest,
+    PromoteClusterStatus,
     RestartInstanceRequest,
     RestoreClusterRequest,
     SwitchoverClusterRequest,
@@ -102,15 +124,26 @@ from google.cloud.alloydb_v1.types.service import (
     UpdateClusterRequest,
     UpdateInstanceRequest,
     UpdateUserRequest,
+    UpgradeClusterRequest,
+    UpgradeClusterResponse,
+    UpgradeClusterStatus,
 )
 
 __all__ = (
     "AlloyDBAdminClient",
     "AlloyDBAdminAsyncClient",
+    "AlloyDBCSQLAdminClient",
+    "AlloyDBCSQLAdminAsyncClient",
+    "CloudSQLBackupRunSource",
+    "RestoreFromCloudSQLRequest",
     "SqlResult",
     "SqlResultColumn",
     "SqlResultRow",
     "SqlResultValue",
+    "GCAInstanceConfig",
+    "GeminiClusterConfig",
+    "GeminiInstanceConfig",
+    "GCAEntitlementType",
     "AutomatedBackupPolicy",
     "Backup",
     "BackupSource",
@@ -152,7 +185,10 @@ __all__ = (
     "ExecuteSqlMetadata",
     "ExecuteSqlRequest",
     "ExecuteSqlResponse",
+    "ExportClusterRequest",
+    "ExportClusterResponse",
     "FailoverInstanceRequest",
+    "GcsDestination",
     "GenerateClientCertificateRequest",
     "GenerateClientCertificateResponse",
     "GetBackupRequest",
@@ -160,6 +196,8 @@ __all__ = (
     "GetConnectionInfoRequest",
     "GetInstanceRequest",
     "GetUserRequest",
+    "ImportClusterRequest",
+    "ImportClusterResponse",
     "InjectFaultRequest",
     "ListBackupsRequest",
     "ListBackupsResponse",
@@ -175,6 +213,7 @@ __all__ = (
     "ListUsersResponse",
     "OperationMetadata",
     "PromoteClusterRequest",
+    "PromoteClusterStatus",
     "RestartInstanceRequest",
     "RestoreClusterRequest",
     "SwitchoverClusterRequest",
@@ -182,4 +221,7 @@ __all__ = (
     "UpdateClusterRequest",
     "UpdateInstanceRequest",
     "UpdateUserRequest",
+    "UpgradeClusterRequest",
+    "UpgradeClusterResponse",
+    "UpgradeClusterStatus",
 )

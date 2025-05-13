@@ -37,6 +37,8 @@ __protobuf__ = proto.module(
         "GcsDestination",
         "ExportClusterRequest",
         "ExportClusterResponse",
+        "ImportClusterRequest",
+        "ImportClusterResponse",
         "UpgradeClusterRequest",
         "UpgradeClusterResponse",
         "DeleteClusterRequest",
@@ -570,6 +572,143 @@ class ExportClusterResponse(proto.Message):
         number=2,
         oneof="destination",
         message="GcsDestination",
+    )
+
+
+class ImportClusterRequest(proto.Message):
+    r"""Import cluster request.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        sql_import_options (google.cloud.alloydb_v1beta.types.ImportClusterRequest.SqlImportOptions):
+            Options for importing data in SQL format.
+
+            This field is a member of `oneof`_ ``import_options``.
+        csv_import_options (google.cloud.alloydb_v1beta.types.ImportClusterRequest.CsvImportOptions):
+            Options for importing data in CSV format.
+
+            This field is a member of `oneof`_ ``import_options``.
+        name (str):
+            Required. The resource name of the cluster.
+        gcs_uri (str):
+            Required. The path to the file in Google Cloud Storage where
+            the source file for import will be stored. The URI is in the
+            form ``gs://bucketName/fileName``.
+        database (str):
+            Optional. Name of the database to which the import will be
+            done. For import from SQL file, this is required only if the
+            file does not specify a database. Note - Value provided
+            should be the same as expected from
+            ``SELECT current_database();`` and NOT as a resource
+            reference.
+        user (str):
+            Optional. Database user to be used for importing the data.
+            Note - Value provided should be the same as expected from
+            ``SELECT current_user;`` and NOT as a resource reference.
+    """
+
+    class SqlImportOptions(proto.Message):
+        r"""Options for importing data in SQL format."""
+
+    class CsvImportOptions(proto.Message):
+        r"""Options for importing data in CSV format.
+
+        Attributes:
+            table (str):
+                Required. The database table to import CSV
+                file into.
+            columns (MutableSequence[str]):
+                Optional. The columns to which CSV data is
+                imported. If not specified, all columns of the
+                database table are loaded with CSV data.
+            field_delimiter (str):
+                Optional. Specifies the character that
+                separates columns within each row (line) of the
+                file. The default is comma. The value of this
+                argument has to be a character in Hex ASCII
+                Code.
+            quote_character (str):
+                Optional. Specifies the quoting character to
+                be used when a data value is quoted. The default
+                is double-quote. The value of this argument has
+                to be a character in Hex ASCII Code.
+            escape_character (str):
+                Optional. Specifies the character that should
+                appear before a data character that needs to be
+                escaped. The default is same as quote character.
+                The value of this argument has to be a character
+                in Hex ASCII Code.
+        """
+
+        table: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        columns: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+        field_delimiter: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        quote_character: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        escape_character: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
+    sql_import_options: SqlImportOptions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="import_options",
+        message=SqlImportOptions,
+    )
+    csv_import_options: CsvImportOptions = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="import_options",
+        message=CsvImportOptions,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    gcs_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    database: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    user: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ImportClusterResponse(proto.Message):
+    r"""Response of import rpc.
+
+    Attributes:
+        bytes_downloaded (int):
+            Required. Size of the object downloaded from
+            Google Cloud Storage in bytes.
+    """
+
+    bytes_downloaded: int = proto.Field(
+        proto.INT64,
+        number=1,
     )
 
 
@@ -2298,6 +2437,10 @@ class ListSupportedDatabaseFlagsRequest(proto.Message):
         page_token (str):
             A token identifying a page of results the
             server should return.
+        scope (google.cloud.alloydb_v1beta.types.SupportedDatabaseFlag.Scope):
+            Optional. The scope for which supported flags
+            are requested. If not specified, default is
+            DATABASE.
     """
 
     parent: str = proto.Field(
@@ -2311,6 +2454,11 @@ class ListSupportedDatabaseFlagsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    scope: resources.SupportedDatabaseFlag.Scope = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=resources.SupportedDatabaseFlag.Scope,
     )
 
 
@@ -2387,7 +2535,7 @@ class GenerateClientCertificateRequest(proto.Message):
             Optional. The public key from the client.
         use_metadata_exchange (bool):
             Optional. An optional hint to the endpoint to
-            generate a client ceritificate that can be used
+            generate a client certificate that can be used
             by AlloyDB connectors to exchange additional
             metadata with the server after TLS handshake.
     """

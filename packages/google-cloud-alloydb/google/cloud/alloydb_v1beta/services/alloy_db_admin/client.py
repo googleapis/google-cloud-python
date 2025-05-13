@@ -43,7 +43,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.alloydb_v1beta import gapic_version as package_version
 
@@ -1616,6 +1615,167 @@ class AlloyDBAdminClient(metaclass=AlloyDBAdminClientMeta):
             response,
             self._transport.operations_client,
             service.ExportClusterResponse,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def import_cluster(
+        self,
+        request: Optional[Union[service.ImportClusterRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        gcs_uri: Optional[str] = None,
+        database: Optional[str] = None,
+        user: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Imports data to the cluster.
+        Imperative only.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1beta
+
+            def sample_import_cluster():
+                # Create a client
+                client = alloydb_v1beta.AlloyDBAdminClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1beta.ImportClusterRequest(
+                    name="name_value",
+                    gcs_uri="gcs_uri_value",
+                )
+
+                # Make the request
+                operation = client.import_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.alloydb_v1beta.types.ImportClusterRequest, dict]):
+                The request object. Import cluster request.
+            name (str):
+                Required. The resource name of the
+                cluster.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            gcs_uri (str):
+                Required. The path to the file in Google Cloud Storage
+                where the source file for import will be stored. The URI
+                is in the form ``gs://bucketName/fileName``.
+
+                This corresponds to the ``gcs_uri`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            database (str):
+                Optional. Name of the database to which the import will
+                be done. For import from SQL file, this is required only
+                if the file does not specify a database. Note - Value
+                provided should be the same as expected from
+                ``SELECT current_database();`` and NOT as a resource
+                reference.
+
+                This corresponds to the ``database`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            user (str):
+                Optional. Database user to be used for importing the
+                data. Note - Value provided should be the same as
+                expected from ``SELECT current_user;`` and NOT as a
+                resource reference.
+
+                This corresponds to the ``user`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.alloydb_v1beta.types.ImportClusterResponse`
+                Response of import rpc.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, gcs_uri, database, user]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.ImportClusterRequest):
+            request = service.ImportClusterRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if gcs_uri is not None:
+                request.gcs_uri = gcs_uri
+            if database is not None:
+                request.database = database
+            if user is not None:
+                request.user = user
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.import_cluster]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            service.ImportClusterResponse,
             metadata_type=service.OperationMetadata,
         )
 
@@ -5922,7 +6082,5 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("AlloyDBAdminClient",)
