@@ -20,6 +20,7 @@ __version__ = package_version.__version__
 
 from google.maps.places_v1.services.places.async_client import PlacesAsyncClient
 from google.maps.places_v1.services.places.client import PlacesClient
+from google.maps.places_v1.types.address_descriptor import AddressDescriptor
 from google.maps.places_v1.types.attribution import AuthorAttribution
 from google.maps.places_v1.types.content_block import ContentBlock
 from google.maps.places_v1.types.contextual_content import ContextualContent
@@ -52,6 +53,7 @@ from google.maps.places_v1.types.travel_mode import TravelMode
 __all__ = (
     "PlacesClient",
     "PlacesAsyncClient",
+    "AddressDescriptor",
     "AuthorAttribution",
     "ContentBlock",
     "ContextualContent",

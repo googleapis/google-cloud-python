@@ -54,6 +54,11 @@ class Review(proto.Message):
             This review's author.
         publish_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp for the review.
+        flag_content_uri (str):
+            A link where users can flag a problem with
+            the review.
+        google_maps_uri (str):
+            A link to show the review on Google Maps.
     """
 
     name: str = proto.Field(
@@ -87,6 +92,14 @@ class Review(proto.Message):
         proto.MESSAGE,
         number=14,
         message=timestamp_pb2.Timestamp,
+    )
+    flag_content_uri: str = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    google_maps_uri: str = proto.Field(
+        proto.STRING,
+        number=16,
     )
 
 

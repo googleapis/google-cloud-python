@@ -17,15 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.type import localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.type import localized_text_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.maps.places.v1',
+    package="google.maps.places.v1",
     manifest={
-        'AddressDescriptor',
+        "AddressDescriptor",
     },
 )
 
@@ -84,6 +82,7 @@ class AddressDescriptor(proto.Message):
 
                 This field is a member of `oneof`_ ``_travel_distance_meters``.
         """
+
         class SpatialRelationship(proto.Enum):
             r"""Defines the spatial relationship between the target location
             and the landmark.
@@ -136,10 +135,12 @@ class AddressDescriptor(proto.Message):
             proto.STRING,
             number=4,
         )
-        spatial_relationship: 'AddressDescriptor.Landmark.SpatialRelationship' = proto.Field(
-            proto.ENUM,
-            number=5,
-            enum='AddressDescriptor.Landmark.SpatialRelationship',
+        spatial_relationship: "AddressDescriptor.Landmark.SpatialRelationship" = (
+            proto.Field(
+                proto.ENUM,
+                number=5,
+                enum="AddressDescriptor.Landmark.SpatialRelationship",
+            )
         )
         straight_line_distance_meters: float = proto.Field(
             proto.FLOAT,
@@ -168,6 +169,7 @@ class AddressDescriptor(proto.Message):
                 Defines the spatial relationship between the
                 target location and the area.
         """
+
         class Containment(proto.Enum):
             r"""Defines the spatial relationship between the target location
             and the area.
@@ -203,10 +205,10 @@ class AddressDescriptor(proto.Message):
             number=3,
             message=localized_text_pb2.LocalizedText,
         )
-        containment: 'AddressDescriptor.Area.Containment' = proto.Field(
+        containment: "AddressDescriptor.Area.Containment" = proto.Field(
             proto.ENUM,
             number=4,
-            enum='AddressDescriptor.Area.Containment',
+            enum="AddressDescriptor.Area.Containment",
         )
 
     landmarks: MutableSequence[Landmark] = proto.RepeatedField(

@@ -44,6 +44,11 @@ class Photo(proto.Message):
             The maximum available height, in pixels.
         author_attributions (MutableSequence[google.maps.places_v1.types.AuthorAttribution]):
             This photo's authors.
+        flag_content_uri (str):
+            A link where users can flag a problem with
+            the photo.
+        google_maps_uri (str):
+            A link to show the photo on Google Maps.
     """
 
     name: str = proto.Field(
@@ -64,6 +69,14 @@ class Photo(proto.Message):
         proto.MESSAGE,
         number=4,
         message=attribution.AuthorAttribution,
+    )
+    flag_content_uri: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    google_maps_uri: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

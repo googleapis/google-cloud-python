@@ -63,6 +63,7 @@ from google.maps.places_v1.services.places import (
     transports,
 )
 from google.maps.places_v1.types import (
+    address_descriptor,
     contextual_content,
     ev_charging,
     fuel_options,
