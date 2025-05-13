@@ -42,7 +42,6 @@ WORKDIR /
 
 # TODO: move to requirements.txt file
 RUN pip3 install click black==23.7.0 isort==5.11.0
-RUN echo 'soafghgoshdgfoidffhgof'
 # TODO: This is only temporary. We should use the artifact from PyPI via a requirements.txt file
 RUN pip3 install git+https://github.com/googleapis/gapic-generator-python.git@1pp-update-README
 
