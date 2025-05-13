@@ -685,7 +685,8 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
 
         Creates a Subscription to a Data Clean Room. This is
         a long-running operation as it will create one or more
-        linked datasets.
+        linked datasets. Throws a Bad Request error if the Data
+        Exchange does not contain any listings.
 
         Returns:
             Callable[[~.SubscribeDataExchangeRequest],
