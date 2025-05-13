@@ -78,6 +78,27 @@ def generate_raw(api_path: str, output: str, api_root: str):
 
 @main.command()
 @click.option(
+    "--repo-root",
+    required=True,
+    type=str,
+    help="""
+    Path to the root of the clone of the git repository.
+    """,
+)
+@click.option(
+    "--library-id",
+    required=True,
+    type=str,
+    help="""
+    The name of the package to build.
+    """,
+)
+def build_library(repo_root: str, library_id: str):
+    """This is unused at the moment"""
+    pass
+
+@main.command()
+@click.option(
     "--api-root",
     required=True,
     type=str,
