@@ -73,11 +73,13 @@ class MatrixFactorization(BaseEstimator, metaclass=ABCMeta):
             for the outputs relevant to this model type.
 
         Args:
-            X (default None):
-                Ignored.
+            X (bigframes.dataframe.DataFrame | bigframes.series.Series | None):
+                DataFrame of shape (n_samples, n_features). Test samples.
 
-            y (default None):
-                Ignored.
+            y (bigframes.dataframe.DataFrame | bigframes.series.Series | None):
+                DataFrame of shape (n_samples,) or (n_samples, n_outputs). True
+                labels for `X`.
+
         Returns:
             bigframes.dataframe.DataFrame: DataFrame that represents model metrics.
         """

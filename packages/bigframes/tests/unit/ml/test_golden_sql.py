@@ -81,6 +81,7 @@ def mock_X(mock_y, mock_session):
         ["index_column_id"],
         ["index_column_label"],
     )
+    type(mock_X).sql = mock.PropertyMock(return_value="input_X_sql_property")
     mock_X.reset_index(drop=True).cache().sql = "input_X_no_index_sql"
     mock_X.join(mock_y).sql = "input_X_y_sql"
     mock_X.join(mock_y).cache.return_value = mock_X.join(mock_y)
@@ -248,7 +249,23 @@ def test_decomposition_mf_predict(mock_session, bqml_model, mock_X):
     )
 
 
-def test_decomposition_mf_score(mock_session, bqml_model, mock_X):
+def test_decomposition_mf_score(mock_session, bqml_model):
+    model = decomposition.MatrixFactorization(
+        num_factors=34,
+        feedback_type="explicit",
+        user_col="user_id",
+        item_col="item_col",
+        rating_col="rating_col",
+        l2_reg=9.83,
+    )
+    model._bqml_model = bqml_model
+    model.score()
+    mock_session.read_gbq.assert_called_once_with(
+        "SELECT * FROM ML.EVALUATE(MODEL `model_project`.`model_dataset`.`model_id`)"
+    )
+
+
+def test_decomposition_mf_score_with_x(mock_session, bqml_model, mock_X):
     model = decomposition.MatrixFactorization(
         num_factors=34,
         feedback_type="explicit",
@@ -259,7 +276,6 @@ def test_decomposition_mf_score(mock_session, bqml_model, mock_X):
     )
     model._bqml_model = bqml_model
     model.score(mock_X)
-
     mock_session.read_gbq.assert_called_once_with(
-        "SELECT * FROM ML.EVALUATE(MODEL `model_project`.`model_dataset`.`model_id`)"
+        "SELECT * FROM ML.EVALUATE(MODEL `model_project`.`model_dataset`.`model_id`,\n  (input_X_sql_property))"
     )

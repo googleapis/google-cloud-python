@@ -360,5 +360,12 @@ class MatrixFactorization(
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        # TODO(b/291973741): X param is ignored. Update BQML supports input in ML.EVALUATE.
-        return self._bqml_model.evaluate()
+        if X is not None and y is not None:
+            X, y = utils.batch_convert_to_dataframe(
+                X, y, session=self._bqml_model.session
+            )
+            input_data = X.join(y, how="outer")
+        else:
+            input_data = X
+
+        return self._bqml_model.evaluate(input_data)

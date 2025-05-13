@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pandas as pd
+import pandas.testing
 
 from bigframes.ml import decomposition
 from tests.system import utils
@@ -193,7 +194,16 @@ def test_decomposition_mf_configure_fit_load(
         )
     )
 
-    reloaded_model.score(new_ratings)
+    # Make sure the input to score is not ignored.
+    scores_training_data = reloaded_model.score().to_pandas()
+    scores_new_ratings = reloaded_model.score(new_ratings).to_pandas()
+    pandas.testing.assert_index_equal(
+        scores_training_data.columns, scores_new_ratings.columns
+    )
+    assert (
+        scores_training_data["mean_squared_error"].iloc[0]
+        != scores_new_ratings["mean_squared_error"].iloc[0]
+    )
 
     result = reloaded_model.predict(new_ratings).to_pandas()
 
