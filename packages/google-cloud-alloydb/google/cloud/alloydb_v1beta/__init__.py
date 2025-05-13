@@ -19,9 +19,19 @@ __version__ = package_version.__version__
 
 
 from .services.alloy_db_admin import AlloyDBAdminAsyncClient, AlloyDBAdminClient
+from .services.alloy_dbcsql_admin import (
+    AlloyDBCSQLAdminAsyncClient,
+    AlloyDBCSQLAdminClient,
+)
 from .types.csql_resources import CloudSQLBackupRunSource
+from .types.csql_service import RestoreFromCloudSQLRequest
 from .types.data_model import SqlResult, SqlResultColumn, SqlResultRow, SqlResultValue
-from .types.gemini import GeminiClusterConfig, GeminiInstanceConfig
+from .types.gemini import (
+    GCAEntitlementType,
+    GCAInstanceConfig,
+    GeminiClusterConfig,
+    GeminiInstanceConfig,
+)
 from .types.resources import (
     AutomatedBackupPolicy,
     Backup,
@@ -77,6 +87,8 @@ from .types.service import (
     GetConnectionInfoRequest,
     GetInstanceRequest,
     GetUserRequest,
+    ImportClusterRequest,
+    ImportClusterResponse,
     InjectFaultRequest,
     ListBackupsRequest,
     ListBackupsResponse,
@@ -107,7 +119,9 @@ from .types.service import (
 
 __all__ = (
     "AlloyDBAdminAsyncClient",
+    "AlloyDBCSQLAdminAsyncClient",
     "AlloyDBAdminClient",
+    "AlloyDBCSQLAdminClient",
     "AutomatedBackupPolicy",
     "Backup",
     "BackupSource",
@@ -143,6 +157,8 @@ __all__ = (
     "ExportClusterRequest",
     "ExportClusterResponse",
     "FailoverInstanceRequest",
+    "GCAEntitlementType",
+    "GCAInstanceConfig",
     "GcsDestination",
     "GeminiClusterConfig",
     "GeminiInstanceConfig",
@@ -153,6 +169,8 @@ __all__ = (
     "GetConnectionInfoRequest",
     "GetInstanceRequest",
     "GetUserRequest",
+    "ImportClusterRequest",
+    "ImportClusterResponse",
     "InjectFaultRequest",
     "Instance",
     "InstanceView",
@@ -176,6 +194,7 @@ __all__ = (
     "PromoteClusterStatus",
     "RestartInstanceRequest",
     "RestoreClusterRequest",
+    "RestoreFromCloudSQLRequest",
     "SqlResult",
     "SqlResultColumn",
     "SqlResultRow",

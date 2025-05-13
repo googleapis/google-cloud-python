@@ -110,6 +110,11 @@
                 "get_user"
               ]
             },
+            "ImportCluster": {
+              "methods": [
+                "import_cluster"
+              ]
+            },
             "InjectFault": {
               "methods": [
                 "inject_fault"
@@ -293,6 +298,11 @@
             "GetUser": {
               "methods": [
                 "get_user"
+              ]
+            },
+            "ImportCluster": {
+              "methods": [
+                "import_cluster"
               ]
             },
             "InjectFault": {
@@ -480,6 +490,11 @@
                 "get_user"
               ]
             },
+            "ImportCluster": {
+              "methods": [
+                "import_cluster"
+              ]
+            },
             "InjectFault": {
               "methods": [
                 "inject_fault"
@@ -558,6 +573,40 @@
             "UpgradeCluster": {
               "methods": [
                 "upgrade_cluster"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "AlloyDBCSQLAdmin": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AlloyDBCSQLAdminClient",
+          "rpcs": {
+            "RestoreFromCloudSQL": {
+              "methods": [
+                "restore_from_cloud_sql"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AlloyDBCSQLAdminAsyncClient",
+          "rpcs": {
+            "RestoreFromCloudSQL": {
+              "methods": [
+                "restore_from_cloud_sql"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AlloyDBCSQLAdminClient",
+          "rpcs": {
+            "RestoreFromCloudSQL": {
+              "methods": [
+                "restore_from_cloud_sql"
               ]
             }
           }

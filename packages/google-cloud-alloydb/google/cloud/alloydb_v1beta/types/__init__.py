@@ -14,8 +14,14 @@
 # limitations under the License.
 #
 from .csql_resources import CloudSQLBackupRunSource
+from .csql_service import RestoreFromCloudSQLRequest
 from .data_model import SqlResult, SqlResultColumn, SqlResultRow, SqlResultValue
-from .gemini import GeminiClusterConfig, GeminiInstanceConfig
+from .gemini import (
+    GCAEntitlementType,
+    GCAInstanceConfig,
+    GeminiClusterConfig,
+    GeminiInstanceConfig,
+)
 from .resources import (
     AutomatedBackupPolicy,
     Backup,
@@ -71,6 +77,8 @@ from .service import (
     GetConnectionInfoRequest,
     GetInstanceRequest,
     GetUserRequest,
+    ImportClusterRequest,
+    ImportClusterResponse,
     InjectFaultRequest,
     ListBackupsRequest,
     ListBackupsResponse,
@@ -101,12 +109,15 @@ from .service import (
 
 __all__ = (
     "CloudSQLBackupRunSource",
+    "RestoreFromCloudSQLRequest",
     "SqlResult",
     "SqlResultColumn",
     "SqlResultRow",
     "SqlResultValue",
+    "GCAInstanceConfig",
     "GeminiClusterConfig",
     "GeminiInstanceConfig",
+    "GCAEntitlementType",
     "AutomatedBackupPolicy",
     "Backup",
     "BackupSource",
@@ -159,6 +170,8 @@ __all__ = (
     "GetConnectionInfoRequest",
     "GetInstanceRequest",
     "GetUserRequest",
+    "ImportClusterRequest",
+    "ImportClusterResponse",
     "InjectFaultRequest",
     "ListBackupsRequest",
     "ListBackupsResponse",

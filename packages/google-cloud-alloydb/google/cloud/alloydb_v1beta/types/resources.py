@@ -390,9 +390,8 @@ class AutomatedBackupPolicy(proto.Message):
             Optional. The encryption config can be
             specified to encrypt the backups with a
             customer-managed encryption key (CMEK). When
-            this field is not specified, the backup will
-            then use default encryption scheme to protect
-            the user data.
+            this field is not specified, the backup will use
+            the cluster's encryption config.
         location (str):
             The location where the backup will be stored.
             Currently, the only supported option is to store
@@ -535,8 +534,8 @@ class ContinuousBackupConfig(proto.Message):
             The encryption config can be specified to
             encrypt the backups with a customer-managed
             encryption key (CMEK). When this field is not
-            specified, the backup will then use default
-            encryption scheme to protect the user data.
+            specified, the backup will use the cluster's
+            encryption config.
     """
 
     enabled: bool = proto.Field(
@@ -1013,11 +1012,19 @@ class Cluster(proto.Message):
                 Optional. Create an instance that allows
                 connections from Private Service Connect
                 endpoints to the instance.
+            service_owned_project_number (int):
+                Output only. The project number that needs to
+                be allowlisted on the network attachment to
+                enable outbound connectivity.
         """
 
         psc_enabled: bool = proto.Field(
             proto.BOOL,
             number=1,
+        )
+        service_owned_project_number: int = proto.Field(
+            proto.INT64,
+            number=3,
         )
 
     class TrialMetadata(proto.Message):
@@ -1369,6 +1376,9 @@ class Instance(proto.Message):
         outbound_public_ip_addresses (MutableSequence[str]):
             Output only. All outbound public IP addresses
             configured for the instance.
+        gca_config (google.cloud.alloydb_v1beta.types.GCAInstanceConfig):
+            Output only. Configuration parameters related
+            to Gemini Cloud Assist.
     """
 
     class State(proto.Enum):
@@ -1466,16 +1476,24 @@ class Instance(proto.Message):
         Attributes:
             cpu_count (int):
                 The number of CPU's in the VM instance.
+            machine_type (str):
+                Machine type of the VM instance. E.g. "n2-highmem-4",
+                "n2-highmem-8", "c4a-highmem-4-lssd". cpu_count must match
+                the number of vCPUs in the machine type.
         """
 
         cpu_count: int = proto.Field(
             proto.INT32,
             number=1,
         )
+        machine_type: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
 
     class Node(proto.Message):
         r"""Details of a single node in the instance.
-        Nodes in an AlloyDB instance are ephemereal, they can change
+        Nodes in an AlloyDB instance are ephemeral, they can change
         during update, failover, autohealing and resize operations.
 
         Attributes:
@@ -1593,7 +1611,7 @@ class Instance(proto.Message):
                 turned "on" by default but tracking is enabled
                 only after observability enabled flag is also
                 turned on. This is read-only flag and only
-                modifiable by producer API.
+                modifiable by internal API.
 
                 This field is a member of `oneof`_ ``_track_wait_event_types``.
             max_query_string_length (int):
@@ -1739,6 +1757,72 @@ class Instance(proto.Message):
             message="SslConfig",
         )
 
+    class PscInterfaceConfig(proto.Message):
+        r"""Configuration for setting up a PSC interface to enable
+        outbound connectivity.
+
+        Attributes:
+            network_attachment_resource (str):
+                The network attachment resource created in the consumer
+                network to which the PSC interface will be linked. This is
+                of the format:
+                "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}".
+                The network attachment must be in the same region as the
+                instance.
+        """
+
+        network_attachment_resource: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class PscAutoConnectionConfig(proto.Message):
+        r"""Configuration for setting up PSC service automation. Consumer
+        projects in the configs will be allowlisted automatically for
+        the instance.
+
+        Attributes:
+            consumer_project (str):
+                The consumer project to which the PSC service
+                automation endpoint will be created.
+            consumer_network (str):
+                The consumer network for the PSC service
+                automation, example:
+                "projects/vpc-host-project/global/networks/default".
+                The consumer network might be hosted a different
+                project than the consumer project.
+            ip_address (str):
+                Output only. The IP address of the PSC
+                service automation endpoint.
+            status (str):
+                Output only. The status of the PSC service
+                automation connection.
+            consumer_network_status (str):
+                Output only. The status of the service
+                connection policy.
+        """
+
+        consumer_project: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        consumer_network: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        ip_address: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        status: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        consumer_network_status: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
     class PscInstanceConfig(proto.Message):
         r"""PscInstanceConfig contains PSC related configuration at an
         instance level.
@@ -1757,6 +1841,15 @@ class Instance(proto.Message):
                 Output only. The DNS name of the instance for
                 PSC connectivity. Name convention:
                 <uid>.<uid>.<region>.alloydb-psc.goog
+            psc_interface_configs (MutableSequence[google.cloud.alloydb_v1beta.types.Instance.PscInterfaceConfig]):
+                Optional. Configurations for setting up PSC
+                interfaces attached to the instance which are
+                used for outbound connectivity. Only primary
+                instances can have PSC interface attached.
+                Currently we only support 0 or 1 PSC interface.
+            psc_auto_connections (MutableSequence[google.cloud.alloydb_v1beta.types.Instance.PscAutoConnectionConfig]):
+                Optional. Configurations for setting up PSC
+                service automation.
         """
 
         service_attachment_link: str = proto.Field(
@@ -1770,6 +1863,20 @@ class Instance(proto.Message):
         psc_dns_name: str = proto.Field(
             proto.STRING,
             number=7,
+        )
+        psc_interface_configs: MutableSequence[
+            "Instance.PscInterfaceConfig"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message="Instance.PscInterfaceConfig",
+        )
+        psc_auto_connections: MutableSequence[
+            "Instance.PscAutoConnectionConfig"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=9,
+            message="Instance.PscAutoConnectionConfig",
         )
 
     class InstanceNetworkConfig(proto.Message):
@@ -1958,6 +2065,11 @@ class Instance(proto.Message):
     outbound_public_ip_addresses: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=34,
+    )
+    gca_config: gemini.GCAInstanceConfig = proto.Field(
+        proto.MESSAGE,
+        number=38,
+        message=gemini.GCAInstanceConfig,
     )
 
 
@@ -2327,6 +2439,14 @@ class SupportedDatabaseFlag(proto.Message):
             Restriction on INTEGER type value.
 
             This field is a member of `oneof`_ ``restrictions``.
+        recommended_string_value (str):
+            The recommended value for a STRING flag.
+
+            This field is a member of `oneof`_ ``recommended_value``.
+        recommended_integer_value (google.protobuf.wrappers_pb2.Int64Value):
+            The recommended value for an INTEGER flag.
+
+            This field is a member of `oneof`_ ``recommended_value``.
         name (str):
             The name of the flag resource, following Google Cloud
             conventions, e.g.:
@@ -2352,6 +2472,8 @@ class SupportedDatabaseFlag(proto.Message):
             that requires database restart is set, the
             backend will automatically restart the database
             (making sure to satisfy any availability SLO's).
+        scope (google.cloud.alloydb_v1beta.types.SupportedDatabaseFlag.Scope):
+            The scope of the flag.
     """
 
     class ValueType(proto.Enum):
@@ -2378,6 +2500,22 @@ class SupportedDatabaseFlag(proto.Message):
         INTEGER = 2
         FLOAT = 3
         NONE = 4
+
+    class Scope(proto.Enum):
+        r"""The scope of the flag.
+
+        Values:
+            SCOPE_UNSPECIFIED (0):
+                The scope of the flag is not specified.
+                Default is DATABASE.
+            DATABASE (1):
+                The flag is a database flag.
+            CONNECTION_POOL (2):
+                The flag is a connection pool flag.
+        """
+        SCOPE_UNSPECIFIED = 0
+        DATABASE = 1
+        CONNECTION_POOL = 2
 
     class StringRestrictions(proto.Message):
         r"""Restrictions on STRING type values
@@ -2429,6 +2567,17 @@ class SupportedDatabaseFlag(proto.Message):
         oneof="restrictions",
         message=IntegerRestrictions,
     )
+    recommended_string_value: str = proto.Field(
+        proto.STRING,
+        number=10,
+        oneof="recommended_value",
+    )
+    recommended_integer_value: wrappers_pb2.Int64Value = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="recommended_value",
+        message=wrappers_pb2.Int64Value,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -2454,6 +2603,11 @@ class SupportedDatabaseFlag(proto.Message):
     requires_db_restart: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    scope: Scope = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Scope,
     )
 
 
