@@ -407,6 +407,114 @@ class StorageControlTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_project_intelligence_config: gapic_v1.method.wrap_method(
+                self.get_project_intelligence_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_project_intelligence_config: gapic_v1.method.wrap_method(
+                self.update_project_intelligence_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_folder_intelligence_config: gapic_v1.method.wrap_method(
+                self.get_folder_intelligence_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_folder_intelligence_config: gapic_v1.method.wrap_method(
+                self.update_folder_intelligence_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_organization_intelligence_config: gapic_v1.method.wrap_method(
+                self.get_organization_intelligence_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_organization_intelligence_config: gapic_v1.method.wrap_method(
+                self.update_organization_intelligence_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -581,6 +689,78 @@ class StorageControlTransport(abc.ABC):
         Union[
             storage_control.ListAnywhereCachesResponse,
             Awaitable[storage_control.ListAnywhereCachesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_project_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.GetProjectIntelligenceConfigRequest],
+        Union[
+            storage_control.IntelligenceConfig,
+            Awaitable[storage_control.IntelligenceConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_project_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateProjectIntelligenceConfigRequest],
+        Union[
+            storage_control.IntelligenceConfig,
+            Awaitable[storage_control.IntelligenceConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_folder_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.GetFolderIntelligenceConfigRequest],
+        Union[
+            storage_control.IntelligenceConfig,
+            Awaitable[storage_control.IntelligenceConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_folder_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateFolderIntelligenceConfigRequest],
+        Union[
+            storage_control.IntelligenceConfig,
+            Awaitable[storage_control.IntelligenceConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_organization_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.GetOrganizationIntelligenceConfigRequest],
+        Union[
+            storage_control.IntelligenceConfig,
+            Awaitable[storage_control.IntelligenceConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_organization_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateOrganizationIntelligenceConfigRequest],
+        Union[
+            storage_control.IntelligenceConfig,
+            Awaitable[storage_control.IntelligenceConfig],
         ],
     ]:
         raise NotImplementedError()

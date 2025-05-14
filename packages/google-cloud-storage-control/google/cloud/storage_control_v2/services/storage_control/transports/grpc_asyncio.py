@@ -850,6 +850,203 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             )
         return self._stubs["list_anywhere_caches"]
 
+    @property
+    def get_project_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.GetProjectIntelligenceConfigRequest],
+        Awaitable[storage_control.IntelligenceConfig],
+    ]:
+        r"""Return a callable for the get project intelligence
+        config method over gRPC.
+
+        Returns the Project scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.GetProjectIntelligenceConfigRequest],
+                    Awaitable[~.IntelligenceConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_project_intelligence_config" not in self._stubs:
+            self._stubs[
+                "get_project_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetProjectIntelligenceConfig",
+                request_serializer=storage_control.GetProjectIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["get_project_intelligence_config"]
+
+    @property
+    def update_project_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateProjectIntelligenceConfigRequest],
+        Awaitable[storage_control.IntelligenceConfig],
+    ]:
+        r"""Return a callable for the update project intelligence
+        config method over gRPC.
+
+        Updates the Project scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.UpdateProjectIntelligenceConfigRequest],
+                    Awaitable[~.IntelligenceConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_project_intelligence_config" not in self._stubs:
+            self._stubs[
+                "update_project_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateProjectIntelligenceConfig",
+                request_serializer=storage_control.UpdateProjectIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["update_project_intelligence_config"]
+
+    @property
+    def get_folder_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.GetFolderIntelligenceConfigRequest],
+        Awaitable[storage_control.IntelligenceConfig],
+    ]:
+        r"""Return a callable for the get folder intelligence config method over gRPC.
+
+        Returns the Folder scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.GetFolderIntelligenceConfigRequest],
+                    Awaitable[~.IntelligenceConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_folder_intelligence_config" not in self._stubs:
+            self._stubs[
+                "get_folder_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetFolderIntelligenceConfig",
+                request_serializer=storage_control.GetFolderIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["get_folder_intelligence_config"]
+
+    @property
+    def update_folder_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateFolderIntelligenceConfigRequest],
+        Awaitable[storage_control.IntelligenceConfig],
+    ]:
+        r"""Return a callable for the update folder intelligence
+        config method over gRPC.
+
+        Updates the Folder scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.UpdateFolderIntelligenceConfigRequest],
+                    Awaitable[~.IntelligenceConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_folder_intelligence_config" not in self._stubs:
+            self._stubs[
+                "update_folder_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateFolderIntelligenceConfig",
+                request_serializer=storage_control.UpdateFolderIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["update_folder_intelligence_config"]
+
+    @property
+    def get_organization_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.GetOrganizationIntelligenceConfigRequest],
+        Awaitable[storage_control.IntelligenceConfig],
+    ]:
+        r"""Return a callable for the get organization intelligence
+        config method over gRPC.
+
+        Returns the Organization scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.GetOrganizationIntelligenceConfigRequest],
+                    Awaitable[~.IntelligenceConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_organization_intelligence_config" not in self._stubs:
+            self._stubs[
+                "get_organization_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetOrganizationIntelligenceConfig",
+                request_serializer=storage_control.GetOrganizationIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["get_organization_intelligence_config"]
+
+    @property
+    def update_organization_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateOrganizationIntelligenceConfigRequest],
+        Awaitable[storage_control.IntelligenceConfig],
+    ]:
+        r"""Return a callable for the update organization
+        intelligence config method over gRPC.
+
+        Updates the Organization scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.UpdateOrganizationIntelligenceConfigRequest],
+                    Awaitable[~.IntelligenceConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_organization_intelligence_config" not in self._stubs:
+            self._stubs[
+                "update_organization_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateOrganizationIntelligenceConfig",
+                request_serializer=storage_control.UpdateOrganizationIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["update_organization_intelligence_config"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1104,6 +1301,114 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             ),
             self.list_anywhere_caches: self._wrap_method(
                 self.list_anywhere_caches,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_project_intelligence_config: self._wrap_method(
+                self.get_project_intelligence_config,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_project_intelligence_config: self._wrap_method(
+                self.update_project_intelligence_config,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_folder_intelligence_config: self._wrap_method(
+                self.get_folder_intelligence_config,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_folder_intelligence_config: self._wrap_method(
+                self.update_folder_intelligence_config,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_organization_intelligence_config: self._wrap_method(
+                self.get_organization_intelligence_config,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_organization_intelligence_config: self._wrap_method(
+                self.update_organization_intelligence_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=60.0,

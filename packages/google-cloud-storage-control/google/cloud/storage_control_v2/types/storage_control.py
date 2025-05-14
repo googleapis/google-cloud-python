@@ -54,6 +54,13 @@ __protobuf__ = proto.module(
         "GetAnywhereCacheRequest",
         "ListAnywhereCachesRequest",
         "ListAnywhereCachesResponse",
+        "IntelligenceConfig",
+        "UpdateOrganizationIntelligenceConfigRequest",
+        "UpdateFolderIntelligenceConfigRequest",
+        "UpdateProjectIntelligenceConfigRequest",
+        "GetOrganizationIntelligenceConfigRequest",
+        "GetFolderIntelligenceConfigRequest",
+        "GetProjectIntelligenceConfigRequest",
     },
 )
 
@@ -1328,6 +1335,439 @@ class ListAnywhereCachesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class IntelligenceConfig(proto.Message):
+    r"""The ``IntelligenceConfig`` resource associated with your
+    organization, folder, or project.
+
+    Attributes:
+        name (str):
+            Identifier. The name of the ``IntelligenceConfig`` resource
+            associated with your organization, folder, or project.
+
+            The name format varies based on the GCP resource hierarchy
+            as follows:
+
+            -  For project:
+               ``projects/{project_number}/locations/global/intelligenceConfig``
+            -  For organization:
+               ``organizations/{org_id}/locations/global/intelligenceConfig``
+            -  For folder:
+               ``folders/{folder_id}/locations/global/intelligenceConfig``
+        edition_config (google.cloud.storage_control_v2.types.IntelligenceConfig.EditionConfig):
+            Optional. The edition configuration of the
+            ``IntelligenceConfig`` resource.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the ``IntelligenceConfig``
+            resource is last updated.
+        filter (google.cloud.storage_control_v2.types.IntelligenceConfig.Filter):
+            Optional. Filter over location and bucket.
+        effective_intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig.EffectiveIntelligenceConfig):
+            Output only. The ``IntelligenceConfig`` resource that is
+            applicable for the resource.
+        trial_config (google.cloud.storage_control_v2.types.IntelligenceConfig.TrialConfig):
+            The trial configuration of the ``IntelligenceConfig``
+            resource.
+    """
+
+    class EditionConfig(proto.Enum):
+        r"""The edition configuration of the ``IntelligenceConfig`` resource.
+        This signifies the edition used for configuring the
+        ``IntelligenceConfig`` resource and can only take the following
+        values: ``EDITION_CONFIG_UNSPECIFIED``, ``INHERIT``, ``DISABLED``,
+        ``STANDARD`` and ``TRIAL``.
+
+        Values:
+            EDITION_CONFIG_UNSPECIFIED (0):
+                This is an unknown edition of the resource.
+            INHERIT (1):
+                The inherited edition from the parent and filters. This is
+                the default edition when there is no ``IntelligenceConfig``
+                setup for a GCP resource.
+            DISABLED (2):
+                The edition configuration is disabled for the
+                ``IntelligenceConfig`` resource and its children. Filters
+                are not applicable.
+            STANDARD (3):
+                The ``IntelligenceConfig`` resource is of STANDARD edition.
+            TRIAL (5):
+                The ``IntelligenceConfig`` resource is available in
+                ``TRIAL`` edition. During the trial period, Cloud Storage
+                does not charge for Storage Intelligence usage. You can
+                specify the buckets to include in the trial period by using
+                filters. At the end of the trial period, the
+                ``IntelligenceConfig`` resource is upgraded to ``STANDARD``
+                edition.
+        """
+        EDITION_CONFIG_UNSPECIFIED = 0
+        INHERIT = 1
+        DISABLED = 2
+        STANDARD = 3
+        TRIAL = 5
+
+    class Filter(proto.Message):
+        r"""Filter over location and bucket using include or exclude
+        semantics. Resources that match the include or exclude filter
+        are exclusively included or excluded from the Storage
+        Intelligence plan.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            included_cloud_storage_locations (google.cloud.storage_control_v2.types.IntelligenceConfig.Filter.CloudStorageLocations):
+                Bucket locations to include.
+
+                This field is a member of `oneof`_ ``cloud_storage_locations``.
+            excluded_cloud_storage_locations (google.cloud.storage_control_v2.types.IntelligenceConfig.Filter.CloudStorageLocations):
+                Bucket locations to exclude.
+
+                This field is a member of `oneof`_ ``cloud_storage_locations``.
+            included_cloud_storage_buckets (google.cloud.storage_control_v2.types.IntelligenceConfig.Filter.CloudStorageBuckets):
+                Buckets to include.
+
+                This field is a member of `oneof`_ ``cloud_storage_buckets``.
+            excluded_cloud_storage_buckets (google.cloud.storage_control_v2.types.IntelligenceConfig.Filter.CloudStorageBuckets):
+                Buckets to exclude.
+
+                This field is a member of `oneof`_ ``cloud_storage_buckets``.
+        """
+
+        class CloudStorageLocations(proto.Message):
+            r"""Collection of bucket locations.
+
+            Attributes:
+                locations (MutableSequence[str]):
+                    Optional. Bucket locations. Location can be any of the Cloud
+                    Storage regions specified in lower case format. For example,
+                    ``us-east1``, ``us-west1``.
+            """
+
+            locations: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        class CloudStorageBuckets(proto.Message):
+            r"""Collection of buckets.
+
+            Attributes:
+                bucket_id_regexes (MutableSequence[str]):
+                    Optional. A regex pattern for matching bucket names. Regex
+                    should follow the syntax specified in
+                    `google/re2 <https://github.com/google/re2>`__. For example,
+                    ``^sample_.*`` matches all buckets of the form
+                    ``gs://sample_bucket-1``, ``gs://sample_bucket-2``,
+                    ``gs://sample_bucket-n`` but not
+                    ``gs://test_sample_bucket``. If you want to match a single
+                    bucket, say ``gs://sample_bucket``, use ``sample_bucket``.
+            """
+
+            bucket_id_regexes: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        included_cloud_storage_locations: "IntelligenceConfig.Filter.CloudStorageLocations" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="cloud_storage_locations",
+            message="IntelligenceConfig.Filter.CloudStorageLocations",
+        )
+        excluded_cloud_storage_locations: "IntelligenceConfig.Filter.CloudStorageLocations" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="cloud_storage_locations",
+            message="IntelligenceConfig.Filter.CloudStorageLocations",
+        )
+        included_cloud_storage_buckets: "IntelligenceConfig.Filter.CloudStorageBuckets" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="cloud_storage_buckets",
+            message="IntelligenceConfig.Filter.CloudStorageBuckets",
+        )
+        excluded_cloud_storage_buckets: "IntelligenceConfig.Filter.CloudStorageBuckets" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="cloud_storage_buckets",
+            message="IntelligenceConfig.Filter.CloudStorageBuckets",
+        )
+
+    class EffectiveIntelligenceConfig(proto.Message):
+        r"""The effective ``IntelligenceConfig`` for the resource.
+
+        Attributes:
+            effective_edition (google.cloud.storage_control_v2.types.IntelligenceConfig.EffectiveIntelligenceConfig.EffectiveEdition):
+                Output only. The ``IntelligenceConfig`` edition that is
+                applicable for the resource.
+            intelligence_config (str):
+                Output only. The ``IntelligenceConfig`` resource that is
+                applied for the target resource. Format:
+                ``{organizations|folders|projects}/{id}/locations/{location}/intelligenceConfig``
+        """
+
+        class EffectiveEdition(proto.Enum):
+            r"""The effective edition of the ``IntelligenceConfig`` resource.
+
+            Values:
+                EFFECTIVE_EDITION_UNSPECIFIED (0):
+                    This is an unknown edition of the resource.
+                NONE (1):
+                    No edition.
+                STANDARD (2):
+                    The ``IntelligenceConfig`` resource is of STANDARD edition.
+            """
+            EFFECTIVE_EDITION_UNSPECIFIED = 0
+            NONE = 1
+            STANDARD = 2
+
+        effective_edition: "IntelligenceConfig.EffectiveIntelligenceConfig.EffectiveEdition" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="IntelligenceConfig.EffectiveIntelligenceConfig.EffectiveEdition",
+        )
+        intelligence_config: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class TrialConfig(proto.Message):
+        r"""The trial configuration of the ``IntelligenceConfig`` resource.
+
+        Attributes:
+            expire_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time at which the trial
+                expires.
+        """
+
+        expire_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    edition_config: EditionConfig = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=EditionConfig,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    filter: Filter = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=Filter,
+    )
+    effective_intelligence_config: EffectiveIntelligenceConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=EffectiveIntelligenceConfig,
+    )
+    trial_config: TrialConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=TrialConfig,
+    )
+
+
+class UpdateOrganizationIntelligenceConfigRequest(proto.Message):
+    r"""Request message to update the ``IntelligenceConfig`` resource
+    associated with your organization.
+
+    **IAM Permissions**:
+
+    Requires ``storage.intelligenceConfigs.update``
+    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+    permission on the organization.
+
+    Attributes:
+        intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
+            Required. The ``IntelligenceConfig`` resource to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The ``update_mask`` that specifies the fields
+            within the ``IntelligenceConfig`` resource that should be
+            modified by this update. Only the listed fields are updated.
+        request_id (str):
+            Optional. The ID that uniquely identifies the
+            request, preventing duplicate processing.
+    """
+
+    intelligence_config: "IntelligenceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="IntelligenceConfig",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateFolderIntelligenceConfigRequest(proto.Message):
+    r"""Request message to update the ``IntelligenceConfig`` resource
+    associated with your folder.
+
+    **IAM Permissions**:
+
+    Requires ``storage.intelligenceConfigs.update``
+    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+    permission on the folder.
+
+    Attributes:
+        intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
+            Required. The ``IntelligenceConfig`` resource to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The ``update_mask`` that specifies the fields
+            within the ``IntelligenceConfig`` resource that should be
+            modified by this update. Only the listed fields are updated.
+        request_id (str):
+            Optional. The ID that uniquely identifies the
+            request, preventing duplicate processing.
+    """
+
+    intelligence_config: "IntelligenceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="IntelligenceConfig",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateProjectIntelligenceConfigRequest(proto.Message):
+    r"""Request message to update the ``IntelligenceConfig`` resource
+    associated with your project.
+
+    **IAM Permissions**:
+
+    Requires ``storage.intelligenceConfigs.update``
+    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+    permission on the folder.
+
+    Attributes:
+        intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
+            Required. The ``IntelligenceConfig`` resource to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The ``update_mask`` that specifies the fields
+            within the ``IntelligenceConfig`` resource that should be
+            modified by this update. Only the listed fields are updated.
+        request_id (str):
+            Optional. The ID that uniquely identifies the
+            request, preventing duplicate processing.
+    """
+
+    intelligence_config: "IntelligenceConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="IntelligenceConfig",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetOrganizationIntelligenceConfigRequest(proto.Message):
+    r"""Request message to get the ``IntelligenceConfig`` resource
+    associated with your organization.
+
+    **IAM Permissions**
+
+    Requires ``storage.intelligenceConfigs.get``
+    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+    permission on the organization.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``IntelligenceConfig`` resource
+            associated with your organization.
+
+            Format:
+            ``organizations/{org_id}/locations/global/intelligenceConfig``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetFolderIntelligenceConfigRequest(proto.Message):
+    r"""Request message to get the ``IntelligenceConfig`` resource
+    associated with your folder.
+
+    **IAM Permissions**
+
+    Requires ``storage.intelligenceConfigs.get``
+    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+    permission on the folder.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``IntelligenceConfig`` resource
+            associated with your folder.
+
+            Format: ``folders/{id}/locations/global/intelligenceConfig``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetProjectIntelligenceConfigRequest(proto.Message):
+    r"""Request message to get the ``IntelligenceConfig`` resource
+    associated with your project.
+
+    **IAM Permissions**:
+
+    Requires ``storage.intelligenceConfigs.get``
+    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+    permission on the project.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``IntelligenceConfig`` resource
+            associated with your project.
+
+            Format:
+            ``projects/{id}/locations/global/intelligenceConfig``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
