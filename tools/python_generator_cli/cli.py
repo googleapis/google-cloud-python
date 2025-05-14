@@ -223,10 +223,21 @@ def generate_library(api_root: str, generator_input: str, output: str, library_i
     """,
 )
 def clean(repo_root: str, library_id: str):
-    """Deletes all automatically generated files for a given library-id."""
+    """
+    Deletes all automatically generated files for a given library-id.
 
-    subprocess.run(f"rm -rf {repo_root}/packages/{library_id}", shell=True)
-    subprocess.run(f"mkdir {repo_root}/packages/{library_id}", shell=True)
+    Preserve:
+        - packages/<pkg>/docs/CHANGELOG.md
+        - packages/<pkg>/CHANGELOG.md
+    """
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        subprocess.run(f"mkdir -p {tmp_dir}/packages/{library_id}/docs", shell=True)
+        subprocess.run(f"cp {repo_root}/packages/{library_id}/docs/CHANGELOG.md {tmp_dir}/packages/{library_id}/docs/CHANGELOG.md", shell=True)
+        subprocess.run(f"cp {repo_root}/packages/{library_id}/CHANGELOG.md {tmp_dir}/packages/{library_id}/CHANGELOG.md", shell=True)
+        subprocess.run(f"rm -rf {repo_root}/packages/{library_id}", shell=True)
+        subprocess.run(f"mkdir {repo_root}/packages/{library_id}", shell=True)
+        subprocess.run(f"cp -r {repo_root}/packages/{library_id}", shell=True)
 
 # Copied from synthtool
 # https://github.com/googleapis/synthtool/blob/6318601ed44bb99ec965bae0d46b54eba42aeb24/synthtool/languages/python_mono_repo.py#L147-L210
