@@ -844,7 +844,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
 
         Deletes the specified clip job resource. This method
         only deletes the clip job and does not delete the VOD
-        clip stored in the GCS.
+        clip stored in Cloud Storage.
 
         Returns:
             Callable[[~.DeleteClipRequest],
@@ -863,6 +863,138 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_clip"]
+
+    @property
+    def create_dvr_session(
+        self,
+    ) -> Callable[[service.CreateDvrSessionRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create dvr session method over gRPC.
+
+        Creates a DVR session with the provided unique ID in
+        the specified channel.
+
+        Returns:
+            Callable[[~.CreateDvrSessionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_dvr_session" not in self._stubs:
+            self._stubs["create_dvr_session"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/CreateDvrSession",
+                request_serializer=service.CreateDvrSessionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_dvr_session"]
+
+    @property
+    def list_dvr_sessions(
+        self,
+    ) -> Callable[[service.ListDvrSessionsRequest], service.ListDvrSessionsResponse]:
+        r"""Return a callable for the list dvr sessions method over gRPC.
+
+        Returns a list of all DVR sessions in the specified
+        channel.
+
+        Returns:
+            Callable[[~.ListDvrSessionsRequest],
+                    ~.ListDvrSessionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_dvr_sessions" not in self._stubs:
+            self._stubs["list_dvr_sessions"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/ListDvrSessions",
+                request_serializer=service.ListDvrSessionsRequest.serialize,
+                response_deserializer=service.ListDvrSessionsResponse.deserialize,
+            )
+        return self._stubs["list_dvr_sessions"]
+
+    @property
+    def get_dvr_session(
+        self,
+    ) -> Callable[[service.GetDvrSessionRequest], resources.DvrSession]:
+        r"""Return a callable for the get dvr session method over gRPC.
+
+        Returns the specified DVR session.
+
+        Returns:
+            Callable[[~.GetDvrSessionRequest],
+                    ~.DvrSession]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_dvr_session" not in self._stubs:
+            self._stubs["get_dvr_session"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/GetDvrSession",
+                request_serializer=service.GetDvrSessionRequest.serialize,
+                response_deserializer=resources.DvrSession.deserialize,
+            )
+        return self._stubs["get_dvr_session"]
+
+    @property
+    def delete_dvr_session(
+        self,
+    ) -> Callable[[service.DeleteDvrSessionRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete dvr session method over gRPC.
+
+        Deletes the specified DVR session.
+
+        Returns:
+            Callable[[~.DeleteDvrSessionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_dvr_session" not in self._stubs:
+            self._stubs["delete_dvr_session"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/DeleteDvrSession",
+                request_serializer=service.DeleteDvrSessionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_dvr_session"]
+
+    @property
+    def update_dvr_session(
+        self,
+    ) -> Callable[[service.UpdateDvrSessionRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update dvr session method over gRPC.
+
+        Updates the specified DVR session.
+
+        Returns:
+            Callable[[~.UpdateDvrSessionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_dvr_session" not in self._stubs:
+            self._stubs["update_dvr_session"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/UpdateDvrSession",
+                request_serializer=service.UpdateDvrSessionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_dvr_session"]
 
     @property
     def create_asset(
