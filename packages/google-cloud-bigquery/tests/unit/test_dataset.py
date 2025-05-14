@@ -613,6 +613,15 @@ class TestAccessEntryAndCondition:
         assert hash(entry1) == hash(entry2)
         assert hash(entry1) != hash(entry3)  # Usually true
 
+    def test_equality_and_hash_from_api_repr(self):
+        """Compare equal entries where one was created via from_api_repr."""
+        entry1 = AccessEntry("OWNER", "specialGroup", "projectOwners")
+        entry2 = AccessEntry.from_api_repr(
+            {"role": "OWNER", "specialGroup": "projectOwners"}
+        )
+        assert entry1 == entry2
+        assert hash(entry1) == hash(entry2)
+
     def test_equality_and_hash_with_condition(self, condition_1, condition_2):
         cond1a = Condition(
             condition_1.expression, condition_1.title, condition_1.description
@@ -745,6 +754,13 @@ class TestAccessEntryAndCondition:
         # Check internal representation
         assert "dataset" in entry._properties
         assert "condition" in entry._properties
+
+    def test_repr_from_api_repr(self):
+        """Check that repr() includes the correct entity_type when the object is initialized from a dictionary."""
+        api_repr = {"role": "OWNER", "userByEmail": "owner@example.com"}
+        entry = AccessEntry.from_api_repr(api_repr)
+        entry_str = repr(entry)
+        assert entry_str == "<AccessEntry: role=OWNER, userByEmail=owner@example.com>"
 
 
 class TestDatasetReference(unittest.TestCase):
@@ -1096,6 +1112,34 @@ class TestDataset(unittest.TestCase):
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.location)
         self.assertEqual(dataset.is_case_insensitive, False)
+
+    def test_access_entries_getter_from_api_repr(self):
+        """Check that `in` works correctly when Dataset is made via from_api_repr()."""
+        from google.cloud.bigquery.dataset import AccessEntry
+
+        dataset = self._get_target_class().from_api_repr(
+            {
+                "datasetReference": {"projectId": "my-proj", "datasetId": "my_dset"},
+                "access": [
+                    {
+                        "role": "OWNER",
+                        "userByEmail": "uilma@example.com",
+                    },
+                    {
+                        "role": "READER",
+                        "groupByEmail": "rhubbles@example.com",
+                    },
+                ],
+            }
+        )
+        assert (
+            AccessEntry("OWNER", "userByEmail", "uilma@example.com")
+            in dataset.access_entries
+        )
+        assert (
+            AccessEntry("READER", "groupByEmail", "rhubbles@example.com")
+            in dataset.access_entries
+        )
 
     def test_access_entries_setter_non_list(self):
         dataset = self._make_one(self.DS_REF)

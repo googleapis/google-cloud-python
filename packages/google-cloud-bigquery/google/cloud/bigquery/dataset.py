@@ -512,7 +512,7 @@ class AccessEntry(object):
         return not self == other
 
     def __repr__(self):
-        return f"<AccessEntry: role={self.role}, {self._entity_type}={self.entity_id}>"
+        return f"<AccessEntry: role={self.role}, {self.entity_type}={self.entity_id}>"
 
     def _key(self):
         """A tuple key that uniquely describes this field.
@@ -531,7 +531,7 @@ class AccessEntry(object):
             properties["condition"] = condition_key
 
         prop_tup = tuple(sorted(properties.items()))
-        return (self.role, self._entity_type, self.entity_id, prop_tup)
+        return (self.role, self.entity_type, self.entity_id, prop_tup)
 
     def __hash__(self):
         return hash(self._key())
