@@ -33,4 +33,4 @@ def test_quickstart(
 
     quickstart.run_quickstart(your_project_id)
     out, _ = capsys.readouterr()
-    assert "average_body_mass (df_session):" in out
+    assert "average_body_mass:" in out

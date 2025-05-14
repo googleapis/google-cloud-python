@@ -14,16 +14,7 @@
 
 
 def run_quickstart(project_id: str) -> None:
-    import bigframes
-
-    session_options = bigframes.BigQueryOptions()
-    session = bigframes.connect(session_options)
-
     your_gcp_project_id = project_id
-    query_or_table = "bigquery-public-data.ml_datasets.penguins"
-    df_session = session.read_gbq(query_or_table)
-    average_body_mass = df_session["body_mass_g"].mean()
-    print(f"average_body_mass (df_session): {average_body_mass}")
 
     # [START bigquery_bigframes_quickstart]
     import bigframes.pandas as bpd
@@ -33,9 +24,19 @@ def run_quickstart(project_id: str) -> None:
     # On BigQuery Studio, the project ID is automatically detected.
     bpd.options.bigquery.project = your_gcp_project_id
 
+    # Use "partial" ordering mode to generate more efficient queries, but the
+    # order of the rows in DataFrames may not be deterministic if you have not
+    # explictly sorted it. Some operations that depend on the order, such as
+    # head() will not function until you explictly order the DataFrame. Set the
+    # ordering mode to "strict" (default) for more pandas compatibility.
+    bpd.options.bigquery.ordering_mode = "partial"
+
     # Create a DataFrame from a BigQuery table
     query_or_table = "bigquery-public-data.ml_datasets.penguins"
     df = bpd.read_gbq(query_or_table)
+
+    # Efficiently preview the results using the .peek() method.
+    df.peek()
 
     # Use the DataFrame just as you would a pandas DataFrame, but calculations
     # happen in the BigQuery query engine instead of the local system.
