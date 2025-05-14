@@ -22,10 +22,27 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.alloydb.v1alpha",
     manifest={
+        "GCAEntitlementType",
         "GeminiClusterConfig",
         "GeminiInstanceConfig",
+        "GCAInstanceConfig",
     },
 )
+
+
+class GCAEntitlementType(proto.Enum):
+    r"""Enum representing the type of GCA entitlement assigned to a
+    resource.
+
+    Values:
+        GCA_ENTITLEMENT_TYPE_UNSPECIFIED (0):
+            No GCA entitlement is assigned.
+        GCA_STANDARD (1):
+            The resource is entitled to the GCA Standard
+            Tier.
+    """
+    GCA_ENTITLEMENT_TYPE_UNSPECIFIED = 0
+    GCA_STANDARD = 1
 
 
 class GeminiClusterConfig(proto.Message):
@@ -67,6 +84,23 @@ class GeminiInstanceConfig(proto.Message):
     entitled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+
+
+class GCAInstanceConfig(proto.Message):
+    r"""Instance level configuration parameters related to the Gemini
+    Cloud Assist product.
+
+    Attributes:
+        gca_entitlement (google.cloud.alloydb_v1alpha.types.GCAEntitlementType):
+            Output only. Represents the GCA entitlement
+            state of the instance.
+    """
+
+    gca_entitlement: "GCAEntitlementType" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="GCAEntitlementType",
     )
 
 

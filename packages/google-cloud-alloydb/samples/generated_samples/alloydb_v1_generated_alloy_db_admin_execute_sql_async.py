@@ -43,7 +43,6 @@ async def sample_execute_sql():
         password="password_value",
         instance="instance_value",
         database="database_value",
-        user="user_value",
         sql_statement="sql_statement_value",
     )
 

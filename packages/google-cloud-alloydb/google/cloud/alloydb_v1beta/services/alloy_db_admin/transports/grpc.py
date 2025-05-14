@@ -472,6 +472,33 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         return self._stubs["export_cluster"]
 
     @property
+    def import_cluster(
+        self,
+    ) -> Callable[[service.ImportClusterRequest], operations_pb2.Operation]:
+        r"""Return a callable for the import cluster method over gRPC.
+
+        Imports data to the cluster.
+        Imperative only.
+
+        Returns:
+            Callable[[~.ImportClusterRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_cluster" not in self._stubs:
+            self._stubs["import_cluster"] = self._logged_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/ImportCluster",
+                request_serializer=service.ImportClusterRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_cluster"]
+
+    @property
     def upgrade_cluster(
         self,
     ) -> Callable[[service.UpgradeClusterRequest], operations_pb2.Operation]:

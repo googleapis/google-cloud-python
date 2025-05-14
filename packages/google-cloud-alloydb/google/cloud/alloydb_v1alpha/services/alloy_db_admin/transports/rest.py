@@ -169,6 +169,14 @@ class AlloyDBAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_export_cluster(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_cluster(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_failover_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -222,6 +230,14 @@ class AlloyDBAdminRestInterceptor:
                 return request, metadata
 
             def post_get_user(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_import_cluster(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_import_cluster(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -881,6 +897,52 @@ class AlloyDBAdminRestInterceptor:
         """
         return response, metadata
 
+    def pre_export_cluster(
+        self,
+        request: service.ExportClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ExportClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for export_cluster
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_export_cluster(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_cluster
+
+        DEPRECATED. Please use the `post_export_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code. This `post_export_cluster` interceptor runs
+        before the `post_export_cluster_with_metadata` interceptor.
+        """
+        return response
+
+    def post_export_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AlloyDBAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_export_cluster_with_metadata`
+        interceptor in new development instead of the `post_export_cluster` interceptor.
+        When both interceptors are used, this `post_export_cluster_with_metadata` interceptor runs after the
+        `post_export_cluster` interceptor. The (possibly modified) response returned by
+        `post_export_cluster` will be passed to
+        `post_export_cluster_with_metadata`.
+        """
+        return response, metadata
+
     def pre_failover_instance(
         self,
         request: service.FailoverInstanceRequest,
@@ -1202,6 +1264,52 @@ class AlloyDBAdminRestInterceptor:
         `post_get_user` interceptor. The (possibly modified) response returned by
         `post_get_user` will be passed to
         `post_get_user_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_import_cluster(
+        self,
+        request: service.ImportClusterRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ImportClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for import_cluster
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_import_cluster(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for import_cluster
+
+        DEPRECATED. Please use the `post_import_cluster_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code. This `post_import_cluster` interceptor runs
+        before the `post_import_cluster_with_metadata` interceptor.
+        """
+        return response
+
+    def post_import_cluster_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for import_cluster
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AlloyDBAdmin server but before it is returned to user code.
+
+        We recommend only using this `post_import_cluster_with_metadata`
+        interceptor in new development instead of the `post_import_cluster` interceptor.
+        When both interceptors are used, this `post_import_cluster_with_metadata` interceptor runs after the
+        `post_import_cluster` interceptor. The (possibly modified) response returned by
+        `post_import_cluster` will be passed to
+        `post_import_cluster_with_metadata`.
         """
         return response, metadata
 
@@ -4012,6 +4120,157 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                 )
             return resp
 
+    class _ExportCluster(
+        _BaseAlloyDBAdminRestTransport._BaseExportCluster, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.ExportCluster")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.ExportClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export cluster method over HTTP.
+
+            Args:
+                request (~.service.ExportClusterRequest):
+                    The request object. Export cluster request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_export_cluster(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAlloyDBAdminRestTransport._BaseExportCluster._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1alpha.AlloyDBAdminClient.ExportCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1alpha.AlloyDBAdmin",
+                        "rpcName": "ExportCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AlloyDBAdminRestTransport._ExportCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_export_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_cluster_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1alpha.AlloyDBAdminClient.export_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1alpha.AlloyDBAdmin",
+                        "rpcName": "ExportCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _FailoverInstance(
         _BaseAlloyDBAdminRestTransport._BaseFailoverInstance, AlloyDBAdminRestStub
     ):
@@ -5071,6 +5330,157 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
                     extra={
                         "serviceName": "google.cloud.alloydb.v1alpha.AlloyDBAdmin",
                         "rpcName": "GetUser",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ImportCluster(
+        _BaseAlloyDBAdminRestTransport._BaseImportCluster, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.ImportCluster")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.ImportClusterRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the import cluster method over HTTP.
+
+            Args:
+                request (~.service.ImportClusterRequest):
+                    The request object. Import cluster request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_import_cluster(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAlloyDBAdminRestTransport._BaseImportCluster._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.alloydb_v1alpha.AlloyDBAdminClient.ImportCluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1alpha.AlloyDBAdmin",
+                        "rpcName": "ImportCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AlloyDBAdminRestTransport._ImportCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_import_cluster(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_import_cluster_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.alloydb_v1alpha.AlloyDBAdminClient.import_cluster",
+                    extra={
+                        "serviceName": "google.cloud.alloydb.v1alpha.AlloyDBAdmin",
+                        "rpcName": "ImportCluster",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -7603,6 +8013,14 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         return self._ExecuteSql(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def export_cluster(
+        self,
+    ) -> Callable[[service.ExportClusterRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportCluster(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def failover_instance(
         self,
     ) -> Callable[[service.FailoverInstanceRequest], operations_pb2.Operation]:
@@ -7654,6 +8072,14 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def import_cluster(
+        self,
+    ) -> Callable[[service.ImportClusterRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ImportCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def inject_fault(
