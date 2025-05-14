@@ -57,7 +57,7 @@ class Semantics:
             >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001") # doctest: +SKIP
 
             >>> df = bpd.DataFrame(
             ... {
@@ -68,7 +68,7 @@ class Semantics:
             ...     ],
             ...     "Year": [1997, 2013, 2010],
             ... })
-            >>> df.semantics.agg(
+            >>> df.semantics.agg( # doctest: +SKIP
             ...     "Find the first name shared by all actors in {Movies}. One word answer.",
             ...     model=model,
             ... )
@@ -326,10 +326,10 @@ class Semantics:
             >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001") # doctest: +SKIP
 
             >>> df = bpd.DataFrame({"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]})
-            >>> df.semantics.filter("{city} is the capital of {country}", model)
+            >>> df.semantics.filter("{city} is the capital of {country}", model) # doctest: +SKIP
                country    city
             1  Germany  Berlin
             <BLANKLINE>
@@ -440,10 +440,10 @@ class Semantics:
             >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001") # doctest: +SKIP
 
             >>> df = bpd.DataFrame({"ingredient_1": ["Burger Bun", "Soy Bean"], "ingredient_2": ["Beef Patty", "Bittern"]})
-            >>> df.semantics.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", output_column="food", model=model)
+            >>> df.semantics.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", output_column="food", model=model) # doctest: +SKIP
               ingredient_1 ingredient_2      food
             0   Burger Bun   Beef Patty  Burger
             <BLANKLINE>
@@ -563,12 +563,12 @@ class Semantics:
             >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001") # doctest: +SKIP
 
             >>> cities = bpd.DataFrame({'city': ['Seattle', 'Ottawa', 'Berlin', 'Shanghai', 'New Delhi']})
             >>> continents = bpd.DataFrame({'continent': ['North America', 'Africa', 'Asia']})
 
-            >>> cities.semantics.join(continents, "{city} is in {continent}", model)
+            >>> cities.semantics.join(continents, "{city} is in {continent}", model) # doctest: +SKIP
                     city      continent
             0    Seattle  North America
             1     Ottawa  North America
@@ -704,10 +704,10 @@ class Semantics:
             >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005")
+            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005") # doctest: +SKIP
 
             >>> df = bpd.DataFrame({"creatures": ["salmon", "sea urchin", "frog", "chimpanzee"]})
-            >>> df.semantics.search("creatures", "monkey", top_k=1, model=model, score_column='distance')
+            >>> df.semantics.search("creatures", "monkey", top_k=1, model=model, score_column='distance') # doctest: +SKIP
                 creatures  distance
             3  chimpanzee  0.635844
             <BLANKLINE>
@@ -805,14 +805,14 @@ class Semantics:
             >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001") # doctest: +SKIP
 
             >>> df = bpd.DataFrame(
             ... {
             ...     "Animals": ["Dog", "Bird", "Cat", "Horse"],
             ...     "Sounds": ["Woof", "Chirp", "Meow", "Neigh"],
             ... })
-            >>> df.semantics.top_k("{Animals} are more popular as pets", model=model, k=2)
+            >>> df.semantics.top_k("{Animals} are more popular as pets", model=model, k=2) # doctest: +SKIP
               Animals Sounds
             0     Dog   Woof
             2     Cat   Meow
@@ -1006,12 +1006,12 @@ class Semantics:
             >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005")
+            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005") # doctest: +SKIP
 
             >>> df1 = bpd.DataFrame({'animal': ['monkey', 'spider']})
             >>> df2 = bpd.DataFrame({'animal': ['scorpion', 'baboon']})
 
-            >>> df1.semantics.sim_join(df2, left_on='animal', right_on='animal', model=model, top_k=1)
+            >>> df1.semantics.sim_join(df2, left_on='animal', right_on='animal', model=model, top_k=1) # doctest: +SKIP
             animal  animal_1
             0  monkey    baboon
             1  spider  scorpion
