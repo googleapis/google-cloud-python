@@ -18,7 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -206,6 +206,95 @@ class StorageInsightsTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.list_dataset_configs: gapic_v1.method.wrap_method(
+                self.list_dataset_configs,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_dataset_config: gapic_v1.method.wrap_method(
+                self.get_dataset_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_dataset_config: gapic_v1.method.wrap_method(
+                self.create_dataset_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.update_dataset_config: gapic_v1.method.wrap_method(
+                self.update_dataset_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_dataset_config: gapic_v1.method.wrap_method(
+                self.delete_dataset_config,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.link_dataset: gapic_v1.method.wrap_method(
+                self.link_dataset,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.unlink_dataset: gapic_v1.method.wrap_method(
+                self.unlink_dataset,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -245,6 +334,11 @@ class StorageInsightsTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
@@ -313,6 +407,72 @@ class StorageInsightsTransport(abc.ABC):
     ) -> Callable[
         [storageinsights.GetReportDetailRequest],
         Union[storageinsights.ReportDetail, Awaitable[storageinsights.ReportDetail]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_dataset_configs(
+        self,
+    ) -> Callable[
+        [storageinsights.ListDatasetConfigsRequest],
+        Union[
+            storageinsights.ListDatasetConfigsResponse,
+            Awaitable[storageinsights.ListDatasetConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.GetDatasetConfigRequest],
+        Union[storageinsights.DatasetConfig, Awaitable[storageinsights.DatasetConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.CreateDatasetConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.UpdateDatasetConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.DeleteDatasetConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def link_dataset(
+        self,
+    ) -> Callable[
+        [storageinsights.LinkDatasetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def unlink_dataset(
+        self,
+    ) -> Callable[
+        [storageinsights.UnlinkDatasetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
