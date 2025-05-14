@@ -33,23 +33,31 @@ __protobuf__ = proto.module(
 class Comment(proto.Message):
     r"""A comment associated with a support case.
 
+    Case comments are the primary way for Google Support to
+    communicate with a user who has opened a case. When a user
+    responds to Google Support, the user's responses also appear as
+    comments.
+
     Attributes:
         name (str):
-            Output only. The resource name for the
-            comment.
+            Output only. Identifier. The resource name of
+            the comment.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time when this comment was
+            Output only. The time when the comment was
             created.
         creator (google.cloud.support_v2.types.Actor):
             Output only. The user or Google Support agent
-            created this comment.
+            who created the comment.
         body (str):
-            The full comment body. Maximum of 12800
-            characters. This can contain rich text syntax.
+            The full comment body.
+
+            Maximum of 12800 characters.
         plain_text_body (str):
-            Output only. DEPRECATED. An automatically
-            generated plain text version of body with all
-            rich text syntax stripped.
+            Output only. DEPRECATED. DO NOT USE.
+
+            A duplicate of the ``body`` field.
+
+            This field is only present for legacy reasons.
     """
 
     name: str = proto.Field(

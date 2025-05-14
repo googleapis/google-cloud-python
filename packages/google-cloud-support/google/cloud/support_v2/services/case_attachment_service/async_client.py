@@ -62,7 +62,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class CaseAttachmentServiceAsyncClient:
-    """A service to manage file attachment for Google Cloud support
+    """A service to manage file attachments for Google Cloud support
     cases.
     """
 
@@ -310,8 +310,37 @@ class CaseAttachmentServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAttachmentsAsyncPager:
-        r"""Retrieve all attachments associated with a support
-        case.
+        r"""List all the attachments associated with a support case.
+
+        EXAMPLES:
+
+        cURL:
+
+        .. code:: shell
+
+           case="projects/some-project/cases/23598314"
+           curl \
+             --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+             "https://cloudsupport.googleapis.com/v2/$case/attachments"
+
+        Python:
+
+        .. code:: python
+
+           import googleapiclient.discovery
+
+           api_version = "v2"
+           supportApiService = googleapiclient.discovery.build(
+               serviceName="cloudsupport",
+               version=api_version,
+               discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+           )
+           request = (
+               supportApiService.cases()
+               .attachments()
+               .list(parent="projects/some-project/cases/43595344")
+           )
+           print(request.execute())
 
         .. code-block:: python
 
@@ -345,9 +374,8 @@ class CaseAttachmentServiceAsyncClient:
                 The request object. The request message for the
                 ListAttachments endpoint.
             parent (:class:`str`):
-                Required. The resource name of Case
-                object for which attachments should be
-                listed.
+                Required. The name of the case for
+                which attachments should be listed.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

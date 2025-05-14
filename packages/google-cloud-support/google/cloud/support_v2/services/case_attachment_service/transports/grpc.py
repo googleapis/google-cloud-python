@@ -110,7 +110,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class CaseAttachmentServiceGrpcTransport(CaseAttachmentServiceTransport):
     """gRPC backend transport for CaseAttachmentService.
 
-    A service to manage file attachment for Google Cloud support
+    A service to manage file attachments for Google Cloud support
     cases.
 
     This class defines the same methods as the primary client, so the
@@ -329,8 +329,37 @@ class CaseAttachmentServiceGrpcTransport(CaseAttachmentServiceTransport):
     ]:
         r"""Return a callable for the list attachments method over gRPC.
 
-        Retrieve all attachments associated with a support
-        case.
+        List all the attachments associated with a support case.
+
+        EXAMPLES:
+
+        cURL:
+
+        .. code:: shell
+
+           case="projects/some-project/cases/23598314"
+           curl \
+             --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+             "https://cloudsupport.googleapis.com/v2/$case/attachments"
+
+        Python:
+
+        .. code:: python
+
+           import googleapiclient.discovery
+
+           api_version = "v2"
+           supportApiService = googleapiclient.discovery.build(
+               serviceName="cloudsupport",
+               version=api_version,
+               discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+           )
+           request = (
+               supportApiService.cases()
+               .attachments()
+               .list(parent="projects/some-project/cases/43595344")
+           )
+           print(request.execute())
 
         Returns:
             Callable[[~.ListAttachmentsRequest],

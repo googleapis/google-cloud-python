@@ -741,8 +741,37 @@ class CommentServiceClient(metaclass=CommentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCommentsPager:
-        r"""Retrieve all Comments associated with the Case
-        object.
+        r"""List all the comments associated with a case.
+
+        EXAMPLES:
+
+        cURL:
+
+        .. code:: shell
+
+           case="projects/some-project/cases/43595344"
+           curl \
+             --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+             "https://cloudsupport.googleapis.com/v2/$case/comments"
+
+        Python:
+
+        .. code:: python
+
+           import googleapiclient.discovery
+
+           api_version = "v2"
+           supportApiService = googleapiclient.discovery.build(
+               serviceName="cloudsupport",
+               version=api_version,
+               discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+           )
+           request = (
+               supportApiService.cases()
+               .comments()
+               .list(parent="projects/some-project/cases/43595344")
+           )
+           print(request.execute())
 
         .. code-block:: python
 
@@ -776,9 +805,8 @@ class CommentServiceClient(metaclass=CommentServiceClientMeta):
                 The request object. The request message for the
                 ListComments endpoint.
             parent (str):
-                Required. The resource name of Case
-                object for which comments should be
-                listed.
+                Required. The name of the case for
+                which to list comments.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -867,9 +895,47 @@ class CommentServiceClient(metaclass=CommentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcs_comment.Comment:
-        r"""Add a new comment to the specified Case.
-        The comment object must have the following fields set:
-        body.
+        r"""Add a new comment to a case.
+
+        The comment must have the following fields set: ``body``.
+
+        EXAMPLES:
+
+        cURL:
+
+        .. code:: shell
+
+           case="projects/some-project/cases/43591344"
+           curl \
+             --request POST \
+             --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+             --header 'Content-Type: application/json' \
+             --data '{
+               "body": "This is a test comment."
+             }' \
+             "https://cloudsupport.googleapis.com/v2/$case/comments"
+
+        Python:
+
+        .. code:: python
+
+           import googleapiclient.discovery
+
+           api_version = "v2"
+           supportApiService = googleapiclient.discovery.build(
+               serviceName="cloudsupport",
+               version=api_version,
+               discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+           )
+           request = (
+               supportApiService.cases()
+               .comments()
+               .create(
+                   parent="projects/some-project/cases/43595344",
+                   body={"body": "This is a test comment."},
+               )
+           )
+           print(request.execute())
 
         .. code-block:: python
 
@@ -899,19 +965,17 @@ class CommentServiceClient(metaclass=CommentServiceClientMeta):
 
         Args:
             request (Union[google.cloud.support_v2.types.CreateCommentRequest, dict]):
-                The request object. The request message for CreateComment
-                endpoint.
+                The request object. The request message for the
+                CreateComment endpoint.
             parent (str):
-                Required. The resource name of Case
-                to which this comment should be added.
+                Required. The name of the case to
+                which the comment should be added.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             comment (google.cloud.support_v2.types.Comment):
-                Required. The Comment object to be
-                added to this Case.
-
+                Required. The comment to be added.
                 This corresponds to the ``comment`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -927,6 +991,11 @@ class CommentServiceClient(metaclass=CommentServiceClientMeta):
             google.cloud.support_v2.types.Comment:
                 A comment associated with a support
                 case.
+                Case comments are the primary way for
+                Google Support to communicate with a
+                user who has opened a case. When a user
+                responds to Google Support, the user's
+                responses also appear as comments.
 
         """
         # Create or coerce a protobuf request object.
