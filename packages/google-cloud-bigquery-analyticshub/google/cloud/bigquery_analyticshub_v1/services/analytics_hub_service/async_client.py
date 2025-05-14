@@ -97,6 +97,14 @@ class AnalyticsHubServiceAsyncClient:
     parse_dataset_path = staticmethod(AnalyticsHubServiceClient.parse_dataset_path)
     listing_path = staticmethod(AnalyticsHubServiceClient.listing_path)
     parse_listing_path = staticmethod(AnalyticsHubServiceClient.parse_listing_path)
+    managed_service_path = staticmethod(AnalyticsHubServiceClient.managed_service_path)
+    parse_managed_service_path = staticmethod(
+        AnalyticsHubServiceClient.parse_managed_service_path
+    )
+    order_path = staticmethod(AnalyticsHubServiceClient.order_path)
+    parse_order_path = staticmethod(AnalyticsHubServiceClient.parse_order_path)
+    routine_path = staticmethod(AnalyticsHubServiceClient.routine_path)
+    parse_routine_path = staticmethod(AnalyticsHubServiceClient.parse_routine_path)
     subscription_path = staticmethod(AnalyticsHubServiceClient.subscription_path)
     parse_subscription_path = staticmethod(
         AnalyticsHubServiceClient.parse_subscription_path
@@ -366,7 +374,7 @@ class AnalyticsHubServiceAsyncClient:
                 data exchanges.
             parent (:class:`str`):
                 Required. The parent resource path of the data
-                exchanges. e.g. ``projects/myproject/locations/US``.
+                exchanges. e.g. ``projects/myproject/locations/us``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -495,7 +503,7 @@ class AnalyticsHubServiceAsyncClient:
             organization (:class:`str`):
                 Required. The organization resource path of the projects
                 containing DataExchanges. e.g.
-                ``organizations/myorg/locations/US``.
+                ``organizations/myorg/locations/us``.
 
                 This corresponds to the ``organization`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -623,7 +631,7 @@ class AnalyticsHubServiceAsyncClient:
                 The request object. Message for getting a data exchange.
             name (:class:`str`):
                 Required. The resource name of the data exchange. e.g.
-                ``projects/myproject/locations/US/dataExchanges/123``.
+                ``projects/myproject/locations/us/dataExchanges/123``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -742,7 +750,7 @@ class AnalyticsHubServiceAsyncClient:
                 The request object. Message for creating a data exchange.
             parent (:class:`str`):
                 Required. The parent resource path of the data exchange.
-                e.g. ``projects/myproject/locations/US``.
+                e.g. ``projects/myproject/locations/us``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -992,7 +1000,7 @@ class AnalyticsHubServiceAsyncClient:
             name (:class:`str`):
                 Required. The full name of the data exchange resource
                 that you want to delete. For example,
-                ``projects/myproject/locations/US/dataExchanges/123``.
+                ``projects/myproject/locations/us/dataExchanges/123``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1095,7 +1103,7 @@ class AnalyticsHubServiceAsyncClient:
                 listings.
             parent (:class:`str`):
                 Required. The parent resource path of the listing. e.g.
-                ``projects/myproject/locations/US/dataExchanges/123``.
+                ``projects/myproject/locations/us/dataExchanges/123``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1219,7 +1227,7 @@ class AnalyticsHubServiceAsyncClient:
                 The request object. Message for getting a listing.
             name (:class:`str`):
                 Required. The resource name of the listing. e.g.
-                ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
+                ``projects/myproject/locations/us/dataExchanges/123/listings/456``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1339,7 +1347,7 @@ class AnalyticsHubServiceAsyncClient:
                 The request object. Message for creating a listing.
             parent (:class:`str`):
                 Required. The parent resource path of the listing. e.g.
-                ``projects/myproject/locations/US/dataExchanges/123``.
+                ``projects/myproject/locations/us/dataExchanges/123``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1586,7 +1594,7 @@ class AnalyticsHubServiceAsyncClient:
                 The request object. Message for deleting a listing.
             name (:class:`str`):
                 Required. Resource name of the listing to delete. e.g.
-                ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
+                ``projects/myproject/locations/us/dataExchanges/123/listings/456``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1700,7 +1708,7 @@ class AnalyticsHubServiceAsyncClient:
             name (:class:`str`):
                 Required. Resource name of the listing that you want to
                 subscribe to. e.g.
-                ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
+                ``projects/myproject/locations/us/dataExchanges/123/listings/456``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1781,7 +1789,8 @@ class AnalyticsHubServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a Subscription to a Data Clean Room. This is
         a long-running operation as it will create one or more
-        linked datasets.
+        linked datasets. Throws a Bad Request error if the Data
+        Exchange does not contain any listings.
 
         .. code-block:: python
 
@@ -1821,7 +1830,7 @@ class AnalyticsHubServiceAsyncClient:
                 Exchange.
             name (:class:`str`):
                 Required. Resource name of the Data Exchange. e.g.
-                ``projects/publisherproject/locations/US/dataExchanges/123``
+                ``projects/publisherproject/locations/us/dataExchanges/123``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1952,7 +1961,7 @@ class AnalyticsHubServiceAsyncClient:
             name (:class:`str`):
                 Required. Resource name of the Subscription to refresh.
                 e.g.
-                ``projects/subscriberproject/locations/US/subscriptions/123``
+                ``projects/subscriberproject/locations/us/subscriptions/123``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2074,7 +2083,7 @@ class AnalyticsHubServiceAsyncClient:
             name (:class:`str`):
                 Required. Resource name of the
                 subscription. e.g.
-                projects/123/locations/US/subscriptions/456
+                projects/123/locations/us/subscriptions/456
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2190,7 +2199,7 @@ class AnalyticsHubServiceAsyncClient:
             parent (:class:`str`):
                 Required. The parent resource path of
                 the subscription. e.g.
-                projects/myproject/locations/US
+                projects/myproject/locations/us
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2321,9 +2330,9 @@ class AnalyticsHubServiceAsyncClient:
                 Required. Resource name of the
                 requested target. This resource may be
                 either a Listing or a DataExchange. e.g.
-                projects/123/locations/US/dataExchanges/456
+                projects/123/locations/us/dataExchanges/456
                 OR e.g.
-                projects/123/locations/US/dataExchanges/456/listings/789
+                projects/123/locations/us/dataExchanges/456/listings/789
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2448,7 +2457,7 @@ class AnalyticsHubServiceAsyncClient:
             name (:class:`str`):
                 Required. Resource name of the
                 subscription to revoke. e.g.
-                projects/123/locations/US/subscriptions/456
+                projects/123/locations/us/subscriptions/456
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2563,7 +2572,7 @@ class AnalyticsHubServiceAsyncClient:
             name (:class:`str`):
                 Required. Resource name of the
                 subscription to delete. e.g.
-                projects/123/locations/US/subscriptions/456
+                projects/123/locations/us/subscriptions/456
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2716,7 +2725,7 @@ class AnalyticsHubServiceAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
@@ -2728,7 +2737,7 @@ class AnalyticsHubServiceAsyncClient:
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2832,7 +2841,7 @@ class AnalyticsHubServiceAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
@@ -2844,7 +2853,7 @@ class AnalyticsHubServiceAsyncClient:
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.

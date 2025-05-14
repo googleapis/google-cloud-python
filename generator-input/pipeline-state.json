@@ -2322,7 +2322,7 @@
             "currentVersion": "0.4.18",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "1270a1ba7ae32ce486b28d00ced9575c29d9ff75",
             "apiPaths": [
                 "google/cloud/bigquery/analyticshub/v1"
             ],
