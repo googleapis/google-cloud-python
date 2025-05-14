@@ -2,6 +2,12 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
+
+import os
+import pathlib
+import tempfile
+import unittest.mock as mock
+
 import google.api_core.exceptions
 import google.cloud.bigquery
 import pandas as pd
@@ -9,6 +15,8 @@ from pandas import DataFrame
 import pytest
 
 from pandas_gbq import gbq
+
+Path = pathlib.Path
 
 
 class FakeDataFrame:
@@ -202,3 +210,64 @@ def test_create_user_agent(user_agent, rfc9110_delimiter, expected):
 
     result = create_user_agent(user_agent, rfc9110_delimiter)
     assert result == expected
+
+
+@mock.patch.dict(os.environ, {"VSCODE_PID": "1234"}, clear=True)
+def test_create_user_agent_vscode():
+    from pandas_gbq.gbq import create_user_agent
+
+    assert create_user_agent() == f"pandas-{pd.__version__} vscode"
+
+
+@mock.patch.dict(os.environ, {"VSCODE_PID": "1234"}, clear=True)
+def test_create_user_agent_vscode_plugin():
+    from pandas_gbq.gbq import create_user_agent
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        user_home = Path(tmpdir)
+        plugin_dir = (
+            user_home / ".vscode" / "extensions" / "googlecloudtools.cloudcode-0.12"
+        )
+        plugin_config = plugin_dir / "package.json"
+
+        # originally pluging config does not exist
+        assert not plugin_config.exists()
+
+        # simulate plugin installation by creating plugin config on disk
+        plugin_dir.mkdir(parents=True)
+        with open(plugin_config, "w") as f:
+            f.write("{}")
+
+        with mock.patch("pathlib.Path.home", return_value=user_home):
+            assert (
+                create_user_agent()
+                == f"pandas-{pd.__version__} vscode googlecloudtools.cloudcode"
+            )
+
+
+@mock.patch.dict(os.environ, {"JPY_PARENT_PID": "1234"}, clear=True)
+def test_create_user_agent_jupyter():
+    from pandas_gbq.gbq import create_user_agent
+
+    assert create_user_agent() == f"pandas-{pd.__version__} jupyter"
+
+
+@mock.patch.dict(os.environ, {"JPY_PARENT_PID": "1234"}, clear=True)
+def test_create_user_agent_jupyter_extension():
+    from pandas_gbq.gbq import create_user_agent
+
+    def custom_import_module_side_effect(name, package=None):
+        if name == "bigquery_jupyter_plugin":
+            return mock.MagicMock()
+        else:
+            import importlib
+
+            return importlib.import_module(name, package)
+
+    with mock.patch(
+        "importlib.import_module", side_effect=custom_import_module_side_effect
+    ):
+        assert (
+            create_user_agent()
+            == f"pandas-{pd.__version__} jupyter bigquery_jupyter_plugin"
+        )
