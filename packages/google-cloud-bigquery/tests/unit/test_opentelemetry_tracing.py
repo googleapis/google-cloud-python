@@ -42,7 +42,6 @@ TEST_SPAN_NAME = "bar"
 TEST_SPAN_ATTRIBUTES = {"foo": "baz"}
 
 
-@pytest.mark.skipif(opentelemetry is None, reason="Require `opentelemetry`")
 @pytest.fixture
 def setup():
     importlib.reload(opentelemetry_tracing)
