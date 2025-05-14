@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Compute Engine API
+#
 
-Overview of the APIs available for Compute Engine API.
+Overview of the APIs available for .
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Compute Engine API.
+.
 
 [classes](https://cloud.google.com/python/docs/reference/compute/latest/summary_class.html)
 
