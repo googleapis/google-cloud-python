@@ -261,3 +261,106 @@ def test_to_dataframe_with_jobs_query_response(class_under_test):
         "Tiffani",
     ]
     assert list(df["number"]) == [6, 325, 26, 10, 17, 22, 6, 229, 8]
+
+
+@mock.patch("google.cloud.bigquery.table.geopandas")
+def test_rowiterator_to_geodataframe_with_default_dtypes(
+    mock_geopandas, monkeypatch, class_under_test
+):
+    mock_geopandas.GeoDataFrame = mock.Mock(spec=True)
+    mock_client = mock.create_autospec(bigquery.Client)
+    mock_client.project = "test-proj"
+    mock_api_request = mock.Mock()
+    schema = [
+        bigquery.SchemaField("geo_col", "GEOGRAPHY"),
+        bigquery.SchemaField("bool_col", "BOOLEAN"),
+        bigquery.SchemaField("int_col", "INTEGER"),
+        bigquery.SchemaField("float_col", "FLOAT"),
+        bigquery.SchemaField("string_col", "STRING"),
+    ]
+    rows = class_under_test(mock_client, mock_api_request, TEST_PATH, schema)
+
+    mock_df = pandas.DataFrame(
+        {
+            "geo_col": ["POINT (1 2)"],
+            "bool_col": [True],
+            "int_col": [123],
+            "float_col": [1.23],
+            "string_col": ["abc"],
+        }
+    )
+    rows.to_dataframe = mock.Mock(return_value=mock_df)
+
+    rows.to_geodataframe(geography_column="geo_col")
+
+    rows.to_dataframe.assert_called_once_with(
+        None,  # bqstorage_client
+        None,  # dtypes
+        None,  # progress_bar_type
+        True,  # create_bqstorage_client
+        geography_as_object=True,
+        bool_dtype=bigquery.enums.DefaultPandasDTypes.BOOL_DTYPE,
+        int_dtype=bigquery.enums.DefaultPandasDTypes.INT_DTYPE,
+        float_dtype=None,
+        string_dtype=None,
+    )
+    mock_geopandas.GeoDataFrame.assert_called_once_with(
+        mock_df, crs="EPSG:4326", geometry="geo_col"
+    )
+
+
+@mock.patch("google.cloud.bigquery.table.geopandas")
+def test_rowiterator_to_geodataframe_with_custom_dtypes(
+    mock_geopandas, monkeypatch, class_under_test
+):
+    mock_geopandas.GeoDataFrame = mock.Mock(spec=True)
+    mock_client = mock.create_autospec(bigquery.Client)
+    mock_client.project = "test-proj"
+    mock_api_request = mock.Mock()
+    schema = [
+        bigquery.SchemaField("geo_col", "GEOGRAPHY"),
+        bigquery.SchemaField("bool_col", "BOOLEAN"),
+        bigquery.SchemaField("int_col", "INTEGER"),
+        bigquery.SchemaField("float_col", "FLOAT"),
+        bigquery.SchemaField("string_col", "STRING"),
+    ]
+    rows = class_under_test(mock_client, mock_api_request, TEST_PATH, schema)
+
+    mock_df = pandas.DataFrame(
+        {
+            "geo_col": ["POINT (3 4)"],
+            "bool_col": [False],
+            "int_col": [456],
+            "float_col": [4.56],
+            "string_col": ["def"],
+        }
+    )
+    rows.to_dataframe = mock.Mock(return_value=mock_df)
+
+    custom_bool_dtype = "bool"
+    custom_int_dtype = "int32"
+    custom_float_dtype = "float32"
+    custom_string_dtype = "string"
+
+    rows.to_geodataframe(
+        geography_column="geo_col",
+        bool_dtype=custom_bool_dtype,
+        int_dtype=custom_int_dtype,
+        float_dtype=custom_float_dtype,
+        string_dtype=custom_string_dtype,
+    )
+
+    rows.to_dataframe.assert_called_once_with(
+        None,  # bqstorage_client
+        None,  # dtypes
+        None,  # progress_bar_type
+        True,  # create_bqstorage_client
+        geography_as_object=True,
+        bool_dtype=custom_bool_dtype,
+        int_dtype=custom_int_dtype,
+        float_dtype=custom_float_dtype,
+        string_dtype=custom_string_dtype,
+    )
+    mock_geopandas.GeoDataFrame.assert_called_once_with(
+        mock_df, crs="EPSG:4326", geometry="geo_col"
+    )

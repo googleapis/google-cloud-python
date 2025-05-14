@@ -29,4 +29,4 @@ pyarrow==4.0.0
 python-dateutil==2.8.2
 requests==2.21.0
 Shapely==1.8.4
-tqdm==4.7.4
+matplotlib==3.7.1

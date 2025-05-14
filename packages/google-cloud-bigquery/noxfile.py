@@ -109,9 +109,7 @@ def default(session, install_extras=True):
     # that logic (and the associated tests) we avoid installing the [ipython] extra
     # which has a downstream effect of then avoiding installing bigquery_magics.
     if install_extras and session.python == UNIT_TEST_PYTHON_VERSIONS[0]:
-        install_target = (
-            ".[bqstorage,pandas,ipywidgets,geopandas,tqdm,opentelemetry,bigquery_v2]"
-        )
+        install_target = ".[bqstorage,pandas,ipywidgets,geopandas,matplotlib,tqdm,opentelemetry,bigquery_v2]"
     elif install_extras:  # run against all other UNIT_TEST_PYTHON_VERSIONS
         install_target = ".[all]"
     else:

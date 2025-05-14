@@ -22,6 +22,7 @@ import pytest
 from ..helpers import make_connection
 from .helpers import _make_client
 from .helpers import _make_job_resource
+from google.cloud.bigquery.enums import DefaultPandasDTypes
 
 try:
     from google.cloud import bigquery_storage
@@ -29,6 +30,7 @@ try:
     import google.cloud.bigquery_storage_v1.services.big_query_read.client
 except (ImportError, AttributeError):
     bigquery_storage = None
+
 
 try:
     import shapely
@@ -1019,5 +1021,9 @@ def test_query_job_to_geodataframe_delegation(wait_for_query):
         progress_bar_type=progress_bar_type,
         create_bqstorage_client=create_bqstorage_client,
         geography_column=geography_column,
+        bool_dtype=DefaultPandasDTypes.BOOL_DTYPE,
+        int_dtype=DefaultPandasDTypes.INT_DTYPE,
+        float_dtype=None,
+        string_dtype=None,
     )
     assert df is row_iterator.to_geodataframe.return_value
