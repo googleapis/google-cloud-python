@@ -20,6 +20,8 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.gke_backup_v1.types import common
+
 __protobuf__ = proto.module(
     package="google.cloud.gkebackup.v1",
     manifest={
@@ -103,6 +105,14 @@ class BackupPlanBinding(proto.Message):
                 Output only. The fully qualified name of the last successful
                 Backup created under this BackupPlan.
                 ``projects/*/locations/*/backupPlans/*/backups/*``
+            backup_config_details (google.cloud.gke_backup_v1.types.BackupPlanBinding.BackupPlanDetails.BackupConfigDetails):
+                Output only. Contains details about the
+                BackupConfig of Backups created via this
+                BackupPlan.
+            retention_policy_details (google.cloud.gke_backup_v1.types.BackupPlanBinding.BackupPlanDetails.RetentionPolicyDetails):
+                Output only. Contains details about the
+                RetentionPolicy of Backups created via this
+                BackupPlan.
         """
 
         class State(proto.Enum):
@@ -135,6 +145,123 @@ class BackupPlanBinding(proto.Message):
             DEACTIVATED = 5
             DELETING = 6
 
+        class BackupConfigDetails(proto.Message):
+            r"""BackupConfigDetails defines the configuration of Backups
+            created via this BackupPlan.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                all_namespaces (bool):
+                    Output only. If True, include all namespaced
+                    resources
+
+                    This field is a member of `oneof`_ ``backup_scope``.
+                selected_namespaces (google.cloud.gke_backup_v1.types.Namespaces):
+                    Output only. If set, include just the
+                    resources in the listed namespaces.
+
+                    This field is a member of `oneof`_ ``backup_scope``.
+                selected_applications (google.cloud.gke_backup_v1.types.NamespacedNames):
+                    Output only. If set, include just the
+                    resources referenced by the listed
+                    ProtectedApplications.
+
+                    This field is a member of `oneof`_ ``backup_scope``.
+                include_volume_data (bool):
+                    Output only. This flag specifies whether
+                    volume data should be backed up when PVCs are
+                    included in the scope of a Backup.
+
+                    Default: False
+                include_secrets (bool):
+                    Output only. This flag specifies whether
+                    Kubernetes Secret resources should be included
+                    when they fall into the scope of Backups.
+
+                    Default: False
+                encryption_key (google.cloud.gke_backup_v1.types.EncryptionKey):
+                    Output only. This defines a customer managed
+                    encryption key that will be used to encrypt the
+                    "config" portion (the Kubernetes resources) of
+                    Backups created via this plan.
+
+                    Default (empty): Config backup artifacts will
+                    not be encrypted.
+            """
+
+            all_namespaces: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+                oneof="backup_scope",
+            )
+            selected_namespaces: common.Namespaces = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="backup_scope",
+                message=common.Namespaces,
+            )
+            selected_applications: common.NamespacedNames = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="backup_scope",
+                message=common.NamespacedNames,
+            )
+            include_volume_data: bool = proto.Field(
+                proto.BOOL,
+                number=5,
+            )
+            include_secrets: bool = proto.Field(
+                proto.BOOL,
+                number=6,
+            )
+            encryption_key: common.EncryptionKey = proto.Field(
+                proto.MESSAGE,
+                number=7,
+                message=common.EncryptionKey,
+            )
+
+        class RetentionPolicyDetails(proto.Message):
+            r"""RetentionPolicyDetails defines a Backup retention policy for
+            a BackupPlan.
+
+            Attributes:
+                backup_delete_lock_days (int):
+                    Optional. Minimum age for Backups created via this
+                    BackupPlan (in days). This field MUST be an integer value
+                    between 0-90 (inclusive). A Backup created under this
+                    BackupPlan will NOT be deletable until it reaches Backup's
+                    (create_time + backup_delete_lock_days). Updating this field
+                    of a BackupPlan does NOT affect existing Backups under it.
+                    Backups created AFTER a successful update will inherit the
+                    new value.
+
+                    Default: 0 (no delete blocking)
+                backup_retain_days (int):
+                    Optional. The default maximum age of a Backup created via
+                    this BackupPlan. This field MUST be an integer value >= 0
+                    and <= 365. If specified, a Backup created under this
+                    BackupPlan will be automatically deleted after its age
+                    reaches (create_time + backup_retain_days). If not
+                    specified, Backups created under this BackupPlan will NOT be
+                    subject to automatic deletion. Default: 0 (no automatic
+                    deletion)
+            """
+
+            backup_delete_lock_days: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            backup_retain_days: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
         protected_pod_count: int = proto.Field(
             proto.INT32,
             number=1,
@@ -161,6 +288,16 @@ class BackupPlanBinding(proto.Message):
         last_successful_backup: str = proto.Field(
             proto.STRING,
             number=6,
+        )
+        backup_config_details: "BackupPlanBinding.BackupPlanDetails.BackupConfigDetails" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message="BackupPlanBinding.BackupPlanDetails.BackupConfigDetails",
+        )
+        retention_policy_details: "BackupPlanBinding.BackupPlanDetails.RetentionPolicyDetails" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message="BackupPlanBinding.BackupPlanDetails.RetentionPolicyDetails",
         )
 
     name: str = proto.Field(

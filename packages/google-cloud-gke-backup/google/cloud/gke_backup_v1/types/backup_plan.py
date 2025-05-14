@@ -121,6 +121,11 @@ class BackupPlan(proto.Message):
             Output only. Human-readable description of why the
             BackupPlan is in the current rpo_risk_level and action items
             if any.
+        backup_channel (str):
+            Output only. The fully qualified name of the BackupChannel
+            to be used to create a backup. This field is set only if the
+            cluster being backed up is in a different project.
+            ``projects/*/locations/*/backupChannels/*``
         last_successful_backup_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Completion time of the last successful Backup.
             This is sourced from a successful Backup's complete_time
@@ -438,6 +443,10 @@ class BackupPlan(proto.Message):
     rpo_risk_reason: str = proto.Field(
         proto.STRING,
         number=17,
+    )
+    backup_channel: str = proto.Field(
+        proto.STRING,
+        number=18,
     )
     last_successful_backup_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
