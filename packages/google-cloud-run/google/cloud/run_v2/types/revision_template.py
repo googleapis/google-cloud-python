@@ -34,6 +34,9 @@ class RevisionTemplate(proto.Message):
     r"""RevisionTemplate describes the data a revision should have
     when created from a template.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         revision (str):
             Optional. The unique name for the revision.
@@ -124,6 +127,11 @@ class RevisionTemplate(proto.Message):
         node_selector (google.cloud.run_v2.types.NodeSelector):
             Optional. The node selector for the revision
             template.
+        gpu_zonal_redundancy_disabled (bool):
+            Optional. True if GPU zonal redundancy is
+            disabled on this revision.
+
+            This field is a member of `oneof`_ ``_gpu_zonal_redundancy_disabled``.
     """
 
     revision: str = proto.Field(
@@ -211,6 +219,11 @@ class RevisionTemplate(proto.Message):
         proto.MESSAGE,
         number=21,
         message=vendor_settings.NodeSelector,
+    )
+    gpu_zonal_redundancy_disabled: bool = proto.Field(
+        proto.BOOL,
+        number=24,
+        optional=True,
     )
 
 

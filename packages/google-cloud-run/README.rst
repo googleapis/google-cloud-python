@@ -1,9 +1,9 @@
-Python Client for Cloud Run
-===========================
+Python Client for Cloud Run Admin API
+=====================================
 
 |preview| |pypi| |versions|
 
-`Cloud Run`_: is a managed compute platform that enables you to run containers that are invocable via requests or events.
+`Cloud Run Admin API`_: Deploy and manage user provided container images that scale automatically based on incoming requests. The Cloud Run Admin API v1 follows the Knative Serving API specification, while v2 is aligned with Google Cloud AIP-based API standards, as described in https://google.aip.dev/.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Cloud Run
    :target: https://pypi.org/project/google-cloud-run/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-run.svg
    :target: https://pypi.org/project/google-cloud-run/
-.. _Cloud Run: https://cloud.google.com/run/docs
+.. _Cloud Run Admin API:
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/run/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/run/docs
+.. _Product Documentation:
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Run.`_
+3. `Enable the Cloud Run Admin API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Run.:  https://cloud.google.com/run/docs
+.. _Enable the Cloud Run Admin API.:
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Run
+-  Read the `Client Library Documentation`_ for Cloud Run Admin API
    to see other available methods on the client.
--  Read the `Cloud Run Product documentation`_ to learn
+-  Read the `Cloud Run Admin API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Run Product documentation:  https://cloud.google.com/run/docs
+.. _Cloud Run Admin API Product documentation:
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
