@@ -11,7 +11,6 @@ API Reference
     compute_v1/services_
     compute_v1/types_
 
-
 Changelog
 ---------
 
