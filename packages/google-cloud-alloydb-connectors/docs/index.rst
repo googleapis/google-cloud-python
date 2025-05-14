@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of .
+By default, you will get version ``connectors_v1``.
+
 
 API Reference
 -------------
@@ -11,6 +14,13 @@ API Reference
     connectors_v1/services_
     connectors_v1/types_
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    /services_
+    /types_
 
 Changelog
 ---------
