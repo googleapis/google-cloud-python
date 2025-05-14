@@ -56,6 +56,12 @@ __protobuf__ = proto.module(
         "GetClipRequest",
         "CreateClipRequest",
         "DeleteClipRequest",
+        "ListDvrSessionsRequest",
+        "ListDvrSessionsResponse",
+        "GetDvrSessionRequest",
+        "CreateDvrSessionRequest",
+        "DeleteDvrSessionRequest",
+        "UpdateDvrSessionRequest",
         "OperationMetadata",
         "GetPoolRequest",
         "UpdatePoolRequest",
@@ -758,6 +764,7 @@ class UpdateInputRequest(proto.Message):
             in the Input resource by the update. You can only update the
             following fields:
 
+            -  ```tier`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#Tier>`__
             -  ```preprocessingConfig`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#PreprocessingConfig>`__
             -  ```securityRules`` <https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#SecurityRule>`__
 
@@ -1177,6 +1184,241 @@ class DeleteClipRequest(proto.Message):
     )
 
 
+class ListDvrSessionsRequest(proto.Message):
+    r"""Request message for "LivestreamService.ListDvrSessions".
+
+    Attributes:
+        parent (str):
+            Required. Parent value for
+            ListDvrSessionsRequest
+        page_size (int):
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+        filter (str):
+            Optional. Filtering results
+        order_by (str):
+            Optional. Hint for how to order the results
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListDvrSessionsResponse(proto.Message):
+    r"""Response message for "LivestreamService.ListDvrSessions".
+
+    Attributes:
+        dvr_sessions (MutableSequence[google.cloud.video.live_stream_v1.types.DvrSession]):
+            The list of DVR sessions
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    dvr_sessions: MutableSequence[resources.DvrSession] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.DvrSession,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetDvrSessionRequest(proto.Message):
+    r"""Request message for "LivestreamService.GetDvrSession".
+
+    Attributes:
+        name (str):
+            Required. Name of the resource, in the following form:
+            ``projects/{project}/locations/{location}/channels/{channelId}/dvrSessions/{dvrSessionId}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateDvrSessionRequest(proto.Message):
+    r"""Request message for "LivestreamService.CreateDvrSession".
+
+    Attributes:
+        parent (str):
+            Required. The parent resource name, in the following form:
+            ``projects/{project}/locations/{location}/channels/{channelId}``.
+        dvr_session_id (str):
+            Required. Id of the requesting object in the
+            following form:
+
+            1. 1 character minimum, 63 characters maximum
+            2. Only contains letters, digits, underscores,
+                and hyphens
+        dvr_session (google.cloud.video.live_stream_v1.types.DvrSession):
+            Required. The resource being created
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dvr_session_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    dvr_session: resources.DvrSession = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.DvrSession,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeleteDvrSessionRequest(proto.Message):
+    r"""Request message for "LivestreamService.DeleteDvrSession".
+
+    Attributes:
+        name (str):
+            Required. The name of the event resource, in the form of:
+            ``projects/{project}/locations/{location}/channels/{channelId}/dvrSessions/{dvrSessionId}``.
+        request_id (str):
+            Optional. A request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. The server will guarantee that for at least
+            60 minutes since the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateDvrSessionRequest(proto.Message):
+    r"""Request message for "LivestreamService.UpdateDvrSession".
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the DvrSession resource by the update. You
+            can only update the following fields:
+
+            -  ``dvrWindows``
+
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask.
+        dvr_session (google.cloud.video.live_stream_v1.types.DvrSession):
+            Required. The DVR session resource to be
+            updated.
+        request_id (str):
+            Optional. A request ID to identify requests. Specify a
+            unique request ID so that if you must retry your request,
+            the server will know to ignore the request if it has already
+            been completed. The server will guarantee that for at least
+            60 minutes since the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    dvr_session: resources.DvrSession = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.DvrSession,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
 
@@ -1196,9 +1438,11 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
-            with a [google.rpc.Status.code][google.rpc.Status.code] of
-            1, corresponding to ``Code.CANCELLED``.
+            successfully been cancelled have
+            [google.longrunning.Operation.error][google.longrunning.Operation.error]
+            value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to ``Code.CANCELLED``.
         api_version (str):
             Output only. API version used to start the
             operation.

@@ -864,7 +864,7 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
 
         Deletes the specified clip job resource. This method
         only deletes the clip job and does not delete the VOD
-        clip stored in the GCS.
+        clip stored in Cloud Storage.
 
         Returns:
             Callable[[~.DeleteClipRequest],
@@ -883,6 +883,146 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_clip"]
+
+    @property
+    def create_dvr_session(
+        self,
+    ) -> Callable[
+        [service.CreateDvrSessionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create dvr session method over gRPC.
+
+        Creates a DVR session with the provided unique ID in
+        the specified channel.
+
+        Returns:
+            Callable[[~.CreateDvrSessionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_dvr_session" not in self._stubs:
+            self._stubs["create_dvr_session"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/CreateDvrSession",
+                request_serializer=service.CreateDvrSessionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_dvr_session"]
+
+    @property
+    def list_dvr_sessions(
+        self,
+    ) -> Callable[
+        [service.ListDvrSessionsRequest], Awaitable[service.ListDvrSessionsResponse]
+    ]:
+        r"""Return a callable for the list dvr sessions method over gRPC.
+
+        Returns a list of all DVR sessions in the specified
+        channel.
+
+        Returns:
+            Callable[[~.ListDvrSessionsRequest],
+                    Awaitable[~.ListDvrSessionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_dvr_sessions" not in self._stubs:
+            self._stubs["list_dvr_sessions"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/ListDvrSessions",
+                request_serializer=service.ListDvrSessionsRequest.serialize,
+                response_deserializer=service.ListDvrSessionsResponse.deserialize,
+            )
+        return self._stubs["list_dvr_sessions"]
+
+    @property
+    def get_dvr_session(
+        self,
+    ) -> Callable[[service.GetDvrSessionRequest], Awaitable[resources.DvrSession]]:
+        r"""Return a callable for the get dvr session method over gRPC.
+
+        Returns the specified DVR session.
+
+        Returns:
+            Callable[[~.GetDvrSessionRequest],
+                    Awaitable[~.DvrSession]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_dvr_session" not in self._stubs:
+            self._stubs["get_dvr_session"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/GetDvrSession",
+                request_serializer=service.GetDvrSessionRequest.serialize,
+                response_deserializer=resources.DvrSession.deserialize,
+            )
+        return self._stubs["get_dvr_session"]
+
+    @property
+    def delete_dvr_session(
+        self,
+    ) -> Callable[
+        [service.DeleteDvrSessionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete dvr session method over gRPC.
+
+        Deletes the specified DVR session.
+
+        Returns:
+            Callable[[~.DeleteDvrSessionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_dvr_session" not in self._stubs:
+            self._stubs["delete_dvr_session"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/DeleteDvrSession",
+                request_serializer=service.DeleteDvrSessionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_dvr_session"]
+
+    @property
+    def update_dvr_session(
+        self,
+    ) -> Callable[
+        [service.UpdateDvrSessionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update dvr session method over gRPC.
+
+        Updates the specified DVR session.
+
+        Returns:
+            Callable[[~.UpdateDvrSessionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_dvr_session" not in self._stubs:
+            self._stubs["update_dvr_session"] = self._logged_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/UpdateDvrSession",
+                request_serializer=service.UpdateDvrSessionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_dvr_session"]
 
     @property
     def create_asset(
@@ -1178,12 +1318,30 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
             ),
             self.list_clips: self._wrap_method(
                 self.list_clips,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_clip: self._wrap_method(
                 self.get_clip,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_clip: self._wrap_method(
@@ -1193,6 +1351,31 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
             ),
             self.delete_clip: self._wrap_method(
                 self.delete_clip,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_dvr_session: self._wrap_method(
+                self.create_dvr_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_dvr_sessions: self._wrap_method(
+                self.list_dvr_sessions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_dvr_session: self._wrap_method(
+                self.get_dvr_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_dvr_session: self._wrap_method(
+                self.delete_dvr_session,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_dvr_session: self._wrap_method(
+                self.update_dvr_session,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1208,17 +1391,44 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
             ),
             self.get_asset: self._wrap_method(
                 self.get_asset,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_assets: self._wrap_method(
                 self.list_assets,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_pool: self._wrap_method(
                 self.get_pool,
-                default_timeout=None,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_pool: self._wrap_method(
