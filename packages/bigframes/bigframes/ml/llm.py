@@ -529,7 +529,8 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         y: utils.ArrayType,
     ) -> GeminiTextGenerator:
         """Fine tune GeminiTextGenerator model. Only support "gemini-1.5-pro-002",
-           and "gemini-1.5-flash-002" models for now.
+           "gemini-1.5-flash-002", "gemini-2.0-flash-001",
+           and "gemini-2.0-flash-lite-001"models for now.
 
         .. note::
 
@@ -549,7 +550,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         """
         if self.model_name not in _GEMINI_FINE_TUNE_SCORE_ENDPOINTS:
             msg = exceptions.format_message(
-                "fit() only supports gemini-1.5-pro-002, or gemini-1.5-flash-002 model."
+                "fit() only supports gemini-1.5-pro-002, gemini-1.5-flash-002, gemini-2.0-flash-001, or gemini-2.0-flash-lite-001 model."
             )
             warnings.warn(msg)
 
