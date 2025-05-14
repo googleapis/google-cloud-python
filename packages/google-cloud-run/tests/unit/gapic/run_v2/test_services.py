@@ -5925,6 +5925,7 @@ def test_create_service_rest_call_success(request_type):
             "session_affinity": True,
             "health_check_disabled": True,
             "node_selector": {"accelerator": "accelerator_value"},
+            "gpu_zonal_redundancy_disabled": True,
         },
         "traffic": [
             {
@@ -6590,6 +6591,7 @@ def test_update_service_rest_call_success(request_type):
             "session_affinity": True,
             "health_check_disabled": True,
             "node_selector": {"accelerator": "accelerator_value"},
+            "gpu_zonal_redundancy_disabled": True,
         },
         "traffic": [
             {

@@ -66,14 +66,15 @@ class ExecutionTemplate(proto.Message):
                 <p>This field follows Kubernetes annotations' namespacing, limits, and
                 rules.
         parallelism (int):
-            Specifies the maximum desired number of tasks the execution
-            should run at given time. Must be <= task_count. When the
-            job is run, if this field is 0 or unset, the maximum
-            possible value will be used for that execution. The actual
-            number of tasks running in steady state will be less than
-            this number when there are fewer tasks waiting to be
-            completed remaining, i.e. when the work left to do is less
-            than max parallelism.
+            Optional. Specifies the maximum desired
+            number of tasks the execution should run at
+            given time. When the job is run, if this field
+            is 0 or unset, the maximum possible value will
+            be used for that execution. The actual number of
+            tasks running in steady state will be less than
+            this number when there are fewer tasks waiting
+            to be completed remaining, i.e. when the work
+            left to do is less than max parallelism.
         task_count (int):
             Specifies the desired number of tasks the
             execution should run. Setting to 1 means that
