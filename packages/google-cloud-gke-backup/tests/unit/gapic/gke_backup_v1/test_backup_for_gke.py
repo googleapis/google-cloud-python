@@ -2071,6 +2071,7 @@ def test_get_backup_plan(request_type, transport: str = "grpc"):
             state_reason="state_reason_value",
             rpo_risk_level=1504,
             rpo_risk_reason="rpo_risk_reason_value",
+            backup_channel="backup_channel_value",
         )
         response = client.get_backup_plan(request)
 
@@ -2093,6 +2094,7 @@ def test_get_backup_plan(request_type, transport: str = "grpc"):
     assert response.state_reason == "state_reason_value"
     assert response.rpo_risk_level == 1504
     assert response.rpo_risk_reason == "rpo_risk_reason_value"
+    assert response.backup_channel == "backup_channel_value"
 
 
 def test_get_backup_plan_non_empty_request_with_auto_populated_field():
@@ -2229,6 +2231,7 @@ async def test_get_backup_plan_async(
                 state_reason="state_reason_value",
                 rpo_risk_level=1504,
                 rpo_risk_reason="rpo_risk_reason_value",
+                backup_channel="backup_channel_value",
             )
         )
         response = await client.get_backup_plan(request)
@@ -2252,6 +2255,7 @@ async def test_get_backup_plan_async(
     assert response.state_reason == "state_reason_value"
     assert response.rpo_risk_level == 1504
     assert response.rpo_risk_reason == "rpo_risk_reason_value"
+    assert response.backup_channel == "backup_channel_value"
 
 
 @pytest.mark.asyncio
@@ -9806,6 +9810,7 @@ def test_get_restore_plan(request_type, transport: str = "grpc"):
             etag="etag_value",
             state=restore_plan.RestorePlan.State.CLUSTER_PENDING,
             state_reason="state_reason_value",
+            restore_channel="restore_channel_value",
         )
         response = client.get_restore_plan(request)
 
@@ -9825,6 +9830,7 @@ def test_get_restore_plan(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.state == restore_plan.RestorePlan.State.CLUSTER_PENDING
     assert response.state_reason == "state_reason_value"
+    assert response.restore_channel == "restore_channel_value"
 
 
 def test_get_restore_plan_non_empty_request_with_auto_populated_field():
@@ -9960,6 +9966,7 @@ async def test_get_restore_plan_async(
                 etag="etag_value",
                 state=restore_plan.RestorePlan.State.CLUSTER_PENDING,
                 state_reason="state_reason_value",
+                restore_channel="restore_channel_value",
             )
         )
         response = await client.get_restore_plan(request)
@@ -9980,6 +9987,7 @@ async def test_get_restore_plan_async(
     assert response.etag == "etag_value"
     assert response.state == restore_plan.RestorePlan.State.CLUSTER_PENDING
     assert response.state_reason == "state_reason_value"
+    assert response.restore_channel == "restore_channel_value"
 
 
 @pytest.mark.asyncio
@@ -26091,6 +26099,7 @@ async def test_get_backup_plan_empty_call_grpc_asyncio():
                 state_reason="state_reason_value",
                 rpo_risk_level=1504,
                 rpo_risk_reason="rpo_risk_reason_value",
+                backup_channel="backup_channel_value",
             )
         )
         await client.get_backup_plan(request=None)
@@ -26660,6 +26669,7 @@ async def test_get_restore_plan_empty_call_grpc_asyncio():
                 etag="etag_value",
                 state=restore_plan.RestorePlan.State.CLUSTER_PENDING,
                 state_reason="state_reason_value",
+                restore_channel="restore_channel_value",
             )
         )
         await client.get_restore_plan(request=None)
@@ -27278,6 +27288,7 @@ def test_create_backup_plan_rest_call_success(request_type):
         "state_reason": "state_reason_value",
         "rpo_risk_level": 1504,
         "rpo_risk_reason": "rpo_risk_reason_value",
+        "backup_channel": "backup_channel_value",
         "last_successful_backup_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -27616,6 +27627,7 @@ def test_get_backup_plan_rest_call_success(request_type):
             state_reason="state_reason_value",
             rpo_risk_level=1504,
             rpo_risk_reason="rpo_risk_reason_value",
+            backup_channel="backup_channel_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -27643,6 +27655,7 @@ def test_get_backup_plan_rest_call_success(request_type):
     assert response.state_reason == "state_reason_value"
     assert response.rpo_risk_level == 1504
     assert response.rpo_risk_reason == "rpo_risk_reason_value"
+    assert response.backup_channel == "backup_channel_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -27815,6 +27828,7 @@ def test_update_backup_plan_rest_call_success(request_type):
         "state_reason": "state_reason_value",
         "rpo_risk_level": 1504,
         "rpo_risk_reason": "rpo_risk_reason_value",
+        "backup_channel": "backup_channel_value",
         "last_successful_backup_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -30464,6 +30478,7 @@ def test_create_restore_plan_rest_call_success(request_type):
         "etag": "etag_value",
         "state": 1,
         "state_reason": "state_reason_value",
+        "restore_channel": "restore_channel_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -30800,6 +30815,7 @@ def test_get_restore_plan_rest_call_success(request_type):
             etag="etag_value",
             state=restore_plan.RestorePlan.State.CLUSTER_PENDING,
             state_reason="state_reason_value",
+            restore_channel="restore_channel_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -30824,6 +30840,7 @@ def test_get_restore_plan_rest_call_success(request_type):
     assert response.etag == "etag_value"
     assert response.state == restore_plan.RestorePlan.State.CLUSTER_PENDING
     assert response.state_reason == "state_reason_value"
+    assert response.restore_channel == "restore_channel_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -31008,6 +31025,7 @@ def test_update_restore_plan_rest_call_success(request_type):
         "etag": "etag_value",
         "state": 1,
         "state_reason": "state_reason_value",
+        "restore_channel": "restore_channel_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

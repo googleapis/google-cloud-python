@@ -40,9 +40,8 @@ class RestoreChannel(proto.Message):
             ``projects/*/locations/*/restoreChannels/*``
         destination_project (str):
             Required. Immutable. The project into which the backups will
-            be restored. The format is ``projects/{project}``.
-            Currently, {project} can only be the project number. Support
-            for project IDs will be added in the future.
+            be restored. The format is ``projects/{projectId}`` or
+            ``projects/{projectNumber}``.
         uid (str):
             Output only. Server generated global unique identifier of
             `UUID <https://en.wikipedia.org/wiki/Universally_unique_identifier>`__
