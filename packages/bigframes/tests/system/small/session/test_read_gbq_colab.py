@@ -73,3 +73,31 @@ def test_read_gbq_colab_includes_formatted_scalars(session):
             }
         ),
     )
+
+
+def test_read_gbq_colab_includes_formatted_bigframes_dataframe(
+    session, scalars_df_index, scalars_pandas_df_index
+):
+    pyformat_args = {
+        # Apply some operations to make sure the columns aren't renamed.
+        "some_dataframe": scalars_df_index[scalars_df_index["int64_col"] > 0].assign(
+            int64_col=scalars_df_index["int64_too"]
+        ),
+        # This is not a supported type, but ignored if not referenced.
+        "some_object": object(),
+    }
+    df = session._read_gbq_colab(
+        """
+        SELECT int64_col, rowindex
+        FROM {some_dataframe}
+        ORDER BY rowindex ASC
+        """,
+        pyformat_args=pyformat_args,
+    )
+    result = df.to_pandas()
+    expected = (
+        scalars_pandas_df_index[scalars_pandas_df_index["int64_col"] > 0]
+        .assign(int64_col=scalars_pandas_df_index["int64_too"])
+        .reset_index(drop=False)[["int64_col", "rowindex"]]
+    )
+    pandas.testing.assert_frame_equal(result, expected)

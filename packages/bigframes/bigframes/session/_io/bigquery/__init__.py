@@ -139,6 +139,28 @@ def create_temp_table(
     return f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}"
 
 
+def create_temp_view(
+    bqclient: bigquery.Client,
+    table_ref: bigquery.TableReference,
+    *,
+    expiration: datetime.datetime,
+    sql: str,
+) -> str:
+    """Create an empty table with an expiration in the desired session.
+
+    The table will be deleted when the session is closed or the expiration
+    is reached.
+    """
+    destination = bigquery.Table(table_ref)
+    destination.expires = expiration
+    destination.view_query = sql
+
+    # Ok if already exists, since this will only happen from retries internal to this method
+    # as the requested table id has a random UUID4 component.
+    bqclient.create_table(destination, exists_ok=True)
+    return f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}"
+
+
 def set_table_expiration(
     bqclient: bigquery.Client,
     table_ref: bigquery.TableReference,

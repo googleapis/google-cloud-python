@@ -37,9 +37,13 @@ def _table_to_sql(table: _BQ_TABLE_TYPES) -> str:
     return f"`{table.project}`.`{table.dataset_id}`.`{table.table_id}`"
 
 
-def _field_to_template_value(name: str, value: Any) -> str:
+def _field_to_template_value(
+    name: str,
+    value: Any,
+) -> str:
     """Convert value to something embeddable in a SQL string."""
     import bigframes.core.sql  # Avoid circular imports
+    import bigframes.dataframe  # Avoid circular imports
 
     _validate_type(name, value)
 
@@ -47,20 +51,27 @@ def _field_to_template_value(name: str, value: Any) -> str:
     if isinstance(value, table_types):
         return _table_to_sql(value)
 
-    # TODO(tswast): convert DataFrame objects to gbq tables or a literals subquery.
+    # TODO(tswast): convert pandas DataFrame objects to gbq tables or a literals subquery.
+    if isinstance(value, bigframes.dataframe.DataFrame):
+        return _table_to_sql(value._to_view())
+
     return bigframes.core.sql.simple_literal(value)
 
 
 def _validate_type(name: str, value: Any):
     """Raises TypeError if value is unsupported."""
     import bigframes.core.sql  # Avoid circular imports
+    import bigframes.dataframe  # Avoid circular imports
 
     if value is None:
         return  # None can't be used in isinstance, but is a valid literal.
 
-    supported_types = typing.get_args(_BQ_TABLE_TYPES) + typing.get_args(
-        bigframes.core.sql.SIMPLE_LITERAL_TYPES
+    supported_types = (
+        typing.get_args(_BQ_TABLE_TYPES)
+        + typing.get_args(bigframes.core.sql.SIMPLE_LITERAL_TYPES)
+        + (bigframes.dataframe.DataFrame,)
     )
+
     if not isinstance(value, supported_types):
         raise TypeError(
             f"{name} has unsupported type: {type(value)}. "
@@ -80,8 +91,6 @@ def pyformat(
     sql_template: str,
     *,
     pyformat_args: dict,
-    # TODO: add dry_run parameter to avoid expensive API calls in conversion
-    # TODO: and session to upload data / convert to table if necessary
 ) -> str:
     """Unsafe Python-style string formatting of SQL string.
 

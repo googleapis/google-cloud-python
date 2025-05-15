@@ -153,6 +153,7 @@ class Block:
 
         self._stats_cache[" ".join(self.index_columns)] = {}
         self._transpose_cache: Optional[Block] = transpose_cache
+        self._view_ref: Optional[bigquery.TableReference] = None
 
     @classmethod
     def from_local(
@@ -2486,6 +2487,17 @@ class Block:
             new_ids[: len(idx_labels)],
             idx_labels,
         )
+
+    def to_view(self, include_index: bool) -> bigquery.TableReference:
+        """
+        Creates a temporary BigQuery VIEW with the SQL corresponding to this block.
+        """
+        if self._view_ref is not None:
+            return self._view_ref
+
+        sql, _, _ = self.to_sql_query(include_index=include_index)
+        self._view_ref = self.session._create_temp_view(sql)
+        return self._view_ref
 
     def cached(self, *, force: bool = False, session_aware: bool = False) -> None:
         """Write the block to a session table."""

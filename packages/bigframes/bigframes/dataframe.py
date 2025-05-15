@@ -394,6 +394,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         return self._apply_unary_op(ops.AsTypeOp(dtype, safe_cast))
 
+    def _should_sql_have_index(self) -> bool:
+        """Should the SQL we pass to BQML and other I/O include the index?"""
+
+        return self._has_index and (
+            self.index.name is not None or len(self.index.names) > 1
+        )
+
+    def _to_view(self) -> bigquery.TableReference:
+        """Compiles this DataFrame's expression tree to SQL and saves it to a
+        (temporary) view.
+        """
+        return self._block.to_view(include_index=self._should_sql_have_index())
+
     def _to_sql_query(
         self, include_index: bool, enable_cache: bool = True
     ) -> Tuple[str, list[str], list[blocks.Label]]:
@@ -420,9 +433,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 string representing the compiled SQL.
         """
         try:
-            include_index = self._has_index and (
-                self.index.name is not None or len(self.index.names) > 1
-            )
+            include_index = self._should_sql_have_index()
             sql, _, _ = self._to_sql_query(include_index=include_index)
             return sql
         except AttributeError as e:
