@@ -46,8 +46,8 @@ class GetCaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The fully qualified name of a case
-            to be retrieved.
+            Required. The full name of a case to be
+            retrieved.
     """
 
     name: str = proto.Field(
@@ -61,8 +61,8 @@ class CreateCaseRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the Google Cloud
-            Resource under which the case should be created.
+            Required. The name of the parent under which
+            the case should be created.
         case (google.cloud.support_v2.types.Case):
             Required. The case to be created.
     """
@@ -83,25 +83,26 @@ class ListCasesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The fully qualified name of parent
-            resource to list cases under.
+            Required. The name of a parent to list cases
+            under.
         filter (str):
-            An expression written in filter language. If non-empty, the
-            query returns the cases that match the filter. Else, the
-            query doesn't filter the cases.
+            An expression used to filter cases.
 
-            Filter expressions use the following fields with the
-            operators equals (``=``) and ``AND``:
+            If it's an empty string, then no filtering happens.
+            Otherwise, the endpoint returns the cases that match the
+            filter.
 
-            -  ``state``: The accepted values are ``OPEN`` or
-               ``CLOSED``.
-            -  ``priority``: The accepted values are ``P0``, ``P1``,
-               ``P2``, ``P3``, or ``P4``. You can specify multiple
-               values for priority using the ``OR`` operator. For
-               example, ``priority=P1 OR priority=P2``.
+            Expressions use the following fields separated by ``AND``
+            and specified with ``=``:
+
+            -  ``state``: Can be ``OPEN`` or ``CLOSED``.
+            -  ``priority``: Can be ``P0``, ``P1``, ``P2``, ``P3``, or
+               ``P4``. You can specify multiple values for priority
+               using the ``OR`` operator. For example,
+               ``priority=P1 OR priority=P2``.
             -  ``creator.email``: The email address of the case creator.
 
-            Examples:
+            EXAMPLES:
 
             -  ``state=CLOSED``
             -  ``state=OPEN AND creator.email="tester@example.com"``
@@ -138,14 +139,13 @@ class ListCasesResponse(proto.Message):
 
     Attributes:
         cases (MutableSequence[google.cloud.support_v2.types.Case]):
-            The list of cases associated with the Google
-            Cloud Resource, after any filters have been
-            applied.
+            The list of cases associated with the parent
+            after any filters have been applied.
         next_page_token (str):
-            A token to retrieve the next page of results. This should be
-            set in the ``page_token`` field of the subsequent
-            ``ListCasesRequest`` message that is issued. If unspecified,
-            there are no more results to retrieve.
+            A token to retrieve the next page of results. Set this in
+            the ``page_token`` field of subsequent ``cases.list``
+            requests. If unspecified, there are no more results to
+            retrieve.
     """
 
     @property
@@ -168,27 +168,24 @@ class SearchCasesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The fully qualified name of parent resource
-            to search cases under.
+            The name of the parent resource to search for
+            cases under.
         query (str):
-            An expression written in filter language.
+            An expression used to filter cases.
 
-            A query uses the following fields with the operators equals
-            (``=``) and ``AND``:
+            Expressions use the following fields separated by ``AND``
+            and specified with ``=``:
 
             -  ``organization``: An organization name in the form
                ``organizations/<organization_id>``.
             -  ``project``: A project name in the form
                ``projects/<project_id>``.
-            -  ``state``: The accepted values are ``OPEN`` or
-               ``CLOSED``.
-            -  ``priority``: The accepted values are ``P0``, ``P1``,
-               ``P2``, ``P3``, or ``P4``. You can specify multiple
-               values for priority using the ``OR`` operator. For
-               example, ``priority=P1 OR priority=P2``.
+            -  ``state``: Can be ``OPEN`` or ``CLOSED``.
+            -  ``priority``: Can be ``P0``, ``P1``, ``P2``, ``P3``, or
+               ``P4``. You can specify multiple values for priority
+               using the ``OR`` operator. For example,
+               ``priority=P1 OR priority=P2``.
             -  ``creator.email``: The email address of the case creator.
-            -  ``billingAccount``: A billing account in the form
-               ``billingAccounts/<billing_account_id>``
 
             You must specify either ``organization`` or ``project``.
 
@@ -207,7 +204,6 @@ class SearchCasesRequest(proto.Message):
             -  ``organization="organizations/123456789"``
             -  ``project="projects/my-project-id"``
             -  ``project="projects/123456789"``
-            -  ``billing_account="billingAccounts/123456-A0B0C0-CUZ789"``
             -  ``organization="organizations/123456789" AND state=CLOSED``
             -  ``project="projects/my-project-id" AND creator.email="tester@example.com"``
             -  ``project="projects/my-project-id" AND (priority=P0 OR priority=P1)``
@@ -243,14 +239,13 @@ class SearchCasesResponse(proto.Message):
 
     Attributes:
         cases (MutableSequence[google.cloud.support_v2.types.Case]):
-            The list of cases associated with the Google
-            Cloud Resource, after any filters have been
-            applied.
+            The list of cases associated with the parent
+            after any filters have been applied.
         next_page_token (str):
-            A token to retrieve the next page of results. This should be
-            set in the ``page_token`` field of subsequent
-            ``SearchCaseRequest`` message that is issued. If
-            unspecified, there are no more results to retrieve.
+            A token to retrieve the next page of results. Set this in
+            the ``page_token`` field of subsequent ``cases.search``
+            requests. If unspecified, there are no more results to
+            retrieve.
     """
 
     @property
@@ -273,11 +268,11 @@ class EscalateCaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The fully qualified name of the
-            Case resource to be escalated.
+            Required. The name of the case to be
+            escalated.
         escalation (google.cloud.support_v2.types.Escalation):
-            The escalation object to be sent with the
-            escalation request.
+            The escalation information to be sent with
+            the escalation request.
     """
 
     name: str = proto.Field(
@@ -296,17 +291,16 @@ class UpdateCaseRequest(proto.Message):
 
     Attributes:
         case (google.cloud.support_v2.types.Case):
-            Required. The case object to update.
+            Required. The case to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            A list of attributes of the case object that should be
-            updated as part of this request. Supported values are
-            ``priority``, ``display_name``, and
+            A list of attributes of the case that should be updated.
+            Supported values are ``priority``, ``display_name``, and
             ``subscriber_email_addresses``. If no fields are specified,
             all supported fields are updated.
 
-            WARNING: If you do not provide a field mask, then you might
-            accidentally clear some fields. For example, if you leave
-            the field mask empty and do not provide a value for
+            Be careful - if you do not provide a field mask, then you
+            might accidentally clear some fields. For example, if you
+            leave the field mask empty and do not provide a value for
             ``subscriber_email_addresses``, then
             ``subscriber_email_addresses`` is updated to empty.
     """
@@ -328,8 +322,7 @@ class CloseCaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The fully qualified name of the
-            case resource to be closed.
+            Required. The name of the case to close.
     """
 
     name: str = proto.Field(
@@ -339,17 +332,19 @@ class CloseCaseRequest(proto.Message):
 
 
 class SearchCaseClassificationsRequest(proto.Message):
-    r"""The request message for SearchCaseClassifications endpoint.
+    r"""The request message for the SearchCaseClassifications
+    endpoint.
 
     Attributes:
         query (str):
-            An expression written in the Google Cloud
-            filter language. If non-empty, then only cases
-            whose fields match the filter are returned. If
-            empty, then no messages are filtered out.
+            An expression used to filter case
+            classifications.
+            If it's an empty string, then no filtering
+            happens. Otherwise, case classifications will be
+            returned that match the filter.
         page_size (int):
-            The maximum number of cases fetched with each
-            request.
+            The maximum number of classifications fetched
+            with each request.
         page_token (str):
             A token identifying the page of results to
             return. If unspecified, the first page is
@@ -377,10 +372,10 @@ class SearchCaseClassificationsResponse(proto.Message):
         case_classifications (MutableSequence[google.cloud.support_v2.types.CaseClassification]):
             The classifications retrieved.
         next_page_token (str):
-            A token to retrieve the next page of results. This should be
-            set in the ``page_token`` field of subsequent
-            ``SearchCaseClassificationsRequest`` message that is issued.
-            If unspecified, there are no more results to retrieve.
+            A token to retrieve the next page of results. Set this in
+            the ``page_token`` field of subsequent
+            ``caseClassifications.list`` requests. If unspecified, there
+            are no more results to retrieve.
     """
 
     @property

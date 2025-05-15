@@ -149,7 +149,7 @@ class CaseAttachmentServiceRestStub:
 class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport):
     """REST backend synchronous transport for CaseAttachmentService.
 
-    A service to manage file attachment for Google Cloud support
+    A service to manage file attachments for Google Cloud support
     cases.
 
     This class defines the same methods as the primary client, so the

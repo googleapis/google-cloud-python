@@ -319,8 +319,8 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
 
             Args:
                 request (~.comment_service.CreateCommentRequest):
-                    The request object. The request message for CreateComment
-                endpoint.
+                    The request object. The request message for the
+                CreateComment endpoint.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -333,6 +333,11 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
                 ~.gcs_comment.Comment:
                     A comment associated with a support
                 case.
+                Case comments are the primary way for
+                Google Support to communicate with a
+                user who has opened a case. When a user
+                responds to Google Support, the user's
+                responses also appear as comments.
 
             """
 

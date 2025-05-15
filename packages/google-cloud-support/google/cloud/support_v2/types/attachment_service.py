@@ -35,13 +35,19 @@ class ListAttachmentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of Case object
-            for which attachments should be listed.
+            Required. The name of the case for which
+            attachments should be listed.
         page_size (int):
             The maximum number of attachments fetched
-            with each request. If not provided, the default
-            is 10. The maximum page size that will be
-            returned is 100.
+            with each request.
+            If not provided, the default is 10. The maximum
+            page size that will be returned is 100.
+
+            The size of each page can be smaller than the
+            requested page size and can include zero. For
+            example, you could request 100 attachments on
+            one page, receive 0, and then on the next page,
+            receive 90.
         page_token (str):
             A token identifying the page of results to
             return. If unspecified, the first page is
@@ -67,11 +73,11 @@ class ListAttachmentsResponse(proto.Message):
 
     Attributes:
         attachments (MutableSequence[google.cloud.support_v2.types.Attachment]):
-            The list of attachments associated with the
-            given case.
+            The list of attachments associated with a
+            case.
         next_page_token (str):
-            A token to retrieve the next page of results. This should be
-            set in the ``page_token`` field of subsequent
+            A token to retrieve the next page of results. Set this in
+            the ``page_token`` field of subsequent
             ``cases.attachments.list`` requests. If unspecified, there
             are no more results to retrieve.
     """

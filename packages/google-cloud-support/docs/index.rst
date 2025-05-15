@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Google Cloud Support API.
+By default, you will get version ``support_v2``.
+
 
 API Reference
 -------------
@@ -10,6 +13,14 @@ API Reference
 
     support_v2/services_
     support_v2/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    support_v2beta/services_
+    support_v2beta/types_
 
 
 Changelog

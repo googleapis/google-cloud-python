@@ -2816,6 +2816,7 @@ def test_create_comment_rest_call_success(request_type):
             "display_name": "display_name_value",
             "email": "email_value",
             "google_support": True,
+            "username": "username_value",
         },
         "body": "body_value",
         "plain_text_body": "plain_text_body_value",
