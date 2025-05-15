@@ -70,6 +70,11 @@
                 "execute_sql"
               ]
             },
+            "ExportCluster": {
+              "methods": [
+                "export_cluster"
+              ]
+            },
             "FailoverInstance": {
               "methods": [
                 "failover_instance"
@@ -103,6 +108,11 @@
             "GetUser": {
               "methods": [
                 "get_user"
+              ]
+            },
+            "ImportCluster": {
+              "methods": [
+                "import_cluster"
               ]
             },
             "InjectFault": {
@@ -178,6 +188,11 @@
             "UpdateUser": {
               "methods": [
                 "update_user"
+              ]
+            },
+            "UpgradeCluster": {
+              "methods": [
+                "upgrade_cluster"
               ]
             }
           }
@@ -245,6 +260,11 @@
                 "execute_sql"
               ]
             },
+            "ExportCluster": {
+              "methods": [
+                "export_cluster"
+              ]
+            },
             "FailoverInstance": {
               "methods": [
                 "failover_instance"
@@ -278,6 +298,11 @@
             "GetUser": {
               "methods": [
                 "get_user"
+              ]
+            },
+            "ImportCluster": {
+              "methods": [
+                "import_cluster"
               ]
             },
             "InjectFault": {
@@ -353,6 +378,11 @@
             "UpdateUser": {
               "methods": [
                 "update_user"
+              ]
+            },
+            "UpgradeCluster": {
+              "methods": [
+                "upgrade_cluster"
               ]
             }
           }
@@ -420,6 +450,11 @@
                 "execute_sql"
               ]
             },
+            "ExportCluster": {
+              "methods": [
+                "export_cluster"
+              ]
+            },
             "FailoverInstance": {
               "methods": [
                 "failover_instance"
@@ -453,6 +488,11 @@
             "GetUser": {
               "methods": [
                 "get_user"
+              ]
+            },
+            "ImportCluster": {
+              "methods": [
+                "import_cluster"
               ]
             },
             "InjectFault": {
@@ -528,6 +568,45 @@
             "UpdateUser": {
               "methods": [
                 "update_user"
+              ]
+            },
+            "UpgradeCluster": {
+              "methods": [
+                "upgrade_cluster"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "AlloyDBCSQLAdmin": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AlloyDBCSQLAdminClient",
+          "rpcs": {
+            "RestoreFromCloudSQL": {
+              "methods": [
+                "restore_from_cloud_sql"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AlloyDBCSQLAdminAsyncClient",
+          "rpcs": {
+            "RestoreFromCloudSQL": {
+              "methods": [
+                "restore_from_cloud_sql"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AlloyDBCSQLAdminClient",
+          "rpcs": {
+            "RestoreFromCloudSQL": {
+              "methods": [
+                "restore_from_cloud_sql"
               ]
             }
           }

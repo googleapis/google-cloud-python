@@ -175,6 +175,21 @@ class AlloyDBAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.export_cluster: gapic_v1.method.wrap_method(
+                self.export_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.import_cluster: gapic_v1.method.wrap_method(
+                self.import_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.upgrade_cluster: gapic_v1.method.wrap_method(
+                self.upgrade_cluster,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_cluster: gapic_v1.method.wrap_method(
                 self.delete_cluster,
                 default_timeout=None,
@@ -466,6 +481,33 @@ class AlloyDBAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.UpdateClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_cluster(
+        self,
+    ) -> Callable[
+        [service.ExportClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_cluster(
+        self,
+    ) -> Callable[
+        [service.ImportClusterRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def upgrade_cluster(
+        self,
+    ) -> Callable[
+        [service.UpgradeClusterRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
