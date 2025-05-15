@@ -1,0 +1,12 @@
+{
+  "commands": {
+    "build-library": {
+      "environmentVariables": [
+        {
+          "name": "SOURCELINK_REPO",
+          "defaultValue": "https://github.com/googleapis/google-cloud-python"
+        }
+      ]
+    }
+  }
+}
