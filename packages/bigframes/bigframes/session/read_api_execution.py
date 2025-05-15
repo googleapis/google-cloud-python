@@ -18,7 +18,7 @@ from typing import Any, Iterator, Optional
 from google.cloud import bigquery_storage_v1
 import pyarrow as pa
 
-from bigframes.core import bigframe_node, rewrite
+from bigframes.core import bigframe_node, nodes, pyarrow_utils, rewrite
 from bigframes.session import executor, semi_executor
 
 
@@ -39,13 +39,10 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
         ordered: bool,
         peek: Optional[int] = None,
     ) -> Optional[executor.ExecuteResult]:
-        node = rewrite.try_reduce_to_table_scan(plan)
+        node = self._try_adapt_plan(plan, ordered)
         if not node:
             return None
         if node.explicitly_ordered and ordered:
-            return None
-        if peek:
-            # TODO: Support peeking
             return None
 
         import google.cloud.bigquery_storage_v1.types as bq_storage_types
@@ -92,16 +89,39 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
 
             def process_page(page):
                 pa_batch = page.to_arrow()
+                pa_batch = pa_batch.select(
+                    [item.source_id for item in node.scan_list.items]
+                )
                 return pa.RecordBatch.from_arrays(
                     pa_batch.columns, names=[id.sql for id in node.ids]
                 )
 
             batches = map(process_page, rowstream.pages)
 
+        if peek:
+            batches = pyarrow_utils.truncate_pyarrow_iterable(batches, max_results=peek)
+
+        rows = node.source.n_rows
+        if peek and rows:
+            rows = min(peek, rows)
+
         return executor.ExecuteResult(
             arrow_batches=batches,
             schema=plan.schema,
             query_job=None,
             total_bytes=None,
-            total_rows=node.source.n_rows,
+            total_rows=rows,
         )
+
+    def _try_adapt_plan(
+        self,
+        plan: bigframe_node.BigFrameNode,
+        ordered: bool,
+    ) -> Optional[nodes.ReadTableNode]:
+        """
+        Tries to simplify the plan to an equivalent single ReadTableNode. Otherwise, returns None.
+        """
+        if not ordered:
+            # gets rid of order_by ops
+            plan = rewrite.bake_order(plan)
+        return rewrite.try_reduce_to_table_scan(plan)
