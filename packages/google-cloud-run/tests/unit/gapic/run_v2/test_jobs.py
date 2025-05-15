@@ -6352,6 +6352,7 @@ def test_create_job_rest_call_success(request_type):
                         }
                     ],
                 },
+                "node_selector": {"accelerator": "accelerator_value"},
             },
         },
         "observed_generation": 2021,
@@ -6958,6 +6959,7 @@ def test_update_job_rest_call_success(request_type):
                         }
                     ],
                 },
+                "node_selector": {"accelerator": "accelerator_value"},
             },
         },
         "observed_generation": 2021,
