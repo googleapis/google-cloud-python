@@ -129,10 +129,13 @@ from .types.homepage import (
     UpdateHomepageRequest,
 )
 from .types.online_return_policy import (
+    CreateOnlineReturnPolicyRequest,
+    DeleteOnlineReturnPolicyRequest,
     GetOnlineReturnPolicyRequest,
     ListOnlineReturnPoliciesRequest,
     ListOnlineReturnPoliciesResponse,
     OnlineReturnPolicy,
+    UpdateOnlineReturnPolicyRequest,
 )
 from .types.phoneverificationstate import PhoneVerificationState
 from .types.programs import (
@@ -243,11 +246,13 @@ __all__ = (
     "CarrierRate",
     "ClaimHomepageRequest",
     "CreateAndConfigureAccountRequest",
+    "CreateOnlineReturnPolicyRequest",
     "CreateRegionRequest",
     "CreateUserRequest",
     "CustomerService",
     "CutoffTime",
     "DeleteAccountRequest",
+    "DeleteOnlineReturnPolicyRequest",
     "DeleteRegionRequest",
     "DeleteUserRequest",
     "DeliveryTime",
@@ -325,6 +330,7 @@ __all__ = (
     "UpdateBusinessInfoRequest",
     "UpdateEmailPreferencesRequest",
     "UpdateHomepageRequest",
+    "UpdateOnlineReturnPolicyRequest",
     "UpdateRegionRequest",
     "UpdateUserRequest",
     "User",
