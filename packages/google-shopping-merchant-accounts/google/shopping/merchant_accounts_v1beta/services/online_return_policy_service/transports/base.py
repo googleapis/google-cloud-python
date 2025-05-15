@@ -24,8 +24,12 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.shopping.merchant_accounts_v1beta import gapic_version as package_version
+from google.shopping.merchant_accounts_v1beta.types import (
+    online_return_policy as gsma_online_return_policy,
+)
 from google.shopping.merchant_accounts_v1beta.types import online_return_policy
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -142,6 +146,21 @@ class OnlineReturnPolicyServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_online_return_policy: gapic_v1.method.wrap_method(
+                self.create_online_return_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_online_return_policy: gapic_v1.method.wrap_method(
+                self.update_online_return_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_online_return_policy: gapic_v1.method.wrap_method(
+                self.delete_online_return_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -174,6 +193,39 @@ class OnlineReturnPolicyServiceTransport(abc.ABC):
             online_return_policy.ListOnlineReturnPoliciesResponse,
             Awaitable[online_return_policy.ListOnlineReturnPoliciesResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_online_return_policy(
+        self,
+    ) -> Callable[
+        [online_return_policy.CreateOnlineReturnPolicyRequest],
+        Union[
+            online_return_policy.OnlineReturnPolicy,
+            Awaitable[online_return_policy.OnlineReturnPolicy],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_online_return_policy(
+        self,
+    ) -> Callable[
+        [gsma_online_return_policy.UpdateOnlineReturnPolicyRequest],
+        Union[
+            gsma_online_return_policy.OnlineReturnPolicy,
+            Awaitable[gsma_online_return_policy.OnlineReturnPolicy],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_online_return_policy(
+        self,
+    ) -> Callable[
+        [online_return_policy.DeleteOnlineReturnPolicyRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

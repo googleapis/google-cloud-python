@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.shopping.type.types import types
 from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
@@ -26,6 +27,9 @@ __protobuf__ = proto.module(
     manifest={
         "GetOnlineReturnPolicyRequest",
         "ListOnlineReturnPoliciesRequest",
+        "CreateOnlineReturnPolicyRequest",
+        "UpdateOnlineReturnPolicyRequest",
+        "DeleteOnlineReturnPolicyRequest",
         "ListOnlineReturnPoliciesResponse",
         "OnlineReturnPolicy",
     },
@@ -52,7 +56,7 @@ class ListOnlineReturnPoliciesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The business account for which to list return
+            Required. The merchant account for which to list return
             policies. Format: ``accounts/{account}``
         page_size (int):
             Optional. The maximum number of ``OnlineReturnPolicy``
@@ -85,6 +89,65 @@ class ListOnlineReturnPoliciesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class CreateOnlineReturnPolicyRequest(proto.Message):
+    r"""Request message for the ``CreateOnlineReturnPolicy`` method.
+
+    Attributes:
+        parent (str):
+            Required. The merchant account for which to create a return
+            policy. Format: ``accounts/{account}``
+        online_return_policy (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy):
+            Required. The return policy to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    online_return_policy: "OnlineReturnPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="OnlineReturnPolicy",
+    )
+
+
+class UpdateOnlineReturnPolicyRequest(proto.Message):
+    r"""Request message for the ``UpdateOnlineReturnPolicy`` method.
+
+    Attributes:
+        online_return_policy (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy):
+            Required. The return policy to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+
+    """
+
+    online_return_policy: "OnlineReturnPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="OnlineReturnPolicy",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteOnlineReturnPolicyRequest(proto.Message):
+    r"""Request message for the ``DeleteOnlineReturnPolicy`` method.
+
+    Attributes:
+        name (str):
+            Required. The name of the return policy to delete. Format:
+            ``accounts/{account}/onlineReturnPolicies/{return_policy}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -148,28 +211,29 @@ class OnlineReturnPolicy(proto.Message):
             where the return policy applies. The values must
             be a valid 2 letter ISO 3166 code.
         policy (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy.Policy):
-            The return policy.
+            Optional. The return policy.
         seasonal_overrides (MutableSequence[google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy.SeasonalOverride]):
             Optional. Overrides to the general policy for
             orders placed during a specific set of time
             intervals.
         restocking_fee (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy.RestockingFee):
-            The restocking fee that applies to all return
-            reason categories. This would be treated as a
-            free restocking fee if the value is not set.
+            Optional. The restocking fee that applies to
+            all return reason categories. This would be
+            treated as a free restocking fee if the value is
+            not set.
         return_methods (MutableSequence[google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy.ReturnMethod]):
-            The return methods of how customers can
-            return an item. This value is required to not be
-            empty unless the type of return policy is
+            Optional. The return methods of how customers
+            can return an item. This value is required to
+            not be empty unless the type of return policy is
             noReturns.
         item_conditions (MutableSequence[google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy.ItemCondition]):
-            The item conditions accepted for returns must
-            not be empty unless the type of return policy is
-            'noReturns'.
+            Optional. The item conditions accepted for
+            returns must not be empty unless the type of
+            return policy is 'noReturns'.
         return_shipping_fee (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy.ReturnShippingFee):
-            The return shipping fee. Should be set only
-            when customer need to download and print the
-            return label.
+            Optional. The return shipping fee. Should be
+            set only when customer need to download and
+            print the return label.
         return_policy_uri (str):
             Required. The return policy uri. This can
             used by Google to do a sanity check for the
@@ -192,6 +256,11 @@ class OnlineReturnPolicy(proto.Message):
             required.
 
             This field is a member of `oneof`_ ``_accept_exchange``.
+        return_label_source (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy.ReturnLabelSource):
+            The field specifies the return label source. This field is
+            required when return method is BY_MAIL.
+
+            This field is a member of `oneof`_ ``_return_label_source``.
     """
 
     class ReturnMethod(proto.Enum):
@@ -226,6 +295,24 @@ class OnlineReturnPolicy(proto.Message):
         ITEM_CONDITION_UNSPECIFIED = 0
         NEW = 1
         USED = 2
+
+    class ReturnLabelSource(proto.Enum):
+        r"""The available return label sources.
+
+        Values:
+            RETURN_LABEL_SOURCE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            DOWNLOAD_AND_PRINT (1):
+                Download and print.
+            IN_THE_PACKAGE (2):
+                Label include in the package.
+            CUSTOMER_RESPONSIBILITY (3):
+                Customer to provide.
+        """
+        RETURN_LABEL_SOURCE_UNSPECIFIED = 0
+        DOWNLOAD_AND_PRINT = 1
+        IN_THE_PACKAGE = 2
+        CUSTOMER_RESPONSIBILITY = 3
 
     class ReturnShippingFee(proto.Message):
         r"""The return shipping fee. This can either be a fixed fee or a
@@ -469,6 +556,12 @@ class OnlineReturnPolicy(proto.Message):
         proto.BOOL,
         number=13,
         optional=True,
+    )
+    return_label_source: ReturnLabelSource = proto.Field(
+        proto.ENUM,
+        number=15,
+        optional=True,
+        enum=ReturnLabelSource,
     )
 
 

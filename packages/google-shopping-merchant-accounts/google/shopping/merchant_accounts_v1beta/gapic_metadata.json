@@ -541,6 +541,16 @@
         "grpc": {
           "libraryClient": "OnlineReturnPolicyServiceClient",
           "rpcs": {
+            "CreateOnlineReturnPolicy": {
+              "methods": [
+                "create_online_return_policy"
+              ]
+            },
+            "DeleteOnlineReturnPolicy": {
+              "methods": [
+                "delete_online_return_policy"
+              ]
+            },
             "GetOnlineReturnPolicy": {
               "methods": [
                 "get_online_return_policy"
@@ -549,6 +559,11 @@
             "ListOnlineReturnPolicies": {
               "methods": [
                 "list_online_return_policies"
+              ]
+            },
+            "UpdateOnlineReturnPolicy": {
+              "methods": [
+                "update_online_return_policy"
               ]
             }
           }
@@ -556,6 +571,16 @@
         "grpc-async": {
           "libraryClient": "OnlineReturnPolicyServiceAsyncClient",
           "rpcs": {
+            "CreateOnlineReturnPolicy": {
+              "methods": [
+                "create_online_return_policy"
+              ]
+            },
+            "DeleteOnlineReturnPolicy": {
+              "methods": [
+                "delete_online_return_policy"
+              ]
+            },
             "GetOnlineReturnPolicy": {
               "methods": [
                 "get_online_return_policy"
@@ -564,6 +589,11 @@
             "ListOnlineReturnPolicies": {
               "methods": [
                 "list_online_return_policies"
+              ]
+            },
+            "UpdateOnlineReturnPolicy": {
+              "methods": [
+                "update_online_return_policy"
               ]
             }
           }
@@ -571,6 +601,16 @@
         "rest": {
           "libraryClient": "OnlineReturnPolicyServiceClient",
           "rpcs": {
+            "CreateOnlineReturnPolicy": {
+              "methods": [
+                "create_online_return_policy"
+              ]
+            },
+            "DeleteOnlineReturnPolicy": {
+              "methods": [
+                "delete_online_return_policy"
+              ]
+            },
             "GetOnlineReturnPolicy": {
               "methods": [
                 "get_online_return_policy"
@@ -579,6 +619,11 @@
             "ListOnlineReturnPolicies": {
               "methods": [
                 "list_online_return_policies"
+              ]
+            },
+            "UpdateOnlineReturnPolicy": {
+              "methods": [
+                "update_online_return_policy"
               ]
             }
           }

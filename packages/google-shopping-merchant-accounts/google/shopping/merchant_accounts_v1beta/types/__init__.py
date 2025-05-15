@@ -75,10 +75,13 @@ from .homepage import (
     UpdateHomepageRequest,
 )
 from .online_return_policy import (
+    CreateOnlineReturnPolicyRequest,
+    DeleteOnlineReturnPolicyRequest,
     GetOnlineReturnPolicyRequest,
     ListOnlineReturnPoliciesRequest,
     ListOnlineReturnPoliciesResponse,
     OnlineReturnPolicy,
+    UpdateOnlineReturnPolicyRequest,
 )
 from .phoneverificationstate import PhoneVerificationState
 from .programs import (
@@ -190,10 +193,13 @@ __all__ = (
     "Homepage",
     "UnclaimHomepageRequest",
     "UpdateHomepageRequest",
+    "CreateOnlineReturnPolicyRequest",
+    "DeleteOnlineReturnPolicyRequest",
     "GetOnlineReturnPolicyRequest",
     "ListOnlineReturnPoliciesRequest",
     "ListOnlineReturnPoliciesResponse",
     "OnlineReturnPolicy",
+    "UpdateOnlineReturnPolicyRequest",
     "PhoneVerificationState",
     "DisableProgramRequest",
     "EnableProgramRequest",

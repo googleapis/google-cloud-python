@@ -23,11 +23,15 @@ from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
+from google.shopping.merchant_accounts_v1beta.types import (
+    online_return_policy as gsma_online_return_policy,
+)
 from google.shopping.merchant_accounts_v1beta.types import online_return_policy
 
 from .base import DEFAULT_CLIENT_INFO, OnlineReturnPolicyServiceTransport
@@ -115,7 +119,8 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
     ads and free listings
 
     programs. This API defines the following resource model:
-    - [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
+
+    - `OnlineReturnPolicy </merchant/api/reference/rpc/google.shopping.merchant.accounts.v1beta#google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy>`__
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -333,7 +338,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
     ]:
         r"""Return a callable for the get online return policy method over gRPC.
 
-        Gets an existing return policy for a given business.
+        Gets an existing return policy for a given merchant.
 
         Returns:
             Callable[[~.GetOnlineReturnPolicyRequest],
@@ -363,7 +368,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
         r"""Return a callable for the list online return policies method over gRPC.
 
         Lists all existing return policies for a given
-        business.
+        merchant.
 
         Returns:
             Callable[[~.ListOnlineReturnPoliciesRequest],
@@ -384,6 +389,100 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
                 response_deserializer=online_return_policy.ListOnlineReturnPoliciesResponse.deserialize,
             )
         return self._stubs["list_online_return_policies"]
+
+    @property
+    def create_online_return_policy(
+        self,
+    ) -> Callable[
+        [online_return_policy.CreateOnlineReturnPolicyRequest],
+        online_return_policy.OnlineReturnPolicy,
+    ]:
+        r"""Return a callable for the create online return policy method over gRPC.
+
+        Creates a new return policy for a given merchant.
+
+        Returns:
+            Callable[[~.CreateOnlineReturnPolicyRequest],
+                    ~.OnlineReturnPolicy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_online_return_policy" not in self._stubs:
+            self._stubs[
+                "create_online_return_policy"
+            ] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/CreateOnlineReturnPolicy",
+                request_serializer=online_return_policy.CreateOnlineReturnPolicyRequest.serialize,
+                response_deserializer=online_return_policy.OnlineReturnPolicy.deserialize,
+            )
+        return self._stubs["create_online_return_policy"]
+
+    @property
+    def update_online_return_policy(
+        self,
+    ) -> Callable[
+        [gsma_online_return_policy.UpdateOnlineReturnPolicyRequest],
+        gsma_online_return_policy.OnlineReturnPolicy,
+    ]:
+        r"""Return a callable for the update online return policy method over gRPC.
+
+        Updates an existing return policy for a given
+        merchant.
+
+        Returns:
+            Callable[[~.UpdateOnlineReturnPolicyRequest],
+                    ~.OnlineReturnPolicy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_online_return_policy" not in self._stubs:
+            self._stubs[
+                "update_online_return_policy"
+            ] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/UpdateOnlineReturnPolicy",
+                request_serializer=gsma_online_return_policy.UpdateOnlineReturnPolicyRequest.serialize,
+                response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
+            )
+        return self._stubs["update_online_return_policy"]
+
+    @property
+    def delete_online_return_policy(
+        self,
+    ) -> Callable[
+        [online_return_policy.DeleteOnlineReturnPolicyRequest], empty_pb2.Empty
+    ]:
+        r"""Return a callable for the delete online return policy method over gRPC.
+
+        Deletes an existing return policy for a given
+        merchant.
+
+        Returns:
+            Callable[[~.DeleteOnlineReturnPolicyRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_online_return_policy" not in self._stubs:
+            self._stubs[
+                "delete_online_return_policy"
+            ] = self._logged_channel.unary_unary(
+                "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/DeleteOnlineReturnPolicy",
+                request_serializer=online_return_policy.DeleteOnlineReturnPolicyRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_online_return_policy"]
 
     def close(self):
         self._logged_channel.close()

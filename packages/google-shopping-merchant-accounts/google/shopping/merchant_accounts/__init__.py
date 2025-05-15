@@ -180,10 +180,13 @@ from google.shopping.merchant_accounts_v1beta.types.homepage import (
     UpdateHomepageRequest,
 )
 from google.shopping.merchant_accounts_v1beta.types.online_return_policy import (
+    CreateOnlineReturnPolicyRequest,
+    DeleteOnlineReturnPolicyRequest,
     GetOnlineReturnPolicyRequest,
     ListOnlineReturnPoliciesRequest,
     ListOnlineReturnPoliciesResponse,
     OnlineReturnPolicy,
+    UpdateOnlineReturnPolicyRequest,
 )
 from google.shopping.merchant_accounts_v1beta.types.phoneverificationstate import (
     PhoneVerificationState,
@@ -331,10 +334,13 @@ __all__ = (
     "Homepage",
     "UnclaimHomepageRequest",
     "UpdateHomepageRequest",
+    "CreateOnlineReturnPolicyRequest",
+    "DeleteOnlineReturnPolicyRequest",
     "GetOnlineReturnPolicyRequest",
     "ListOnlineReturnPoliciesRequest",
     "ListOnlineReturnPoliciesResponse",
     "OnlineReturnPolicy",
+    "UpdateOnlineReturnPolicyRequest",
     "PhoneVerificationState",
     "DisableProgramRequest",
     "EnableProgramRequest",
