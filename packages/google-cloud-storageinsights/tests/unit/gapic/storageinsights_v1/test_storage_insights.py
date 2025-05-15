@@ -43,9 +43,18 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
@@ -53,6 +62,8 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -3985,6 +3996,2668 @@ async def test_get_report_detail_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.ListDatasetConfigsRequest,
+        dict,
+    ],
+)
+def test_list_dataset_configs(request_type, transport: str = "grpc"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storageinsights.ListDatasetConfigsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_dataset_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.ListDatasetConfigsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatasetConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_dataset_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.ListDatasetConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_dataset_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.ListDatasetConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+def test_list_dataset_configs_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_dataset_configs in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_dataset_configs
+        ] = mock_rpc
+        request = {}
+        client.list_dataset_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_dataset_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_dataset_configs_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_dataset_configs
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_dataset_configs
+        ] = mock_rpc
+
+        request = {}
+        await client.list_dataset_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_dataset_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_dataset_configs_async(
+    transport: str = "grpc_asyncio",
+    request_type=storageinsights.ListDatasetConfigsRequest,
+):
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ListDatasetConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_dataset_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.ListDatasetConfigsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatasetConfigsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_dataset_configs_async_from_dict():
+    await test_list_dataset_configs_async(request_type=dict)
+
+
+def test_list_dataset_configs_field_headers():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.ListDatasetConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        call.return_value = storageinsights.ListDatasetConfigsResponse()
+        client.list_dataset_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_dataset_configs_field_headers_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.ListDatasetConfigsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ListDatasetConfigsResponse()
+        )
+        await client.list_dataset_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_dataset_configs_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storageinsights.ListDatasetConfigsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_dataset_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_dataset_configs_flattened_error():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_dataset_configs(
+            storageinsights.ListDatasetConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_dataset_configs_flattened_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storageinsights.ListDatasetConfigsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ListDatasetConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_dataset_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_dataset_configs_flattened_error_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_dataset_configs(
+            storageinsights.ListDatasetConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_dataset_configs_pager(transport_name: str = "grpc"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[],
+                next_page_token="def",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_dataset_configs(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storageinsights.DatasetConfig) for i in results)
+
+
+def test_list_dataset_configs_pages(transport_name: str = "grpc"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[],
+                next_page_token="def",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_dataset_configs(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_dataset_configs_async_pager():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[],
+                next_page_token="def",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_dataset_configs(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, storageinsights.DatasetConfig) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_dataset_configs_async_pages():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[],
+                next_page_token="def",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_dataset_configs(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.GetDatasetConfigRequest,
+        dict,
+    ],
+)
+def test_get_dataset_config(request_type, transport: str = "grpc"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storageinsights.DatasetConfig(
+            name="name_value",
+            uid="uid_value",
+            organization_number=2045,
+            include_newly_created_buckets=True,
+            skip_verification_and_ingest=True,
+            retention_period_days=2250,
+            dataset_config_state=storageinsights.DatasetConfig.ConfigState.CONFIG_STATE_ACTIVE,
+            description="description_value",
+            organization_scope=True,
+        )
+        response = client.get_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.GetDatasetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storageinsights.DatasetConfig)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.organization_number == 2045
+    assert response.include_newly_created_buckets is True
+    assert response.skip_verification_and_ingest is True
+    assert response.retention_period_days == 2250
+    assert (
+        response.dataset_config_state
+        == storageinsights.DatasetConfig.ConfigState.CONFIG_STATE_ACTIVE
+    )
+    assert response.description == "description_value"
+
+
+def test_get_dataset_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.GetDatasetConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_dataset_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.GetDatasetConfigRequest(
+            name="name_value",
+        )
+
+
+def test_get_dataset_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_dataset_config in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_dataset_config
+        ] = mock_rpc
+        request = {}
+        client.get_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_dataset_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_dataset_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_dataset_config
+        ] = mock_rpc
+
+        request = {}
+        await client.get_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_dataset_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=storageinsights.GetDatasetConfigRequest,
+):
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.DatasetConfig(
+                name="name_value",
+                uid="uid_value",
+                organization_number=2045,
+                include_newly_created_buckets=True,
+                skip_verification_and_ingest=True,
+                retention_period_days=2250,
+                dataset_config_state=storageinsights.DatasetConfig.ConfigState.CONFIG_STATE_ACTIVE,
+                description="description_value",
+            )
+        )
+        response = await client.get_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.GetDatasetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storageinsights.DatasetConfig)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.organization_number == 2045
+    assert response.include_newly_created_buckets is True
+    assert response.skip_verification_and_ingest is True
+    assert response.retention_period_days == 2250
+    assert (
+        response.dataset_config_state
+        == storageinsights.DatasetConfig.ConfigState.CONFIG_STATE_ACTIVE
+    )
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_get_dataset_config_async_from_dict():
+    await test_get_dataset_config_async(request_type=dict)
+
+
+def test_get_dataset_config_field_headers():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.GetDatasetConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        call.return_value = storageinsights.DatasetConfig()
+        client.get_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_dataset_config_field_headers_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.GetDatasetConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.DatasetConfig()
+        )
+        await client.get_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_dataset_config_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storageinsights.DatasetConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_dataset_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_dataset_config_flattened_error():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_dataset_config(
+            storageinsights.GetDatasetConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dataset_config_flattened_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storageinsights.DatasetConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.DatasetConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_dataset_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_dataset_config_flattened_error_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_dataset_config(
+            storageinsights.GetDatasetConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.CreateDatasetConfigRequest,
+        dict,
+    ],
+)
+def test_create_dataset_config(request_type, transport: str = "grpc"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.CreateDatasetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_dataset_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.CreateDatasetConfigRequest(
+        parent="parent_value",
+        dataset_config_id="dataset_config_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_dataset_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.CreateDatasetConfigRequest(
+            parent="parent_value",
+            dataset_config_id="dataset_config_id_value",
+            request_id="request_id_value",
+        )
+
+
+def test_create_dataset_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_dataset_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_dataset_config
+        ] = mock_rpc
+        request = {}
+        client.create_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_dataset_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_dataset_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_dataset_config
+        ] = mock_rpc
+
+        request = {}
+        await client.create_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.create_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_dataset_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=storageinsights.CreateDatasetConfigRequest,
+):
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.CreateDatasetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_dataset_config_async_from_dict():
+    await test_create_dataset_config_async(request_type=dict)
+
+
+def test_create_dataset_config_field_headers():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.CreateDatasetConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_dataset_config_field_headers_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.CreateDatasetConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_dataset_config_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_dataset_config(
+            parent="parent_value",
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            dataset_config_id="dataset_config_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].dataset_config
+        mock_val = storageinsights.DatasetConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].dataset_config_id
+        mock_val = "dataset_config_id_value"
+        assert arg == mock_val
+
+
+def test_create_dataset_config_flattened_error():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_dataset_config(
+            storageinsights.CreateDatasetConfigRequest(),
+            parent="parent_value",
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            dataset_config_id="dataset_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_dataset_config_flattened_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_dataset_config(
+            parent="parent_value",
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            dataset_config_id="dataset_config_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].dataset_config
+        mock_val = storageinsights.DatasetConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].dataset_config_id
+        mock_val = "dataset_config_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_dataset_config_flattened_error_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_dataset_config(
+            storageinsights.CreateDatasetConfigRequest(),
+            parent="parent_value",
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            dataset_config_id="dataset_config_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.UpdateDatasetConfigRequest,
+        dict,
+    ],
+)
+def test_update_dataset_config(request_type, transport: str = "grpc"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.UpdateDatasetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_dataset_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.UpdateDatasetConfigRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_dataset_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.UpdateDatasetConfigRequest(
+            request_id="request_id_value",
+        )
+
+
+def test_update_dataset_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_dataset_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_dataset_config
+        ] = mock_rpc
+        request = {}
+        client.update_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_dataset_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_dataset_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_dataset_config
+        ] = mock_rpc
+
+        request = {}
+        await client.update_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.update_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_dataset_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=storageinsights.UpdateDatasetConfigRequest,
+):
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.UpdateDatasetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_dataset_config_async_from_dict():
+    await test_update_dataset_config_async(request_type=dict)
+
+
+def test_update_dataset_config_field_headers():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.UpdateDatasetConfigRequest()
+
+    request.dataset_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "dataset_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_dataset_config_field_headers_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.UpdateDatasetConfigRequest()
+
+    request.dataset_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "dataset_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_dataset_config_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_dataset_config(
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].dataset_config
+        mock_val = storageinsights.DatasetConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_dataset_config_flattened_error():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_dataset_config(
+            storageinsights.UpdateDatasetConfigRequest(),
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_dataset_config_flattened_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_dataset_config(
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].dataset_config
+        mock_val = storageinsights.DatasetConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_dataset_config_flattened_error_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_dataset_config(
+            storageinsights.UpdateDatasetConfigRequest(),
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.DeleteDatasetConfigRequest,
+        dict,
+    ],
+)
+def test_delete_dataset_config(request_type, transport: str = "grpc"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.DeleteDatasetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_dataset_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.DeleteDatasetConfigRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_dataset_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.DeleteDatasetConfigRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+def test_delete_dataset_config_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_dataset_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_dataset_config
+        ] = mock_rpc
+        request = {}
+        client.delete_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_dataset_config_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_dataset_config
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_dataset_config
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.delete_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_dataset_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=storageinsights.DeleteDatasetConfigRequest,
+):
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.DeleteDatasetConfigRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_dataset_config_async_from_dict():
+    await test_delete_dataset_config_async(request_type=dict)
+
+
+def test_delete_dataset_config_field_headers():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.DeleteDatasetConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_dataset_config_field_headers_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.DeleteDatasetConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_dataset_config_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_dataset_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_dataset_config_flattened_error():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_dataset_config(
+            storageinsights.DeleteDatasetConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_dataset_config_flattened_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_dataset_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_dataset_config_flattened_error_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_dataset_config(
+            storageinsights.DeleteDatasetConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.LinkDatasetRequest,
+        dict,
+    ],
+)
+def test_link_dataset(request_type, transport: str = "grpc"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.link_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.LinkDatasetRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_link_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.LinkDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.link_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.LinkDatasetRequest(
+            name="name_value",
+        )
+
+
+def test_link_dataset_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.link_dataset in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.link_dataset] = mock_rpc
+        request = {}
+        client.link_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.link_dataset(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_link_dataset_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.link_dataset
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.link_dataset
+        ] = mock_rpc
+
+        request = {}
+        await client.link_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.link_dataset(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_link_dataset_async(
+    transport: str = "grpc_asyncio", request_type=storageinsights.LinkDatasetRequest
+):
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.link_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.LinkDatasetRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_link_dataset_async_from_dict():
+    await test_link_dataset_async(request_type=dict)
+
+
+def test_link_dataset_field_headers():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.LinkDatasetRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.link_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_link_dataset_field_headers_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.LinkDatasetRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.link_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_link_dataset_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.link_dataset(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_link_dataset_flattened_error():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.link_dataset(
+            storageinsights.LinkDatasetRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_link_dataset_flattened_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.link_dataset(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_link_dataset_flattened_error_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.link_dataset(
+            storageinsights.LinkDatasetRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.UnlinkDatasetRequest,
+        dict,
+    ],
+)
+def test_unlink_dataset(request_type, transport: str = "grpc"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.unlink_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.UnlinkDatasetRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_unlink_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.UnlinkDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.unlink_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.UnlinkDatasetRequest(
+            name="name_value",
+        )
+
+
+def test_unlink_dataset_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.unlink_dataset in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.unlink_dataset] = mock_rpc
+        request = {}
+        client.unlink_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.unlink_dataset(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_unlink_dataset_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageInsightsAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.unlink_dataset
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.unlink_dataset
+        ] = mock_rpc
+
+        request = {}
+        await client.unlink_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.unlink_dataset(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_unlink_dataset_async(
+    transport: str = "grpc_asyncio", request_type=storageinsights.UnlinkDatasetRequest
+):
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.unlink_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storageinsights.UnlinkDatasetRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_unlink_dataset_async_from_dict():
+    await test_unlink_dataset_async(request_type=dict)
+
+
+def test_unlink_dataset_field_headers():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.UnlinkDatasetRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.unlink_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_unlink_dataset_field_headers_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storageinsights.UnlinkDatasetRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.unlink_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_unlink_dataset_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.unlink_dataset(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_unlink_dataset_flattened_error():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.unlink_dataset(
+            storageinsights.UnlinkDatasetRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_unlink_dataset_flattened_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.unlink_dataset(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_unlink_dataset_flattened_error_async():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.unlink_dataset(
+            storageinsights.UnlinkDatasetRequest(),
+            name="name_value",
+        )
+
+
 def test_list_report_configs_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -5474,6 +8147,1425 @@ def test_get_report_detail_rest_flattened_error(transport: str = "rest"):
         )
 
 
+def test_list_dataset_configs_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_dataset_configs in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_dataset_configs
+        ] = mock_rpc
+
+        request = {}
+        client.list_dataset_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_dataset_configs(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_dataset_configs_rest_required_fields(
+    request_type=storageinsights.ListDatasetConfigsRequest,
+):
+    transport_class = transports.StorageInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_dataset_configs._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_dataset_configs._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storageinsights.ListDatasetConfigsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storageinsights.ListDatasetConfigsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_dataset_configs(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_dataset_configs_rest_unset_required_fields():
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_dataset_configs._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_dataset_configs_rest_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storageinsights.ListDatasetConfigsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storageinsights.ListDatasetConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_dataset_configs(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/datasetConfigs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_dataset_configs_rest_flattened_error(transport: str = "rest"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_dataset_configs(
+            storageinsights.ListDatasetConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_dataset_configs_rest_pager(transport: str = "rest"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[],
+                next_page_token="def",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            storageinsights.ListDatasetConfigsResponse(
+                dataset_configs=[
+                    storageinsights.DatasetConfig(),
+                    storageinsights.DatasetConfig(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            storageinsights.ListDatasetConfigsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_dataset_configs(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storageinsights.DatasetConfig) for i in results)
+
+        pages = list(client.list_dataset_configs(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_dataset_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_dataset_config in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_dataset_config
+        ] = mock_rpc
+
+        request = {}
+        client.get_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_dataset_config_rest_required_fields(
+    request_type=storageinsights.GetDatasetConfigRequest,
+):
+    transport_class = transports.StorageInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_dataset_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_dataset_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storageinsights.DatasetConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storageinsights.DatasetConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_dataset_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_dataset_config_rest_unset_required_fields():
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_dataset_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_dataset_config_rest_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storageinsights.DatasetConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/datasetConfigs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storageinsights.DatasetConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_dataset_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/datasetConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_dataset_config_rest_flattened_error(transport: str = "rest"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_dataset_config(
+            storageinsights.GetDatasetConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_create_dataset_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_dataset_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_dataset_config
+        ] = mock_rpc
+
+        request = {}
+        client.create_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_dataset_config_rest_required_fields(
+    request_type=storageinsights.CreateDatasetConfigRequest,
+):
+    transport_class = transports.StorageInsightsRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["dataset_config_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "datasetConfigId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_dataset_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "datasetConfigId" in jsonified_request
+    assert jsonified_request["datasetConfigId"] == request_init["dataset_config_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["datasetConfigId"] = "dataset_config_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_dataset_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "dataset_config_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "datasetConfigId" in jsonified_request
+    assert jsonified_request["datasetConfigId"] == "dataset_config_id_value"
+
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_dataset_config(request)
+
+            expected_params = [
+                (
+                    "datasetConfigId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_dataset_config_rest_unset_required_fields():
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_dataset_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "datasetConfigId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "datasetConfigId",
+                "datasetConfig",
+            )
+        )
+    )
+
+
+def test_create_dataset_config_rest_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            dataset_config_id="dataset_config_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_dataset_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/datasetConfigs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_dataset_config_rest_flattened_error(transport: str = "rest"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_dataset_config(
+            storageinsights.CreateDatasetConfigRequest(),
+            parent="parent_value",
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            dataset_config_id="dataset_config_id_value",
+        )
+
+
+def test_update_dataset_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_dataset_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_dataset_config
+        ] = mock_rpc
+
+        request = {}
+        client.update_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_dataset_config_rest_required_fields(
+    request_type=storageinsights.UpdateDatasetConfigRequest,
+):
+    transport_class = transports.StorageInsightsRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_dataset_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_dataset_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.update_dataset_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_dataset_config_rest_unset_required_fields():
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_dataset_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "datasetConfig",
+            )
+        )
+    )
+
+
+def test_update_dataset_config_rest_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "dataset_config": {
+                "name": "projects/sample1/locations/sample2/datasetConfigs/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.update_dataset_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{dataset_config.name=projects/*/locations/*/datasetConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_dataset_config_rest_flattened_error(transport: str = "rest"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_dataset_config(
+            storageinsights.UpdateDatasetConfigRequest(),
+            dataset_config=storageinsights.DatasetConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_delete_dataset_config_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_dataset_config
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_dataset_config
+        ] = mock_rpc
+
+        request = {}
+        client.delete_dataset_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_dataset_config(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_dataset_config_rest_required_fields(
+    request_type=storageinsights.DeleteDatasetConfigRequest,
+):
+    transport_class = transports.StorageInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_dataset_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_dataset_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_dataset_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_dataset_config_rest_unset_required_fields():
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_dataset_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+def test_delete_dataset_config_rest_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/datasetConfigs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_dataset_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/datasetConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_dataset_config_rest_flattened_error(transport: str = "rest"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_dataset_config(
+            storageinsights.DeleteDatasetConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_link_dataset_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.link_dataset in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.link_dataset] = mock_rpc
+
+        request = {}
+        client.link_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.link_dataset(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_link_dataset_rest_required_fields(
+    request_type=storageinsights.LinkDatasetRequest,
+):
+    transport_class = transports.StorageInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).link_dataset._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).link_dataset._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.link_dataset(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_link_dataset_rest_unset_required_fields():
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.link_dataset._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_link_dataset_rest_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/datasetConfigs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.link_dataset(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/datasetConfigs/*}:linkDataset"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_link_dataset_rest_flattened_error(transport: str = "rest"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.link_dataset(
+            storageinsights.LinkDatasetRequest(),
+            name="name_value",
+        )
+
+
+def test_unlink_dataset_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageInsightsClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.unlink_dataset in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.unlink_dataset] = mock_rpc
+
+        request = {}
+        client.unlink_dataset(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.unlink_dataset(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_unlink_dataset_rest_required_fields(
+    request_type=storageinsights.UnlinkDatasetRequest,
+):
+    transport_class = transports.StorageInsightsRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).unlink_dataset._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).unlink_dataset._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.unlink_dataset(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_unlink_dataset_rest_unset_required_fields():
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.unlink_dataset._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_unlink_dataset_rest_flattened():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/datasetConfigs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.unlink_dataset(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/datasetConfigs/*}:unlinkDataset"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_unlink_dataset_rest_flattened_error(transport: str = "rest"):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.unlink_dataset(
+            storageinsights.UnlinkDatasetRequest(),
+            name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.StorageInsightsGrpcTransport(
@@ -5741,6 +9833,163 @@ def test_get_report_detail_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_dataset_configs_empty_call_grpc():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        call.return_value = storageinsights.ListDatasetConfigsResponse()
+        client.list_dataset_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.ListDatasetConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_dataset_config_empty_call_grpc():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        call.return_value = storageinsights.DatasetConfig()
+        client.get_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.GetDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_dataset_config_empty_call_grpc():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.CreateDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_dataset_config_empty_call_grpc():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.UpdateDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_dataset_config_empty_call_grpc():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.DeleteDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_link_dataset_empty_call_grpc():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.link_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.LinkDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_unlink_dataset_empty_call_grpc():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.unlink_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.UnlinkDatasetRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = StorageInsightsAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -5957,6 +10206,203 @@ async def test_get_report_detail_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetReportDetailRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_dataset_configs_empty_call_grpc_asyncio():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ListDatasetConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_dataset_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.ListDatasetConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_dataset_config_empty_call_grpc_asyncio():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.DatasetConfig(
+                name="name_value",
+                uid="uid_value",
+                organization_number=2045,
+                include_newly_created_buckets=True,
+                skip_verification_and_ingest=True,
+                retention_period_days=2250,
+                dataset_config_state=storageinsights.DatasetConfig.ConfigState.CONFIG_STATE_ACTIVE,
+                description="description_value",
+            )
+        )
+        await client.get_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.GetDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_dataset_config_empty_call_grpc_asyncio():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.CreateDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_dataset_config_empty_call_grpc_asyncio():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.UpdateDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_dataset_config_empty_call_grpc_asyncio():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.DeleteDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_link_dataset_empty_call_grpc_asyncio():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.link_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.LinkDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_unlink_dataset_empty_call_grpc_asyncio():
+    client = StorageInsightsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.unlink_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.UnlinkDatasetRequest()
 
         assert args[0] == request_msg
 
@@ -7079,6 +11525,1135 @@ def test_get_report_detail_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_list_dataset_configs_rest_bad_request(
+    request_type=storageinsights.ListDatasetConfigsRequest,
+):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_dataset_configs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.ListDatasetConfigsRequest,
+        dict,
+    ],
+)
+def test_list_dataset_configs_rest_call_success(request_type):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storageinsights.ListDatasetConfigsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storageinsights.ListDatasetConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_dataset_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatasetConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_dataset_configs_rest_interceptors(null_interceptor):
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageInsightsRestInterceptor(),
+    )
+    client = StorageInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "post_list_dataset_configs"
+    ) as post, mock.patch.object(
+        transports.StorageInsightsRestInterceptor,
+        "post_list_dataset_configs_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "pre_list_dataset_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storageinsights.ListDatasetConfigsRequest.pb(
+            storageinsights.ListDatasetConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storageinsights.ListDatasetConfigsResponse.to_json(
+            storageinsights.ListDatasetConfigsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = storageinsights.ListDatasetConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storageinsights.ListDatasetConfigsResponse()
+        post_with_metadata.return_value = (
+            storageinsights.ListDatasetConfigsResponse(),
+            metadata,
+        )
+
+        client.list_dataset_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_dataset_config_rest_bad_request(
+    request_type=storageinsights.GetDatasetConfigRequest,
+):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasetConfigs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_dataset_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.GetDatasetConfigRequest,
+        dict,
+    ],
+)
+def test_get_dataset_config_rest_call_success(request_type):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasetConfigs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storageinsights.DatasetConfig(
+            name="name_value",
+            uid="uid_value",
+            organization_number=2045,
+            include_newly_created_buckets=True,
+            skip_verification_and_ingest=True,
+            retention_period_days=2250,
+            dataset_config_state=storageinsights.DatasetConfig.ConfigState.CONFIG_STATE_ACTIVE,
+            description="description_value",
+            organization_scope=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storageinsights.DatasetConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_dataset_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storageinsights.DatasetConfig)
+    assert response.name == "name_value"
+    assert response.uid == "uid_value"
+    assert response.organization_number == 2045
+    assert response.include_newly_created_buckets is True
+    assert response.skip_verification_and_ingest is True
+    assert response.retention_period_days == 2250
+    assert (
+        response.dataset_config_state
+        == storageinsights.DatasetConfig.ConfigState.CONFIG_STATE_ACTIVE
+    )
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_dataset_config_rest_interceptors(null_interceptor):
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageInsightsRestInterceptor(),
+    )
+    client = StorageInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "post_get_dataset_config"
+    ) as post, mock.patch.object(
+        transports.StorageInsightsRestInterceptor,
+        "post_get_dataset_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "pre_get_dataset_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storageinsights.GetDatasetConfigRequest.pb(
+            storageinsights.GetDatasetConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storageinsights.DatasetConfig.to_json(
+            storageinsights.DatasetConfig()
+        )
+        req.return_value.content = return_value
+
+        request = storageinsights.GetDatasetConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storageinsights.DatasetConfig()
+        post_with_metadata.return_value = storageinsights.DatasetConfig(), metadata
+
+        client.get_dataset_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_create_dataset_config_rest_bad_request(
+    request_type=storageinsights.CreateDatasetConfigRequest,
+):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_dataset_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.CreateDatasetConfigRequest,
+        dict,
+    ],
+)
+def test_create_dataset_config_rest_call_success(request_type):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["dataset_config"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "uid": "uid_value",
+        "organization_number": 2045,
+        "source_projects": {"project_numbers": [1619, 1620]},
+        "source_folders": {"folder_numbers": [1496, 1497]},
+        "organization_scope": True,
+        "cloud_storage_object_path": "cloud_storage_object_path_value",
+        "include_cloud_storage_locations": {
+            "locations": ["locations_value1", "locations_value2"]
+        },
+        "exclude_cloud_storage_locations": {},
+        "include_cloud_storage_buckets": {
+            "cloud_storage_buckets": [
+                {
+                    "bucket_name": "bucket_name_value",
+                    "bucket_prefix_regex": "bucket_prefix_regex_value",
+                }
+            ]
+        },
+        "exclude_cloud_storage_buckets": {},
+        "include_newly_created_buckets": True,
+        "skip_verification_and_ingest": True,
+        "retention_period_days": 2250,
+        "link": {"dataset": "dataset_value", "linked": True},
+        "identity": {"name": "name_value", "type_": 1},
+        "status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "dataset_config_state": 1,
+        "description": "description_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = storageinsights.CreateDatasetConfigRequest.meta.fields[
+        "dataset_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["dataset_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dataset_config"][field])):
+                    del request_init["dataset_config"][field][i][subfield]
+            else:
+                del request_init["dataset_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_dataset_config(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_dataset_config_rest_interceptors(null_interceptor):
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageInsightsRestInterceptor(),
+    )
+    client = StorageInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "post_create_dataset_config"
+    ) as post, mock.patch.object(
+        transports.StorageInsightsRestInterceptor,
+        "post_create_dataset_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "pre_create_dataset_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storageinsights.CreateDatasetConfigRequest.pb(
+            storageinsights.CreateDatasetConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = storageinsights.CreateDatasetConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.create_dataset_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_update_dataset_config_rest_bad_request(
+    request_type=storageinsights.UpdateDatasetConfigRequest,
+):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "dataset_config": {
+            "name": "projects/sample1/locations/sample2/datasetConfigs/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.update_dataset_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.UpdateDatasetConfigRequest,
+        dict,
+    ],
+)
+def test_update_dataset_config_rest_call_success(request_type):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "dataset_config": {
+            "name": "projects/sample1/locations/sample2/datasetConfigs/sample3"
+        }
+    }
+    request_init["dataset_config"] = {
+        "name": "projects/sample1/locations/sample2/datasetConfigs/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "uid": "uid_value",
+        "organization_number": 2045,
+        "source_projects": {"project_numbers": [1619, 1620]},
+        "source_folders": {"folder_numbers": [1496, 1497]},
+        "organization_scope": True,
+        "cloud_storage_object_path": "cloud_storage_object_path_value",
+        "include_cloud_storage_locations": {
+            "locations": ["locations_value1", "locations_value2"]
+        },
+        "exclude_cloud_storage_locations": {},
+        "include_cloud_storage_buckets": {
+            "cloud_storage_buckets": [
+                {
+                    "bucket_name": "bucket_name_value",
+                    "bucket_prefix_regex": "bucket_prefix_regex_value",
+                }
+            ]
+        },
+        "exclude_cloud_storage_buckets": {},
+        "include_newly_created_buckets": True,
+        "skip_verification_and_ingest": True,
+        "retention_period_days": 2250,
+        "link": {"dataset": "dataset_value", "linked": True},
+        "identity": {"name": "name_value", "type_": 1},
+        "status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "dataset_config_state": 1,
+        "description": "description_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = storageinsights.UpdateDatasetConfigRequest.meta.fields[
+        "dataset_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["dataset_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dataset_config"][field])):
+                    del request_init["dataset_config"][field][i][subfield]
+            else:
+                del request_init["dataset_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.update_dataset_config(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_dataset_config_rest_interceptors(null_interceptor):
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageInsightsRestInterceptor(),
+    )
+    client = StorageInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "post_update_dataset_config"
+    ) as post, mock.patch.object(
+        transports.StorageInsightsRestInterceptor,
+        "post_update_dataset_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "pre_update_dataset_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storageinsights.UpdateDatasetConfigRequest.pb(
+            storageinsights.UpdateDatasetConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = storageinsights.UpdateDatasetConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.update_dataset_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_delete_dataset_config_rest_bad_request(
+    request_type=storageinsights.DeleteDatasetConfigRequest,
+):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasetConfigs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_dataset_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.DeleteDatasetConfigRequest,
+        dict,
+    ],
+)
+def test_delete_dataset_config_rest_call_success(request_type):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasetConfigs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_dataset_config(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_dataset_config_rest_interceptors(null_interceptor):
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageInsightsRestInterceptor(),
+    )
+    client = StorageInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "post_delete_dataset_config"
+    ) as post, mock.patch.object(
+        transports.StorageInsightsRestInterceptor,
+        "post_delete_dataset_config_with_metadata",
+    ) as post_with_metadata, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "pre_delete_dataset_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storageinsights.DeleteDatasetConfigRequest.pb(
+            storageinsights.DeleteDatasetConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = storageinsights.DeleteDatasetConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.delete_dataset_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_link_dataset_rest_bad_request(request_type=storageinsights.LinkDatasetRequest):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasetConfigs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.link_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.LinkDatasetRequest,
+        dict,
+    ],
+)
+def test_link_dataset_rest_call_success(request_type):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasetConfigs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.link_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_link_dataset_rest_interceptors(null_interceptor):
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageInsightsRestInterceptor(),
+    )
+    client = StorageInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "post_link_dataset"
+    ) as post, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "post_link_dataset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "pre_link_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storageinsights.LinkDatasetRequest.pb(
+            storageinsights.LinkDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = storageinsights.LinkDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.link_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_unlink_dataset_rest_bad_request(
+    request_type=storageinsights.UnlinkDatasetRequest,
+):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasetConfigs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.unlink_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.UnlinkDatasetRequest,
+        dict,
+    ],
+)
+def test_unlink_dataset_rest_call_success(request_type):
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasetConfigs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.unlink_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_unlink_dataset_rest_interceptors(null_interceptor):
+    transport = transports.StorageInsightsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageInsightsRestInterceptor(),
+    )
+    client = StorageInsightsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "post_unlink_dataset"
+    ) as post, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "post_unlink_dataset_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.StorageInsightsRestInterceptor, "pre_unlink_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storageinsights.UnlinkDatasetRequest.pb(
+            storageinsights.UnlinkDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = storageinsights.UnlinkDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.unlink_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = StorageInsightsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7608,6 +13183,173 @@ def test_get_report_detail_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_dataset_configs_empty_call_rest():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_dataset_configs), "__call__"
+    ) as call:
+        client.list_dataset_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.ListDatasetConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_dataset_config_empty_call_rest():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dataset_config), "__call__"
+    ) as call:
+        client.get_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.GetDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_dataset_config_empty_call_rest():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_dataset_config), "__call__"
+    ) as call:
+        client.create_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.CreateDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_dataset_config_empty_call_rest():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_config), "__call__"
+    ) as call:
+        client.update_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.UpdateDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_dataset_config_empty_call_rest():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_dataset_config), "__call__"
+    ) as call:
+        client.delete_dataset_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.DeleteDatasetConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_link_dataset_empty_call_rest():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
+        client.link_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.LinkDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_unlink_dataset_empty_call_rest():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
+        client.unlink_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storageinsights.UnlinkDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+def test_storage_insights_rest_lro_client():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = StorageInsightsClient(
@@ -7648,6 +13390,13 @@ def test_storage_insights_base_transport():
         "delete_report_config",
         "list_report_details",
         "get_report_detail",
+        "list_dataset_configs",
+        "get_dataset_config",
+        "create_dataset_config",
+        "update_dataset_config",
+        "delete_dataset_config",
+        "link_dataset",
+        "unlink_dataset",
         "get_location",
         "list_locations",
         "get_operation",
@@ -7661,6 +13410,11 @@ def test_storage_insights_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
 
     # Catch all for all remaining methods and properties
     remainder = [
@@ -7933,6 +13687,27 @@ def test_storage_insights_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_report_detail._session
     session2 = client2.transport.get_report_detail._session
     assert session1 != session2
+    session1 = client1.transport.list_dataset_configs._session
+    session2 = client2.transport.list_dataset_configs._session
+    assert session1 != session2
+    session1 = client1.transport.get_dataset_config._session
+    session2 = client2.transport.get_dataset_config._session
+    assert session1 != session2
+    session1 = client1.transport.create_dataset_config._session
+    session2 = client2.transport.create_dataset_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_dataset_config._session
+    session2 = client2.transport.update_dataset_config._session
+    assert session1 != session2
+    session1 = client1.transport.delete_dataset_config._session
+    session2 = client2.transport.delete_dataset_config._session
+    assert session1 != session2
+    session1 = client1.transport.link_dataset._session
+    session2 = client2.transport.link_dataset._session
+    assert session1 != session2
+    session1 = client1.transport.unlink_dataset._session
+    session2 = client2.transport.unlink_dataset._session
+    assert session1 != session2
 
 
 def test_storage_insights_grpc_transport_channel():
@@ -8061,10 +13836,72 @@ def test_storage_insights_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_report_config_path():
+def test_storage_insights_grpc_lro_client():
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_storage_insights_grpc_lro_async_client():
+    client = StorageInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_dataset_config_path():
     project = "squid"
     location = "clam"
-    report_config = "whelk"
+    dataset_config = "whelk"
+    expected = "projects/{project}/locations/{location}/datasetConfigs/{dataset_config}".format(
+        project=project,
+        location=location,
+        dataset_config=dataset_config,
+    )
+    actual = StorageInsightsClient.dataset_config_path(
+        project, location, dataset_config
+    )
+    assert expected == actual
+
+
+def test_parse_dataset_config_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "dataset_config": "nudibranch",
+    }
+    path = StorageInsightsClient.dataset_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageInsightsClient.parse_dataset_config_path(path)
+    assert expected == actual
+
+
+def test_report_config_path():
+    project = "cuttlefish"
+    location = "mussel"
+    report_config = "winkle"
     expected = (
         "projects/{project}/locations/{location}/reportConfigs/{report_config}".format(
             project=project,
@@ -8078,9 +13915,9 @@ def test_report_config_path():
 
 def test_parse_report_config_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "report_config": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "report_config": "abalone",
     }
     path = StorageInsightsClient.report_config_path(**expected)
 
@@ -8090,10 +13927,10 @@ def test_parse_report_config_path():
 
 
 def test_report_detail_path():
-    project = "cuttlefish"
-    location = "mussel"
-    report_config = "winkle"
-    report_detail = "nautilus"
+    project = "squid"
+    location = "clam"
+    report_config = "whelk"
+    report_detail = "octopus"
     expected = "projects/{project}/locations/{location}/reportConfigs/{report_config}/reportDetails/{report_detail}".format(
         project=project,
         location=location,
@@ -8108,10 +13945,10 @@ def test_report_detail_path():
 
 def test_parse_report_detail_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "report_config": "squid",
-        "report_detail": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "report_config": "cuttlefish",
+        "report_detail": "mussel",
     }
     path = StorageInsightsClient.report_detail_path(**expected)
 
@@ -8121,7 +13958,7 @@ def test_parse_report_detail_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8131,7 +13968,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = StorageInsightsClient.common_billing_account_path(**expected)
 
@@ -8141,7 +13978,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -8151,7 +13988,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = StorageInsightsClient.common_folder_path(**expected)
 
@@ -8161,7 +13998,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -8171,7 +14008,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = StorageInsightsClient.common_organization_path(**expected)
 
@@ -8181,7 +14018,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -8191,7 +14028,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = StorageInsightsClient.common_project_path(**expected)
 
@@ -8201,8 +14038,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -8213,8 +14050,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = StorageInsightsClient.common_location_path(**expected)
 

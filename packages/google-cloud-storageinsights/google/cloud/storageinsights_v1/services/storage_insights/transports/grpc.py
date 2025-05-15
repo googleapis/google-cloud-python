@@ -19,7 +19,7 @@ import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -196,6 +196,7 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -321,6 +322,22 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
     def grpc_channel(self) -> grpc.Channel:
         """Return the channel designed to connect to this service."""
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def list_report_configs(
@@ -518,6 +535,206 @@ class StorageInsightsGrpcTransport(StorageInsightsTransport):
                 response_deserializer=storageinsights.ReportDetail.deserialize,
             )
         return self._stubs["get_report_detail"]
+
+    @property
+    def list_dataset_configs(
+        self,
+    ) -> Callable[
+        [storageinsights.ListDatasetConfigsRequest],
+        storageinsights.ListDatasetConfigsResponse,
+    ]:
+        r"""Return a callable for the list dataset configs method over gRPC.
+
+        Lists the dataset configurations in a given project
+        for a given location.
+
+        Returns:
+            Callable[[~.ListDatasetConfigsRequest],
+                    ~.ListDatasetConfigsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_dataset_configs" not in self._stubs:
+            self._stubs["list_dataset_configs"] = self._logged_channel.unary_unary(
+                "/google.cloud.storageinsights.v1.StorageInsights/ListDatasetConfigs",
+                request_serializer=storageinsights.ListDatasetConfigsRequest.serialize,
+                response_deserializer=storageinsights.ListDatasetConfigsResponse.deserialize,
+            )
+        return self._stubs["list_dataset_configs"]
+
+    @property
+    def get_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.GetDatasetConfigRequest], storageinsights.DatasetConfig
+    ]:
+        r"""Return a callable for the get dataset config method over gRPC.
+
+        Gets the dataset configuration in a given project for
+        a given location.
+
+        Returns:
+            Callable[[~.GetDatasetConfigRequest],
+                    ~.DatasetConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_dataset_config" not in self._stubs:
+            self._stubs["get_dataset_config"] = self._logged_channel.unary_unary(
+                "/google.cloud.storageinsights.v1.StorageInsights/GetDatasetConfig",
+                request_serializer=storageinsights.GetDatasetConfigRequest.serialize,
+                response_deserializer=storageinsights.DatasetConfig.deserialize,
+            )
+        return self._stubs["get_dataset_config"]
+
+    @property
+    def create_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.CreateDatasetConfigRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create dataset config method over gRPC.
+
+        Creates a dataset configuration in a given project
+        for a given location.
+
+        Returns:
+            Callable[[~.CreateDatasetConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_dataset_config" not in self._stubs:
+            self._stubs["create_dataset_config"] = self._logged_channel.unary_unary(
+                "/google.cloud.storageinsights.v1.StorageInsights/CreateDatasetConfig",
+                request_serializer=storageinsights.CreateDatasetConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_dataset_config"]
+
+    @property
+    def update_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.UpdateDatasetConfigRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update dataset config method over gRPC.
+
+        Updates a dataset configuration in a given project
+        for a given location.
+
+        Returns:
+            Callable[[~.UpdateDatasetConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_dataset_config" not in self._stubs:
+            self._stubs["update_dataset_config"] = self._logged_channel.unary_unary(
+                "/google.cloud.storageinsights.v1.StorageInsights/UpdateDatasetConfig",
+                request_serializer=storageinsights.UpdateDatasetConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_dataset_config"]
+
+    @property
+    def delete_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.DeleteDatasetConfigRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete dataset config method over gRPC.
+
+        Deletes a dataset configuration in a given project
+        for a given location.
+
+        Returns:
+            Callable[[~.DeleteDatasetConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_dataset_config" not in self._stubs:
+            self._stubs["delete_dataset_config"] = self._logged_channel.unary_unary(
+                "/google.cloud.storageinsights.v1.StorageInsights/DeleteDatasetConfig",
+                request_serializer=storageinsights.DeleteDatasetConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_dataset_config"]
+
+    @property
+    def link_dataset(
+        self,
+    ) -> Callable[[storageinsights.LinkDatasetRequest], operations_pb2.Operation]:
+        r"""Return a callable for the link dataset method over gRPC.
+
+        Links a dataset to BigQuery in a given project for a
+        given location.
+
+        Returns:
+            Callable[[~.LinkDatasetRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "link_dataset" not in self._stubs:
+            self._stubs["link_dataset"] = self._logged_channel.unary_unary(
+                "/google.cloud.storageinsights.v1.StorageInsights/LinkDataset",
+                request_serializer=storageinsights.LinkDatasetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["link_dataset"]
+
+    @property
+    def unlink_dataset(
+        self,
+    ) -> Callable[[storageinsights.UnlinkDatasetRequest], operations_pb2.Operation]:
+        r"""Return a callable for the unlink dataset method over gRPC.
+
+        Unlinks a dataset from BigQuery in a given project
+        for a given location.
+
+        Returns:
+            Callable[[~.UnlinkDatasetRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "unlink_dataset" not in self._stubs:
+            self._stubs["unlink_dataset"] = self._logged_channel.unary_unary(
+                "/google.cloud.storageinsights.v1.StorageInsights/UnlinkDataset",
+                request_serializer=storageinsights.UnlinkDatasetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["unlink_dataset"]
 
     def close(self):
         self._logged_channel.close()

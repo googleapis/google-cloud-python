@@ -10,14 +10,29 @@
         "grpc": {
           "libraryClient": "StorageInsightsClient",
           "rpcs": {
+            "CreateDatasetConfig": {
+              "methods": [
+                "create_dataset_config"
+              ]
+            },
             "CreateReportConfig": {
               "methods": [
                 "create_report_config"
               ]
             },
+            "DeleteDatasetConfig": {
+              "methods": [
+                "delete_dataset_config"
+              ]
+            },
             "DeleteReportConfig": {
               "methods": [
                 "delete_report_config"
+              ]
+            },
+            "GetDatasetConfig": {
+              "methods": [
+                "get_dataset_config"
               ]
             },
             "GetReportConfig": {
@@ -30,6 +45,16 @@
                 "get_report_detail"
               ]
             },
+            "LinkDataset": {
+              "methods": [
+                "link_dataset"
+              ]
+            },
+            "ListDatasetConfigs": {
+              "methods": [
+                "list_dataset_configs"
+              ]
+            },
             "ListReportConfigs": {
               "methods": [
                 "list_report_configs"
@@ -38,6 +63,16 @@
             "ListReportDetails": {
               "methods": [
                 "list_report_details"
+              ]
+            },
+            "UnlinkDataset": {
+              "methods": [
+                "unlink_dataset"
+              ]
+            },
+            "UpdateDatasetConfig": {
+              "methods": [
+                "update_dataset_config"
               ]
             },
             "UpdateReportConfig": {
@@ -50,14 +85,29 @@
         "grpc-async": {
           "libraryClient": "StorageInsightsAsyncClient",
           "rpcs": {
+            "CreateDatasetConfig": {
+              "methods": [
+                "create_dataset_config"
+              ]
+            },
             "CreateReportConfig": {
               "methods": [
                 "create_report_config"
               ]
             },
+            "DeleteDatasetConfig": {
+              "methods": [
+                "delete_dataset_config"
+              ]
+            },
             "DeleteReportConfig": {
               "methods": [
                 "delete_report_config"
+              ]
+            },
+            "GetDatasetConfig": {
+              "methods": [
+                "get_dataset_config"
               ]
             },
             "GetReportConfig": {
@@ -70,6 +120,16 @@
                 "get_report_detail"
               ]
             },
+            "LinkDataset": {
+              "methods": [
+                "link_dataset"
+              ]
+            },
+            "ListDatasetConfigs": {
+              "methods": [
+                "list_dataset_configs"
+              ]
+            },
             "ListReportConfigs": {
               "methods": [
                 "list_report_configs"
@@ -78,6 +138,16 @@
             "ListReportDetails": {
               "methods": [
                 "list_report_details"
+              ]
+            },
+            "UnlinkDataset": {
+              "methods": [
+                "unlink_dataset"
+              ]
+            },
+            "UpdateDatasetConfig": {
+              "methods": [
+                "update_dataset_config"
               ]
             },
             "UpdateReportConfig": {
@@ -90,14 +160,29 @@
         "rest": {
           "libraryClient": "StorageInsightsClient",
           "rpcs": {
+            "CreateDatasetConfig": {
+              "methods": [
+                "create_dataset_config"
+              ]
+            },
             "CreateReportConfig": {
               "methods": [
                 "create_report_config"
               ]
             },
+            "DeleteDatasetConfig": {
+              "methods": [
+                "delete_dataset_config"
+              ]
+            },
             "DeleteReportConfig": {
               "methods": [
                 "delete_report_config"
+              ]
+            },
+            "GetDatasetConfig": {
+              "methods": [
+                "get_dataset_config"
               ]
             },
             "GetReportConfig": {
@@ -110,6 +195,16 @@
                 "get_report_detail"
               ]
             },
+            "LinkDataset": {
+              "methods": [
+                "link_dataset"
+              ]
+            },
+            "ListDatasetConfigs": {
+              "methods": [
+                "list_dataset_configs"
+              ]
+            },
             "ListReportConfigs": {
               "methods": [
                 "list_report_configs"
@@ -118,6 +213,16 @@
             "ListReportDetails": {
               "methods": [
                 "list_report_details"
+              ]
+            },
+            "UnlinkDataset": {
+              "methods": [
+                "unlink_dataset"
+              ]
+            },
+            "UpdateDatasetConfig": {
+              "methods": [
+                "update_dataset_config"
               ]
             },
             "UpdateReportConfig": {

@@ -19,8 +19,8 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
@@ -75,6 +75,14 @@ class StorageInsightsRestInterceptor:
 
     .. code-block:: python
         class MyCustomStorageInsightsInterceptor(StorageInsightsRestInterceptor):
+            def pre_create_dataset_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_dataset_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_report_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -83,9 +91,25 @@ class StorageInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_dataset_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_dataset_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_report_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_get_dataset_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_dataset_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_get_report_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -100,6 +124,22 @@ class StorageInsightsRestInterceptor:
                 return request, metadata
 
             def post_get_report_detail(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_link_dataset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_link_dataset(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_dataset_configs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_dataset_configs(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -119,6 +159,22 @@ class StorageInsightsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_unlink_dataset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_unlink_dataset(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_dataset_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_dataset_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_report_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -132,6 +188,55 @@ class StorageInsightsRestInterceptor:
 
 
     """
+
+    def pre_create_dataset_config(
+        self,
+        request: storageinsights.CreateDatasetConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.CreateDatasetConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_dataset_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageInsights server.
+        """
+        return request, metadata
+
+    def post_create_dataset_config(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_dataset_config
+
+        DEPRECATED. Please use the `post_create_dataset_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageInsights server but before
+        it is returned to user code. This `post_create_dataset_config` interceptor runs
+        before the `post_create_dataset_config_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_dataset_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_dataset_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_create_dataset_config_with_metadata`
+        interceptor in new development instead of the `post_create_dataset_config` interceptor.
+        When both interceptors are used, this `post_create_dataset_config_with_metadata` interceptor runs after the
+        `post_create_dataset_config` interceptor. The (possibly modified) response returned by
+        `post_create_dataset_config` will be passed to
+        `post_create_dataset_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_report_config(
         self,
@@ -182,6 +287,55 @@ class StorageInsightsRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_dataset_config(
+        self,
+        request: storageinsights.DeleteDatasetConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.DeleteDatasetConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_dataset_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageInsights server.
+        """
+        return request, metadata
+
+    def post_delete_dataset_config(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_dataset_config
+
+        DEPRECATED. Please use the `post_delete_dataset_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageInsights server but before
+        it is returned to user code. This `post_delete_dataset_config` interceptor runs
+        before the `post_delete_dataset_config_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_dataset_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_dataset_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_delete_dataset_config_with_metadata`
+        interceptor in new development instead of the `post_delete_dataset_config` interceptor.
+        When both interceptors are used, this `post_delete_dataset_config_with_metadata` interceptor runs after the
+        `post_delete_dataset_config` interceptor. The (possibly modified) response returned by
+        `post_delete_dataset_config` will be passed to
+        `post_delete_dataset_config_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_report_config(
         self,
         request: storageinsights.DeleteReportConfigRequest,
@@ -196,6 +350,54 @@ class StorageInsightsRestInterceptor:
         before they are sent to the StorageInsights server.
         """
         return request, metadata
+
+    def pre_get_dataset_config(
+        self,
+        request: storageinsights.GetDatasetConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.GetDatasetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_dataset_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageInsights server.
+        """
+        return request, metadata
+
+    def post_get_dataset_config(
+        self, response: storageinsights.DatasetConfig
+    ) -> storageinsights.DatasetConfig:
+        """Post-rpc interceptor for get_dataset_config
+
+        DEPRECATED. Please use the `post_get_dataset_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageInsights server but before
+        it is returned to user code. This `post_get_dataset_config` interceptor runs
+        before the `post_get_dataset_config_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_dataset_config_with_metadata(
+        self,
+        response: storageinsights.DatasetConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[storageinsights.DatasetConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_dataset_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_get_dataset_config_with_metadata`
+        interceptor in new development instead of the `post_get_dataset_config` interceptor.
+        When both interceptors are used, this `post_get_dataset_config_with_metadata` interceptor runs after the
+        `post_get_dataset_config` interceptor. The (possibly modified) response returned by
+        `post_get_dataset_config` will be passed to
+        `post_get_dataset_config_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_report_config(
         self,
@@ -290,6 +492,106 @@ class StorageInsightsRestInterceptor:
         `post_get_report_detail` interceptor. The (possibly modified) response returned by
         `post_get_report_detail` will be passed to
         `post_get_report_detail_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_link_dataset(
+        self,
+        request: storageinsights.LinkDatasetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.LinkDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for link_dataset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageInsights server.
+        """
+        return request, metadata
+
+    def post_link_dataset(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for link_dataset
+
+        DEPRECATED. Please use the `post_link_dataset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageInsights server but before
+        it is returned to user code. This `post_link_dataset` interceptor runs
+        before the `post_link_dataset_with_metadata` interceptor.
+        """
+        return response
+
+    def post_link_dataset_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for link_dataset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_link_dataset_with_metadata`
+        interceptor in new development instead of the `post_link_dataset` interceptor.
+        When both interceptors are used, this `post_link_dataset_with_metadata` interceptor runs after the
+        `post_link_dataset` interceptor. The (possibly modified) response returned by
+        `post_link_dataset` will be passed to
+        `post_link_dataset_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_dataset_configs(
+        self,
+        request: storageinsights.ListDatasetConfigsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.ListDatasetConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_dataset_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageInsights server.
+        """
+        return request, metadata
+
+    def post_list_dataset_configs(
+        self, response: storageinsights.ListDatasetConfigsResponse
+    ) -> storageinsights.ListDatasetConfigsResponse:
+        """Post-rpc interceptor for list_dataset_configs
+
+        DEPRECATED. Please use the `post_list_dataset_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageInsights server but before
+        it is returned to user code. This `post_list_dataset_configs` interceptor runs
+        before the `post_list_dataset_configs_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_dataset_configs_with_metadata(
+        self,
+        response: storageinsights.ListDatasetConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.ListDatasetConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_dataset_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_list_dataset_configs_with_metadata`
+        interceptor in new development instead of the `post_list_dataset_configs` interceptor.
+        When both interceptors are used, this `post_list_dataset_configs_with_metadata` interceptor runs after the
+        `post_list_dataset_configs` interceptor. The (possibly modified) response returned by
+        `post_list_dataset_configs` will be passed to
+        `post_list_dataset_configs_with_metadata`.
         """
         return response, metadata
 
@@ -394,6 +696,103 @@ class StorageInsightsRestInterceptor:
         `post_list_report_details` interceptor. The (possibly modified) response returned by
         `post_list_report_details` will be passed to
         `post_list_report_details_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_unlink_dataset(
+        self,
+        request: storageinsights.UnlinkDatasetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.UnlinkDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for unlink_dataset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageInsights server.
+        """
+        return request, metadata
+
+    def post_unlink_dataset(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for unlink_dataset
+
+        DEPRECATED. Please use the `post_unlink_dataset_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageInsights server but before
+        it is returned to user code. This `post_unlink_dataset` interceptor runs
+        before the `post_unlink_dataset_with_metadata` interceptor.
+        """
+        return response
+
+    def post_unlink_dataset_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for unlink_dataset
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_unlink_dataset_with_metadata`
+        interceptor in new development instead of the `post_unlink_dataset` interceptor.
+        When both interceptors are used, this `post_unlink_dataset_with_metadata` interceptor runs after the
+        `post_unlink_dataset` interceptor. The (possibly modified) response returned by
+        `post_unlink_dataset` will be passed to
+        `post_unlink_dataset_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_dataset_config(
+        self,
+        request: storageinsights.UpdateDatasetConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.UpdateDatasetConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_dataset_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the StorageInsights server.
+        """
+        return request, metadata
+
+    def post_update_dataset_config(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_dataset_config
+
+        DEPRECATED. Please use the `post_update_dataset_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the StorageInsights server but before
+        it is returned to user code. This `post_update_dataset_config` interceptor runs
+        before the `post_update_dataset_config_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_dataset_config_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_dataset_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the StorageInsights server but before it is returned to user code.
+
+        We recommend only using this `post_update_dataset_config_with_metadata`
+        interceptor in new development instead of the `post_update_dataset_config` interceptor.
+        When both interceptors are used, this `post_update_dataset_config_with_metadata` interceptor runs after the
+        `post_update_dataset_config` interceptor. The (possibly modified) response returned by
+        `post_update_dataset_config` will be passed to
+        `post_update_dataset_config_with_metadata`.
         """
         return response, metadata
 
@@ -674,10 +1073,219 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
+        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or StorageInsightsRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    @property
+    def operations_client(self) -> operations_v1.AbstractOperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.CancelOperation": [
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
+                        "body": "*",
+                    },
+                ],
+                "google.longrunning.Operations.DeleteOperation": [
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.GetOperation": [
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*}/operations",
+                    },
+                ],
+            }
+
+            rest_transport = operations_v1.OperationsRestTransport(
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,
+                scopes=self._scopes,
+                http_options=http_options,
+                path_prefix="v1",
+            )
+
+            self._operations_client = operations_v1.AbstractOperationsClient(
+                transport=rest_transport
+            )
+
+        # Return the client from cache.
+        return self._operations_client
+
+    class _CreateDatasetConfig(
+        _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig,
+        StorageInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("StorageInsightsRestTransport.CreateDatasetConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: storageinsights.CreateDatasetConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create dataset config method over HTTP.
+
+            Args:
+                request (~.storageinsights.CreateDatasetConfigRequest):
+                    The request object. Request message for
+                [``CreateDatasetConfig``][google.cloud.storageinsights.v1.StorageInsights.CreateDatasetConfig]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_dataset_config(
+                request, metadata
+            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.CreateDatasetConfig",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "CreateDatasetConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageInsightsRestTransport._CreateDatasetConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_dataset_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_dataset_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.create_dataset_config",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "CreateDatasetConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _CreateReportConfig(
         _BaseStorageInsightsRestTransport._BaseCreateReportConfig,
@@ -838,6 +1446,155 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
+    class _DeleteDatasetConfig(
+        _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig,
+        StorageInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("StorageInsightsRestTransport.DeleteDatasetConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: storageinsights.DeleteDatasetConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete dataset config method over HTTP.
+
+            Args:
+                request (~.storageinsights.DeleteDatasetConfigRequest):
+                    The request object. Request message for
+                [``DeleteDatasetConfig``][google.cloud.storageinsights.v1.StorageInsights.DeleteDatasetConfig]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_dataset_config(
+                request, metadata
+            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.DeleteDatasetConfig",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "DeleteDatasetConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageInsightsRestTransport._DeleteDatasetConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_dataset_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_dataset_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.delete_dataset_config",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "DeleteDatasetConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteReportConfig(
         _BaseStorageInsightsRestTransport._BaseDeleteReportConfig,
         StorageInsightsRestStub,
@@ -946,6 +1703,156 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _GetDatasetConfig(
+        _BaseStorageInsightsRestTransport._BaseGetDatasetConfig, StorageInsightsRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageInsightsRestTransport.GetDatasetConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: storageinsights.GetDatasetConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> storageinsights.DatasetConfig:
+            r"""Call the get dataset config method over HTTP.
+
+            Args:
+                request (~.storageinsights.GetDatasetConfigRequest):
+                    The request object. Request message for
+                [``GetDatasetConfig``][google.cloud.storageinsights.v1.StorageInsights.GetDatasetConfig]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.storageinsights.DatasetConfig:
+                    Message describing the dataset configuration properties.
+                For more information, see `Dataset configuration
+                properties <https://cloud.google.com/storage/docs/insights/datasets#dataset-config>`__.
+
+            """
+
+            http_options = (
+                _BaseStorageInsightsRestTransport._BaseGetDatasetConfig._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_dataset_config(
+                request, metadata
+            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetDatasetConfig._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageInsightsRestTransport._BaseGetDatasetConfig._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.GetDatasetConfig",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetDatasetConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageInsightsRestTransport._GetDatasetConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = storageinsights.DatasetConfig()
+            pb_resp = storageinsights.DatasetConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_dataset_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_dataset_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storageinsights.DatasetConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.get_dataset_config",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetDatasetConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetReportConfig(
         _BaseStorageInsightsRestTransport._BaseGetReportConfig, StorageInsightsRestStub
@@ -1249,6 +2156,310 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
+    class _LinkDataset(
+        _BaseStorageInsightsRestTransport._BaseLinkDataset, StorageInsightsRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageInsightsRestTransport.LinkDataset")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: storageinsights.LinkDatasetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the link dataset method over HTTP.
+
+            Args:
+                request (~.storageinsights.LinkDatasetRequest):
+                    The request object. Request message for
+                [``LinkDataset``][google.cloud.storageinsights.v1.StorageInsights.LinkDataset]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseStorageInsightsRestTransport._BaseLinkDataset._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_link_dataset(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.LinkDataset",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "LinkDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageInsightsRestTransport._LinkDataset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_link_dataset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_link_dataset_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.link_dataset",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "LinkDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListDatasetConfigs(
+        _BaseStorageInsightsRestTransport._BaseListDatasetConfigs,
+        StorageInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("StorageInsightsRestTransport.ListDatasetConfigs")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: storageinsights.ListDatasetConfigsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> storageinsights.ListDatasetConfigsResponse:
+            r"""Call the list dataset configs method over HTTP.
+
+            Args:
+                request (~.storageinsights.ListDatasetConfigsRequest):
+                    The request object. Request message for
+                [``ListDatasetConfigs``][google.cloud.storageinsights.v1.StorageInsights.ListDatasetConfigs]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.storageinsights.ListDatasetConfigsResponse:
+                    Response message for
+                [``ListDatasetConfigs``][google.cloud.storageinsights.v1.StorageInsights.ListDatasetConfigs]
+
+            """
+
+            http_options = (
+                _BaseStorageInsightsRestTransport._BaseListDatasetConfigs._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_dataset_configs(
+                request, metadata
+            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseListDatasetConfigs._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageInsightsRestTransport._BaseListDatasetConfigs._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.ListDatasetConfigs",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListDatasetConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageInsightsRestTransport._ListDatasetConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = storageinsights.ListDatasetConfigsResponse()
+            pb_resp = storageinsights.ListDatasetConfigsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_dataset_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_dataset_configs_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        storageinsights.ListDatasetConfigsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.list_dataset_configs",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListDatasetConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListReportConfigs(
         _BaseStorageInsightsRestTransport._BaseListReportConfigs,
         StorageInsightsRestStub,
@@ -1290,8 +2501,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             Args:
                 request (~.storageinsights.ListReportConfigsRequest):
-                    The request object. Message for requesting list of
-                ReportConfigs
+                    The request object. Request message for
+                [``ListReportConfigs``][google.cloud.storageinsights.v1.StorageInsights.ListReportConfigs]
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1553,6 +2764,313 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
+    class _UnlinkDataset(
+        _BaseStorageInsightsRestTransport._BaseUnlinkDataset, StorageInsightsRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageInsightsRestTransport.UnlinkDataset")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: storageinsights.UnlinkDatasetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the unlink dataset method over HTTP.
+
+            Args:
+                request (~.storageinsights.UnlinkDatasetRequest):
+                    The request object. Request message for
+                [``UnlinkDataset``][google.cloud.storageinsights.v1.StorageInsights.UnlinkDataset]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_unlink_dataset(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.UnlinkDataset",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "UnlinkDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageInsightsRestTransport._UnlinkDataset._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_unlink_dataset(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_unlink_dataset_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.unlink_dataset",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "UnlinkDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateDatasetConfig(
+        _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig,
+        StorageInsightsRestStub,
+    ):
+        def __hash__(self):
+            return hash("StorageInsightsRestTransport.UpdateDatasetConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: storageinsights.UpdateDatasetConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update dataset config method over HTTP.
+
+            Args:
+                request (~.storageinsights.UpdateDatasetConfigRequest):
+                    The request object. Request message for
+                [``UpdateDatasetConfig``][google.cloud.storageinsights.v1.StorageInsights.UpdateDatasetConfig]
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_dataset_config(
+                request, metadata
+            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.UpdateDatasetConfig",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "UpdateDatasetConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = StorageInsightsRestTransport._UpdateDatasetConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_dataset_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_dataset_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.update_dataset_config",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "UpdateDatasetConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateReportConfig(
         _BaseStorageInsightsRestTransport._BaseUpdateReportConfig,
         StorageInsightsRestStub,
@@ -1713,6 +3231,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             return resp
 
     @property
+    def create_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.CreateDatasetConfigRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateDatasetConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_report_config(
         self,
     ) -> Callable[
@@ -1723,12 +3251,32 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
         return self._CreateReportConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.DeleteDatasetConfigRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteDatasetConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_report_config(
         self,
     ) -> Callable[[storageinsights.DeleteReportConfigRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReportConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.GetDatasetConfigRequest], storageinsights.DatasetConfig
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetDatasetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_report_config(
@@ -1751,6 +3299,25 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
         return self._GetReportDetail(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def link_dataset(
+        self,
+    ) -> Callable[[storageinsights.LinkDatasetRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._LinkDataset(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_dataset_configs(
+        self,
+    ) -> Callable[
+        [storageinsights.ListDatasetConfigsRequest],
+        storageinsights.ListDatasetConfigsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListDatasetConfigs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_report_configs(
         self,
     ) -> Callable[
@@ -1771,6 +3338,24 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReportDetails(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def unlink_dataset(
+        self,
+    ) -> Callable[[storageinsights.UnlinkDatasetRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UnlinkDataset(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_dataset_config(
+        self,
+    ) -> Callable[
+        [storageinsights.UpdateDatasetConfigRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateDatasetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_report_config(

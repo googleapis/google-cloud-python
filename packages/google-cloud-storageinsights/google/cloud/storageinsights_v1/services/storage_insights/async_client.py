@@ -44,8 +44,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -80,6 +83,10 @@ class StorageInsightsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = StorageInsightsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = StorageInsightsClient._DEFAULT_UNIVERSE
 
+    dataset_config_path = staticmethod(StorageInsightsClient.dataset_config_path)
+    parse_dataset_config_path = staticmethod(
+        StorageInsightsClient.parse_dataset_config_path
+    )
     report_config_path = staticmethod(StorageInsightsClient.report_config_path)
     parse_report_config_path = staticmethod(
         StorageInsightsClient.parse_report_config_path
@@ -342,8 +349,8 @@ class StorageInsightsAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.storageinsights_v1.types.ListReportConfigsRequest, dict]]):
-                The request object. Message for requesting list of
-                ReportConfigs
+                The request object. Request message for
+                [``ListReportConfigs``][google.cloud.storageinsights.v1.StorageInsights.ListReportConfigs]
             parent (:class:`str`):
                 Required. Parent value for
                 ListReportConfigsRequest
@@ -1121,6 +1128,928 @@ class StorageInsightsAsyncClient:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_dataset_configs(
+        self,
+        request: Optional[
+            Union[storageinsights.ListDatasetConfigsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListDatasetConfigsAsyncPager:
+        r"""Lists the dataset configurations in a given project
+        for a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storageinsights_v1
+
+            async def sample_list_dataset_configs():
+                # Create a client
+                client = storageinsights_v1.StorageInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = storageinsights_v1.ListDatasetConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_dataset_configs(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storageinsights_v1.types.ListDatasetConfigsRequest, dict]]):
+                The request object. Request message for
+                [``ListDatasetConfigs``][google.cloud.storageinsights.v1.StorageInsights.ListDatasetConfigs]
+            parent (:class:`str`):
+                Required. Parent value for
+                ListDatasetConfigsRequest
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storageinsights_v1.services.storage_insights.pagers.ListDatasetConfigsAsyncPager:
+                Response message for
+                   [ListDatasetConfigs][google.cloud.storageinsights.v1.StorageInsights.ListDatasetConfigs]
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storageinsights.ListDatasetConfigsRequest):
+            request = storageinsights.ListDatasetConfigsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_dataset_configs
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListDatasetConfigsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_dataset_config(
+        self,
+        request: Optional[Union[storageinsights.GetDatasetConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storageinsights.DatasetConfig:
+        r"""Gets the dataset configuration in a given project for
+        a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storageinsights_v1
+
+            async def sample_get_dataset_config():
+                # Create a client
+                client = storageinsights_v1.StorageInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = storageinsights_v1.GetDatasetConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_dataset_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storageinsights_v1.types.GetDatasetConfigRequest, dict]]):
+                The request object. Request message for
+                [``GetDatasetConfig``][google.cloud.storageinsights.v1.StorageInsights.GetDatasetConfig]
+            name (:class:`str`):
+                Required. Name of the resource
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storageinsights_v1.types.DatasetConfig:
+                Message describing the dataset configuration properties. For more
+                   information, see [Dataset configuration
+                   properties](\ https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storageinsights.GetDatasetConfigRequest):
+            request = storageinsights.GetDatasetConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_dataset_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_dataset_config(
+        self,
+        request: Optional[
+            Union[storageinsights.CreateDatasetConfigRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        dataset_config: Optional[storageinsights.DatasetConfig] = None,
+        dataset_config_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a dataset configuration in a given project
+        for a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storageinsights_v1
+
+            async def sample_create_dataset_config():
+                # Create a client
+                client = storageinsights_v1.StorageInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = storageinsights_v1.CreateDatasetConfigRequest(
+                    parent="parent_value",
+                    dataset_config_id="dataset_config_id_value",
+                )
+
+                # Make the request
+                operation = client.create_dataset_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storageinsights_v1.types.CreateDatasetConfigRequest, dict]]):
+                The request object. Request message for
+                [``CreateDatasetConfig``][google.cloud.storageinsights.v1.StorageInsights.CreateDatasetConfig]
+            parent (:class:`str`):
+                Required. Value for parent.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            dataset_config (:class:`google.cloud.storageinsights_v1.types.DatasetConfig`):
+                Required. The resource being created
+                This corresponds to the ``dataset_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            dataset_config_id (:class:`str`):
+                Required. ID of the requesting object. If
+                auto-generating ID is enabled on the server-side, remove
+                this field and ``dataset_config_id`` from the
+                method_signature of Create RPC Note: The value should
+                not contain any hyphens.
+
+                This corresponds to the ``dataset_config_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.storageinsights_v1.types.DatasetConfig` Message describing the dataset configuration properties. For more
+                   information, see [Dataset configuration
+                   properties](\ https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, dataset_config, dataset_config_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storageinsights.CreateDatasetConfigRequest):
+            request = storageinsights.CreateDatasetConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if dataset_config is not None:
+            request.dataset_config = dataset_config
+        if dataset_config_id is not None:
+            request.dataset_config_id = dataset_config_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_dataset_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            storageinsights.DatasetConfig,
+            metadata_type=storageinsights.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_dataset_config(
+        self,
+        request: Optional[
+            Union[storageinsights.UpdateDatasetConfigRequest, dict]
+        ] = None,
+        *,
+        dataset_config: Optional[storageinsights.DatasetConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates a dataset configuration in a given project
+        for a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storageinsights_v1
+
+            async def sample_update_dataset_config():
+                # Create a client
+                client = storageinsights_v1.StorageInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = storageinsights_v1.UpdateDatasetConfigRequest(
+                )
+
+                # Make the request
+                operation = client.update_dataset_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storageinsights_v1.types.UpdateDatasetConfigRequest, dict]]):
+                The request object. Request message for
+                [``UpdateDatasetConfig``][google.cloud.storageinsights.v1.StorageInsights.UpdateDatasetConfig]
+            dataset_config (:class:`google.cloud.storageinsights_v1.types.DatasetConfig`):
+                Required. The resource being updated
+                This corresponds to the ``dataset_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. Field mask is used to specify the fields to be
+                overwritten in the ``DatasetConfig`` resource by the
+                update. The fields specified in the ``update_mask`` are
+                relative to the resource, not the full request. A field
+                is overwritten if it is in the mask. If the user does
+                not provide a mask then it returns an "Invalid Argument"
+                error.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.storageinsights_v1.types.DatasetConfig` Message describing the dataset configuration properties. For more
+                   information, see [Dataset configuration
+                   properties](\ https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [dataset_config, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storageinsights.UpdateDatasetConfigRequest):
+            request = storageinsights.UpdateDatasetConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if dataset_config is not None:
+            request.dataset_config = dataset_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_dataset_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("dataset_config.name", request.dataset_config.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            storageinsights.DatasetConfig,
+            metadata_type=storageinsights.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_dataset_config(
+        self,
+        request: Optional[
+            Union[storageinsights.DeleteDatasetConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a dataset configuration in a given project
+        for a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storageinsights_v1
+
+            async def sample_delete_dataset_config():
+                # Create a client
+                client = storageinsights_v1.StorageInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = storageinsights_v1.DeleteDatasetConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_dataset_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storageinsights_v1.types.DeleteDatasetConfigRequest, dict]]):
+                The request object. Request message for
+                [``DeleteDatasetConfig``][google.cloud.storageinsights.v1.StorageInsights.DeleteDatasetConfig]
+            name (:class:`str`):
+                Required. Name of the resource
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storageinsights.DeleteDatasetConfigRequest):
+            request = storageinsights.DeleteDatasetConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_dataset_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=storageinsights.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def link_dataset(
+        self,
+        request: Optional[Union[storageinsights.LinkDatasetRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Links a dataset to BigQuery in a given project for a
+        given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storageinsights_v1
+
+            async def sample_link_dataset():
+                # Create a client
+                client = storageinsights_v1.StorageInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = storageinsights_v1.LinkDatasetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.link_dataset(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storageinsights_v1.types.LinkDatasetRequest, dict]]):
+                The request object. Request message for
+                [``LinkDataset``][google.cloud.storageinsights.v1.StorageInsights.LinkDataset]
+            name (:class:`str`):
+                Required. Name of the resource
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.storageinsights_v1.types.LinkDatasetResponse` Response message for
+                   [LinkDataset][google.cloud.storageinsights.v1.StorageInsights.LinkDataset]
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storageinsights.LinkDatasetRequest):
+            request = storageinsights.LinkDatasetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.link_dataset
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            storageinsights.LinkDatasetResponse,
+            metadata_type=storageinsights.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def unlink_dataset(
+        self,
+        request: Optional[Union[storageinsights.UnlinkDatasetRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Unlinks a dataset from BigQuery in a given project
+        for a given location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storageinsights_v1
+
+            async def sample_unlink_dataset():
+                # Create a client
+                client = storageinsights_v1.StorageInsightsAsyncClient()
+
+                # Initialize request argument(s)
+                request = storageinsights_v1.UnlinkDatasetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.unlink_dataset(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storageinsights_v1.types.UnlinkDatasetRequest, dict]]):
+                The request object. Request message for
+                [``UnlinkDataset``][google.cloud.storageinsights.v1.StorageInsights.UnlinkDataset]
+            name (:class:`str`):
+                Required. Name of the resource
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storageinsights.UnlinkDatasetRequest):
+            request = storageinsights.UnlinkDatasetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.unlink_dataset
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=storageinsights.OperationMetadata,
         )
 
         # Done; return the response.
