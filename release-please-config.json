@@ -267,7 +267,9 @@
             "component": "google-cloud-alloydb-connectors",
             "extra-files": [
                 "google/cloud/alloydb/connectors/gapic_version.py",
-                "google/cloud/alloydb/connectors_v1/gapic_version.py"
+                "google/cloud/alloydb/connectors_v1/gapic_version.py",
+                "google/cloud/alloydb/connectors_v1alpha/gapic_version.py",
+                "google/cloud/alloydb/connectors_v1beta/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -2899,9 +2901,15 @@
             "extra-files": [
                 "google/cloud/support/gapic_version.py",
                 "google/cloud/support_v2/gapic_version.py",
+                "google/cloud/support_v2beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.support.v2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.support.v2beta.json",
                     "type": "json"
                 }
             ],
