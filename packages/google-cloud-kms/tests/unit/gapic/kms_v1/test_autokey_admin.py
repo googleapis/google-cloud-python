@@ -1121,6 +1121,7 @@ def test_update_autokey_config(request_type, transport: str = "grpc"):
             name="name_value",
             key_project="key_project_value",
             state=autokey_admin.AutokeyConfig.State.ACTIVE,
+            etag="etag_value",
         )
         response = client.update_autokey_config(request)
 
@@ -1135,6 +1136,7 @@ def test_update_autokey_config(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
     assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
+    assert response.etag == "etag_value"
 
 
 def test_update_autokey_config_non_empty_request_with_auto_populated_field():
@@ -1269,6 +1271,7 @@ async def test_update_autokey_config_async(
                 name="name_value",
                 key_project="key_project_value",
                 state=autokey_admin.AutokeyConfig.State.ACTIVE,
+                etag="etag_value",
             )
         )
         response = await client.update_autokey_config(request)
@@ -1284,6 +1287,7 @@ async def test_update_autokey_config_async(
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
     assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -1478,6 +1482,7 @@ def test_get_autokey_config(request_type, transport: str = "grpc"):
             name="name_value",
             key_project="key_project_value",
             state=autokey_admin.AutokeyConfig.State.ACTIVE,
+            etag="etag_value",
         )
         response = client.get_autokey_config(request)
 
@@ -1492,6 +1497,7 @@ def test_get_autokey_config(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
     assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
+    assert response.etag == "etag_value"
 
 
 def test_get_autokey_config_non_empty_request_with_auto_populated_field():
@@ -1628,6 +1634,7 @@ async def test_get_autokey_config_async(
                 name="name_value",
                 key_project="key_project_value",
                 state=autokey_admin.AutokeyConfig.State.ACTIVE,
+                etag="etag_value",
             )
         )
         response = await client.get_autokey_config(request)
@@ -1643,6 +1650,7 @@ async def test_get_autokey_config_async(
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
     assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
@@ -2910,6 +2918,7 @@ async def test_update_autokey_config_empty_call_grpc_asyncio():
                 name="name_value",
                 key_project="key_project_value",
                 state=autokey_admin.AutokeyConfig.State.ACTIVE,
+                etag="etag_value",
             )
         )
         await client.update_autokey_config(request=None)
@@ -2941,6 +2950,7 @@ async def test_get_autokey_config_empty_call_grpc_asyncio():
                 name="name_value",
                 key_project="key_project_value",
                 state=autokey_admin.AutokeyConfig.State.ACTIVE,
+                etag="etag_value",
             )
         )
         await client.get_autokey_config(request=None)
@@ -3032,6 +3042,7 @@ def test_update_autokey_config_rest_call_success(request_type):
         "name": "folders/sample1/autokeyConfig",
         "key_project": "key_project_value",
         "state": 1,
+        "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3109,6 +3120,7 @@ def test_update_autokey_config_rest_call_success(request_type):
             name="name_value",
             key_project="key_project_value",
             state=autokey_admin.AutokeyConfig.State.ACTIVE,
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3128,6 +3140,7 @@ def test_update_autokey_config_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
     assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3243,6 +3256,7 @@ def test_get_autokey_config_rest_call_success(request_type):
             name="name_value",
             key_project="key_project_value",
             state=autokey_admin.AutokeyConfig.State.ACTIVE,
+            etag="etag_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -3262,6 +3276,7 @@ def test_get_autokey_config_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.key_project == "key_project_value"
     assert response.state == autokey_admin.AutokeyConfig.State.ACTIVE
+    assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
