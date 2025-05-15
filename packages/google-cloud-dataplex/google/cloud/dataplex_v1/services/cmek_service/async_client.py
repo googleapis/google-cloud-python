@@ -364,13 +364,9 @@ class CmekServiceAsyncClient:
                 should not be set.
             encryption_config_id (:class:`str`):
                 Required. The ID of the
-                EncryptionConfig to create. The ID must
-                contain only letters (a-z, A-Z), numbers
-                (0-9), and hyphens (-).
-                The maximum size is 63 characters.
-                The first character must be a letter.
-                The last character must be a letter or a
-                number.
+                [EncryptionConfig][google.cloud.dataplex.v1.EncryptionConfig]
+                to create. Currently, only a value of "default" is
+                supported.
 
                 This corresponds to the ``encryption_config_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

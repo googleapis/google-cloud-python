@@ -256,8 +256,8 @@ class DataDiscoveryResult(proto.Message):
             Output only. Configuration for metadata
             publishing.
         scan_statistics (google.cloud.dataplex_v1.types.DataDiscoveryResult.ScanStatistics):
-            Output only. Statistics of the
-            DataDiscoveryScan.
+            Output only. Describes result statistics of a
+            data scan discovery job.
     """
 
     class BigQueryPublishing(proto.Message):
@@ -282,7 +282,7 @@ class DataDiscoveryResult(proto.Message):
         )
 
     class ScanStatistics(proto.Message):
-        r"""Statistics of the DataDiscoveryScan.
+        r"""Describes result statistics of a data scan discovery job.
 
         Attributes:
             scanned_file_count (int):
