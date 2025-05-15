@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import re
-from typing import cast, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.strings.accessor as vendorstr
@@ -230,21 +230,26 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         flags: int = 0,
         regex: bool = False,
     ) -> series.Series:
-        is_compiled = isinstance(pat, re.Pattern)
-        patstr = cast(str, pat.pattern if is_compiled else pat)  # type: ignore
+        if isinstance(pat, re.Pattern):
+            assert isinstance(pat.pattern, str)
+            pat_str = pat.pattern
+            flags = pat.flags | flags
+        else:
+            pat_str = pat
+
         if case is False:
-            return self.replace(pat, repl, flags=flags | re.IGNORECASE, regex=True)
+            return self.replace(pat_str, repl, flags=flags | re.IGNORECASE, regex=True)
         if regex:
             re2flags = _parse_flags(flags)
             if re2flags:
-                patstr = re2flags + patstr
-            return self._apply_unary_op(ops.RegexReplaceStrOp(pat=patstr, repl=repl))
+                pat_str = re2flags + pat_str
+            return self._apply_unary_op(ops.RegexReplaceStrOp(pat=pat_str, repl=repl))
         else:
-            if is_compiled:
+            if isinstance(pat, re.Pattern):
                 raise ValueError(
                     "Must set 'regex'=True if using compiled regex pattern."
                 )
-            return self._apply_unary_op(ops.ReplaceStrOp(pat=patstr, repl=repl))
+            return self._apply_unary_op(ops.ReplaceStrOp(pat=pat_str, repl=repl))
 
     def startswith(
         self,
@@ -318,9 +323,14 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
 def _parse_flags(flags: int) -> Optional[str]:
     re2flags = []
     for reflag, re2flag in REGEXP_FLAGS.items():
-        if flags & flags:
+        if flags & reflag:
             re2flags.append(re2flag)
             flags = flags ^ reflag
+
+    # re2 handles unicode fine by default
+    # most compiled re in python will have unicode set
+    if re.U and flags:
+        flags = flags ^ re.U
 
     # Remaining flags couldn't be mapped to re2 engine
     if flags:
