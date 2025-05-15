@@ -113,7 +113,7 @@ class EncryptionConfig(proto.Message):
                     The error code is not specified
                 INTERNAL_ERROR (1):
                     Error because of internal server error, will
-                    be retried automatically..
+                    be retried automatically.
                 REQUIRE_USER_ACTION (2):
                     User action is required to resolve the error.
             """
@@ -173,12 +173,10 @@ class CreateEncryptionConfigRequest(proto.Message):
             Required. The location at which the
             EncryptionConfig is to be created.
         encryption_config_id (str):
-            Required. The ID of the EncryptionConfig to
-            create. The ID must contain only letters (a-z,
-            A-Z), numbers (0-9), and hyphens (-).
-            The maximum size is 63 characters.
-            The first character must be a letter.
-            The last character must be a letter or a number.
+            Required. The ID of the
+            [EncryptionConfig][google.cloud.dataplex.v1.EncryptionConfig]
+            to create. Currently, only a value of "default" is
+            supported.
         encryption_config (google.cloud.dataplex_v1.types.EncryptionConfig):
             Required. The EncryptionConfig to create.
     """
