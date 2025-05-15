@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.15...google-cloud-storageinsights-v0.1.16) (2025-05-15)
+
+
+### Features
+
+* Add Client Libraries for Datasets ([2e7f0b8](https://github.com/googleapis/google-cloud-python/commit/2e7f0b8527639ea06509d9037d490766b3871c3f))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.14...google-cloud-storageinsights-v0.1.15) (2025-03-15)
 
 

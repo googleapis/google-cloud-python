@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [0.10.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.17...google-cloud-run-v0.10.18) (2025-05-15)
+
+
+### Features
+
+* support GPU zonal redundancy setting in Cloud Run services ([2f33995](https://github.com/googleapis/google-cloud-python/commit/2f33995c8f454fe9a6798aa2477bd1b0a817d1da))
+* support node selector in Cloud Run jobs for GPU setting ([2f33995](https://github.com/googleapis/google-cloud-python/commit/2f33995c8f454fe9a6798aa2477bd1b0a817d1da))
+
 ## [0.10.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.16...google-cloud-run-v0.10.17) (2025-03-15)
 
 

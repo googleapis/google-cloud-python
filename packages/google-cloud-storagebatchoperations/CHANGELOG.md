@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storagebatchoperations-v0.1.2...google-cloud-storagebatchoperations-v0.1.3) (2025-05-15)
+
+
+### Documentation
+
+* minor fixes to the reference documentation ([115c506](https://github.com/googleapis/google-cloud-python/commit/115c506229a052bccc69d4e913af727730769312))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storagebatchoperations-v0.1.1...google-cloud-storagebatchoperations-v0.1.2) (2025-05-08)
 
 
