@@ -665,6 +665,162 @@ class ListClipsAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListDvrSessionsPager:
+    """A pager for iterating through ``list_dvr_sessions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.video.live_stream_v1.types.ListDvrSessionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``dvr_sessions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListDvrSessions`` requests and continue to iterate
+    through the ``dvr_sessions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.video.live_stream_v1.types.ListDvrSessionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListDvrSessionsResponse],
+        request: service.ListDvrSessionsRequest,
+        response: service.ListDvrSessionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.video.live_stream_v1.types.ListDvrSessionsRequest):
+                The initial request object.
+            response (google.cloud.video.live_stream_v1.types.ListDvrSessionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = service.ListDvrSessionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[service.ListDvrSessionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[resources.DvrSession]:
+        for page in self.pages:
+            yield from page.dvr_sessions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListDvrSessionsAsyncPager:
+    """A pager for iterating through ``list_dvr_sessions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.video.live_stream_v1.types.ListDvrSessionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``dvr_sessions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListDvrSessions`` requests and continue to iterate
+    through the ``dvr_sessions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.video.live_stream_v1.types.ListDvrSessionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListDvrSessionsResponse]],
+        request: service.ListDvrSessionsRequest,
+        response: service.ListDvrSessionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.video.live_stream_v1.types.ListDvrSessionsRequest):
+                The initial request object.
+            response (google.cloud.video.live_stream_v1.types.ListDvrSessionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = service.ListDvrSessionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[service.ListDvrSessionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[resources.DvrSession]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.dvr_sessions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListAssetsPager:
     """A pager for iterating through ``list_assets`` requests.
 

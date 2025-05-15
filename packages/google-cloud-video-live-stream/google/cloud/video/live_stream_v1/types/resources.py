@@ -43,6 +43,8 @@ __protobuf__ = proto.module(
         "InputAttachment",
         "Event",
         "Clip",
+        "TimeInterval",
+        "DvrSession",
         "Asset",
         "Encryption",
         "Pool",
@@ -1079,7 +1081,7 @@ class Clip(proto.Message):
     Attributes:
         name (str):
             The resource name of the clip, in the following format:
-            ``projects/{project}/locations/{location}/channels/{c}/clips/{clipId}``.
+            ``projects/{project}/locations/{location}/channels/{channelId}/clips/{clipId}``.
             ``{clipId}`` is a user-specified resource id that conforms
             to the following criteria:
 
@@ -1118,6 +1120,9 @@ class Clip(proto.Message):
         clip_manifests (MutableSequence[google.cloud.video.live_stream_v1.types.Clip.ClipManifest]):
             Required. A list of clip manifests. Currently
             only one clip manifest is allowed.
+        output_type (google.cloud.video.live_stream_v1.types.Clip.OutputType):
+            Optional. OutputType of the clip. If not
+            specified, the default value is MANIFEST.
     """
 
     class State(proto.Enum):
@@ -1144,6 +1149,22 @@ class Clip(proto.Message):
         CREATING = 2
         SUCCEEDED = 3
         FAILED = 4
+
+    class OutputType(proto.Enum):
+        r"""OutputType represents the output type of the clip.
+
+        Values:
+            OUTPUT_TYPE_UNSPECIFIED (0):
+                OutputType is not specified.
+            MANIFEST (1):
+                OutputType is a VOD manifest. This is the
+                default value.
+            MP4 (2):
+                OutputType is an MP4 file.
+        """
+        OUTPUT_TYPE_UNSPECIFIED = 0
+        MANIFEST = 1
+        MP4 = 2
 
     class TimeSlice(proto.Message):
         r"""TimeSlice represents a tuple of Unix epoch timestamps that
@@ -1264,6 +1285,215 @@ class Clip(proto.Message):
         proto.MESSAGE,
         number=12,
         message=ClipManifest,
+    )
+    output_type: OutputType = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=OutputType,
+    )
+
+
+class TimeInterval(proto.Message):
+    r"""TimeInterval represents a time interval.
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The start time of the interval.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The end time of the interval.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class DvrSession(proto.Message):
+    r"""DvrSession is a sub-resource under channel. Each DvrSession
+    represents a DVR recording of the live stream for a specific
+    time range.
+
+    Attributes:
+        name (str):
+            Identifier. The resource name of the DVR session, in the
+            following format:
+            ``projects/{project}/locations/{location}/channels/{channelId}/dvrSessions/{dvrSessionId}``.
+            ``{dvrSessionId}`` is a user-specified resource id that
+            conforms to the following criteria:
+
+            1. 1 character minimum, 63 characters maximum
+            2. Only contains letters, digits, underscores, and hyphens
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The update time.
+        labels (MutableMapping[str, str]):
+            Optional. User-defined key/value metadata.
+        state (google.cloud.video.live_stream_v1.types.DvrSession.State):
+            Output only. The state of the clip.
+        error (google.rpc.status_pb2.Status):
+            Output only. An error object that describes the reason for
+            the failure. This property only presents when ``state`` is
+            ``FAILED``.
+        dvr_manifests (MutableSequence[google.cloud.video.live_stream_v1.types.DvrSession.DvrManifest]):
+            Required. A list of DVR manifests. Currently
+            only one DVR manifest is allowed.
+        dvr_windows (MutableSequence[google.cloud.video.live_stream_v1.types.DvrSession.DvrWindow]):
+            Required. The specified ranges of segments to
+            generate a DVR recording.
+    """
+
+    class State(proto.Enum):
+        r"""State of the DVR session.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State is not specified.
+            PENDING (1):
+                The operation is pending to be picked up by
+                the server.
+            UPDATING (2):
+                The session is being updated.
+            SCHEDULED (3):
+                The session is scheduled and waiting for the
+                start time.
+            LIVE (4):
+                The session is currently in progress and the outputs are
+                available in the specified Cloud Storage bucket. For
+                additional information, see the ``dvr_manifests.output_uri``
+                field.
+            FINISHED (5):
+                Outputs are available in the specified Cloud Storage bucket.
+                For additional information, see the
+                ``dvr_manifests.output_uri`` field.
+            FAILED (6):
+                The operation has failed. For additional information, see
+                the ``error`` field.
+            DELETING (7):
+                The session is being deleted.
+            POST_PROCESSING (8):
+                The session is being post processed.
+            COOLDOWN (9):
+                The session is in cooldown. The cooldown
+                period lasts for 60 seconds. When the DVR
+                session is updated by the user to have a new end
+                time that is likely already in the past, the DVR
+                manifest will end as soon as possible and the
+                DVR session will move to this state. This is
+                done to prevent the players to receive a
+                manifest update that removes a segment that has
+                already been played. After the cooldown period
+                ends, a new manifest is generated that honors
+                the new end time.
+            STOPPING (10):
+                The session is being stopped. The session
+                will move to STOPPING state, if the parent
+                channel is updated.
+        """
+        STATE_UNSPECIFIED = 0
+        PENDING = 1
+        UPDATING = 2
+        SCHEDULED = 3
+        LIVE = 4
+        FINISHED = 5
+        FAILED = 6
+        DELETING = 7
+        POST_PROCESSING = 8
+        COOLDOWN = 9
+        STOPPING = 10
+
+    class DvrManifest(proto.Message):
+        r"""DvrManifest identifies a source manifest and specifies a file
+        name for the generated DVR manifest.
+
+        Attributes:
+            manifest_key (str):
+                Required. A unique key that identifies a manifest config in
+                the parent channel. This key is the same as
+                ``channel.manifests.key`` for the selected manifest.
+            output_uri (str):
+                Output only. The output URI of the DVR manifest. The DVR
+                output will be placed in a directory named
+                ``dvr/dvrSessionId/`` under the parent channel's output uri.
+                Format:
+                {channel.output.uri}/dvr/{dvrSessionId}/{channel.manifests.fileName}
+                Example: gs://my-bucket/outputs/dvr/my-dvr-session/main.m3u8
+        """
+
+        manifest_key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        output_uri: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class DvrWindow(proto.Message):
+        r"""DvrWindow represents a DVR window.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            time_interval (google.cloud.video.live_stream_v1.types.TimeInterval):
+                A time interval in the form of a tuple of
+                Unix epoch time.
+
+                This field is a member of `oneof`_ ``kind``.
+        """
+
+        time_interval: "TimeInterval" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="kind",
+            message="TimeInterval",
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=status_pb2.Status,
+    )
+    dvr_manifests: MutableSequence[DvrManifest] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=DvrManifest,
+    )
+    dvr_windows: MutableSequence[DvrWindow] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=DvrWindow,
     )
 
 
