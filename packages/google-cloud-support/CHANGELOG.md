@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.14...google-cloud-support-v0.1.15) (2025-05-15)
+
+
+### Features
+
+* Annotate `Comment.plain_text_body` as deprecated (it was already deprecated, but now we're adding the annotation for it) ([85418b0](https://github.com/googleapis/google-cloud-python/commit/85418b093f0d5e06e809cbf52e63a46df8aa087c))
+* Deprecate the `Actor.email` field and add `username` to replace it ([85418b0](https://github.com/googleapis/google-cloud-python/commit/85418b093f0d5e06e809cbf52e63a46df8aa087c))
+* publish client libraries for CSAPI v2beta ([85418b0](https://github.com/googleapis/google-cloud-python/commit/85418b093f0d5e06e809cbf52e63a46df8aa087c))
+
+
+### Documentation
+
+* Bring comments and metadata up to date ([85418b0](https://github.com/googleapis/google-cloud-python/commit/85418b093f0d5e06e809cbf52e63a46df8aa087c))
+
 ## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.13...google-cloud-support-v0.1.14) (2025-03-15)
 
 

@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.25...google-maps-places-v0.2.0) (2025-05-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing field `references` is removed from message `.google.maps.places.v1.Place`
+* An existing message `AreaSummary` is removed
+* An existing field `area_summary` is removed from message `.google.maps.places.v1.Place`
+* An existing field `description` is removed from message `.google.maps.places.v1.Place`
+
+### Features
+
+* add address descriptor proto ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+* add new GoogleMapsLinks fields ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+* add new NeighborhoodSummary fields ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+* add new photo fields ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+* add new review fields ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+* add new ReviewSummary fields ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+* update GenerativeSummary fields ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+
+
+### Bug Fixes
+
+* An existing field `area_summary` is removed from message `.google.maps.places.v1.Place` ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+* An existing field `description` is removed from message `.google.maps.places.v1.Place` ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+* An existing field `references` is removed from message `.google.maps.places.v1.Place` ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+* An existing message `AreaSummary` is removed ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+
+
+### Documentation
+
+* change comments for some fields in Places API ([657feee](https://github.com/googleapis/google-cloud-python/commit/657feee6e32efc9fef8a8df11790a24d8750ad36))
+
 ## [0.1.25](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.24...google-maps-places-v0.1.25) (2025-03-15)
 
 

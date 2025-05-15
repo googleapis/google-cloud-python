@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.10.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.10.1...google-cloud-dataplex-v2.10.2) (2025-05-15)
+
+
+### Documentation
+
+* A comment for enum `SyncMode` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for enum value `EXPORT` in enum `Type` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for enum value `INTERNAL_ERROR` in enum `ErrorCode` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `aspect_types` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `encryption_config_id` in message `.google.cloud.dataplex.v1.CreateEncryptionConfigRequest` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `entry_groups` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `entry_types` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `error_message` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `exported_entries` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `organization_level` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `output_path` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `projects` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `scan_statistics` in message `.google.cloud.dataplex.v1.DataDiscoveryResult` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `scope` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for field `source_storage_uri` in message `.google.cloud.dataplex.v1.MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for message `DataDiscoveryResult` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for message `MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for message `MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+* A comment for message `MetadataJob` is changed ([6f6d015](https://github.com/googleapis/google-cloud-python/commit/6f6d015c35ae5143f14c2e808a8ca6e35716fe90))
+
 ## [2.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.10.0...google-cloud-dataplex-v2.10.1) (2025-04-17)
 
 

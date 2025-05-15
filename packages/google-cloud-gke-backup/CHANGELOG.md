@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.18...google-cloud-gke-backup-v0.5.19) (2025-05-15)
+
+
+### Features
+
+* Add BackupChannel field in BackupPlan ([091f988](https://github.com/googleapis/google-cloud-python/commit/091f988fe45f5859c7540dabc809cc20aa9c5bfc))
+* Add BackupConfig of Backups in BackupPlanBinding ([091f988](https://github.com/googleapis/google-cloud-python/commit/091f988fe45f5859c7540dabc809cc20aa9c5bfc))
+* Add RestoreChannel field in RestorePlan ([091f988](https://github.com/googleapis/google-cloud-python/commit/091f988fe45f5859c7540dabc809cc20aa9c5bfc))
+* Add support for Project ID in BackupChannel and RestoreChannel ([091f988](https://github.com/googleapis/google-cloud-python/commit/091f988fe45f5859c7540dabc809cc20aa9c5bfc))
+
+
+### Documentation
+
+* minor documentation fixes ([091f988](https://github.com/googleapis/google-cloud-python/commit/091f988fe45f5859c7540dabc809cc20aa9c5bfc))
+
 ## [0.5.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.17...google-cloud-gke-backup-v0.5.18) (2025-04-23)
 
 

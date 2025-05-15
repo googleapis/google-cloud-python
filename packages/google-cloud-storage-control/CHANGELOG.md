@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.4.0...google-cloud-storage-control-v1.5.0) (2025-05-15)
+
+
+### Features
+
+* Add Client Libraries Storage IntelligenceConfig ([2fe4678](https://github.com/googleapis/google-cloud-python/commit/2fe4678e19f728412ce970732328f1481aeaf02d))
+
 ## [1.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.3.1...google-cloud-storage-control-v1.4.0) (2025-05-08)
 
 

@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.4.1...google-cloud-kms-v3.5.0) (2025-05-15)
+
+
+### Features
+
+* Adding eTag field to AutokeyConfig ([5d7b972](https://github.com/googleapis/google-cloud-python/commit/5d7b9728009f7ef561d65d70a8b712400b509d34))
+
+
+### Documentation
+
+* Updating docs for total_size field in KMS List APIs ([5d7b972](https://github.com/googleapis/google-cloud-python/commit/5d7b9728009f7ef561d65d70a8b712400b509d34))
+
 ## [3.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.4.0...google-cloud-kms-v3.4.1) (2025-03-15)
 
 

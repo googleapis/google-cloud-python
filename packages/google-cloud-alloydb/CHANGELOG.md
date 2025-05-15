@@ -1,5 +1,47 @@
 # Changelog
 
+## [0.4.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.5...google-cloud-alloydb-v0.4.6) (2025-05-15)
+
+
+### Features
+
+* Add a new GCAEntitlement field in Gemini config ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add CloudSQL support for RestoreCluster operation ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add fields to PscInstanceConfig ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add GCA Entitlement type ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add Import and Export functionalities ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add machine_type field to instance config ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add new CSQL API for supporting Cluster creation from Cloud SQL ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add new fields and methods to the AlloyDB API ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add new fields to support observability configurations, machine types and PSC related configs ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add new methods for exporting, importing and upgrade Cluster operations ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add recommended_value and scope field to SupportedDatabaseFlags ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Add the GCAInstanceConfig field in instance ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Improve documentation of existing API fields ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* make user optional in ExecuteSql API ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* Sync AlloyDB API changes from HEAD to stable ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+
+
+### Documentation
+
+* A comment for field `database_flags` in message `.google.cloud.alloydb.v1.Instance` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `encryption_config` in message `.google.cloud.alloydb.v1.AutomatedBackupPolicy` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `encryption_config` in message `.google.cloud.alloydb.v1.ContinuousBackupConfig` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `encryption_config` in message `.google.cloud.alloydb.v1beta.AutomatedBackupPolicy` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `encryption_config` in message `.google.cloud.alloydb.v1beta.ContinuousBackupConfig` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `id` in message `.google.cloud.alloydb.v1.Instance` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `ip` in message `.google.cloud.alloydb.v1.Instance` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `requested_cancellation` in message `.google.cloud.alloydb.v1.OperationMetadata` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `state` in message `.google.cloud.alloydb.v1.Instance` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `track_wait_event_types` in message `.google.cloud.alloydb.v1beta.Instance` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `use_metadata_exchange` in message `.google.cloud.alloydb.v1.GenerateClientCertificateRequest` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `use_metadata_exchange` in message `.google.cloud.alloydb.v1beta.GenerateClientCertificateRequest` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `user` in message `.google.cloud.alloydb.v1.ExecuteSqlRequest` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `user` in message `.google.cloud.alloydb.v1beta.ExecuteSqlRequest` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for field `zone_id` in message `.google.cloud.alloydb.v1.Instance` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for message `Instance` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+* A comment for message `Instance` is changed ([50c8a86](https://github.com/googleapis/google-cloud-python/commit/50c8a86a84ba45b77f114e23a98693f8c9202a39))
+
 ## [0.4.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.4...google-cloud-alloydb-v0.4.5) (2025-03-19)
 
 

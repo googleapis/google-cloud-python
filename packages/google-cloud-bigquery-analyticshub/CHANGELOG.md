@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.18...google-cloud-bigquery-analyticshub-v0.4.19) (2025-05-15)
+
+
+### Features
+
+* Add support for Analytics Hub & Marketplace Integration ([d875d05](https://github.com/googleapis/google-cloud-python/commit/d875d053acb170e1491dd774c93506b339524d45))
+* Adding allow_only_metadata_sharing to Listing resource ([d875d05](https://github.com/googleapis/google-cloud-python/commit/d875d053acb170e1491dd774c93506b339524d45))
+* Adding CommercialInfo message to the Listing and Subscription resources ([d875d05](https://github.com/googleapis/google-cloud-python/commit/d875d053acb170e1491dd774c93506b339524d45))
+* Adding delete_commercial and revoke_commercial to DeleteListingRequest and RevokeSubscriptionRequest ([d875d05](https://github.com/googleapis/google-cloud-python/commit/d875d053acb170e1491dd774c93506b339524d45))
+* Adding DestinationDataset to the Subscription resource ([d875d05](https://github.com/googleapis/google-cloud-python/commit/d875d053acb170e1491dd774c93506b339524d45))
+* Adding routine field to the SharedResource message ([d875d05](https://github.com/googleapis/google-cloud-python/commit/d875d053acb170e1491dd774c93506b339524d45))
+
 ## [0.4.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.17...google-cloud-bigquery-analyticshub-v0.4.18) (2025-03-27)
 
 

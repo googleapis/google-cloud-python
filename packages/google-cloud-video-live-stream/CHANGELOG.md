@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.11.1...google-cloud-video-live-stream-v1.12.0) (2025-05-15)
+
+
+### Features
+
+* added DVRSession methods to support DVR feature ([f20efc4](https://github.com/googleapis/google-cloud-python/commit/f20efc44ed858b34b96a70dfcd8938e6be86cbb2))
+* added OutputType field to the Clip resource to support MP4 clipping ([f20efc4](https://github.com/googleapis/google-cloud-python/commit/f20efc44ed858b34b96a70dfcd8938e6be86cbb2))
+
+
+### Documentation
+
+* A comment for field `requested_cancellation` in message `.google.cloud.video.livestream.v1.OperationMetadata` is changed to clarify error type ([f20efc4](https://github.com/googleapis/google-cloud-python/commit/f20efc44ed858b34b96a70dfcd8938e6be86cbb2))
+* Clarified GCS in the comment for method `DeleteClip` in service `LivestreamService` ([f20efc4](https://github.com/googleapis/google-cloud-python/commit/f20efc44ed858b34b96a70dfcd8938e6be86cbb2))
+* Updated comment for field `update_mask` in message `.google.cloud.video.livestream.v1.UpdateInputRequest` to indicate updates in `tier` field are allowed ([f20efc4](https://github.com/googleapis/google-cloud-python/commit/f20efc44ed858b34b96a70dfcd8938e6be86cbb2))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.11.0...google-cloud-video-live-stream-v1.11.1) (2025-03-15)
 
 
