@@ -886,7 +886,7 @@ def test_list_columns_and_indexes_with_named_index_same_as_column_name(
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_dataframe_to_json_generator(module_under_test):
-    utcnow = datetime.datetime.utcnow()
+    utcnow = datetime.datetime.now(datetime.timezone.utc)
     dataframe = pandas.DataFrame(
         {
             "a_series": [1, 2, 3, 4],

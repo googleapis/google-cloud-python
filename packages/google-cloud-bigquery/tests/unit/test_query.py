@@ -637,9 +637,9 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_timestamp_micros(self):
-        from google.cloud._helpers import _microseconds_from_datetime
+        from google.cloud._helpers import _microseconds_from_datetime, UTC
 
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(UTC)
         seconds = _microseconds_from_datetime(now) / 1.0e6
         EXPECTED = {
             "parameterType": {"type": "TIMESTAMP"},
@@ -650,9 +650,9 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_datetime_datetime(self):
-        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import _datetime_to_rfc3339, UTC
 
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(UTC)
         EXPECTED = {
             "parameterType": {"type": "DATETIME"},
             "parameterValue": {
@@ -664,9 +664,9 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_datetime_string(self):
-        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import _datetime_to_rfc3339, UTC
 
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(UTC)
         now_str = _datetime_to_rfc3339(now)
         EXPECTED = {
             "parameterType": {"type": "DATETIME"},
@@ -1047,9 +1047,10 @@ class Test_RangeQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_datetime_datetime(self):
+        from google.cloud._helpers import UTC  # type: ignore
         from google.cloud.bigquery._helpers import _RFC3339_MICROS_NO_ZULU
 
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(UTC)
         now_str = now.strftime(_RFC3339_MICROS_NO_ZULU)
         EXPECTED = {
             "parameterType": {
@@ -1089,7 +1090,7 @@ class Test_RangeQueryParameter(unittest.TestCase):
     def test_to_api_repr_w_timestamp_timestamp(self):
         from google.cloud._helpers import UTC  # type: ignore
 
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(UTC)
         now = now.astimezone(UTC)
         now_str = str(now)
         EXPECTED = {

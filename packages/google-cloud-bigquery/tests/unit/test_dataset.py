@@ -945,7 +945,9 @@ class TestDataset(unittest.TestCase):
         from google.cloud._helpers import UTC
 
         self.WHEN_TS = 1437767599.006
-        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
+        self.WHEN = datetime.datetime.fromtimestamp(self.WHEN_TS, UTC).replace(
+            tzinfo=UTC
+        )
         self.ETAG = "ETAG"
         self.DS_FULL_ID = "%s:%s" % (self.PROJECT, self.DS_ID)
         self.RESOURCE_URL = "http://example.com/path/to/resource"

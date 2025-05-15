@@ -395,7 +395,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud._helpers import UTC
 
         self.WHEN_TS = 1437767599.006
-        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
+        self.WHEN = datetime.datetime.fromtimestamp(self.WHEN_TS, UTC).replace(
+            tzinfo=UTC
+        )
         self.ETAG = "ETAG"
         self.TABLE_FULL_ID = "%s:%s.%s" % (self.PROJECT, self.DS_ID, self.TABLE_NAME)
         self.RESOURCE_URL = "http://example.com/path/to/resource"
@@ -1952,7 +1954,9 @@ class TestTableListItem(unittest.TestCase):
         from google.cloud._helpers import UTC
 
         self.WHEN_TS = 1437767599.125
-        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
+        self.WHEN = datetime.datetime.fromtimestamp(self.WHEN_TS, UTC).replace(
+            tzinfo=UTC
+        )
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
 
     def test_ctor(self):

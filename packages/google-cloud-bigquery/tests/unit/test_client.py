@@ -5853,7 +5853,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.schema import SchemaField
 
         WHEN_TS = 1437767599.006
-        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(tzinfo=UTC)
+        WHEN = datetime.datetime.fromtimestamp(WHEN_TS, UTC).replace(tzinfo=UTC)
         PATH = "projects/%s/datasets/%s/tables/%s/insertAll" % (
             self.PROJECT,
             self.DS_ID,
@@ -5914,7 +5914,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.table import Table
 
         WHEN_TS = 1437767599.006
-        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(tzinfo=UTC)
+        WHEN = datetime.datetime.fromtimestamp(WHEN_TS, UTC).replace(tzinfo=UTC)
         PATH = "projects/%s/datasets/%s/tables/%s/insertAll" % (
             self.PROJECT,
             self.DS_ID,
@@ -6097,6 +6097,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_insert_rows_w_repeated_fields(self):
+        from google.cloud._helpers import UTC
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
@@ -6126,12 +6127,8 @@ class TestClient(unittest.TestCase):
                     (
                         12,
                         [
-                            datetime.datetime(
-                                2018, 12, 1, 12, 0, 0, tzinfo=datetime.timezone.utc
-                            ),
-                            datetime.datetime(
-                                2018, 12, 1, 13, 0, 0, tzinfo=datetime.timezone.utc
-                            ),
+                            datetime.datetime(2018, 12, 1, 12, 0, 0, tzinfo=UTC),
+                            datetime.datetime(2018, 12, 1, 13, 0, 0, tzinfo=UTC),
                         ],
                         [1.25, 2.5],
                     ),
@@ -6966,7 +6963,9 @@ class TestClient(unittest.TestCase):
         )
         WHEN_TS = 1437767599006000
 
-        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS / 1e6).replace(tzinfo=UTC)
+        WHEN = datetime.datetime.fromtimestamp(
+            WHEN_TS / 1e6, datetime.timezone.utc
+        ).replace(tzinfo=UTC)
         WHEN_1 = WHEN + datetime.timedelta(microseconds=1)
         WHEN_2 = WHEN + datetime.timedelta(microseconds=2)
         ROWS = 1234

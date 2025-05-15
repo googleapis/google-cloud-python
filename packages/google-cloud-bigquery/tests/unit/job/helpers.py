@@ -106,7 +106,9 @@ class _Base(unittest.TestCase):
         from google.cloud._helpers import UTC
 
         self.WHEN_TS = 1437767599.006
-        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(tzinfo=UTC)
+        self.WHEN = datetime.datetime.fromtimestamp(self.WHEN_TS, UTC).replace(
+            tzinfo=UTC
+        )
         self.ETAG = "ETAG"
         self.FULL_JOB_ID = "%s:%s" % (self.PROJECT, self.JOB_ID)
         self.RESOURCE_URL = "{}/bigquery/v2/projects/{}/jobs/{}".format(
