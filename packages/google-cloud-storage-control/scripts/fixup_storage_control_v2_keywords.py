@@ -47,7 +47,10 @@ class storage_controlCallTransformer(cst.CSTTransformer):
         'disable_anywhere_cache': ('name', 'request_id', ),
         'get_anywhere_cache': ('name', 'request_id', ),
         'get_folder': ('name', 'if_metageneration_match', 'if_metageneration_not_match', 'request_id', ),
+        'get_folder_intelligence_config': ('name', ),
         'get_managed_folder': ('name', 'if_metageneration_match', 'if_metageneration_not_match', 'request_id', ),
+        'get_organization_intelligence_config': ('name', ),
+        'get_project_intelligence_config': ('name', ),
         'get_storage_layout': ('name', 'prefix', 'request_id', ),
         'list_anywhere_caches': ('parent', 'page_size', 'page_token', 'request_id', ),
         'list_folders': ('parent', 'page_size', 'page_token', 'prefix', 'delimiter', 'lexicographic_start', 'lexicographic_end', 'request_id', ),
@@ -56,6 +59,9 @@ class storage_controlCallTransformer(cst.CSTTransformer):
         'rename_folder': ('name', 'destination_folder_id', 'if_metageneration_match', 'if_metageneration_not_match', 'request_id', ),
         'resume_anywhere_cache': ('name', 'request_id', ),
         'update_anywhere_cache': ('anywhere_cache', 'update_mask', 'request_id', ),
+        'update_folder_intelligence_config': ('intelligence_config', 'update_mask', 'request_id', ),
+        'update_organization_intelligence_config': ('intelligence_config', 'update_mask', 'request_id', ),
+        'update_project_intelligence_config': ('intelligence_config', 'update_mask', 'request_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

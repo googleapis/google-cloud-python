@@ -824,6 +824,203 @@ class StorageControlGrpcTransport(StorageControlTransport):
             )
         return self._stubs["list_anywhere_caches"]
 
+    @property
+    def get_project_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.GetProjectIntelligenceConfigRequest],
+        storage_control.IntelligenceConfig,
+    ]:
+        r"""Return a callable for the get project intelligence
+        config method over gRPC.
+
+        Returns the Project scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.GetProjectIntelligenceConfigRequest],
+                    ~.IntelligenceConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_project_intelligence_config" not in self._stubs:
+            self._stubs[
+                "get_project_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetProjectIntelligenceConfig",
+                request_serializer=storage_control.GetProjectIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["get_project_intelligence_config"]
+
+    @property
+    def update_project_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateProjectIntelligenceConfigRequest],
+        storage_control.IntelligenceConfig,
+    ]:
+        r"""Return a callable for the update project intelligence
+        config method over gRPC.
+
+        Updates the Project scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.UpdateProjectIntelligenceConfigRequest],
+                    ~.IntelligenceConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_project_intelligence_config" not in self._stubs:
+            self._stubs[
+                "update_project_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateProjectIntelligenceConfig",
+                request_serializer=storage_control.UpdateProjectIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["update_project_intelligence_config"]
+
+    @property
+    def get_folder_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.GetFolderIntelligenceConfigRequest],
+        storage_control.IntelligenceConfig,
+    ]:
+        r"""Return a callable for the get folder intelligence config method over gRPC.
+
+        Returns the Folder scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.GetFolderIntelligenceConfigRequest],
+                    ~.IntelligenceConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_folder_intelligence_config" not in self._stubs:
+            self._stubs[
+                "get_folder_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetFolderIntelligenceConfig",
+                request_serializer=storage_control.GetFolderIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["get_folder_intelligence_config"]
+
+    @property
+    def update_folder_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateFolderIntelligenceConfigRequest],
+        storage_control.IntelligenceConfig,
+    ]:
+        r"""Return a callable for the update folder intelligence
+        config method over gRPC.
+
+        Updates the Folder scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.UpdateFolderIntelligenceConfigRequest],
+                    ~.IntelligenceConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_folder_intelligence_config" not in self._stubs:
+            self._stubs[
+                "update_folder_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateFolderIntelligenceConfig",
+                request_serializer=storage_control.UpdateFolderIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["update_folder_intelligence_config"]
+
+    @property
+    def get_organization_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.GetOrganizationIntelligenceConfigRequest],
+        storage_control.IntelligenceConfig,
+    ]:
+        r"""Return a callable for the get organization intelligence
+        config method over gRPC.
+
+        Returns the Organization scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.GetOrganizationIntelligenceConfigRequest],
+                    ~.IntelligenceConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_organization_intelligence_config" not in self._stubs:
+            self._stubs[
+                "get_organization_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetOrganizationIntelligenceConfig",
+                request_serializer=storage_control.GetOrganizationIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["get_organization_intelligence_config"]
+
+    @property
+    def update_organization_intelligence_config(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateOrganizationIntelligenceConfigRequest],
+        storage_control.IntelligenceConfig,
+    ]:
+        r"""Return a callable for the update organization
+        intelligence config method over gRPC.
+
+        Updates the Organization scoped singleton
+        IntelligenceConfig resource.
+
+        Returns:
+            Callable[[~.UpdateOrganizationIntelligenceConfigRequest],
+                    ~.IntelligenceConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_organization_intelligence_config" not in self._stubs:
+            self._stubs[
+                "update_organization_intelligence_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateOrganizationIntelligenceConfig",
+                request_serializer=storage_control.UpdateOrganizationIntelligenceConfigRequest.serialize,
+                response_deserializer=storage_control.IntelligenceConfig.deserialize,
+            )
+        return self._stubs["update_organization_intelligence_config"]
+
     def close(self):
         self._logged_channel.close()
 

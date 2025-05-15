@@ -89,6 +89,12 @@ class StorageControlAsyncClient:
     )
     folder_path = staticmethod(StorageControlClient.folder_path)
     parse_folder_path = staticmethod(StorageControlClient.parse_folder_path)
+    intelligence_config_path = staticmethod(
+        StorageControlClient.intelligence_config_path
+    )
+    parse_intelligence_config_path = staticmethod(
+        StorageControlClient.parse_intelligence_config_path
+    )
     managed_folder_path = staticmethod(StorageControlClient.managed_folder_path)
     parse_managed_folder_path = staticmethod(
         StorageControlClient.parse_managed_folder_path
@@ -2549,6 +2555,784 @@ class StorageControlAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_project_intelligence_config(
+        self,
+        request: Optional[
+            Union[storage_control.GetProjectIntelligenceConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.IntelligenceConfig:
+        r"""Returns the Project scoped singleton
+        IntelligenceConfig resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_get_project_intelligence_config():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.GetProjectIntelligenceConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_project_intelligence_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.GetProjectIntelligenceConfigRequest, dict]]):
+                The request object. Request message to get the ``IntelligenceConfig``
+                resource associated with your project.
+
+                **IAM Permissions**:
+
+                Requires ``storage.intelligenceConfigs.get``
+                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+                permission on the project.
+            name (:class:`str`):
+                Required. The name of the ``IntelligenceConfig``
+                resource associated with your project.
+
+                Format:
+                ``projects/{id}/locations/global/intelligenceConfig``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.IntelligenceConfig:
+                The IntelligenceConfig resource associated with your organization, folder,
+                   or project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.GetProjectIntelligenceConfigRequest):
+            request = storage_control.GetProjectIntelligenceConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_project_intelligence_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_project_intelligence_config(
+        self,
+        request: Optional[
+            Union[storage_control.UpdateProjectIntelligenceConfigRequest, dict]
+        ] = None,
+        *,
+        intelligence_config: Optional[storage_control.IntelligenceConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.IntelligenceConfig:
+        r"""Updates the Project scoped singleton
+        IntelligenceConfig resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_update_project_intelligence_config():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.UpdateProjectIntelligenceConfigRequest(
+                )
+
+                # Make the request
+                response = await client.update_project_intelligence_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.UpdateProjectIntelligenceConfigRequest, dict]]):
+                The request object. Request message to update the ``IntelligenceConfig``
+                resource associated with your project.
+
+                **IAM Permissions**:
+
+                Requires ``storage.intelligenceConfigs.update``
+                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+                permission on the folder.
+            intelligence_config (:class:`google.cloud.storage_control_v2.types.IntelligenceConfig`):
+                Required. The ``IntelligenceConfig`` resource to be
+                updated.
+
+                This corresponds to the ``intelligence_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The ``update_mask`` that specifies the fields
+                within the ``IntelligenceConfig`` resource that should
+                be modified by this update. Only the listed fields are
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.IntelligenceConfig:
+                The IntelligenceConfig resource associated with your organization, folder,
+                   or project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [intelligence_config, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, storage_control.UpdateProjectIntelligenceConfigRequest
+        ):
+            request = storage_control.UpdateProjectIntelligenceConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if intelligence_config is not None:
+            request.intelligence_config = intelligence_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_project_intelligence_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("intelligence_config.name", request.intelligence_config.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_folder_intelligence_config(
+        self,
+        request: Optional[
+            Union[storage_control.GetFolderIntelligenceConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.IntelligenceConfig:
+        r"""Returns the Folder scoped singleton
+        IntelligenceConfig resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_get_folder_intelligence_config():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.GetFolderIntelligenceConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_folder_intelligence_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.GetFolderIntelligenceConfigRequest, dict]]):
+                The request object. Request message to get the ``IntelligenceConfig``
+                resource associated with your folder.
+
+                **IAM Permissions**
+
+                Requires ``storage.intelligenceConfigs.get``
+                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+                permission on the folder.
+            name (:class:`str`):
+                Required. The name of the ``IntelligenceConfig``
+                resource associated with your folder.
+
+                Format:
+                ``folders/{id}/locations/global/intelligenceConfig``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.IntelligenceConfig:
+                The IntelligenceConfig resource associated with your organization, folder,
+                   or project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.GetFolderIntelligenceConfigRequest):
+            request = storage_control.GetFolderIntelligenceConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_folder_intelligence_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_folder_intelligence_config(
+        self,
+        request: Optional[
+            Union[storage_control.UpdateFolderIntelligenceConfigRequest, dict]
+        ] = None,
+        *,
+        intelligence_config: Optional[storage_control.IntelligenceConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.IntelligenceConfig:
+        r"""Updates the Folder scoped singleton
+        IntelligenceConfig resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_update_folder_intelligence_config():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.UpdateFolderIntelligenceConfigRequest(
+                )
+
+                # Make the request
+                response = await client.update_folder_intelligence_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.UpdateFolderIntelligenceConfigRequest, dict]]):
+                The request object. Request message to update the ``IntelligenceConfig``
+                resource associated with your folder.
+
+                **IAM Permissions**:
+
+                Requires ``storage.intelligenceConfigs.update``
+                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+                permission on the folder.
+            intelligence_config (:class:`google.cloud.storage_control_v2.types.IntelligenceConfig`):
+                Required. The ``IntelligenceConfig`` resource to be
+                updated.
+
+                This corresponds to the ``intelligence_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The ``update_mask`` that specifies the fields
+                within the ``IntelligenceConfig`` resource that should
+                be modified by this update. Only the listed fields are
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.IntelligenceConfig:
+                The IntelligenceConfig resource associated with your organization, folder,
+                   or project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [intelligence_config, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, storage_control.UpdateFolderIntelligenceConfigRequest
+        ):
+            request = storage_control.UpdateFolderIntelligenceConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if intelligence_config is not None:
+            request.intelligence_config = intelligence_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_folder_intelligence_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("intelligence_config.name", request.intelligence_config.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_organization_intelligence_config(
+        self,
+        request: Optional[
+            Union[storage_control.GetOrganizationIntelligenceConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.IntelligenceConfig:
+        r"""Returns the Organization scoped singleton
+        IntelligenceConfig resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_get_organization_intelligence_config():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.GetOrganizationIntelligenceConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_organization_intelligence_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.GetOrganizationIntelligenceConfigRequest, dict]]):
+                The request object. Request message to get the ``IntelligenceConfig``
+                resource associated with your organization.
+
+                **IAM Permissions**
+
+                Requires ``storage.intelligenceConfigs.get``
+                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+                permission on the organization.
+            name (:class:`str`):
+                Required. The name of the ``IntelligenceConfig``
+                resource associated with your organization.
+
+                Format:
+                ``organizations/{org_id}/locations/global/intelligenceConfig``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.IntelligenceConfig:
+                The IntelligenceConfig resource associated with your organization, folder,
+                   or project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, storage_control.GetOrganizationIntelligenceConfigRequest
+        ):
+            request = storage_control.GetOrganizationIntelligenceConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_organization_intelligence_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_organization_intelligence_config(
+        self,
+        request: Optional[
+            Union[storage_control.UpdateOrganizationIntelligenceConfigRequest, dict]
+        ] = None,
+        *,
+        intelligence_config: Optional[storage_control.IntelligenceConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.IntelligenceConfig:
+        r"""Updates the Organization scoped singleton
+        IntelligenceConfig resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            async def sample_update_organization_intelligence_config():
+                # Create a client
+                client = storage_control_v2.StorageControlAsyncClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.UpdateOrganizationIntelligenceConfigRequest(
+                )
+
+                # Make the request
+                response = await client.update_organization_intelligence_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.storage_control_v2.types.UpdateOrganizationIntelligenceConfigRequest, dict]]):
+                The request object. Request message to update the ``IntelligenceConfig``
+                resource associated with your organization.
+
+                **IAM Permissions**:
+
+                Requires ``storage.intelligenceConfigs.update``
+                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
+                permission on the organization.
+            intelligence_config (:class:`google.cloud.storage_control_v2.types.IntelligenceConfig`):
+                Required. The ``IntelligenceConfig`` resource to be
+                updated.
+
+                This corresponds to the ``intelligence_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The ``update_mask`` that specifies the fields
+                within the ``IntelligenceConfig`` resource that should
+                be modified by this update. Only the listed fields are
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.IntelligenceConfig:
+                The IntelligenceConfig resource associated with your organization, folder,
+                   or project.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [intelligence_config, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, storage_control.UpdateOrganizationIntelligenceConfigRequest
+        ):
+            request = storage_control.UpdateOrganizationIntelligenceConfigRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if intelligence_config is not None:
+            request.intelligence_config = intelligence_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_organization_intelligence_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("intelligence_config.name", request.intelligence_config.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

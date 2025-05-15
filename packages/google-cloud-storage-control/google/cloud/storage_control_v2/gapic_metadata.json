@@ -50,9 +50,24 @@
                 "get_folder"
               ]
             },
+            "GetFolderIntelligenceConfig": {
+              "methods": [
+                "get_folder_intelligence_config"
+              ]
+            },
             "GetManagedFolder": {
               "methods": [
                 "get_managed_folder"
+              ]
+            },
+            "GetOrganizationIntelligenceConfig": {
+              "methods": [
+                "get_organization_intelligence_config"
+              ]
+            },
+            "GetProjectIntelligenceConfig": {
+              "methods": [
+                "get_project_intelligence_config"
               ]
             },
             "GetStorageLayout": {
@@ -93,6 +108,21 @@
             "UpdateAnywhereCache": {
               "methods": [
                 "update_anywhere_cache"
+              ]
+            },
+            "UpdateFolderIntelligenceConfig": {
+              "methods": [
+                "update_folder_intelligence_config"
+              ]
+            },
+            "UpdateOrganizationIntelligenceConfig": {
+              "methods": [
+                "update_organization_intelligence_config"
+              ]
+            },
+            "UpdateProjectIntelligenceConfig": {
+              "methods": [
+                "update_project_intelligence_config"
               ]
             }
           }
@@ -140,9 +170,24 @@
                 "get_folder"
               ]
             },
+            "GetFolderIntelligenceConfig": {
+              "methods": [
+                "get_folder_intelligence_config"
+              ]
+            },
             "GetManagedFolder": {
               "methods": [
                 "get_managed_folder"
+              ]
+            },
+            "GetOrganizationIntelligenceConfig": {
+              "methods": [
+                "get_organization_intelligence_config"
+              ]
+            },
+            "GetProjectIntelligenceConfig": {
+              "methods": [
+                "get_project_intelligence_config"
               ]
             },
             "GetStorageLayout": {
@@ -183,6 +228,21 @@
             "UpdateAnywhereCache": {
               "methods": [
                 "update_anywhere_cache"
+              ]
+            },
+            "UpdateFolderIntelligenceConfig": {
+              "methods": [
+                "update_folder_intelligence_config"
+              ]
+            },
+            "UpdateOrganizationIntelligenceConfig": {
+              "methods": [
+                "update_organization_intelligence_config"
+              ]
+            },
+            "UpdateProjectIntelligenceConfig": {
+              "methods": [
+                "update_project_intelligence_config"
               ]
             }
           }
