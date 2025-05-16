@@ -1311,7 +1311,8 @@ class TestTableAsync:
         if include_app_profile:
             assert "app_profile_id=profile" in routing_str
         else:
-            assert "app_profile_id=" not in routing_str
+            # empty app_profile_id should send empty string
+            assert "app_profile_id=" in routing_str
 
 
 @CrossSync.convert_class(

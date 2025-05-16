@@ -207,6 +207,10 @@ class TestSystemAsync:
         assert len(results) == 1
         assert results[0] is None
 
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)),
+        reason="emulator mode doesn't refresh channel",
+    )
     @CrossSync.pytest
     async def test_channel_refresh(self, table_id, instance_id, temp_rows):
         """
