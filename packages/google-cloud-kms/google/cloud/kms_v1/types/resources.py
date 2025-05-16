@@ -859,7 +859,7 @@ class CryptoKeyVersion(proto.Message):
                 [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
                 state.
             DESTROYED (3):
-                This key material of this version is destroyed and no longer
+                The key material of this version is destroyed and no longer
                 stored. This version may only become
                 [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
                 again if this version is
