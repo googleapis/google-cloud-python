@@ -14072,6 +14072,7 @@ def test_get_workflow_config(request_type, transport: str = 'grpc'):
             release_config='release_config_value',
             cron_schedule='cron_schedule_value',
             time_zone='time_zone_value',
+            disabled=True,
             internal_metadata='internal_metadata_value',
         )
         response = client.get_workflow_config(request)
@@ -14088,6 +14089,7 @@ def test_get_workflow_config(request_type, transport: str = 'grpc'):
     assert response.release_config == 'release_config_value'
     assert response.cron_schedule == 'cron_schedule_value'
     assert response.time_zone == 'time_zone_value'
+    assert response.disabled is True
     assert response.internal_metadata == 'internal_metadata_value'
 
 
@@ -14205,6 +14207,7 @@ async def test_get_workflow_config_async(transport: str = 'grpc_asyncio', reques
             release_config='release_config_value',
             cron_schedule='cron_schedule_value',
             time_zone='time_zone_value',
+            disabled=True,
             internal_metadata='internal_metadata_value',
         ))
         response = await client.get_workflow_config(request)
@@ -14221,6 +14224,7 @@ async def test_get_workflow_config_async(transport: str = 'grpc_asyncio', reques
     assert response.release_config == 'release_config_value'
     assert response.cron_schedule == 'cron_schedule_value'
     assert response.time_zone == 'time_zone_value'
+    assert response.disabled is True
     assert response.internal_metadata == 'internal_metadata_value'
 
 
@@ -14397,6 +14401,7 @@ def test_create_workflow_config(request_type, transport: str = 'grpc'):
             release_config='release_config_value',
             cron_schedule='cron_schedule_value',
             time_zone='time_zone_value',
+            disabled=True,
             internal_metadata='internal_metadata_value',
         )
         response = client.create_workflow_config(request)
@@ -14413,6 +14418,7 @@ def test_create_workflow_config(request_type, transport: str = 'grpc'):
     assert response.release_config == 'release_config_value'
     assert response.cron_schedule == 'cron_schedule_value'
     assert response.time_zone == 'time_zone_value'
+    assert response.disabled is True
     assert response.internal_metadata == 'internal_metadata_value'
 
 
@@ -14532,6 +14538,7 @@ async def test_create_workflow_config_async(transport: str = 'grpc_asyncio', req
             release_config='release_config_value',
             cron_schedule='cron_schedule_value',
             time_zone='time_zone_value',
+            disabled=True,
             internal_metadata='internal_metadata_value',
         ))
         response = await client.create_workflow_config(request)
@@ -14548,6 +14555,7 @@ async def test_create_workflow_config_async(transport: str = 'grpc_asyncio', req
     assert response.release_config == 'release_config_value'
     assert response.cron_schedule == 'cron_schedule_value'
     assert response.time_zone == 'time_zone_value'
+    assert response.disabled is True
     assert response.internal_metadata == 'internal_metadata_value'
 
 
@@ -14744,6 +14752,7 @@ def test_update_workflow_config(request_type, transport: str = 'grpc'):
             release_config='release_config_value',
             cron_schedule='cron_schedule_value',
             time_zone='time_zone_value',
+            disabled=True,
             internal_metadata='internal_metadata_value',
         )
         response = client.update_workflow_config(request)
@@ -14760,6 +14769,7 @@ def test_update_workflow_config(request_type, transport: str = 'grpc'):
     assert response.release_config == 'release_config_value'
     assert response.cron_schedule == 'cron_schedule_value'
     assert response.time_zone == 'time_zone_value'
+    assert response.disabled is True
     assert response.internal_metadata == 'internal_metadata_value'
 
 
@@ -14875,6 +14885,7 @@ async def test_update_workflow_config_async(transport: str = 'grpc_asyncio', req
             release_config='release_config_value',
             cron_schedule='cron_schedule_value',
             time_zone='time_zone_value',
+            disabled=True,
             internal_metadata='internal_metadata_value',
         ))
         response = await client.update_workflow_config(request)
@@ -14891,6 +14902,7 @@ async def test_update_workflow_config_async(transport: str = 'grpc_asyncio', req
     assert response.release_config == 'release_config_value'
     assert response.cron_schedule == 'cron_schedule_value'
     assert response.time_zone == 'time_zone_value'
+    assert response.disabled is True
     assert response.internal_metadata == 'internal_metadata_value'
 
 
@@ -29181,6 +29193,7 @@ async def test_get_workflow_config_empty_call_grpc_asyncio():
             release_config='release_config_value',
             cron_schedule='cron_schedule_value',
             time_zone='time_zone_value',
+            disabled=True,
             internal_metadata='internal_metadata_value',
         ))
         await client.get_workflow_config(request=None)
@@ -29212,6 +29225,7 @@ async def test_create_workflow_config_empty_call_grpc_asyncio():
             release_config='release_config_value',
             cron_schedule='cron_schedule_value',
             time_zone='time_zone_value',
+            disabled=True,
             internal_metadata='internal_metadata_value',
         ))
         await client.create_workflow_config(request=None)
@@ -29243,6 +29257,7 @@ async def test_update_workflow_config_empty_call_grpc_asyncio():
             release_config='release_config_value',
             cron_schedule='cron_schedule_value',
             time_zone='time_zone_value',
+            disabled=True,
             internal_metadata='internal_metadata_value',
         ))
         await client.update_workflow_config(request=None)
@@ -33343,7 +33358,7 @@ def test_create_release_config_rest_call_success(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2/repositories/sample3'}
-    request_init["release_config"] = {'name': 'name_value', 'git_commitish': 'git_commitish_value', 'code_compilation_config': {'default_database': 'default_database_value', 'default_schema': 'default_schema_value', 'default_location': 'default_location_value', 'assertion_schema': 'assertion_schema_value', 'vars': {}, 'database_suffix': 'database_suffix_value', 'schema_suffix': 'schema_suffix_value', 'table_prefix': 'table_prefix_value', 'default_notebook_runtime_options': {'gcs_output_bucket': 'gcs_output_bucket_value'}}, 'cron_schedule': 'cron_schedule_value', 'time_zone': 'time_zone_value', 'recent_scheduled_release_records': [{'compilation_result': 'compilation_result_value', 'error_status': {'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}, 'release_time': {'seconds': 751, 'nanos': 543}}], 'release_compilation_result': 'release_compilation_result_value', 'disabled': True, 'internal_metadata': 'internal_metadata_value'}
+    request_init["release_config"] = {'name': 'name_value', 'git_commitish': 'git_commitish_value', 'code_compilation_config': {'default_database': 'default_database_value', 'default_schema': 'default_schema_value', 'default_location': 'default_location_value', 'assertion_schema': 'assertion_schema_value', 'vars': {}, 'database_suffix': 'database_suffix_value', 'schema_suffix': 'schema_suffix_value', 'table_prefix': 'table_prefix_value', 'builtin_assertion_name_prefix': 'builtin_assertion_name_prefix_value', 'default_notebook_runtime_options': {'gcs_output_bucket': 'gcs_output_bucket_value', 'ai_platform_notebook_runtime_template': 'ai_platform_notebook_runtime_template_value'}}, 'cron_schedule': 'cron_schedule_value', 'time_zone': 'time_zone_value', 'recent_scheduled_release_records': [{'compilation_result': 'compilation_result_value', 'error_status': {'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}, 'release_time': {'seconds': 751, 'nanos': 543}}], 'release_compilation_result': 'release_compilation_result_value', 'disabled': True, 'internal_metadata': 'internal_metadata_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
@@ -33525,7 +33540,7 @@ def test_update_release_config_rest_call_success(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'release_config': {'name': 'projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4'}}
-    request_init["release_config"] = {'name': 'projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4', 'git_commitish': 'git_commitish_value', 'code_compilation_config': {'default_database': 'default_database_value', 'default_schema': 'default_schema_value', 'default_location': 'default_location_value', 'assertion_schema': 'assertion_schema_value', 'vars': {}, 'database_suffix': 'database_suffix_value', 'schema_suffix': 'schema_suffix_value', 'table_prefix': 'table_prefix_value', 'default_notebook_runtime_options': {'gcs_output_bucket': 'gcs_output_bucket_value'}}, 'cron_schedule': 'cron_schedule_value', 'time_zone': 'time_zone_value', 'recent_scheduled_release_records': [{'compilation_result': 'compilation_result_value', 'error_status': {'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}, 'release_time': {'seconds': 751, 'nanos': 543}}], 'release_compilation_result': 'release_compilation_result_value', 'disabled': True, 'internal_metadata': 'internal_metadata_value'}
+    request_init["release_config"] = {'name': 'projects/sample1/locations/sample2/repositories/sample3/releaseConfigs/sample4', 'git_commitish': 'git_commitish_value', 'code_compilation_config': {'default_database': 'default_database_value', 'default_schema': 'default_schema_value', 'default_location': 'default_location_value', 'assertion_schema': 'assertion_schema_value', 'vars': {}, 'database_suffix': 'database_suffix_value', 'schema_suffix': 'schema_suffix_value', 'table_prefix': 'table_prefix_value', 'builtin_assertion_name_prefix': 'builtin_assertion_name_prefix_value', 'default_notebook_runtime_options': {'gcs_output_bucket': 'gcs_output_bucket_value', 'ai_platform_notebook_runtime_template': 'ai_platform_notebook_runtime_template_value'}}, 'cron_schedule': 'cron_schedule_value', 'time_zone': 'time_zone_value', 'recent_scheduled_release_records': [{'compilation_result': 'compilation_result_value', 'error_status': {'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}, 'release_time': {'seconds': 751, 'nanos': 543}}], 'release_compilation_result': 'release_compilation_result_value', 'disabled': True, 'internal_metadata': 'internal_metadata_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
@@ -34018,7 +34033,7 @@ def test_create_compilation_result_rest_call_success(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2/repositories/sample3'}
-    request_init["compilation_result"] = {'git_commitish': 'git_commitish_value', 'workspace': 'workspace_value', 'release_config': 'release_config_value', 'name': 'name_value', 'code_compilation_config': {'default_database': 'default_database_value', 'default_schema': 'default_schema_value', 'default_location': 'default_location_value', 'assertion_schema': 'assertion_schema_value', 'vars': {}, 'database_suffix': 'database_suffix_value', 'schema_suffix': 'schema_suffix_value', 'table_prefix': 'table_prefix_value', 'default_notebook_runtime_options': {'gcs_output_bucket': 'gcs_output_bucket_value'}}, 'resolved_git_commit_sha': 'resolved_git_commit_sha_value', 'dataform_core_version': 'dataform_core_version_value', 'compilation_errors': [{'message': 'message_value', 'stack': 'stack_value', 'path': 'path_value', 'action_target': {'database': 'database_value', 'schema': 'schema_value', 'name': 'name_value'}}], 'data_encryption_state': {'kms_key_version_name': 'kms_key_version_name_value'}, 'create_time': {'seconds': 751, 'nanos': 543}, 'internal_metadata': 'internal_metadata_value'}
+    request_init["compilation_result"] = {'git_commitish': 'git_commitish_value', 'workspace': 'workspace_value', 'release_config': 'release_config_value', 'name': 'name_value', 'code_compilation_config': {'default_database': 'default_database_value', 'default_schema': 'default_schema_value', 'default_location': 'default_location_value', 'assertion_schema': 'assertion_schema_value', 'vars': {}, 'database_suffix': 'database_suffix_value', 'schema_suffix': 'schema_suffix_value', 'table_prefix': 'table_prefix_value', 'builtin_assertion_name_prefix': 'builtin_assertion_name_prefix_value', 'default_notebook_runtime_options': {'gcs_output_bucket': 'gcs_output_bucket_value', 'ai_platform_notebook_runtime_template': 'ai_platform_notebook_runtime_template_value'}}, 'resolved_git_commit_sha': 'resolved_git_commit_sha_value', 'dataform_core_version': 'dataform_core_version_value', 'compilation_errors': [{'message': 'message_value', 'stack': 'stack_value', 'path': 'path_value', 'action_target': {'database': 'database_value', 'schema': 'schema_value', 'name': 'name_value'}}], 'data_encryption_state': {'kms_key_version_name': 'kms_key_version_name_value'}, 'create_time': {'seconds': 751, 'nanos': 543}, 'internal_metadata': 'internal_metadata_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
@@ -34419,6 +34434,7 @@ def test_get_workflow_config_rest_call_success(request_type):
               release_config='release_config_value',
               cron_schedule='cron_schedule_value',
               time_zone='time_zone_value',
+              disabled=True,
               internal_metadata='internal_metadata_value',
         )
 
@@ -34440,6 +34456,7 @@ def test_get_workflow_config_rest_call_success(request_type):
     assert response.release_config == 'release_config_value'
     assert response.cron_schedule == 'cron_schedule_value'
     assert response.time_zone == 'time_zone_value'
+    assert response.disabled is True
     assert response.internal_metadata == 'internal_metadata_value'
 
 
@@ -34523,7 +34540,7 @@ def test_create_workflow_config_rest_call_success(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2/repositories/sample3'}
-    request_init["workflow_config"] = {'name': 'name_value', 'release_config': 'release_config_value', 'invocation_config': {'included_targets': [{'database': 'database_value', 'schema': 'schema_value', 'name': 'name_value'}], 'included_tags': ['included_tags_value1', 'included_tags_value2'], 'transitive_dependencies_included': True, 'transitive_dependents_included': True, 'fully_refresh_incremental_tables_enabled': True, 'service_account': 'service_account_value'}, 'cron_schedule': 'cron_schedule_value', 'time_zone': 'time_zone_value', 'recent_scheduled_execution_records': [{'workflow_invocation': 'workflow_invocation_value', 'error_status': {'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}, 'execution_time': {'seconds': 751, 'nanos': 543}}], 'create_time': {}, 'update_time': {}, 'internal_metadata': 'internal_metadata_value'}
+    request_init["workflow_config"] = {'name': 'name_value', 'release_config': 'release_config_value', 'invocation_config': {'included_targets': [{'database': 'database_value', 'schema': 'schema_value', 'name': 'name_value'}], 'included_tags': ['included_tags_value1', 'included_tags_value2'], 'transitive_dependencies_included': True, 'transitive_dependents_included': True, 'fully_refresh_incremental_tables_enabled': True, 'service_account': 'service_account_value'}, 'cron_schedule': 'cron_schedule_value', 'time_zone': 'time_zone_value', 'recent_scheduled_execution_records': [{'workflow_invocation': 'workflow_invocation_value', 'error_status': {'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}, 'execution_time': {'seconds': 751, 'nanos': 543}}], 'disabled': True, 'create_time': {}, 'update_time': {}, 'internal_metadata': 'internal_metadata_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
@@ -34597,6 +34614,7 @@ def test_create_workflow_config_rest_call_success(request_type):
               release_config='release_config_value',
               cron_schedule='cron_schedule_value',
               time_zone='time_zone_value',
+              disabled=True,
               internal_metadata='internal_metadata_value',
         )
 
@@ -34618,6 +34636,7 @@ def test_create_workflow_config_rest_call_success(request_type):
     assert response.release_config == 'release_config_value'
     assert response.cron_schedule == 'cron_schedule_value'
     assert response.time_zone == 'time_zone_value'
+    assert response.disabled is True
     assert response.internal_metadata == 'internal_metadata_value'
 
 
@@ -34701,7 +34720,7 @@ def test_update_workflow_config_rest_call_success(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'workflow_config': {'name': 'projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4'}}
-    request_init["workflow_config"] = {'name': 'projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4', 'release_config': 'release_config_value', 'invocation_config': {'included_targets': [{'database': 'database_value', 'schema': 'schema_value', 'name': 'name_value'}], 'included_tags': ['included_tags_value1', 'included_tags_value2'], 'transitive_dependencies_included': True, 'transitive_dependents_included': True, 'fully_refresh_incremental_tables_enabled': True, 'service_account': 'service_account_value'}, 'cron_schedule': 'cron_schedule_value', 'time_zone': 'time_zone_value', 'recent_scheduled_execution_records': [{'workflow_invocation': 'workflow_invocation_value', 'error_status': {'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}, 'execution_time': {'seconds': 751, 'nanos': 543}}], 'create_time': {}, 'update_time': {}, 'internal_metadata': 'internal_metadata_value'}
+    request_init["workflow_config"] = {'name': 'projects/sample1/locations/sample2/repositories/sample3/workflowConfigs/sample4', 'release_config': 'release_config_value', 'invocation_config': {'included_targets': [{'database': 'database_value', 'schema': 'schema_value', 'name': 'name_value'}], 'included_tags': ['included_tags_value1', 'included_tags_value2'], 'transitive_dependencies_included': True, 'transitive_dependents_included': True, 'fully_refresh_incremental_tables_enabled': True, 'service_account': 'service_account_value'}, 'cron_schedule': 'cron_schedule_value', 'time_zone': 'time_zone_value', 'recent_scheduled_execution_records': [{'workflow_invocation': 'workflow_invocation_value', 'error_status': {'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}, 'execution_time': {'seconds': 751, 'nanos': 543}}], 'disabled': True, 'create_time': {}, 'update_time': {}, 'internal_metadata': 'internal_metadata_value'}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
@@ -34775,6 +34794,7 @@ def test_update_workflow_config_rest_call_success(request_type):
               release_config='release_config_value',
               cron_schedule='cron_schedule_value',
               time_zone='time_zone_value',
+              disabled=True,
               internal_metadata='internal_metadata_value',
         )
 
@@ -34796,6 +34816,7 @@ def test_update_workflow_config_rest_call_success(request_type):
     assert response.release_config == 'release_config_value'
     assert response.cron_schedule == 'cron_schedule_value'
     assert response.time_zone == 'time_zone_value'
+    assert response.disabled is True
     assert response.internal_metadata == 'internal_metadata_value'
 
 
@@ -38065,11 +38086,32 @@ def test_parse_crypto_key_version_path():
     actual = DataformClient.parse_crypto_key_version_path(path)
     assert expected == actual
 
-def test_release_config_path():
+def test_notebook_runtime_template_path():
     project = "cuttlefish"
     location = "mussel"
-    repository = "winkle"
-    release_config = "nautilus"
+    notebook_runtime_template = "winkle"
+    expected = "projects/{project}/locations/{location}/notebookRuntimeTemplates/{notebook_runtime_template}".format(project=project, location=location, notebook_runtime_template=notebook_runtime_template, )
+    actual = DataformClient.notebook_runtime_template_path(project, location, notebook_runtime_template)
+    assert expected == actual
+
+
+def test_parse_notebook_runtime_template_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "notebook_runtime_template": "abalone",
+    }
+    path = DataformClient.notebook_runtime_template_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataformClient.parse_notebook_runtime_template_path(path)
+    assert expected == actual
+
+def test_release_config_path():
+    project = "squid"
+    location = "clam"
+    repository = "whelk"
+    release_config = "octopus"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/releaseConfigs/{release_config}".format(project=project, location=location, repository=repository, release_config=release_config, )
     actual = DataformClient.release_config_path(project, location, repository, release_config)
     assert expected == actual
@@ -38077,10 +38119,10 @@ def test_release_config_path():
 
 def test_parse_release_config_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "repository": "squid",
-        "release_config": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "repository": "cuttlefish",
+        "release_config": "mussel",
     }
     path = DataformClient.release_config_path(**expected)
 
@@ -38089,9 +38131,9 @@ def test_parse_release_config_path():
     assert expected == actual
 
 def test_repository_path():
-    project = "whelk"
-    location = "octopus"
-    repository = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
     expected = "projects/{project}/locations/{location}/repositories/{repository}".format(project=project, location=location, repository=repository, )
     actual = DataformClient.repository_path(project, location, repository)
     assert expected == actual
@@ -38099,9 +38141,9 @@ def test_repository_path():
 
 def test_parse_repository_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "repository": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "repository": "clam",
     }
     path = DataformClient.repository_path(**expected)
 
@@ -38110,9 +38152,9 @@ def test_parse_repository_path():
     assert expected == actual
 
 def test_secret_version_path():
-    project = "winkle"
-    secret = "nautilus"
-    version = "scallop"
+    project = "whelk"
+    secret = "octopus"
+    version = "oyster"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(project=project, secret=secret, version=version, )
     actual = DataformClient.secret_version_path(project, secret, version)
     assert expected == actual
@@ -38120,9 +38162,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "abalone",
-        "secret": "squid",
-        "version": "clam",
+        "project": "nudibranch",
+        "secret": "cuttlefish",
+        "version": "mussel",
     }
     path = DataformClient.secret_version_path(**expected)
 
@@ -38131,10 +38173,10 @@ def test_parse_secret_version_path():
     assert expected == actual
 
 def test_workflow_config_path():
-    project = "whelk"
-    location = "octopus"
-    repository = "oyster"
-    workflow_config = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
+    workflow_config = "abalone"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workflowConfigs/{workflow_config}".format(project=project, location=location, repository=repository, workflow_config=workflow_config, )
     actual = DataformClient.workflow_config_path(project, location, repository, workflow_config)
     assert expected == actual
@@ -38142,10 +38184,10 @@ def test_workflow_config_path():
 
 def test_parse_workflow_config_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "repository": "winkle",
-        "workflow_config": "nautilus",
+        "project": "squid",
+        "location": "clam",
+        "repository": "whelk",
+        "workflow_config": "octopus",
     }
     path = DataformClient.workflow_config_path(**expected)
 
@@ -38154,10 +38196,10 @@ def test_parse_workflow_config_path():
     assert expected == actual
 
 def test_workflow_invocation_path():
-    project = "scallop"
-    location = "abalone"
-    repository = "squid"
-    workflow_invocation = "clam"
+    project = "oyster"
+    location = "nudibranch"
+    repository = "cuttlefish"
+    workflow_invocation = "mussel"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workflowInvocations/{workflow_invocation}".format(project=project, location=location, repository=repository, workflow_invocation=workflow_invocation, )
     actual = DataformClient.workflow_invocation_path(project, location, repository, workflow_invocation)
     assert expected == actual
@@ -38165,10 +38207,10 @@ def test_workflow_invocation_path():
 
 def test_parse_workflow_invocation_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "repository": "oyster",
-        "workflow_invocation": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
+        "repository": "scallop",
+        "workflow_invocation": "abalone",
     }
     path = DataformClient.workflow_invocation_path(**expected)
 
@@ -38177,10 +38219,10 @@ def test_parse_workflow_invocation_path():
     assert expected == actual
 
 def test_workspace_path():
-    project = "cuttlefish"
-    location = "mussel"
-    repository = "winkle"
-    workspace = "nautilus"
+    project = "squid"
+    location = "clam"
+    repository = "whelk"
+    workspace = "octopus"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}".format(project=project, location=location, repository=repository, workspace=workspace, )
     actual = DataformClient.workspace_path(project, location, repository, workspace)
     assert expected == actual
@@ -38188,10 +38230,10 @@ def test_workspace_path():
 
 def test_parse_workspace_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "repository": "squid",
-        "workspace": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "repository": "cuttlefish",
+        "workspace": "mussel",
     }
     path = DataformClient.workspace_path(**expected)
 
@@ -38200,7 +38242,7 @@ def test_parse_workspace_path():
     assert expected == actual
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(billing_account=billing_account, )
     actual = DataformClient.common_billing_account_path(billing_account)
     assert expected == actual
@@ -38208,7 +38250,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = DataformClient.common_billing_account_path(**expected)
 
@@ -38217,7 +38259,7 @@ def test_parse_common_billing_account_path():
     assert expected == actual
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(folder=folder, )
     actual = DataformClient.common_folder_path(folder)
     assert expected == actual
@@ -38225,7 +38267,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = DataformClient.common_folder_path(**expected)
 
@@ -38234,7 +38276,7 @@ def test_parse_common_folder_path():
     assert expected == actual
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(organization=organization, )
     actual = DataformClient.common_organization_path(organization)
     assert expected == actual
@@ -38242,7 +38284,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = DataformClient.common_organization_path(**expected)
 
@@ -38251,7 +38293,7 @@ def test_parse_common_organization_path():
     assert expected == actual
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(project=project, )
     actual = DataformClient.common_project_path(project)
     assert expected == actual
@@ -38259,7 +38301,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = DataformClient.common_project_path(**expected)
 
@@ -38268,8 +38310,8 @@ def test_parse_common_project_path():
     assert expected == actual
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(project=project, location=location, )
     actual = DataformClient.common_location_path(project, location)
     assert expected == actual
@@ -38277,8 +38319,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = DataformClient.common_location_path(**expected)
 

@@ -232,6 +232,17 @@ class DataformClient(metaclass=DataformClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def notebook_runtime_template_path(project: str,location: str,notebook_runtime_template: str,) -> str:
+        """Returns a fully-qualified notebook_runtime_template string."""
+        return "projects/{project}/locations/{location}/notebookRuntimeTemplates/{notebook_runtime_template}".format(project=project, location=location, notebook_runtime_template=notebook_runtime_template, )
+
+    @staticmethod
+    def parse_notebook_runtime_template_path(path: str) -> Dict[str,str]:
+        """Parses a notebook_runtime_template path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/notebookRuntimeTemplates/(?P<notebook_runtime_template>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def release_config_path(project: str,location: str,repository: str,release_config: str,) -> str:
         """Returns a fully-qualified release_config string."""
         return "projects/{project}/locations/{location}/repositories/{repository}/releaseConfigs/{release_config}".format(project=project, location=location, repository=repository, release_config=release_config, )
@@ -713,6 +724,10 @@ class DataformClient(metaclass=DataformClientMeta):
             ) -> pagers.ListRepositoriesPager:
         r"""Lists Repositories in a given project and location.
 
+        **Note:** *This method can return repositories not shown in
+        the*\ `Dataform
+        UI <https://console.cloud.google.com/bigquery/dataform>`__.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -1057,13 +1072,11 @@ class DataformClient(metaclass=DataformClientMeta):
             ) -> dataform.Repository:
         r"""Updates a single Repository.
 
-        **Note:** This method does not fully implement
-        `AIP-134 <https://google.aip.dev/134>`__; in particular:
-
-        -  The wildcard entry (**\***) is treated as a bad request
-        -  When the **field_mask** is omitted, instead of only updating
-           the set fields, the request is treated as a full update on
-           all modifiable fields
+        **Note:** *This method does not fully
+        implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
+        wildcard entry (*) is treated as a bad request, and when the
+        ``field_mask`` is omitted, the request is treated as a full
+        update on all modifiable fields.*
 
         .. code-block:: python
 
@@ -4047,13 +4060,11 @@ class DataformClient(metaclass=DataformClientMeta):
             ) -> dataform.ReleaseConfig:
         r"""Updates a single ReleaseConfig.
 
-        **Note:** This method does not fully implement
-        `AIP-134 <https://google.aip.dev/134>`__; in particular:
-
-        -  The wildcard entry (**\***) is treated as a bad request
-        -  When the **field_mask** is omitted, instead of only updating
-           the set fields, the request is treated as a full update on
-           all modifiable fields
+        **Note:** *This method does not fully
+        implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
+        wildcard entry (*) is treated as a bad request, and when the
+        ``field_mask`` is omitted, the request is treated as a full
+        update on all modifiable fields.*
 
         .. code-block:: python
 
@@ -5058,13 +5069,11 @@ class DataformClient(metaclass=DataformClientMeta):
             ) -> dataform.WorkflowConfig:
         r"""Updates a single WorkflowConfig.
 
-        **Note:** This method does not fully implement
-        `AIP-134 <https://google.aip.dev/134>`__; in particular:
-
-        -  The wildcard entry (**\***) is treated as a bad request
-        -  When the **field_mask** is omitted, instead of only updating
-           the set fields, the request is treated as a full update on
-           all modifiable fields
+        **Note:** *This method does not fully
+        implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
+        wildcard entry (*) is treated as a bad request, and when the
+        ``field_mask`` is omitted, the request is treated as a full
+        update on all modifiable fields.*
 
         .. code-block:: python
 
@@ -5993,13 +6002,11 @@ class DataformClient(metaclass=DataformClientMeta):
             ) -> dataform.Config:
         r"""Update default config for a given project and location.
 
-        **Note:** This method does not fully implement
-        `AIP-134 <https://google.aip.dev/134>`__; in particular:
-
-        -  The wildcard entry (**\***) is treated as a bad request
-        -  When the **field_mask** is omitted, instead of only updating
-           the set fields, the request is treated as a full update on
-           all modifiable fields
+        **Note:** *This method does not fully
+        implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
+        wildcard entry (*) is treated as a bad request, and when the
+        ``field_mask`` is omitted, the request is treated as a full
+        update on all modifiable fields.*
 
         .. code-block:: python
 
