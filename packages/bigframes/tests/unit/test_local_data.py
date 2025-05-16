@@ -64,3 +64,16 @@ def test_local_data_well_formed_round_trip_sliced():
         result.reset_index(drop=True),
         check_dtype=False,
     )
+
+
+def test_local_data_equal_self():
+    local_entry = local_data.ManagedArrowTable.from_pandas(pd_data)
+    assert local_entry == local_entry
+    assert hash(local_entry) == hash(local_entry)
+
+
+def test_local_data_not_equal_other():
+    local_entry = local_data.ManagedArrowTable.from_pandas(pd_data)
+    local_entry2 = local_data.ManagedArrowTable.from_pandas(pd_data[::2])
+    assert local_entry != local_entry2
+    assert hash(local_entry) != hash(local_entry2)

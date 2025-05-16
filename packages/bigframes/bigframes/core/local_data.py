@@ -54,8 +54,8 @@ _MANAGED_STORAGE_TYPES_OVERRIDES: dict[bigframes.dtypes.Dtype, pa.DataType] = {
 
 @dataclasses.dataclass(frozen=True)
 class ManagedArrowTable:
-    data: pa.Table = dataclasses.field(hash=False)
-    schema: schemata.ArraySchema = dataclasses.field(hash=False)
+    data: pa.Table = dataclasses.field(hash=False, compare=False)
+    schema: schemata.ArraySchema = dataclasses.field(hash=False, compare=False)
     id: uuid.UUID = dataclasses.field(default_factory=uuid.uuid4)
 
     @functools.cached_property
