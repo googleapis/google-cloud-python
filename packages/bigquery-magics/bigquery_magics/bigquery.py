@@ -126,6 +126,7 @@ from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.job import QueryJobConfig
 import pandas
 
+from bigquery_magics import environment
 from bigquery_magics import line_arg_parser as lap
 import bigquery_magics._versions_helpers
 import bigquery_magics.config
@@ -143,8 +144,25 @@ try:
 except ImportError:
     bpd = None
 
-USER_AGENT = f"ipython-{IPython.__version__} bigquery-magics/{bigquery_magics.version.__version__}"
 context = bigquery_magics.config.context
+
+
+def _get_user_agent():
+    identities = [
+        f"ipython-{IPython.__version__}",
+        f"bigquery-magics/{bigquery_magics.version.__version__}",
+    ]
+
+    if environment.is_vscode():
+        identities.append("vscode")
+        if environment.is_vscode_google_cloud_code_extension_installed():
+            identities.append(environment.GOOGLE_CLOUD_CODE_EXTENSION_NAME)
+    elif environment.is_jupyter():
+        identities.append("jupyter")
+        if environment.is_jupyter_bigquery_plugin_installed():
+            identities.append(environment.BIGQUERY_JUPYTER_PLUGIN_NAME)
+
+    return " ".join(identities)
 
 
 def _handle_error(error, destination_var=None):
@@ -558,7 +576,7 @@ def _create_clients(args: Any) -> Tuple[bigquery.Client, Any]:
         project=args.project or context.project,
         credentials=context.credentials,
         default_query_job_config=context.default_query_job_config,
-        client_info=client_info.ClientInfo(user_agent=USER_AGENT),
+        client_info=client_info.ClientInfo(user_agent=_get_user_agent()),
         client_options=bigquery_client_options,
         location=args.location,
     )
@@ -885,7 +903,7 @@ def _make_bqstorage_client(client, client_options):
 
     return client._ensure_bqstorage_client(
         client_options=client_options,
-        client_info=gapic_client_info.ClientInfo(user_agent=USER_AGENT),
+        client_info=gapic_client_info.ClientInfo(user_agent=_get_user_agent()),
     )
 
 
