@@ -6851,7 +6851,8 @@ def test_read_rows_routing_parameters_request_1_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -6909,7 +6910,8 @@ def test_read_rows_routing_parameters_request_3_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -6939,7 +6941,8 @@ def test_sample_row_keys_routing_parameters_request_1_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -6997,7 +7000,8 @@ def test_sample_row_keys_routing_parameters_request_3_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7027,7 +7031,8 @@ def test_mutate_row_routing_parameters_request_1_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7085,7 +7090,8 @@ def test_mutate_row_routing_parameters_request_3_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7115,7 +7121,8 @@ def test_mutate_rows_routing_parameters_request_1_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7173,7 +7180,8 @@ def test_mutate_rows_routing_parameters_request_3_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7205,7 +7213,8 @@ def test_check_and_mutate_row_routing_parameters_request_1_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7267,7 +7276,8 @@ def test_check_and_mutate_row_routing_parameters_request_3_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7294,7 +7304,10 @@ def test_ping_and_warm_routing_parameters_request_1_grpc():
 
         assert args[0] == request_msg
 
-        expected_headers = {"name": "projects/sample1/instances/sample2"}
+        expected_headers = {
+            "name": "projects/sample1/instances/sample2",
+            "app_profile_id": "",
+        }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
         )
@@ -7349,7 +7362,8 @@ def test_read_modify_write_row_routing_parameters_request_1_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7413,7 +7427,8 @@ def test_read_modify_write_row_routing_parameters_request_3_grpc():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7442,7 +7457,6 @@ def test_prepare_query_routing_parameters_request_1_grpc():
 
         assert args[0] == request_msg
 
-        # expect app_profile_id while temporary patch is in place: https://github.com/googleapis/python-bigtable/pull/1072
         expected_headers = {
             "name": "projects/sample1/instances/sample2",
             "app_profile_id": "",
@@ -7498,7 +7512,6 @@ def test_execute_query_routing_parameters_request_1_grpc():
 
         assert args[0] == request_msg
 
-        # expect app_profile_id while temporary patch is in place: https://github.com/googleapis/python-bigtable/pull/1072
         expected_headers = {
             "name": "projects/sample1/instances/sample2",
             "app_profile_id": "",
@@ -7867,7 +7880,8 @@ async def test_read_rows_routing_parameters_request_1_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7935,7 +7949,8 @@ async def test_read_rows_routing_parameters_request_3_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -7970,7 +7985,8 @@ async def test_sample_row_keys_routing_parameters_request_1_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8038,7 +8054,8 @@ async def test_sample_row_keys_routing_parameters_request_3_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8072,7 +8089,8 @@ async def test_mutate_row_routing_parameters_request_1_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8138,7 +8156,8 @@ async def test_mutate_row_routing_parameters_request_3_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8173,7 +8192,8 @@ async def test_mutate_rows_routing_parameters_request_1_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8241,7 +8261,8 @@ async def test_mutate_rows_routing_parameters_request_3_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8279,7 +8300,8 @@ async def test_check_and_mutate_row_routing_parameters_request_1_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8353,7 +8375,8 @@ async def test_check_and_mutate_row_routing_parameters_request_3_grpc_asyncio():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8386,7 +8409,10 @@ async def test_ping_and_warm_routing_parameters_request_1_grpc_asyncio():
 
         assert args[0] == request_msg
 
-        expected_headers = {"name": "projects/sample1/instances/sample2"}
+        expected_headers = {
+            "name": "projects/sample1/instances/sample2",
+            "app_profile_id": "",
+        }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
         )
@@ -8449,7 +8475,8 @@ async def test_read_modify_write_row_routing_parameters_request_1_grpc_asyncio()
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8521,7 +8548,8 @@ async def test_read_modify_write_row_routing_parameters_request_3_grpc_asyncio()
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -8556,7 +8584,6 @@ async def test_prepare_query_routing_parameters_request_1_grpc_asyncio():
 
         assert args[0] == request_msg
 
-        # expect app_profile_id while temporary patch is in place: https://github.com/googleapis/python-bigtable/pull/1072
         expected_headers = {
             "name": "projects/sample1/instances/sample2",
             "app_profile_id": "",
@@ -8623,7 +8650,6 @@ async def test_execute_query_routing_parameters_request_1_grpc_asyncio():
 
         assert args[0] == request_msg
 
-        # expect app_profile_id while temporary patch is in place: https://github.com/googleapis/python-bigtable/pull/1072
         expected_headers = {
             "name": "projects/sample1/instances/sample2",
             "app_profile_id": "",
@@ -10307,7 +10333,8 @@ def test_read_rows_routing_parameters_request_1_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10363,7 +10390,8 @@ def test_read_rows_routing_parameters_request_3_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10392,7 +10420,8 @@ def test_sample_row_keys_routing_parameters_request_1_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10448,7 +10477,8 @@ def test_sample_row_keys_routing_parameters_request_3_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10477,7 +10507,8 @@ def test_mutate_row_routing_parameters_request_1_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10533,7 +10564,8 @@ def test_mutate_row_routing_parameters_request_3_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10562,7 +10594,8 @@ def test_mutate_rows_routing_parameters_request_1_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10618,7 +10651,8 @@ def test_mutate_rows_routing_parameters_request_3_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10649,7 +10683,8 @@ def test_check_and_mutate_row_routing_parameters_request_1_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10709,7 +10744,8 @@ def test_check_and_mutate_row_routing_parameters_request_3_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10735,7 +10771,10 @@ def test_ping_and_warm_routing_parameters_request_1_rest():
 
         assert args[0] == request_msg
 
-        expected_headers = {"name": "projects/sample1/instances/sample2"}
+        expected_headers = {
+            "name": "projects/sample1/instances/sample2",
+            "app_profile_id": "",
+        }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
         )
@@ -10788,7 +10827,8 @@ def test_read_modify_write_row_routing_parameters_request_1_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "table_name": "projects/sample1/instances/sample2/tables/sample3"
+            "table_name": "projects/sample1/instances/sample2/tables/sample3",
+            "app_profile_id": "",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10850,7 +10890,8 @@ def test_read_modify_write_row_routing_parameters_request_3_rest():
         assert args[0] == request_msg
 
         expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
+            "app_profile_id": "",
+            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4",
         }
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
@@ -10878,7 +10919,6 @@ def test_prepare_query_routing_parameters_request_1_rest():
 
         assert args[0] == request_msg
 
-        # expect app_profile_id while temporary patch is in place: https://github.com/googleapis/python-bigtable/pull/1072
         expected_headers = {
             "name": "projects/sample1/instances/sample2",
             "app_profile_id": "",
@@ -10932,7 +10972,6 @@ def test_execute_query_routing_parameters_request_1_rest():
 
         assert args[0] == request_msg
 
-        # expect app_profile_id while temporary patch is in place: https://github.com/googleapis/python-bigtable/pull/1072
         expected_headers = {
             "name": "projects/sample1/instances/sample2",
             "app_profile_id": "",

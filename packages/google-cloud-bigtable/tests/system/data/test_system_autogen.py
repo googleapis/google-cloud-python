@@ -165,6 +165,10 @@ class TestSystem:
         assert len(results) == 1
         assert results[0] is None
 
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)),
+        reason="emulator mode doesn't refresh channel",
+    )
     def test_channel_refresh(self, table_id, instance_id, temp_rows):
         """change grpc channel to refresh after 1 second. Schedule a read_rows call after refresh,
         to ensure new channel works"""
