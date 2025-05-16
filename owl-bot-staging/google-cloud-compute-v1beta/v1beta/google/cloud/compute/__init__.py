@@ -1,0 +1,3973 @@
+# -*- coding: utf-8 -*-
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+from google.cloud.compute import gapic_version as package_version
+
+__version__ = package_version.__version__
+
+
+from google.cloud.compute_v1beta.services.accelerator_types.client import AcceleratorTypesClient
+from google.cloud.compute_v1beta.services.addresses.client import AddressesClient
+from google.cloud.compute_v1beta.services.advice.client import AdviceClient
+from google.cloud.compute_v1beta.services.autoscalers.client import AutoscalersClient
+from google.cloud.compute_v1beta.services.backend_buckets.client import BackendBucketsClient
+from google.cloud.compute_v1beta.services.backend_services.client import BackendServicesClient
+from google.cloud.compute_v1beta.services.cross_site_networks.client import CrossSiteNetworksClient
+from google.cloud.compute_v1beta.services.disks.client import DisksClient
+from google.cloud.compute_v1beta.services.disk_settings_service.client import DiskSettingsServiceClient
+from google.cloud.compute_v1beta.services.disk_types.client import DiskTypesClient
+from google.cloud.compute_v1beta.services.external_vpn_gateways.client import ExternalVpnGatewaysClient
+from google.cloud.compute_v1beta.services.firewall_policies.client import FirewallPoliciesClient
+from google.cloud.compute_v1beta.services.firewalls.client import FirewallsClient
+from google.cloud.compute_v1beta.services.forwarding_rules.client import ForwardingRulesClient
+from google.cloud.compute_v1beta.services.future_reservations.client import FutureReservationsClient
+from google.cloud.compute_v1beta.services.global_addresses.client import GlobalAddressesClient
+from google.cloud.compute_v1beta.services.global_forwarding_rules.client import GlobalForwardingRulesClient
+from google.cloud.compute_v1beta.services.global_network_endpoint_groups.client import GlobalNetworkEndpointGroupsClient
+from google.cloud.compute_v1beta.services.global_operations.client import GlobalOperationsClient
+from google.cloud.compute_v1beta.services.global_organization_operations.client import GlobalOrganizationOperationsClient
+from google.cloud.compute_v1beta.services.global_public_delegated_prefixes.client import GlobalPublicDelegatedPrefixesClient
+from google.cloud.compute_v1beta.services.health_checks.client import HealthChecksClient
+from google.cloud.compute_v1beta.services.image_family_views.client import ImageFamilyViewsClient
+from google.cloud.compute_v1beta.services.images.client import ImagesClient
+from google.cloud.compute_v1beta.services.instance_group_manager_resize_requests.client import InstanceGroupManagerResizeRequestsClient
+from google.cloud.compute_v1beta.services.instance_group_managers.client import InstanceGroupManagersClient
+from google.cloud.compute_v1beta.services.instance_groups.client import InstanceGroupsClient
+from google.cloud.compute_v1beta.services.instances.client import InstancesClient
+from google.cloud.compute_v1beta.services.instance_settings_service.client import InstanceSettingsServiceClient
+from google.cloud.compute_v1beta.services.instance_templates.client import InstanceTemplatesClient
+from google.cloud.compute_v1beta.services.instant_snapshots.client import InstantSnapshotsClient
+from google.cloud.compute_v1beta.services.interconnect_attachment_groups.client import InterconnectAttachmentGroupsClient
+from google.cloud.compute_v1beta.services.interconnect_attachments.client import InterconnectAttachmentsClient
+from google.cloud.compute_v1beta.services.interconnect_groups.client import InterconnectGroupsClient
+from google.cloud.compute_v1beta.services.interconnect_locations.client import InterconnectLocationsClient
+from google.cloud.compute_v1beta.services.interconnect_remote_locations.client import InterconnectRemoteLocationsClient
+from google.cloud.compute_v1beta.services.interconnects.client import InterconnectsClient
+from google.cloud.compute_v1beta.services.license_codes.client import LicenseCodesClient
+from google.cloud.compute_v1beta.services.licenses.client import LicensesClient
+from google.cloud.compute_v1beta.services.machine_images.client import MachineImagesClient
+from google.cloud.compute_v1beta.services.machine_types.client import MachineTypesClient
+from google.cloud.compute_v1beta.services.network_attachments.client import NetworkAttachmentsClient
+from google.cloud.compute_v1beta.services.network_edge_security_services.client import NetworkEdgeSecurityServicesClient
+from google.cloud.compute_v1beta.services.network_endpoint_groups.client import NetworkEndpointGroupsClient
+from google.cloud.compute_v1beta.services.network_firewall_policies.client import NetworkFirewallPoliciesClient
+from google.cloud.compute_v1beta.services.network_profiles.client import NetworkProfilesClient
+from google.cloud.compute_v1beta.services.networks.client import NetworksClient
+from google.cloud.compute_v1beta.services.node_groups.client import NodeGroupsClient
+from google.cloud.compute_v1beta.services.node_templates.client import NodeTemplatesClient
+from google.cloud.compute_v1beta.services.node_types.client import NodeTypesClient
+from google.cloud.compute_v1beta.services.organization_security_policies.client import OrganizationSecurityPoliciesClient
+from google.cloud.compute_v1beta.services.packet_mirrorings.client import PacketMirroringsClient
+from google.cloud.compute_v1beta.services.preview_features.client import PreviewFeaturesClient
+from google.cloud.compute_v1beta.services.projects.client import ProjectsClient
+from google.cloud.compute_v1beta.services.public_advertised_prefixes.client import PublicAdvertisedPrefixesClient
+from google.cloud.compute_v1beta.services.public_delegated_prefixes.client import PublicDelegatedPrefixesClient
+from google.cloud.compute_v1beta.services.region_autoscalers.client import RegionAutoscalersClient
+from google.cloud.compute_v1beta.services.region_backend_services.client import RegionBackendServicesClient
+from google.cloud.compute_v1beta.services.region_commitments.client import RegionCommitmentsClient
+from google.cloud.compute_v1beta.services.region_disks.client import RegionDisksClient
+from google.cloud.compute_v1beta.services.region_disk_settings.client import RegionDiskSettingsClient
+from google.cloud.compute_v1beta.services.region_disk_types.client import RegionDiskTypesClient
+from google.cloud.compute_v1beta.services.region_health_checks.client import RegionHealthChecksClient
+from google.cloud.compute_v1beta.services.region_health_check_services.client import RegionHealthCheckServicesClient
+from google.cloud.compute_v1beta.services.region_instance_group_manager_resize_requests.client import RegionInstanceGroupManagerResizeRequestsClient
+from google.cloud.compute_v1beta.services.region_instance_group_managers.client import RegionInstanceGroupManagersClient
+from google.cloud.compute_v1beta.services.region_instance_groups.client import RegionInstanceGroupsClient
+from google.cloud.compute_v1beta.services.region_instances.client import RegionInstancesClient
+from google.cloud.compute_v1beta.services.region_instance_templates.client import RegionInstanceTemplatesClient
+from google.cloud.compute_v1beta.services.region_instant_snapshots.client import RegionInstantSnapshotsClient
+from google.cloud.compute_v1beta.services.region_multi_migs.client import RegionMultiMigsClient
+from google.cloud.compute_v1beta.services.region_network_endpoint_groups.client import RegionNetworkEndpointGroupsClient
+from google.cloud.compute_v1beta.services.region_network_firewall_policies.client import RegionNetworkFirewallPoliciesClient
+from google.cloud.compute_v1beta.services.region_notification_endpoints.client import RegionNotificationEndpointsClient
+from google.cloud.compute_v1beta.services.region_operations.client import RegionOperationsClient
+from google.cloud.compute_v1beta.services.regions.client import RegionsClient
+from google.cloud.compute_v1beta.services.region_security_policies.client import RegionSecurityPoliciesClient
+from google.cloud.compute_v1beta.services.region_snapshots.client import RegionSnapshotsClient
+from google.cloud.compute_v1beta.services.region_snapshot_settings.client import RegionSnapshotSettingsClient
+from google.cloud.compute_v1beta.services.region_ssl_certificates.client import RegionSslCertificatesClient
+from google.cloud.compute_v1beta.services.region_ssl_policies.client import RegionSslPoliciesClient
+from google.cloud.compute_v1beta.services.region_target_http_proxies.client import RegionTargetHttpProxiesClient
+from google.cloud.compute_v1beta.services.region_target_https_proxies.client import RegionTargetHttpsProxiesClient
+from google.cloud.compute_v1beta.services.region_target_tcp_proxies.client import RegionTargetTcpProxiesClient
+from google.cloud.compute_v1beta.services.region_url_maps.client import RegionUrlMapsClient
+from google.cloud.compute_v1beta.services.region_zones.client import RegionZonesClient
+from google.cloud.compute_v1beta.services.reservation_blocks.client import ReservationBlocksClient
+from google.cloud.compute_v1beta.services.reservations.client import ReservationsClient
+from google.cloud.compute_v1beta.services.resource_policies.client import ResourcePoliciesClient
+from google.cloud.compute_v1beta.services.routers.client import RoutersClient
+from google.cloud.compute_v1beta.services.routes.client import RoutesClient
+from google.cloud.compute_v1beta.services.security_policies.client import SecurityPoliciesClient
+from google.cloud.compute_v1beta.services.service_attachments.client import ServiceAttachmentsClient
+from google.cloud.compute_v1beta.services.snapshots.client import SnapshotsClient
+from google.cloud.compute_v1beta.services.snapshot_settings_service.client import SnapshotSettingsServiceClient
+from google.cloud.compute_v1beta.services.ssl_certificates.client import SslCertificatesClient
+from google.cloud.compute_v1beta.services.ssl_policies.client import SslPoliciesClient
+from google.cloud.compute_v1beta.services.storage_pools.client import StoragePoolsClient
+from google.cloud.compute_v1beta.services.storage_pool_types.client import StoragePoolTypesClient
+from google.cloud.compute_v1beta.services.subnetworks.client import SubnetworksClient
+from google.cloud.compute_v1beta.services.target_grpc_proxies.client import TargetGrpcProxiesClient
+from google.cloud.compute_v1beta.services.target_http_proxies.client import TargetHttpProxiesClient
+from google.cloud.compute_v1beta.services.target_https_proxies.client import TargetHttpsProxiesClient
+from google.cloud.compute_v1beta.services.target_instances.client import TargetInstancesClient
+from google.cloud.compute_v1beta.services.target_pools.client import TargetPoolsClient
+from google.cloud.compute_v1beta.services.target_ssl_proxies.client import TargetSslProxiesClient
+from google.cloud.compute_v1beta.services.target_tcp_proxies.client import TargetTcpProxiesClient
+from google.cloud.compute_v1beta.services.target_vpn_gateways.client import TargetVpnGatewaysClient
+from google.cloud.compute_v1beta.services.url_maps.client import UrlMapsClient
+from google.cloud.compute_v1beta.services.vpn_gateways.client import VpnGatewaysClient
+from google.cloud.compute_v1beta.services.vpn_tunnels.client import VpnTunnelsClient
+from google.cloud.compute_v1beta.services.wire_groups.client import WireGroupsClient
+from google.cloud.compute_v1beta.services.zone_operations.client import ZoneOperationsClient
+from google.cloud.compute_v1beta.services.zones.client import ZonesClient
+
+from google.cloud.compute_v1beta.types.compute import AbandonInstancesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import AbandonInstancesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import AcceleratorConfig
+from google.cloud.compute_v1beta.types.compute import Accelerators
+from google.cloud.compute_v1beta.types.compute import AcceleratorType
+from google.cloud.compute_v1beta.types.compute import AcceleratorTypeAggregatedList
+from google.cloud.compute_v1beta.types.compute import AcceleratorTypeList
+from google.cloud.compute_v1beta.types.compute import AcceleratorTypesScopedList
+from google.cloud.compute_v1beta.types.compute import AccessConfig
+from google.cloud.compute_v1beta.types.compute import AddAccessConfigInstanceRequest
+from google.cloud.compute_v1beta.types.compute import AddAssociationFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddAssociationNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddAssociationOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddAssociationRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddHealthCheckTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import AddInstancesInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import AddInstanceTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import AddNetworkInterfaceInstanceRequest
+from google.cloud.compute_v1beta.types.compute import AddNodesNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import AddPacketMirroringRuleFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddPacketMirroringRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddPeeringNetworkRequest
+from google.cloud.compute_v1beta.types.compute import AddResourcePoliciesDiskRequest
+from google.cloud.compute_v1beta.types.compute import AddResourcePoliciesInstanceRequest
+from google.cloud.compute_v1beta.types.compute import AddResourcePoliciesRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import Address
+from google.cloud.compute_v1beta.types.compute import AddressAggregatedList
+from google.cloud.compute_v1beta.types.compute import AddressesScopedList
+from google.cloud.compute_v1beta.types.compute import AddressList
+from google.cloud.compute_v1beta.types.compute import AddRuleFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddRuleOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddRuleRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddRuleRegionSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddRuleSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import AddSignedUrlKeyBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import AddSignedUrlKeyBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import AdvancedMachineFeatures
+from google.cloud.compute_v1beta.types.compute import AggregatedListAcceleratorTypesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListAddressesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListAutoscalersRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListBackendServicesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListDisksRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListDiskTypesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListForwardingRulesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListFutureReservationsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListGlobalOperationsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListHealthChecksRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListInstanceGroupManagersRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListInstanceGroupsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListInstancesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListInstanceTemplatesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListInstantSnapshotsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListInterconnectAttachmentsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListMachineTypesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListNetworkAttachmentsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListNetworkEdgeSecurityServicesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListNetworkEndpointGroupsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListNetworkFirewallPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListNodeGroupsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListNodeTemplatesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListNodeTypesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListPacketMirroringsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListPublicDelegatedPrefixesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListRegionCommitmentsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListReservationsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListResourcePoliciesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListRoutersRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListSecurityPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListServiceAttachmentsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListSnapshotsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListSslCertificatesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListSslPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListStoragePoolsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListStoragePoolTypesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListSubnetworksRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListTargetHttpProxiesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListTargetHttpsProxiesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListTargetInstancesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListTargetPoolsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListTargetTcpProxiesRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListTargetVpnGatewaysRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListUrlMapsRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListVpnGatewaysRequest
+from google.cloud.compute_v1beta.types.compute import AggregatedListVpnTunnelsRequest
+from google.cloud.compute_v1beta.types.compute import AliasIpRange
+from google.cloud.compute_v1beta.types.compute import AllocationAggregateReservation
+from google.cloud.compute_v1beta.types.compute import AllocationAggregateReservationReservedResourceInfo
+from google.cloud.compute_v1beta.types.compute import AllocationAggregateReservationReservedResourceInfoAccelerator
+from google.cloud.compute_v1beta.types.compute import AllocationReservationSharingPolicy
+from google.cloud.compute_v1beta.types.compute import AllocationResourceStatus
+from google.cloud.compute_v1beta.types.compute import AllocationResourceStatusSpecificSKUAllocation
+from google.cloud.compute_v1beta.types.compute import AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk
+from google.cloud.compute_v1beta.types.compute import AllocationSpecificSKUAllocationReservedInstanceProperties
+from google.cloud.compute_v1beta.types.compute import AllocationSpecificSKUReservation
+from google.cloud.compute_v1beta.types.compute import Allowed
+from google.cloud.compute_v1beta.types.compute import AnnouncePublicAdvertisedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import AnnouncePublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import ApplyUpdatesToInstancesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import AttachDiskInstanceRequest
+from google.cloud.compute_v1beta.types.compute import AttachedDisk
+from google.cloud.compute_v1beta.types.compute import AttachedDiskInitializeParams
+from google.cloud.compute_v1beta.types.compute import AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import AttachNetworkEndpointsNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import AttachNetworkEndpointsRegionNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import AuditConfig
+from google.cloud.compute_v1beta.types.compute import AuditLogConfig
+from google.cloud.compute_v1beta.types.compute import Autoscaler
+from google.cloud.compute_v1beta.types.compute import AutoscalerAggregatedList
+from google.cloud.compute_v1beta.types.compute import AutoscalerList
+from google.cloud.compute_v1beta.types.compute import AutoscalersScopedList
+from google.cloud.compute_v1beta.types.compute import AutoscalerStatusDetails
+from google.cloud.compute_v1beta.types.compute import AutoscalingPolicy
+from google.cloud.compute_v1beta.types.compute import AutoscalingPolicyCpuUtilization
+from google.cloud.compute_v1beta.types.compute import AutoscalingPolicyCustomMetricUtilization
+from google.cloud.compute_v1beta.types.compute import AutoscalingPolicyLoadBalancingUtilization
+from google.cloud.compute_v1beta.types.compute import AutoscalingPolicyScaleDownControl
+from google.cloud.compute_v1beta.types.compute import AutoscalingPolicyScaleInControl
+from google.cloud.compute_v1beta.types.compute import AutoscalingPolicyScalingSchedule
+from google.cloud.compute_v1beta.types.compute import AWSV4Signature
+from google.cloud.compute_v1beta.types.compute import Backend
+from google.cloud.compute_v1beta.types.compute import BackendBucket
+from google.cloud.compute_v1beta.types.compute import BackendBucketCdnPolicy
+from google.cloud.compute_v1beta.types.compute import BackendBucketCdnPolicyBypassCacheOnRequestHeader
+from google.cloud.compute_v1beta.types.compute import BackendBucketCdnPolicyCacheKeyPolicy
+from google.cloud.compute_v1beta.types.compute import BackendBucketCdnPolicyNegativeCachingPolicy
+from google.cloud.compute_v1beta.types.compute import BackendBucketList
+from google.cloud.compute_v1beta.types.compute import BackendBucketListUsable
+from google.cloud.compute_v1beta.types.compute import BackendBucketUsedBy
+from google.cloud.compute_v1beta.types.compute import BackendCustomMetric
+from google.cloud.compute_v1beta.types.compute import BackendService
+from google.cloud.compute_v1beta.types.compute import BackendServiceAggregatedList
+from google.cloud.compute_v1beta.types.compute import BackendServiceCdnPolicy
+from google.cloud.compute_v1beta.types.compute import BackendServiceCdnPolicyBypassCacheOnRequestHeader
+from google.cloud.compute_v1beta.types.compute import BackendServiceCdnPolicyNegativeCachingPolicy
+from google.cloud.compute_v1beta.types.compute import BackendServiceConnectionTrackingPolicy
+from google.cloud.compute_v1beta.types.compute import BackendServiceCustomMetric
+from google.cloud.compute_v1beta.types.compute import BackendServiceDynamicForwarding
+from google.cloud.compute_v1beta.types.compute import BackendServiceDynamicForwardingIpPortSelection
+from google.cloud.compute_v1beta.types.compute import BackendServiceFailoverPolicy
+from google.cloud.compute_v1beta.types.compute import BackendServiceGroupHealth
+from google.cloud.compute_v1beta.types.compute import BackendServiceHAPolicy
+from google.cloud.compute_v1beta.types.compute import BackendServiceHAPolicyLeader
+from google.cloud.compute_v1beta.types.compute import BackendServiceHAPolicyLeaderNetworkEndpoint
+from google.cloud.compute_v1beta.types.compute import BackendServiceHttpCookie
+from google.cloud.compute_v1beta.types.compute import BackendServiceIAP
+from google.cloud.compute_v1beta.types.compute import BackendServiceList
+from google.cloud.compute_v1beta.types.compute import BackendServiceListUsable
+from google.cloud.compute_v1beta.types.compute import BackendServiceLocalityLoadBalancingPolicyConfig
+from google.cloud.compute_v1beta.types.compute import BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy
+from google.cloud.compute_v1beta.types.compute import BackendServiceLocalityLoadBalancingPolicyConfigPolicy
+from google.cloud.compute_v1beta.types.compute import BackendServiceLogConfig
+from google.cloud.compute_v1beta.types.compute import BackendServiceNetworkPassThroughLbTrafficPolicy
+from google.cloud.compute_v1beta.types.compute import BackendServiceNetworkPassThroughLbTrafficPolicyZonalAffinity
+from google.cloud.compute_v1beta.types.compute import BackendServiceReference
+from google.cloud.compute_v1beta.types.compute import BackendServicesGetEffectiveSecurityPoliciesResponse
+from google.cloud.compute_v1beta.types.compute import BackendServicesScopedList
+from google.cloud.compute_v1beta.types.compute import BackendServiceTlsSettings
+from google.cloud.compute_v1beta.types.compute import BackendServiceTlsSettingsSubjectAltName
+from google.cloud.compute_v1beta.types.compute import BackendServiceUsedBy
+from google.cloud.compute_v1beta.types.compute import BfdPacket
+from google.cloud.compute_v1beta.types.compute import BfdStatus
+from google.cloud.compute_v1beta.types.compute import BfdStatusPacketCounts
+from google.cloud.compute_v1beta.types.compute import BgpRoute
+from google.cloud.compute_v1beta.types.compute import BgpRouteAsPath
+from google.cloud.compute_v1beta.types.compute import BgpRouteNetworkLayerReachabilityInformation
+from google.cloud.compute_v1beta.types.compute import Binding
+from google.cloud.compute_v1beta.types.compute import BulkInsertDiskRequest
+from google.cloud.compute_v1beta.types.compute import BulkInsertDiskResource
+from google.cloud.compute_v1beta.types.compute import BulkInsertInstanceRequest
+from google.cloud.compute_v1beta.types.compute import BulkInsertInstanceResource
+from google.cloud.compute_v1beta.types.compute import BulkInsertInstanceResourcePerInstanceProperties
+from google.cloud.compute_v1beta.types.compute import BulkInsertOperationStatus
+from google.cloud.compute_v1beta.types.compute import BulkInsertRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import BulkInsertRegionInstanceRequest
+from google.cloud.compute_v1beta.types.compute import BulkSetLabelsDiskRequest
+from google.cloud.compute_v1beta.types.compute import BulkSetLabelsRequest
+from google.cloud.compute_v1beta.types.compute import BulkZoneSetLabelsRequest
+from google.cloud.compute_v1beta.types.compute import BundledLocalSsds
+from google.cloud.compute_v1beta.types.compute import CacheInvalidationRule
+from google.cloud.compute_v1beta.types.compute import CacheKeyPolicy
+from google.cloud.compute_v1beta.types.compute import CalendarModeAdviceRequest
+from google.cloud.compute_v1beta.types.compute import CalendarModeAdviceResponse
+from google.cloud.compute_v1beta.types.compute import CalendarModeAdviceRpcRequest
+from google.cloud.compute_v1beta.types.compute import CalendarModeRecommendation
+from google.cloud.compute_v1beta.types.compute import CancelFutureReservationRequest
+from google.cloud.compute_v1beta.types.compute import CancelInstanceGroupManagerResizeRequestRequest
+from google.cloud.compute_v1beta.types.compute import CancelRegionInstanceGroupManagerResizeRequestRequest
+from google.cloud.compute_v1beta.types.compute import CircuitBreakers
+from google.cloud.compute_v1beta.types.compute import CloneRulesFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import CloneRulesNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import CloneRulesRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import Commitment
+from google.cloud.compute_v1beta.types.compute import CommitmentAggregatedList
+from google.cloud.compute_v1beta.types.compute import CommitmentList
+from google.cloud.compute_v1beta.types.compute import CommitmentResourceStatus
+from google.cloud.compute_v1beta.types.compute import CommitmentsScopedList
+from google.cloud.compute_v1beta.types.compute import ConfidentialInstanceConfig
+from google.cloud.compute_v1beta.types.compute import ConnectionDraining
+from google.cloud.compute_v1beta.types.compute import ConsistentHashLoadBalancerSettings
+from google.cloud.compute_v1beta.types.compute import ConsistentHashLoadBalancerSettingsHttpCookie
+from google.cloud.compute_v1beta.types.compute import CopyRulesOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import CorsPolicy
+from google.cloud.compute_v1beta.types.compute import CreateInstancesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import CreateInstancesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import CreateMembersInterconnectGroupRequest
+from google.cloud.compute_v1beta.types.compute import CreateSnapshotDiskRequest
+from google.cloud.compute_v1beta.types.compute import CreateSnapshotRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import CrossSiteNetwork
+from google.cloud.compute_v1beta.types.compute import CrossSiteNetworkList
+from google.cloud.compute_v1beta.types.compute import CustomerEncryptionKey
+from google.cloud.compute_v1beta.types.compute import CustomerEncryptionKeyProtectedDisk
+from google.cloud.compute_v1beta.types.compute import CustomErrorResponsePolicy
+from google.cloud.compute_v1beta.types.compute import CustomErrorResponsePolicyCustomErrorResponseRule
+from google.cloud.compute_v1beta.types.compute import Data
+from google.cloud.compute_v1beta.types.compute import Date
+from google.cloud.compute_v1beta.types.compute import DeleteAccessConfigInstanceRequest
+from google.cloud.compute_v1beta.types.compute import DeleteAddressRequest
+from google.cloud.compute_v1beta.types.compute import DeleteAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import DeleteBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import DeleteBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import DeleteCrossSiteNetworkRequest
+from google.cloud.compute_v1beta.types.compute import DeleteDiskRequest
+from google.cloud.compute_v1beta.types.compute import DeleteExternalVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import DeleteFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteFirewallRequest
+from google.cloud.compute_v1beta.types.compute import DeleteForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import DeleteFutureReservationRequest
+from google.cloud.compute_v1beta.types.compute import DeleteGlobalAddressRequest
+from google.cloud.compute_v1beta.types.compute import DeleteGlobalForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import DeleteGlobalNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import DeleteGlobalOperationRequest
+from google.cloud.compute_v1beta.types.compute import DeleteGlobalOperationResponse
+from google.cloud.compute_v1beta.types.compute import DeleteGlobalOrganizationOperationRequest
+from google.cloud.compute_v1beta.types.compute import DeleteGlobalOrganizationOperationResponse
+from google.cloud.compute_v1beta.types.compute import DeleteGlobalPublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import DeleteHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import DeleteImageRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInstanceGroupManagerResizeRequestRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInstanceRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInstancesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInstancesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInterconnectAttachmentGroupRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInterconnectAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInterconnectGroupRequest
+from google.cloud.compute_v1beta.types.compute import DeleteInterconnectRequest
+from google.cloud.compute_v1beta.types.compute import DeleteLicenseRequest
+from google.cloud.compute_v1beta.types.compute import DeleteMachineImageRequest
+from google.cloud.compute_v1beta.types.compute import DeleteNetworkAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import DeleteNetworkEdgeSecurityServiceRequest
+from google.cloud.compute_v1beta.types.compute import DeleteNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import DeleteNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteNetworkInterfaceInstanceRequest
+from google.cloud.compute_v1beta.types.compute import DeleteNetworkRequest
+from google.cloud.compute_v1beta.types.compute import DeleteNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import DeleteNodesNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import DeleteNodeTemplateRequest
+from google.cloud.compute_v1beta.types.compute import DeleteOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import DeletePacketMirroringRequest
+from google.cloud.compute_v1beta.types.compute import DeletePerInstanceConfigsInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import DeletePerInstanceConfigsRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import DeletePublicAdvertisedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import DeletePublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionHealthCheckServiceRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionInstanceGroupManagerResizeRequestRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionMultiMigRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionNotificationEndpointRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionOperationRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionOperationResponse
+from google.cloud.compute_v1beta.types.compute import DeleteRegionSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionSslCertificateRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRegionUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import DeleteReservationRequest
+from google.cloud.compute_v1beta.types.compute import DeleteResourcePolicyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRoutePolicyRouterRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRouteRequest
+from google.cloud.compute_v1beta.types.compute import DeleteRouterRequest
+from google.cloud.compute_v1beta.types.compute import DeleteSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteServiceAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import DeleteSignedUrlKeyBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import DeleteSignedUrlKeyBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import DeleteSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import DeleteSslCertificateRequest
+from google.cloud.compute_v1beta.types.compute import DeleteSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteStoragePoolRequest
+from google.cloud.compute_v1beta.types.compute import DeleteSubnetworkRequest
+from google.cloud.compute_v1beta.types.compute import DeleteTargetGrpcProxyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteTargetInstanceRequest
+from google.cloud.compute_v1beta.types.compute import DeleteTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import DeleteTargetSslProxyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import DeleteTargetVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import DeleteUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import DeleteVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import DeleteVpnTunnelRequest
+from google.cloud.compute_v1beta.types.compute import DeleteWireGroupRequest
+from google.cloud.compute_v1beta.types.compute import DeleteZoneOperationRequest
+from google.cloud.compute_v1beta.types.compute import DeleteZoneOperationResponse
+from google.cloud.compute_v1beta.types.compute import Denied
+from google.cloud.compute_v1beta.types.compute import DeprecateImageRequest
+from google.cloud.compute_v1beta.types.compute import DeprecationStatus
+from google.cloud.compute_v1beta.types.compute import DetachDiskInstanceRequest
+from google.cloud.compute_v1beta.types.compute import DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import DetachNetworkEndpointsNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import DetachNetworkEndpointsRegionNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import DisableXpnHostProjectRequest
+from google.cloud.compute_v1beta.types.compute import DisableXpnResourceProjectRequest
+from google.cloud.compute_v1beta.types.compute import Disk
+from google.cloud.compute_v1beta.types.compute import DiskAggregatedList
+from google.cloud.compute_v1beta.types.compute import DiskAsyncReplication
+from google.cloud.compute_v1beta.types.compute import DiskAsyncReplicationList
+from google.cloud.compute_v1beta.types.compute import DiskInstantiationConfig
+from google.cloud.compute_v1beta.types.compute import DiskList
+from google.cloud.compute_v1beta.types.compute import DiskMoveRequest
+from google.cloud.compute_v1beta.types.compute import DiskParams
+from google.cloud.compute_v1beta.types.compute import DiskResourceStatus
+from google.cloud.compute_v1beta.types.compute import DiskResourceStatusAsyncReplicationStatus
+from google.cloud.compute_v1beta.types.compute import DisksAddResourcePoliciesRequest
+from google.cloud.compute_v1beta.types.compute import DiskSettings
+from google.cloud.compute_v1beta.types.compute import DiskSettingsAccessLocation
+from google.cloud.compute_v1beta.types.compute import DiskSettingsAccessLocationAccessLocationPreference
+from google.cloud.compute_v1beta.types.compute import DisksRemoveResourcePoliciesRequest
+from google.cloud.compute_v1beta.types.compute import DisksResizeRequest
+from google.cloud.compute_v1beta.types.compute import DisksScopedList
+from google.cloud.compute_v1beta.types.compute import DisksStartAsyncReplicationRequest
+from google.cloud.compute_v1beta.types.compute import DisksStopGroupAsyncReplicationResource
+from google.cloud.compute_v1beta.types.compute import DiskType
+from google.cloud.compute_v1beta.types.compute import DiskTypeAggregatedList
+from google.cloud.compute_v1beta.types.compute import DiskTypeList
+from google.cloud.compute_v1beta.types.compute import DiskTypesScopedList
+from google.cloud.compute_v1beta.types.compute import DisplayDevice
+from google.cloud.compute_v1beta.types.compute import DistributionPolicy
+from google.cloud.compute_v1beta.types.compute import DistributionPolicyZoneConfiguration
+from google.cloud.compute_v1beta.types.compute import Duration
+from google.cloud.compute_v1beta.types.compute import EnableXpnHostProjectRequest
+from google.cloud.compute_v1beta.types.compute import EnableXpnResourceProjectRequest
+from google.cloud.compute_v1beta.types.compute import Error
+from google.cloud.compute_v1beta.types.compute import ErrorDetails
+from google.cloud.compute_v1beta.types.compute import ErrorInfo
+from google.cloud.compute_v1beta.types.compute import Errors
+from google.cloud.compute_v1beta.types.compute import ExchangedPeeringRoute
+from google.cloud.compute_v1beta.types.compute import ExchangedPeeringRoutesList
+from google.cloud.compute_v1beta.types.compute import ExpandIpCidrRangeSubnetworkRequest
+from google.cloud.compute_v1beta.types.compute import Expr
+from google.cloud.compute_v1beta.types.compute import ExternalVpnGateway
+from google.cloud.compute_v1beta.types.compute import ExternalVpnGatewayInterface
+from google.cloud.compute_v1beta.types.compute import ExternalVpnGatewayList
+from google.cloud.compute_v1beta.types.compute import FileContentBuffer
+from google.cloud.compute_v1beta.types.compute import Firewall
+from google.cloud.compute_v1beta.types.compute import FirewallList
+from google.cloud.compute_v1beta.types.compute import FirewallLogConfig
+from google.cloud.compute_v1beta.types.compute import FirewallParams
+from google.cloud.compute_v1beta.types.compute import FirewallPoliciesListAssociationsResponse
+from google.cloud.compute_v1beta.types.compute import FirewallPoliciesScopedList
+from google.cloud.compute_v1beta.types.compute import FirewallPolicy
+from google.cloud.compute_v1beta.types.compute import FirewallPolicyAssociation
+from google.cloud.compute_v1beta.types.compute import FirewallPolicyList
+from google.cloud.compute_v1beta.types.compute import FirewallPolicyRule
+from google.cloud.compute_v1beta.types.compute import FirewallPolicyRuleMatcher
+from google.cloud.compute_v1beta.types.compute import FirewallPolicyRuleMatcherLayer4Config
+from google.cloud.compute_v1beta.types.compute import FirewallPolicyRuleSecureTag
+from google.cloud.compute_v1beta.types.compute import FixedOrPercent
+from google.cloud.compute_v1beta.types.compute import FlexibleTimeRange
+from google.cloud.compute_v1beta.types.compute import ForwardingRule
+from google.cloud.compute_v1beta.types.compute import ForwardingRuleAggregatedList
+from google.cloud.compute_v1beta.types.compute import ForwardingRuleList
+from google.cloud.compute_v1beta.types.compute import ForwardingRuleReference
+from google.cloud.compute_v1beta.types.compute import ForwardingRuleServiceDirectoryRegistration
+from google.cloud.compute_v1beta.types.compute import ForwardingRulesScopedList
+from google.cloud.compute_v1beta.types.compute import FutureReservation
+from google.cloud.compute_v1beta.types.compute import FutureReservationCommitmentInfo
+from google.cloud.compute_v1beta.types.compute import FutureReservationsAggregatedListResponse
+from google.cloud.compute_v1beta.types.compute import FutureReservationsListResponse
+from google.cloud.compute_v1beta.types.compute import FutureReservationSpecificSKUProperties
+from google.cloud.compute_v1beta.types.compute import FutureReservationsScopedList
+from google.cloud.compute_v1beta.types.compute import FutureReservationStatus
+from google.cloud.compute_v1beta.types.compute import FutureReservationStatusExistingMatchingUsageInfo
+from google.cloud.compute_v1beta.types.compute import FutureReservationStatusLastKnownGoodState
+from google.cloud.compute_v1beta.types.compute import FutureReservationStatusLastKnownGoodStateFutureReservationSpecs
+from google.cloud.compute_v1beta.types.compute import FutureReservationStatusSpecificSKUProperties
+from google.cloud.compute_v1beta.types.compute import FutureReservationTimeWindow
+from google.cloud.compute_v1beta.types.compute import FutureResourcesRecommendation
+from google.cloud.compute_v1beta.types.compute import FutureResourcesRecommendationOtherLocation
+from google.cloud.compute_v1beta.types.compute import FutureResourcesSpec
+from google.cloud.compute_v1beta.types.compute import FutureResourcesSpecAggregateResources
+from google.cloud.compute_v1beta.types.compute import FutureResourcesSpecLocalSsdPartition
+from google.cloud.compute_v1beta.types.compute import FutureResourcesSpecLocationPolicy
+from google.cloud.compute_v1beta.types.compute import FutureResourcesSpecLocationPolicyLocation
+from google.cloud.compute_v1beta.types.compute import FutureResourcesSpecSpecificSKUResources
+from google.cloud.compute_v1beta.types.compute import FutureResourcesSpecTargetResources
+from google.cloud.compute_v1beta.types.compute import GetAcceleratorTypeRequest
+from google.cloud.compute_v1beta.types.compute import GetAddressRequest
+from google.cloud.compute_v1beta.types.compute import GetAssociationFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetAssociationNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetAssociationOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetAssociationRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import GetBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import GetBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import GetCrossSiteNetworkRequest
+from google.cloud.compute_v1beta.types.compute import GetDiagnosticsInterconnectRequest
+from google.cloud.compute_v1beta.types.compute import GetDiskRequest
+from google.cloud.compute_v1beta.types.compute import GetDiskSettingRequest
+from google.cloud.compute_v1beta.types.compute import GetDiskTypeRequest
+from google.cloud.compute_v1beta.types.compute import GetEffectiveFirewallsInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetEffectiveFirewallsNetworkRequest
+from google.cloud.compute_v1beta.types.compute import GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetEffectiveSecurityPoliciesBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import GetExternalVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import GetFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetFirewallRequest
+from google.cloud.compute_v1beta.types.compute import GetForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import GetFromFamilyImageRequest
+from google.cloud.compute_v1beta.types.compute import GetFutureReservationRequest
+from google.cloud.compute_v1beta.types.compute import GetGlobalAddressRequest
+from google.cloud.compute_v1beta.types.compute import GetGlobalForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import GetGlobalNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetGlobalOperationRequest
+from google.cloud.compute_v1beta.types.compute import GetGlobalOrganizationOperationRequest
+from google.cloud.compute_v1beta.types.compute import GetGlobalPublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import GetGuestAttributesInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetHealthBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import GetHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import GetHealthRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import GetHealthTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyDiskRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyImageRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyInterconnectAttachmentGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyInterconnectGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyLicenseRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyMachineImageRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyNetworkAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyNodeTemplateRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyRegionInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyRegionSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyReservationRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyResourcePolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyServiceAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicySnapshotRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicyStoragePoolRequest
+from google.cloud.compute_v1beta.types.compute import GetIamPolicySubnetworkRequest
+from google.cloud.compute_v1beta.types.compute import GetImageFamilyViewRequest
+from google.cloud.compute_v1beta.types.compute import GetImageRequest
+from google.cloud.compute_v1beta.types.compute import GetInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import GetInstanceGroupManagerResizeRequestRequest
+from google.cloud.compute_v1beta.types.compute import GetInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetInstanceSettingRequest
+from google.cloud.compute_v1beta.types.compute import GetInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import GetInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import GetInterconnectAttachmentGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetInterconnectAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import GetInterconnectGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetInterconnectLocationRequest
+from google.cloud.compute_v1beta.types.compute import GetInterconnectRemoteLocationRequest
+from google.cloud.compute_v1beta.types.compute import GetInterconnectRequest
+from google.cloud.compute_v1beta.types.compute import GetLicenseCodeRequest
+from google.cloud.compute_v1beta.types.compute import GetLicenseRequest
+from google.cloud.compute_v1beta.types.compute import GetMachineImageRequest
+from google.cloud.compute_v1beta.types.compute import GetMachineTypeRequest
+from google.cloud.compute_v1beta.types.compute import GetMacsecConfigInterconnectRequest
+from google.cloud.compute_v1beta.types.compute import GetNatIpInfoRouterRequest
+from google.cloud.compute_v1beta.types.compute import GetNatMappingInfoRoutersRequest
+from google.cloud.compute_v1beta.types.compute import GetNetworkAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import GetNetworkEdgeSecurityServiceRequest
+from google.cloud.compute_v1beta.types.compute import GetNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetNetworkProfileRequest
+from google.cloud.compute_v1beta.types.compute import GetNetworkRequest
+from google.cloud.compute_v1beta.types.compute import GetNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetNodeTemplateRequest
+from google.cloud.compute_v1beta.types.compute import GetNodeTypeRequest
+from google.cloud.compute_v1beta.types.compute import GetOperationalStatusInterconnectAttachmentGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetOperationalStatusInterconnectGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetPacketMirroringRequest
+from google.cloud.compute_v1beta.types.compute import GetPacketMirroringRuleFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetPacketMirroringRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetPartnerMetadataInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetPreviewFeatureRequest
+from google.cloud.compute_v1beta.types.compute import GetProjectRequest
+from google.cloud.compute_v1beta.types.compute import GetPublicAdvertisedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import GetPublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionCommitmentRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionDiskSettingRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionDiskTypeRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionHealthCheckServiceRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionInstanceGroupManagerResizeRequestRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionMultiMigRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionNotificationEndpointRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionOperationRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionSnapshotSettingRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionSslCertificateRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import GetRegionUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import GetReservationBlockRequest
+from google.cloud.compute_v1beta.types.compute import GetReservationRequest
+from google.cloud.compute_v1beta.types.compute import GetResourcePolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetRoutePolicyRouterRequest
+from google.cloud.compute_v1beta.types.compute import GetRouteRequest
+from google.cloud.compute_v1beta.types.compute import GetRouterRequest
+from google.cloud.compute_v1beta.types.compute import GetRouterStatusRouterRequest
+from google.cloud.compute_v1beta.types.compute import GetRuleFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetRuleOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetRuleRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetRuleRegionSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetRuleSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetScreenshotInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetSerialPortOutputInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetServiceAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import GetShieldedInstanceIdentityInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetShieldedVmIdentityInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import GetSnapshotSettingRequest
+from google.cloud.compute_v1beta.types.compute import GetSslCertificateRequest
+from google.cloud.compute_v1beta.types.compute import GetSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GetStatusVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import GetStoragePoolRequest
+from google.cloud.compute_v1beta.types.compute import GetStoragePoolTypeRequest
+from google.cloud.compute_v1beta.types.compute import GetSubnetworkRequest
+from google.cloud.compute_v1beta.types.compute import GetTargetGrpcProxyRequest
+from google.cloud.compute_v1beta.types.compute import GetTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import GetTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import GetTargetInstanceRequest
+from google.cloud.compute_v1beta.types.compute import GetTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import GetTargetSslProxyRequest
+from google.cloud.compute_v1beta.types.compute import GetTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import GetTargetVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import GetUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import GetVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import GetVpnTunnelRequest
+from google.cloud.compute_v1beta.types.compute import GetWireGroupRequest
+from google.cloud.compute_v1beta.types.compute import GetXpnHostProjectRequest
+from google.cloud.compute_v1beta.types.compute import GetXpnResourcesProjectsRequest
+from google.cloud.compute_v1beta.types.compute import GetZoneOperationRequest
+from google.cloud.compute_v1beta.types.compute import GetZoneRequest
+from google.cloud.compute_v1beta.types.compute import GlobalAddressesMoveRequest
+from google.cloud.compute_v1beta.types.compute import GlobalNetworkEndpointGroupsAttachEndpointsRequest
+from google.cloud.compute_v1beta.types.compute import GlobalNetworkEndpointGroupsDetachEndpointsRequest
+from google.cloud.compute_v1beta.types.compute import GlobalOrganizationSetPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GlobalSetLabelsRequest
+from google.cloud.compute_v1beta.types.compute import GlobalSetPolicyRequest
+from google.cloud.compute_v1beta.types.compute import GroupMaintenanceInfo
+from google.cloud.compute_v1beta.types.compute import GRPCHealthCheck
+from google.cloud.compute_v1beta.types.compute import GRPCTLSHealthCheck
+from google.cloud.compute_v1beta.types.compute import GuestAttributes
+from google.cloud.compute_v1beta.types.compute import GuestAttributesEntry
+from google.cloud.compute_v1beta.types.compute import GuestAttributesValue
+from google.cloud.compute_v1beta.types.compute import GuestOsFeature
+from google.cloud.compute_v1beta.types.compute import HealthCheck
+from google.cloud.compute_v1beta.types.compute import HealthCheckList
+from google.cloud.compute_v1beta.types.compute import HealthCheckLogConfig
+from google.cloud.compute_v1beta.types.compute import HealthCheckReference
+from google.cloud.compute_v1beta.types.compute import HealthChecksAggregatedList
+from google.cloud.compute_v1beta.types.compute import HealthCheckService
+from google.cloud.compute_v1beta.types.compute import HealthCheckServiceReference
+from google.cloud.compute_v1beta.types.compute import HealthCheckServicesList
+from google.cloud.compute_v1beta.types.compute import HealthChecksScopedList
+from google.cloud.compute_v1beta.types.compute import HealthStatus
+from google.cloud.compute_v1beta.types.compute import HealthStatusForNetworkEndpoint
+from google.cloud.compute_v1beta.types.compute import Help
+from google.cloud.compute_v1beta.types.compute import HelpLink
+from google.cloud.compute_v1beta.types.compute import HostRule
+from google.cloud.compute_v1beta.types.compute import HTTP2HealthCheck
+from google.cloud.compute_v1beta.types.compute import HttpFaultAbort
+from google.cloud.compute_v1beta.types.compute import HttpFaultDelay
+from google.cloud.compute_v1beta.types.compute import HttpFaultInjection
+from google.cloud.compute_v1beta.types.compute import HttpFilterConfig
+from google.cloud.compute_v1beta.types.compute import HttpHeaderAction
+from google.cloud.compute_v1beta.types.compute import HttpHeaderMatch
+from google.cloud.compute_v1beta.types.compute import HttpHeaderOption
+from google.cloud.compute_v1beta.types.compute import HTTPHealthCheck
+from google.cloud.compute_v1beta.types.compute import HttpQueryParameterMatch
+from google.cloud.compute_v1beta.types.compute import HttpRedirectAction
+from google.cloud.compute_v1beta.types.compute import HttpRetryPolicy
+from google.cloud.compute_v1beta.types.compute import HttpRouteAction
+from google.cloud.compute_v1beta.types.compute import HttpRouteRule
+from google.cloud.compute_v1beta.types.compute import HttpRouteRuleMatch
+from google.cloud.compute_v1beta.types.compute import HTTPSHealthCheck
+from google.cloud.compute_v1beta.types.compute import Image
+from google.cloud.compute_v1beta.types.compute import ImageFamilyView
+from google.cloud.compute_v1beta.types.compute import ImageList
+from google.cloud.compute_v1beta.types.compute import InitialStateConfig
+from google.cloud.compute_v1beta.types.compute import InsertAddressRequest
+from google.cloud.compute_v1beta.types.compute import InsertAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import InsertBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import InsertBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import InsertCrossSiteNetworkRequest
+from google.cloud.compute_v1beta.types.compute import InsertDiskRequest
+from google.cloud.compute_v1beta.types.compute import InsertExternalVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import InsertFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import InsertFirewallRequest
+from google.cloud.compute_v1beta.types.compute import InsertForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import InsertFutureReservationRequest
+from google.cloud.compute_v1beta.types.compute import InsertGlobalAddressRequest
+from google.cloud.compute_v1beta.types.compute import InsertGlobalForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import InsertGlobalNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import InsertGlobalPublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import InsertHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import InsertImageRequest
+from google.cloud.compute_v1beta.types.compute import InsertInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import InsertInstanceGroupManagerResizeRequestRequest
+from google.cloud.compute_v1beta.types.compute import InsertInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import InsertInstanceRequest
+from google.cloud.compute_v1beta.types.compute import InsertInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import InsertInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import InsertInterconnectAttachmentGroupRequest
+from google.cloud.compute_v1beta.types.compute import InsertInterconnectAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import InsertInterconnectGroupRequest
+from google.cloud.compute_v1beta.types.compute import InsertInterconnectRequest
+from google.cloud.compute_v1beta.types.compute import InsertLicenseRequest
+from google.cloud.compute_v1beta.types.compute import InsertMachineImageRequest
+from google.cloud.compute_v1beta.types.compute import InsertNetworkAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import InsertNetworkEdgeSecurityServiceRequest
+from google.cloud.compute_v1beta.types.compute import InsertNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import InsertNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import InsertNetworkRequest
+from google.cloud.compute_v1beta.types.compute import InsertNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import InsertNodeTemplateRequest
+from google.cloud.compute_v1beta.types.compute import InsertOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import InsertPacketMirroringRequest
+from google.cloud.compute_v1beta.types.compute import InsertPublicAdvertisedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import InsertPublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionCommitmentRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionHealthCheckServiceRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionInstanceGroupManagerResizeRequestRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionMultiMigRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionNotificationEndpointRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionSslCertificateRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import InsertRegionUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import InsertReservationRequest
+from google.cloud.compute_v1beta.types.compute import InsertResourcePolicyRequest
+from google.cloud.compute_v1beta.types.compute import InsertRouteRequest
+from google.cloud.compute_v1beta.types.compute import InsertRouterRequest
+from google.cloud.compute_v1beta.types.compute import InsertSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import InsertServiceAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import InsertSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import InsertSslCertificateRequest
+from google.cloud.compute_v1beta.types.compute import InsertSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import InsertStoragePoolRequest
+from google.cloud.compute_v1beta.types.compute import InsertSubnetworkRequest
+from google.cloud.compute_v1beta.types.compute import InsertTargetGrpcProxyRequest
+from google.cloud.compute_v1beta.types.compute import InsertTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import InsertTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import InsertTargetInstanceRequest
+from google.cloud.compute_v1beta.types.compute import InsertTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import InsertTargetSslProxyRequest
+from google.cloud.compute_v1beta.types.compute import InsertTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import InsertTargetVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import InsertUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import InsertVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import InsertVpnTunnelRequest
+from google.cloud.compute_v1beta.types.compute import InsertWireGroupRequest
+from google.cloud.compute_v1beta.types.compute import Instance
+from google.cloud.compute_v1beta.types.compute import InstanceAggregatedList
+from google.cloud.compute_v1beta.types.compute import InstanceConsumptionData
+from google.cloud.compute_v1beta.types.compute import InstanceConsumptionInfo
+from google.cloud.compute_v1beta.types.compute import InstanceGroup
+from google.cloud.compute_v1beta.types.compute import InstanceGroupAggregatedList
+from google.cloud.compute_v1beta.types.compute import InstanceGroupList
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManager
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerActionsSummary
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerAggregatedList
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerAllInstancesConfig
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerAutoHealingPolicy
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerInstanceFlexibilityPolicy
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerInstanceFlexibilityPolicyProvisioningModelMix
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerInstanceLifecyclePolicy
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerList
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerParams
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerResizeRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerResizeRequestsListResponse
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerResizeRequestStatus
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerResizeRequestStatusLastAttempt
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerResourcePolicies
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersAbandonInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersApplyUpdatesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersCreateInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersDeleteInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersDeletePerInstanceConfigsReq
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersListErrorsResponse
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersListManagedInstancesResponse
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersListPerInstanceConfigsResp
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersPatchPerInstanceConfigsReq
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersRecreateInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersResizeAdvancedRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersResumeInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersScopedList
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersSetAutoHealingRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersSetInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersSetTargetPoolsRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersStartInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersStopInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersSuspendInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerStandbyPolicy
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerStatus
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerStatusAllInstancesConfig
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerStatusStateful
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerStatusStatefulPerInstanceConfigs
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerStatusVersionTarget
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagersUpdatePerInstanceConfigsReq
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerUpdatePolicy
+from google.cloud.compute_v1beta.types.compute import InstanceGroupManagerVersion
+from google.cloud.compute_v1beta.types.compute import InstanceGroupsAddInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupsListInstances
+from google.cloud.compute_v1beta.types.compute import InstanceGroupsListInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupsRemoveInstancesRequest
+from google.cloud.compute_v1beta.types.compute import InstanceGroupsScopedList
+from google.cloud.compute_v1beta.types.compute import InstanceGroupsSetNamedPortsRequest
+from google.cloud.compute_v1beta.types.compute import InstanceList
+from google.cloud.compute_v1beta.types.compute import InstanceListReferrers
+from google.cloud.compute_v1beta.types.compute import InstanceManagedByIgmError
+from google.cloud.compute_v1beta.types.compute import InstanceManagedByIgmErrorInstanceActionDetails
+from google.cloud.compute_v1beta.types.compute import InstanceManagedByIgmErrorManagedInstanceError
+from google.cloud.compute_v1beta.types.compute import InstanceMoveRequest
+from google.cloud.compute_v1beta.types.compute import InstanceParams
+from google.cloud.compute_v1beta.types.compute import InstanceProperties
+from google.cloud.compute_v1beta.types.compute import InstancePropertiesPatch
+from google.cloud.compute_v1beta.types.compute import InstanceReference
+from google.cloud.compute_v1beta.types.compute import InstancesAddResourcePoliciesRequest
+from google.cloud.compute_v1beta.types.compute import InstancesBulkInsertOperationMetadata
+from google.cloud.compute_v1beta.types.compute import InstanceSettings
+from google.cloud.compute_v1beta.types.compute import InstanceSettingsMetadata
+from google.cloud.compute_v1beta.types.compute import InstancesGetEffectiveFirewallsResponse
+from google.cloud.compute_v1beta.types.compute import InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy
+from google.cloud.compute_v1beta.types.compute import InstancesGetEffectiveFirewallsResponseOrganizationFirewallPolicy
+from google.cloud.compute_v1beta.types.compute import InstancesRemoveResourcePoliciesRequest
+from google.cloud.compute_v1beta.types.compute import InstancesReportHostAsFaultyRequest
+from google.cloud.compute_v1beta.types.compute import InstancesReportHostAsFaultyRequestFaultReason
+from google.cloud.compute_v1beta.types.compute import InstancesResumeRequest
+from google.cloud.compute_v1beta.types.compute import InstancesScopedList
+from google.cloud.compute_v1beta.types.compute import InstancesSetLabelsRequest
+from google.cloud.compute_v1beta.types.compute import InstancesSetMachineResourcesRequest
+from google.cloud.compute_v1beta.types.compute import InstancesSetMachineTypeRequest
+from google.cloud.compute_v1beta.types.compute import InstancesSetMinCpuPlatformRequest
+from google.cloud.compute_v1beta.types.compute import InstancesSetNameRequest
+from google.cloud.compute_v1beta.types.compute import InstancesSetSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import InstancesSetServiceAccountRequest
+from google.cloud.compute_v1beta.types.compute import InstancesStartWithEncryptionKeyRequest
+from google.cloud.compute_v1beta.types.compute import InstanceTemplate
+from google.cloud.compute_v1beta.types.compute import InstanceTemplateAggregatedList
+from google.cloud.compute_v1beta.types.compute import InstanceTemplateList
+from google.cloud.compute_v1beta.types.compute import InstanceTemplatesScopedList
+from google.cloud.compute_v1beta.types.compute import InstanceWithNamedPorts
+from google.cloud.compute_v1beta.types.compute import InstantSnapshot
+from google.cloud.compute_v1beta.types.compute import InstantSnapshotAggregatedList
+from google.cloud.compute_v1beta.types.compute import InstantSnapshotList
+from google.cloud.compute_v1beta.types.compute import InstantSnapshotResourceStatus
+from google.cloud.compute_v1beta.types.compute import InstantSnapshotsScopedList
+from google.cloud.compute_v1beta.types.compute import Int64RangeMatch
+from google.cloud.compute_v1beta.types.compute import Interconnect
+from google.cloud.compute_v1beta.types.compute import InterconnectApplicationAwareInterconnect
+from google.cloud.compute_v1beta.types.compute import InterconnectApplicationAwareInterconnectBandwidthPercentage
+from google.cloud.compute_v1beta.types.compute import InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy
+from google.cloud.compute_v1beta.types.compute import InterconnectApplicationAwareInterconnectStrictPriorityPolicy
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachment
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentAggregatedList
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentConfigurationConstraints
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentConfigurationConstraintsBgpPeerASNRange
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroup
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupAttachment
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupConfigured
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupConfiguredAvailabilitySLA
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupIntent
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupLogicalStructure
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupLogicalStructureRegion
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupLogicalStructureRegionMetro
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupLogicalStructureRegionMetroFacility
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupsGetOperationalStatusResponse
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupsListResponse
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupsOperationalStatus
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentGroupsOperationalStatusAttachmentStatus
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentList
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentPartnerMetadata
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentPrivateInfo
+from google.cloud.compute_v1beta.types.compute import InterconnectAttachmentsScopedList
+from google.cloud.compute_v1beta.types.compute import InterconnectCircuitInfo
+from google.cloud.compute_v1beta.types.compute import InterconnectDiagnostics
+from google.cloud.compute_v1beta.types.compute import InterconnectDiagnosticsARPEntry
+from google.cloud.compute_v1beta.types.compute import InterconnectDiagnosticsLinkLACPStatus
+from google.cloud.compute_v1beta.types.compute import InterconnectDiagnosticsLinkOpticalPower
+from google.cloud.compute_v1beta.types.compute import InterconnectDiagnosticsLinkStatus
+from google.cloud.compute_v1beta.types.compute import InterconnectDiagnosticsMacsecStatus
+from google.cloud.compute_v1beta.types.compute import InterconnectGroup
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupConfigured
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupConfiguredTopologyCapability
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupIntent
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupInterconnect
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupPhysicalStructure
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupPhysicalStructureMetros
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupPhysicalStructureMetrosFacilities
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupPhysicalStructureMetrosFacilitiesZones
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupsCreateMembers
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupsCreateMembersInterconnectInput
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupsCreateMembersRequest
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupsGetOperationalStatusResponse
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupsListResponse
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupsOperationalStatus
+from google.cloud.compute_v1beta.types.compute import InterconnectGroupsOperationalStatusInterconnectStatus
+from google.cloud.compute_v1beta.types.compute import InterconnectList
+from google.cloud.compute_v1beta.types.compute import InterconnectLocation
+from google.cloud.compute_v1beta.types.compute import InterconnectLocationCrossSiteInterconnectInfo
+from google.cloud.compute_v1beta.types.compute import InterconnectLocationList
+from google.cloud.compute_v1beta.types.compute import InterconnectLocationRegionInfo
+from google.cloud.compute_v1beta.types.compute import InterconnectMacsec
+from google.cloud.compute_v1beta.types.compute import InterconnectMacsecConfig
+from google.cloud.compute_v1beta.types.compute import InterconnectMacsecConfigPreSharedKey
+from google.cloud.compute_v1beta.types.compute import InterconnectMacsecPreSharedKey
+from google.cloud.compute_v1beta.types.compute import InterconnectOutageNotification
+from google.cloud.compute_v1beta.types.compute import InterconnectRemoteLocation
+from google.cloud.compute_v1beta.types.compute import InterconnectRemoteLocationConstraints
+from google.cloud.compute_v1beta.types.compute import InterconnectRemoteLocationConstraintsSubnetLengthRange
+from google.cloud.compute_v1beta.types.compute import InterconnectRemoteLocationList
+from google.cloud.compute_v1beta.types.compute import InterconnectRemoteLocationPermittedConnections
+from google.cloud.compute_v1beta.types.compute import InterconnectsGetDiagnosticsResponse
+from google.cloud.compute_v1beta.types.compute import InterconnectsGetMacsecConfigResponse
+from google.cloud.compute_v1beta.types.compute import InvalidateCacheRegionUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import InvalidateCacheUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import Items
+from google.cloud.compute_v1beta.types.compute import License
+from google.cloud.compute_v1beta.types.compute import LicenseCode
+from google.cloud.compute_v1beta.types.compute import LicenseCodeLicenseAlias
+from google.cloud.compute_v1beta.types.compute import LicenseResourceCommitment
+from google.cloud.compute_v1beta.types.compute import LicenseResourceRequirements
+from google.cloud.compute_v1beta.types.compute import LicensesListResponse
+from google.cloud.compute_v1beta.types.compute import ListAcceleratorTypesRequest
+from google.cloud.compute_v1beta.types.compute import ListAddressesRequest
+from google.cloud.compute_v1beta.types.compute import ListAssociationsFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import ListAssociationsOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import ListAutoscalersRequest
+from google.cloud.compute_v1beta.types.compute import ListAvailableFeaturesRegionSslPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListAvailableFeaturesSslPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListBackendBucketsRequest
+from google.cloud.compute_v1beta.types.compute import ListBackendServicesRequest
+from google.cloud.compute_v1beta.types.compute import ListBgpRoutesRoutersRequest
+from google.cloud.compute_v1beta.types.compute import ListCrossSiteNetworksRequest
+from google.cloud.compute_v1beta.types.compute import ListDisksRequest
+from google.cloud.compute_v1beta.types.compute import ListDisksStoragePoolsRequest
+from google.cloud.compute_v1beta.types.compute import ListDiskTypesRequest
+from google.cloud.compute_v1beta.types.compute import ListErrorsInstanceGroupManagersRequest
+from google.cloud.compute_v1beta.types.compute import ListErrorsRegionInstanceGroupManagersRequest
+from google.cloud.compute_v1beta.types.compute import ListExternalVpnGatewaysRequest
+from google.cloud.compute_v1beta.types.compute import ListFirewallPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListFirewallsRequest
+from google.cloud.compute_v1beta.types.compute import ListForwardingRulesRequest
+from google.cloud.compute_v1beta.types.compute import ListFutureReservationsRequest
+from google.cloud.compute_v1beta.types.compute import ListGlobalAddressesRequest
+from google.cloud.compute_v1beta.types.compute import ListGlobalForwardingRulesRequest
+from google.cloud.compute_v1beta.types.compute import ListGlobalNetworkEndpointGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListGlobalOperationsRequest
+from google.cloud.compute_v1beta.types.compute import ListGlobalOrganizationOperationsRequest
+from google.cloud.compute_v1beta.types.compute import ListGlobalPublicDelegatedPrefixesRequest
+from google.cloud.compute_v1beta.types.compute import ListHealthChecksRequest
+from google.cloud.compute_v1beta.types.compute import ListImagesRequest
+from google.cloud.compute_v1beta.types.compute import ListInstanceGroupManagerResizeRequestsRequest
+from google.cloud.compute_v1beta.types.compute import ListInstanceGroupManagersRequest
+from google.cloud.compute_v1beta.types.compute import ListInstanceGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListInstancesInstanceGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListInstancesRegionInstanceGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListInstancesRequest
+from google.cloud.compute_v1beta.types.compute import ListInstanceTemplatesRequest
+from google.cloud.compute_v1beta.types.compute import ListInstantSnapshotsRequest
+from google.cloud.compute_v1beta.types.compute import ListInterconnectAttachmentGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListInterconnectAttachmentsRequest
+from google.cloud.compute_v1beta.types.compute import ListInterconnectGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListInterconnectLocationsRequest
+from google.cloud.compute_v1beta.types.compute import ListInterconnectRemoteLocationsRequest
+from google.cloud.compute_v1beta.types.compute import ListInterconnectsRequest
+from google.cloud.compute_v1beta.types.compute import ListLicensesRequest
+from google.cloud.compute_v1beta.types.compute import ListMachineImagesRequest
+from google.cloud.compute_v1beta.types.compute import ListMachineTypesRequest
+from google.cloud.compute_v1beta.types.compute import ListManagedInstancesInstanceGroupManagersRequest
+from google.cloud.compute_v1beta.types.compute import ListManagedInstancesRegionInstanceGroupManagersRequest
+from google.cloud.compute_v1beta.types.compute import ListNetworkAttachmentsRequest
+from google.cloud.compute_v1beta.types.compute import ListNetworkEndpointGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListNetworkEndpointsNetworkEndpointGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListNetworkEndpointsRegionNetworkEndpointGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListNetworkFirewallPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListNetworkProfilesRequest
+from google.cloud.compute_v1beta.types.compute import ListNetworksRequest
+from google.cloud.compute_v1beta.types.compute import ListNodeGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListNodesNodeGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListNodeTemplatesRequest
+from google.cloud.compute_v1beta.types.compute import ListNodeTypesRequest
+from google.cloud.compute_v1beta.types.compute import ListOrganizationSecurityPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListPacketMirroringsRequest
+from google.cloud.compute_v1beta.types.compute import ListPeeringRoutesNetworksRequest
+from google.cloud.compute_v1beta.types.compute import ListPerInstanceConfigsInstanceGroupManagersRequest
+from google.cloud.compute_v1beta.types.compute import ListPerInstanceConfigsRegionInstanceGroupManagersRequest
+from google.cloud.compute_v1beta.types.compute import ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListPreconfiguredExpressionSetsSecurityPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListPreviewFeaturesRequest
+from google.cloud.compute_v1beta.types.compute import ListPublicAdvertisedPrefixesRequest
+from google.cloud.compute_v1beta.types.compute import ListPublicDelegatedPrefixesRequest
+from google.cloud.compute_v1beta.types.compute import ListReferrersInstancesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionAutoscalersRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionBackendServicesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionCommitmentsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionDisksRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionDiskTypesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionHealthCheckServicesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionHealthChecksRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionInstanceGroupManagerResizeRequestsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionInstanceGroupManagersRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionInstanceGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionInstanceTemplatesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionInstantSnapshotsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionMultiMigsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionNetworkEndpointGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionNetworkFirewallPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionNotificationEndpointsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionOperationsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionSecurityPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionSnapshotsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionSslCertificatesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionSslPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionTargetHttpProxiesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionTargetHttpsProxiesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionTargetTcpProxiesRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionUrlMapsRequest
+from google.cloud.compute_v1beta.types.compute import ListRegionZonesRequest
+from google.cloud.compute_v1beta.types.compute import ListReservationBlocksRequest
+from google.cloud.compute_v1beta.types.compute import ListReservationsRequest
+from google.cloud.compute_v1beta.types.compute import ListResourcePoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListRoutePoliciesRoutersRequest
+from google.cloud.compute_v1beta.types.compute import ListRoutersRequest
+from google.cloud.compute_v1beta.types.compute import ListRoutesRequest
+from google.cloud.compute_v1beta.types.compute import ListSecurityPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListServiceAttachmentsRequest
+from google.cloud.compute_v1beta.types.compute import ListSnapshotsRequest
+from google.cloud.compute_v1beta.types.compute import ListSslCertificatesRequest
+from google.cloud.compute_v1beta.types.compute import ListSslPoliciesRequest
+from google.cloud.compute_v1beta.types.compute import ListStoragePoolsRequest
+from google.cloud.compute_v1beta.types.compute import ListStoragePoolTypesRequest
+from google.cloud.compute_v1beta.types.compute import ListSubnetworksRequest
+from google.cloud.compute_v1beta.types.compute import ListTargetGrpcProxiesRequest
+from google.cloud.compute_v1beta.types.compute import ListTargetHttpProxiesRequest
+from google.cloud.compute_v1beta.types.compute import ListTargetHttpsProxiesRequest
+from google.cloud.compute_v1beta.types.compute import ListTargetInstancesRequest
+from google.cloud.compute_v1beta.types.compute import ListTargetPoolsRequest
+from google.cloud.compute_v1beta.types.compute import ListTargetSslProxiesRequest
+from google.cloud.compute_v1beta.types.compute import ListTargetTcpProxiesRequest
+from google.cloud.compute_v1beta.types.compute import ListTargetVpnGatewaysRequest
+from google.cloud.compute_v1beta.types.compute import ListUrlMapsRequest
+from google.cloud.compute_v1beta.types.compute import ListUsableBackendBucketsRequest
+from google.cloud.compute_v1beta.types.compute import ListUsableBackendServicesRequest
+from google.cloud.compute_v1beta.types.compute import ListUsableRegionBackendServicesRequest
+from google.cloud.compute_v1beta.types.compute import ListUsableSubnetworksRequest
+from google.cloud.compute_v1beta.types.compute import ListVpnGatewaysRequest
+from google.cloud.compute_v1beta.types.compute import ListVpnTunnelsRequest
+from google.cloud.compute_v1beta.types.compute import ListWireGroupsRequest
+from google.cloud.compute_v1beta.types.compute import ListXpnHostsProjectsRequest
+from google.cloud.compute_v1beta.types.compute import ListZoneOperationsRequest
+from google.cloud.compute_v1beta.types.compute import ListZonesRequest
+from google.cloud.compute_v1beta.types.compute import LocalDisk
+from google.cloud.compute_v1beta.types.compute import LocalizedMessage
+from google.cloud.compute_v1beta.types.compute import LocationPolicy
+from google.cloud.compute_v1beta.types.compute import LocationPolicyLocation
+from google.cloud.compute_v1beta.types.compute import LocationPolicyLocationConstraints
+from google.cloud.compute_v1beta.types.compute import MachineImage
+from google.cloud.compute_v1beta.types.compute import MachineImageList
+from google.cloud.compute_v1beta.types.compute import MachineType
+from google.cloud.compute_v1beta.types.compute import MachineTypeAggregatedList
+from google.cloud.compute_v1beta.types.compute import MachineTypeList
+from google.cloud.compute_v1beta.types.compute import MachineTypesScopedList
+from google.cloud.compute_v1beta.types.compute import ManagedInstance
+from google.cloud.compute_v1beta.types.compute import ManagedInstanceAllInstancesConfig
+from google.cloud.compute_v1beta.types.compute import ManagedInstanceInstanceHealth
+from google.cloud.compute_v1beta.types.compute import ManagedInstanceLastAttempt
+from google.cloud.compute_v1beta.types.compute import ManagedInstanceLastAttemptErrors
+from google.cloud.compute_v1beta.types.compute import ManagedInstancePropertiesFromFlexibilityPolicy
+from google.cloud.compute_v1beta.types.compute import ManagedInstanceVersion
+from google.cloud.compute_v1beta.types.compute import Metadata
+from google.cloud.compute_v1beta.types.compute import MetadataFilter
+from google.cloud.compute_v1beta.types.compute import MetadataFilterLabelMatch
+from google.cloud.compute_v1beta.types.compute import MoveAddressRequest
+from google.cloud.compute_v1beta.types.compute import MoveDiskProjectRequest
+from google.cloud.compute_v1beta.types.compute import MoveFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import MoveGlobalAddressRequest
+from google.cloud.compute_v1beta.types.compute import MoveInstanceProjectRequest
+from google.cloud.compute_v1beta.types.compute import MoveOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import MultiMig
+from google.cloud.compute_v1beta.types.compute import MultiMigResourcePolicies
+from google.cloud.compute_v1beta.types.compute import MultiMigsList
+from google.cloud.compute_v1beta.types.compute import NamedPort
+from google.cloud.compute_v1beta.types.compute import NatIpInfo
+from google.cloud.compute_v1beta.types.compute import NatIpInfoNatIpInfoMapping
+from google.cloud.compute_v1beta.types.compute import NatIpInfoResponse
+from google.cloud.compute_v1beta.types.compute import Network
+from google.cloud.compute_v1beta.types.compute import NetworkAttachment
+from google.cloud.compute_v1beta.types.compute import NetworkAttachmentAggregatedList
+from google.cloud.compute_v1beta.types.compute import NetworkAttachmentConnectedEndpoint
+from google.cloud.compute_v1beta.types.compute import NetworkAttachmentList
+from google.cloud.compute_v1beta.types.compute import NetworkAttachmentsScopedList
+from google.cloud.compute_v1beta.types.compute import NetworkEdgeSecurityService
+from google.cloud.compute_v1beta.types.compute import NetworkEdgeSecurityServiceAggregatedList
+from google.cloud.compute_v1beta.types.compute import NetworkEdgeSecurityServicesScopedList
+from google.cloud.compute_v1beta.types.compute import NetworkEndpoint
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroup
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupAggregatedList
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupAppEngine
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupCloudFunction
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupCloudRun
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupLbNetworkEndpointGroup
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupList
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupPscData
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupsAttachEndpointsRequest
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupsDetachEndpointsRequest
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupServerlessDeployment
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupsListEndpointsRequest
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupsListEndpointsRequestNetworkEndpointFilter
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupsListNetworkEndpoints
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointGroupsScopedList
+from google.cloud.compute_v1beta.types.compute import NetworkEndpointWithHealthStatus
+from google.cloud.compute_v1beta.types.compute import NetworkFirewallPolicyAggregatedList
+from google.cloud.compute_v1beta.types.compute import NetworkInterface
+from google.cloud.compute_v1beta.types.compute import NetworkList
+from google.cloud.compute_v1beta.types.compute import NetworkParams
+from google.cloud.compute_v1beta.types.compute import NetworkPeering
+from google.cloud.compute_v1beta.types.compute import NetworkPeeringConnectionStatus
+from google.cloud.compute_v1beta.types.compute import NetworkPeeringConnectionStatusConsensusState
+from google.cloud.compute_v1beta.types.compute import NetworkPeeringConnectionStatusTrafficConfiguration
+from google.cloud.compute_v1beta.types.compute import NetworkPerformanceConfig
+from google.cloud.compute_v1beta.types.compute import NetworkProfile
+from google.cloud.compute_v1beta.types.compute import NetworkProfileLocation
+from google.cloud.compute_v1beta.types.compute import NetworkProfileNetworkFeatures
+from google.cloud.compute_v1beta.types.compute import NetworkProfilesListResponse
+from google.cloud.compute_v1beta.types.compute import NetworkRoutingConfig
+from google.cloud.compute_v1beta.types.compute import NetworksAddPeeringRequest
+from google.cloud.compute_v1beta.types.compute import NetworksGetEffectiveFirewallsResponse
+from google.cloud.compute_v1beta.types.compute import NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy
+from google.cloud.compute_v1beta.types.compute import NetworksGetEffectiveFirewallsResponseOrganizationFirewallPolicy
+from google.cloud.compute_v1beta.types.compute import NetworksRemovePeeringRequest
+from google.cloud.compute_v1beta.types.compute import NetworksRequestRemovePeeringRequest
+from google.cloud.compute_v1beta.types.compute import NetworksUpdatePeeringRequest
+from google.cloud.compute_v1beta.types.compute import NodeGroup
+from google.cloud.compute_v1beta.types.compute import NodeGroupAggregatedList
+from google.cloud.compute_v1beta.types.compute import NodeGroupAutoscalingPolicy
+from google.cloud.compute_v1beta.types.compute import NodeGroupList
+from google.cloud.compute_v1beta.types.compute import NodeGroupMaintenanceWindow
+from google.cloud.compute_v1beta.types.compute import NodeGroupNode
+from google.cloud.compute_v1beta.types.compute import NodeGroupsAddNodesRequest
+from google.cloud.compute_v1beta.types.compute import NodeGroupsDeleteNodesRequest
+from google.cloud.compute_v1beta.types.compute import NodeGroupsListNodes
+from google.cloud.compute_v1beta.types.compute import NodeGroupsPerformMaintenanceRequest
+from google.cloud.compute_v1beta.types.compute import NodeGroupsScopedList
+from google.cloud.compute_v1beta.types.compute import NodeGroupsSetNodeTemplateRequest
+from google.cloud.compute_v1beta.types.compute import NodeGroupsSimulateMaintenanceEventRequest
+from google.cloud.compute_v1beta.types.compute import NodeTemplate
+from google.cloud.compute_v1beta.types.compute import NodeTemplateAggregatedList
+from google.cloud.compute_v1beta.types.compute import NodeTemplateList
+from google.cloud.compute_v1beta.types.compute import NodeTemplateNodeTypeFlexibility
+from google.cloud.compute_v1beta.types.compute import NodeTemplatesScopedList
+from google.cloud.compute_v1beta.types.compute import NodeType
+from google.cloud.compute_v1beta.types.compute import NodeTypeAggregatedList
+from google.cloud.compute_v1beta.types.compute import NodeTypeList
+from google.cloud.compute_v1beta.types.compute import NodeTypesScopedList
+from google.cloud.compute_v1beta.types.compute import NotificationEndpoint
+from google.cloud.compute_v1beta.types.compute import NotificationEndpointGrpcSettings
+from google.cloud.compute_v1beta.types.compute import NotificationEndpointList
+from google.cloud.compute_v1beta.types.compute import Operation
+from google.cloud.compute_v1beta.types.compute import OperationAggregatedList
+from google.cloud.compute_v1beta.types.compute import OperationList
+from google.cloud.compute_v1beta.types.compute import OperationsScopedList
+from google.cloud.compute_v1beta.types.compute import OrganizationSecurityPoliciesListAssociationsResponse
+from google.cloud.compute_v1beta.types.compute import OutlierDetection
+from google.cloud.compute_v1beta.types.compute import PacketIntervals
+from google.cloud.compute_v1beta.types.compute import PacketMirroring
+from google.cloud.compute_v1beta.types.compute import PacketMirroringAggregatedList
+from google.cloud.compute_v1beta.types.compute import PacketMirroringFilter
+from google.cloud.compute_v1beta.types.compute import PacketMirroringForwardingRuleInfo
+from google.cloud.compute_v1beta.types.compute import PacketMirroringList
+from google.cloud.compute_v1beta.types.compute import PacketMirroringMirroredResourceInfo
+from google.cloud.compute_v1beta.types.compute import PacketMirroringMirroredResourceInfoInstanceInfo
+from google.cloud.compute_v1beta.types.compute import PacketMirroringMirroredResourceInfoSubnetInfo
+from google.cloud.compute_v1beta.types.compute import PacketMirroringNetworkInfo
+from google.cloud.compute_v1beta.types.compute import PacketMirroringsScopedList
+from google.cloud.compute_v1beta.types.compute import PartnerMetadata
+from google.cloud.compute_v1beta.types.compute import PatchAssociationRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import PatchBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import PatchBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import PatchCrossSiteNetworkRequest
+from google.cloud.compute_v1beta.types.compute import PatchDiskSettingRequest
+from google.cloud.compute_v1beta.types.compute import PatchFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchFirewallRequest
+from google.cloud.compute_v1beta.types.compute import PatchForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import PatchGlobalForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import PatchGlobalPublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import PatchHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import PatchImageRequest
+from google.cloud.compute_v1beta.types.compute import PatchInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import PatchInstanceSettingRequest
+from google.cloud.compute_v1beta.types.compute import PatchInterconnectAttachmentGroupRequest
+from google.cloud.compute_v1beta.types.compute import PatchInterconnectAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import PatchInterconnectGroupRequest
+from google.cloud.compute_v1beta.types.compute import PatchInterconnectRequest
+from google.cloud.compute_v1beta.types.compute import PatchNetworkAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import PatchNetworkEdgeSecurityServiceRequest
+from google.cloud.compute_v1beta.types.compute import PatchNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchNetworkRequest
+from google.cloud.compute_v1beta.types.compute import PatchNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import PatchOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchPacketMirroringRequest
+from google.cloud.compute_v1beta.types.compute import PatchPacketMirroringRuleFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchPacketMirroringRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchPartnerMetadataInstanceRequest
+from google.cloud.compute_v1beta.types.compute import PatchPerInstanceConfigsInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import PatchPerInstanceConfigsRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import PatchPublicAdvertisedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import PatchPublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionDiskSettingRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionHealthCheckServiceRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionSnapshotSettingRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRegionUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import PatchResourcePolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRoutePolicyRouterRequest
+from google.cloud.compute_v1beta.types.compute import PatchRouterRequest
+from google.cloud.compute_v1beta.types.compute import PatchRuleFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRuleOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRuleRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRuleRegionSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchRuleSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchServiceAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import PatchSnapshotSettingRequest
+from google.cloud.compute_v1beta.types.compute import PatchSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import PatchSubnetworkRequest
+from google.cloud.compute_v1beta.types.compute import PatchTargetGrpcProxyRequest
+from google.cloud.compute_v1beta.types.compute import PatchTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import PatchTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import PatchUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import PatchWireGroupRequest
+from google.cloud.compute_v1beta.types.compute import PathMatcher
+from google.cloud.compute_v1beta.types.compute import PathRule
+from google.cloud.compute_v1beta.types.compute import PerformMaintenanceInstanceRequest
+from google.cloud.compute_v1beta.types.compute import PerformMaintenanceNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import PerformMaintenanceReservationBlockRequest
+from google.cloud.compute_v1beta.types.compute import PerformMaintenanceReservationRequest
+from google.cloud.compute_v1beta.types.compute import PerInstanceConfig
+from google.cloud.compute_v1beta.types.compute import Policy
+from google.cloud.compute_v1beta.types.compute import PreconfiguredWafSet
+from google.cloud.compute_v1beta.types.compute import PreservedState
+from google.cloud.compute_v1beta.types.compute import PreservedStatePreservedDisk
+from google.cloud.compute_v1beta.types.compute import PreservedStatePreservedNetworkIp
+from google.cloud.compute_v1beta.types.compute import PreservedStatePreservedNetworkIpIpAddress
+from google.cloud.compute_v1beta.types.compute import PreviewFeature
+from google.cloud.compute_v1beta.types.compute import PreviewFeatureList
+from google.cloud.compute_v1beta.types.compute import PreviewFeatureRolloutOperation
+from google.cloud.compute_v1beta.types.compute import PreviewFeatureRolloutOperationRolloutInput
+from google.cloud.compute_v1beta.types.compute import PreviewFeatureRolloutOperationRolloutStatus
+from google.cloud.compute_v1beta.types.compute import PreviewFeatureRolloutOperationRolloutStatusRolloutMetadata
+from google.cloud.compute_v1beta.types.compute import PreviewFeatureStatus
+from google.cloud.compute_v1beta.types.compute import PreviewFeatureStatusReleaseStatus
+from google.cloud.compute_v1beta.types.compute import PreviewRouterRequest
+from google.cloud.compute_v1beta.types.compute import Project
+from google.cloud.compute_v1beta.types.compute import ProjectsDisableXpnResourceRequest
+from google.cloud.compute_v1beta.types.compute import ProjectsEnableXpnResourceRequest
+from google.cloud.compute_v1beta.types.compute import ProjectsGetXpnResources
+from google.cloud.compute_v1beta.types.compute import ProjectsListXpnHostsRequest
+from google.cloud.compute_v1beta.types.compute import ProjectsSetCloudArmorTierRequest
+from google.cloud.compute_v1beta.types.compute import ProjectsSetDefaultNetworkTierRequest
+from google.cloud.compute_v1beta.types.compute import ProjectsSetManagedProtectionTierRequest
+from google.cloud.compute_v1beta.types.compute import PublicAdvertisedPrefix
+from google.cloud.compute_v1beta.types.compute import PublicAdvertisedPrefixList
+from google.cloud.compute_v1beta.types.compute import PublicAdvertisedPrefixPublicDelegatedPrefix
+from google.cloud.compute_v1beta.types.compute import PublicDelegatedPrefix
+from google.cloud.compute_v1beta.types.compute import PublicDelegatedPrefixAggregatedList
+from google.cloud.compute_v1beta.types.compute import PublicDelegatedPrefixesScopedList
+from google.cloud.compute_v1beta.types.compute import PublicDelegatedPrefixList
+from google.cloud.compute_v1beta.types.compute import PublicDelegatedPrefixPublicDelegatedSubPrefix
+from google.cloud.compute_v1beta.types.compute import Quota
+from google.cloud.compute_v1beta.types.compute import QuotaExceededInfo
+from google.cloud.compute_v1beta.types.compute import QuotaStatusWarning
+from google.cloud.compute_v1beta.types.compute import RawDisk
+from google.cloud.compute_v1beta.types.compute import RecreateInstancesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import RecreateInstancesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import Reference
+from google.cloud.compute_v1beta.types.compute import Region
+from google.cloud.compute_v1beta.types.compute import RegionAddressesMoveRequest
+from google.cloud.compute_v1beta.types.compute import RegionAutoscalerList
+from google.cloud.compute_v1beta.types.compute import RegionCommitmentsUpdateReservationsRequest
+from google.cloud.compute_v1beta.types.compute import RegionDisksAddResourcePoliciesRequest
+from google.cloud.compute_v1beta.types.compute import RegionDisksRemoveResourcePoliciesRequest
+from google.cloud.compute_v1beta.types.compute import RegionDisksResizeRequest
+from google.cloud.compute_v1beta.types.compute import RegionDisksStartAsyncReplicationRequest
+from google.cloud.compute_v1beta.types.compute import RegionDiskTypeList
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupList
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagerDeleteInstanceConfigReq
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagerList
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagerPatchInstanceConfigReq
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagerResizeRequestsListResponse
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersAbandonInstancesRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersApplyUpdatesRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersCreateInstancesRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersDeleteInstancesRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersListErrorsResponse
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersListInstanceConfigsResp
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersListInstancesResponse
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersRecreateRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersResizeAdvancedRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersResumeInstancesRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersSetAutoHealingRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersSetTargetPoolsRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersSetTemplateRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersStartInstancesRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersStopInstancesRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagersSuspendInstancesRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupManagerUpdateInstanceConfigReq
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupsListInstances
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupsListInstancesRequest
+from google.cloud.compute_v1beta.types.compute import RegionInstanceGroupsSetNamedPortsRequest
+from google.cloud.compute_v1beta.types.compute import RegionList
+from google.cloud.compute_v1beta.types.compute import RegionNetworkEndpointGroupsAttachEndpointsRequest
+from google.cloud.compute_v1beta.types.compute import RegionNetworkEndpointGroupsDetachEndpointsRequest
+from google.cloud.compute_v1beta.types.compute import RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse
+from google.cloud.compute_v1beta.types.compute import RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewallPolicy
+from google.cloud.compute_v1beta.types.compute import RegionSetLabelsRequest
+from google.cloud.compute_v1beta.types.compute import RegionSetPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RegionTargetHttpsProxiesSetSslCertificatesRequest
+from google.cloud.compute_v1beta.types.compute import RegionUrlMapsValidateRequest
+from google.cloud.compute_v1beta.types.compute import RemoveAssociationFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemoveAssociationNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemoveAssociationOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemoveAssociationRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemoveHealthCheckTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import RemoveInstancesInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import RemoveInstanceTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import RemovePacketMirroringRuleFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemovePacketMirroringRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemovePeeringNetworkRequest
+from google.cloud.compute_v1beta.types.compute import RemoveResourcePoliciesDiskRequest
+from google.cloud.compute_v1beta.types.compute import RemoveResourcePoliciesInstanceRequest
+from google.cloud.compute_v1beta.types.compute import RemoveResourcePoliciesRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import RemoveRuleFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemoveRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemoveRuleOrganizationSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemoveRuleRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemoveRuleRegionSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import RemoveRuleSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import ReportHostAsFaultyInstanceRequest
+from google.cloud.compute_v1beta.types.compute import RequestMirrorPolicy
+from google.cloud.compute_v1beta.types.compute import RequestRemovePeeringNetworkRequest
+from google.cloud.compute_v1beta.types.compute import Reservation
+from google.cloud.compute_v1beta.types.compute import ReservationAffinity
+from google.cloud.compute_v1beta.types.compute import ReservationAggregatedList
+from google.cloud.compute_v1beta.types.compute import ReservationBlock
+from google.cloud.compute_v1beta.types.compute import ReservationBlockPhysicalTopology
+from google.cloud.compute_v1beta.types.compute import ReservationBlocksGetResponse
+from google.cloud.compute_v1beta.types.compute import ReservationBlocksListResponse
+from google.cloud.compute_v1beta.types.compute import ReservationList
+from google.cloud.compute_v1beta.types.compute import ReservationsBlocksPerformMaintenanceRequest
+from google.cloud.compute_v1beta.types.compute import ReservationsPerformMaintenanceRequest
+from google.cloud.compute_v1beta.types.compute import ReservationsResizeRequest
+from google.cloud.compute_v1beta.types.compute import ReservationsScopedList
+from google.cloud.compute_v1beta.types.compute import ResetInstanceRequest
+from google.cloud.compute_v1beta.types.compute import ResizeAdvancedInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import ResizeAdvancedRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import ResizeDiskRequest
+from google.cloud.compute_v1beta.types.compute import ResizeInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import ResizeRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import ResizeRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import ResizeReservationRequest
+from google.cloud.compute_v1beta.types.compute import ResourceCommitment
+from google.cloud.compute_v1beta.types.compute import ResourceGroupReference
+from google.cloud.compute_v1beta.types.compute import ResourcePoliciesScopedList
+from google.cloud.compute_v1beta.types.compute import ResourcePolicy
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyAggregatedList
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyDailyCycle
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyDiskConsistencyGroupPolicy
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyGroupPlacementPolicy
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyHourlyCycle
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyInstanceSchedulePolicy
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyInstanceSchedulePolicySchedule
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyList
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyResourceStatus
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
+from google.cloud.compute_v1beta.types.compute import ResourcePolicySnapshotSchedulePolicy
+from google.cloud.compute_v1beta.types.compute import ResourcePolicySnapshotSchedulePolicyRetentionPolicy
+from google.cloud.compute_v1beta.types.compute import ResourcePolicySnapshotSchedulePolicySchedule
+from google.cloud.compute_v1beta.types.compute import ResourcePolicySnapshotSchedulePolicySnapshotProperties
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyWeeklyCycle
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyWeeklyCycleDayOfWeek
+from google.cloud.compute_v1beta.types.compute import ResourcePolicyWorkloadPolicy
+from google.cloud.compute_v1beta.types.compute import ResourceStatus
+from google.cloud.compute_v1beta.types.compute import ResourceStatusPhysicalHostTopology
+from google.cloud.compute_v1beta.types.compute import ResourceStatusScheduling
+from google.cloud.compute_v1beta.types.compute import ResourceStatusShutdownDetails
+from google.cloud.compute_v1beta.types.compute import ResumeInstanceRequest
+from google.cloud.compute_v1beta.types.compute import ResumeInstancesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import ResumeInstancesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import RolloutPolicy
+from google.cloud.compute_v1beta.types.compute import Route
+from google.cloud.compute_v1beta.types.compute import RouteAsPath
+from google.cloud.compute_v1beta.types.compute import RouteList
+from google.cloud.compute_v1beta.types.compute import RouteParams
+from google.cloud.compute_v1beta.types.compute import RoutePolicy
+from google.cloud.compute_v1beta.types.compute import RoutePolicyPolicyTerm
+from google.cloud.compute_v1beta.types.compute import Router
+from google.cloud.compute_v1beta.types.compute import RouterAdvertisedIpRange
+from google.cloud.compute_v1beta.types.compute import RouterAggregatedList
+from google.cloud.compute_v1beta.types.compute import RouterBgp
+from google.cloud.compute_v1beta.types.compute import RouterBgpPeer
+from google.cloud.compute_v1beta.types.compute import RouterBgpPeerBfd
+from google.cloud.compute_v1beta.types.compute import RouterBgpPeerCustomLearnedIpRange
+from google.cloud.compute_v1beta.types.compute import RouterInterface
+from google.cloud.compute_v1beta.types.compute import RouterList
+from google.cloud.compute_v1beta.types.compute import RouterMd5AuthenticationKey
+from google.cloud.compute_v1beta.types.compute import RouterNat
+from google.cloud.compute_v1beta.types.compute import RouterNatLogConfig
+from google.cloud.compute_v1beta.types.compute import RouterNatRule
+from google.cloud.compute_v1beta.types.compute import RouterNatRuleAction
+from google.cloud.compute_v1beta.types.compute import RouterNatSubnetworkToNat
+from google.cloud.compute_v1beta.types.compute import RouterNatSubnetworkToNat64
+from google.cloud.compute_v1beta.types.compute import RoutersGetRoutePolicyResponse
+from google.cloud.compute_v1beta.types.compute import RoutersListBgpRoutes
+from google.cloud.compute_v1beta.types.compute import RoutersListRoutePolicies
+from google.cloud.compute_v1beta.types.compute import RoutersPreviewResponse
+from google.cloud.compute_v1beta.types.compute import RoutersScopedList
+from google.cloud.compute_v1beta.types.compute import RouterStatus
+from google.cloud.compute_v1beta.types.compute import RouterStatusBgpPeerStatus
+from google.cloud.compute_v1beta.types.compute import RouterStatusNatStatus
+from google.cloud.compute_v1beta.types.compute import RouterStatusNatStatusNatRuleStatus
+from google.cloud.compute_v1beta.types.compute import RouterStatusResponse
+from google.cloud.compute_v1beta.types.compute import SavedAttachedDisk
+from google.cloud.compute_v1beta.types.compute import SavedDisk
+from google.cloud.compute_v1beta.types.compute import ScalingScheduleStatus
+from google.cloud.compute_v1beta.types.compute import Scheduling
+from google.cloud.compute_v1beta.types.compute import SchedulingGracefulShutdown
+from google.cloud.compute_v1beta.types.compute import SchedulingNodeAffinity
+from google.cloud.compute_v1beta.types.compute import SchedulingOnInstanceStopAction
+from google.cloud.compute_v1beta.types.compute import Screenshot
+from google.cloud.compute_v1beta.types.compute import SecurityPoliciesAggregatedList
+from google.cloud.compute_v1beta.types.compute import SecurityPoliciesListPreconfiguredExpressionSetsResponse
+from google.cloud.compute_v1beta.types.compute import SecurityPoliciesScopedList
+from google.cloud.compute_v1beta.types.compute import SecurityPoliciesWafConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicy
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyAdaptiveProtectionConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyAdvancedOptionsConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyAdvancedOptionsConfigJsonCustomConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyAssociation
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyDdosProtectionConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyList
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRecaptchaOptionsConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyReference
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRule
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleHttpHeaderAction
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleHttpHeaderActionHttpHeaderOption
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleMatcher
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleMatcherConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleMatcherConfigLayer4Config
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleMatcherExprOptions
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleNetworkMatcher
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRulePreconfiguredWafConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRulePreconfiguredWafConfigExclusion
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleRateLimitOptions
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleRateLimitOptionsThreshold
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyRuleRedirectOptions
+from google.cloud.compute_v1beta.types.compute import SecurityPolicyUserDefinedField
+from google.cloud.compute_v1beta.types.compute import SecuritySettings
+from google.cloud.compute_v1beta.types.compute import SendDiagnosticInterruptInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SendDiagnosticInterruptInstanceResponse
+from google.cloud.compute_v1beta.types.compute import SerialPortOutput
+from google.cloud.compute_v1beta.types.compute import ServerBinding
+from google.cloud.compute_v1beta.types.compute import ServiceAccount
+from google.cloud.compute_v1beta.types.compute import ServiceAttachment
+from google.cloud.compute_v1beta.types.compute import ServiceAttachmentAggregatedList
+from google.cloud.compute_v1beta.types.compute import ServiceAttachmentConnectedEndpoint
+from google.cloud.compute_v1beta.types.compute import ServiceAttachmentConsumerProjectLimit
+from google.cloud.compute_v1beta.types.compute import ServiceAttachmentList
+from google.cloud.compute_v1beta.types.compute import ServiceAttachmentsScopedList
+from google.cloud.compute_v1beta.types.compute import ServiceAttachmentTunnelingConfig
+from google.cloud.compute_v1beta.types.compute import SetAutoHealingPoliciesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import SetAutoHealingPoliciesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import SetBackendServiceTargetSslProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetBackendServiceTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetBackupTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import SetCertificateMapTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetCertificateMapTargetSslProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetCloudArmorTierProjectRequest
+from google.cloud.compute_v1beta.types.compute import SetCommonInstanceMetadataOperationMetadata
+from google.cloud.compute_v1beta.types.compute import SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo
+from google.cloud.compute_v1beta.types.compute import SetCommonInstanceMetadataProjectRequest
+from google.cloud.compute_v1beta.types.compute import SetDefaultNetworkTierProjectRequest
+from google.cloud.compute_v1beta.types.compute import SetDeletionProtectionInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetDiskAutoDeleteInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetEdgeSecurityPolicyBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import SetEdgeSecurityPolicyBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyDiskRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyImageRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyInterconnectAttachmentGroupRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyInterconnectGroupRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyLicenseRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyMachineImageRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyNetworkAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyNodeTemplateRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyRegionInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyRegionSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyReservationRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyResourcePolicyRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyServiceAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicySnapshotRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicyStoragePoolRequest
+from google.cloud.compute_v1beta.types.compute import SetIamPolicySubnetworkRequest
+from google.cloud.compute_v1beta.types.compute import SetInstanceTemplateInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import SetInstanceTemplateRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsAddressRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsDiskRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsExternalVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsGlobalAddressRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsGlobalForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsImageRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsInterconnectAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsInterconnectRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsMachineImageRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsRegionInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsRegionSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsRegionSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsTargetVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import SetLabelsVpnTunnelRequest
+from google.cloud.compute_v1beta.types.compute import SetMachineResourcesInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetMachineTypeInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetManagedProtectionTierProjectRequest
+from google.cloud.compute_v1beta.types.compute import SetMetadataInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetMinCpuPlatformInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetNamedPortsInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import SetNamedPortsRegionInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import SetNameInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetNodeTemplateNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import SetPrivateIpGoogleAccessSubnetworkRequest
+from google.cloud.compute_v1beta.types.compute import SetProxyHeaderTargetSslProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetProxyHeaderTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetQuicOverrideTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetSchedulingInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetSecurityPolicyBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import SetSecurityPolicyInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetSecurityPolicyRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import SetSecurityPolicyTargetInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetSecurityPolicyTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import SetServiceAccountInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetShieldedInstanceIntegrityPolicyInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetShieldedVmIntegrityPolicyInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetSslCertificatesRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetSslCertificatesTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetSslCertificatesTargetSslProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetSslPolicyTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetSslPolicyTargetSslProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetTagsInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SetTargetForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import SetTargetGlobalForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import SetTargetPoolsInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import SetTargetPoolsRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import SetUrlMapRegionTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetUrlMapRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetUrlMapTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetUrlMapTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import SetUsageExportBucketProjectRequest
+from google.cloud.compute_v1beta.types.compute import ShareSettings
+from google.cloud.compute_v1beta.types.compute import ShareSettingsProjectConfig
+from google.cloud.compute_v1beta.types.compute import ShieldedInstanceConfig
+from google.cloud.compute_v1beta.types.compute import ShieldedInstanceIdentity
+from google.cloud.compute_v1beta.types.compute import ShieldedInstanceIdentityEntry
+from google.cloud.compute_v1beta.types.compute import ShieldedInstanceIntegrityPolicy
+from google.cloud.compute_v1beta.types.compute import ShieldedVmConfig
+from google.cloud.compute_v1beta.types.compute import ShieldedVmIdentity
+from google.cloud.compute_v1beta.types.compute import ShieldedVmIdentityEntry
+from google.cloud.compute_v1beta.types.compute import ShieldedVmIntegrityPolicy
+from google.cloud.compute_v1beta.types.compute import SignedUrlKey
+from google.cloud.compute_v1beta.types.compute import SimulateMaintenanceEventInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SimulateMaintenanceEventNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import Snapshot
+from google.cloud.compute_v1beta.types.compute import SnapshotAggregatedList
+from google.cloud.compute_v1beta.types.compute import SnapshotList
+from google.cloud.compute_v1beta.types.compute import SnapshotSettings
+from google.cloud.compute_v1beta.types.compute import SnapshotSettingsAccessLocation
+from google.cloud.compute_v1beta.types.compute import SnapshotSettingsAccessLocationAccessLocationPreference
+from google.cloud.compute_v1beta.types.compute import SnapshotSettingsStorageLocationSettings
+from google.cloud.compute_v1beta.types.compute import SnapshotSettingsStorageLocationSettingsStorageLocationPreference
+from google.cloud.compute_v1beta.types.compute import SnapshotsScopedList
+from google.cloud.compute_v1beta.types.compute import SourceDiskEncryptionKey
+from google.cloud.compute_v1beta.types.compute import SourceInstanceParams
+from google.cloud.compute_v1beta.types.compute import SourceInstanceProperties
+from google.cloud.compute_v1beta.types.compute import SslCertificate
+from google.cloud.compute_v1beta.types.compute import SslCertificateAggregatedList
+from google.cloud.compute_v1beta.types.compute import SslCertificateList
+from google.cloud.compute_v1beta.types.compute import SslCertificateManagedSslCertificate
+from google.cloud.compute_v1beta.types.compute import SslCertificateSelfManagedSslCertificate
+from google.cloud.compute_v1beta.types.compute import SslCertificatesScopedList
+from google.cloud.compute_v1beta.types.compute import SSLHealthCheck
+from google.cloud.compute_v1beta.types.compute import SslPoliciesAggregatedList
+from google.cloud.compute_v1beta.types.compute import SslPoliciesList
+from google.cloud.compute_v1beta.types.compute import SslPoliciesListAvailableFeaturesResponse
+from google.cloud.compute_v1beta.types.compute import SslPoliciesScopedList
+from google.cloud.compute_v1beta.types.compute import SslPolicy
+from google.cloud.compute_v1beta.types.compute import SslPolicyReference
+from google.cloud.compute_v1beta.types.compute import StartAsyncReplicationDiskRequest
+from google.cloud.compute_v1beta.types.compute import StartAsyncReplicationRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import StartInstanceRequest
+from google.cloud.compute_v1beta.types.compute import StartInstancesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import StartInstancesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import StartWithEncryptionKeyInstanceRequest
+from google.cloud.compute_v1beta.types.compute import StatefulPolicy
+from google.cloud.compute_v1beta.types.compute import StatefulPolicyPreservedState
+from google.cloud.compute_v1beta.types.compute import StatefulPolicyPreservedStateDiskDevice
+from google.cloud.compute_v1beta.types.compute import StatefulPolicyPreservedStateNetworkIp
+from google.cloud.compute_v1beta.types.compute import Status
+from google.cloud.compute_v1beta.types.compute import StopAsyncReplicationDiskRequest
+from google.cloud.compute_v1beta.types.compute import StopAsyncReplicationRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import StopGroupAsyncReplicationDiskRequest
+from google.cloud.compute_v1beta.types.compute import StopGroupAsyncReplicationRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import StopInstanceRequest
+from google.cloud.compute_v1beta.types.compute import StopInstancesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import StopInstancesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import StoragePool
+from google.cloud.compute_v1beta.types.compute import StoragePoolAggregatedList
+from google.cloud.compute_v1beta.types.compute import StoragePoolDisk
+from google.cloud.compute_v1beta.types.compute import StoragePoolList
+from google.cloud.compute_v1beta.types.compute import StoragePoolListDisks
+from google.cloud.compute_v1beta.types.compute import StoragePoolResourceStatus
+from google.cloud.compute_v1beta.types.compute import StoragePoolsScopedList
+from google.cloud.compute_v1beta.types.compute import StoragePoolType
+from google.cloud.compute_v1beta.types.compute import StoragePoolTypeAggregatedList
+from google.cloud.compute_v1beta.types.compute import StoragePoolTypeList
+from google.cloud.compute_v1beta.types.compute import StoragePoolTypesScopedList
+from google.cloud.compute_v1beta.types.compute import StructuredEntries
+from google.cloud.compute_v1beta.types.compute import Subnetwork
+from google.cloud.compute_v1beta.types.compute import SubnetworkAggregatedList
+from google.cloud.compute_v1beta.types.compute import SubnetworkList
+from google.cloud.compute_v1beta.types.compute import SubnetworkLogConfig
+from google.cloud.compute_v1beta.types.compute import SubnetworkParams
+from google.cloud.compute_v1beta.types.compute import SubnetworkSecondaryRange
+from google.cloud.compute_v1beta.types.compute import SubnetworksExpandIpCidrRangeRequest
+from google.cloud.compute_v1beta.types.compute import SubnetworksScopedList
+from google.cloud.compute_v1beta.types.compute import SubnetworksScopedWarning
+from google.cloud.compute_v1beta.types.compute import SubnetworksSetPrivateIpGoogleAccessRequest
+from google.cloud.compute_v1beta.types.compute import Subsetting
+from google.cloud.compute_v1beta.types.compute import SuspendInstanceRequest
+from google.cloud.compute_v1beta.types.compute import SuspendInstancesInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import SuspendInstancesRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import SwitchToCustomModeNetworkRequest
+from google.cloud.compute_v1beta.types.compute import Tags
+from google.cloud.compute_v1beta.types.compute import TargetGrpcProxy
+from google.cloud.compute_v1beta.types.compute import TargetGrpcProxyList
+from google.cloud.compute_v1beta.types.compute import TargetHttpProxiesScopedList
+from google.cloud.compute_v1beta.types.compute import TargetHttpProxy
+from google.cloud.compute_v1beta.types.compute import TargetHttpProxyAggregatedList
+from google.cloud.compute_v1beta.types.compute import TargetHttpProxyList
+from google.cloud.compute_v1beta.types.compute import TargetHttpsProxiesScopedList
+from google.cloud.compute_v1beta.types.compute import TargetHttpsProxiesSetCertificateMapRequest
+from google.cloud.compute_v1beta.types.compute import TargetHttpsProxiesSetQuicOverrideRequest
+from google.cloud.compute_v1beta.types.compute import TargetHttpsProxiesSetSslCertificatesRequest
+from google.cloud.compute_v1beta.types.compute import TargetHttpsProxy
+from google.cloud.compute_v1beta.types.compute import TargetHttpsProxyAggregatedList
+from google.cloud.compute_v1beta.types.compute import TargetHttpsProxyList
+from google.cloud.compute_v1beta.types.compute import TargetInstance
+from google.cloud.compute_v1beta.types.compute import TargetInstanceAggregatedList
+from google.cloud.compute_v1beta.types.compute import TargetInstanceList
+from google.cloud.compute_v1beta.types.compute import TargetInstancesScopedList
+from google.cloud.compute_v1beta.types.compute import TargetPool
+from google.cloud.compute_v1beta.types.compute import TargetPoolAggregatedList
+from google.cloud.compute_v1beta.types.compute import TargetPoolInstanceHealth
+from google.cloud.compute_v1beta.types.compute import TargetPoolList
+from google.cloud.compute_v1beta.types.compute import TargetPoolsAddHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import TargetPoolsAddInstanceRequest
+from google.cloud.compute_v1beta.types.compute import TargetPoolsRemoveHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import TargetPoolsRemoveInstanceRequest
+from google.cloud.compute_v1beta.types.compute import TargetPoolsScopedList
+from google.cloud.compute_v1beta.types.compute import TargetReference
+from google.cloud.compute_v1beta.types.compute import TargetSslProxiesSetBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import TargetSslProxiesSetCertificateMapRequest
+from google.cloud.compute_v1beta.types.compute import TargetSslProxiesSetProxyHeaderRequest
+from google.cloud.compute_v1beta.types.compute import TargetSslProxiesSetSslCertificatesRequest
+from google.cloud.compute_v1beta.types.compute import TargetSslProxy
+from google.cloud.compute_v1beta.types.compute import TargetSslProxyList
+from google.cloud.compute_v1beta.types.compute import TargetTcpProxiesScopedList
+from google.cloud.compute_v1beta.types.compute import TargetTcpProxiesSetBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import TargetTcpProxiesSetProxyHeaderRequest
+from google.cloud.compute_v1beta.types.compute import TargetTcpProxy
+from google.cloud.compute_v1beta.types.compute import TargetTcpProxyAggregatedList
+from google.cloud.compute_v1beta.types.compute import TargetTcpProxyList
+from google.cloud.compute_v1beta.types.compute import TargetVpnGateway
+from google.cloud.compute_v1beta.types.compute import TargetVpnGatewayAggregatedList
+from google.cloud.compute_v1beta.types.compute import TargetVpnGatewayList
+from google.cloud.compute_v1beta.types.compute import TargetVpnGatewaysScopedList
+from google.cloud.compute_v1beta.types.compute import TCPHealthCheck
+from google.cloud.compute_v1beta.types.compute import TestFailure
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsAddressRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsDiskRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsExternalVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsFirewallRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsGlobalAddressRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsGlobalForwardingRuleRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsImageRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsInstanceRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsInstanceTemplateRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsInterconnectAttachmentGroupRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsInterconnectAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsInterconnectGroupRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsInterconnectRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsLicenseCodeRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsLicenseRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsMachineImageRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsNetworkAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsNetworkEndpointGroupRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsNetworkRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsNodeGroupRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsNodeTemplateRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsPacketMirroringRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionCommitmentRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionHealthCheckServiceRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionInstanceGroupRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionInstantSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionNetworkFirewallPolicyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionNotificationEndpointRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionSslCertificateRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRegionUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsReservationRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsResourcePolicyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRouteRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsRouterRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsSecurityPolicyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsServiceAttachmentRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsSnapshotRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsSslCertificateRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsSslPolicyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsStoragePoolRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsSubnetworkRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsTargetGrpcProxyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsTargetHttpProxyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsTargetHttpsProxyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsTargetInstanceRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsTargetPoolRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsTargetSslProxyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsTargetTcpProxyRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsTargetVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsVpnGatewayRequest
+from google.cloud.compute_v1beta.types.compute import TestIamPermissionsVpnTunnelRequest
+from google.cloud.compute_v1beta.types.compute import TestPermissionsRequest
+from google.cloud.compute_v1beta.types.compute import TestPermissionsResponse
+from google.cloud.compute_v1beta.types.compute import Uint128
+from google.cloud.compute_v1beta.types.compute import UpcomingMaintenance
+from google.cloud.compute_v1beta.types.compute import UpdateAccessConfigInstanceRequest
+from google.cloud.compute_v1beta.types.compute import UpdateAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import UpdateBackendBucketRequest
+from google.cloud.compute_v1beta.types.compute import UpdateBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import UpdateDiskRequest
+from google.cloud.compute_v1beta.types.compute import UpdateDisplayDeviceInstanceRequest
+from google.cloud.compute_v1beta.types.compute import UpdateFirewallRequest
+from google.cloud.compute_v1beta.types.compute import UpdateFutureReservationRequest
+from google.cloud.compute_v1beta.types.compute import UpdateHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import UpdateInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import UpdateInstanceRequest
+from google.cloud.compute_v1beta.types.compute import UpdateLicenseRequest
+from google.cloud.compute_v1beta.types.compute import UpdateNetworkInterfaceInstanceRequest
+from google.cloud.compute_v1beta.types.compute import UpdatePeeringNetworkRequest
+from google.cloud.compute_v1beta.types.compute import UpdatePerInstanceConfigsInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import UpdatePreviewFeatureRequest
+from google.cloud.compute_v1beta.types.compute import UpdateRegionAutoscalerRequest
+from google.cloud.compute_v1beta.types.compute import UpdateRegionBackendServiceRequest
+from google.cloud.compute_v1beta.types.compute import UpdateRegionCommitmentRequest
+from google.cloud.compute_v1beta.types.compute import UpdateRegionDiskRequest
+from google.cloud.compute_v1beta.types.compute import UpdateRegionHealthCheckRequest
+from google.cloud.compute_v1beta.types.compute import UpdateRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1beta.types.compute import UpdateRegionUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import UpdateReservationRequest
+from google.cloud.compute_v1beta.types.compute import UpdateReservationsRegionCommitmentRequest
+from google.cloud.compute_v1beta.types.compute import UpdateRoutePolicyRouterRequest
+from google.cloud.compute_v1beta.types.compute import UpdateRouterRequest
+from google.cloud.compute_v1beta.types.compute import UpdateShieldedInstanceConfigInstanceRequest
+from google.cloud.compute_v1beta.types.compute import UpdateShieldedVmConfigInstanceRequest
+from google.cloud.compute_v1beta.types.compute import UpdateStoragePoolRequest
+from google.cloud.compute_v1beta.types.compute import UpdateUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import UrlMap
+from google.cloud.compute_v1beta.types.compute import UrlMapList
+from google.cloud.compute_v1beta.types.compute import UrlMapReference
+from google.cloud.compute_v1beta.types.compute import UrlMapsAggregatedList
+from google.cloud.compute_v1beta.types.compute import UrlMapsScopedList
+from google.cloud.compute_v1beta.types.compute import UrlMapsValidateRequest
+from google.cloud.compute_v1beta.types.compute import UrlMapsValidateResponse
+from google.cloud.compute_v1beta.types.compute import UrlMapTest
+from google.cloud.compute_v1beta.types.compute import UrlMapTestHeader
+from google.cloud.compute_v1beta.types.compute import UrlMapValidationResult
+from google.cloud.compute_v1beta.types.compute import UrlRewrite
+from google.cloud.compute_v1beta.types.compute import UsableSubnetwork
+from google.cloud.compute_v1beta.types.compute import UsableSubnetworksAggregatedList
+from google.cloud.compute_v1beta.types.compute import UsableSubnetworkSecondaryRange
+from google.cloud.compute_v1beta.types.compute import UsageExportLocation
+from google.cloud.compute_v1beta.types.compute import ValidateRegionUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import ValidateUrlMapRequest
+from google.cloud.compute_v1beta.types.compute import VmEndpointNatMappings
+from google.cloud.compute_v1beta.types.compute import VmEndpointNatMappingsInterfaceNatMappings
+from google.cloud.compute_v1beta.types.compute import VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings
+from google.cloud.compute_v1beta.types.compute import VmEndpointNatMappingsList
+from google.cloud.compute_v1beta.types.compute import VpnGateway
+from google.cloud.compute_v1beta.types.compute import VpnGatewayAggregatedList
+from google.cloud.compute_v1beta.types.compute import VpnGatewayList
+from google.cloud.compute_v1beta.types.compute import VpnGatewaysGetStatusResponse
+from google.cloud.compute_v1beta.types.compute import VpnGatewaysScopedList
+from google.cloud.compute_v1beta.types.compute import VpnGatewayStatus
+from google.cloud.compute_v1beta.types.compute import VpnGatewayStatusHighAvailabilityRequirementState
+from google.cloud.compute_v1beta.types.compute import VpnGatewayStatusTunnel
+from google.cloud.compute_v1beta.types.compute import VpnGatewayStatusVpnConnection
+from google.cloud.compute_v1beta.types.compute import VpnGatewayVpnGatewayInterface
+from google.cloud.compute_v1beta.types.compute import VpnTunnel
+from google.cloud.compute_v1beta.types.compute import VpnTunnelAggregatedList
+from google.cloud.compute_v1beta.types.compute import VpnTunnelList
+from google.cloud.compute_v1beta.types.compute import VpnTunnelsScopedList
+from google.cloud.compute_v1beta.types.compute import WafExpressionSet
+from google.cloud.compute_v1beta.types.compute import WafExpressionSetExpression
+from google.cloud.compute_v1beta.types.compute import WaitGlobalOperationRequest
+from google.cloud.compute_v1beta.types.compute import WaitRegionOperationRequest
+from google.cloud.compute_v1beta.types.compute import WaitZoneOperationRequest
+from google.cloud.compute_v1beta.types.compute import Warning
+from google.cloud.compute_v1beta.types.compute import Warnings
+from google.cloud.compute_v1beta.types.compute import WeightedBackendService
+from google.cloud.compute_v1beta.types.compute import Wire
+from google.cloud.compute_v1beta.types.compute import WireEndpoint
+from google.cloud.compute_v1beta.types.compute import WireGroup
+from google.cloud.compute_v1beta.types.compute import WireGroupEndpoint
+from google.cloud.compute_v1beta.types.compute import WireGroupEndpointInterconnect
+from google.cloud.compute_v1beta.types.compute import WireGroupList
+from google.cloud.compute_v1beta.types.compute import WireGroupProperties
+from google.cloud.compute_v1beta.types.compute import WireGroupTopology
+from google.cloud.compute_v1beta.types.compute import WireGroupTopologyEndpoint
+from google.cloud.compute_v1beta.types.compute import WireProperties
+from google.cloud.compute_v1beta.types.compute import WithdrawPublicAdvertisedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import WithdrawPublicDelegatedPrefixeRequest
+from google.cloud.compute_v1beta.types.compute import XpnHostList
+from google.cloud.compute_v1beta.types.compute import XpnResourceId
+from google.cloud.compute_v1beta.types.compute import Zone
+from google.cloud.compute_v1beta.types.compute import ZoneList
+from google.cloud.compute_v1beta.types.compute import ZoneSetLabelsRequest
+from google.cloud.compute_v1beta.types.compute import ZoneSetPolicyRequest
+
+__all__ = ('AcceleratorTypesClient',
+    'AddressesClient',
+    'AdviceClient',
+    'AutoscalersClient',
+    'BackendBucketsClient',
+    'BackendServicesClient',
+    'CrossSiteNetworksClient',
+    'DisksClient',
+    'DiskSettingsServiceClient',
+    'DiskTypesClient',
+    'ExternalVpnGatewaysClient',
+    'FirewallPoliciesClient',
+    'FirewallsClient',
+    'ForwardingRulesClient',
+    'FutureReservationsClient',
+    'GlobalAddressesClient',
+    'GlobalForwardingRulesClient',
+    'GlobalNetworkEndpointGroupsClient',
+    'GlobalOperationsClient',
+    'GlobalOrganizationOperationsClient',
+    'GlobalPublicDelegatedPrefixesClient',
+    'HealthChecksClient',
+    'ImageFamilyViewsClient',
+    'ImagesClient',
+    'InstanceGroupManagerResizeRequestsClient',
+    'InstanceGroupManagersClient',
+    'InstanceGroupsClient',
+    'InstancesClient',
+    'InstanceSettingsServiceClient',
+    'InstanceTemplatesClient',
+    'InstantSnapshotsClient',
+    'InterconnectAttachmentGroupsClient',
+    'InterconnectAttachmentsClient',
+    'InterconnectGroupsClient',
+    'InterconnectLocationsClient',
+    'InterconnectRemoteLocationsClient',
+    'InterconnectsClient',
+    'LicenseCodesClient',
+    'LicensesClient',
+    'MachineImagesClient',
+    'MachineTypesClient',
+    'NetworkAttachmentsClient',
+    'NetworkEdgeSecurityServicesClient',
+    'NetworkEndpointGroupsClient',
+    'NetworkFirewallPoliciesClient',
+    'NetworkProfilesClient',
+    'NetworksClient',
+    'NodeGroupsClient',
+    'NodeTemplatesClient',
+    'NodeTypesClient',
+    'OrganizationSecurityPoliciesClient',
+    'PacketMirroringsClient',
+    'PreviewFeaturesClient',
+    'ProjectsClient',
+    'PublicAdvertisedPrefixesClient',
+    'PublicDelegatedPrefixesClient',
+    'RegionAutoscalersClient',
+    'RegionBackendServicesClient',
+    'RegionCommitmentsClient',
+    'RegionDisksClient',
+    'RegionDiskSettingsClient',
+    'RegionDiskTypesClient',
+    'RegionHealthChecksClient',
+    'RegionHealthCheckServicesClient',
+    'RegionInstanceGroupManagerResizeRequestsClient',
+    'RegionInstanceGroupManagersClient',
+    'RegionInstanceGroupsClient',
+    'RegionInstancesClient',
+    'RegionInstanceTemplatesClient',
+    'RegionInstantSnapshotsClient',
+    'RegionMultiMigsClient',
+    'RegionNetworkEndpointGroupsClient',
+    'RegionNetworkFirewallPoliciesClient',
+    'RegionNotificationEndpointsClient',
+    'RegionOperationsClient',
+    'RegionsClient',
+    'RegionSecurityPoliciesClient',
+    'RegionSnapshotsClient',
+    'RegionSnapshotSettingsClient',
+    'RegionSslCertificatesClient',
+    'RegionSslPoliciesClient',
+    'RegionTargetHttpProxiesClient',
+    'RegionTargetHttpsProxiesClient',
+    'RegionTargetTcpProxiesClient',
+    'RegionUrlMapsClient',
+    'RegionZonesClient',
+    'ReservationBlocksClient',
+    'ReservationsClient',
+    'ResourcePoliciesClient',
+    'RoutersClient',
+    'RoutesClient',
+    'SecurityPoliciesClient',
+    'ServiceAttachmentsClient',
+    'SnapshotsClient',
+    'SnapshotSettingsServiceClient',
+    'SslCertificatesClient',
+    'SslPoliciesClient',
+    'StoragePoolsClient',
+    'StoragePoolTypesClient',
+    'SubnetworksClient',
+    'TargetGrpcProxiesClient',
+    'TargetHttpProxiesClient',
+    'TargetHttpsProxiesClient',
+    'TargetInstancesClient',
+    'TargetPoolsClient',
+    'TargetSslProxiesClient',
+    'TargetTcpProxiesClient',
+    'TargetVpnGatewaysClient',
+    'UrlMapsClient',
+    'VpnGatewaysClient',
+    'VpnTunnelsClient',
+    'WireGroupsClient',
+    'ZoneOperationsClient',
+    'ZonesClient',
+    'AbandonInstancesInstanceGroupManagerRequest',
+    'AbandonInstancesRegionInstanceGroupManagerRequest',
+    'AcceleratorConfig',
+    'Accelerators',
+    'AcceleratorType',
+    'AcceleratorTypeAggregatedList',
+    'AcceleratorTypeList',
+    'AcceleratorTypesScopedList',
+    'AccessConfig',
+    'AddAccessConfigInstanceRequest',
+    'AddAssociationFirewallPolicyRequest',
+    'AddAssociationNetworkFirewallPolicyRequest',
+    'AddAssociationOrganizationSecurityPolicyRequest',
+    'AddAssociationRegionNetworkFirewallPolicyRequest',
+    'AddHealthCheckTargetPoolRequest',
+    'AddInstancesInstanceGroupRequest',
+    'AddInstanceTargetPoolRequest',
+    'AddNetworkInterfaceInstanceRequest',
+    'AddNodesNodeGroupRequest',
+    'AddPacketMirroringRuleFirewallPolicyRequest',
+    'AddPacketMirroringRuleNetworkFirewallPolicyRequest',
+    'AddPeeringNetworkRequest',
+    'AddResourcePoliciesDiskRequest',
+    'AddResourcePoliciesInstanceRequest',
+    'AddResourcePoliciesRegionDiskRequest',
+    'Address',
+    'AddressAggregatedList',
+    'AddressesScopedList',
+    'AddressList',
+    'AddRuleFirewallPolicyRequest',
+    'AddRuleNetworkFirewallPolicyRequest',
+    'AddRuleOrganizationSecurityPolicyRequest',
+    'AddRuleRegionNetworkFirewallPolicyRequest',
+    'AddRuleRegionSecurityPolicyRequest',
+    'AddRuleSecurityPolicyRequest',
+    'AddSignedUrlKeyBackendBucketRequest',
+    'AddSignedUrlKeyBackendServiceRequest',
+    'AdvancedMachineFeatures',
+    'AggregatedListAcceleratorTypesRequest',
+    'AggregatedListAddressesRequest',
+    'AggregatedListAutoscalersRequest',
+    'AggregatedListBackendServicesRequest',
+    'AggregatedListDisksRequest',
+    'AggregatedListDiskTypesRequest',
+    'AggregatedListForwardingRulesRequest',
+    'AggregatedListFutureReservationsRequest',
+    'AggregatedListGlobalOperationsRequest',
+    'AggregatedListHealthChecksRequest',
+    'AggregatedListInstanceGroupManagersRequest',
+    'AggregatedListInstanceGroupsRequest',
+    'AggregatedListInstancesRequest',
+    'AggregatedListInstanceTemplatesRequest',
+    'AggregatedListInstantSnapshotsRequest',
+    'AggregatedListInterconnectAttachmentsRequest',
+    'AggregatedListMachineTypesRequest',
+    'AggregatedListNetworkAttachmentsRequest',
+    'AggregatedListNetworkEdgeSecurityServicesRequest',
+    'AggregatedListNetworkEndpointGroupsRequest',
+    'AggregatedListNetworkFirewallPoliciesRequest',
+    'AggregatedListNodeGroupsRequest',
+    'AggregatedListNodeTemplatesRequest',
+    'AggregatedListNodeTypesRequest',
+    'AggregatedListPacketMirroringsRequest',
+    'AggregatedListPublicDelegatedPrefixesRequest',
+    'AggregatedListRegionCommitmentsRequest',
+    'AggregatedListReservationsRequest',
+    'AggregatedListResourcePoliciesRequest',
+    'AggregatedListRoutersRequest',
+    'AggregatedListSecurityPoliciesRequest',
+    'AggregatedListServiceAttachmentsRequest',
+    'AggregatedListSnapshotsRequest',
+    'AggregatedListSslCertificatesRequest',
+    'AggregatedListSslPoliciesRequest',
+    'AggregatedListStoragePoolsRequest',
+    'AggregatedListStoragePoolTypesRequest',
+    'AggregatedListSubnetworksRequest',
+    'AggregatedListTargetHttpProxiesRequest',
+    'AggregatedListTargetHttpsProxiesRequest',
+    'AggregatedListTargetInstancesRequest',
+    'AggregatedListTargetPoolsRequest',
+    'AggregatedListTargetTcpProxiesRequest',
+    'AggregatedListTargetVpnGatewaysRequest',
+    'AggregatedListUrlMapsRequest',
+    'AggregatedListVpnGatewaysRequest',
+    'AggregatedListVpnTunnelsRequest',
+    'AliasIpRange',
+    'AllocationAggregateReservation',
+    'AllocationAggregateReservationReservedResourceInfo',
+    'AllocationAggregateReservationReservedResourceInfoAccelerator',
+    'AllocationReservationSharingPolicy',
+    'AllocationResourceStatus',
+    'AllocationResourceStatusSpecificSKUAllocation',
+    'AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk',
+    'AllocationSpecificSKUAllocationReservedInstanceProperties',
+    'AllocationSpecificSKUReservation',
+    'Allowed',
+    'AnnouncePublicAdvertisedPrefixeRequest',
+    'AnnouncePublicDelegatedPrefixeRequest',
+    'ApplyUpdatesToInstancesInstanceGroupManagerRequest',
+    'ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest',
+    'AttachDiskInstanceRequest',
+    'AttachedDisk',
+    'AttachedDiskInitializeParams',
+    'AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest',
+    'AttachNetworkEndpointsNetworkEndpointGroupRequest',
+    'AttachNetworkEndpointsRegionNetworkEndpointGroupRequest',
+    'AuditConfig',
+    'AuditLogConfig',
+    'Autoscaler',
+    'AutoscalerAggregatedList',
+    'AutoscalerList',
+    'AutoscalersScopedList',
+    'AutoscalerStatusDetails',
+    'AutoscalingPolicy',
+    'AutoscalingPolicyCpuUtilization',
+    'AutoscalingPolicyCustomMetricUtilization',
+    'AutoscalingPolicyLoadBalancingUtilization',
+    'AutoscalingPolicyScaleDownControl',
+    'AutoscalingPolicyScaleInControl',
+    'AutoscalingPolicyScalingSchedule',
+    'AWSV4Signature',
+    'Backend',
+    'BackendBucket',
+    'BackendBucketCdnPolicy',
+    'BackendBucketCdnPolicyBypassCacheOnRequestHeader',
+    'BackendBucketCdnPolicyCacheKeyPolicy',
+    'BackendBucketCdnPolicyNegativeCachingPolicy',
+    'BackendBucketList',
+    'BackendBucketListUsable',
+    'BackendBucketUsedBy',
+    'BackendCustomMetric',
+    'BackendService',
+    'BackendServiceAggregatedList',
+    'BackendServiceCdnPolicy',
+    'BackendServiceCdnPolicyBypassCacheOnRequestHeader',
+    'BackendServiceCdnPolicyNegativeCachingPolicy',
+    'BackendServiceConnectionTrackingPolicy',
+    'BackendServiceCustomMetric',
+    'BackendServiceDynamicForwarding',
+    'BackendServiceDynamicForwardingIpPortSelection',
+    'BackendServiceFailoverPolicy',
+    'BackendServiceGroupHealth',
+    'BackendServiceHAPolicy',
+    'BackendServiceHAPolicyLeader',
+    'BackendServiceHAPolicyLeaderNetworkEndpoint',
+    'BackendServiceHttpCookie',
+    'BackendServiceIAP',
+    'BackendServiceList',
+    'BackendServiceListUsable',
+    'BackendServiceLocalityLoadBalancingPolicyConfig',
+    'BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy',
+    'BackendServiceLocalityLoadBalancingPolicyConfigPolicy',
+    'BackendServiceLogConfig',
+    'BackendServiceNetworkPassThroughLbTrafficPolicy',
+    'BackendServiceNetworkPassThroughLbTrafficPolicyZonalAffinity',
+    'BackendServiceReference',
+    'BackendServicesGetEffectiveSecurityPoliciesResponse',
+    'BackendServicesScopedList',
+    'BackendServiceTlsSettings',
+    'BackendServiceTlsSettingsSubjectAltName',
+    'BackendServiceUsedBy',
+    'BfdPacket',
+    'BfdStatus',
+    'BfdStatusPacketCounts',
+    'BgpRoute',
+    'BgpRouteAsPath',
+    'BgpRouteNetworkLayerReachabilityInformation',
+    'Binding',
+    'BulkInsertDiskRequest',
+    'BulkInsertDiskResource',
+    'BulkInsertInstanceRequest',
+    'BulkInsertInstanceResource',
+    'BulkInsertInstanceResourcePerInstanceProperties',
+    'BulkInsertOperationStatus',
+    'BulkInsertRegionDiskRequest',
+    'BulkInsertRegionInstanceRequest',
+    'BulkSetLabelsDiskRequest',
+    'BulkSetLabelsRequest',
+    'BulkZoneSetLabelsRequest',
+    'BundledLocalSsds',
+    'CacheInvalidationRule',
+    'CacheKeyPolicy',
+    'CalendarModeAdviceRequest',
+    'CalendarModeAdviceResponse',
+    'CalendarModeAdviceRpcRequest',
+    'CalendarModeRecommendation',
+    'CancelFutureReservationRequest',
+    'CancelInstanceGroupManagerResizeRequestRequest',
+    'CancelRegionInstanceGroupManagerResizeRequestRequest',
+    'CircuitBreakers',
+    'CloneRulesFirewallPolicyRequest',
+    'CloneRulesNetworkFirewallPolicyRequest',
+    'CloneRulesRegionNetworkFirewallPolicyRequest',
+    'Commitment',
+    'CommitmentAggregatedList',
+    'CommitmentList',
+    'CommitmentResourceStatus',
+    'CommitmentsScopedList',
+    'ConfidentialInstanceConfig',
+    'ConnectionDraining',
+    'ConsistentHashLoadBalancerSettings',
+    'ConsistentHashLoadBalancerSettingsHttpCookie',
+    'CopyRulesOrganizationSecurityPolicyRequest',
+    'CorsPolicy',
+    'CreateInstancesInstanceGroupManagerRequest',
+    'CreateInstancesRegionInstanceGroupManagerRequest',
+    'CreateMembersInterconnectGroupRequest',
+    'CreateSnapshotDiskRequest',
+    'CreateSnapshotRegionDiskRequest',
+    'CrossSiteNetwork',
+    'CrossSiteNetworkList',
+    'CustomerEncryptionKey',
+    'CustomerEncryptionKeyProtectedDisk',
+    'CustomErrorResponsePolicy',
+    'CustomErrorResponsePolicyCustomErrorResponseRule',
+    'Data',
+    'Date',
+    'DeleteAccessConfigInstanceRequest',
+    'DeleteAddressRequest',
+    'DeleteAutoscalerRequest',
+    'DeleteBackendBucketRequest',
+    'DeleteBackendServiceRequest',
+    'DeleteCrossSiteNetworkRequest',
+    'DeleteDiskRequest',
+    'DeleteExternalVpnGatewayRequest',
+    'DeleteFirewallPolicyRequest',
+    'DeleteFirewallRequest',
+    'DeleteForwardingRuleRequest',
+    'DeleteFutureReservationRequest',
+    'DeleteGlobalAddressRequest',
+    'DeleteGlobalForwardingRuleRequest',
+    'DeleteGlobalNetworkEndpointGroupRequest',
+    'DeleteGlobalOperationRequest',
+    'DeleteGlobalOperationResponse',
+    'DeleteGlobalOrganizationOperationRequest',
+    'DeleteGlobalOrganizationOperationResponse',
+    'DeleteGlobalPublicDelegatedPrefixeRequest',
+    'DeleteHealthCheckRequest',
+    'DeleteImageRequest',
+    'DeleteInstanceGroupManagerRequest',
+    'DeleteInstanceGroupManagerResizeRequestRequest',
+    'DeleteInstanceGroupRequest',
+    'DeleteInstanceRequest',
+    'DeleteInstancesInstanceGroupManagerRequest',
+    'DeleteInstancesRegionInstanceGroupManagerRequest',
+    'DeleteInstanceTemplateRequest',
+    'DeleteInstantSnapshotRequest',
+    'DeleteInterconnectAttachmentGroupRequest',
+    'DeleteInterconnectAttachmentRequest',
+    'DeleteInterconnectGroupRequest',
+    'DeleteInterconnectRequest',
+    'DeleteLicenseRequest',
+    'DeleteMachineImageRequest',
+    'DeleteNetworkAttachmentRequest',
+    'DeleteNetworkEdgeSecurityServiceRequest',
+    'DeleteNetworkEndpointGroupRequest',
+    'DeleteNetworkFirewallPolicyRequest',
+    'DeleteNetworkInterfaceInstanceRequest',
+    'DeleteNetworkRequest',
+    'DeleteNodeGroupRequest',
+    'DeleteNodesNodeGroupRequest',
+    'DeleteNodeTemplateRequest',
+    'DeleteOrganizationSecurityPolicyRequest',
+    'DeletePacketMirroringRequest',
+    'DeletePerInstanceConfigsInstanceGroupManagerRequest',
+    'DeletePerInstanceConfigsRegionInstanceGroupManagerRequest',
+    'DeletePublicAdvertisedPrefixeRequest',
+    'DeletePublicDelegatedPrefixeRequest',
+    'DeleteRegionAutoscalerRequest',
+    'DeleteRegionBackendServiceRequest',
+    'DeleteRegionDiskRequest',
+    'DeleteRegionHealthCheckRequest',
+    'DeleteRegionHealthCheckServiceRequest',
+    'DeleteRegionInstanceGroupManagerRequest',
+    'DeleteRegionInstanceGroupManagerResizeRequestRequest',
+    'DeleteRegionInstanceTemplateRequest',
+    'DeleteRegionInstantSnapshotRequest',
+    'DeleteRegionMultiMigRequest',
+    'DeleteRegionNetworkEndpointGroupRequest',
+    'DeleteRegionNetworkFirewallPolicyRequest',
+    'DeleteRegionNotificationEndpointRequest',
+    'DeleteRegionOperationRequest',
+    'DeleteRegionOperationResponse',
+    'DeleteRegionSecurityPolicyRequest',
+    'DeleteRegionSnapshotRequest',
+    'DeleteRegionSslCertificateRequest',
+    'DeleteRegionSslPolicyRequest',
+    'DeleteRegionTargetHttpProxyRequest',
+    'DeleteRegionTargetHttpsProxyRequest',
+    'DeleteRegionTargetTcpProxyRequest',
+    'DeleteRegionUrlMapRequest',
+    'DeleteReservationRequest',
+    'DeleteResourcePolicyRequest',
+    'DeleteRoutePolicyRouterRequest',
+    'DeleteRouteRequest',
+    'DeleteRouterRequest',
+    'DeleteSecurityPolicyRequest',
+    'DeleteServiceAttachmentRequest',
+    'DeleteSignedUrlKeyBackendBucketRequest',
+    'DeleteSignedUrlKeyBackendServiceRequest',
+    'DeleteSnapshotRequest',
+    'DeleteSslCertificateRequest',
+    'DeleteSslPolicyRequest',
+    'DeleteStoragePoolRequest',
+    'DeleteSubnetworkRequest',
+    'DeleteTargetGrpcProxyRequest',
+    'DeleteTargetHttpProxyRequest',
+    'DeleteTargetHttpsProxyRequest',
+    'DeleteTargetInstanceRequest',
+    'DeleteTargetPoolRequest',
+    'DeleteTargetSslProxyRequest',
+    'DeleteTargetTcpProxyRequest',
+    'DeleteTargetVpnGatewayRequest',
+    'DeleteUrlMapRequest',
+    'DeleteVpnGatewayRequest',
+    'DeleteVpnTunnelRequest',
+    'DeleteWireGroupRequest',
+    'DeleteZoneOperationRequest',
+    'DeleteZoneOperationResponse',
+    'Denied',
+    'DeprecateImageRequest',
+    'DeprecationStatus',
+    'DetachDiskInstanceRequest',
+    'DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest',
+    'DetachNetworkEndpointsNetworkEndpointGroupRequest',
+    'DetachNetworkEndpointsRegionNetworkEndpointGroupRequest',
+    'DisableXpnHostProjectRequest',
+    'DisableXpnResourceProjectRequest',
+    'Disk',
+    'DiskAggregatedList',
+    'DiskAsyncReplication',
+    'DiskAsyncReplicationList',
+    'DiskInstantiationConfig',
+    'DiskList',
+    'DiskMoveRequest',
+    'DiskParams',
+    'DiskResourceStatus',
+    'DiskResourceStatusAsyncReplicationStatus',
+    'DisksAddResourcePoliciesRequest',
+    'DiskSettings',
+    'DiskSettingsAccessLocation',
+    'DiskSettingsAccessLocationAccessLocationPreference',
+    'DisksRemoveResourcePoliciesRequest',
+    'DisksResizeRequest',
+    'DisksScopedList',
+    'DisksStartAsyncReplicationRequest',
+    'DisksStopGroupAsyncReplicationResource',
+    'DiskType',
+    'DiskTypeAggregatedList',
+    'DiskTypeList',
+    'DiskTypesScopedList',
+    'DisplayDevice',
+    'DistributionPolicy',
+    'DistributionPolicyZoneConfiguration',
+    'Duration',
+    'EnableXpnHostProjectRequest',
+    'EnableXpnResourceProjectRequest',
+    'Error',
+    'ErrorDetails',
+    'ErrorInfo',
+    'Errors',
+    'ExchangedPeeringRoute',
+    'ExchangedPeeringRoutesList',
+    'ExpandIpCidrRangeSubnetworkRequest',
+    'Expr',
+    'ExternalVpnGateway',
+    'ExternalVpnGatewayInterface',
+    'ExternalVpnGatewayList',
+    'FileContentBuffer',
+    'Firewall',
+    'FirewallList',
+    'FirewallLogConfig',
+    'FirewallParams',
+    'FirewallPoliciesListAssociationsResponse',
+    'FirewallPoliciesScopedList',
+    'FirewallPolicy',
+    'FirewallPolicyAssociation',
+    'FirewallPolicyList',
+    'FirewallPolicyRule',
+    'FirewallPolicyRuleMatcher',
+    'FirewallPolicyRuleMatcherLayer4Config',
+    'FirewallPolicyRuleSecureTag',
+    'FixedOrPercent',
+    'FlexibleTimeRange',
+    'ForwardingRule',
+    'ForwardingRuleAggregatedList',
+    'ForwardingRuleList',
+    'ForwardingRuleReference',
+    'ForwardingRuleServiceDirectoryRegistration',
+    'ForwardingRulesScopedList',
+    'FutureReservation',
+    'FutureReservationCommitmentInfo',
+    'FutureReservationsAggregatedListResponse',
+    'FutureReservationsListResponse',
+    'FutureReservationSpecificSKUProperties',
+    'FutureReservationsScopedList',
+    'FutureReservationStatus',
+    'FutureReservationStatusExistingMatchingUsageInfo',
+    'FutureReservationStatusLastKnownGoodState',
+    'FutureReservationStatusLastKnownGoodStateFutureReservationSpecs',
+    'FutureReservationStatusSpecificSKUProperties',
+    'FutureReservationTimeWindow',
+    'FutureResourcesRecommendation',
+    'FutureResourcesRecommendationOtherLocation',
+    'FutureResourcesSpec',
+    'FutureResourcesSpecAggregateResources',
+    'FutureResourcesSpecLocalSsdPartition',
+    'FutureResourcesSpecLocationPolicy',
+    'FutureResourcesSpecLocationPolicyLocation',
+    'FutureResourcesSpecSpecificSKUResources',
+    'FutureResourcesSpecTargetResources',
+    'GetAcceleratorTypeRequest',
+    'GetAddressRequest',
+    'GetAssociationFirewallPolicyRequest',
+    'GetAssociationNetworkFirewallPolicyRequest',
+    'GetAssociationOrganizationSecurityPolicyRequest',
+    'GetAssociationRegionNetworkFirewallPolicyRequest',
+    'GetAutoscalerRequest',
+    'GetBackendBucketRequest',
+    'GetBackendServiceRequest',
+    'GetCrossSiteNetworkRequest',
+    'GetDiagnosticsInterconnectRequest',
+    'GetDiskRequest',
+    'GetDiskSettingRequest',
+    'GetDiskTypeRequest',
+    'GetEffectiveFirewallsInstanceRequest',
+    'GetEffectiveFirewallsNetworkRequest',
+    'GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest',
+    'GetEffectiveSecurityPoliciesBackendServiceRequest',
+    'GetExternalVpnGatewayRequest',
+    'GetFirewallPolicyRequest',
+    'GetFirewallRequest',
+    'GetForwardingRuleRequest',
+    'GetFromFamilyImageRequest',
+    'GetFutureReservationRequest',
+    'GetGlobalAddressRequest',
+    'GetGlobalForwardingRuleRequest',
+    'GetGlobalNetworkEndpointGroupRequest',
+    'GetGlobalOperationRequest',
+    'GetGlobalOrganizationOperationRequest',
+    'GetGlobalPublicDelegatedPrefixeRequest',
+    'GetGuestAttributesInstanceRequest',
+    'GetHealthBackendServiceRequest',
+    'GetHealthCheckRequest',
+    'GetHealthRegionBackendServiceRequest',
+    'GetHealthTargetPoolRequest',
+    'GetIamPolicyBackendBucketRequest',
+    'GetIamPolicyBackendServiceRequest',
+    'GetIamPolicyDiskRequest',
+    'GetIamPolicyFirewallPolicyRequest',
+    'GetIamPolicyImageRequest',
+    'GetIamPolicyInstanceRequest',
+    'GetIamPolicyInstanceTemplateRequest',
+    'GetIamPolicyInstantSnapshotRequest',
+    'GetIamPolicyInterconnectAttachmentGroupRequest',
+    'GetIamPolicyInterconnectGroupRequest',
+    'GetIamPolicyLicenseRequest',
+    'GetIamPolicyMachineImageRequest',
+    'GetIamPolicyNetworkAttachmentRequest',
+    'GetIamPolicyNetworkFirewallPolicyRequest',
+    'GetIamPolicyNodeGroupRequest',
+    'GetIamPolicyNodeTemplateRequest',
+    'GetIamPolicyRegionBackendServiceRequest',
+    'GetIamPolicyRegionDiskRequest',
+    'GetIamPolicyRegionInstantSnapshotRequest',
+    'GetIamPolicyRegionNetworkFirewallPolicyRequest',
+    'GetIamPolicyRegionSnapshotRequest',
+    'GetIamPolicyReservationRequest',
+    'GetIamPolicyResourcePolicyRequest',
+    'GetIamPolicyServiceAttachmentRequest',
+    'GetIamPolicySnapshotRequest',
+    'GetIamPolicyStoragePoolRequest',
+    'GetIamPolicySubnetworkRequest',
+    'GetImageFamilyViewRequest',
+    'GetImageRequest',
+    'GetInstanceGroupManagerRequest',
+    'GetInstanceGroupManagerResizeRequestRequest',
+    'GetInstanceGroupRequest',
+    'GetInstanceRequest',
+    'GetInstanceSettingRequest',
+    'GetInstanceTemplateRequest',
+    'GetInstantSnapshotRequest',
+    'GetInterconnectAttachmentGroupRequest',
+    'GetInterconnectAttachmentRequest',
+    'GetInterconnectGroupRequest',
+    'GetInterconnectLocationRequest',
+    'GetInterconnectRemoteLocationRequest',
+    'GetInterconnectRequest',
+    'GetLicenseCodeRequest',
+    'GetLicenseRequest',
+    'GetMachineImageRequest',
+    'GetMachineTypeRequest',
+    'GetMacsecConfigInterconnectRequest',
+    'GetNatIpInfoRouterRequest',
+    'GetNatMappingInfoRoutersRequest',
+    'GetNetworkAttachmentRequest',
+    'GetNetworkEdgeSecurityServiceRequest',
+    'GetNetworkEndpointGroupRequest',
+    'GetNetworkFirewallPolicyRequest',
+    'GetNetworkProfileRequest',
+    'GetNetworkRequest',
+    'GetNodeGroupRequest',
+    'GetNodeTemplateRequest',
+    'GetNodeTypeRequest',
+    'GetOperationalStatusInterconnectAttachmentGroupRequest',
+    'GetOperationalStatusInterconnectGroupRequest',
+    'GetOrganizationSecurityPolicyRequest',
+    'GetPacketMirroringRequest',
+    'GetPacketMirroringRuleFirewallPolicyRequest',
+    'GetPacketMirroringRuleNetworkFirewallPolicyRequest',
+    'GetPartnerMetadataInstanceRequest',
+    'GetPreviewFeatureRequest',
+    'GetProjectRequest',
+    'GetPublicAdvertisedPrefixeRequest',
+    'GetPublicDelegatedPrefixeRequest',
+    'GetRegionAutoscalerRequest',
+    'GetRegionBackendServiceRequest',
+    'GetRegionCommitmentRequest',
+    'GetRegionDiskRequest',
+    'GetRegionDiskSettingRequest',
+    'GetRegionDiskTypeRequest',
+    'GetRegionHealthCheckRequest',
+    'GetRegionHealthCheckServiceRequest',
+    'GetRegionInstanceGroupManagerRequest',
+    'GetRegionInstanceGroupManagerResizeRequestRequest',
+    'GetRegionInstanceGroupRequest',
+    'GetRegionInstanceTemplateRequest',
+    'GetRegionInstantSnapshotRequest',
+    'GetRegionMultiMigRequest',
+    'GetRegionNetworkEndpointGroupRequest',
+    'GetRegionNetworkFirewallPolicyRequest',
+    'GetRegionNotificationEndpointRequest',
+    'GetRegionOperationRequest',
+    'GetRegionRequest',
+    'GetRegionSecurityPolicyRequest',
+    'GetRegionSnapshotRequest',
+    'GetRegionSnapshotSettingRequest',
+    'GetRegionSslCertificateRequest',
+    'GetRegionSslPolicyRequest',
+    'GetRegionTargetHttpProxyRequest',
+    'GetRegionTargetHttpsProxyRequest',
+    'GetRegionTargetTcpProxyRequest',
+    'GetRegionUrlMapRequest',
+    'GetReservationBlockRequest',
+    'GetReservationRequest',
+    'GetResourcePolicyRequest',
+    'GetRoutePolicyRouterRequest',
+    'GetRouteRequest',
+    'GetRouterRequest',
+    'GetRouterStatusRouterRequest',
+    'GetRuleFirewallPolicyRequest',
+    'GetRuleNetworkFirewallPolicyRequest',
+    'GetRuleOrganizationSecurityPolicyRequest',
+    'GetRuleRegionNetworkFirewallPolicyRequest',
+    'GetRuleRegionSecurityPolicyRequest',
+    'GetRuleSecurityPolicyRequest',
+    'GetScreenshotInstanceRequest',
+    'GetSecurityPolicyRequest',
+    'GetSerialPortOutputInstanceRequest',
+    'GetServiceAttachmentRequest',
+    'GetShieldedInstanceIdentityInstanceRequest',
+    'GetShieldedVmIdentityInstanceRequest',
+    'GetSnapshotRequest',
+    'GetSnapshotSettingRequest',
+    'GetSslCertificateRequest',
+    'GetSslPolicyRequest',
+    'GetStatusVpnGatewayRequest',
+    'GetStoragePoolRequest',
+    'GetStoragePoolTypeRequest',
+    'GetSubnetworkRequest',
+    'GetTargetGrpcProxyRequest',
+    'GetTargetHttpProxyRequest',
+    'GetTargetHttpsProxyRequest',
+    'GetTargetInstanceRequest',
+    'GetTargetPoolRequest',
+    'GetTargetSslProxyRequest',
+    'GetTargetTcpProxyRequest',
+    'GetTargetVpnGatewayRequest',
+    'GetUrlMapRequest',
+    'GetVpnGatewayRequest',
+    'GetVpnTunnelRequest',
+    'GetWireGroupRequest',
+    'GetXpnHostProjectRequest',
+    'GetXpnResourcesProjectsRequest',
+    'GetZoneOperationRequest',
+    'GetZoneRequest',
+    'GlobalAddressesMoveRequest',
+    'GlobalNetworkEndpointGroupsAttachEndpointsRequest',
+    'GlobalNetworkEndpointGroupsDetachEndpointsRequest',
+    'GlobalOrganizationSetPolicyRequest',
+    'GlobalSetLabelsRequest',
+    'GlobalSetPolicyRequest',
+    'GroupMaintenanceInfo',
+    'GRPCHealthCheck',
+    'GRPCTLSHealthCheck',
+    'GuestAttributes',
+    'GuestAttributesEntry',
+    'GuestAttributesValue',
+    'GuestOsFeature',
+    'HealthCheck',
+    'HealthCheckList',
+    'HealthCheckLogConfig',
+    'HealthCheckReference',
+    'HealthChecksAggregatedList',
+    'HealthCheckService',
+    'HealthCheckServiceReference',
+    'HealthCheckServicesList',
+    'HealthChecksScopedList',
+    'HealthStatus',
+    'HealthStatusForNetworkEndpoint',
+    'Help',
+    'HelpLink',
+    'HostRule',
+    'HTTP2HealthCheck',
+    'HttpFaultAbort',
+    'HttpFaultDelay',
+    'HttpFaultInjection',
+    'HttpFilterConfig',
+    'HttpHeaderAction',
+    'HttpHeaderMatch',
+    'HttpHeaderOption',
+    'HTTPHealthCheck',
+    'HttpQueryParameterMatch',
+    'HttpRedirectAction',
+    'HttpRetryPolicy',
+    'HttpRouteAction',
+    'HttpRouteRule',
+    'HttpRouteRuleMatch',
+    'HTTPSHealthCheck',
+    'Image',
+    'ImageFamilyView',
+    'ImageList',
+    'InitialStateConfig',
+    'InsertAddressRequest',
+    'InsertAutoscalerRequest',
+    'InsertBackendBucketRequest',
+    'InsertBackendServiceRequest',
+    'InsertCrossSiteNetworkRequest',
+    'InsertDiskRequest',
+    'InsertExternalVpnGatewayRequest',
+    'InsertFirewallPolicyRequest',
+    'InsertFirewallRequest',
+    'InsertForwardingRuleRequest',
+    'InsertFutureReservationRequest',
+    'InsertGlobalAddressRequest',
+    'InsertGlobalForwardingRuleRequest',
+    'InsertGlobalNetworkEndpointGroupRequest',
+    'InsertGlobalPublicDelegatedPrefixeRequest',
+    'InsertHealthCheckRequest',
+    'InsertImageRequest',
+    'InsertInstanceGroupManagerRequest',
+    'InsertInstanceGroupManagerResizeRequestRequest',
+    'InsertInstanceGroupRequest',
+    'InsertInstanceRequest',
+    'InsertInstanceTemplateRequest',
+    'InsertInstantSnapshotRequest',
+    'InsertInterconnectAttachmentGroupRequest',
+    'InsertInterconnectAttachmentRequest',
+    'InsertInterconnectGroupRequest',
+    'InsertInterconnectRequest',
+    'InsertLicenseRequest',
+    'InsertMachineImageRequest',
+    'InsertNetworkAttachmentRequest',
+    'InsertNetworkEdgeSecurityServiceRequest',
+    'InsertNetworkEndpointGroupRequest',
+    'InsertNetworkFirewallPolicyRequest',
+    'InsertNetworkRequest',
+    'InsertNodeGroupRequest',
+    'InsertNodeTemplateRequest',
+    'InsertOrganizationSecurityPolicyRequest',
+    'InsertPacketMirroringRequest',
+    'InsertPublicAdvertisedPrefixeRequest',
+    'InsertPublicDelegatedPrefixeRequest',
+    'InsertRegionAutoscalerRequest',
+    'InsertRegionBackendServiceRequest',
+    'InsertRegionCommitmentRequest',
+    'InsertRegionDiskRequest',
+    'InsertRegionHealthCheckRequest',
+    'InsertRegionHealthCheckServiceRequest',
+    'InsertRegionInstanceGroupManagerRequest',
+    'InsertRegionInstanceGroupManagerResizeRequestRequest',
+    'InsertRegionInstanceTemplateRequest',
+    'InsertRegionInstantSnapshotRequest',
+    'InsertRegionMultiMigRequest',
+    'InsertRegionNetworkEndpointGroupRequest',
+    'InsertRegionNetworkFirewallPolicyRequest',
+    'InsertRegionNotificationEndpointRequest',
+    'InsertRegionSecurityPolicyRequest',
+    'InsertRegionSnapshotRequest',
+    'InsertRegionSslCertificateRequest',
+    'InsertRegionSslPolicyRequest',
+    'InsertRegionTargetHttpProxyRequest',
+    'InsertRegionTargetHttpsProxyRequest',
+    'InsertRegionTargetTcpProxyRequest',
+    'InsertRegionUrlMapRequest',
+    'InsertReservationRequest',
+    'InsertResourcePolicyRequest',
+    'InsertRouteRequest',
+    'InsertRouterRequest',
+    'InsertSecurityPolicyRequest',
+    'InsertServiceAttachmentRequest',
+    'InsertSnapshotRequest',
+    'InsertSslCertificateRequest',
+    'InsertSslPolicyRequest',
+    'InsertStoragePoolRequest',
+    'InsertSubnetworkRequest',
+    'InsertTargetGrpcProxyRequest',
+    'InsertTargetHttpProxyRequest',
+    'InsertTargetHttpsProxyRequest',
+    'InsertTargetInstanceRequest',
+    'InsertTargetPoolRequest',
+    'InsertTargetSslProxyRequest',
+    'InsertTargetTcpProxyRequest',
+    'InsertTargetVpnGatewayRequest',
+    'InsertUrlMapRequest',
+    'InsertVpnGatewayRequest',
+    'InsertVpnTunnelRequest',
+    'InsertWireGroupRequest',
+    'Instance',
+    'InstanceAggregatedList',
+    'InstanceConsumptionData',
+    'InstanceConsumptionInfo',
+    'InstanceGroup',
+    'InstanceGroupAggregatedList',
+    'InstanceGroupList',
+    'InstanceGroupManager',
+    'InstanceGroupManagerActionsSummary',
+    'InstanceGroupManagerAggregatedList',
+    'InstanceGroupManagerAllInstancesConfig',
+    'InstanceGroupManagerAutoHealingPolicy',
+    'InstanceGroupManagerInstanceFlexibilityPolicy',
+    'InstanceGroupManagerInstanceFlexibilityPolicyInstanceSelection',
+    'InstanceGroupManagerInstanceFlexibilityPolicyProvisioningModelMix',
+    'InstanceGroupManagerInstanceLifecyclePolicy',
+    'InstanceGroupManagerList',
+    'InstanceGroupManagerParams',
+    'InstanceGroupManagerResizeRequest',
+    'InstanceGroupManagerResizeRequestsListResponse',
+    'InstanceGroupManagerResizeRequestStatus',
+    'InstanceGroupManagerResizeRequestStatusLastAttempt',
+    'InstanceGroupManagerResourcePolicies',
+    'InstanceGroupManagersAbandonInstancesRequest',
+    'InstanceGroupManagersApplyUpdatesRequest',
+    'InstanceGroupManagersCreateInstancesRequest',
+    'InstanceGroupManagersDeleteInstancesRequest',
+    'InstanceGroupManagersDeletePerInstanceConfigsReq',
+    'InstanceGroupManagersListErrorsResponse',
+    'InstanceGroupManagersListManagedInstancesResponse',
+    'InstanceGroupManagersListPerInstanceConfigsResp',
+    'InstanceGroupManagersPatchPerInstanceConfigsReq',
+    'InstanceGroupManagersRecreateInstancesRequest',
+    'InstanceGroupManagersResizeAdvancedRequest',
+    'InstanceGroupManagersResumeInstancesRequest',
+    'InstanceGroupManagersScopedList',
+    'InstanceGroupManagersSetAutoHealingRequest',
+    'InstanceGroupManagersSetInstanceTemplateRequest',
+    'InstanceGroupManagersSetTargetPoolsRequest',
+    'InstanceGroupManagersStartInstancesRequest',
+    'InstanceGroupManagersStopInstancesRequest',
+    'InstanceGroupManagersSuspendInstancesRequest',
+    'InstanceGroupManagerStandbyPolicy',
+    'InstanceGroupManagerStatus',
+    'InstanceGroupManagerStatusAllInstancesConfig',
+    'InstanceGroupManagerStatusStateful',
+    'InstanceGroupManagerStatusStatefulPerInstanceConfigs',
+    'InstanceGroupManagerStatusVersionTarget',
+    'InstanceGroupManagersUpdatePerInstanceConfigsReq',
+    'InstanceGroupManagerUpdatePolicy',
+    'InstanceGroupManagerVersion',
+    'InstanceGroupsAddInstancesRequest',
+    'InstanceGroupsListInstances',
+    'InstanceGroupsListInstancesRequest',
+    'InstanceGroupsRemoveInstancesRequest',
+    'InstanceGroupsScopedList',
+    'InstanceGroupsSetNamedPortsRequest',
+    'InstanceList',
+    'InstanceListReferrers',
+    'InstanceManagedByIgmError',
+    'InstanceManagedByIgmErrorInstanceActionDetails',
+    'InstanceManagedByIgmErrorManagedInstanceError',
+    'InstanceMoveRequest',
+    'InstanceParams',
+    'InstanceProperties',
+    'InstancePropertiesPatch',
+    'InstanceReference',
+    'InstancesAddResourcePoliciesRequest',
+    'InstancesBulkInsertOperationMetadata',
+    'InstanceSettings',
+    'InstanceSettingsMetadata',
+    'InstancesGetEffectiveFirewallsResponse',
+    'InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy',
+    'InstancesGetEffectiveFirewallsResponseOrganizationFirewallPolicy',
+    'InstancesRemoveResourcePoliciesRequest',
+    'InstancesReportHostAsFaultyRequest',
+    'InstancesReportHostAsFaultyRequestFaultReason',
+    'InstancesResumeRequest',
+    'InstancesScopedList',
+    'InstancesSetLabelsRequest',
+    'InstancesSetMachineResourcesRequest',
+    'InstancesSetMachineTypeRequest',
+    'InstancesSetMinCpuPlatformRequest',
+    'InstancesSetNameRequest',
+    'InstancesSetSecurityPolicyRequest',
+    'InstancesSetServiceAccountRequest',
+    'InstancesStartWithEncryptionKeyRequest',
+    'InstanceTemplate',
+    'InstanceTemplateAggregatedList',
+    'InstanceTemplateList',
+    'InstanceTemplatesScopedList',
+    'InstanceWithNamedPorts',
+    'InstantSnapshot',
+    'InstantSnapshotAggregatedList',
+    'InstantSnapshotList',
+    'InstantSnapshotResourceStatus',
+    'InstantSnapshotsScopedList',
+    'Int64RangeMatch',
+    'Interconnect',
+    'InterconnectApplicationAwareInterconnect',
+    'InterconnectApplicationAwareInterconnectBandwidthPercentage',
+    'InterconnectApplicationAwareInterconnectBandwidthPercentagePolicy',
+    'InterconnectApplicationAwareInterconnectStrictPriorityPolicy',
+    'InterconnectAttachment',
+    'InterconnectAttachmentAggregatedList',
+    'InterconnectAttachmentConfigurationConstraints',
+    'InterconnectAttachmentConfigurationConstraintsBgpPeerASNRange',
+    'InterconnectAttachmentGroup',
+    'InterconnectAttachmentGroupAttachment',
+    'InterconnectAttachmentGroupConfigured',
+    'InterconnectAttachmentGroupConfiguredAvailabilitySLA',
+    'InterconnectAttachmentGroupConfiguredAvailabilitySLAIntendedSlaBlockers',
+    'InterconnectAttachmentGroupIntent',
+    'InterconnectAttachmentGroupLogicalStructure',
+    'InterconnectAttachmentGroupLogicalStructureRegion',
+    'InterconnectAttachmentGroupLogicalStructureRegionMetro',
+    'InterconnectAttachmentGroupLogicalStructureRegionMetroFacility',
+    'InterconnectAttachmentGroupLogicalStructureRegionMetroFacilityZone',
+    'InterconnectAttachmentGroupsGetOperationalStatusResponse',
+    'InterconnectAttachmentGroupsListResponse',
+    'InterconnectAttachmentGroupsOperationalStatus',
+    'InterconnectAttachmentGroupsOperationalStatusAttachmentStatus',
+    'InterconnectAttachmentList',
+    'InterconnectAttachmentPartnerMetadata',
+    'InterconnectAttachmentPrivateInfo',
+    'InterconnectAttachmentsScopedList',
+    'InterconnectCircuitInfo',
+    'InterconnectDiagnostics',
+    'InterconnectDiagnosticsARPEntry',
+    'InterconnectDiagnosticsLinkLACPStatus',
+    'InterconnectDiagnosticsLinkOpticalPower',
+    'InterconnectDiagnosticsLinkStatus',
+    'InterconnectDiagnosticsMacsecStatus',
+    'InterconnectGroup',
+    'InterconnectGroupConfigured',
+    'InterconnectGroupConfiguredTopologyCapability',
+    'InterconnectGroupConfiguredTopologyCapabilityIntendedCapabilityBlockers',
+    'InterconnectGroupIntent',
+    'InterconnectGroupInterconnect',
+    'InterconnectGroupPhysicalStructure',
+    'InterconnectGroupPhysicalStructureMetros',
+    'InterconnectGroupPhysicalStructureMetrosFacilities',
+    'InterconnectGroupPhysicalStructureMetrosFacilitiesZones',
+    'InterconnectGroupsCreateMembers',
+    'InterconnectGroupsCreateMembersInterconnectInput',
+    'InterconnectGroupsCreateMembersRequest',
+    'InterconnectGroupsGetOperationalStatusResponse',
+    'InterconnectGroupsListResponse',
+    'InterconnectGroupsOperationalStatus',
+    'InterconnectGroupsOperationalStatusInterconnectStatus',
+    'InterconnectList',
+    'InterconnectLocation',
+    'InterconnectLocationCrossSiteInterconnectInfo',
+    'InterconnectLocationList',
+    'InterconnectLocationRegionInfo',
+    'InterconnectMacsec',
+    'InterconnectMacsecConfig',
+    'InterconnectMacsecConfigPreSharedKey',
+    'InterconnectMacsecPreSharedKey',
+    'InterconnectOutageNotification',
+    'InterconnectRemoteLocation',
+    'InterconnectRemoteLocationConstraints',
+    'InterconnectRemoteLocationConstraintsSubnetLengthRange',
+    'InterconnectRemoteLocationList',
+    'InterconnectRemoteLocationPermittedConnections',
+    'InterconnectsGetDiagnosticsResponse',
+    'InterconnectsGetMacsecConfigResponse',
+    'InvalidateCacheRegionUrlMapRequest',
+    'InvalidateCacheUrlMapRequest',
+    'Items',
+    'License',
+    'LicenseCode',
+    'LicenseCodeLicenseAlias',
+    'LicenseResourceCommitment',
+    'LicenseResourceRequirements',
+    'LicensesListResponse',
+    'ListAcceleratorTypesRequest',
+    'ListAddressesRequest',
+    'ListAssociationsFirewallPolicyRequest',
+    'ListAssociationsOrganizationSecurityPolicyRequest',
+    'ListAutoscalersRequest',
+    'ListAvailableFeaturesRegionSslPoliciesRequest',
+    'ListAvailableFeaturesSslPoliciesRequest',
+    'ListBackendBucketsRequest',
+    'ListBackendServicesRequest',
+    'ListBgpRoutesRoutersRequest',
+    'ListCrossSiteNetworksRequest',
+    'ListDisksRequest',
+    'ListDisksStoragePoolsRequest',
+    'ListDiskTypesRequest',
+    'ListErrorsInstanceGroupManagersRequest',
+    'ListErrorsRegionInstanceGroupManagersRequest',
+    'ListExternalVpnGatewaysRequest',
+    'ListFirewallPoliciesRequest',
+    'ListFirewallsRequest',
+    'ListForwardingRulesRequest',
+    'ListFutureReservationsRequest',
+    'ListGlobalAddressesRequest',
+    'ListGlobalForwardingRulesRequest',
+    'ListGlobalNetworkEndpointGroupsRequest',
+    'ListGlobalOperationsRequest',
+    'ListGlobalOrganizationOperationsRequest',
+    'ListGlobalPublicDelegatedPrefixesRequest',
+    'ListHealthChecksRequest',
+    'ListImagesRequest',
+    'ListInstanceGroupManagerResizeRequestsRequest',
+    'ListInstanceGroupManagersRequest',
+    'ListInstanceGroupsRequest',
+    'ListInstancesInstanceGroupsRequest',
+    'ListInstancesRegionInstanceGroupsRequest',
+    'ListInstancesRequest',
+    'ListInstanceTemplatesRequest',
+    'ListInstantSnapshotsRequest',
+    'ListInterconnectAttachmentGroupsRequest',
+    'ListInterconnectAttachmentsRequest',
+    'ListInterconnectGroupsRequest',
+    'ListInterconnectLocationsRequest',
+    'ListInterconnectRemoteLocationsRequest',
+    'ListInterconnectsRequest',
+    'ListLicensesRequest',
+    'ListMachineImagesRequest',
+    'ListMachineTypesRequest',
+    'ListManagedInstancesInstanceGroupManagersRequest',
+    'ListManagedInstancesRegionInstanceGroupManagersRequest',
+    'ListNetworkAttachmentsRequest',
+    'ListNetworkEndpointGroupsRequest',
+    'ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest',
+    'ListNetworkEndpointsNetworkEndpointGroupsRequest',
+    'ListNetworkEndpointsRegionNetworkEndpointGroupsRequest',
+    'ListNetworkFirewallPoliciesRequest',
+    'ListNetworkProfilesRequest',
+    'ListNetworksRequest',
+    'ListNodeGroupsRequest',
+    'ListNodesNodeGroupsRequest',
+    'ListNodeTemplatesRequest',
+    'ListNodeTypesRequest',
+    'ListOrganizationSecurityPoliciesRequest',
+    'ListPacketMirroringsRequest',
+    'ListPeeringRoutesNetworksRequest',
+    'ListPerInstanceConfigsInstanceGroupManagersRequest',
+    'ListPerInstanceConfigsRegionInstanceGroupManagersRequest',
+    'ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest',
+    'ListPreconfiguredExpressionSetsSecurityPoliciesRequest',
+    'ListPreviewFeaturesRequest',
+    'ListPublicAdvertisedPrefixesRequest',
+    'ListPublicDelegatedPrefixesRequest',
+    'ListReferrersInstancesRequest',
+    'ListRegionAutoscalersRequest',
+    'ListRegionBackendServicesRequest',
+    'ListRegionCommitmentsRequest',
+    'ListRegionDisksRequest',
+    'ListRegionDiskTypesRequest',
+    'ListRegionHealthCheckServicesRequest',
+    'ListRegionHealthChecksRequest',
+    'ListRegionInstanceGroupManagerResizeRequestsRequest',
+    'ListRegionInstanceGroupManagersRequest',
+    'ListRegionInstanceGroupsRequest',
+    'ListRegionInstanceTemplatesRequest',
+    'ListRegionInstantSnapshotsRequest',
+    'ListRegionMultiMigsRequest',
+    'ListRegionNetworkEndpointGroupsRequest',
+    'ListRegionNetworkFirewallPoliciesRequest',
+    'ListRegionNotificationEndpointsRequest',
+    'ListRegionOperationsRequest',
+    'ListRegionSecurityPoliciesRequest',
+    'ListRegionSnapshotsRequest',
+    'ListRegionsRequest',
+    'ListRegionSslCertificatesRequest',
+    'ListRegionSslPoliciesRequest',
+    'ListRegionTargetHttpProxiesRequest',
+    'ListRegionTargetHttpsProxiesRequest',
+    'ListRegionTargetTcpProxiesRequest',
+    'ListRegionUrlMapsRequest',
+    'ListRegionZonesRequest',
+    'ListReservationBlocksRequest',
+    'ListReservationsRequest',
+    'ListResourcePoliciesRequest',
+    'ListRoutePoliciesRoutersRequest',
+    'ListRoutersRequest',
+    'ListRoutesRequest',
+    'ListSecurityPoliciesRequest',
+    'ListServiceAttachmentsRequest',
+    'ListSnapshotsRequest',
+    'ListSslCertificatesRequest',
+    'ListSslPoliciesRequest',
+    'ListStoragePoolsRequest',
+    'ListStoragePoolTypesRequest',
+    'ListSubnetworksRequest',
+    'ListTargetGrpcProxiesRequest',
+    'ListTargetHttpProxiesRequest',
+    'ListTargetHttpsProxiesRequest',
+    'ListTargetInstancesRequest',
+    'ListTargetPoolsRequest',
+    'ListTargetSslProxiesRequest',
+    'ListTargetTcpProxiesRequest',
+    'ListTargetVpnGatewaysRequest',
+    'ListUrlMapsRequest',
+    'ListUsableBackendBucketsRequest',
+    'ListUsableBackendServicesRequest',
+    'ListUsableRegionBackendServicesRequest',
+    'ListUsableSubnetworksRequest',
+    'ListVpnGatewaysRequest',
+    'ListVpnTunnelsRequest',
+    'ListWireGroupsRequest',
+    'ListXpnHostsProjectsRequest',
+    'ListZoneOperationsRequest',
+    'ListZonesRequest',
+    'LocalDisk',
+    'LocalizedMessage',
+    'LocationPolicy',
+    'LocationPolicyLocation',
+    'LocationPolicyLocationConstraints',
+    'MachineImage',
+    'MachineImageList',
+    'MachineType',
+    'MachineTypeAggregatedList',
+    'MachineTypeList',
+    'MachineTypesScopedList',
+    'ManagedInstance',
+    'ManagedInstanceAllInstancesConfig',
+    'ManagedInstanceInstanceHealth',
+    'ManagedInstanceLastAttempt',
+    'ManagedInstanceLastAttemptErrors',
+    'ManagedInstancePropertiesFromFlexibilityPolicy',
+    'ManagedInstanceVersion',
+    'Metadata',
+    'MetadataFilter',
+    'MetadataFilterLabelMatch',
+    'MoveAddressRequest',
+    'MoveDiskProjectRequest',
+    'MoveFirewallPolicyRequest',
+    'MoveGlobalAddressRequest',
+    'MoveInstanceProjectRequest',
+    'MoveOrganizationSecurityPolicyRequest',
+    'MultiMig',
+    'MultiMigResourcePolicies',
+    'MultiMigsList',
+    'NamedPort',
+    'NatIpInfo',
+    'NatIpInfoNatIpInfoMapping',
+    'NatIpInfoResponse',
+    'Network',
+    'NetworkAttachment',
+    'NetworkAttachmentAggregatedList',
+    'NetworkAttachmentConnectedEndpoint',
+    'NetworkAttachmentList',
+    'NetworkAttachmentsScopedList',
+    'NetworkEdgeSecurityService',
+    'NetworkEdgeSecurityServiceAggregatedList',
+    'NetworkEdgeSecurityServicesScopedList',
+    'NetworkEndpoint',
+    'NetworkEndpointGroup',
+    'NetworkEndpointGroupAggregatedList',
+    'NetworkEndpointGroupAppEngine',
+    'NetworkEndpointGroupCloudFunction',
+    'NetworkEndpointGroupCloudRun',
+    'NetworkEndpointGroupLbNetworkEndpointGroup',
+    'NetworkEndpointGroupList',
+    'NetworkEndpointGroupPscData',
+    'NetworkEndpointGroupsAttachEndpointsRequest',
+    'NetworkEndpointGroupsDetachEndpointsRequest',
+    'NetworkEndpointGroupServerlessDeployment',
+    'NetworkEndpointGroupsListEndpointsRequest',
+    'NetworkEndpointGroupsListEndpointsRequestNetworkEndpointFilter',
+    'NetworkEndpointGroupsListNetworkEndpoints',
+    'NetworkEndpointGroupsScopedList',
+    'NetworkEndpointWithHealthStatus',
+    'NetworkFirewallPolicyAggregatedList',
+    'NetworkInterface',
+    'NetworkList',
+    'NetworkParams',
+    'NetworkPeering',
+    'NetworkPeeringConnectionStatus',
+    'NetworkPeeringConnectionStatusConsensusState',
+    'NetworkPeeringConnectionStatusTrafficConfiguration',
+    'NetworkPerformanceConfig',
+    'NetworkProfile',
+    'NetworkProfileLocation',
+    'NetworkProfileNetworkFeatures',
+    'NetworkProfilesListResponse',
+    'NetworkRoutingConfig',
+    'NetworksAddPeeringRequest',
+    'NetworksGetEffectiveFirewallsResponse',
+    'NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy',
+    'NetworksGetEffectiveFirewallsResponseOrganizationFirewallPolicy',
+    'NetworksRemovePeeringRequest',
+    'NetworksRequestRemovePeeringRequest',
+    'NetworksUpdatePeeringRequest',
+    'NodeGroup',
+    'NodeGroupAggregatedList',
+    'NodeGroupAutoscalingPolicy',
+    'NodeGroupList',
+    'NodeGroupMaintenanceWindow',
+    'NodeGroupNode',
+    'NodeGroupsAddNodesRequest',
+    'NodeGroupsDeleteNodesRequest',
+    'NodeGroupsListNodes',
+    'NodeGroupsPerformMaintenanceRequest',
+    'NodeGroupsScopedList',
+    'NodeGroupsSetNodeTemplateRequest',
+    'NodeGroupsSimulateMaintenanceEventRequest',
+    'NodeTemplate',
+    'NodeTemplateAggregatedList',
+    'NodeTemplateList',
+    'NodeTemplateNodeTypeFlexibility',
+    'NodeTemplatesScopedList',
+    'NodeType',
+    'NodeTypeAggregatedList',
+    'NodeTypeList',
+    'NodeTypesScopedList',
+    'NotificationEndpoint',
+    'NotificationEndpointGrpcSettings',
+    'NotificationEndpointList',
+    'Operation',
+    'OperationAggregatedList',
+    'OperationList',
+    'OperationsScopedList',
+    'OrganizationSecurityPoliciesListAssociationsResponse',
+    'OutlierDetection',
+    'PacketIntervals',
+    'PacketMirroring',
+    'PacketMirroringAggregatedList',
+    'PacketMirroringFilter',
+    'PacketMirroringForwardingRuleInfo',
+    'PacketMirroringList',
+    'PacketMirroringMirroredResourceInfo',
+    'PacketMirroringMirroredResourceInfoInstanceInfo',
+    'PacketMirroringMirroredResourceInfoSubnetInfo',
+    'PacketMirroringNetworkInfo',
+    'PacketMirroringsScopedList',
+    'PartnerMetadata',
+    'PatchAssociationRegionNetworkFirewallPolicyRequest',
+    'PatchAutoscalerRequest',
+    'PatchBackendBucketRequest',
+    'PatchBackendServiceRequest',
+    'PatchCrossSiteNetworkRequest',
+    'PatchDiskSettingRequest',
+    'PatchFirewallPolicyRequest',
+    'PatchFirewallRequest',
+    'PatchForwardingRuleRequest',
+    'PatchGlobalForwardingRuleRequest',
+    'PatchGlobalPublicDelegatedPrefixeRequest',
+    'PatchHealthCheckRequest',
+    'PatchImageRequest',
+    'PatchInstanceGroupManagerRequest',
+    'PatchInstanceSettingRequest',
+    'PatchInterconnectAttachmentGroupRequest',
+    'PatchInterconnectAttachmentRequest',
+    'PatchInterconnectGroupRequest',
+    'PatchInterconnectRequest',
+    'PatchNetworkAttachmentRequest',
+    'PatchNetworkEdgeSecurityServiceRequest',
+    'PatchNetworkFirewallPolicyRequest',
+    'PatchNetworkRequest',
+    'PatchNodeGroupRequest',
+    'PatchOrganizationSecurityPolicyRequest',
+    'PatchPacketMirroringRequest',
+    'PatchPacketMirroringRuleFirewallPolicyRequest',
+    'PatchPacketMirroringRuleNetworkFirewallPolicyRequest',
+    'PatchPartnerMetadataInstanceRequest',
+    'PatchPerInstanceConfigsInstanceGroupManagerRequest',
+    'PatchPerInstanceConfigsRegionInstanceGroupManagerRequest',
+    'PatchPublicAdvertisedPrefixeRequest',
+    'PatchPublicDelegatedPrefixeRequest',
+    'PatchRegionAutoscalerRequest',
+    'PatchRegionBackendServiceRequest',
+    'PatchRegionDiskSettingRequest',
+    'PatchRegionHealthCheckRequest',
+    'PatchRegionHealthCheckServiceRequest',
+    'PatchRegionInstanceGroupManagerRequest',
+    'PatchRegionNetworkFirewallPolicyRequest',
+    'PatchRegionSecurityPolicyRequest',
+    'PatchRegionSnapshotSettingRequest',
+    'PatchRegionSslPolicyRequest',
+    'PatchRegionTargetHttpsProxyRequest',
+    'PatchRegionUrlMapRequest',
+    'PatchResourcePolicyRequest',
+    'PatchRoutePolicyRouterRequest',
+    'PatchRouterRequest',
+    'PatchRuleFirewallPolicyRequest',
+    'PatchRuleNetworkFirewallPolicyRequest',
+    'PatchRuleOrganizationSecurityPolicyRequest',
+    'PatchRuleRegionNetworkFirewallPolicyRequest',
+    'PatchRuleRegionSecurityPolicyRequest',
+    'PatchRuleSecurityPolicyRequest',
+    'PatchSecurityPolicyRequest',
+    'PatchServiceAttachmentRequest',
+    'PatchSnapshotSettingRequest',
+    'PatchSslPolicyRequest',
+    'PatchSubnetworkRequest',
+    'PatchTargetGrpcProxyRequest',
+    'PatchTargetHttpProxyRequest',
+    'PatchTargetHttpsProxyRequest',
+    'PatchUrlMapRequest',
+    'PatchWireGroupRequest',
+    'PathMatcher',
+    'PathRule',
+    'PerformMaintenanceInstanceRequest',
+    'PerformMaintenanceNodeGroupRequest',
+    'PerformMaintenanceReservationBlockRequest',
+    'PerformMaintenanceReservationRequest',
+    'PerInstanceConfig',
+    'Policy',
+    'PreconfiguredWafSet',
+    'PreservedState',
+    'PreservedStatePreservedDisk',
+    'PreservedStatePreservedNetworkIp',
+    'PreservedStatePreservedNetworkIpIpAddress',
+    'PreviewFeature',
+    'PreviewFeatureList',
+    'PreviewFeatureRolloutOperation',
+    'PreviewFeatureRolloutOperationRolloutInput',
+    'PreviewFeatureRolloutOperationRolloutStatus',
+    'PreviewFeatureRolloutOperationRolloutStatusRolloutMetadata',
+    'PreviewFeatureStatus',
+    'PreviewFeatureStatusReleaseStatus',
+    'PreviewRouterRequest',
+    'Project',
+    'ProjectsDisableXpnResourceRequest',
+    'ProjectsEnableXpnResourceRequest',
+    'ProjectsGetXpnResources',
+    'ProjectsListXpnHostsRequest',
+    'ProjectsSetCloudArmorTierRequest',
+    'ProjectsSetDefaultNetworkTierRequest',
+    'ProjectsSetManagedProtectionTierRequest',
+    'PublicAdvertisedPrefix',
+    'PublicAdvertisedPrefixList',
+    'PublicAdvertisedPrefixPublicDelegatedPrefix',
+    'PublicDelegatedPrefix',
+    'PublicDelegatedPrefixAggregatedList',
+    'PublicDelegatedPrefixesScopedList',
+    'PublicDelegatedPrefixList',
+    'PublicDelegatedPrefixPublicDelegatedSubPrefix',
+    'Quota',
+    'QuotaExceededInfo',
+    'QuotaStatusWarning',
+    'RawDisk',
+    'RecreateInstancesInstanceGroupManagerRequest',
+    'RecreateInstancesRegionInstanceGroupManagerRequest',
+    'Reference',
+    'Region',
+    'RegionAddressesMoveRequest',
+    'RegionAutoscalerList',
+    'RegionCommitmentsUpdateReservationsRequest',
+    'RegionDisksAddResourcePoliciesRequest',
+    'RegionDisksRemoveResourcePoliciesRequest',
+    'RegionDisksResizeRequest',
+    'RegionDisksStartAsyncReplicationRequest',
+    'RegionDiskTypeList',
+    'RegionInstanceGroupList',
+    'RegionInstanceGroupManagerDeleteInstanceConfigReq',
+    'RegionInstanceGroupManagerList',
+    'RegionInstanceGroupManagerPatchInstanceConfigReq',
+    'RegionInstanceGroupManagerResizeRequestsListResponse',
+    'RegionInstanceGroupManagersAbandonInstancesRequest',
+    'RegionInstanceGroupManagersApplyUpdatesRequest',
+    'RegionInstanceGroupManagersCreateInstancesRequest',
+    'RegionInstanceGroupManagersDeleteInstancesRequest',
+    'RegionInstanceGroupManagersListErrorsResponse',
+    'RegionInstanceGroupManagersListInstanceConfigsResp',
+    'RegionInstanceGroupManagersListInstancesResponse',
+    'RegionInstanceGroupManagersRecreateRequest',
+    'RegionInstanceGroupManagersResizeAdvancedRequest',
+    'RegionInstanceGroupManagersResumeInstancesRequest',
+    'RegionInstanceGroupManagersSetAutoHealingRequest',
+    'RegionInstanceGroupManagersSetTargetPoolsRequest',
+    'RegionInstanceGroupManagersSetTemplateRequest',
+    'RegionInstanceGroupManagersStartInstancesRequest',
+    'RegionInstanceGroupManagersStopInstancesRequest',
+    'RegionInstanceGroupManagersSuspendInstancesRequest',
+    'RegionInstanceGroupManagerUpdateInstanceConfigReq',
+    'RegionInstanceGroupsListInstances',
+    'RegionInstanceGroupsListInstancesRequest',
+    'RegionInstanceGroupsSetNamedPortsRequest',
+    'RegionList',
+    'RegionNetworkEndpointGroupsAttachEndpointsRequest',
+    'RegionNetworkEndpointGroupsDetachEndpointsRequest',
+    'RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse',
+    'RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewallPolicy',
+    'RegionSetLabelsRequest',
+    'RegionSetPolicyRequest',
+    'RegionTargetHttpsProxiesSetSslCertificatesRequest',
+    'RegionUrlMapsValidateRequest',
+    'RemoveAssociationFirewallPolicyRequest',
+    'RemoveAssociationNetworkFirewallPolicyRequest',
+    'RemoveAssociationOrganizationSecurityPolicyRequest',
+    'RemoveAssociationRegionNetworkFirewallPolicyRequest',
+    'RemoveHealthCheckTargetPoolRequest',
+    'RemoveInstancesInstanceGroupRequest',
+    'RemoveInstanceTargetPoolRequest',
+    'RemovePacketMirroringRuleFirewallPolicyRequest',
+    'RemovePacketMirroringRuleNetworkFirewallPolicyRequest',
+    'RemovePeeringNetworkRequest',
+    'RemoveResourcePoliciesDiskRequest',
+    'RemoveResourcePoliciesInstanceRequest',
+    'RemoveResourcePoliciesRegionDiskRequest',
+    'RemoveRuleFirewallPolicyRequest',
+    'RemoveRuleNetworkFirewallPolicyRequest',
+    'RemoveRuleOrganizationSecurityPolicyRequest',
+    'RemoveRuleRegionNetworkFirewallPolicyRequest',
+    'RemoveRuleRegionSecurityPolicyRequest',
+    'RemoveRuleSecurityPolicyRequest',
+    'ReportHostAsFaultyInstanceRequest',
+    'RequestMirrorPolicy',
+    'RequestRemovePeeringNetworkRequest',
+    'Reservation',
+    'ReservationAffinity',
+    'ReservationAggregatedList',
+    'ReservationBlock',
+    'ReservationBlockPhysicalTopology',
+    'ReservationBlocksGetResponse',
+    'ReservationBlocksListResponse',
+    'ReservationList',
+    'ReservationsBlocksPerformMaintenanceRequest',
+    'ReservationsPerformMaintenanceRequest',
+    'ReservationsResizeRequest',
+    'ReservationsScopedList',
+    'ResetInstanceRequest',
+    'ResizeAdvancedInstanceGroupManagerRequest',
+    'ResizeAdvancedRegionInstanceGroupManagerRequest',
+    'ResizeDiskRequest',
+    'ResizeInstanceGroupManagerRequest',
+    'ResizeRegionDiskRequest',
+    'ResizeRegionInstanceGroupManagerRequest',
+    'ResizeReservationRequest',
+    'ResourceCommitment',
+    'ResourceGroupReference',
+    'ResourcePoliciesScopedList',
+    'ResourcePolicy',
+    'ResourcePolicyAggregatedList',
+    'ResourcePolicyDailyCycle',
+    'ResourcePolicyDiskConsistencyGroupPolicy',
+    'ResourcePolicyGroupPlacementPolicy',
+    'ResourcePolicyHourlyCycle',
+    'ResourcePolicyInstanceSchedulePolicy',
+    'ResourcePolicyInstanceSchedulePolicySchedule',
+    'ResourcePolicyList',
+    'ResourcePolicyResourceStatus',
+    'ResourcePolicyResourceStatusInstanceSchedulePolicyStatus',
+    'ResourcePolicySnapshotSchedulePolicy',
+    'ResourcePolicySnapshotSchedulePolicyRetentionPolicy',
+    'ResourcePolicySnapshotSchedulePolicySchedule',
+    'ResourcePolicySnapshotSchedulePolicySnapshotProperties',
+    'ResourcePolicyWeeklyCycle',
+    'ResourcePolicyWeeklyCycleDayOfWeek',
+    'ResourcePolicyWorkloadPolicy',
+    'ResourceStatus',
+    'ResourceStatusPhysicalHostTopology',
+    'ResourceStatusScheduling',
+    'ResourceStatusShutdownDetails',
+    'ResumeInstanceRequest',
+    'ResumeInstancesInstanceGroupManagerRequest',
+    'ResumeInstancesRegionInstanceGroupManagerRequest',
+    'RolloutPolicy',
+    'Route',
+    'RouteAsPath',
+    'RouteList',
+    'RouteParams',
+    'RoutePolicy',
+    'RoutePolicyPolicyTerm',
+    'Router',
+    'RouterAdvertisedIpRange',
+    'RouterAggregatedList',
+    'RouterBgp',
+    'RouterBgpPeer',
+    'RouterBgpPeerBfd',
+    'RouterBgpPeerCustomLearnedIpRange',
+    'RouterInterface',
+    'RouterList',
+    'RouterMd5AuthenticationKey',
+    'RouterNat',
+    'RouterNatLogConfig',
+    'RouterNatRule',
+    'RouterNatRuleAction',
+    'RouterNatSubnetworkToNat',
+    'RouterNatSubnetworkToNat64',
+    'RoutersGetRoutePolicyResponse',
+    'RoutersListBgpRoutes',
+    'RoutersListRoutePolicies',
+    'RoutersPreviewResponse',
+    'RoutersScopedList',
+    'RouterStatus',
+    'RouterStatusBgpPeerStatus',
+    'RouterStatusNatStatus',
+    'RouterStatusNatStatusNatRuleStatus',
+    'RouterStatusResponse',
+    'SavedAttachedDisk',
+    'SavedDisk',
+    'ScalingScheduleStatus',
+    'Scheduling',
+    'SchedulingGracefulShutdown',
+    'SchedulingNodeAffinity',
+    'SchedulingOnInstanceStopAction',
+    'Screenshot',
+    'SecurityPoliciesAggregatedList',
+    'SecurityPoliciesListPreconfiguredExpressionSetsResponse',
+    'SecurityPoliciesScopedList',
+    'SecurityPoliciesWafConfig',
+    'SecurityPolicy',
+    'SecurityPolicyAdaptiveProtectionConfig',
+    'SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig',
+    'SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig',
+    'SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig',
+    'SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig',
+    'SecurityPolicyAdvancedOptionsConfig',
+    'SecurityPolicyAdvancedOptionsConfigJsonCustomConfig',
+    'SecurityPolicyAssociation',
+    'SecurityPolicyDdosProtectionConfig',
+    'SecurityPolicyList',
+    'SecurityPolicyRecaptchaOptionsConfig',
+    'SecurityPolicyReference',
+    'SecurityPolicyRule',
+    'SecurityPolicyRuleHttpHeaderAction',
+    'SecurityPolicyRuleHttpHeaderActionHttpHeaderOption',
+    'SecurityPolicyRuleMatcher',
+    'SecurityPolicyRuleMatcherConfig',
+    'SecurityPolicyRuleMatcherConfigLayer4Config',
+    'SecurityPolicyRuleMatcherExprOptions',
+    'SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions',
+    'SecurityPolicyRuleNetworkMatcher',
+    'SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch',
+    'SecurityPolicyRulePreconfiguredWafConfig',
+    'SecurityPolicyRulePreconfiguredWafConfigExclusion',
+    'SecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams',
+    'SecurityPolicyRuleRateLimitOptions',
+    'SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig',
+    'SecurityPolicyRuleRateLimitOptionsThreshold',
+    'SecurityPolicyRuleRedirectOptions',
+    'SecurityPolicyUserDefinedField',
+    'SecuritySettings',
+    'SendDiagnosticInterruptInstanceRequest',
+    'SendDiagnosticInterruptInstanceResponse',
+    'SerialPortOutput',
+    'ServerBinding',
+    'ServiceAccount',
+    'ServiceAttachment',
+    'ServiceAttachmentAggregatedList',
+    'ServiceAttachmentConnectedEndpoint',
+    'ServiceAttachmentConsumerProjectLimit',
+    'ServiceAttachmentList',
+    'ServiceAttachmentsScopedList',
+    'ServiceAttachmentTunnelingConfig',
+    'SetAutoHealingPoliciesInstanceGroupManagerRequest',
+    'SetAutoHealingPoliciesRegionInstanceGroupManagerRequest',
+    'SetBackendServiceTargetSslProxyRequest',
+    'SetBackendServiceTargetTcpProxyRequest',
+    'SetBackupTargetPoolRequest',
+    'SetCertificateMapTargetHttpsProxyRequest',
+    'SetCertificateMapTargetSslProxyRequest',
+    'SetCloudArmorTierProjectRequest',
+    'SetCommonInstanceMetadataOperationMetadata',
+    'SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo',
+    'SetCommonInstanceMetadataProjectRequest',
+    'SetDefaultNetworkTierProjectRequest',
+    'SetDeletionProtectionInstanceRequest',
+    'SetDiskAutoDeleteInstanceRequest',
+    'SetEdgeSecurityPolicyBackendBucketRequest',
+    'SetEdgeSecurityPolicyBackendServiceRequest',
+    'SetIamPolicyBackendBucketRequest',
+    'SetIamPolicyBackendServiceRequest',
+    'SetIamPolicyDiskRequest',
+    'SetIamPolicyFirewallPolicyRequest',
+    'SetIamPolicyImageRequest',
+    'SetIamPolicyInstanceRequest',
+    'SetIamPolicyInstanceTemplateRequest',
+    'SetIamPolicyInstantSnapshotRequest',
+    'SetIamPolicyInterconnectAttachmentGroupRequest',
+    'SetIamPolicyInterconnectGroupRequest',
+    'SetIamPolicyLicenseRequest',
+    'SetIamPolicyMachineImageRequest',
+    'SetIamPolicyNetworkAttachmentRequest',
+    'SetIamPolicyNetworkFirewallPolicyRequest',
+    'SetIamPolicyNodeGroupRequest',
+    'SetIamPolicyNodeTemplateRequest',
+    'SetIamPolicyRegionBackendServiceRequest',
+    'SetIamPolicyRegionDiskRequest',
+    'SetIamPolicyRegionInstantSnapshotRequest',
+    'SetIamPolicyRegionNetworkFirewallPolicyRequest',
+    'SetIamPolicyRegionSnapshotRequest',
+    'SetIamPolicyReservationRequest',
+    'SetIamPolicyResourcePolicyRequest',
+    'SetIamPolicyServiceAttachmentRequest',
+    'SetIamPolicySnapshotRequest',
+    'SetIamPolicyStoragePoolRequest',
+    'SetIamPolicySubnetworkRequest',
+    'SetInstanceTemplateInstanceGroupManagerRequest',
+    'SetInstanceTemplateRegionInstanceGroupManagerRequest',
+    'SetLabelsAddressRequest',
+    'SetLabelsDiskRequest',
+    'SetLabelsExternalVpnGatewayRequest',
+    'SetLabelsForwardingRuleRequest',
+    'SetLabelsGlobalAddressRequest',
+    'SetLabelsGlobalForwardingRuleRequest',
+    'SetLabelsImageRequest',
+    'SetLabelsInstanceRequest',
+    'SetLabelsInstantSnapshotRequest',
+    'SetLabelsInterconnectAttachmentRequest',
+    'SetLabelsInterconnectRequest',
+    'SetLabelsMachineImageRequest',
+    'SetLabelsRegionDiskRequest',
+    'SetLabelsRegionInstantSnapshotRequest',
+    'SetLabelsRegionSecurityPolicyRequest',
+    'SetLabelsRegionSnapshotRequest',
+    'SetLabelsSecurityPolicyRequest',
+    'SetLabelsSnapshotRequest',
+    'SetLabelsTargetVpnGatewayRequest',
+    'SetLabelsVpnGatewayRequest',
+    'SetLabelsVpnTunnelRequest',
+    'SetMachineResourcesInstanceRequest',
+    'SetMachineTypeInstanceRequest',
+    'SetManagedProtectionTierProjectRequest',
+    'SetMetadataInstanceRequest',
+    'SetMinCpuPlatformInstanceRequest',
+    'SetNamedPortsInstanceGroupRequest',
+    'SetNamedPortsRegionInstanceGroupRequest',
+    'SetNameInstanceRequest',
+    'SetNodeTemplateNodeGroupRequest',
+    'SetPrivateIpGoogleAccessSubnetworkRequest',
+    'SetProxyHeaderTargetSslProxyRequest',
+    'SetProxyHeaderTargetTcpProxyRequest',
+    'SetQuicOverrideTargetHttpsProxyRequest',
+    'SetSchedulingInstanceRequest',
+    'SetSecurityPolicyBackendServiceRequest',
+    'SetSecurityPolicyInstanceRequest',
+    'SetSecurityPolicyRegionBackendServiceRequest',
+    'SetSecurityPolicyTargetInstanceRequest',
+    'SetSecurityPolicyTargetPoolRequest',
+    'SetServiceAccountInstanceRequest',
+    'SetShieldedInstanceIntegrityPolicyInstanceRequest',
+    'SetShieldedVmIntegrityPolicyInstanceRequest',
+    'SetSslCertificatesRegionTargetHttpsProxyRequest',
+    'SetSslCertificatesTargetHttpsProxyRequest',
+    'SetSslCertificatesTargetSslProxyRequest',
+    'SetSslPolicyTargetHttpsProxyRequest',
+    'SetSslPolicyTargetSslProxyRequest',
+    'SetTagsInstanceRequest',
+    'SetTargetForwardingRuleRequest',
+    'SetTargetGlobalForwardingRuleRequest',
+    'SetTargetPoolsInstanceGroupManagerRequest',
+    'SetTargetPoolsRegionInstanceGroupManagerRequest',
+    'SetUrlMapRegionTargetHttpProxyRequest',
+    'SetUrlMapRegionTargetHttpsProxyRequest',
+    'SetUrlMapTargetHttpProxyRequest',
+    'SetUrlMapTargetHttpsProxyRequest',
+    'SetUsageExportBucketProjectRequest',
+    'ShareSettings',
+    'ShareSettingsProjectConfig',
+    'ShieldedInstanceConfig',
+    'ShieldedInstanceIdentity',
+    'ShieldedInstanceIdentityEntry',
+    'ShieldedInstanceIntegrityPolicy',
+    'ShieldedVmConfig',
+    'ShieldedVmIdentity',
+    'ShieldedVmIdentityEntry',
+    'ShieldedVmIntegrityPolicy',
+    'SignedUrlKey',
+    'SimulateMaintenanceEventInstanceRequest',
+    'SimulateMaintenanceEventNodeGroupRequest',
+    'Snapshot',
+    'SnapshotAggregatedList',
+    'SnapshotList',
+    'SnapshotSettings',
+    'SnapshotSettingsAccessLocation',
+    'SnapshotSettingsAccessLocationAccessLocationPreference',
+    'SnapshotSettingsStorageLocationSettings',
+    'SnapshotSettingsStorageLocationSettingsStorageLocationPreference',
+    'SnapshotsScopedList',
+    'SourceDiskEncryptionKey',
+    'SourceInstanceParams',
+    'SourceInstanceProperties',
+    'SslCertificate',
+    'SslCertificateAggregatedList',
+    'SslCertificateList',
+    'SslCertificateManagedSslCertificate',
+    'SslCertificateSelfManagedSslCertificate',
+    'SslCertificatesScopedList',
+    'SSLHealthCheck',
+    'SslPoliciesAggregatedList',
+    'SslPoliciesList',
+    'SslPoliciesListAvailableFeaturesResponse',
+    'SslPoliciesScopedList',
+    'SslPolicy',
+    'SslPolicyReference',
+    'StartAsyncReplicationDiskRequest',
+    'StartAsyncReplicationRegionDiskRequest',
+    'StartInstanceRequest',
+    'StartInstancesInstanceGroupManagerRequest',
+    'StartInstancesRegionInstanceGroupManagerRequest',
+    'StartWithEncryptionKeyInstanceRequest',
+    'StatefulPolicy',
+    'StatefulPolicyPreservedState',
+    'StatefulPolicyPreservedStateDiskDevice',
+    'StatefulPolicyPreservedStateNetworkIp',
+    'Status',
+    'StopAsyncReplicationDiskRequest',
+    'StopAsyncReplicationRegionDiskRequest',
+    'StopGroupAsyncReplicationDiskRequest',
+    'StopGroupAsyncReplicationRegionDiskRequest',
+    'StopInstanceRequest',
+    'StopInstancesInstanceGroupManagerRequest',
+    'StopInstancesRegionInstanceGroupManagerRequest',
+    'StoragePool',
+    'StoragePoolAggregatedList',
+    'StoragePoolDisk',
+    'StoragePoolList',
+    'StoragePoolListDisks',
+    'StoragePoolResourceStatus',
+    'StoragePoolsScopedList',
+    'StoragePoolType',
+    'StoragePoolTypeAggregatedList',
+    'StoragePoolTypeList',
+    'StoragePoolTypesScopedList',
+    'StructuredEntries',
+    'Subnetwork',
+    'SubnetworkAggregatedList',
+    'SubnetworkList',
+    'SubnetworkLogConfig',
+    'SubnetworkParams',
+    'SubnetworkSecondaryRange',
+    'SubnetworksExpandIpCidrRangeRequest',
+    'SubnetworksScopedList',
+    'SubnetworksScopedWarning',
+    'SubnetworksSetPrivateIpGoogleAccessRequest',
+    'Subsetting',
+    'SuspendInstanceRequest',
+    'SuspendInstancesInstanceGroupManagerRequest',
+    'SuspendInstancesRegionInstanceGroupManagerRequest',
+    'SwitchToCustomModeNetworkRequest',
+    'Tags',
+    'TargetGrpcProxy',
+    'TargetGrpcProxyList',
+    'TargetHttpProxiesScopedList',
+    'TargetHttpProxy',
+    'TargetHttpProxyAggregatedList',
+    'TargetHttpProxyList',
+    'TargetHttpsProxiesScopedList',
+    'TargetHttpsProxiesSetCertificateMapRequest',
+    'TargetHttpsProxiesSetQuicOverrideRequest',
+    'TargetHttpsProxiesSetSslCertificatesRequest',
+    'TargetHttpsProxy',
+    'TargetHttpsProxyAggregatedList',
+    'TargetHttpsProxyList',
+    'TargetInstance',
+    'TargetInstanceAggregatedList',
+    'TargetInstanceList',
+    'TargetInstancesScopedList',
+    'TargetPool',
+    'TargetPoolAggregatedList',
+    'TargetPoolInstanceHealth',
+    'TargetPoolList',
+    'TargetPoolsAddHealthCheckRequest',
+    'TargetPoolsAddInstanceRequest',
+    'TargetPoolsRemoveHealthCheckRequest',
+    'TargetPoolsRemoveInstanceRequest',
+    'TargetPoolsScopedList',
+    'TargetReference',
+    'TargetSslProxiesSetBackendServiceRequest',
+    'TargetSslProxiesSetCertificateMapRequest',
+    'TargetSslProxiesSetProxyHeaderRequest',
+    'TargetSslProxiesSetSslCertificatesRequest',
+    'TargetSslProxy',
+    'TargetSslProxyList',
+    'TargetTcpProxiesScopedList',
+    'TargetTcpProxiesSetBackendServiceRequest',
+    'TargetTcpProxiesSetProxyHeaderRequest',
+    'TargetTcpProxy',
+    'TargetTcpProxyAggregatedList',
+    'TargetTcpProxyList',
+    'TargetVpnGateway',
+    'TargetVpnGatewayAggregatedList',
+    'TargetVpnGatewayList',
+    'TargetVpnGatewaysScopedList',
+    'TCPHealthCheck',
+    'TestFailure',
+    'TestIamPermissionsAddressRequest',
+    'TestIamPermissionsAutoscalerRequest',
+    'TestIamPermissionsBackendBucketRequest',
+    'TestIamPermissionsBackendServiceRequest',
+    'TestIamPermissionsDiskRequest',
+    'TestIamPermissionsExternalVpnGatewayRequest',
+    'TestIamPermissionsFirewallPolicyRequest',
+    'TestIamPermissionsFirewallRequest',
+    'TestIamPermissionsForwardingRuleRequest',
+    'TestIamPermissionsGlobalAddressRequest',
+    'TestIamPermissionsGlobalForwardingRuleRequest',
+    'TestIamPermissionsHealthCheckRequest',
+    'TestIamPermissionsImageRequest',
+    'TestIamPermissionsInstanceGroupManagerRequest',
+    'TestIamPermissionsInstanceGroupRequest',
+    'TestIamPermissionsInstanceRequest',
+    'TestIamPermissionsInstanceTemplateRequest',
+    'TestIamPermissionsInstantSnapshotRequest',
+    'TestIamPermissionsInterconnectAttachmentGroupRequest',
+    'TestIamPermissionsInterconnectAttachmentRequest',
+    'TestIamPermissionsInterconnectGroupRequest',
+    'TestIamPermissionsInterconnectRequest',
+    'TestIamPermissionsLicenseCodeRequest',
+    'TestIamPermissionsLicenseRequest',
+    'TestIamPermissionsMachineImageRequest',
+    'TestIamPermissionsNetworkAttachmentRequest',
+    'TestIamPermissionsNetworkEndpointGroupRequest',
+    'TestIamPermissionsNetworkFirewallPolicyRequest',
+    'TestIamPermissionsNetworkRequest',
+    'TestIamPermissionsNodeGroupRequest',
+    'TestIamPermissionsNodeTemplateRequest',
+    'TestIamPermissionsPacketMirroringRequest',
+    'TestIamPermissionsRegionAutoscalerRequest',
+    'TestIamPermissionsRegionBackendServiceRequest',
+    'TestIamPermissionsRegionCommitmentRequest',
+    'TestIamPermissionsRegionDiskRequest',
+    'TestIamPermissionsRegionHealthCheckRequest',
+    'TestIamPermissionsRegionHealthCheckServiceRequest',
+    'TestIamPermissionsRegionInstanceGroupManagerRequest',
+    'TestIamPermissionsRegionInstanceGroupRequest',
+    'TestIamPermissionsRegionInstantSnapshotRequest',
+    'TestIamPermissionsRegionNetworkFirewallPolicyRequest',
+    'TestIamPermissionsRegionNotificationEndpointRequest',
+    'TestIamPermissionsRegionSnapshotRequest',
+    'TestIamPermissionsRegionSslCertificateRequest',
+    'TestIamPermissionsRegionSslPolicyRequest',
+    'TestIamPermissionsRegionTargetHttpProxyRequest',
+    'TestIamPermissionsRegionTargetHttpsProxyRequest',
+    'TestIamPermissionsRegionTargetTcpProxyRequest',
+    'TestIamPermissionsRegionUrlMapRequest',
+    'TestIamPermissionsReservationRequest',
+    'TestIamPermissionsResourcePolicyRequest',
+    'TestIamPermissionsRouteRequest',
+    'TestIamPermissionsRouterRequest',
+    'TestIamPermissionsSecurityPolicyRequest',
+    'TestIamPermissionsServiceAttachmentRequest',
+    'TestIamPermissionsSnapshotRequest',
+    'TestIamPermissionsSslCertificateRequest',
+    'TestIamPermissionsSslPolicyRequest',
+    'TestIamPermissionsStoragePoolRequest',
+    'TestIamPermissionsSubnetworkRequest',
+    'TestIamPermissionsTargetGrpcProxyRequest',
+    'TestIamPermissionsTargetHttpProxyRequest',
+    'TestIamPermissionsTargetHttpsProxyRequest',
+    'TestIamPermissionsTargetInstanceRequest',
+    'TestIamPermissionsTargetPoolRequest',
+    'TestIamPermissionsTargetSslProxyRequest',
+    'TestIamPermissionsTargetTcpProxyRequest',
+    'TestIamPermissionsTargetVpnGatewayRequest',
+    'TestIamPermissionsUrlMapRequest',
+    'TestIamPermissionsVpnGatewayRequest',
+    'TestIamPermissionsVpnTunnelRequest',
+    'TestPermissionsRequest',
+    'TestPermissionsResponse',
+    'Uint128',
+    'UpcomingMaintenance',
+    'UpdateAccessConfigInstanceRequest',
+    'UpdateAutoscalerRequest',
+    'UpdateBackendBucketRequest',
+    'UpdateBackendServiceRequest',
+    'UpdateDiskRequest',
+    'UpdateDisplayDeviceInstanceRequest',
+    'UpdateFirewallRequest',
+    'UpdateFutureReservationRequest',
+    'UpdateHealthCheckRequest',
+    'UpdateInstanceGroupManagerRequest',
+    'UpdateInstanceRequest',
+    'UpdateLicenseRequest',
+    'UpdateNetworkInterfaceInstanceRequest',
+    'UpdatePeeringNetworkRequest',
+    'UpdatePerInstanceConfigsInstanceGroupManagerRequest',
+    'UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest',
+    'UpdatePreviewFeatureRequest',
+    'UpdateRegionAutoscalerRequest',
+    'UpdateRegionBackendServiceRequest',
+    'UpdateRegionCommitmentRequest',
+    'UpdateRegionDiskRequest',
+    'UpdateRegionHealthCheckRequest',
+    'UpdateRegionInstanceGroupManagerRequest',
+    'UpdateRegionUrlMapRequest',
+    'UpdateReservationRequest',
+    'UpdateReservationsRegionCommitmentRequest',
+    'UpdateRoutePolicyRouterRequest',
+    'UpdateRouterRequest',
+    'UpdateShieldedInstanceConfigInstanceRequest',
+    'UpdateShieldedVmConfigInstanceRequest',
+    'UpdateStoragePoolRequest',
+    'UpdateUrlMapRequest',
+    'UrlMap',
+    'UrlMapList',
+    'UrlMapReference',
+    'UrlMapsAggregatedList',
+    'UrlMapsScopedList',
+    'UrlMapsValidateRequest',
+    'UrlMapsValidateResponse',
+    'UrlMapTest',
+    'UrlMapTestHeader',
+    'UrlMapValidationResult',
+    'UrlRewrite',
+    'UsableSubnetwork',
+    'UsableSubnetworksAggregatedList',
+    'UsableSubnetworkSecondaryRange',
+    'UsageExportLocation',
+    'ValidateRegionUrlMapRequest',
+    'ValidateUrlMapRequest',
+    'VmEndpointNatMappings',
+    'VmEndpointNatMappingsInterfaceNatMappings',
+    'VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings',
+    'VmEndpointNatMappingsList',
+    'VpnGateway',
+    'VpnGatewayAggregatedList',
+    'VpnGatewayList',
+    'VpnGatewaysGetStatusResponse',
+    'VpnGatewaysScopedList',
+    'VpnGatewayStatus',
+    'VpnGatewayStatusHighAvailabilityRequirementState',
+    'VpnGatewayStatusTunnel',
+    'VpnGatewayStatusVpnConnection',
+    'VpnGatewayVpnGatewayInterface',
+    'VpnTunnel',
+    'VpnTunnelAggregatedList',
+    'VpnTunnelList',
+    'VpnTunnelsScopedList',
+    'WafExpressionSet',
+    'WafExpressionSetExpression',
+    'WaitGlobalOperationRequest',
+    'WaitRegionOperationRequest',
+    'WaitZoneOperationRequest',
+    'Warning',
+    'Warnings',
+    'WeightedBackendService',
+    'Wire',
+    'WireEndpoint',
+    'WireGroup',
+    'WireGroupEndpoint',
+    'WireGroupEndpointInterconnect',
+    'WireGroupList',
+    'WireGroupProperties',
+    'WireGroupTopology',
+    'WireGroupTopologyEndpoint',
+    'WireProperties',
+    'WithdrawPublicAdvertisedPrefixeRequest',
+    'WithdrawPublicDelegatedPrefixeRequest',
+    'XpnHostList',
+    'XpnResourceId',
+    'Zone',
+    'ZoneList',
+    'ZoneSetLabelsRequest',
+    'ZoneSetPolicyRequest',
+)
