@@ -2445,6 +2445,9 @@ class CodeCompilationConfig(proto.Message):
         table_prefix (str):
             Optional. The prefix that should be prepended
             to all table names.
+        builtin_assertion_name_prefix (str):
+            Optional. The prefix to prepend to built-in
+            assertion names.
         default_notebook_runtime_options (google.cloud.dataform_v1.types.NotebookRuntimeOptions):
             Optional. The default notebook runtime
             options.
@@ -2483,6 +2486,10 @@ class CodeCompilationConfig(proto.Message):
         proto.STRING,
         number=7,
     )
+    builtin_assertion_name_prefix: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
     default_notebook_runtime_options: "NotebookRuntimeOptions" = proto.Field(
         proto.MESSAGE,
         number=9,
@@ -2501,12 +2508,22 @@ class NotebookRuntimeOptions(proto.Message):
             result to. Format: ``gs://bucket-name``.
 
             This field is a member of `oneof`_ ``execution_sink``.
+        ai_platform_notebook_runtime_template (str):
+            Optional. The resource name of the [Colab runtime template]
+            (https://cloud.google.com/colab/docs/runtimes), from which a
+            runtime is created for notebook executions. If not
+            specified, a runtime is created with Colab's default
+            specifications.
     """
 
     gcs_output_bucket: str = proto.Field(
         proto.STRING,
         number=1,
         oneof="execution_sink",
+    )
+    ai_platform_notebook_runtime_template: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -2751,6 +2768,10 @@ class CompilationResultAction(proto.Message):
             This field is a member of `oneof`_ ``compiled_object``.
         notebook (google.cloud.dataform_v1.types.CompilationResultAction.Notebook):
             The notebook executed by this action.
+
+            This field is a member of `oneof`_ ``compiled_object``.
+        data_preparation (google.cloud.dataform_v1.types.CompilationResultAction.DataPreparation):
+            The data preparation executed by this action.
 
             This field is a member of `oneof`_ ``compiled_object``.
         target (google.cloud.dataform_v1.types.Target):
@@ -3113,6 +3134,191 @@ class CompilationResultAction(proto.Message):
             number=4,
         )
 
+    class DataPreparation(proto.Message):
+        r"""Defines a compiled Data Preparation entity
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            contents_yaml (str):
+                The data preparation definition, stored as a
+                YAML string.
+
+                This field is a member of `oneof`_ ``definition``.
+            contents_sql (google.cloud.dataform_v1.types.CompilationResultAction.DataPreparation.SqlDefinition):
+                SQL definition for a Data Preparation.
+                Contains a SQL query and additional context
+                information.
+
+                This field is a member of `oneof`_ ``definition``.
+            dependency_targets (MutableSequence[google.cloud.dataform_v1.types.Target]):
+                A list of actions that this action depends
+                on.
+            disabled (bool):
+                Whether this action is disabled (i.e. should
+                not be run).
+            tags (MutableSequence[str]):
+                Arbitrary, user-defined tags on this action.
+        """
+
+        class SqlDefinition(proto.Message):
+            r"""Definition of a SQL Data Preparation
+
+            Attributes:
+                query (str):
+                    The SQL query representing the data
+                    preparation steps. Formatted as a Pipe SQL query
+                    statement.
+                error_table (google.cloud.dataform_v1.types.CompilationResultAction.DataPreparation.ErrorTable):
+                    Error table configuration,
+                load (google.cloud.dataform_v1.types.CompilationResultAction.LoadConfig):
+                    Load configuration.
+            """
+
+            query: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            error_table: "CompilationResultAction.DataPreparation.ErrorTable" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="CompilationResultAction.DataPreparation.ErrorTable",
+                )
+            )
+            load: "CompilationResultAction.LoadConfig" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="CompilationResultAction.LoadConfig",
+            )
+
+        class ErrorTable(proto.Message):
+            r"""Error table information, used to write error data into a
+            BigQuery table.
+
+            Attributes:
+                target (google.cloud.dataform_v1.types.Target):
+                    Error Table target.
+                retention_days (int):
+                    Error table partition expiration in days.
+                    Only positive values are allowed.
+            """
+
+            target: "Target" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="Target",
+            )
+            retention_days: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
+        contents_yaml: str = proto.Field(
+            proto.STRING,
+            number=5,
+            oneof="definition",
+        )
+        contents_sql: "CompilationResultAction.DataPreparation.SqlDefinition" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=6,
+                oneof="definition",
+                message="CompilationResultAction.DataPreparation.SqlDefinition",
+            )
+        )
+        dependency_targets: MutableSequence["Target"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Target",
+        )
+        disabled: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        tags: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
+
+    class LoadConfig(proto.Message):
+        r"""Simplified load configuration for actions
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            replace (google.cloud.dataform_v1.types.CompilationResultAction.SimpleLoadMode):
+                Replace destination table
+
+                This field is a member of `oneof`_ ``mode``.
+            append (google.cloud.dataform_v1.types.CompilationResultAction.SimpleLoadMode):
+                Append into destination table
+
+                This field is a member of `oneof`_ ``mode``.
+            maximum (google.cloud.dataform_v1.types.CompilationResultAction.IncrementalLoadMode):
+                Insert records where the value exceeds the
+                previous maximum value for a column in the
+                destination table
+
+                This field is a member of `oneof`_ ``mode``.
+            unique (google.cloud.dataform_v1.types.CompilationResultAction.IncrementalLoadMode):
+                Insert records where the value of a column is
+                not already present in the destination table
+
+                This field is a member of `oneof`_ ``mode``.
+        """
+
+        replace: "CompilationResultAction.SimpleLoadMode" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="mode",
+            message="CompilationResultAction.SimpleLoadMode",
+        )
+        append: "CompilationResultAction.SimpleLoadMode" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="mode",
+            message="CompilationResultAction.SimpleLoadMode",
+        )
+        maximum: "CompilationResultAction.IncrementalLoadMode" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="mode",
+            message="CompilationResultAction.IncrementalLoadMode",
+        )
+        unique: "CompilationResultAction.IncrementalLoadMode" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="mode",
+            message="CompilationResultAction.IncrementalLoadMode",
+        )
+
+    class SimpleLoadMode(proto.Message):
+        r"""Simple load definition"""
+
+    class IncrementalLoadMode(proto.Message):
+        r"""Load definition for incremental load modes
+
+        Attributes:
+            column (str):
+                Column name for incremental load modes
+        """
+
+        column: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     relation: Relation = proto.Field(
         proto.MESSAGE,
         number=4,
@@ -3142,6 +3348,12 @@ class CompilationResultAction(proto.Message):
         number=8,
         oneof="compiled_object",
         message=Notebook,
+    )
+    data_preparation: DataPreparation = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="compiled_object",
+        message=DataPreparation,
     )
     target: "Target" = proto.Field(
         proto.MESSAGE,
@@ -3266,6 +3478,9 @@ class WorkflowConfig(proto.Message):
             execution attempts, ordered in descending order of
             ``execution_time``. Updated whenever automatic creation of a
             workflow invocation is triggered by cron_schedule.
+        disabled (bool):
+            Optional. Disables automatic creation of
+            workflow invocations.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp of when the
             WorkflowConfig was created.
@@ -3354,6 +3569,10 @@ class WorkflowConfig(proto.Message):
         proto.MESSAGE,
         number=5,
         message=ScheduledExecutionRecord,
+    )
+    disabled: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -3882,6 +4101,11 @@ class WorkflowInvocationAction(proto.Message):
             action details.
 
             This field is a member of `oneof`_ ``action``.
+        data_preparation_action (google.cloud.dataform_v1.types.WorkflowInvocationAction.DataPreparationAction):
+            Output only. The workflow action's data
+            preparation action details.
+
+            This field is a member of `oneof`_ ``action``.
         target (google.cloud.dataform_v1.types.Target):
             Output only. This action's identifier. Unique
             within the workflow invocation.
@@ -3987,6 +4211,183 @@ class WorkflowInvocationAction(proto.Message):
             number=2,
         )
 
+    class DataPreparationAction(proto.Message):
+        r"""Represents a workflow action that will run a Data
+        Preparation.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            contents_yaml (str):
+                Output only. YAML representing the contents
+                of the data preparation. Can be used to show the
+                customer what the input was to their workflow.
+
+                This field is a member of `oneof`_ ``definition``.
+            contents_sql (google.cloud.dataform_v1.types.WorkflowInvocationAction.DataPreparationAction.ActionSqlDefinition):
+                SQL definition for a Data Preparation.
+                Contains a SQL query and additional context
+                information.
+
+                This field is a member of `oneof`_ ``definition``.
+            generated_sql (str):
+                Output only. The generated BigQuery SQL
+                script that will be executed. For reference
+                only.
+            job_id (str):
+                Output only. The ID of the BigQuery job that executed the
+                SQL in sql_script. Only set once the job has started to run.
+        """
+
+        class ActionSqlDefinition(proto.Message):
+            r"""Definition of a SQL Data Preparation
+
+            Attributes:
+                query (str):
+                    The SQL query representing the data
+                    preparation steps. Formatted as a Pipe SQL query
+                    statement.
+                error_table (google.cloud.dataform_v1.types.WorkflowInvocationAction.DataPreparationAction.ActionErrorTable):
+                    Error table configuration,
+                load_config (google.cloud.dataform_v1.types.WorkflowInvocationAction.DataPreparationAction.ActionLoadConfig):
+                    Load configuration.
+            """
+
+            query: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            error_table: "WorkflowInvocationAction.DataPreparationAction.ActionErrorTable" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="WorkflowInvocationAction.DataPreparationAction.ActionErrorTable",
+            )
+            load_config: "WorkflowInvocationAction.DataPreparationAction.ActionLoadConfig" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="WorkflowInvocationAction.DataPreparationAction.ActionLoadConfig",
+            )
+
+        class ActionErrorTable(proto.Message):
+            r"""Error table information, used to write error data into a
+            BigQuery table.
+
+            Attributes:
+                target (google.cloud.dataform_v1.types.Target):
+                    Error Table target.
+                retention_days (int):
+                    Error table partition expiration in days.
+                    Only positive values are allowed.
+            """
+
+            target: "Target" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="Target",
+            )
+            retention_days: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
+        class ActionLoadConfig(proto.Message):
+            r"""Simplified load configuration for actions
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                replace (google.cloud.dataform_v1.types.WorkflowInvocationAction.DataPreparationAction.ActionSimpleLoadMode):
+                    Replace destination table
+
+                    This field is a member of `oneof`_ ``mode``.
+                append (google.cloud.dataform_v1.types.WorkflowInvocationAction.DataPreparationAction.ActionSimpleLoadMode):
+                    Append into destination table
+
+                    This field is a member of `oneof`_ ``mode``.
+                maximum (google.cloud.dataform_v1.types.WorkflowInvocationAction.DataPreparationAction.ActionIncrementalLoadMode):
+                    Insert records where the value exceeds the
+                    previous maximum value for a column in the
+                    destination table
+
+                    This field is a member of `oneof`_ ``mode``.
+                unique (google.cloud.dataform_v1.types.WorkflowInvocationAction.DataPreparationAction.ActionIncrementalLoadMode):
+                    Insert records where the value of a column is
+                    not already present in the destination table
+
+                    This field is a member of `oneof`_ ``mode``.
+            """
+
+            replace: "WorkflowInvocationAction.DataPreparationAction.ActionSimpleLoadMode" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="mode",
+                message="WorkflowInvocationAction.DataPreparationAction.ActionSimpleLoadMode",
+            )
+            append: "WorkflowInvocationAction.DataPreparationAction.ActionSimpleLoadMode" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="mode",
+                message="WorkflowInvocationAction.DataPreparationAction.ActionSimpleLoadMode",
+            )
+            maximum: "WorkflowInvocationAction.DataPreparationAction.ActionIncrementalLoadMode" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                oneof="mode",
+                message="WorkflowInvocationAction.DataPreparationAction.ActionIncrementalLoadMode",
+            )
+            unique: "WorkflowInvocationAction.DataPreparationAction.ActionIncrementalLoadMode" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="mode",
+                message="WorkflowInvocationAction.DataPreparationAction.ActionIncrementalLoadMode",
+            )
+
+        class ActionSimpleLoadMode(proto.Message):
+            r"""Simple load definition"""
+
+        class ActionIncrementalLoadMode(proto.Message):
+            r"""Load definition for incremental load modes
+
+            Attributes:
+                column (str):
+                    Column name for incremental load modes
+            """
+
+            column: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        contents_yaml: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="definition",
+        )
+        contents_sql: "WorkflowInvocationAction.DataPreparationAction.ActionSqlDefinition" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="definition",
+            message="WorkflowInvocationAction.DataPreparationAction.ActionSqlDefinition",
+        )
+        generated_sql: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        job_id: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
     bigquery_action: BigQueryAction = proto.Field(
         proto.MESSAGE,
         number=6,
@@ -3998,6 +4399,12 @@ class WorkflowInvocationAction(proto.Message):
         number=8,
         oneof="action",
         message=NotebookAction,
+    )
+    data_preparation_action: DataPreparationAction = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="action",
+        message=DataPreparationAction,
     )
     target: "Target" = proto.Field(
         proto.MESSAGE,
