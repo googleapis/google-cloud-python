@@ -457,6 +457,55 @@
         }
       }
     },
+    "GbpAccountsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "GbpAccountsServiceClient",
+          "rpcs": {
+            "LinkGbpAccount": {
+              "methods": [
+                "link_gbp_account"
+              ]
+            },
+            "ListGbpAccounts": {
+              "methods": [
+                "list_gbp_accounts"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "GbpAccountsServiceAsyncClient",
+          "rpcs": {
+            "LinkGbpAccount": {
+              "methods": [
+                "link_gbp_account"
+              ]
+            },
+            "ListGbpAccounts": {
+              "methods": [
+                "list_gbp_accounts"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "GbpAccountsServiceClient",
+          "rpcs": {
+            "LinkGbpAccount": {
+              "methods": [
+                "link_gbp_account"
+              ]
+            },
+            "ListGbpAccounts": {
+              "methods": [
+                "list_gbp_accounts"
+              ]
+            }
+          }
+        }
+      }
+    },
     "HomepageService": {
       "clients": {
         "grpc": {
@@ -530,6 +579,149 @@
             "UpdateHomepage": {
               "methods": [
                 "update_homepage"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "LfpProvidersService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "LfpProvidersServiceClient",
+          "rpcs": {
+            "FindLfpProviders": {
+              "methods": [
+                "find_lfp_providers"
+              ]
+            },
+            "LinkLfpProvider": {
+              "methods": [
+                "link_lfp_provider"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "LfpProvidersServiceAsyncClient",
+          "rpcs": {
+            "FindLfpProviders": {
+              "methods": [
+                "find_lfp_providers"
+              ]
+            },
+            "LinkLfpProvider": {
+              "methods": [
+                "link_lfp_provider"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "LfpProvidersServiceClient",
+          "rpcs": {
+            "FindLfpProviders": {
+              "methods": [
+                "find_lfp_providers"
+              ]
+            },
+            "LinkLfpProvider": {
+              "methods": [
+                "link_lfp_provider"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "OmnichannelSettingsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "OmnichannelSettingsServiceClient",
+          "rpcs": {
+            "CreateOmnichannelSetting": {
+              "methods": [
+                "create_omnichannel_setting"
+              ]
+            },
+            "GetOmnichannelSetting": {
+              "methods": [
+                "get_omnichannel_setting"
+              ]
+            },
+            "ListOmnichannelSettings": {
+              "methods": [
+                "list_omnichannel_settings"
+              ]
+            },
+            "RequestInventoryVerification": {
+              "methods": [
+                "request_inventory_verification"
+              ]
+            },
+            "UpdateOmnichannelSetting": {
+              "methods": [
+                "update_omnichannel_setting"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "OmnichannelSettingsServiceAsyncClient",
+          "rpcs": {
+            "CreateOmnichannelSetting": {
+              "methods": [
+                "create_omnichannel_setting"
+              ]
+            },
+            "GetOmnichannelSetting": {
+              "methods": [
+                "get_omnichannel_setting"
+              ]
+            },
+            "ListOmnichannelSettings": {
+              "methods": [
+                "list_omnichannel_settings"
+              ]
+            },
+            "RequestInventoryVerification": {
+              "methods": [
+                "request_inventory_verification"
+              ]
+            },
+            "UpdateOmnichannelSetting": {
+              "methods": [
+                "update_omnichannel_setting"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "OmnichannelSettingsServiceClient",
+          "rpcs": {
+            "CreateOmnichannelSetting": {
+              "methods": [
+                "create_omnichannel_setting"
+              ]
+            },
+            "GetOmnichannelSetting": {
+              "methods": [
+                "get_omnichannel_setting"
+              ]
+            },
+            "ListOmnichannelSettings": {
+              "methods": [
+                "list_omnichannel_settings"
+              ]
+            },
+            "RequestInventoryVerification": {
+              "methods": [
+                "request_inventory_verification"
+              ]
+            },
+            "UpdateOmnichannelSetting": {
+              "methods": [
+                "update_omnichannel_setting"
               ]
             }
           }
