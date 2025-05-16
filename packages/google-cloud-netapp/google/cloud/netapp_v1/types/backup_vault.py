@@ -68,6 +68,9 @@ class BackupVault(proto.Message):
             Output only. Name of the Backup vault created in backup
             region. Format:
             ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}``
+        backup_retention_policy (google.cloud.netapp_v1.types.BackupVault.BackupRetentionPolicy):
+            Optional. Backup retention policy defining
+            the retenton of backups.
     """
 
     class State(proto.Enum):
@@ -108,6 +111,56 @@ class BackupVault(proto.Message):
         BACKUP_VAULT_TYPE_UNSPECIFIED = 0
         IN_REGION = 1
         CROSS_REGION = 2
+
+    class BackupRetentionPolicy(proto.Message):
+        r"""Retention policy for backups in the backup vault
+
+        Attributes:
+            backup_minimum_enforced_retention_days (int):
+                Required. Minimum retention duration in days
+                for backups in the backup vault.
+            daily_backup_immutable (bool):
+                Optional. Indicates if the daily backups are immutable.
+                Atleast one of daily_backup_immutable,
+                weekly_backup_immutable, monthly_backup_immutable and
+                manual_backup_immutable must be true.
+            weekly_backup_immutable (bool):
+                Optional. Indicates if the weekly backups are immutable.
+                Atleast one of daily_backup_immutable,
+                weekly_backup_immutable, monthly_backup_immutable and
+                manual_backup_immutable must be true.
+            monthly_backup_immutable (bool):
+                Optional. Indicates if the monthly backups are immutable.
+                Atleast one of daily_backup_immutable,
+                weekly_backup_immutable, monthly_backup_immutable and
+                manual_backup_immutable must be true.
+            manual_backup_immutable (bool):
+                Optional. Indicates if the manual backups are immutable.
+                Atleast one of daily_backup_immutable,
+                weekly_backup_immutable, monthly_backup_immutable and
+                manual_backup_immutable must be true.
+        """
+
+        backup_minimum_enforced_retention_days: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        daily_backup_immutable: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        weekly_backup_immutable: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        monthly_backup_immutable: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+        manual_backup_immutable: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -152,6 +205,11 @@ class BackupVault(proto.Message):
     destination_backup_vault: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    backup_retention_policy: BackupRetentionPolicy = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=BackupRetentionPolicy,
     )
 
 

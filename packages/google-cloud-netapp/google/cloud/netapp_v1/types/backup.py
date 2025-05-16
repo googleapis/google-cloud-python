@@ -89,6 +89,9 @@ class Backup(proto.Message):
         backup_region (str):
             Output only. Region in which backup is stored. Format:
             ``projects/{project_id}/locations/{location}``
+        enforced_retention_end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time until which the backup
+            is not deletable.
     """
 
     class State(proto.Enum):
@@ -200,6 +203,11 @@ class Backup(proto.Message):
     backup_region: str = proto.Field(
         proto.STRING,
         number=14,
+    )
+    enforced_retention_end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=timestamp_pb2.Timestamp,
     )
 
 
