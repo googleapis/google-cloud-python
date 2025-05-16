@@ -286,6 +286,17 @@ class StoragePool(proto.Message):
             Output only. Reserved for future use
         satisfies_pzi (bool):
             Output only. Reserved for future use
+        custom_performance_enabled (bool):
+            Optional. True if using Independent Scaling
+            of capacity and performance (Hyperdisk) By
+            default set to false
+        total_throughput_mibps (int):
+            Optional. Custom Performance Total Throughput
+            of the pool (in MiB/s)
+        total_iops (int):
+            Optional. Custom Performance Total IOPS of the pool If not
+            provided, it will be calculated based on the
+            total_throughput_mibps
     """
 
     class State(proto.Enum):
@@ -411,6 +422,18 @@ class StoragePool(proto.Message):
     satisfies_pzi: bool = proto.Field(
         proto.BOOL,
         number=24,
+    )
+    custom_performance_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=25,
+    )
+    total_throughput_mibps: int = proto.Field(
+        proto.INT64,
+        number=26,
+    )
+    total_iops: int = proto.Field(
+        proto.INT64,
+        number=27,
     )
 
 

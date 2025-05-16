@@ -55,8 +55,8 @@ class TransferStats(proto.Message):
 
     Attributes:
         transfer_bytes (int):
-            Cumulative bytes trasferred so far for the
-            replication relatinonship.
+            Cumulative bytes transferred so far for the
+            replication relationship.
 
             This field is a member of `oneof`_ ``_transfer_bytes``.
         total_transfer_duration (google.protobuf.duration_pb2.Duration):
