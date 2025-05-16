@@ -66,11 +66,29 @@ from google.shopping.merchant_accounts_v1beta.services.email_preferences_service
 from google.shopping.merchant_accounts_v1beta.services.email_preferences_service.client import (
     EmailPreferencesServiceClient,
 )
+from google.shopping.merchant_accounts_v1beta.services.gbp_accounts_service.async_client import (
+    GbpAccountsServiceAsyncClient,
+)
+from google.shopping.merchant_accounts_v1beta.services.gbp_accounts_service.client import (
+    GbpAccountsServiceClient,
+)
 from google.shopping.merchant_accounts_v1beta.services.homepage_service.async_client import (
     HomepageServiceAsyncClient,
 )
 from google.shopping.merchant_accounts_v1beta.services.homepage_service.client import (
     HomepageServiceClient,
+)
+from google.shopping.merchant_accounts_v1beta.services.lfp_providers_service.async_client import (
+    LfpProvidersServiceAsyncClient,
+)
+from google.shopping.merchant_accounts_v1beta.services.lfp_providers_service.client import (
+    LfpProvidersServiceClient,
+)
+from google.shopping.merchant_accounts_v1beta.services.omnichannel_settings_service.async_client import (
+    OmnichannelSettingsServiceAsyncClient,
+)
+from google.shopping.merchant_accounts_v1beta.services.omnichannel_settings_service.client import (
+    OmnichannelSettingsServiceClient,
 )
 from google.shopping.merchant_accounts_v1beta.services.online_return_policy_service.async_client import (
     OnlineReturnPolicyServiceAsyncClient,
@@ -172,12 +190,43 @@ from google.shopping.merchant_accounts_v1beta.types.emailpreferences import (
     GetEmailPreferencesRequest,
     UpdateEmailPreferencesRequest,
 )
+from google.shopping.merchant_accounts_v1beta.types.gbpaccounts import (
+    GbpAccount,
+    LinkGbpAccountRequest,
+    LinkGbpAccountResponse,
+    ListGbpAccountsRequest,
+    ListGbpAccountsResponse,
+)
 from google.shopping.merchant_accounts_v1beta.types.homepage import (
     ClaimHomepageRequest,
     GetHomepageRequest,
     Homepage,
     UnclaimHomepageRequest,
     UpdateHomepageRequest,
+)
+from google.shopping.merchant_accounts_v1beta.types.lfpproviders import (
+    FindLfpProvidersRequest,
+    FindLfpProvidersResponse,
+    LfpProvider,
+    LinkLfpProviderRequest,
+    LinkLfpProviderResponse,
+)
+from google.shopping.merchant_accounts_v1beta.types.omnichannelsettings import (
+    About,
+    CreateOmnichannelSettingRequest,
+    GetOmnichannelSettingRequest,
+    InStock,
+    InventoryVerification,
+    LfpLink,
+    ListOmnichannelSettingsRequest,
+    ListOmnichannelSettingsResponse,
+    OmnichannelSetting,
+    OnDisplayToOrder,
+    Pickup,
+    RequestInventoryVerificationRequest,
+    RequestInventoryVerificationResponse,
+    ReviewState,
+    UpdateOmnichannelSettingRequest,
 )
 from google.shopping.merchant_accounts_v1beta.types.online_return_policy import (
     CreateOnlineReturnPolicyRequest,
@@ -275,8 +324,14 @@ __all__ = (
     "BusinessInfoServiceAsyncClient",
     "EmailPreferencesServiceClient",
     "EmailPreferencesServiceAsyncClient",
+    "GbpAccountsServiceClient",
+    "GbpAccountsServiceAsyncClient",
     "HomepageServiceClient",
     "HomepageServiceAsyncClient",
+    "LfpProvidersServiceClient",
+    "LfpProvidersServiceAsyncClient",
+    "OmnichannelSettingsServiceClient",
+    "OmnichannelSettingsServiceAsyncClient",
     "OnlineReturnPolicyServiceClient",
     "OnlineReturnPolicyServiceAsyncClient",
     "ProgramsServiceClient",
@@ -329,11 +384,36 @@ __all__ = (
     "EmailPreferences",
     "GetEmailPreferencesRequest",
     "UpdateEmailPreferencesRequest",
+    "GbpAccount",
+    "LinkGbpAccountRequest",
+    "LinkGbpAccountResponse",
+    "ListGbpAccountsRequest",
+    "ListGbpAccountsResponse",
     "ClaimHomepageRequest",
     "GetHomepageRequest",
     "Homepage",
     "UnclaimHomepageRequest",
     "UpdateHomepageRequest",
+    "FindLfpProvidersRequest",
+    "FindLfpProvidersResponse",
+    "LfpProvider",
+    "LinkLfpProviderRequest",
+    "LinkLfpProviderResponse",
+    "About",
+    "CreateOmnichannelSettingRequest",
+    "GetOmnichannelSettingRequest",
+    "InStock",
+    "InventoryVerification",
+    "LfpLink",
+    "ListOmnichannelSettingsRequest",
+    "ListOmnichannelSettingsResponse",
+    "OmnichannelSetting",
+    "OnDisplayToOrder",
+    "Pickup",
+    "RequestInventoryVerificationRequest",
+    "RequestInventoryVerificationResponse",
+    "ReviewState",
+    "UpdateOmnichannelSettingRequest",
     "CreateOnlineReturnPolicyRequest",
     "DeleteOnlineReturnPolicyRequest",
     "GetOnlineReturnPolicyRequest",
