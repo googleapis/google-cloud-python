@@ -49,3 +49,8 @@ def test_dataframe_to_pandas(mock_df, api_name, kwargs):
     mock_df.to_pandas.assert_called_once_with(
         allow_large_results=kwargs["allow_large_results"]
     )
+
+
+def test_to_gbq_if_exists_invalid(mock_df):
+    with pytest.raises(ValueError, match="Got invalid value 'invalid' for if_exists."):
+        mock_df.to_gbq("a.b.c", if_exists="invalid")

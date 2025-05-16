@@ -29,9 +29,11 @@ import google.cloud.bigquery_storage_v1
 
 import bigframes.core
 from bigframes.core import compile, rewrite
+import bigframes.core.compile.sqlglot.sqlglot_ir as sqlglot_ir
 import bigframes.core.guid
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as order
+import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
 import bigframes.exceptions as bfe
@@ -206,17 +208,45 @@ class BigQueryCachingExecutor(executor.Executor):
         if bigframes.options.compute.enable_multi_query_execution:
             self._simplify_with_caching(array_value)
 
-        dispositions = {
-            "fail": bigquery.WriteDisposition.WRITE_EMPTY,
-            "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
-            "append": bigquery.WriteDisposition.WRITE_APPEND,
-        }
+        table_exists = True
+        try:
+            table = self.bqclient.get_table(destination)
+            if if_exists == "fail":
+                raise ValueError(f"Table already exists: {destination.__str__()}")
+        except google.api_core.exceptions.NotFound:
+            table_exists = False
+
+        if len(cluster_cols) != 0:
+            if table_exists and table.clustering_fields != cluster_cols:
+                raise ValueError(
+                    "Table clustering fields cannot be changed after the table has "
+                    f"been created. Existing clustering fields: {table.clustering_fields}"
+                )
+
         sql = self.to_sql(array_value, ordered=False)
-        job_config = bigquery.QueryJobConfig(
-            write_disposition=dispositions[if_exists],
-            destination=destination,
-            clustering_fields=cluster_cols if cluster_cols else None,
-        )
+        if table_exists and _if_schema_match(table.schema, array_value.schema):
+            # b/409086472: Uses DML for table appends and replacements to avoid
+            # BigQuery `RATE_LIMIT_EXCEEDED` errors, as per quota limits:
+            # https://cloud.google.com/bigquery/quotas#standard_tables
+            job_config = bigquery.QueryJobConfig()
+            ir = sqlglot_ir.SQLGlotIR.from_query_string(sql)
+            if if_exists == "append":
+                sql = ir.insert(destination)
+            else:  # for "replace"
+                assert if_exists == "replace"
+                sql = ir.replace(destination)
+        else:
+            dispositions = {
+                "fail": bigquery.WriteDisposition.WRITE_EMPTY,
+                "replace": bigquery.WriteDisposition.WRITE_TRUNCATE,
+                "append": bigquery.WriteDisposition.WRITE_APPEND,
+            }
+            job_config = bigquery.QueryJobConfig(
+                write_disposition=dispositions[if_exists],
+                destination=destination,
+                clustering_fields=cluster_cols if cluster_cols else None,
+            )
+
         # TODO(swast): plumb through the api_name of the user-facing api that
         # caused this query.
         _, query_job = self._run_execute_query(
@@ -570,6 +600,21 @@ class BigQueryCachingExecutor(executor.Executor):
             total_bytes=size_bytes,
             total_rows=iterator.total_rows,
         )
+
+
+def _if_schema_match(
+    table_schema: Tuple[bigquery.SchemaField, ...], schema: schemata.ArraySchema
+) -> bool:
+    if len(table_schema) != len(schema.items):
+        return False
+    for field in table_schema:
+        if field.name not in schema.names:
+            return False
+        if bigframes.dtypes.convert_schema_field(field)[1] != schema.get_type(
+            field.name
+        ):
+            return False
+    return True
 
 
 def _sanitize(

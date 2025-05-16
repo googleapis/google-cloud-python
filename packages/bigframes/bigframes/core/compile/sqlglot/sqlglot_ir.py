@@ -17,6 +17,7 @@ from __future__ import annotations
 import dataclasses
 import typing
 
+from google.cloud import bigquery
 import pyarrow as pa
 import sqlglot as sg
 import sqlglot.dialects.bigquery
@@ -104,6 +105,24 @@ class SQLGlotIR:
         )
         return cls(expr=sg.select(sge.Star()).from_(expr), uid_gen=uid_gen)
 
+    @classmethod
+    def from_query_string(
+        cls,
+        query_string: str,
+    ) -> SQLGlotIR:
+        """Builds SQLGlot expression from a query string"""
+        uid_gen: guid.SequentialUIDGenerator = guid.SequentialUIDGenerator()
+        cte_name = sge.to_identifier(
+            next(uid_gen.get_uid_stream("bfcte_")), quoted=cls.quoted
+        )
+        cte = sge.CTE(
+            this=query_string,
+            alias=cte_name,
+        )
+        select_expr = sge.Select().select(sge.Star()).from_(sge.Table(this=cte_name))
+        select_expr.set("with", sge.With(expressions=[cte]))
+        return cls(expr=select_expr, uid_gen=uid_gen)
+
     def select(
         self,
         selected_cols: tuple[tuple[str, sge.Expression], ...],
@@ -132,6 +151,36 @@ class SQLGlotIR:
         # TODO: some columns are not able to be projected into the same select.
         select_expr = self.expr.select(*projected_cols_expr, append=True)
         return SQLGlotIR(expr=select_expr)
+
+    def insert(
+        self,
+        destination: bigquery.TableReference,
+    ) -> str:
+        return sge.insert(self.expr.subquery(), _table(destination)).sql(
+            dialect=self.dialect, pretty=self.pretty
+        )
+
+    def replace(
+        self,
+        destination: bigquery.TableReference,
+    ) -> str:
+        # Workaround for SQLGlot breaking change:
+        # https://github.com/tobymao/sqlglot/pull/4495
+        whens_expr = [
+            sge.When(matched=False, source=True, then=sge.Delete()),
+            sge.When(matched=False, then=sge.Insert(this=sge.Var(this="ROW"))),
+        ]
+        whens_str = "\n".join(
+            when_expr.sql(dialect=self.dialect, pretty=self.pretty)
+            for when_expr in whens_expr
+        )
+
+        merge_str = sge.Merge(
+            this=_table(destination),
+            using=self.expr.subquery(),
+            on=_literal(False, dtypes.BOOL_DTYPE),
+        ).sql(dialect=self.dialect, pretty=self.pretty)
+        return f"{merge_str}\n{whens_str}"
 
     def _encapsulate_as_cte(
         self,
@@ -190,3 +239,11 @@ def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
 
 def _cast(arg: typing.Any, to: str) -> sge.Cast:
     return sge.Cast(this=arg, to=to)
+
+
+def _table(table: bigquery.TableReference) -> sge.Table:
+    return sge.Table(
+        this=sg.to_identifier(table.table_id, quoted=True),
+        db=sg.to_identifier(table.dataset_id, quoted=True),
+        catalog=sg.to_identifier(table.project, quoted=True),
+    )

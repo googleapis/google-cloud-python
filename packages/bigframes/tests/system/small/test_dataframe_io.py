@@ -458,7 +458,7 @@ def test_to_csv_tabs(
     [True, False],
 )
 @pytest.mark.skipif(pandas_gbq is None, reason="required by pd.read_gbq")
-def test_to_gbq_index(scalars_dfs, dataset_id, index):
+def test_to_gbq_w_index(scalars_dfs, dataset_id, index):
     """Test the `to_gbq` API with the `index` parameter."""
     scalars_df, scalars_pandas_df = scalars_dfs
     destination_table = f"{dataset_id}.test_index_df_to_gbq_{index}"
@@ -485,48 +485,67 @@ def test_to_gbq_index(scalars_dfs, dataset_id, index):
     pd.testing.assert_frame_equal(df_out, expected, check_index_type=False)
 
 
-@pytest.mark.parametrize(
-    ("if_exists", "expected_index"),
-    [
-        pytest.param("replace", 1),
-        pytest.param("append", 2),
-        pytest.param(
-            "fail",
-            0,
-            marks=pytest.mark.xfail(
-                raises=google.api_core.exceptions.Conflict,
-            ),
-        ),
-        pytest.param(
-            "unknown",
-            0,
-            marks=pytest.mark.xfail(
-                raises=ValueError,
-            ),
-        ),
-    ],
-)
-@pytest.mark.skipif(pandas_gbq is None, reason="required by pd.read_gbq")
-def test_to_gbq_if_exists(
-    scalars_df_default_index,
-    scalars_pandas_df_default_index,
-    dataset_id,
-    if_exists,
-    expected_index,
-):
-    """Test the `to_gbq` API with the `if_exists` parameter."""
-    destination_table = f"{dataset_id}.test_to_gbq_if_exists_{if_exists}"
+def test_to_gbq_if_exists_is_fail(scalars_dfs, dataset_id):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    destination_table = f"{dataset_id}.test_to_gbq_if_exists_is_fails"
+    scalars_df.to_gbq(destination_table)
 
-    scalars_df_default_index.to_gbq(destination_table)
-    scalars_df_default_index.to_gbq(destination_table, if_exists=if_exists)
+    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    assert len(gcs_df) == len(scalars_pandas_df)
+    pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
 
-    gcs_df = pd.read_gbq(destination_table)
-    assert len(gcs_df.index) == expected_index * len(
-        scalars_pandas_df_default_index.index
-    )
-    pd.testing.assert_index_equal(
-        gcs_df.columns, scalars_pandas_df_default_index.columns
-    )
+    # Test default value is "fails"
+    with pytest.raises(ValueError, match="Table already exists"):
+        scalars_df.to_gbq(destination_table)
+
+    with pytest.raises(ValueError, match="Table already exists"):
+        scalars_df.to_gbq(destination_table, if_exists="fail")
+
+
+def test_to_gbq_if_exists_is_replace(scalars_dfs, dataset_id):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    destination_table = f"{dataset_id}.test_to_gbq_if_exists_is_replace"
+    scalars_df.to_gbq(destination_table)
+
+    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    assert len(gcs_df) == len(scalars_pandas_df)
+    pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
+
+    # When replacing a table with same schema
+    scalars_df.to_gbq(destination_table, if_exists="replace")
+    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    assert len(gcs_df) == len(scalars_pandas_df)
+    pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
+
+    # When replacing a table with different schema
+    partitial_scalars_df = scalars_df.drop(columns=["string_col"])
+    partitial_scalars_df.to_gbq(destination_table, if_exists="replace")
+    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    assert len(gcs_df) == len(partitial_scalars_df)
+    pd.testing.assert_index_equal(gcs_df.columns, partitial_scalars_df.columns)
+
+
+def test_to_gbq_if_exists_is_append(scalars_dfs, dataset_id):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    destination_table = f"{dataset_id}.test_to_gbq_if_exists_is_append"
+    scalars_df.to_gbq(destination_table)
+
+    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    assert len(gcs_df) == len(scalars_pandas_df)
+    pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
+
+    # When appending to a table with same schema
+    scalars_df.to_gbq(destination_table, if_exists="append")
+    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    assert len(gcs_df) == 2 * len(scalars_pandas_df)
+    pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
+
+    # When appending to a table with different schema
+    partitial_scalars_df = scalars_df.drop(columns=["string_col"])
+    partitial_scalars_df.to_gbq(destination_table, if_exists="append")
+    gcs_df = pd.read_gbq(destination_table, index_col="rowindex")
+    assert len(gcs_df) == 3 * len(partitial_scalars_df)
+    pd.testing.assert_index_equal(gcs_df.columns, scalars_df.columns)
 
 
 def test_to_gbq_w_duplicate_column_names(
@@ -771,6 +790,27 @@ def test_to_gbq_w_clustering_no_destination(
 
     assert list(table.clustering_fields) == clustering_columns
     assert table.expires is not None
+
+
+def test_to_gbq_w_clustering_existing_table(
+    scalars_df_default_index,
+    dataset_id,
+    bigquery_client,
+):
+    destination_table = f"{dataset_id}.test_to_gbq_w_clustering_existing_table"
+    scalars_df_default_index.to_gbq(destination_table)
+
+    table = bigquery_client.get_table(destination_table)
+    assert table.clustering_fields is None
+    assert table.expires is None
+
+    with pytest.raises(ValueError, match="Table clustering fields cannot be changed"):
+        clustering_columns = ["int64_col"]
+        scalars_df_default_index.to_gbq(
+            destination_table,
+            if_exists="replace",
+            clustering_columns=clustering_columns,
+        )
 
 
 def test_to_gbq_w_invalid_destination_table(scalars_df_index):
