@@ -252,7 +252,7 @@ class Semantics:
             >>> bpd.options.compute.semantic_ops_confirmation_threshold = 25
 
             >>> import bigframes.ml.llm as llm
-            >>> model = llm.TextEmbeddingGenerator()
+            >>> model = llm.TextEmbeddingGenerator(model_name="text-embedding-005")
 
             >>> df = bpd.DataFrame({
             ...     "Product": ["Smartphone", "Laptop", "T-shirt", "Jeans"],

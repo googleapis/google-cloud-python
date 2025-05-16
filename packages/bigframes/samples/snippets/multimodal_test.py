@@ -78,7 +78,7 @@ def test_multimodal_dataframe(gcs_dst_bucket: str) -> None:
     # [START bigquery_dataframes_multimodal_dataframe_ml_text]
     from bigframes.ml import llm
 
-    gemini = llm.GeminiTextGenerator(model_name="gemini-1.5-flash-002")
+    gemini = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
 
     # Deal with first 2 images as example
     df_image = df_image.head(2)

@@ -112,10 +112,17 @@ _GEMINI_MULTIMODAL_MODEL_NOT_SUPPORTED_WARNING = (
     "If you proceed with '{model_name}', it might not work as expected or could lead to errors with multimodal inputs."
 )
 
+_MODEL_DEPRECATE_WARNING = (
+    "'{model_name}' is going to be deprecated. Use '{new_model_name}' ({link}) instead."
+)
+
 
 @log_adapter.class_logger
 class TextEmbeddingGenerator(base.RetriableRemotePredictor):
     """Text embedding generator LLM model.
+
+    .. note::
+        text-embedding-004 is going to be deprecated. Use text-embedding-005(https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.TextEmbeddingGenerator) instead.
 
     Args:
         model_name (str, Default to "text-embedding-004"):
@@ -166,6 +173,15 @@ class TextEmbeddingGenerator(base.RetriableRemotePredictor):
                 _MODEL_NOT_SUPPORTED_WARNING.format(
                     model_name=self.model_name,
                     known_models=", ".join(_TEXT_EMBEDDING_ENDPOINTS),
+                )
+            )
+            warnings.warn(msg)
+        if self.model_name == "text-embedding-004":
+            msg = exceptions.format_message(
+                _MODEL_DEPRECATE_WARNING.format(
+                    model_name=self.model_name,
+                    new_model_name="text-embedding-005",
+                    link="https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.TextEmbeddingGenerator",
                 )
             )
             warnings.warn(msg)
@@ -416,6 +432,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             default and a warning will be issued.
 
         .. note::
+            "gemini-1.5-X" is going to be deprecated. Please use gemini-2.0-X instead. For example, "gemini-2.0-flash-001".
             "gemini-2.0-flash-exp", "gemini-1.5-pro-preview-0514" and "gemini-1.5-flash-preview-0514" is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
             Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
             and might have limited support. For more information, see the launch stage descriptions
@@ -461,10 +478,12 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
                 "(https://cloud.google.com/products#product-launch-stages)."
             )
             warnings.warn(msg, category=exceptions.PreviewWarning)
+
         if model_name is None:
             model_name = "gemini-2.0-flash-001"
             msg = exceptions.format_message(_REMOVE_DEFAULT_MODEL_WARNING)
             warnings.warn(msg, category=FutureWarning, stacklevel=2)
+
         self.model_name = model_name
         self.session = session or global_session.get_global_session()
         self.max_iterations = max_iterations
@@ -484,6 +503,15 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
                 _MODEL_NOT_SUPPORTED_WARNING.format(
                     model_name=self.model_name,
                     known_models=", ".join(_GEMINI_ENDPOINTS),
+                )
+            )
+            warnings.warn(msg)
+        if self.model_name.startswith("gemini-1.5"):
+            msg = exceptions.format_message(
+                _MODEL_DEPRECATE_WARNING.format(
+                    model_name=self.model_name,
+                    new_model_name="gemini-2.0-X",
+                    link="https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator",
                 )
             )
             warnings.warn(msg)

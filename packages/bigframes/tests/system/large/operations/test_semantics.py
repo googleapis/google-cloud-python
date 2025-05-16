@@ -86,7 +86,7 @@ def test_agg(session, gemini_flash_model, max_agg_rows, cluster_column):
             cluster_column=cluster_column,
         ).to_pandas()
 
-    expected_s = pd.Series(["Leonardo \n"], dtype=dtypes.STRING_DTYPE)
+    expected_s = pd.Series(["Leonardo\n"], dtype=dtypes.STRING_DTYPE)
     expected_s.name = "Movies"
     pandas.testing.assert_series_equal(actual_s, expected_s, check_index_type=False)
 
@@ -137,12 +137,13 @@ def test_agg_w_int_column(session, gemini_flash_model):
             "Movies": [
                 "Killers of the Flower Moon",
                 "The Great Gatsby",
+                "The Wolf of Wall Street",
             ],
-            "Years": [2023, 2013],
+            "Years": [2023, 2013, 2013],
         },
         session=session,
     )
-    instruction = "Find the {Years} Leonardo DiCaprio acted in the most movies. Answer with the year only."
+    instruction = "Find the {Years} Leonardo DiCaprio acted in the most movies. Your answer should be the four-digit year, returned as a string."
 
     with bigframes.option_context(
         SEM_OP_EXP_OPTION,
@@ -155,7 +156,7 @@ def test_agg_w_int_column(session, gemini_flash_model):
             model=gemini_flash_model,
         ).to_pandas()
 
-    expected_s = pd.Series(["2013 \n"], dtype=dtypes.STRING_DTYPE)
+    expected_s = pd.Series(["2013\n"], dtype=dtypes.STRING_DTYPE)
     expected_s.name = "Years"
     pandas.testing.assert_series_equal(actual_s, expected_s, check_index_type=False)
 
@@ -764,7 +765,7 @@ def test_join_with_confirmation(session, gemini_flash_model, reply, monkeypatch)
 def test_self_join(session, gemini_flash_model):
     animals = dataframe.DataFrame(
         data={
-            "animal": ["spider", "capybara"],
+            "animal": ["ant", "elephant"],
         },
         session=session,
     )
@@ -783,8 +784,8 @@ def test_self_join(session, gemini_flash_model):
 
     expected_df = pd.DataFrame(
         {
-            "animal_left": ["capybara"],
-            "animal_right": ["spider"],
+            "animal_left": ["elephant"],
+            "animal_right": ["ant"],
         }
     )
     pandas.testing.assert_frame_equal(

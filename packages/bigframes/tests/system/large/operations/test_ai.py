@@ -434,7 +434,7 @@ def test_join_with_confirmation(session, gemini_flash_model, reply, monkeypatch)
 def test_self_join(session, gemini_flash_model):
     animals = dataframe.DataFrame(
         data={
-            "animal": ["spider", "capybara"],
+            "animal": ["ant", "elephant"],
         },
         session=session,
     )
@@ -453,8 +453,8 @@ def test_self_join(session, gemini_flash_model):
 
     expected_df = pd.DataFrame(
         {
-            "animal_left": ["capybara"],
-            "animal_right": ["spider"],
+            "animal_left": ["elephant"],
+            "animal_right": ["ant"],
         }
     )
     pandas.testing.assert_frame_equal(
