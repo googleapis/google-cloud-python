@@ -1635,6 +1635,25 @@ def test_merge_left_on_right_on(scalars_dfs, merge_how):
     )
 
 
+@pytest.mark.parametrize(
+    ("decimals",),
+    [
+        (2,),
+        ({"float64_col": 0, "bool_col": 1, "int64_too": -3},),
+        ({},),
+    ],
+)
+def test_dataframe_round(scalars_dfs, decimals):
+    if pd.__version__.startswith("1."):
+        pytest.skip("Rounding doesn't work as expected in pandas 1.x")
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.round(decimals).to_pandas()
+    pd_result = scalars_pandas_df.round(decimals)
+
+    assert_pandas_df_equal(bf_result, pd_result)
+
+
 def test_get_dtypes(scalars_df_default_index):
     dtypes = scalars_df_default_index.dtypes
     dtypes_dict: Dict[str, bigframes.dtypes.Dtype] = {

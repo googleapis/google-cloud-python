@@ -4788,6 +4788,83 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def round(self, decimals):
+        """
+        Round a DataFrame to a variable number of decimal places.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> df = bpd.DataFrame([(.21, .32), (.01, .67), (.66, .03), (.21, .18)],
+            ...                   columns=['dogs', 'cats'])
+            >>> df
+               dogs  cats
+            0  0.21  0.32
+            1  0.01  0.67
+            2  0.66  0.03
+            3  0.21  0.18
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+            By providing an integer each column is rounded to the same number
+            of decimal places
+
+            >>> df.round(1)
+                dogs  cats
+            0   0.2   0.3
+            1   0.0   0.7
+            2   0.7   0.0
+            3   0.2   0.2
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+            With a dict, the number of places for specific columns can be
+            specified with the column names as key and the number of decimal
+            places as value
+
+            >>> df.round({'dogs': 1, 'cats': 0})
+                dogs  cats
+            0   0.2   0.0
+            1   0.0   1.0
+            2   0.7   0.0
+            3   0.2   0.0
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+            Using a Series, the number of places for specific columns can be
+            specified with the column names as index and the number of
+            decimal places as value
+
+            >>> decimals = pd.Series([0, 1], index=['cats', 'dogs'])
+            >>> df.round(decimals)
+                dogs  cats
+            0   0.2   0.0
+            1   0.0   1.0
+            2   0.7   0.0
+            3   0.2   0.0
+            <BLANKLINE>
+            [4 rows x 2 columns]
+
+        Args:
+            decimals (int, dict, Series):
+                Number of decimal places to round each column to. If an int is
+                given, round each column to the same number of places.
+                Otherwise dict and Series round to variable numbers of places.
+                Column names should be in the keys if `decimals` is a
+                dict-like, or in the index if `decimals` is a Series. Any
+                columns not included in `decimals` will be left as is. Elements
+                of `decimals` which are not columns of the input will be
+                ignored.
+
+        Returns:
+            bigframes.pandas.DataFrame:
+                A DataFrame with the affected columns rounded to the specified
+                number of decimal places.
+
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def apply(self, func, *, axis=0, args=(), **kwargs):
         """Apply a function along an axis of the DataFrame.
 

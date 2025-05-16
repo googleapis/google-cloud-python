@@ -27,6 +27,7 @@ import typing
 from typing import (
     Callable,
     Dict,
+    Hashable,
     Iterable,
     List,
     Literal,
@@ -3607,6 +3608,47 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def abs(self) -> DataFrame:
         return self._apply_unary_op(ops.abs_op)
+
+    def round(self, decimals: Union[int, dict[Hashable, int]] = 0) -> DataFrame:
+        is_mapping = utils.is_dict_like(decimals)
+        if not (is_mapping or isinstance(decimals, int)):
+            raise TypeError("'decimals' must be either a dict-like or integer.")
+        block = self._block
+        exprs = []
+        for label, col_id, dtype in zip(
+            block.column_labels, block.value_columns, block.dtypes
+        ):
+            if dtype in set(bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE) - {
+                bigframes.dtypes.BOOL_DTYPE
+            }:
+                if is_mapping:
+                    if label in decimals:  # type: ignore
+                        exprs.append(
+                            ops.round_op.as_expr(
+                                col_id,
+                                ex.const(
+                                    decimals[label], dtype=bigframes.dtypes.INT_DTYPE  # type: ignore
+                                ),
+                            )
+                        )
+                    else:
+                        exprs.append(ex.deref(col_id))
+                else:
+                    exprs.append(
+                        ops.round_op.as_expr(
+                            col_id,
+                            ex.const(
+                                typing.cast(int, decimals),
+                                dtype=bigframes.dtypes.INT_DTYPE,
+                            ),
+                        )
+                    )
+            else:
+                exprs.append(ex.deref(col_id))
+
+        return DataFrame(
+            block.project_exprs(exprs, labels=block.column_labels, drop=True)
+        )
 
     def isna(self) -> DataFrame:
         return self._apply_unary_op(ops.isnull_op)

@@ -289,7 +289,7 @@ arctan2_op = base_ops.create_binary_op(
 )
 
 round_op = base_ops.create_binary_op(
-    name="round", type_signature=op_typing.BINARY_REAL_NUMERIC
+    name="round", type_signature=op_typing.BINARY_NUMERIC
 )
 
 unsafe_pow_op = base_ops.create_binary_op(

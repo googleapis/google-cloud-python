@@ -1826,6 +1826,13 @@ def fillna_op(
 
 @scalar_op_compiler.register_binary_op(ops.round_op)
 def round_op(x: ibis_types.Value, y: ibis_types.Value):
+    if x.type().is_integer():
+        # bq produces float64, but pandas returns int
+        return (
+            typing.cast(ibis_types.NumericValue, x)
+            .round(digits=typing.cast(ibis_types.IntegerValue, y))
+            .cast(ibis_dtypes.int64)
+        )
     return typing.cast(ibis_types.NumericValue, x).round(
         digits=typing.cast(ibis_types.IntegerValue, y)
     )
