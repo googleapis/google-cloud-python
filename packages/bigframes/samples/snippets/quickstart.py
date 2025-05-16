@@ -71,3 +71,7 @@ def run_quickstart(project_id: str) -> None:
     model.fit(X, y)
     model.score(X, y)
     # [END bigquery_bigframes_quickstart]
+
+    # close session and reset option so not to affect other tests
+    bpd.close_session()
+    bpd.options.bigquery.ordering_mode = "strict"
