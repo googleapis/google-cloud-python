@@ -32,6 +32,7 @@ from google.cloud.spanner_v1 import ExecuteBatchDmlRequest
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import TransactionSelector
 from google.cloud.spanner_v1 import TransactionOptions
+from google.cloud.spanner_v1._helpers import AtomicCounter
 from google.cloud.spanner_v1.snapshot import _SnapshotBase
 from google.cloud.spanner_v1.batch import _BatchBase
 from google.cloud.spanner_v1._opentelemetry_tracing import add_span_event, trace_call
@@ -181,12 +182,19 @@ class Transaction(_SnapshotBase, _BatchBase):
             observability_options=observability_options,
             metadata=metadata,
         ) as span, MetricsCapture():
-            method = functools.partial(
-                api.begin_transaction,
-                session=self._session.name,
-                options=txn_options,
-                metadata=metadata,
-            )
+            attempt = AtomicCounter(0)
+            nth_request = database._next_nth_request
+
+            def wrapped_method(*args, **kwargs):
+                method = functools.partial(
+                    api.begin_transaction,
+                    session=self._session.name,
+                    options=txn_options,
+                    metadata=database.metadata_with_request_id(
+                        nth_request, attempt.increment(), metadata
+                    ),
+                )
+                return method(*args, **kwargs)
 
             def beforeNextRetry(nthRetry, delayInSeconds):
                 add_span_event(
@@ -196,7 +204,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 )
 
             response = _retry(
-                method,
+                wrapped_method,
                 allowed_exceptions={InternalServerError: _check_rst_stream_error},
                 beforeNextRetry=beforeNextRetry,
             )
@@ -217,6 +225,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                         database._route_to_leader_enabled
                     )
                 )
+
             observability_options = getattr(database, "observability_options", None)
             with trace_call(
                 f"CloudSpanner.{type(self).__name__}.rollback",
@@ -224,16 +233,26 @@ class Transaction(_SnapshotBase, _BatchBase):
                 observability_options=observability_options,
                 metadata=metadata,
             ), MetricsCapture():
-                method = functools.partial(
-                    api.rollback,
-                    session=self._session.name,
-                    transaction_id=self._transaction_id,
-                    metadata=metadata,
-                )
+                attempt = AtomicCounter(0)
+                nth_request = database._next_nth_request
+
+                def wrapped_method(*args, **kwargs):
+                    attempt.increment()
+                    method = functools.partial(
+                        api.rollback,
+                        session=self._session.name,
+                        transaction_id=self._transaction_id,
+                        metadata=database.metadata_with_request_id(
+                            nth_request, attempt.value, metadata
+                        ),
+                    )
+                    return method(*args, **kwargs)
+
                 _retry(
-                    method,
+                    wrapped_method,
                     allowed_exceptions={InternalServerError: _check_rst_stream_error},
                 )
+
         self.rolled_back = True
         del self._session._transaction
 
@@ -306,11 +325,19 @@ class Transaction(_SnapshotBase, _BatchBase):
 
             add_span_event(span, "Starting Commit")
 
-            method = functools.partial(
-                api.commit,
-                request=request,
-                metadata=metadata,
-            )
+            attempt = AtomicCounter(0)
+            nth_request = database._next_nth_request
+
+            def wrapped_method(*args, **kwargs):
+                attempt.increment()
+                method = functools.partial(
+                    api.commit,
+                    request=request,
+                    metadata=database.metadata_with_request_id(
+                        nth_request, attempt.value, metadata
+                    ),
+                )
+                return method(*args, **kwargs)
 
             def beforeNextRetry(nthRetry, delayInSeconds):
                 add_span_event(
@@ -320,7 +347,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 )
 
             response = _retry(
-                method,
+                wrapped_method,
                 allowed_exceptions={InternalServerError: _check_rst_stream_error},
                 beforeNextRetry=beforeNextRetry,
             )
@@ -469,19 +496,27 @@ class Transaction(_SnapshotBase, _BatchBase):
             last_statement=last_statement,
         )
 
-        method = functools.partial(
-            api.execute_sql,
-            request=request,
-            metadata=metadata,
-            retry=retry,
-            timeout=timeout,
-        )
+        nth_request = database._next_nth_request
+        attempt = AtomicCounter(0)
+
+        def wrapped_method(*args, **kwargs):
+            attempt.increment()
+            method = functools.partial(
+                api.execute_sql,
+                request=request,
+                metadata=database.metadata_with_request_id(
+                    nth_request, attempt.value, metadata
+                ),
+                retry=retry,
+                timeout=timeout,
+            )
+            return method(*args, **kwargs)
 
         if self._transaction_id is None:
             # lock is added to handle the inline begin for first rpc
             with self._lock:
                 response = self._execute_request(
-                    method,
+                    wrapped_method,
                     request,
                     metadata,
                     f"CloudSpanner.{type(self).__name__}.execute_update",
@@ -499,7 +534,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                     self._transaction_id = response.metadata.transaction.id
         else:
             response = self._execute_request(
-                method,
+                wrapped_method,
                 request,
                 metadata,
                 f"CloudSpanner.{type(self).__name__}.execute_update",
@@ -611,19 +646,27 @@ class Transaction(_SnapshotBase, _BatchBase):
             last_statements=last_statement,
         )
 
-        method = functools.partial(
-            api.execute_batch_dml,
-            request=request,
-            metadata=metadata,
-            retry=retry,
-            timeout=timeout,
-        )
+        nth_request = database._next_nth_request
+        attempt = AtomicCounter(0)
+
+        def wrapped_method(*args, **kwargs):
+            attempt.increment()
+            method = functools.partial(
+                api.execute_batch_dml,
+                request=request,
+                metadata=database.metadata_with_request_id(
+                    nth_request, attempt.value, metadata
+                ),
+                retry=retry,
+                timeout=timeout,
+            )
+            return method(*args, **kwargs)
 
         if self._transaction_id is None:
             # lock is added to handle the inline begin for first rpc
             with self._lock:
                 response = self._execute_request(
-                    method,
+                    wrapped_method,
                     request,
                     metadata,
                     "CloudSpanner.DMLTransaction",
@@ -642,7 +685,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                         break
         else:
             response = self._execute_request(
-                method,
+                wrapped_method,
                 request,
                 metadata,
                 "CloudSpanner.DMLTransaction",

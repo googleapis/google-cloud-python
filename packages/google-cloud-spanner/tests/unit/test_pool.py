@@ -19,6 +19,11 @@ import unittest
 from datetime import datetime, timedelta
 
 import mock
+from google.cloud.spanner_v1._helpers import (
+    _metadata_with_request_id,
+    AtomicCounter,
+)
+
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from tests._helpers import (
     OpenTelemetryBase,
@@ -1193,6 +1198,9 @@ class _Session(object):
 
 
 class _Database(object):
+    NTH_REQUEST = AtomicCounter()
+    NTH_CLIENT_ID = AtomicCounter()
+
     def __init__(self, name):
         self.name = name
         self._sessions = []
@@ -1246,6 +1254,27 @@ class _Database(object):
     @property
     def observability_options(self):
         return dict(db_name=self.name)
+
+    @property
+    def _next_nth_request(self):
+        return self.NTH_REQUEST.increment()
+
+    @property
+    def _nth_client_id(self):
+        return self.NTH_CLIENT_ID.increment()
+
+    def metadata_with_request_id(self, nth_request, nth_attempt, prior_metadata=[]):
+        return _metadata_with_request_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+        )
+
+    @property
+    def _channel_id(self):
+        return 1
 
 
 class _Queue(object):

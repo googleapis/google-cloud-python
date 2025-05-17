@@ -249,17 +249,28 @@ class Batch(_BatchBase):
             observability_options=observability_options,
             metadata=metadata,
         ), MetricsCapture():
-            method = functools.partial(
-                api.commit,
-                request=request,
-                metadata=metadata,
-            )
+
+            def wrapped_method(*args, **kwargs):
+                method = functools.partial(
+                    api.commit,
+                    request=request,
+                    metadata=database.metadata_with_request_id(
+                        # This code is retried due to ABORTED, hence nth_request
+                        # should be increased. attempt can only be increased if
+                        # we encounter UNAVAILABLE or INTERNAL.
+                        getattr(database, "_next_nth_request", 0),
+                        1,
+                        metadata,
+                    ),
+                )
+                return method(*args, **kwargs)
+
             deadline = time.time() + kwargs.get(
                 "timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS
             )
             default_retry_delay = kwargs.get("default_retry_delay", None)
             response = _retry_on_aborted_exception(
-                method,
+                wrapped_method,
                 deadline=deadline,
                 default_retry_delay=default_retry_delay,
             )

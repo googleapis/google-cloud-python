@@ -72,7 +72,7 @@ X_GOOG_REQUEST_ID = "x-goog-spanner-request-id"
 
 class XGoogRequestIDHeaderInterceptor(ClientInterceptor):
     # TODO:(@odeke-em): delete this guard when PR #1367 is merged.
-    X_GOOG_REQUEST_ID_FUNCTIONALITY_MERGED = False
+    X_GOOG_REQUEST_ID_FUNCTIONALITY_MERGED = True
 
     def __init__(self):
         self._unary_req_segments = []

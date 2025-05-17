@@ -24,7 +24,11 @@ from tests._helpers import (
     HAS_OPENTELEMETRY_INSTALLED,
     enrich_with_otel_scope,
 )
+from google.cloud.spanner_v1._helpers import (
+    _metadata_with_request_id,
+)
 from google.cloud.spanner_v1.param_types import INT64
+from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 from google.api_core.retry import Retry
 
 TABLE_NAME = "citizens"
@@ -135,6 +139,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             session,
             attributes,
             transaction=derived,
+            request_id_manager=None if not session else session._database,
         )
 
     def _make_item(self, value, resume_token=b"", metadata=None):
@@ -153,9 +158,17 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), [])
-        restart.assert_called_once_with(request=request, metadata=None)
+        restart.assert_called_once_with(
+            request=request,
+            metadata=[
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                )
+            ],
+        )
         self.assertNoSpans()
 
     def test_iteration_w_non_empty_raw(self):
@@ -167,9 +180,17 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(ITEMS))
-        restart.assert_called_once_with(request=request, metadata=None)
+        restart.assert_called_once_with(
+            request=request,
+            metadata=[
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                )
+            ],
+        )
         self.assertNoSpans()
 
     def test_iteration_w_raw_w_resume_tken(self):
@@ -186,9 +207,17 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(ITEMS))
-        restart.assert_called_once_with(request=request, metadata=None)
+        restart.assert_called_once_with(
+            request=request,
+            metadata=[
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                )
+            ],
+        )
         self.assertNoSpans()
 
     def test_iteration_w_raw_raising_unavailable_no_token(self):
@@ -207,7 +236,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(ITEMS))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, b"")
@@ -234,7 +263,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(ITEMS))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, b"")
@@ -256,10 +285,18 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         with self.assertRaises(InternalServerError):
             list(resumable)
-        restart.assert_called_once_with(request=request, metadata=None)
+        restart.assert_called_once_with(
+            request=request,
+            metadata=[
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                )
+            ],
+        )
         self.assertNoSpans()
 
     def test_iteration_w_raw_raising_unavailable(self):
@@ -278,7 +315,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST + LAST))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, RESUME_TOKEN)
@@ -295,7 +332,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             fail_after=True,
             error=InternalServerError(
                 "Received unexpected EOS on DATA frame from server"
-            )
+            ),
         )
         after = _MockIterator(*LAST)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
@@ -304,7 +341,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST + LAST))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, RESUME_TOKEN)
@@ -326,10 +363,18 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         with self.assertRaises(InternalServerError):
             list(resumable)
-        restart.assert_called_once_with(request=request, metadata=None)
+        restart.assert_called_once_with(
+            request=request,
+            metadata=[
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                )
+            ],
+        )
         self.assertNoSpans()
 
     def test_iteration_w_raw_raising_unavailable_after_token(self):
@@ -347,7 +392,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST + SECOND))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, RESUME_TOKEN)
@@ -370,7 +415,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = True
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST))
         self.assertEqual(len(restart.mock_calls), 1)
         begin_count = sum(
@@ -401,7 +446,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = True
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(SECOND))
         self.assertEqual(len(restart.mock_calls), 2)
         begin_count = sum(
@@ -440,7 +485,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         derived = self._makeDerived(session)
         derived._multi_use = True
 
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
 
         self.assertEqual(list(resumable), list(FIRST + SECOND))
         self.assertEqual(len(restart.mock_calls), 2)
@@ -467,7 +512,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             fail_after=True,
             error=InternalServerError(
                 "Received unexpected EOS on DATA frame from server"
-            )
+            ),
         )
         after = _MockIterator(*SECOND)
         request = mock.Mock(test="test", spec=["test", "resume_token"])
@@ -476,7 +521,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST + SECOND))
         self.assertEqual(len(restart.mock_calls), 2)
         self.assertEqual(request.resume_token, RESUME_TOKEN)
@@ -497,10 +542,18 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database.spanner_api = self._make_spanner_api()
         session = _Session(database)
         derived = self._makeDerived(session)
-        resumable = self._call_fut(derived, restart, request)
+        resumable = self._call_fut(derived, restart, request, session=session)
         with self.assertRaises(InternalServerError):
             list(resumable)
-        restart.assert_called_once_with(request=request, metadata=None)
+        restart.assert_called_once_with(
+            request=request,
+            metadata=[
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                )
+            ],
+        )
         self.assertNoSpans()
 
     def test_iteration_w_span_creation(self):
@@ -777,7 +830,13 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
         api.streaming_read.assert_called_once_with(
             request=expected_request,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
             retry=retry,
             timeout=timeout,
         )
@@ -1026,7 +1085,13 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
         api.execute_streaming_sql.assert_called_once_with(
             request=expected_request,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                ),
+            ],
             timeout=timeout,
             retry=retry,
         )
@@ -1199,6 +1264,10 @@ class Test_SnapshotBase(OpenTelemetryBase):
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                ),
             ],
             retry=retry,
             timeout=timeout,
@@ -1378,6 +1447,10 @@ class Test_SnapshotBase(OpenTelemetryBase):
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                ),
             ],
             retry=retry,
             timeout=timeout,
@@ -1774,7 +1847,13 @@ class TestSnapshot(OpenTelemetryBase):
         api.begin_transaction.assert_called_once_with(
             session=session.name,
             options=expected_txn_options,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
         )
 
         self.assertSpanAttributes(
@@ -1810,7 +1889,13 @@ class TestSnapshot(OpenTelemetryBase):
         api.begin_transaction.assert_called_once_with(
             session=session.name,
             options=expected_txn_options,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+            metadata=[
+                ("google-cloud-resource-prefix", database.name),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
+            ],
         )
 
         self.assertSpanAttributes(
@@ -1835,6 +1920,7 @@ class _Instance(object):
 class _Database(object):
     def __init__(self, directed_read_options=None):
         self.name = "testing"
+        self._nth_request = 0
         self._instance = _Instance()
         self._route_to_leader_enabled = True
         self._directed_read_options = directed_read_options
@@ -1842,6 +1928,28 @@ class _Database(object):
     @property
     def observability_options(self):
         return dict(db_name=self.name)
+
+    @property
+    def _next_nth_request(self):
+        self._nth_request += 1
+        return self._nth_request
+
+    @property
+    def _nth_client_id(self):
+        return 1
+
+    def metadata_with_request_id(self, nth_request, nth_attempt, prior_metadata=[]):
+        return _metadata_with_request_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+        )
+
+    @property
+    def _channel_id(self):
+        return 1
 
 
 class _Session(object):

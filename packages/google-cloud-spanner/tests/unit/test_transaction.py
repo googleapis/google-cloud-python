@@ -25,6 +25,7 @@ from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _metadata_with_request_id,
 )
+from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 
 from tests._helpers import (
     HAS_OPENTELEMETRY_INSTALLED,
@@ -201,11 +202,10 @@ class TestTransaction(OpenTelemetryBase):
             [
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
-                # TODO(@odeke-em): enable with PR #1367.
-                # (
-                #     "x-goog-spanner-request-id",
-                #     f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
-                # ),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
+                ),
             ],
         )
 
@@ -310,11 +310,10 @@ class TestTransaction(OpenTelemetryBase):
             [
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
-                # TODO(@odeke-em): enable with PR #1367.
-                # (
-                #     "x-goog-spanner-request-id",
-                #     f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
-                # ),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
+                ),
             ],
         )
 
@@ -506,11 +505,10 @@ class TestTransaction(OpenTelemetryBase):
             [
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
-                # TODO(@odeke-em): enable with PR #1367.
-                # (
-                #     "x-goog-spanner-request-id",
-                #     f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
-                # ),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
+                ),
             ],
         )
         self.assertEqual(actual_request_options, expected_request_options)
@@ -685,11 +683,10 @@ class TestTransaction(OpenTelemetryBase):
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
-                # TODO(@odeke-em): enable with PR #1367.
-                # (
-                #     "x-goog-spanner-request-id",
-                #     f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
-                # ),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
+                ),
             ],
         )
 
@@ -883,11 +880,10 @@ class TestTransaction(OpenTelemetryBase):
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
-                # TODO(@odeke-em): enable with PR #1367.
-                # (
-                #     "x-goog-spanner-request-id",
-                #     f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
-                # ),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
+                ),
             ],
             retry=retry,
             timeout=timeout,
@@ -1003,11 +999,10 @@ class TestTransaction(OpenTelemetryBase):
             [
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
-                # TODO(@odeke-em): enable with PR #1367.
-                # (
-                #     "x-goog-spanner-request-id",
-                #     f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.2.1",
-                # ),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.2.1",
+                ),
             ],
         )
 
