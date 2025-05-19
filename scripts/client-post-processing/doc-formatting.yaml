@@ -363,6 +363,20 @@ replacements:
     after: "This API defines the following resource model:\n\n    - `OnlineReturnPolicy"
     count: 4
   - paths: [
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/async_client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/transports/grpc.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/transports/grpc_asyncio.py,
+    ]
+    before: |
+        This API defines the following resource model:
+        \    ----------------------------------------------\n
+        \    \[OmnichannelSetting\]\[google.shopping.merchant.accounts.v1.OmnichannelSetting\]
+    after: |
+        This API defines the following resource model:
+            - [OmnichannelSetting][google.shopping.merchant.accounts.v1.OmnichannelSetting]
+    count: 4
+  - paths: [
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/types/shippingsettings.py
     ]
     before: |

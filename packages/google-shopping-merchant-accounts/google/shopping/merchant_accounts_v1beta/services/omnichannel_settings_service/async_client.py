@@ -70,9 +70,7 @@ class OmnichannelSettingsServiceAsyncClient:
     settings.
 
     This API defines the following resource model:
-    ----------------------------------------------
-
-    [OmnichannelSetting][google.shopping.merchant.accounts.v1.OmnichannelSetting]
+    - [OmnichannelSetting][google.shopping.merchant.accounts.v1.OmnichannelSetting]
     """
 
     _client: OmnichannelSettingsServiceClient

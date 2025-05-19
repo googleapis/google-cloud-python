@@ -114,9 +114,7 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
     settings.
 
     This API defines the following resource model:
-    ----------------------------------------------
-
-    [OmnichannelSetting][google.shopping.merchant.accounts.v1.OmnichannelSetting]
+    - [OmnichannelSetting][google.shopping.merchant.accounts.v1.OmnichannelSetting]
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
