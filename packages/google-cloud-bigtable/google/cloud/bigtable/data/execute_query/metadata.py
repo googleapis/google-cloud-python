@@ -369,6 +369,8 @@ def _pb_metadata_to_metadata_types(
 ) -> Metadata:
     if "proto_schema" in metadata_pb:
         fields: List[Tuple[Optional[str], SqlType.Type]] = []
+        if not metadata_pb.proto_schema.columns:
+            raise ValueError("Invalid empty ResultSetMetadata received.")
         for column_metadata in metadata_pb.proto_schema.columns:
             fields.append(
                 (column_metadata.name, _pb_type_to_metadata_type(column_metadata.type))
