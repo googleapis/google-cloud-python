@@ -508,31 +508,37 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
         bq_schema_unused = set()
 
     bq_schema_out = []
-    unknown_type_fields = []
-
+    unknown_type_columns = []
+    dataframe_reset_index = dataframe.reset_index()
     for column, dtype in list_columns_and_indexes(dataframe):
-        # Use provided type from schema, if present.
+        # Step 1: use provided type from schema, if present.
         bq_field = bq_schema_index.get(column)
         if bq_field:
             bq_schema_out.append(bq_field)
             bq_schema_unused.discard(bq_field.name)
             continue
 
-        # Otherwise, try to automatically determine the type based on the
+        # Step 2: try to automatically determine the type based on the
         # pandas dtype.
         bq_type = _PANDAS_DTYPE_TO_BQ.get(dtype.name)
         if bq_type is None:
-            sample_data = _first_valid(dataframe.reset_index()[column])
+            sample_data = _first_valid(dataframe_reset_index[column])
             if (
                 isinstance(sample_data, _BaseGeometry)
                 and sample_data is not None  # Paranoia
             ):
                 bq_type = "GEOGRAPHY"
-        bq_field = schema.SchemaField(column, bq_type)
-        bq_schema_out.append(bq_field)
+        if bq_type is not None:
+            bq_schema_out.append(schema.SchemaField(column, bq_type))
+            continue
 
-        if bq_field.field_type is None:
-            unknown_type_fields.append(bq_field)
+        # Step 3: try with pyarrow if available
+        bq_field = _get_schema_by_pyarrow(column, dataframe_reset_index[column])
+        if bq_field is not None:
+            bq_schema_out.append(bq_field)
+            continue
+
+        unknown_type_columns.append(column)
 
     # Catch any schema mismatch. The developer explicitly asked to serialize a
     # column, but it was not found.
@@ -543,97 +549,69 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
             )
         )
 
-    # If schema detection was not successful for all columns, also try with
-    # pyarrow, if available.
-    if unknown_type_fields:
-        if not pyarrow:
-            msg = "Could not determine the type of columns: {}".format(
-                ", ".join(field.name for field in unknown_type_fields)
-            )
-            warnings.warn(msg)
-            return None  # We cannot detect the schema in full.
+    if unknown_type_columns != []:
+        msg = "Could not determine the type of columns: {}".format(
+            ", ".join(unknown_type_columns)
+        )
+        warnings.warn(msg)
+        return None  # We cannot detect the schema in full.
 
-        # The augment_schema() helper itself will also issue unknown type
-        # warnings if detection still fails for any of the fields.
-        bq_schema_out = augment_schema(dataframe, bq_schema_out)
-
-    return tuple(bq_schema_out) if bq_schema_out else None
+    return tuple(bq_schema_out)
 
 
-def augment_schema(dataframe, current_bq_schema):
-    """Try to deduce the unknown field types and return an improved schema.
+def _get_schema_by_pyarrow(name, series):
+    """Attempt to detect the type of the given series by leveraging PyArrow's
+    type detection capabilities.
 
-    This function requires ``pyarrow`` to run. If all the missing types still
-    cannot be detected, ``None`` is returned. If all types are already known,
-    a shallow copy of the given schema is returned.
+    This function requires the ``pyarrow`` library to be installed and
+    available. If the series type cannot be determined or ``pyarrow`` is not
+    available, ``None`` is returned.
 
     Args:
-        dataframe (pandas.DataFrame):
-            DataFrame for which some of the field types are still unknown.
-        current_bq_schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
-            A BigQuery schema for ``dataframe``. The types of some or all of
-            the fields may be ``None``.
+        name (str):
+            the column name of the SchemaField.
+        series (pandas.Series):
+            The Series data for which to detect the data type.
     Returns:
-        Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]
+        Optional[google.cloud.bigquery.schema.SchemaField]:
+            A tuple containing the BigQuery-compatible type string (e.g.,
+            "STRING", "INTEGER", "TIMESTAMP", "DATETIME", "NUMERIC", "BIGNUMERIC")
+            and the mode string ("NULLABLE", "REPEATED").
+            Returns ``None`` if the type cannot be determined or ``pyarrow``
+            is not imported.
     """
-    # pytype: disable=attribute-error
-    augmented_schema = []
-    unknown_type_fields = []
-    for field in current_bq_schema:
-        if field.field_type is not None:
-            augmented_schema.append(field)
-            continue
 
-        arrow_table = pyarrow.array(dataframe.reset_index()[field.name])
-
-        if pyarrow.types.is_list(arrow_table.type):
-            # `pyarrow.ListType`
-            detected_mode = "REPEATED"
-            detected_type = _pyarrow_helpers.arrow_scalar_ids_to_bq(
-                arrow_table.values.type.id
-            )
-
-            # For timezone-naive datetimes, pyarrow assumes the UTC timezone and adds
-            # it to such datetimes, causing them to be recognized as TIMESTAMP type.
-            # We thus additionally check the actual data to see if we need to overrule
-            # that and choose DATETIME instead.
-            # Note that this should only be needed for datetime values inside a list,
-            # since scalar datetime values have a proper Pandas dtype that allows
-            # distinguishing between timezone-naive and timezone-aware values before
-            # even requiring the additional schema augment logic in this method.
-            if detected_type == "TIMESTAMP":
-                valid_item = _first_array_valid(dataframe[field.name])
-                if isinstance(valid_item, datetime) and valid_item.tzinfo is None:
-                    detected_type = "DATETIME"
-        else:
-            detected_mode = field.mode
-            detected_type = _pyarrow_helpers.arrow_scalar_ids_to_bq(arrow_table.type.id)
-            if detected_type == "NUMERIC" and arrow_table.type.scale > 9:
-                detected_type = "BIGNUMERIC"
-
-        if detected_type is None:
-            unknown_type_fields.append(field)
-            continue
-
-        new_field = schema.SchemaField(
-            name=field.name,
-            field_type=detected_type,
-            mode=detected_mode,
-            description=field.description,
-            fields=field.fields,
-        )
-        augmented_schema.append(new_field)
-
-    if unknown_type_fields:
-        warnings.warn(
-            "Pyarrow could not determine the type of columns: {}.".format(
-                ", ".join(field.name for field in unknown_type_fields)
-            )
-        )
+    if not pyarrow:
         return None
 
-    return augmented_schema
-    # pytype: enable=attribute-error
+    arrow_table = pyarrow.array(series)
+    if pyarrow.types.is_list(arrow_table.type):
+        # `pyarrow.ListType`
+        mode = "REPEATED"
+        type = _pyarrow_helpers.arrow_scalar_ids_to_bq(arrow_table.values.type.id)
+
+        # For timezone-naive datetimes, pyarrow assumes the UTC timezone and adds
+        # it to such datetimes, causing them to be recognized as TIMESTAMP type.
+        # We thus additionally check the actual data to see if we need to overrule
+        # that and choose DATETIME instead.
+        # Note that this should only be needed for datetime values inside a list,
+        # since scalar datetime values have a proper Pandas dtype that allows
+        # distinguishing between timezone-naive and timezone-aware values before
+        # even requiring the additional schema augment logic in this method.
+        if type == "TIMESTAMP":
+            valid_item = _first_array_valid(series)
+            if isinstance(valid_item, datetime) and valid_item.tzinfo is None:
+                type = "DATETIME"
+    else:
+        mode = "NULLABLE"  # default mode
+        type = _pyarrow_helpers.arrow_scalar_ids_to_bq(arrow_table.type.id)
+        if type == "NUMERIC" and arrow_table.type.scale > 9:
+            type = "BIGNUMERIC"
+
+    if type is not None:
+        return schema.SchemaField(name, type, mode)
+    else:
+        return None
 
 
 def dataframe_to_arrow(dataframe, bq_schema):

@@ -640,11 +640,6 @@ class TestSchemaField(unittest.TestCase):
         expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, None, (), None)"
         self.assertEqual(repr(field1), expected)
 
-    def test___repr__type_not_set(self):
-        field1 = self._make_one("field1", field_type=None)
-        expected = "SchemaField('field1', None, 'NULLABLE', None, None, (), None)"
-        self.assertEqual(repr(field1), expected)
-
     def test___repr__evaluable_no_policy_tags(self):
         field = self._make_one("field1", "STRING", "REQUIRED", "Description")
         field_repr = repr(field)

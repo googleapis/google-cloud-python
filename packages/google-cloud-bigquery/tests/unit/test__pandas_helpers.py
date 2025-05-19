@@ -1568,31 +1568,7 @@ def test_augment_schema_type_detection_succeeds(module_under_test):
     # set to "datetime64[ns]", and pyarrow converts that to pyarrow.TimestampArray.
     # We thus cannot expect to get a DATETIME date when converting back to the
     # BigQuery type.
-
-    current_schema = (
-        schema.SchemaField("bool_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("int_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("float_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("time_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("timestamp_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("date_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("bytes_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("string_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("numeric_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("bignumeric_field", field_type=None, mode="NULLABLE"),
-    )
-
-    with warnings.catch_warnings(record=True) as warned:
-        augmented_schema = module_under_test.augment_schema(dataframe, current_schema)
-
-    # there should be no relevant warnings
-    unwanted_warnings = [
-        warning for warning in warned if "Pyarrow could not" in str(warning)
-    ]
-    assert not unwanted_warnings
-
-    # the augmented schema must match the expected
-    expected_schema = (
+    expected_schemas = (
         schema.SchemaField("bool_field", field_type="BOOL", mode="NULLABLE"),
         schema.SchemaField("int_field", field_type="INT64", mode="NULLABLE"),
         schema.SchemaField("float_field", field_type="FLOAT64", mode="NULLABLE"),
@@ -1607,8 +1583,13 @@ def test_augment_schema_type_detection_succeeds(module_under_test):
         ),
     )
 
-    by_name = operator.attrgetter("name")
-    assert sorted(augmented_schema, key=by_name) == sorted(expected_schema, key=by_name)
+    for col_name, expected_schema in zip(dataframe, expected_schemas):
+        with warnings.catch_warnings(record=True) as warned:
+            schema_field = module_under_test._get_schema_by_pyarrow(
+                col_name, dataframe[col_name]
+            )
+            assert warned == []
+            assert schema_field == expected_schema
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -1639,30 +1620,20 @@ def test_augment_schema_repeated_fields(module_under_test):
         ]
     )
 
-    current_schema = (
-        schema.SchemaField("string_array", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("timestamp_array", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("datetime_array", field_type=None, mode="NULLABLE"),
-    )
-
-    with warnings.catch_warnings(record=True) as warned:
-        augmented_schema = module_under_test.augment_schema(dataframe, current_schema)
-
-    # there should be no relevant warnings
-    unwanted_warnings = [
-        warning for warning in warned if "Pyarrow could not" in str(warning)
-    ]
-    assert not unwanted_warnings
-
     # the augmented schema must match the expected
-    expected_schema = (
+    expected_schemas = (
         schema.SchemaField("string_array", field_type="STRING", mode="REPEATED"),
         schema.SchemaField("timestamp_array", field_type="TIMESTAMP", mode="REPEATED"),
         schema.SchemaField("datetime_array", field_type="DATETIME", mode="REPEATED"),
     )
 
-    by_name = operator.attrgetter("name")
-    assert sorted(augmented_schema, key=by_name) == sorted(expected_schema, key=by_name)
+    for col_name, expected_schema in zip(dataframe, expected_schemas):
+        with warnings.catch_warnings(record=True) as warned:
+            schema_field = module_under_test._get_schema_by_pyarrow(
+                col_name, dataframe[col_name]
+            )
+            assert warned == []
+            assert schema_field == expected_schema
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -1681,24 +1652,21 @@ def test_augment_schema_type_detection_fails(module_under_test):
             },
         ]
     )
-    current_schema = [
+
+    expected_schemas = (
         schema.SchemaField("status", field_type="STRING", mode="NULLABLE"),
-        schema.SchemaField("struct_field", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("struct_field_2", field_type=None, mode="NULLABLE"),
-    ]
+        # Could not determine the type of these columns
+        None,
+        None,
+    )
 
-    with warnings.catch_warnings(record=True) as warned:
-        augmented_schema = module_under_test.augment_schema(dataframe, current_schema)
-
-    assert augmented_schema is None
-
-    expected_warnings = [
-        warning for warning in warned if "could not determine" in str(warning)
-    ]
-    assert len(expected_warnings) == 1
-    warning_msg = str(expected_warnings[0])
-    assert "pyarrow" in warning_msg.lower()
-    assert "struct_field" in warning_msg and "struct_field_2" in warning_msg
+    for col_name, expected_schema in zip(dataframe, expected_schemas):
+        with warnings.catch_warnings(record=True) as warned:
+            schema_field = module_under_test._get_schema_by_pyarrow(
+                col_name, dataframe[col_name]
+            )
+            assert warned == []
+            assert schema_field == expected_schema
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -1706,23 +1674,14 @@ def test_augment_schema_type_detection_fails_array_data(module_under_test):
     dataframe = pandas.DataFrame(
         data=[{"all_none_array": [None, float("NaN")], "empty_array": []}]
     )
-    current_schema = [
-        schema.SchemaField("all_none_array", field_type=None, mode="NULLABLE"),
-        schema.SchemaField("empty_array", field_type=None, mode="NULLABLE"),
-    ]
 
-    with warnings.catch_warnings(record=True) as warned:
-        augmented_schema = module_under_test.augment_schema(dataframe, current_schema)
-
-    assert augmented_schema is None
-
-    expected_warnings = [
-        warning for warning in warned if "could not determine" in str(warning)
-    ]
-    assert len(expected_warnings) == 1
-    warning_msg = str(expected_warnings[0])
-    assert "pyarrow" in warning_msg.lower()
-    assert "all_none_array" in warning_msg and "empty_array" in warning_msg
+    for col_name in dataframe:
+        with warnings.catch_warnings(record=True) as warned:
+            schema_field = module_under_test._get_schema_by_pyarrow(
+                col_name, dataframe[col_name]
+            )
+            assert warned == []
+            assert schema_field is None
 
 
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
