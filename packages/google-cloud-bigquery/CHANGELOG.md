@@ -5,6 +5,21 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.33.0](https://github.com/googleapis/python-bigquery/compare/v3.32.0...v3.33.0) (2025-05-19)
+
+
+### Features
+
+* Add ability to set autodetect_schema query param in update_table ([#2171](https://github.com/googleapis/python-bigquery/issues/2171)) ([57f940d](https://github.com/googleapis/python-bigquery/commit/57f940d957613b4d80fb81ea40a1177b73856189))
+* Add dtype parameters to to_geodataframe  functions ([#2176](https://github.com/googleapis/python-bigquery/issues/2176)) ([ebfd0a8](https://github.com/googleapis/python-bigquery/commit/ebfd0a83d43bcb96f65f5669437220aa6138b766))
+* Support job reservation ([#2186](https://github.com/googleapis/python-bigquery/issues/2186)) ([cb646ce](https://github.com/googleapis/python-bigquery/commit/cb646ceea172bf199f366ae0592546dff2d3bcb2))
+
+
+### Bug Fixes
+
+* Ensure AccessEntry equality and repr uses the correct `entity_type` ([#2182](https://github.com/googleapis/python-bigquery/issues/2182)) ([0217637](https://github.com/googleapis/python-bigquery/commit/02176377d5e2fc25b5cd4f46aa6ebfb1b6a960a6))
+* Ensure SchemaField.field_dtype returns a string ([#2188](https://github.com/googleapis/python-bigquery/issues/2188)) ([7ec2848](https://github.com/googleapis/python-bigquery/commit/7ec2848379d5743bbcb36700a1153540c451e0e0))
+
 ## [3.32.0](https://github.com/googleapis/python-bigquery/compare/v3.31.0...v3.32.0) (2025-05-12)
 
 
