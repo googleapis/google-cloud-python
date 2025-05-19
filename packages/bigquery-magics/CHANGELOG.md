@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.9.0...v0.10.0) (2025-05-16)
+
+
+### Features
+
+* Instrument vscode, jupyter and 3p plugin usage ([#115](https://github.com/googleapis/python-bigquery-magics/issues/115)) ([0dd163f](https://github.com/googleapis/python-bigquery-magics/commit/0dd163f3e5a2627e21b7d2d91ad1eefcd662b7a0))
+
 ## [0.9.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.8.1...v0.9.0) (2025-03-26)
 
 
