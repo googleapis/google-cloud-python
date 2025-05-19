@@ -51,7 +51,11 @@ def test_filter(session):
     df = dataframe.DataFrame({"col": ["A", "B"]}, session=session)
     model = FakeGeminiTextGenerator(
         dataframe.DataFrame(
-            {"ml_generate_text_llm_result": ["true", "false"]}, session=session
+            {
+                "answer": [True, False],
+                "full_response": _create_dummy_full_response(2),
+            },
+            session=session,
         ),
     )
 
@@ -77,7 +81,11 @@ def test_map(session):
     df = dataframe.DataFrame({"col": ["A", "B"]}, session=session)
     model = FakeGeminiTextGenerator(
         dataframe.DataFrame(
-            {"ml_generate_text_llm_result": ["true", "false"]}, session=session
+            {
+                "output": ["true", "false"],
+                "full_response": _create_dummy_full_response(2),
+            },
+            session=session,
         ),
     )
 
@@ -87,7 +95,9 @@ def test_map(session):
         THRESHOLD_OPTION,
         50,
     ):
-        result = df.ai.map("map {col}", model=model, output_column="output").to_pandas()
+        result = df.ai.map(
+            "map {col}", model=model, output_schema={"output": "string"}
+        ).to_pandas()
 
     pandas.testing.assert_frame_equal(
         result,
@@ -102,7 +112,13 @@ def test_join(session):
     left_df = dataframe.DataFrame({"col_A": ["A"]}, session=session)
     right_df = dataframe.DataFrame({"col_B": ["B"]}, session=session)
     model = FakeGeminiTextGenerator(
-        dataframe.DataFrame({"ml_generate_text_llm_result": ["true"]}, session=session),
+        dataframe.DataFrame(
+            {
+                "answer": [True],
+                "full_response": _create_dummy_full_response(1),
+            },
+            session=session,
+        ),
     )
 
     with bigframes.option_context(
@@ -139,3 +155,9 @@ def test_top_k(session):
         result = df.ai.top_k("top k of {col}", model, k=1).to_pandas()
 
     assert len(result) == 1
+
+
+def _create_dummy_full_response(row_count: int) -> pd.Series:
+    entry = """{"candidates": [{"avg_logprobs": -0.5}]}"""
+
+    return pd.Series([entry] * row_count)

@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
 import re
 import typing
-from typing import List, Optional
+from typing import Dict, List, Optional
 import warnings
 
 import numpy as np
@@ -34,7 +36,13 @@ class AIAccessor:
 
         self._df: bigframes.dataframe.DataFrame = df
 
-    def filter(self, instruction: str, model, ground_with_google_search: bool = False):
+    def filter(
+        self,
+        instruction: str,
+        model,
+        ground_with_google_search: bool = False,
+        attach_logprobs: bool = False,
+    ):
         """
         Filters the DataFrame with the semantics of the user instruction.
 
@@ -74,6 +82,10 @@ class AIAccessor:
                 page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
                 The default is `False`.
 
+            attach_logprobs (bool, default False):
+                Controls whether to attach an additional "logprob" column for each result. Logprobs are float-point values reflecting the confidence level
+                of the LLM for their responses. Higher values indicate more confidence. The value is in the range between negative infinite and 0.
+
         Returns:
             bigframes.pandas.DataFrame: DataFrame filtered by the instruction.
 
@@ -82,72 +94,27 @@ class AIAccessor:
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
-        import bigframes.dataframe
-        import bigframes.series
 
-        self._validate_model(model)
-        columns = self._parse_columns(instruction)
-        for column in columns:
-            if column not in self._df.columns:
-                raise ValueError(f"Column {column} not found.")
+        answer_col = "answer"
 
-        if ground_with_google_search:
-            msg = exceptions.format_message(
-                "Enables Grounding with Google Search may impact billing cost. See pricing "
-                "details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models"
-            )
-            warnings.warn(msg, category=UserWarning)
+        output_schema = {answer_col: "bool"}
+        result = self.map(
+            instruction,
+            model,
+            output_schema,
+            ground_with_google_search,
+            attach_logprobs,
+        )
 
-        self._confirm_operation(len(self._df))
-
-        df: bigframes.dataframe.DataFrame = self._df[columns].copy()
-        has_blob_column = False
-        for column in columns:
-            if df[column].dtype == dtypes.OBJ_REF_DTYPE:
-                # Don't cast blob columns to string
-                has_blob_column = True
-                continue
-
-            if df[column].dtype != dtypes.STRING_DTYPE:
-                df[column] = df[column].astype(dtypes.STRING_DTYPE)
-
-        user_instruction = self._format_instruction(instruction, columns)
-        output_instruction = "Based on the provided context, reply to the following claim by only True or False:"
-
-        if has_blob_column:
-            results = typing.cast(
-                bigframes.dataframe.DataFrame,
-                model.predict(
-                    df,
-                    prompt=self._make_multimodel_prompt(
-                        df, columns, user_instruction, output_instruction
-                    ),
-                    temperature=0.0,
-                    ground_with_google_search=ground_with_google_search,
-                ),
-            )
-        else:
-            results = typing.cast(
-                bigframes.dataframe.DataFrame,
-                model.predict(
-                    self._make_text_prompt(
-                        df, columns, user_instruction, output_instruction
-                    ),
-                    temperature=0.0,
-                    ground_with_google_search=ground_with_google_search,
-                ),
-            )
-
-        return self._df[
-            results["ml_generate_text_llm_result"].str.lower().str.contains("true")
-        ]
+        return result[result[answer_col]].drop(answer_col, axis=1)
 
     def map(
         self,
         instruction: str,
-        output_column: str,
         model,
+        output_schema: Dict[str, str] | None = None,
         ground_with_google_search: bool = False,
+        attach_logprobs=False,
     ):
         """
         Maps the DataFrame with the semantics of the user instruction.
@@ -163,7 +130,7 @@ class AIAccessor:
             >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
 
             >>> df = bpd.DataFrame({"ingredient_1": ["Burger Bun", "Soy Bean"], "ingredient_2": ["Beef Patty", "Bittern"]})
-            >>> df.ai.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", output_column="food", model=model)
+            >>> df.ai.map("What is the food made from {ingredient_1} and {ingredient_2}? One word only.", model=model, output_schema={"food": "string"})
               ingredient_1 ingredient_2      food
             0   Burger Bun   Beef Patty  Burger
             <BLANKLINE>
@@ -180,11 +147,13 @@ class AIAccessor:
                 in the instructions like:
                 "Get the ingredients of {food}."
 
-            output_column (str):
-                The column name of the mapping result.
-
             model (bigframes.ml.llm.GeminiTextGenerator):
                 A GeminiTextGenerator provided by Bigframes ML package.
+
+            output_schema (Dict[str, str] or None, default None):
+                The schema used to generate structured output as a bigframes DataFrame. The schema is a string key-value pair of <column_name>:<type>.
+                Supported types are int64, float64, bool, string, array<type> and struct<column type>. If None, generate string result under the column
+                "ml_generate_text_llm_result".
 
             ground_with_google_search (bool, default False):
                 Enables Grounding with Google Search for the GeminiTextGenerator model.
@@ -193,6 +162,11 @@ class AIAccessor:
                 Note: Using this feature may impact billing costs. Refer to the pricing
                 page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
                 The default is `False`.
+
+            attach_logprobs (bool, default False):
+                Controls whether to attach an additional "logprob" column for each result. Logprobs are float-point values reflecting the confidence level
+                of the LLM for their responses. Higher values indicate more confidence. The value is in the range between negative infinite and 0.
+
 
         Returns:
             bigframes.pandas.DataFrame: DataFrame with attached mapping results.
@@ -236,6 +210,9 @@ class AIAccessor:
             "Based on the provided contenxt, answer the following instruction:"
         )
 
+        if output_schema is None:
+            output_schema = {"ml_generate_text_llm_result": "string"}
+
         if has_blob_column:
             results = typing.cast(
                 bigframes.series.Series,
@@ -246,7 +223,8 @@ class AIAccessor:
                     ),
                     temperature=0.0,
                     ground_with_google_search=ground_with_google_search,
-                )["ml_generate_text_llm_result"],
+                    output_schema=output_schema,
+                ),
             )
         else:
             results = typing.cast(
@@ -257,12 +235,28 @@ class AIAccessor:
                     ),
                     temperature=0.0,
                     ground_with_google_search=ground_with_google_search,
-                )["ml_generate_text_llm_result"],
+                    output_schema=output_schema,
+                ),
             )
+
+        attach_columns = [results[col] for col, _ in output_schema.items()]
+
+        def extract_logprob(s: bigframes.series.Series) -> bigframes.series.Series:
+            from bigframes import bigquery as bbq
+
+            logprob_jsons = bbq.json_extract_array(s, "$.candidates").list[0]
+            logprobs = bbq.json_extract(logprob_jsons, "$.avg_logprobs").astype(
+                "Float64"
+            )
+            logprobs.name = "logprob"
+            return logprobs
+
+        if attach_logprobs:
+            attach_columns.append(extract_logprob(results["full_response"]))
 
         from bigframes.core.reshape.api import concat
 
-        return concat([self._df, results.rename(output_column)], axis=1)
+        return concat([self._df, *attach_columns], axis=1)
 
     def join(
         self,
@@ -270,6 +264,7 @@ class AIAccessor:
         instruction: str,
         model,
         ground_with_google_search: bool = False,
+        attach_logprobs=False,
     ):
         """
         Joines two dataframes by applying the instruction over each pair of rows from
@@ -313,10 +308,6 @@ class AIAccessor:
             model (bigframes.ml.llm.GeminiTextGenerator):
                 A GeminiTextGenerator provided by Bigframes ML package.
 
-            max_rows (int, default 1000):
-                The maximum number of rows allowed to be sent to the model per call. If the result is too large, the method
-                call will end early with an error.
-
             ground_with_google_search (bool, default False):
                 Enables Grounding with Google Search for the GeminiTextGenerator model.
                 When set to True, the model incorporates relevant information from Google
@@ -324,6 +315,10 @@ class AIAccessor:
                 Note: Using this feature may impact billing costs. Refer to the pricing
                 page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
                 The default is `False`.
+
+            attach_logprobs (bool, default False):
+                Controls whether to attach an additional "logprob" column for each result. Logprobs are float-point values reflecting the confidence level
+                of the LLM for their responses. Higher values indicate more confidence. The value is in the range between negative infinite and 0.
 
         Returns:
             bigframes.pandas.DataFrame: The joined dataframe.
@@ -400,7 +395,10 @@ class AIAccessor:
         joined_df = self._df.merge(other, how="cross", suffixes=("_left", "_right"))
 
         return joined_df.ai.filter(
-            instruction, model, ground_with_google_search=ground_with_google_search
+            instruction,
+            model,
+            ground_with_google_search=ground_with_google_search,
+            attach_logprobs=attach_logprobs,
         ).reset_index(drop=True)
 
     def search(
