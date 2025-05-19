@@ -2037,6 +2037,9 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
             zone="zone_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            custom_performance_enabled=True,
+            total_throughput_mibps=2391,
+            total_iops=1086,
         )
         response = client.get_storage_pool(request)
 
@@ -2068,6 +2071,9 @@ def test_get_storage_pool(request_type, transport: str = "grpc"):
     assert response.zone == "zone_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.custom_performance_enabled is True
+    assert response.total_throughput_mibps == 2391
+    assert response.total_iops == 1086
 
 
 def test_get_storage_pool_non_empty_request_with_auto_populated_field():
@@ -2215,6 +2221,9 @@ async def test_get_storage_pool_async(
                 zone="zone_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                custom_performance_enabled=True,
+                total_throughput_mibps=2391,
+                total_iops=1086,
             )
         )
         response = await client.get_storage_pool(request)
@@ -2247,6 +2256,9 @@ async def test_get_storage_pool_async(
     assert response.zone == "zone_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.custom_performance_enabled is True
+    assert response.total_throughput_mibps == 2391
+    assert response.total_iops == 1086
 
 
 @pytest.mark.asyncio
@@ -36283,6 +36295,9 @@ async def test_get_storage_pool_empty_call_grpc_asyncio():
                 zone="zone_value",
                 satisfies_pzs=True,
                 satisfies_pzi=True,
+                custom_performance_enabled=True,
+                total_throughput_mibps=2391,
+                total_iops=1086,
             )
         )
         await client.get_storage_pool(request=None)
@@ -38133,6 +38148,9 @@ def test_create_storage_pool_rest_call_success(request_type):
         "zone": "zone_value",
         "satisfies_pzs": True,
         "satisfies_pzi": True,
+        "custom_performance_enabled": True,
+        "total_throughput_mibps": 2391,
+        "total_iops": 1086,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -38348,6 +38366,9 @@ def test_get_storage_pool_rest_call_success(request_type):
             zone="zone_value",
             satisfies_pzs=True,
             satisfies_pzi=True,
+            custom_performance_enabled=True,
+            total_throughput_mibps=2391,
+            total_iops=1086,
         )
 
         # Wrap the value into a proper Response obj
@@ -38384,6 +38405,9 @@ def test_get_storage_pool_rest_call_success(request_type):
     assert response.zone == "zone_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
+    assert response.custom_performance_enabled is True
+    assert response.total_throughput_mibps == 2391
+    assert response.total_iops == 1086
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -38516,6 +38540,9 @@ def test_update_storage_pool_rest_call_success(request_type):
         "zone": "zone_value",
         "satisfies_pzs": True,
         "satisfies_pzi": True,
+        "custom_performance_enabled": True,
+        "total_throughput_mibps": 2391,
+        "total_iops": 1086,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -44369,6 +44396,13 @@ def test_create_backup_vault_rest_call_success(request_type):
         "backup_region": "backup_region_value",
         "source_backup_vault": "source_backup_vault_value",
         "destination_backup_vault": "destination_backup_vault_value",
+        "backup_retention_policy": {
+            "backup_minimum_enforced_retention_days": 4029,
+            "daily_backup_immutable": True,
+            "weekly_backup_immutable": True,
+            "monthly_backup_immutable": True,
+            "manual_backup_immutable": True,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -44850,6 +44884,13 @@ def test_update_backup_vault_rest_call_success(request_type):
         "backup_region": "backup_region_value",
         "source_backup_vault": "source_backup_vault_value",
         "destination_backup_vault": "destination_backup_vault_value",
+        "backup_retention_policy": {
+            "backup_minimum_enforced_retention_days": 4029,
+            "daily_backup_immutable": True,
+            "weekly_backup_immutable": True,
+            "monthly_backup_immutable": True,
+            "manual_backup_immutable": True,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -45173,6 +45214,7 @@ def test_create_backup_rest_call_success(request_type):
         "satisfies_pzi": True,
         "volume_region": "volume_region_value",
         "backup_region": "backup_region_value",
+        "enforced_retention_end_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -45772,6 +45814,7 @@ def test_update_backup_rest_call_success(request_type):
         "satisfies_pzi": True,
         "volume_region": "volume_region_value",
         "backup_region": "backup_region_value",
+        "enforced_retention_end_time": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
