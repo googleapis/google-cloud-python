@@ -443,6 +443,16 @@ class Test_AsyncJob(unittest.TestCase):
         status["state"] = state
         self.assertEqual(job.state, state)
 
+    def test_reservation_id(self):
+        reservation_id = "RESERVATION-ID"
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        self.assertIsNone(job.reservation_id)
+        stats = job._properties["statistics"] = {}
+        self.assertIsNone(job.reservation_id)
+        stats["reservation_id"] = reservation_id
+        self.assertEqual(job.reservation_id, reservation_id)
+
     def _set_properties_job(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)
@@ -1188,15 +1198,18 @@ class Test_JobConfig(unittest.TestCase):
         job_config = QueryJobConfig()
         job_config.dry_run = True
         job_config.maximum_bytes_billed = 1000
+        job_config.reservation = "reservation_1"
 
         default_job_config = QueryJobConfig()
         default_job_config.use_query_cache = True
         default_job_config.maximum_bytes_billed = 2000
+        default_job_config.reservation = "reservation_2"
 
         final_job_config = job_config._fill_from_default(default_job_config)
         self.assertTrue(final_job_config.dry_run)
         self.assertTrue(final_job_config.use_query_cache)
         self.assertEqual(final_job_config.maximum_bytes_billed, 1000)
+        self.assertEqual(final_job_config.reservation, "reservation_1")
 
     def test_fill_load_job_from_default(self):
         from google.cloud.bigquery import LoadJobConfig
@@ -1204,15 +1217,18 @@ class Test_JobConfig(unittest.TestCase):
         job_config = LoadJobConfig()
         job_config.create_session = True
         job_config.encoding = "UTF-8"
+        job_config.reservation = "reservation_1"
 
         default_job_config = LoadJobConfig()
         default_job_config.ignore_unknown_values = True
         default_job_config.encoding = "ISO-8859-1"
+        default_job_config.reservation = "reservation_2"
 
         final_job_config = job_config._fill_from_default(default_job_config)
         self.assertTrue(final_job_config.create_session)
         self.assertTrue(final_job_config.ignore_unknown_values)
         self.assertEqual(final_job_config.encoding, "UTF-8")
+        self.assertEqual(final_job_config.reservation, "reservation_1")
 
     def test_fill_from_default_conflict(self):
         from google.cloud.bigquery import QueryJobConfig
@@ -1232,10 +1248,12 @@ class Test_JobConfig(unittest.TestCase):
         job_config = QueryJobConfig()
         job_config.dry_run = True
         job_config.maximum_bytes_billed = 1000
+        job_config.reservation = "reservation_1"
 
         final_job_config = job_config._fill_from_default(default_job_config=None)
         self.assertTrue(final_job_config.dry_run)
         self.assertEqual(final_job_config.maximum_bytes_billed, 1000)
+        self.assertEqual(final_job_config.reservation, "reservation_1")
 
     @mock.patch("google.cloud.bigquery._helpers._get_sub_prop")
     def test__get_sub_prop_wo_default(self, _get_sub_prop):
@@ -1338,3 +1356,27 @@ class Test_JobConfig(unittest.TestCase):
         job_config.job_timeout_ms = None
         assert job_config.job_timeout_ms is None
         assert "jobTimeoutMs" not in job_config._properties
+
+    def test_reservation_miss(self):
+        job_config = self._make_one()
+        self.assertEqual(job_config.reservation, None)
+
+    def test_reservation_hit(self):
+        job_config = self._make_one()
+        job_config._properties["reservation"] = "foo"
+        self.assertEqual(job_config.reservation, "foo")
+
+    def test_reservation_update_in_place(self):
+        job_config = self._make_one()
+        job_config.reservation = "bar"  # update in place
+        self.assertEqual(job_config.reservation, "bar")
+
+    def test_reservation_setter_invalid(self):
+        job_config = self._make_one()
+        with self.assertRaises(ValueError):
+            job_config.reservation = object()
+
+    def test_reservation_setter(self):
+        job_config = self._make_one()
+        job_config.reservation = "foo"
+        self.assertEqual(job_config._properties["reservation"], "foo")

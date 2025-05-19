@@ -225,6 +225,26 @@ class _JobConfig(object):
             self._properties.pop("jobTimeoutMs", None)
 
     @property
+    def reservation(self):
+        """str: Optional. The reservation that job would use.
+
+        User can specify a reservation to execute the job. If reservation is
+        not set, reservation is determined based on the rules defined by the
+        reservation assignments. The expected format is
+        projects/{project}/locations/{location}/reservations/{reservation}.
+
+        Raises:
+            ValueError: If ``value`` type is not None or of string type.
+        """
+        return self._properties.setdefault("reservation", None)
+
+    @reservation.setter
+    def reservation(self, value):
+        if value and not isinstance(value, str):
+            raise ValueError("Reservation must be None or a string.")
+        self._properties["reservation"] = value
+
+    @property
     def labels(self):
         """Dict[str, str]: Labels for the job.
 
@@ -487,6 +507,18 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def location(self):
         """str: Location where the job runs."""
         return _helpers._get_sub_prop(self._properties, ["jobReference", "location"])
+
+    @property
+    def reservation_id(self):
+        """str: Name of the primary reservation assigned to this job.
+
+        Note that this could be different than reservations reported in
+        the reservation field if parent reservations were used to execute
+        this job.
+        """
+        return _helpers._get_sub_prop(
+            self._properties, ["statistics", "reservation_id"]
+        )
 
     def _require_client(self, client):
         """Check client or verify over-ride.
