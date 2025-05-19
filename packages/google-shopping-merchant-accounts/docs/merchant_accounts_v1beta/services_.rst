@@ -11,7 +11,10 @@ Services for Google Shopping Merchant Accounts v1beta API
     business_identity_service
     business_info_service
     email_preferences_service
+    gbp_accounts_service
     homepage_service
+    lfp_providers_service
+    omnichannel_settings_service
     online_return_policy_service
     programs_service
     regions_service
