@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.29.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.28.1...v0.29.0) (2025-05-14)
+
+
+### Features
+
+* Instrument vscode, jupyter and 3p plugin usage ([#925](https://github.com/googleapis/python-bigquery-pandas/issues/925)) ([7d354f1](https://github.com/googleapis/python-bigquery-pandas/commit/7d354f1ca90eb2647c81d8d8422d0146d56f802a))
+
 ## [0.28.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.28.0...v0.28.1) (2025-04-28)
 
 
