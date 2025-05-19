@@ -94,6 +94,12 @@ class DataformAsyncClient:
     parse_crypto_key_version_path = staticmethod(
         DataformClient.parse_crypto_key_version_path
     )
+    notebook_runtime_template_path = staticmethod(
+        DataformClient.notebook_runtime_template_path
+    )
+    parse_notebook_runtime_template_path = staticmethod(
+        DataformClient.parse_notebook_runtime_template_path
+    )
     release_config_path = staticmethod(DataformClient.release_config_path)
     parse_release_config_path = staticmethod(DataformClient.parse_release_config_path)
     repository_path = staticmethod(DataformClient.repository_path)
@@ -322,6 +328,10 @@ class DataformAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRepositoriesAsyncPager:
         r"""Lists Repositories in a given project and location.
+
+        **Note:** *This method can return repositories not shown in
+        the*\ `Dataform
+        UI <https://console.cloud.google.com/bigquery/dataform>`__.
 
         .. code-block:: python
 
@@ -685,13 +695,11 @@ class DataformAsyncClient:
     ) -> dataform.Repository:
         r"""Updates a single Repository.
 
-        **Note:** This method does not fully implement
-        `AIP-134 <https://google.aip.dev/134>`__; in particular:
-
-        -  The wildcard entry (**\***) is treated as a bad request
-        -  When the **field_mask** is omitted, instead of only updating
-           the set fields, the request is treated as a full update on
-           all modifiable fields
+        **Note:** *This method does not fully
+        implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
+        wildcard entry (*) is treated as a bad request, and when the
+        ``field_mask`` is omitted, the request is treated as a full
+        update on all modifiable fields.*
 
         .. code-block:: python
 
@@ -3780,13 +3788,11 @@ class DataformAsyncClient:
     ) -> dataform.ReleaseConfig:
         r"""Updates a single ReleaseConfig.
 
-        **Note:** This method does not fully implement
-        `AIP-134 <https://google.aip.dev/134>`__; in particular:
-
-        -  The wildcard entry (**\***) is treated as a bad request
-        -  When the **field_mask** is omitted, instead of only updating
-           the set fields, the request is treated as a full update on
-           all modifiable fields
+        **Note:** *This method does not fully
+        implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
+        wildcard entry (*) is treated as a bad request, and when the
+        ``field_mask`` is omitted, the request is treated as a full
+        update on all modifiable fields.*
 
         .. code-block:: python
 
@@ -4844,13 +4850,11 @@ class DataformAsyncClient:
     ) -> dataform.WorkflowConfig:
         r"""Updates a single WorkflowConfig.
 
-        **Note:** This method does not fully implement
-        `AIP-134 <https://google.aip.dev/134>`__; in particular:
-
-        -  The wildcard entry (**\***) is treated as a bad request
-        -  When the **field_mask** is omitted, instead of only updating
-           the set fields, the request is treated as a full update on
-           all modifiable fields
+        **Note:** *This method does not fully
+        implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
+        wildcard entry (*) is treated as a bad request, and when the
+        ``field_mask`` is omitted, the request is treated as a full
+        update on all modifiable fields.*
 
         .. code-block:: python
 
@@ -5827,13 +5831,11 @@ class DataformAsyncClient:
     ) -> dataform.Config:
         r"""Update default config for a given project and location.
 
-        **Note:** This method does not fully implement
-        `AIP-134 <https://google.aip.dev/134>`__; in particular:
-
-        -  The wildcard entry (**\***) is treated as a bad request
-        -  When the **field_mask** is omitted, instead of only updating
-           the set fields, the request is treated as a full update on
-           all modifiable fields
+        **Note:** *This method does not fully
+        implement*\ `AIP/134 <https://google.aip.dev/134>`__\ *. The
+        wildcard entry (*) is treated as a bad request, and when the
+        ``field_mask`` is omitted, the request is treated as a full
+        update on all modifiable fields.*
 
         .. code-block:: python
 
