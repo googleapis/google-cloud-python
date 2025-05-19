@@ -2858,13 +2858,6 @@ class TestRowIterator(unittest.TestCase):
         )
         self.assertFalse(result)
 
-    def test__should_use_bqstorage_returns_false_if_page_size_set(self):
-        iterator = self._make_one(page_size=10, first_page_response=None)  # not cached
-        result = iterator._should_use_bqstorage(
-            bqstorage_client=None, create_bqstorage_client=True
-        )
-        self.assertFalse(result)
-
     def test__should_use_bqstorage_returns_false_w_warning_if_missing_dependency(self):
         iterator = self._make_one(first_page_response=None)  # not cached
 

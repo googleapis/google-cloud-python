@@ -1897,11 +1897,6 @@ class RowIterator(HTTPIterator):
         """total bytes processed from job statistics, if present."""
         return self._total_bytes_processed
 
-    @property
-    def page_size(self) -> Optional[int]:
-        """The maximum number of rows in each page of results from this request, if present."""
-        return self._page_size
-
     def _is_almost_completely_cached(self):
         """Check if all results are completely cached.
 
@@ -1953,7 +1948,7 @@ class RowIterator(HTTPIterator):
         if self._is_almost_completely_cached():
             return False
 
-        if self.max_results is not None or self.page_size is not None:
+        if self.max_results is not None:
             return False
 
         try:
@@ -2023,9 +2018,7 @@ class RowIterator(HTTPIterator):
             bqstorage_client:
                 The BigQuery Storage client intended to use for downloading result rows.
         """
-        if bqstorage_client is not None and (
-            self.max_results is not None or self.page_size is not None
-        ):
+        if bqstorage_client is not None and self.max_results is not None:
             warnings.warn(
                 "Cannot use bqstorage_client if max_results is set, "
                 "reverting to fetching data with the REST endpoint.",
