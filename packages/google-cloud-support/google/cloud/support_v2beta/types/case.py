@@ -81,7 +81,7 @@ class Case(proto.Message):
 
     Attributes:
         name (str):
-            The resource name for the case.
+            Identifier. The resource name for the case.
         display_name (str):
             The short summary of the issue reported in
             this case.
