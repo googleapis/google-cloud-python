@@ -402,8 +402,8 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
     def create_online_return_policy(
         self,
     ) -> Callable[
-        [online_return_policy.CreateOnlineReturnPolicyRequest],
-        Awaitable[online_return_policy.OnlineReturnPolicy],
+        [gsma_online_return_policy.CreateOnlineReturnPolicyRequest],
+        Awaitable[gsma_online_return_policy.OnlineReturnPolicy],
     ]:
         r"""Return a callable for the create online return policy method over gRPC.
 
@@ -424,8 +424,8 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
                 "create_online_return_policy"
             ] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/CreateOnlineReturnPolicy",
-                request_serializer=online_return_policy.CreateOnlineReturnPolicyRequest.serialize,
-                response_deserializer=online_return_policy.OnlineReturnPolicy.deserialize,
+                request_serializer=gsma_online_return_policy.CreateOnlineReturnPolicyRequest.serialize,
+                response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
             )
         return self._stubs["create_online_return_policy"]
 
@@ -470,8 +470,7 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
     ]:
         r"""Return a callable for the delete online return policy method over gRPC.
 
-        Deletes an existing return policy for a given
-        merchant.
+        Deletes an existing return policy.
 
         Returns:
             Callable[[~.DeleteOnlineReturnPolicyRequest],

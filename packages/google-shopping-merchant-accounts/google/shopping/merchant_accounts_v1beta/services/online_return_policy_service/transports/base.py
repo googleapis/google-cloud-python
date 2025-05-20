@@ -200,10 +200,10 @@ class OnlineReturnPolicyServiceTransport(abc.ABC):
     def create_online_return_policy(
         self,
     ) -> Callable[
-        [online_return_policy.CreateOnlineReturnPolicyRequest],
+        [gsma_online_return_policy.CreateOnlineReturnPolicyRequest],
         Union[
-            online_return_policy.OnlineReturnPolicy,
-            Awaitable[online_return_policy.OnlineReturnPolicy],
+            gsma_online_return_policy.OnlineReturnPolicy,
+            Awaitable[gsma_online_return_policy.OnlineReturnPolicy],
         ],
     ]:
         raise NotImplementedError()
