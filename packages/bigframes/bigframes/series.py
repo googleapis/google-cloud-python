@@ -1353,14 +1353,17 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         return Series(block.select_column(result_id).with_column_labels([self.name]))
 
-    def clip(self, lower, upper):
+    def clip(self, lower=None, upper=None):
         if lower is None and upper is None:
             return self
         if lower is None:
             return self._apply_binary_op(upper, ops.minimum_op, alignment="left")
         if upper is None:
             return self._apply_binary_op(lower, ops.maximum_op, alignment="left")
-        value_id, lower_id, upper_id, block = self._align3(lower, upper)
+        # special rule to coerce scalar string args to date
+        value_id, lower_id, upper_id, block = self._align3(
+            lower, upper, cast_scalars=(bigframes.dtypes.is_date_like(self.dtype))
+        )
         block, result_id = block.project_expr(
             ops.clip_op.as_expr(value_id, lower_id, upper_id),
         )

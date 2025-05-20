@@ -3001,6 +3001,17 @@ def test_clip(scalars_df_index, scalars_pandas_df_index, ordered):
     assert_series_equal(bf_result, pd_result, ignore_order=not ordered)
 
 
+def test_clip_int_with_float_bounds(scalars_df_index, scalars_pandas_df_index):
+    col_bf = scalars_df_index["int64_too"]
+    bf_result = col_bf.clip(-100, 3.14151593).to_pandas()
+
+    col_pd = scalars_pandas_df_index["int64_too"]
+    # pandas doesn't work with Int64 and clip with floats
+    pd_result = col_pd.astype("int64").clip(-100, 3.14151593).astype("Float64")
+
+    assert_series_equal(bf_result, pd_result)
+
+
 def test_clip_filtered_two_sided(scalars_df_index, scalars_pandas_df_index):
     col_bf = scalars_df_index["int64_col"].iloc[::2]
     lower_bf = scalars_df_index["int64_too"].iloc[2:] - 1

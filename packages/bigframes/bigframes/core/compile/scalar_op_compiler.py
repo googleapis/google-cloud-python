@@ -1935,34 +1935,18 @@ def clip_op(
     if isinstance(lower, ibis_types.NullScalar) and (
         not isinstance(upper, ibis_types.NullScalar)
     ):
-        return (
-            ibis_api.case()  # type: ignore
-            .when(upper.isnull() | (original > upper), upper)
-            .else_(original)
-            .end()
-        )
+        return ibis_api.least(original, upper)
     elif (not isinstance(lower, ibis_types.NullScalar)) and isinstance(
         upper, ibis_types.NullScalar
     ):
-        return (
-            ibis_api.case()  # type: ignore
-            .when(lower.isnull() | (original < lower), lower)
-            .else_(original)
-            .end()
-        )
+        return ibis_api.greatest(original, lower)
     elif isinstance(lower, ibis_types.NullScalar) and (
         isinstance(upper, ibis_types.NullScalar)
     ):
         return original
     else:
         # Note: Pandas has unchanged behavior when upper bound and lower bound are flipped. This implementation requires that lower_bound < upper_bound
-        return (
-            ibis_api.case()  # type: ignore
-            .when(lower.isnull() | (original < lower), lower)
-            .when(upper.isnull() | (original > upper), upper)
-            .else_(original)
-            .end()
-        )
+        return ibis_api.greatest(ibis_api.least(original, upper), lower)
 
 
 # N-ary Operations
