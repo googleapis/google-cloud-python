@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.2...google-shopping-merchant-accounts-v0.3.3) (2025-05-20)
+
+
+### Features
+
+* [google-shopping-merchant-accounts] Add OmnichannelSetingsService, LfpProvidersService and GbpAccountsService ([#13915](https://github.com/googleapis/google-cloud-python/issues/13915)) ([863c743](https://github.com/googleapis/google-cloud-python/commit/863c743e3ee562430cbea72839c3d4fead2f8748))
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.1...google-shopping-merchant-accounts-v0.3.2) (2025-05-15)
 
 

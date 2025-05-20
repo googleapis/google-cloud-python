@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.23](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.22...google-cloud-netapp-v0.3.23) (2025-05-20)
+
+
+### Features
+
+* [google-cloud-netapp] A new message `google.cloud.netapp.v1.BackupRetentionPolicy` is added in `google.cloud.netapp.v1.BackupVault` ([1423ec9](https://github.com/googleapis/google-cloud-python/commit/1423ec9bacb0f81f7e46929a6b82ecb5f20d24eb))
+* A new field `enforced_retention_end_time` in message `google.cloud.netapp.v1.Backup` is added ([1423ec9](https://github.com/googleapis/google-cloud-python/commit/1423ec9bacb0f81f7e46929a6b82ecb5f20d24eb))
+* New fields `custom_performance_enabled`, `total_throughput_mibps`, `total_iops` in message `google.cloud.netapp.v1.StoragePool` are added ([1423ec9](https://github.com/googleapis/google-cloud-python/commit/1423ec9bacb0f81f7e46929a6b82ecb5f20d24eb))
+
+
+### Documentation
+
+* A comment for field `transfer_bytes` in message `.google.cloud.netapp.v1.TransferStats` is changed ([1423ec9](https://github.com/googleapis/google-cloud-python/commit/1423ec9bacb0f81f7e46929a6b82ecb5f20d24eb))
+
 ## [0.3.22](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.21...google-cloud-netapp-v0.3.22) (2025-05-08)
 
 

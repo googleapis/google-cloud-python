@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.5.0...google-cloud-kms-v3.5.1) (2025-05-20)
+
+
+### Documentation
+
+* [google-cloud-kms] A comment for enum value `DESTROYED` in enum `CryptoKeyVersionState` is changed ([#13913](https://github.com/googleapis/google-cloud-python/issues/13913)) ([cdca657](https://github.com/googleapis/google-cloud-python/commit/cdca65752c8ae2289c09f0320e39b66826725417))
+
 ## [3.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.4.1...google-cloud-kms-v3.5.0) (2025-05-15)
 
 
