@@ -253,6 +253,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute-v1beta>`_
+     - stable
+     - |PyPI-google-cloud-compute-v1beta|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:187134>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187134&template=0>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute>`_
      - stable
      - |PyPI-google-cloud-compute|
@@ -1562,6 +1568,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-common
 .. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
      :target: https://pypi.org/project/google-cloud-orchestration-airflow
+.. |PyPI-google-cloud-compute-v1beta| image:: https://img.shields.io/pypi/v/google-cloud-compute-v1beta.svg
+     :target: https://pypi.org/project/google-cloud-compute-v1beta
 .. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
      :target: https://pypi.org/project/google-cloud-compute
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
