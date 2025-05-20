@@ -21,7 +21,19 @@ replacements:
     after: "`IT_`"
     count: 2
   - paths: [
+      packages/google-cloud-compute-v1beta/google/cloud/compute_v1beta/types/compute.py,
+    ]
+    before: \"IT_\"
+    after: "`IT_`"
+    count: 2
+  - paths: [
       packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
+    ]
+    before: \"NS_\"
+    after: "`NS_`"
+    count: 2
+  - paths: [
+      packages/google-cloud-compute-v1beta/google/cloud/compute_v1beta/types/compute.py,
     ]
     before: \"NS_\"
     after: "`NS_`"
