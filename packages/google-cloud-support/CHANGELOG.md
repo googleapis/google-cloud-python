@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.15...google-cloud-support-v0.1.16) (2025-05-20)
+
+
+### Documentation
+
+* [google-cloud-support] Update Cloud Support RPC comments to no longer include cURL and Python examples ([#13929](https://github.com/googleapis/google-cloud-python/issues/13929)) ([40e08b2](https://github.com/googleapis/google-cloud-python/commit/40e08b2bd92f7fbc256a6bf4c58d4b0549eb053a))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.14...google-cloud-support-v0.1.15) (2025-05-15)
 
 

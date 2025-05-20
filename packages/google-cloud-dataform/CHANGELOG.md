@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.6.1...google-cloud-dataform-v0.6.2) (2025-05-20)
+
+
+### Features
+
+* Support adding a workflow action to execute a Data Preparation node ([8f95f78](https://github.com/googleapis/google-cloud-python/commit/8f95f787fa8479cce7e44db97dcf36d39a1fa541))
+
+
+### Documentation
+
+* Updated the formatting in some comments in multiple services ([8f95f78](https://github.com/googleapis/google-cloud-python/commit/8f95f787fa8479cce7e44db97dcf36d39a1fa541))
+
 ## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.6.0...google-cloud-dataform-v0.6.1) (2025-03-15)
 
 
