@@ -133,12 +133,6 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Asset Inventory <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset>`_
-     - stable
-     - |PyPI-google-cloud-asset|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559757>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187210>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Assured Workloads for Government <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-assured-workloads>`_
      - stable
      - |PyPI-google-cloud-assured-workloads|
@@ -252,6 +246,12 @@ Libraries
      - |PyPI-google-cloud-orchestration-airflow|
      -
      -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute-v1beta>`_
+     - stable
+     - |PyPI-google-cloud-compute-v1beta|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:187134>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187134&template=0>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute>`_
      - stable
@@ -1075,12 +1075,6 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Enterprise Knowledge Graph <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-enterpriseknowledgegraph>`_
-     - preview
-     - |PyPI-google-cloud-enterpriseknowledgegraph|
-     -
-     -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
      - preview
      - |PyPI-google-cloud-error-reporting|
@@ -1522,8 +1516,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-appengine-logging
 .. |PyPI-google-cloud-artifact-registry| image:: https://img.shields.io/pypi/v/google-cloud-artifact-registry.svg
      :target: https://pypi.org/project/google-cloud-artifact-registry
-.. |PyPI-google-cloud-asset| image:: https://img.shields.io/pypi/v/google-cloud-asset.svg
-     :target: https://pypi.org/project/google-cloud-asset
 .. |PyPI-google-cloud-assured-workloads| image:: https://img.shields.io/pypi/v/google-cloud-assured-workloads.svg
      :target: https://pypi.org/project/google-cloud-assured-workloads
 .. |PyPI-google-cloud-automl| image:: https://img.shields.io/pypi/v/google-cloud-automl.svg
@@ -1562,6 +1554,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-common
 .. |PyPI-google-cloud-orchestration-airflow| image:: https://img.shields.io/pypi/v/google-cloud-orchestration-airflow.svg
      :target: https://pypi.org/project/google-cloud-orchestration-airflow
+.. |PyPI-google-cloud-compute-v1beta| image:: https://img.shields.io/pypi/v/google-cloud-compute-v1beta.svg
+     :target: https://pypi.org/project/google-cloud-compute-v1beta
 .. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
      :target: https://pypi.org/project/google-cloud-compute
 .. |PyPI-google-cloud-contact-center-insights| image:: https://img.shields.io/pypi/v/google-cloud-contact-center-insights.svg
@@ -1836,8 +1830,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-documentai-toolbox
 .. |PyPI-google-cloud-contentwarehouse| image:: https://img.shields.io/pypi/v/google-cloud-contentwarehouse.svg
      :target: https://pypi.org/project/google-cloud-contentwarehouse
-.. |PyPI-google-cloud-enterpriseknowledgegraph| image:: https://img.shields.io/pypi/v/google-cloud-enterpriseknowledgegraph.svg
-     :target: https://pypi.org/project/google-cloud-enterpriseknowledgegraph
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-eventarc-publishing| image:: https://img.shields.io/pypi/v/google-cloud-eventarc-publishing.svg
