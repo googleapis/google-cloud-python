@@ -747,37 +747,8 @@ class CaseAttachmentServiceClient(metaclass=CaseAttachmentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAttachmentsPager:
-        r"""List all the attachments associated with a support case.
-
-        EXAMPLES:
-
-        cURL:
-
-        .. code:: shell
-
-           case="projects/some-project/cases/23598314"
-           curl \
-             --header "Authorization: Bearer $(gcloud auth print-access-token)" \
-             "https://cloudsupport.googleapis.com/v2/$case/attachments"
-
-        Python:
-
-        .. code:: python
-
-           import googleapiclient.discovery
-
-           api_version = "v2"
-           supportApiService = googleapiclient.discovery.build(
-               serviceName="cloudsupport",
-               version=api_version,
-               discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
-           )
-           request = (
-               supportApiService.cases()
-               .attachments()
-               .list(parent="projects/some-project/cases/43595344")
-           )
-           print(request.execute())
+        r"""List all the attachments associated with a support
+        case.
 
         .. code-block:: python
 
