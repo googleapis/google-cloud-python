@@ -5,7 +5,8 @@ A :class:`~google.cloud.spanner_v1.transaction.Transaction` represents a
 transaction:  when the transaction commits, it will send any accumulated
 mutations to the server.
 
-To understand more about how transactions work, visit [Transaction](https://cloud.google.com/spanner/docs/reference/rest/v1/Transaction).
+To understand more about how transactions work, visit
+`Transaction <https://cloud.google.com/spanner/docs/reference/rest/v1/Transaction>`_.
 To learn more about how to use them in the Python client, continue reading.
 
 
@@ -90,8 +91,8 @@ any of the records already exists.
 Update records using a Transaction
 ----------------------------------
 
-:meth:`Transaction.update` updates one or more existing records in a table.  Fails
-if any of the records does not already exist.
+:meth:`Transaction.update` updates one or more existing records in a table.
+Fails if any of the records does not already exist.
 
 .. code:: python
 
@@ -178,9 +179,9 @@ Using :meth:`~Database.run_in_transaction`
 
 Rather than calling :meth:`~Transaction.commit` or :meth:`~Transaction.rollback`
 manually, you should use :meth:`~Database.run_in_transaction` to run the
-function that you need.  The transaction's :meth:`~Transaction.commit` method
+function that you need. The transaction's :meth:`~Transaction.commit` method
 will be called automatically if the ``with`` block exits without raising an
-exception.  The function will automatically be retried for
+exception. The function will automatically be retried for
 :class:`~google.api_core.exceptions.Aborted` errors, but will raise on
 :class:`~google.api_core.exceptions.GoogleAPICallError` and
 :meth:`~Transaction.rollback` will be called on all others.
@@ -188,25 +189,30 @@ exception.  The function will automatically be retried for
 .. code:: python
 
     def _unit_of_work(transaction):
-
         transaction.insert(
-            'citizens', columns=['email', 'first_name', 'last_name', 'age'],
+            'citizens',
+            columns=['email', 'first_name', 'last_name', 'age'],
             values=[
                 ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
                 ['bharney@example.com', 'Bharney', 'Rhubble', 31],
-            ])
+            ]
+        )
 
         transaction.update(
-            'citizens', columns=['email', 'age'],
+            'citizens',
+            columns=['email', 'age'],
             values=[
                 ['phred@exammple.com', 33],
                 ['bharney@example.com', 32],
-            ])
+            ]
+        )
 
         ...
 
-        transaction.delete('citizens',
-            keyset['bharney@example.com', 'nonesuch@example.com'])
+        transaction.delete(
+            'citizens',
+            keyset=['bharney@example.com', 'nonesuch@example.com']
+        )
 
     db.run_in_transaction(_unit_of_work)
 
@@ -242,7 +248,7 @@ If an exception is raised inside the ``with`` block, the transaction's
         ...
 
         transaction.delete('citizens',
-            keyset['bharney@example.com', 'nonesuch@example.com'])
+            keyset=['bharney@example.com', 'nonesuch@example.com'])
 
 
 Begin a Transaction
