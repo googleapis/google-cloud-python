@@ -56,12 +56,21 @@ class Options:
     """Global options affecting BigQuery DataFrames behavior."""
 
     def __init__(self):
+        self.reset()
+
+    def reset(self) -> Options:
+        """Reset the option settings to defaults.
+
+        Returns:
+            bigframes._config.Options: Options object with default values.
+        """
         self._local = ThreadLocalConfig()
 
         # BigQuery options are special because they can only be set once per
         # session, so we need an indicator as to whether we are using the
         # thread-local session or the global session.
         self._bigquery_options = bigquery_options.BigQueryOptions()
+        return self
 
     def _init_bigquery_thread_local(self):
         """Initialize thread-local options, based on current global options."""

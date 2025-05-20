@@ -74,4 +74,4 @@ def run_quickstart(project_id: str) -> None:
 
     # close session and reset option so not to affect other tests
     bpd.close_session()
-    bpd.options.bigquery.ordering_mode = "strict"
+    bpd.options.reset()
