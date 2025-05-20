@@ -1529,7 +1529,7 @@ class QueryJob(_AsyncJob):
                 a DDL query, an ``_EmptyRowIterator`` instance is returned.
 
         Raises:
-            google.cloud.exceptions.GoogleAPICallError:
+            google.api_core.exceptions.GoogleAPICallError:
                 If the job failed and retries aren't successful.
             concurrent.futures.TimeoutError:
                 If the job did not complete in the given timeout.
