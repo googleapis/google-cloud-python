@@ -1276,6 +1276,11 @@ def test_bigquery_magic_with_no_query_cache(monkeypatch):
     bigquery.load_ipython_extension(ip)
     conn = make_connection()
     monkeypatch.setattr(magics.context, "_connection", conn)
+    monkeypatch.setattr(
+        magics.context,
+        "credentials",
+        mock.create_autospec(google.auth.credentials.Credentials, instance=True),
+    )
     monkeypatch.setattr(magics.context, "project", "project-from-context")
 
     # --no_query_cache option should override context.

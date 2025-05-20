@@ -1856,6 +1856,7 @@ def test__download_table_bqstorage_shuts_down_workers(
     Make sure that when the top-level iterator goes out of scope (is deleted),
     the child threads are also stopped.
     """
+    pytest.importorskip("google.cloud.bigquery_storage_v1")
     from google.cloud.bigquery import dataset
     from google.cloud.bigquery import table
     import google.cloud.bigquery_storage_v1.reader

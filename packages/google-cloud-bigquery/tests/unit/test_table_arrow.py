@@ -18,7 +18,8 @@ from google.cloud import bigquery
 import google.cloud.bigquery.table
 
 
-pyarrow = pytest.importorskip("pyarrow", minversion="3.0.0")
+pytest.importorskip("numpy")
+pytest.importorskip("pyarrow", minversion="3.0.0")
 
 
 def test_to_arrow_with_jobs_query_response():
