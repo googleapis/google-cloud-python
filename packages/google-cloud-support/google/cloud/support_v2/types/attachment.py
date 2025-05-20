@@ -42,8 +42,8 @@ class Attachment(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the
-            attachment.
+            Output only. Identifier. The resource name of
+            the attachment.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the attachment
             was created.
