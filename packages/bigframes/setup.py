@@ -36,7 +36,7 @@ dependencies = [
     # please keep these in sync with the minimum versions in testing/constraints-3.9.txt
     "cloudpickle >= 2.0.0",
     "fsspec >=2023.3.0",
-    "gcsfs >=2023.3.0",
+    "gcsfs >=2023.3.0, !=2025.5.0",
     "geopandas >=0.12.2",
     "google-auth >=2.15.0,<3.0",
     "google-cloud-bigquery[bqstorage,pandas] >=3.31.0",
