@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import inspect
+import threading
 import typing
 from typing import (
     Any,
@@ -465,6 +466,8 @@ def from_glob_path(
 
 from_glob_path.__doc__ = inspect.getdoc(bigframes.session.Session.from_glob_path)
 
+_default_location_lock = threading.Lock()
+
 
 def _set_default_session_location_if_possible(query):
     # Set the location as per the query if this is the first query the user is
@@ -475,31 +478,34 @@ def _set_default_session_location_if_possible(query):
     # If query is a table name, then it would be the location of the table.
     # If query is a SQL with a table, then it would be table's location.
     # If query is a SQL with no table, then it would be the BQ default location.
-    if (
-        config.options.bigquery._session_started
-        or config.options.bigquery.location
-        or config.options.bigquery.use_regional_endpoints
-    ):
-        return
+    global _default_location_lock
 
-    clients_provider = bigframes.session.clients.ClientsProvider(
-        project=config.options.bigquery.project,
-        location=config.options.bigquery.location,
-        use_regional_endpoints=config.options.bigquery.use_regional_endpoints,
-        credentials=config.options.bigquery.credentials,
-        application_name=config.options.bigquery.application_name,
-        bq_kms_key_name=config.options.bigquery.kms_key_name,
-        client_endpoints_override=config.options.bigquery.client_endpoints_override,
-    )
+    with _default_location_lock:
+        if (
+            config.options.bigquery._session_started
+            or config.options.bigquery.location
+            or config.options.bigquery.use_regional_endpoints
+        ):
+            return
 
-    bqclient = clients_provider.bqclient
+        clients_provider = bigframes.session.clients.ClientsProvider(
+            project=config.options.bigquery.project,
+            location=config.options.bigquery.location,
+            use_regional_endpoints=config.options.bigquery.use_regional_endpoints,
+            credentials=config.options.bigquery.credentials,
+            application_name=config.options.bigquery.application_name,
+            bq_kms_key_name=config.options.bigquery.kms_key_name,
+            client_endpoints_override=config.options.bigquery.client_endpoints_override,
+        )
 
-    if bigframes.session._io.bigquery.is_query(query):
-        # Intentionally run outside of the session so that we can detect the
-        # location before creating the session. Since it's a dry_run, labels
-        # aren't necessary.
-        job = bqclient.query(query, bigquery.QueryJobConfig(dry_run=True))
-        config.options.bigquery.location = job.location
-    else:
-        table = bqclient.get_table(query)
-        config.options.bigquery.location = table.location
+        bqclient = clients_provider.bqclient
+
+        if bigframes.session._io.bigquery.is_query(query):
+            # Intentionally run outside of the session so that we can detect the
+            # location before creating the session. Since it's a dry_run, labels
+            # aren't necessary.
+            job = bqclient.query(query, bigquery.QueryJobConfig(dry_run=True))
+            config.options.bigquery.location = job.location
+        else:
+            table = bqclient.get_table(query)
+            config.options.bigquery.location = table.location
