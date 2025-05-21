@@ -30,6 +30,7 @@ import http.client as http_client
 DEFAULT_RETRYABLE_STATUS_CODES = (
     http_client.INTERNAL_SERVER_ERROR,
     http_client.SERVICE_UNAVAILABLE,
+    http_client.GATEWAY_TIMEOUT,
     http_client.REQUEST_TIMEOUT,
     http_client.TOO_MANY_REQUESTS,
 )
