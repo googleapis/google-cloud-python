@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.3...google-shopping-merchant-accounts-v0.3.4) (2025-05-21)
+
+
+### Features
+
+* A new method_signature `parent,online_return_policy` is added to method `CreateOnlineReturnPolicy` in service `OnlineReturnPolicyService` ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+
+
+### Documentation
+
+* A comment for field `accept_defective_only` in message `.google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+* A comment for field `accept_exchange` in message `.google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+* A comment for field `online_return_policy` in message `.google.shopping.merchant.accounts.v1beta.CreateOnlineReturnPolicyRequest` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+* A comment for field `online_return_policy` in message `.google.shopping.merchant.accounts.v1beta.UpdateOnlineReturnPolicyRequest` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+* A comment for field `parent` in message `.google.shopping.merchant.accounts.v1beta.CreateOnlineReturnPolicyRequest` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+* A comment for field `process_refund_days` in message `.google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+* A comment for field `return_label_source` in message `.google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+* A comment for field `update_mask` in message `.google.shopping.merchant.accounts.v1beta.UpdateOnlineReturnPolicyRequest` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+* A comment for message `UpdateOnlineReturnPolicyRequest` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+* A comment for method `DeleteOnlineReturnPolicy` in service `OnlineReturnPolicyService` is changed ([a96ff25](https://github.com/googleapis/google-cloud-python/commit/a96ff25fc48a9d5c7f22717bf3070361b8387fac))
+
 ## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.2...google-shopping-merchant-accounts-v0.3.3) (2025-05-20)
 
 
