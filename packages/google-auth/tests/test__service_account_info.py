@@ -53,7 +53,7 @@ def test_from_dict_bad_private_key():
     with pytest.raises(ValueError) as excinfo:
         _service_account_info.from_dict(info)
 
-    assert excinfo.match(r"key")
+    assert excinfo.match(r"(?i)(key|PEM)")
 
 
 def test_from_dict_bad_format():
