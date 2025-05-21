@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.40.2](https://github.com/googleapis/google-auth-library-python/compare/v2.40.1...v2.40.2) (2025-05-21)
+
+
+### Bug Fixes
+
+* Remove sync response logs in AuthorizedSession ([97ed1c8](https://github.com/googleapis/google-auth-library-python/commit/97ed1c8ef1a797af26c5639b618aa26360e9d868))
+* Update test to consider new error message from cryptography ([#1765](https://github.com/googleapis/google-auth-library-python/issues/1765)) ([44e38b6](https://github.com/googleapis/google-auth-library-python/commit/44e38b60002f9dbd524b1fe82fa8d4295afc68bc))
+
 ## [2.40.1](https://github.com/googleapis/google-auth-library-python/compare/v2.40.0...v2.40.1) (2025-05-06)
 
 
