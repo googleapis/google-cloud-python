@@ -95,7 +95,7 @@ templated_files = common.py_library(
     ],
 )
 
-s.move(templated_files, excludes=[".coveragerc", "README.rst", ".github/release-please.yml", "noxfile.py"])
+s.move(templated_files, excludes=[".coveragerc", "README.rst", ".github/release-please.yml", "noxfile.py", "renovate.json"])
 
 
 # ----------------------------------------------------------------------------
