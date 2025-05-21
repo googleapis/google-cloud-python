@@ -1,6 +1,7 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/indexes/base.py
 from __future__ import annotations
 
+from collections.abc import Hashable
 import typing
 
 from bigframes import constants
@@ -1055,6 +1056,28 @@ class Index:
                 'first' : Drop duplicates except for the first occurrence.
                 'last' : Drop duplicates except for the last occurrence.
                 ``False`` : Drop all duplicates.
+
+        Returns:
+            bigframes.pandas.Index
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def unique(self, level: Hashable | int | None = None):
+        """
+        Returns unique values in the index.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> idx = bpd.Index([1, 1, 2, 3, 3])
+            >>> idx.unique()
+            Index([1, 2, 3], dtype='Int64')
+
+        Args:
+            level (int or hashable, optional):
+                Only return values from specified level (for MultiIndex).
+                If int, gets the level by integer position, else by level name.
 
         Returns:
             bigframes.pandas.Index

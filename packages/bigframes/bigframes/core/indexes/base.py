@@ -451,6 +451,12 @@ class Index(vendored_pandas_index.Index):
         block = block_ops.drop_duplicates(self._block, self._block.index_columns, keep)
         return Index(block)
 
+    def unique(self, level: Hashable | int | None = None) -> Index:
+        if level is None:
+            return self.drop_duplicates()
+
+        return self.get_level_values(level).drop_duplicates()
+
     def isin(self, values) -> Index:
         if not utils.is_list_like(values):
             raise TypeError(
