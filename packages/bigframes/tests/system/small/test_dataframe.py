@@ -3638,9 +3638,7 @@ def test_iat_errors(scalars_df_index, scalars_pandas_df_index, index, error):
         scalars_df_index.iat[index]
 
 
-def test_iloc_single_integer_out_of_bound_error(
-    scalars_df_index, scalars_pandas_df_index
-):
+def test_iloc_single_integer_out_of_bound_error(scalars_df_index):
     with pytest.raises(IndexError, match="single positional indexer is out-of-bounds"):
         scalars_df_index.iloc[99]
 
@@ -3648,6 +3646,17 @@ def test_iloc_single_integer_out_of_bound_error(
 def test_loc_bool_series(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index.loc[scalars_df_index.bool_col].to_pandas()
     pd_result = scalars_pandas_df_index.loc[scalars_pandas_df_index.bool_col]
+
+    pd.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_loc_list_select_rows_and_columns(scalars_df_index, scalars_pandas_df_index):
+    idx_list = [0, 3, 5]
+    bf_result = scalars_df_index.loc[idx_list, ["bool_col", "int64_col"]].to_pandas()
+    pd_result = scalars_pandas_df_index.loc[idx_list, ["bool_col", "int64_col"]]
 
     pd.testing.assert_frame_equal(
         bf_result,

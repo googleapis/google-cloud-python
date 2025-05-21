@@ -155,8 +155,8 @@ class LocDataFrameIndexer:
         # row key. We must choose one, so bias towards treating as multi-part row label
         if isinstance(key, tuple) and len(key) == 2:
             is_row_multi_index = self._dataframe.index.nlevels > 1
-            is_first_item_tuple = isinstance(key[0], tuple)
-            if not is_row_multi_index or is_first_item_tuple:
+            is_first_item_list_or_tuple = isinstance(key[0], (tuple, list))
+            if not is_row_multi_index or is_first_item_list_or_tuple:
                 df = typing.cast(
                     bigframes.dataframe.DataFrame,
                     _loc_getitem_series_or_dataframe(self._dataframe, key[0]),
