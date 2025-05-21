@@ -7511,7 +7511,6 @@ def test_execute_query_routing_parameters_request_1_grpc():
         )
 
         assert args[0] == request_msg
-
         expected_headers = {
             "name": "projects/sample1/instances/sample2",
             "app_profile_id": "",
