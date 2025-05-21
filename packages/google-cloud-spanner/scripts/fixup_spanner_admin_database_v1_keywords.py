@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ class spanner_admin_databaseCallTransformer(cst.CSTTransformer):
         'update_backup': ('backup', 'update_mask', ),
         'update_backup_schedule': ('backup_schedule', 'update_mask', ),
         'update_database': ('database', 'update_mask', ),
-        'update_database_ddl': ('database', 'statements', 'operation_id', 'proto_descriptors', ),
+        'update_database_ddl': ('database', 'statements', 'operation_id', 'proto_descriptors', 'throughput_mode', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

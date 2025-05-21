@@ -80,6 +80,111 @@ for library in get_staging_dirs(spanner_default_version, "spanner"):
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
 
+    # Customization for MetricsInterceptor
+
+    assert 6 == s.replace(
+        [
+            library / "google/cloud/spanner_v1/services/spanner/transports/*.py",
+            library / "google/cloud/spanner_v1/services/spanner/client.py",
+        ],
+        """from google.cloud.spanner_v1.types import transaction""",
+        """from google.cloud.spanner_v1.types import transaction
+from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor""",
+    )
+
+    assert 1 == s.replace(
+        library / "google/cloud/spanner_v1/services/spanner/transports/*.py",
+        """api_audience: Optional\[str\] = None,
+            \*\*kwargs,
+            \) -> None:
+        \"\"\"Instantiate the transport.""",
+"""api_audience: Optional[str] = None,
+            metrics_interceptor: Optional[MetricsInterceptor] = None,
+            **kwargs,
+    ) -> None:
+        \"\"\"Instantiate the transport."""
+    )
+
+    assert 4 == s.replace(
+        library / "google/cloud/spanner_v1/services/spanner/transports/*.py",
+        """api_audience: Optional\[str\] = None,
+            \) -> None:
+        \"\"\"Instantiate the transport.""",
+"""api_audience: Optional[str] = None,
+            metrics_interceptor: Optional[MetricsInterceptor] = None,
+    ) -> None:
+        \"\"\"Instantiate the transport."""
+    )
+
+    assert 1 == s.replace(
+        library / "google/cloud/spanner_v1/services/spanner/transports/grpc.py",
+        """\)\n\n        self._interceptor = _LoggingClientInterceptor\(\)""",
+        """)
+
+        # Wrap the gRPC channel with the metric interceptor
+        if metrics_interceptor is not None:
+            self._metrics_interceptor = metrics_interceptor
+            self._grpc_channel = grpc.intercept_channel(
+                self._grpc_channel, metrics_interceptor
+            )
+
+        self._interceptor = _LoggingClientInterceptor()"""
+    )
+
+    assert 1 == s.replace(
+        library / "google/cloud/spanner_v1/services/spanner/transports/grpc.py",
+        """self._stubs: Dict\[str, Callable\] = \{\}\n\n        if api_mtls_endpoint:""",
+        """self._stubs: Dict[str, Callable] = {}
+        self._metrics_interceptor = None
+
+        if api_mtls_endpoint:"""
+    )
+
+    assert 1 == s.replace(
+        library / "google/cloud/spanner_v1/services/spanner/client.py",
+        """# initialize with the provided callable or the passed in class
+            self._transport = transport_init\(
+                credentials=credentials,
+                credentials_file=self._client_options.credentials_file,
+                host=self._api_endpoint,
+                scopes=self._client_options.scopes,
+                client_cert_source_for_mtls=self._client_cert_source,
+                quota_project_id=self._client_options.quota_project_id,
+                client_info=client_info,
+                always_use_jwt_access=True,
+                api_audience=self._client_options.api_audience,
+            \)""",
+            """# initialize with the provided callable or the passed in class
+            self._transport = transport_init(
+                credentials=credentials,
+                credentials_file=self._client_options.credentials_file,
+                host=self._api_endpoint,
+                scopes=self._client_options.scopes,
+                client_cert_source_for_mtls=self._client_cert_source,
+                quota_project_id=self._client_options.quota_project_id,
+                client_info=client_info,
+                always_use_jwt_access=True,
+                api_audience=self._client_options.api_audience,
+                metrics_interceptor=MetricsInterceptor(),
+            )""",
+    )
+
+    assert 12 == s.replace(
+        library / "tests/unit/gapic/spanner_v1/test_spanner.py",
+        """api_audience=None,\n(\s+)\)""",
+        """api_audience=None,
+            metrics_interceptor=mock.ANY,
+        )"""
+    )
+
+    assert 1 == s.replace(
+        library / "tests/unit/gapic/spanner_v1/test_spanner.py",
+        """api_audience="https://language.googleapis.com"\n(\s+)\)""",
+        """api_audience="https://language.googleapis.com",
+            metrics_interceptor=mock.ANY,
+        )"""
+    )
+
     s.move(
         library,
         excludes=[
@@ -96,11 +201,6 @@ for library in get_staging_dirs(spanner_default_version, "spanner"):
 for library in get_staging_dirs(
     spanner_admin_instance_default_version, "spanner_admin_instance"
 ):
-    s.replace(
-        library / "google/cloud/spanner_admin_instance_v*/__init__.py",
-        "from google.cloud.spanner_admin_instance import gapic_version as package_version",
-        f"from google.cloud.spanner_admin_instance_{library.name} import gapic_version as package_version",
-    )
     s.move(
         library,
         excludes=["google/cloud/spanner_admin_instance/**", "*.*", "docs/index.rst", "noxfile.py", "**/gapic_version.py", "testing/constraints-3.7.txt",],
@@ -109,11 +209,6 @@ for library in get_staging_dirs(
 for library in get_staging_dirs(
     spanner_admin_database_default_version, "spanner_admin_database"
 ):
-    s.replace(
-        library / "google/cloud/spanner_admin_database_v*/__init__.py",
-        "from google.cloud.spanner_admin_database import gapic_version as package_version",
-        f"from google.cloud.spanner_admin_database_{library.name} import gapic_version as package_version",
-    )
     s.move(
         library,
         excludes=["google/cloud/spanner_admin_database/**", "*.*", "docs/index.rst", "noxfile.py", "**/gapic_version.py", "testing/constraints-3.7.txt",],
