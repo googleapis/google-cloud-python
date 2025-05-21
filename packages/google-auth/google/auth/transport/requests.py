@@ -545,7 +545,6 @@ class AuthorizedSession(requests.Session):
                 timeout=timeout,
                 **kwargs
             )
-            _helpers.response_log(_LOGGER, response)
         remaining_time = guard.remaining_timeout
 
         # If the response indicated that the credentials needed to be
