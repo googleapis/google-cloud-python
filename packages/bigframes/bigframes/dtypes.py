@@ -499,33 +499,6 @@ def bigframes_dtype_to_arrow_dtype(
         )
 
 
-def bigframes_dtype_to_literal(
-    bigframes_dtype: Dtype,
-) -> Any:
-    """Create a representative literal value for a bigframes dtype.
-
-    The inverse of infer_literal_type().
-    """
-    if isinstance(bigframes_dtype, pd.ArrowDtype):
-        arrow_type = bigframes_dtype.pyarrow_dtype
-        return arrow_type_to_literal(arrow_type)
-
-    if isinstance(bigframes_dtype, pd.Float64Dtype):
-        return 1.0
-    if isinstance(bigframes_dtype, pd.Int64Dtype):
-        return 1
-    if isinstance(bigframes_dtype, pd.BooleanDtype):
-        return True
-    if isinstance(bigframes_dtype, pd.StringDtype):
-        return "string"
-    if isinstance(bigframes_dtype, gpd.array.GeometryDtype):
-        return shapely.geometry.Point((0, 0))
-
-    raise TypeError(
-        f"No literal  conversion for {bigframes_dtype}. {constants.FEEDBACK_LINK}"
-    )
-
-
 def arrow_type_to_literal(
     arrow_type: pa.DataType,
 ) -> Any:

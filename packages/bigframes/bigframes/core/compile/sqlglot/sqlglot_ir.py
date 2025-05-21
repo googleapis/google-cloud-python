@@ -18,6 +18,7 @@ import dataclasses
 import typing
 
 from google.cloud import bigquery
+import numpy as np
 import pyarrow as pa
 import sqlglot as sg
 import sqlglot.dialects.bigquery
@@ -213,7 +214,11 @@ def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
     elif dtype == dtypes.BYTES_DTYPE:
         return _cast(str(value), sqlglot_type)
     elif dtypes.is_time_like(dtype):
+        if isinstance(value, np.generic):
+            value = value.item()
         return _cast(sge.convert(value.isoformat()), sqlglot_type)
+    elif dtype in (dtypes.NUMERIC_DTYPE, dtypes.BIGNUMERIC_DTYPE):
+        return _cast(sge.convert(value), sqlglot_type)
     elif dtypes.is_geo_like(dtype):
         wkt = value if isinstance(value, str) else to_wkt(value)
         return sge.func("ST_GEOGFROMTEXT", sge.convert(wkt))
@@ -234,6 +239,8 @@ def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
         )
         return values if len(value) > 0 else _cast(values, sqlglot_type)
     else:
+        if isinstance(value, np.generic):
+            value = value.item()
         return sge.convert(value)
 
 

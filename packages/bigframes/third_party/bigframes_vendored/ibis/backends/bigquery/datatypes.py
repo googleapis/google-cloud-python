@@ -53,6 +53,8 @@ class BigQueryType(TypeMapper):
             )
         elif dtype.is_integer():
             return "INT64"
+        elif dtype.is_boolean():
+            return "BOOLEAN"
         elif dtype.is_binary():
             return "BYTES"
         elif dtype.is_string():

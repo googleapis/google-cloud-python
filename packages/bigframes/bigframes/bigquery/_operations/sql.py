@@ -20,6 +20,7 @@ from typing import Sequence
 
 import google.cloud.bigquery
 
+import bigframes.core.compile.sqlglot.sqlglot_ir as sqlglot_ir
 import bigframes.core.sql
 import bigframes.dataframe
 import bigframes.dtypes
@@ -72,16 +73,16 @@ def sql_scalar(
     # Another benefit of this is that if there is a syntax error in the SQL
     # template, then this will fail with an error earlier in the process,
     # aiding users in debugging.
-    base_series = columns[0]
-    literals = [
-        bigframes.dtypes.bigframes_dtype_to_literal(column.dtype) for column in columns
+    literals_sql = [
+        sqlglot_ir._literal(None, column.dtype).sql(dialect="bigquery")
+        for column in columns
     ]
-    literals_sql = [bigframes.core.sql.simple_literal(literal) for literal in literals]
+    select_sql = sql_template.format(*literals_sql)
+    dry_run_sql = f"SELECT {select_sql}"
 
     # Use the executor directly, because we want the original column IDs, not
     # the user-friendly column names that block.to_sql_query() would produce.
-    select_sql = sql_template.format(*literals_sql)
-    dry_run_sql = f"SELECT {select_sql}"
+    base_series = columns[0]
     bqclient = base_series._session.bqclient
     job = bqclient.query(
         dry_run_sql, job_config=google.cloud.bigquery.QueryJobConfig(dry_run=True)
