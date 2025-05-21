@@ -27,7 +27,7 @@ independently written applications.
    :target: https://pypi.org/project/google-cloud-pubsub/
 .. _Google Cloud Pub / Sub: https://cloud.google.com/pubsub/
 .. _Product Documentation: https://cloud.google.com/pubsub/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/pubsub/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/pubsub/latest/summary_overview
 
 Quick Start
 -----------
@@ -116,7 +116,7 @@ messages to it
 
 To learn more, consult the `publishing documentation`_.
 
-.. _publishing documentation: https://cloud.google.com/python/docs/reference/pubsub/latest
+.. _publishing documentation: https://cloud.google.com/python/docs/reference/pubsub/latest/google.cloud.pubsub_v1.publisher.client.Client
 
 
 Subscribing
@@ -162,7 +162,7 @@ block the current thread until a given condition obtains:
 It is also possible to pull messages in a synchronous (blocking) fashion. To
 learn more about subscribing, consult the `subscriber documentation`_.
 
-.. _subscriber documentation: https://cloud.google.com/python/docs/reference/pubsub/latest
+.. _subscriber documentation: https://cloud.google.com/python/docs/reference/pubsub/latest/google.cloud.pubsub_v1.subscriber.client.Client
 
 
 Authentication
