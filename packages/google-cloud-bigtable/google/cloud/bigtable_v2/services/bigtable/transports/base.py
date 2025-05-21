@@ -25,12 +25,16 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import google.protobuf
 
 from google.cloud.bigtable_v2.types import bigtable
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
+
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class BigtableTransport(abc.ABC):
