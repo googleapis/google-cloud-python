@@ -41,8 +41,6 @@ def llm_remote_text_df(session, llm_remote_text_pandas_df):
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-1.5-pro-002",
-        "gemini-1.5-flash-002",
         "gemini-2.0-flash-001",
         "gemini-2.0-flash-lite-001",
     ),
