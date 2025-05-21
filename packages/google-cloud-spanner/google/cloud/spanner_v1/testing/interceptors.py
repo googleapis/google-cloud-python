@@ -17,6 +17,7 @@ import threading
 
 from grpc_interceptor import ClientInterceptor
 from google.api_core.exceptions import Aborted
+from google.cloud.spanner_v1.request_id_header import parse_request_id
 
 
 class MethodCountInterceptor(ClientInterceptor):
@@ -119,18 +120,3 @@ class XGoogRequestIDHeaderInterceptor(ClientInterceptor):
     def reset(self):
         self._stream_req_segments.clear()
         self._unary_req_segments.clear()
-
-
-def parse_request_id(request_id_str):
-    splits = request_id_str.split(".")
-    version, rand_process_id, client_id, channel_id, nth_request, nth_attempt = list(
-        map(lambda v: int(v), splits)
-    )
-    return (
-        version,
-        rand_process_id,
-        client_id,
-        channel_id,
-        nth_request,
-        nth_attempt,
-    )

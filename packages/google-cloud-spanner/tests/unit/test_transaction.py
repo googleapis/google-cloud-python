@@ -172,10 +172,13 @@ class TestTransaction(OpenTelemetryBase):
         with self.assertRaises(RuntimeError):
             transaction.begin()
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner.Transaction.begin",
             status=StatusCode.ERROR,
-            attributes=TestTransaction.BASE_ATTRIBUTES,
+            attributes=dict(
+                TestTransaction.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_begin_ok(self):
@@ -197,6 +200,7 @@ class TestTransaction(OpenTelemetryBase):
         session_id, txn_options, metadata = api._begun
         self.assertEqual(session_id, session.name)
         self.assertTrue(type(txn_options).pb(txn_options).HasField("read_write"))
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1"
         self.assertEqual(
             metadata,
             [
@@ -204,13 +208,16 @@ class TestTransaction(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
+                    req_id,
                 ),
             ],
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.Transaction.begin", attributes=TestTransaction.BASE_ATTRIBUTES
+            "CloudSpanner.Transaction.begin",
+            attributes=dict(
+                TestTransaction.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_begin_w_retry(self):
@@ -280,10 +287,13 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertFalse(transaction.rolled_back)
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner.Transaction.rollback",
             status=StatusCode.ERROR,
-            attributes=TestTransaction.BASE_ATTRIBUTES,
+            attributes=dict(
+                TestTransaction.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_rollback_ok(self):
@@ -305,6 +315,7 @@ class TestTransaction(OpenTelemetryBase):
         session_id, txn_id, metadata = api._rolled_back
         self.assertEqual(session_id, session.name)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertEqual(
             metadata,
             [
@@ -312,14 +323,16 @@ class TestTransaction(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
+                    req_id,
                 ),
             ],
         )
 
         self.assertSpanAttributes(
             "CloudSpanner.Transaction.rollback",
-            attributes=TestTransaction.BASE_ATTRIBUTES,
+            attributes=dict(
+                TestTransaction.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_commit_not_begun(self):
@@ -430,10 +443,15 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertIsNone(transaction.committed)
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1"
         self.assertSpanAttributes(
             "CloudSpanner.Transaction.commit",
             status=StatusCode.ERROR,
-            attributes=dict(TestTransaction.BASE_ATTRIBUTES, num_mutations=1),
+            attributes=dict(
+                TestTransaction.BASE_ATTRIBUTES,
+                num_mutations=1,
+                x_goog_spanner_request_id=req_id,
+            ),
         )
 
     def _commit_helper(
@@ -500,6 +518,7 @@ class TestTransaction(OpenTelemetryBase):
         self.assertEqual(session_id, session.name)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertEqual(
             metadata,
             [
@@ -507,7 +526,7 @@ class TestTransaction(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{_Client.NTH_CLIENT.value}.1.1.1",
+                    req_id,
                 ),
             ],
         )
@@ -521,6 +540,7 @@ class TestTransaction(OpenTelemetryBase):
             attributes=dict(
                 TestTransaction.BASE_ATTRIBUTES,
                 num_mutations=len(transaction._mutations),
+                x_goog_spanner_request_id=req_id,
             ),
         )
 
@@ -1069,13 +1089,16 @@ class _Database(object):
     def _nth_client_id(self):
         return self._instance._client._nth_client_id
 
-    def metadata_with_request_id(self, nth_request, nth_attempt, prior_metadata=[]):
+    def metadata_with_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
         return _metadata_with_request_id(
             self._nth_client_id,
             self._channel_id,
             nth_request,
             nth_attempt,
             prior_metadata,
+            span,
         )
 
     @property

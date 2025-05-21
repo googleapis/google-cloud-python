@@ -167,11 +167,14 @@ class Session(object):
             self._labels,
             observability_options=observability_options,
             metadata=metadata,
-        ), MetricsCapture():
+        ) as span, MetricsCapture():
             session_pb = api.create_session(
                 request=request,
                 metadata=self._database.metadata_with_request_id(
-                    self._database._next_nth_request, 1, metadata
+                    self._database._next_nth_request,
+                    1,
+                    metadata,
+                    span,
                 ),
             )
         self._session_id = session_pb.name.split("/")[-1]
@@ -218,7 +221,10 @@ class Session(object):
                 api.get_session(
                     name=self.name,
                     metadata=database.metadata_with_request_id(
-                        database._next_nth_request, 1, metadata
+                        database._next_nth_request,
+                        1,
+                        metadata,
+                        span,
                     ),
                 )
                 if span:
@@ -263,11 +269,14 @@ class Session(object):
             },
             observability_options=observability_options,
             metadata=metadata,
-        ), MetricsCapture():
+        ) as span, MetricsCapture():
             api.delete_session(
                 name=self.name,
                 metadata=database.metadata_with_request_id(
-                    database._next_nth_request, 1, metadata
+                    database._next_nth_request,
+                    1,
+                    metadata,
+                    span,
                 ),
             )
 

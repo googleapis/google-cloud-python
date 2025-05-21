@@ -23,6 +23,7 @@ from google.cloud.spanner_v1._helpers import (
     _metadata_with_request_id,
     AtomicCounter,
 )
+from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from tests._helpers import (
@@ -260,7 +261,10 @@ class TestFixedSizePool(OpenTelemetryBase):
         want_span_names = ["CloudSpanner.FixedPool.BatchCreateSessions", "pool.Get"]
         assert got_span_names == want_span_names
 
-        attrs = TestFixedSizePool.BASE_ATTRIBUTES.copy()
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id-1}.{database._channel_id}.{_Database.NTH_REQUEST.value}.1"
+        attrs = dict(
+            TestFixedSizePool.BASE_ATTRIBUTES.copy(), x_goog_spanner_request_id=req_id
+        )
 
         # Check for the overall spans.
         self.assertSpanAttributes(
@@ -927,7 +931,10 @@ class TestPingingPool(OpenTelemetryBase):
         want_span_names = ["CloudSpanner.PingingPool.BatchCreateSessions"]
         assert got_span_names == want_span_names
 
-        attrs = TestPingingPool.BASE_ATTRIBUTES.copy()
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id-1}.{database._channel_id}.{_Database.NTH_REQUEST.value}.1"
+        attrs = dict(
+            TestPingingPool.BASE_ATTRIBUTES.copy(), x_goog_spanner_request_id=req_id
+        )
         self.assertSpanAttributes(
             "CloudSpanner.PingingPool.BatchCreateSessions",
             attributes=attrs,
@@ -1263,13 +1270,16 @@ class _Database(object):
     def _nth_client_id(self):
         return self.NTH_CLIENT_ID.increment()
 
-    def metadata_with_request_id(self, nth_request, nth_attempt, prior_metadata=[]):
+    def metadata_with_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
         return _metadata_with_request_id(
             self._nth_client_id,
             self._channel_id,
             nth_request,
             nth_attempt,
             prior_metadata,
+            span,
         )
 
     @property

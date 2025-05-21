@@ -1264,13 +1264,16 @@ class _Database(object):
     def _nth_client_id(self):
         return self._instance._client._nth_client_id
 
-    def metadata_with_request_id(self, nth_request, nth_attempt, prior_metadata=[]):
+    def metadata_with_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
         return _metadata_with_request_id(
             self._nth_client_id,
             self._channel_id,
             nth_request,
             nth_attempt,
             prior_metadata,
+            span,
         )
 
     @property

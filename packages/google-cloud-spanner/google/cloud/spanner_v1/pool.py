@@ -257,7 +257,10 @@ class FixedSizePool(AbstractSessionPool):
                 resp = api.batch_create_sessions(
                     request=request,
                     metadata=database.metadata_with_request_id(
-                        database._next_nth_request, 1, metadata
+                        database._next_nth_request,
+                        1,
+                        metadata,
+                        span,
                     ),
                 )
 
@@ -564,7 +567,10 @@ class PingingPool(AbstractSessionPool):
                 resp = api.batch_create_sessions(
                     request=request,
                     metadata=database.metadata_with_request_id(
-                        database._next_nth_request, 1, metadata
+                        database._next_nth_request,
+                        1,
+                        metadata,
+                        span,
                     ),
                 )
 

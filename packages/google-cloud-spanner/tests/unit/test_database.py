@@ -3241,6 +3241,10 @@ class TestMutationGroupsCheckout(_BaseTest):
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
+                (
+                    "x-goog-spanner-request-id",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                ),
             ],
         )
 
@@ -3405,13 +3409,16 @@ class _Database(object):
     def _next_nth_request(self):
         return self._nth_request.increment()
 
-    def metadata_with_request_id(self, nth_request, nth_attempt, prior_metadata=[]):
+    def metadata_with_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
         return _metadata_with_request_id(
             self._nth_client_id,
             self._channel_id,
             nth_request,
             nth_attempt,
             prior_metadata,
+            span,
         )
 
     @property

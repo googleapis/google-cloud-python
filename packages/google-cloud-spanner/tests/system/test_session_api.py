@@ -33,6 +33,10 @@ from .testdata import singer_pb2
 from tests import _helpers as ot_helpers
 from . import _helpers
 from . import _sample_data
+from google.cloud.spanner_v1.request_id_header import (
+    REQ_RAND_PROCESS_ID,
+    parse_request_id,
+)
 
 
 SOME_DATE = datetime.date(2011, 1, 17)
@@ -441,28 +445,51 @@ def test_batch_insert_then_read(sessions_database, ot_exporter):
     if ot_exporter is not None:
         span_list = ot_exporter.get_finished_spans()
 
+        sampling_req_id = parse_request_id(
+            span_list[0].attributes["x_goog_spanner_request_id"]
+        )
+        nth_req0 = sampling_req_id[-2]
+
+        db = sessions_database
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.GetSession",
-            attributes=_make_attributes(db_name, session_found=True),
+            attributes=_make_attributes(
+                db_name,
+                session_found=True,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+0}.1",
+            ),
             span=span_list[0],
         )
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.Batch.commit",
-            attributes=_make_attributes(db_name, num_mutations=2),
+            attributes=_make_attributes(
+                db_name,
+                num_mutations=2,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+1}.1",
+            ),
             span=span_list[1],
         )
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.GetSession",
-            attributes=_make_attributes(db_name, session_found=True),
+            attributes=_make_attributes(
+                db_name,
+                session_found=True,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+2}.1",
+            ),
             span=span_list[2],
         )
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.Snapshot.read",
-            attributes=_make_attributes(db_name, columns=sd.COLUMNS, table_id=sd.TABLE),
+            attributes=_make_attributes(
+                db_name,
+                columns=sd.COLUMNS,
+                table_id=sd.TABLE,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+3}.1",
+            ),
             span=span_list[3],
         )
 
@@ -625,28 +652,50 @@ def test_transaction_read_and_insert_then_rollback(
         ]
         assert got_span_names == want_span_names
 
+        sampling_req_id = parse_request_id(
+            span_list[0].attributes["x_goog_spanner_request_id"]
+        )
+        nth_req0 = sampling_req_id[-2]
+
+        db = sessions_database
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.CreateSession",
-            attributes=_make_attributes(db_name),
+            attributes=dict(
+                _make_attributes(
+                    db_name,
+                    x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+0}.1",
+                ),
+            ),
             span=span_list[0],
         )
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.GetSession",
-            attributes=_make_attributes(db_name, session_found=True),
+            attributes=_make_attributes(
+                db_name,
+                session_found=True,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+1}.1",
+            ),
             span=span_list[1],
         )
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.Batch.commit",
-            attributes=_make_attributes(db_name, num_mutations=1),
+            attributes=_make_attributes(
+                db_name,
+                num_mutations=1,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+2}.1",
+            ),
             span=span_list[2],
         )
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.Transaction.begin",
-            attributes=_make_attributes(db_name),
+            attributes=_make_attributes(
+                db_name,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+3}.1",
+            ),
             span=span_list[3],
         )
         assert_span_attributes(
@@ -656,6 +705,7 @@ def test_transaction_read_and_insert_then_rollback(
                 db_name,
                 table_id=sd.TABLE,
                 columns=sd.COLUMNS,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+4}.1",
             ),
             span=span_list[4],
         )
@@ -666,13 +716,17 @@ def test_transaction_read_and_insert_then_rollback(
                 db_name,
                 table_id=sd.TABLE,
                 columns=sd.COLUMNS,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+5}.1",
             ),
             span=span_list[5],
         )
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.Transaction.rollback",
-            attributes=_make_attributes(db_name),
+            attributes=_make_attributes(
+                db_name,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+6}.1",
+            ),
             span=span_list[6],
         )
         assert_span_attributes(
@@ -682,6 +736,7 @@ def test_transaction_read_and_insert_then_rollback(
                 db_name,
                 table_id=sd.TABLE,
                 columns=sd.COLUMNS,
+                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0+7}.1",
             ),
             span=span_list[7],
         )

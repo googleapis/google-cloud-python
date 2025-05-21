@@ -216,10 +216,13 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         with self.assertRaises(Unknown):
             batch.commit()
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner.Batch.commit",
             status=StatusCode.ERROR,
-            attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
+            attributes=dict(
+                BASE_ATTRIBUTES, num_mutations=1, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_commit_ok(self):
@@ -249,6 +252,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertEqual(
             metadata,
             [
@@ -256,7 +260,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
@@ -265,7 +269,9 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         self.assertSpanAttributes(
             "CloudSpanner.Batch.commit",
-            attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
+            attributes=dict(
+                BASE_ATTRIBUTES, num_mutations=1, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_aborted_exception_on_commit_with_retries(self):
@@ -347,6 +353,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
             single_use_txn.isolation_level,
             isolation_level,
         )
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertEqual(
             metadata,
             [
@@ -354,7 +361,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
@@ -362,7 +369,9 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         self.assertSpanAttributes(
             "CloudSpanner.Batch.commit",
-            attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
+            attributes=dict(
+                BASE_ATTRIBUTES, num_mutations=1, x_goog_spanner_request_id=req_id
+            ),
         )
 
         self.assertEqual(max_commit_delay_in, max_commit_delay)
@@ -461,6 +470,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertEqual(
             metadata,
             [
@@ -468,7 +478,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
@@ -476,7 +486,9 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         self.assertSpanAttributes(
             "CloudSpanner.Batch.commit",
-            attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
+            attributes=dict(
+                BASE_ATTRIBUTES, num_mutations=1, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_context_mgr_failure(self):
@@ -520,10 +532,13 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         group = groups.group()
         group.delete(TABLE_NAME, keyset=keyset)
         groups.batch_write()
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner.batch_write",
             status=StatusCode.OK,
-            attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
+            attributes=dict(
+                BASE_ATTRIBUTES, num_mutation_groups=1, x_goog_spanner_request_id=req_id
+            ),
         )
         assert groups.committed
         # The second call to batch_write should raise an error.
@@ -543,10 +558,13 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         with self.assertRaises(Unknown):
             groups.batch_write()
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner.batch_write",
             status=StatusCode.ERROR,
-            attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
+            attributes=dict(
+                BASE_ATTRIBUTES, num_mutation_groups=1, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def _test_batch_write_with_request_options(
@@ -596,6 +614,11 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
                 "traceparent is missing in metadata",
             )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
+        expected_metadata.append(
+            ("x-goog-spanner-request-id", req_id),
+        )
+
         # Remove traceparent from actual metadata for comparison
         filtered_metadata = [item for item in metadata if item[0] != "traceparent"]
 
@@ -615,7 +638,9 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         self.assertSpanAttributes(
             "CloudSpanner.batch_write",
             status=StatusCode.OK,
-            attributes=dict(BASE_ATTRIBUTES, num_mutation_groups=1),
+            attributes=dict(
+                BASE_ATTRIBUTES, num_mutation_groups=1, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_batch_write_no_request_options(self):
@@ -671,13 +696,16 @@ class _Database(object):
         self._nth_request += 1
         return self._nth_request
 
-    def metadata_with_request_id(self, nth_request, nth_attempt, prior_metadata=[]):
+    def metadata_with_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
         return _metadata_with_request_id(
             self._nth_client_id,
             self._channel_id,
             nth_request,
             nth_attempt,
             prior_metadata,
+            span,
         )
 
     @property

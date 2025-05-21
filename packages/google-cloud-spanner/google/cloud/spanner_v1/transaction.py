@@ -191,7 +191,10 @@ class Transaction(_SnapshotBase, _BatchBase):
                     session=self._session.name,
                     options=txn_options,
                     metadata=database.metadata_with_request_id(
-                        nth_request, attempt.increment(), metadata
+                        nth_request,
+                        attempt.increment(),
+                        metadata,
+                        span,
                     ),
                 )
                 return method(*args, **kwargs)
@@ -232,7 +235,7 @@ class Transaction(_SnapshotBase, _BatchBase):
                 self._session,
                 observability_options=observability_options,
                 metadata=metadata,
-            ), MetricsCapture():
+            ) as span, MetricsCapture():
                 attempt = AtomicCounter(0)
                 nth_request = database._next_nth_request
 
@@ -243,7 +246,10 @@ class Transaction(_SnapshotBase, _BatchBase):
                         session=self._session.name,
                         transaction_id=self._transaction_id,
                         metadata=database.metadata_with_request_id(
-                            nth_request, attempt.value, metadata
+                            nth_request,
+                            attempt.value,
+                            metadata,
+                            span,
                         ),
                     )
                     return method(*args, **kwargs)
@@ -334,7 +340,10 @@ class Transaction(_SnapshotBase, _BatchBase):
                     api.commit,
                     request=request,
                     metadata=database.metadata_with_request_id(
-                        nth_request, attempt.value, metadata
+                        nth_request,
+                        attempt.value,
+                        metadata,
+                        span,
                     ),
                 )
                 return method(*args, **kwargs)

@@ -570,7 +570,13 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             derived, restart, request, name, _Session(_Database()), extra_atts
         )
         self.assertEqual(list(resumable), [])
-        self.assertSpanAttributes(name, attributes=dict(BASE_ATTRIBUTES, test_att=1))
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
+        self.assertSpanAttributes(
+            name,
+            attributes=dict(
+                BASE_ATTRIBUTES, test_att=1, x_goog_spanner_request_id=req_id
+            ),
+        )
 
     def test_iteration_w_multiple_span_creation(self):
         from google.api_core.exceptions import ServiceUnavailable
@@ -599,11 +605,15 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
 
             span_list = self.ot_exporter.get_finished_spans()
             self.assertEqual(len(span_list), 2)
-            for span in span_list:
+            for i, span in enumerate(span_list):
                 self.assertEqual(span.name, name)
+                req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.{i+1}"
                 self.assertEqual(
                     dict(span.attributes),
-                    enrich_with_otel_scope(BASE_ATTRIBUTES),
+                    dict(
+                        enrich_with_otel_scope(BASE_ATTRIBUTES),
+                        x_goog_spanner_request_id=req_id,
+                    ),
                 )
 
 
@@ -678,11 +688,15 @@ class Test_SnapshotBase(OpenTelemetryBase):
         with self.assertRaises(RuntimeError):
             list(derived.read(TABLE_NAME, COLUMNS, keyset))
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner._Derived.read",
             status=StatusCode.ERROR,
             attributes=dict(
-                BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
+                BASE_ATTRIBUTES,
+                table_id=TABLE_NAME,
+                columns=tuple(COLUMNS),
+                x_goog_spanner_request_id=req_id,
             ),
         )
 
@@ -828,13 +842,14 @@ class Test_SnapshotBase(OpenTelemetryBase):
             request_options=expected_request_options,
             directed_read_options=expected_directed_read_options,
         )
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         api.streaming_read.assert_called_once_with(
             request=expected_request,
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
             retry=retry,
@@ -844,7 +859,10 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertSpanAttributes(
             "CloudSpanner._Derived.read",
             attributes=dict(
-                BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
+                BASE_ATTRIBUTES,
+                table_id=TABLE_NAME,
+                columns=tuple(COLUMNS),
+                x_goog_spanner_request_id=req_id,
             ),
         )
 
@@ -936,10 +954,14 @@ class Test_SnapshotBase(OpenTelemetryBase):
 
         self.assertEqual(derived._execute_sql_count, 1)
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner._Derived.execute_sql",
             status=StatusCode.ERROR,
-            attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY}),
+            attributes=dict(
+                BASE_ATTRIBUTES,
+                **{"db.statement": SQL_QUERY, "x_goog_spanner_request_id": req_id},
+            ),
         )
 
     def _execute_sql_helper(
@@ -1083,13 +1105,14 @@ class Test_SnapshotBase(OpenTelemetryBase):
             seqno=sql_count,
             directed_read_options=expected_directed_read_options,
         )
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         api.execute_streaming_sql.assert_called_once_with(
             request=expected_request,
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                    req_id,
                 ),
             ],
             timeout=timeout,
@@ -1101,7 +1124,13 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertSpanAttributes(
             "CloudSpanner._Derived.execute_sql",
             status=StatusCode.OK,
-            attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY_WITH_PARAM}),
+            attributes=dict(
+                BASE_ATTRIBUTES,
+                **{
+                    "db.statement": SQL_QUERY_WITH_PARAM,
+                    "x_goog_spanner_request_id": req_id,
+                },
+            ),
         )
 
     def test_execute_sql_wo_multi_use(self):
@@ -1259,6 +1288,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             index=index,
             partition_options=expected_partition_options,
         )
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         api.partition_read.assert_called_once_with(
             request=expected_request,
             metadata=[
@@ -1266,7 +1296,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                    req_id,
                 ),
             ],
             retry=retry,
@@ -1277,6 +1307,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             BASE_ATTRIBUTES,
             table_id=TABLE_NAME,
             columns=tuple(COLUMNS),
+            x_goog_spanner_request_id=req_id,
         )
         if index:
             want_span_attributes["index"] = index
@@ -1309,11 +1340,15 @@ class Test_SnapshotBase(OpenTelemetryBase):
         with self.assertRaises(RuntimeError):
             list(derived.partition_read(TABLE_NAME, COLUMNS, keyset))
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner._Derived.partition_read",
             status=StatusCode.ERROR,
             attributes=dict(
-                BASE_ATTRIBUTES, table_id=TABLE_NAME, columns=tuple(COLUMNS)
+                BASE_ATTRIBUTES,
+                table_id=TABLE_NAME,
+                columns=tuple(COLUMNS),
+                x_goog_spanner_request_id=req_id,
             ),
         )
 
@@ -1442,6 +1477,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             param_types=PARAM_TYPES,
             partition_options=expected_partition_options,
         )
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         api.partition_query.assert_called_once_with(
             request=expected_request,
             metadata=[
@@ -1449,7 +1485,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                    req_id,
                 ),
             ],
             retry=retry,
@@ -1459,7 +1495,13 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertSpanAttributes(
             "CloudSpanner._Derived.partition_query",
             status=StatusCode.OK,
-            attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY_WITH_PARAM}),
+            attributes=dict(
+                BASE_ATTRIBUTES,
+                **{
+                    "db.statement": SQL_QUERY_WITH_PARAM,
+                    "x_goog_spanner_request_id": req_id,
+                },
+            ),
         )
 
     def test_partition_query_other_error(self):
@@ -1474,10 +1516,14 @@ class Test_SnapshotBase(OpenTelemetryBase):
         with self.assertRaises(RuntimeError):
             list(derived.partition_query(SQL_QUERY))
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner._Derived.partition_query",
             status=StatusCode.ERROR,
-            attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY}),
+            attributes=dict(
+                BASE_ATTRIBUTES,
+                **{"db.statement": SQL_QUERY, "x_goog_spanner_request_id": req_id},
+            ),
         )
 
     def test_partition_query_single_use_raises(self):
@@ -1792,10 +1838,11 @@ class TestSnapshot(OpenTelemetryBase):
         want_span_names = ["CloudSpanner.Snapshot.begin"]
         assert got_span_names == want_span_names
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner.Snapshot.begin",
             status=StatusCode.ERROR,
-            attributes=BASE_ATTRIBUTES,
+            attributes=dict(BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id),
         )
 
     def test_begin_w_retry(self):
@@ -1844,6 +1891,7 @@ class TestSnapshot(OpenTelemetryBase):
             )
         )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         api.begin_transaction.assert_called_once_with(
             session=session.name,
             options=expected_txn_options,
@@ -1851,7 +1899,7 @@ class TestSnapshot(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
@@ -1859,7 +1907,7 @@ class TestSnapshot(OpenTelemetryBase):
         self.assertSpanAttributes(
             "CloudSpanner.Snapshot.begin",
             status=StatusCode.OK,
-            attributes=BASE_ATTRIBUTES,
+            attributes=dict(BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id),
         )
 
     def test_begin_ok_exact_strong(self):
@@ -1886,6 +1934,7 @@ class TestSnapshot(OpenTelemetryBase):
             )
         )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         api.begin_transaction.assert_called_once_with(
             session=session.name,
             options=expected_txn_options,
@@ -1893,7 +1942,7 @@ class TestSnapshot(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
@@ -1901,7 +1950,7 @@ class TestSnapshot(OpenTelemetryBase):
         self.assertSpanAttributes(
             "CloudSpanner.Snapshot.begin",
             status=StatusCode.OK,
-            attributes=BASE_ATTRIBUTES,
+            attributes=dict(BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id),
         )
 
 
@@ -1938,13 +1987,16 @@ class _Database(object):
     def _nth_client_id(self):
         return 1
 
-    def metadata_with_request_id(self, nth_request, nth_attempt, prior_metadata=[]):
+    def metadata_with_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
         return _metadata_with_request_id(
             self._nth_client_id,
             self._channel_id,
             nth_request,
             nth_attempt,
             prior_metadata,
+            span,
         )
 
     @property

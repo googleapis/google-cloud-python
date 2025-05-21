@@ -72,7 +72,9 @@ def inject_into_mock_database(mockdb):
     channel_id = 1
     setattr(mockdb, "_channel_id", channel_id)
 
-    def metadata_with_request_id(nth_request, nth_attempt, prior_metadata=[]):
+    def metadata_with_request_id(
+        nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
         nth_req = nth_request.fget(mockdb)
         return _metadata_with_request_id(
             nth_client_id,
@@ -80,6 +82,7 @@ def inject_into_mock_database(mockdb):
             nth_req,
             nth_attempt,
             prior_metadata,
+            span,
         )
 
     setattr(mockdb, "metadata_with_request_id", metadata_with_request_id)
@@ -223,6 +226,7 @@ class TestSession(OpenTelemetryBase):
             session=session_template,
         )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.create_session.assert_called_once_with(
             request=request,
             metadata=[
@@ -230,13 +234,16 @@ class TestSession(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.CreateSession", attributes=TestSession.BASE_ATTRIBUTES
+            "CloudSpanner.CreateSession",
+            attributes=dict(
+                TestSession.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_create_session_span_annotations(self):
@@ -293,6 +300,7 @@ class TestSession(OpenTelemetryBase):
             database=database.name,
         )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.create_session.assert_called_once_with(
             request=request,
             metadata=[
@@ -306,7 +314,10 @@ class TestSession(OpenTelemetryBase):
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.CreateSession", attributes=TestSession.BASE_ATTRIBUTES
+            "CloudSpanner.CreateSession",
+            attributes=dict(
+                TestSession.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_create_ok(self):
@@ -325,6 +336,7 @@ class TestSession(OpenTelemetryBase):
             database=database.name,
         )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.create_session.assert_called_once_with(
             request=request,
             metadata=[
@@ -332,13 +344,16 @@ class TestSession(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
 
         self.assertSpanAttributes(
-            "CloudSpanner.CreateSession", attributes=TestSession.BASE_ATTRIBUTES
+            "CloudSpanner.CreateSession",
+            attributes=dict(
+                TestSession.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_create_w_labels(self):
@@ -359,6 +374,7 @@ class TestSession(OpenTelemetryBase):
             session=SessionRequestProto(labels=labels),
         )
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.create_session.assert_called_once_with(
             request=request,
             metadata=[
@@ -366,14 +382,16 @@ class TestSession(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
 
         self.assertSpanAttributes(
             "CloudSpanner.CreateSession",
-            attributes=dict(TestSession.BASE_ATTRIBUTES, foo="bar"),
+            attributes=dict(
+                TestSession.BASE_ATTRIBUTES, foo="bar", x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_create_error(self):
@@ -386,10 +404,13 @@ class TestSession(OpenTelemetryBase):
         with self.assertRaises(Unknown):
             session.create()
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
             "CloudSpanner.CreateSession",
             status=StatusCode.ERROR,
-            attributes=TestSession.BASE_ATTRIBUTES,
+            attributes=dict(
+                TestSession.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_exists_wo_session_id(self):
@@ -410,6 +431,7 @@ class TestSession(OpenTelemetryBase):
 
         self.assertTrue(session.exists())
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.get_session.assert_called_once_with(
             name=self.SESSION_NAME,
             metadata=[
@@ -417,14 +439,18 @@ class TestSession(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
 
         self.assertSpanAttributes(
             "CloudSpanner.GetSession",
-            attributes=dict(TestSession.BASE_ATTRIBUTES, session_found=True),
+            attributes=dict(
+                TestSession.BASE_ATTRIBUTES,
+                session_found=True,
+                x_goog_spanner_request_id=req_id,
+            ),
         )
 
     @mock.patch(
@@ -466,6 +492,7 @@ class TestSession(OpenTelemetryBase):
 
         self.assertFalse(session.exists())
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.get_session.assert_called_once_with(
             name=self.SESSION_NAME,
             metadata=[
@@ -473,14 +500,18 @@ class TestSession(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
 
         self.assertSpanAttributes(
             "CloudSpanner.GetSession",
-            attributes=dict(TestSession.BASE_ATTRIBUTES, session_found=False),
+            attributes=dict(
+                TestSession.BASE_ATTRIBUTES,
+                session_found=False,
+                x_goog_spanner_request_id=req_id,
+            ),
         )
 
     @mock.patch(
@@ -522,6 +553,7 @@ class TestSession(OpenTelemetryBase):
         with self.assertRaises(Unknown):
             session.exists()
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.get_session.assert_called_once_with(
             name=self.SESSION_NAME,
             metadata=[
@@ -529,7 +561,7 @@ class TestSession(OpenTelemetryBase):
                 ("x-goog-spanner-route-to-leader", "true"),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
@@ -537,7 +569,9 @@ class TestSession(OpenTelemetryBase):
         self.assertSpanAttributes(
             "CloudSpanner.GetSession",
             status=StatusCode.ERROR,
-            attributes=TestSession.BASE_ATTRIBUTES,
+            attributes=dict(
+                TestSession.BASE_ATTRIBUTES, x_goog_spanner_request_id=req_id
+            ),
         )
 
     def test_ping_wo_session_id(self):
@@ -645,13 +679,14 @@ class TestSession(OpenTelemetryBase):
 
         session.delete()
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.delete_session.assert_called_once_with(
             name=self.SESSION_NAME,
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
@@ -660,7 +695,7 @@ class TestSession(OpenTelemetryBase):
         attrs.update(TestSession.BASE_ATTRIBUTES)
         self.assertSpanAttributes(
             "CloudSpanner.DeleteSession",
-            attributes=attrs,
+            attributes=dict(attrs, x_goog_spanner_request_id=req_id),
         )
 
     def test_delete_miss(self):
@@ -674,18 +709,23 @@ class TestSession(OpenTelemetryBase):
         with self.assertRaises(NotFound):
             session.delete()
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.delete_session.assert_called_once_with(
             name=self.SESSION_NAME,
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
 
-        attrs = {"session.id": session._session_id, "session.name": session.name}
+        attrs = {
+            "session.id": session._session_id,
+            "session.name": session.name,
+            "x_goog_spanner_request_id": req_id,
+        }
         attrs.update(TestSession.BASE_ATTRIBUTES)
 
         self.assertSpanAttributes(
@@ -705,18 +745,23 @@ class TestSession(OpenTelemetryBase):
         with self.assertRaises(Unknown):
             session.delete()
 
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.delete_session.assert_called_once_with(
             name=self.SESSION_NAME,
             metadata=[
                 ("google-cloud-resource-prefix", database.name),
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    req_id,
                 ),
             ],
         )
 
-        attrs = {"session.id": session._session_id, "session.name": session.name}
+        attrs = {
+            "session.id": session._session_id,
+            "session.name": session.name,
+            "x_goog_spanner_request_id": req_id,
+        }
         attrs.update(TestSession.BASE_ATTRIBUTES)
 
         self.assertSpanAttributes(

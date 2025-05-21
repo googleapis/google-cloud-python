@@ -462,13 +462,19 @@ class Database(object):
 
         return self._spanner_api
 
-    def metadata_with_request_id(self, nth_request, nth_attempt, prior_metadata=[]):
+    def metadata_with_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        if span is None:
+            span = get_current_span()
+
         return _metadata_with_request_id(
             self._nth_client_id,
             self._channel_id,
             nth_request,
             nth_attempt,
             prior_metadata,
+            span,
         )
 
     def __eq__(self, other):
@@ -762,6 +768,7 @@ class Database(object):
                             self._next_nth_request,
                             1,
                             metadata,
+                            span,
                         ),
                     )
 
