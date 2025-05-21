@@ -128,7 +128,7 @@ class BaseCollectionReference(Generic[QueryType]):
     def _vector_query(self) -> BaseVectorQuery:
         raise NotImplementedError
 
-    def document(self, document_id: Optional[str] = None):
+    def document(self, document_id: Optional[str] = None) -> DocumentReference:
         """Create a sub-document underneath the current collection.
 
         Args:
