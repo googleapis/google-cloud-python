@@ -118,7 +118,7 @@ class _BaseOnlineReturnPolicyServiceRestTransport(OnlineReturnPolicyServiceTrans
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = online_return_policy.CreateOnlineReturnPolicyRequest.pb(
+            pb_request = gsma_online_return_policy.CreateOnlineReturnPolicyRequest.pb(
                 request
             )
             transcoded_request = path_template.transcode(http_options, pb_request)

@@ -120,10 +120,10 @@ class OnlineReturnPolicyServiceRestInterceptor:
 
     def pre_create_online_return_policy(
         self,
-        request: online_return_policy.CreateOnlineReturnPolicyRequest,
+        request: gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        online_return_policy.CreateOnlineReturnPolicyRequest,
+        gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
         Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_online_return_policy
@@ -134,8 +134,8 @@ class OnlineReturnPolicyServiceRestInterceptor:
         return request, metadata
 
     def post_create_online_return_policy(
-        self, response: online_return_policy.OnlineReturnPolicy
-    ) -> online_return_policy.OnlineReturnPolicy:
+        self, response: gsma_online_return_policy.OnlineReturnPolicy
+    ) -> gsma_online_return_policy.OnlineReturnPolicy:
         """Post-rpc interceptor for create_online_return_policy
 
         DEPRECATED. Please use the `post_create_online_return_policy_with_metadata`
@@ -150,10 +150,11 @@ class OnlineReturnPolicyServiceRestInterceptor:
 
     def post_create_online_return_policy_with_metadata(
         self,
-        response: online_return_policy.OnlineReturnPolicy,
+        response: gsma_online_return_policy.OnlineReturnPolicy,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        online_return_policy.OnlineReturnPolicy, Sequence[Tuple[str, Union[str, bytes]]]
+        gsma_online_return_policy.OnlineReturnPolicy,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Post-rpc interceptor for create_online_return_policy
 
@@ -469,17 +470,17 @@ class OnlineReturnPolicyServiceRestTransport(
 
         def __call__(
             self,
-            request: online_return_policy.CreateOnlineReturnPolicyRequest,
+            request: gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> online_return_policy.OnlineReturnPolicy:
+        ) -> gsma_online_return_policy.OnlineReturnPolicy:
             r"""Call the create online return
             policy method over HTTP.
 
                 Args:
-                    request (~.online_return_policy.CreateOnlineReturnPolicyRequest):
+                    request (~.gsma_online_return_policy.CreateOnlineReturnPolicyRequest):
                         The request object. Request message for the ``CreateOnlineReturnPolicy``
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -491,7 +492,7 @@ class OnlineReturnPolicyServiceRestTransport(
                         be of type `bytes`.
 
                 Returns:
-                    ~.online_return_policy.OnlineReturnPolicy:
+                    ~.gsma_online_return_policy.OnlineReturnPolicy:
                         `Online return
                     policy <https://support.google.com/merchants/answer/10220642>`__
                     object. This is currently used to represent return
@@ -563,8 +564,8 @@ class OnlineReturnPolicyServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = online_return_policy.OnlineReturnPolicy()
-            pb_resp = online_return_policy.OnlineReturnPolicy.pb(resp)
+            resp = gsma_online_return_policy.OnlineReturnPolicy()
+            pb_resp = gsma_online_return_policy.OnlineReturnPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -577,8 +578,8 @@ class OnlineReturnPolicyServiceRestTransport(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = online_return_policy.OnlineReturnPolicy.to_json(
-                        response
+                    response_payload = (
+                        gsma_online_return_policy.OnlineReturnPolicy.to_json(response)
                     )
                 except:
                     response_payload = None
@@ -1068,7 +1069,9 @@ class OnlineReturnPolicyServiceRestTransport(
                 Args:
                     request (~.gsma_online_return_policy.UpdateOnlineReturnPolicyRequest):
                         The request object. Request message for the ``UpdateOnlineReturnPolicy``
-                    method.
+                    method. The method supports field masks and when the
+                    mask is provided, only the fields specified in the mask
+                    are updated.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1189,8 +1192,8 @@ class OnlineReturnPolicyServiceRestTransport(
     def create_online_return_policy(
         self,
     ) -> Callable[
-        [online_return_policy.CreateOnlineReturnPolicyRequest],
-        online_return_policy.OnlineReturnPolicy,
+        [gsma_online_return_policy.CreateOnlineReturnPolicyRequest],
+        gsma_online_return_policy.OnlineReturnPolicy,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast

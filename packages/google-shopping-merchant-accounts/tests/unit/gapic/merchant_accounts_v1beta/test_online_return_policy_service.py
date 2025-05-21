@@ -2151,7 +2151,7 @@ async def test_list_online_return_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        online_return_policy.CreateOnlineReturnPolicyRequest,
+        gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
         dict,
     ],
 )
@@ -2170,40 +2170,42 @@ def test_create_online_return_policy(request_type, transport: str = "grpc"):
         type(client.transport.create_online_return_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = online_return_policy.OnlineReturnPolicy(
+        call.return_value = gsma_online_return_policy.OnlineReturnPolicy(
             name="name_value",
             return_policy_id="return_policy_id_value",
             label="label_value",
             countries=["countries_value"],
             return_methods=[
-                online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
+                gsma_online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
             ],
-            item_conditions=[online_return_policy.OnlineReturnPolicy.ItemCondition.NEW],
+            item_conditions=[
+                gsma_online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
+            ],
             return_policy_uri="return_policy_uri_value",
             accept_defective_only=True,
             process_refund_days=2034,
             accept_exchange=True,
-            return_label_source=online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT,
+            return_label_source=gsma_online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT,
         )
         response = client.create_online_return_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = online_return_policy.CreateOnlineReturnPolicyRequest()
+        request = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, online_return_policy.OnlineReturnPolicy)
+    assert isinstance(response, gsma_online_return_policy.OnlineReturnPolicy)
     assert response.name == "name_value"
     assert response.return_policy_id == "return_policy_id_value"
     assert response.label == "label_value"
     assert response.countries == ["countries_value"]
     assert response.return_methods == [
-        online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
+        gsma_online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
     ]
     assert response.item_conditions == [
-        online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
+        gsma_online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
     ]
     assert response.return_policy_uri == "return_policy_uri_value"
     assert response.accept_defective_only is True
@@ -2211,7 +2213,7 @@ def test_create_online_return_policy(request_type, transport: str = "grpc"):
     assert response.accept_exchange is True
     assert (
         response.return_label_source
-        == online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT
+        == gsma_online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT
     )
 
 
@@ -2226,7 +2228,7 @@ def test_create_online_return_policy_non_empty_request_with_auto_populated_field
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = online_return_policy.CreateOnlineReturnPolicyRequest(
+    request = gsma_online_return_policy.CreateOnlineReturnPolicyRequest(
         parent="parent_value",
     )
 
@@ -2240,7 +2242,7 @@ def test_create_online_return_policy_non_empty_request_with_auto_populated_field
         client.create_online_return_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == online_return_policy.CreateOnlineReturnPolicyRequest(
+        assert args[0] == gsma_online_return_policy.CreateOnlineReturnPolicyRequest(
             parent="parent_value",
         )
 
@@ -2330,7 +2332,7 @@ async def test_create_online_return_policy_async_use_cached_wrapped_rpc(
 @pytest.mark.asyncio
 async def test_create_online_return_policy_async(
     transport: str = "grpc_asyncio",
-    request_type=online_return_policy.CreateOnlineReturnPolicyRequest,
+    request_type=gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
 ):
     client = OnlineReturnPolicyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2347,22 +2349,22 @@ async def test_create_online_return_policy_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            online_return_policy.OnlineReturnPolicy(
+            gsma_online_return_policy.OnlineReturnPolicy(
                 name="name_value",
                 return_policy_id="return_policy_id_value",
                 label="label_value",
                 countries=["countries_value"],
                 return_methods=[
-                    online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
+                    gsma_online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
                 ],
                 item_conditions=[
-                    online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
+                    gsma_online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
                 ],
                 return_policy_uri="return_policy_uri_value",
                 accept_defective_only=True,
                 process_refund_days=2034,
                 accept_exchange=True,
-                return_label_source=online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT,
+                return_label_source=gsma_online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT,
             )
         )
         response = await client.create_online_return_policy(request)
@@ -2370,20 +2372,20 @@ async def test_create_online_return_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = online_return_policy.CreateOnlineReturnPolicyRequest()
+        request = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, online_return_policy.OnlineReturnPolicy)
+    assert isinstance(response, gsma_online_return_policy.OnlineReturnPolicy)
     assert response.name == "name_value"
     assert response.return_policy_id == "return_policy_id_value"
     assert response.label == "label_value"
     assert response.countries == ["countries_value"]
     assert response.return_methods == [
-        online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
+        gsma_online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
     ]
     assert response.item_conditions == [
-        online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
+        gsma_online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
     ]
     assert response.return_policy_uri == "return_policy_uri_value"
     assert response.accept_defective_only is True
@@ -2391,7 +2393,7 @@ async def test_create_online_return_policy_async(
     assert response.accept_exchange is True
     assert (
         response.return_label_source
-        == online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT
+        == gsma_online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT
     )
 
 
@@ -2407,7 +2409,7 @@ def test_create_online_return_policy_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = online_return_policy.CreateOnlineReturnPolicyRequest()
+    request = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
 
     request.parent = "parent_value"
 
@@ -2415,7 +2417,7 @@ def test_create_online_return_policy_field_headers():
     with mock.patch.object(
         type(client.transport.create_online_return_policy), "__call__"
     ) as call:
-        call.return_value = online_return_policy.OnlineReturnPolicy()
+        call.return_value = gsma_online_return_policy.OnlineReturnPolicy()
         client.create_online_return_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2439,7 +2441,7 @@ async def test_create_online_return_policy_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = online_return_policy.CreateOnlineReturnPolicyRequest()
+    request = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
 
     request.parent = "parent_value"
 
@@ -2448,7 +2450,7 @@ async def test_create_online_return_policy_field_headers_async():
         type(client.transport.create_online_return_policy), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            online_return_policy.OnlineReturnPolicy()
+            gsma_online_return_policy.OnlineReturnPolicy()
         )
         await client.create_online_return_policy(request)
 
@@ -2475,11 +2477,14 @@ def test_create_online_return_policy_flattened():
         type(client.transport.create_online_return_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = online_return_policy.OnlineReturnPolicy()
+        call.return_value = gsma_online_return_policy.OnlineReturnPolicy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_online_return_policy(
             parent="parent_value",
+            online_return_policy=gsma_online_return_policy.OnlineReturnPolicy(
+                name="name_value"
+            ),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2488,6 +2493,9 @@ def test_create_online_return_policy_flattened():
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
         mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].online_return_policy
+        mock_val = gsma_online_return_policy.OnlineReturnPolicy(name="name_value")
         assert arg == mock_val
 
 
@@ -2500,8 +2508,11 @@ def test_create_online_return_policy_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_online_return_policy(
-            online_return_policy.CreateOnlineReturnPolicyRequest(),
+            gsma_online_return_policy.CreateOnlineReturnPolicyRequest(),
             parent="parent_value",
+            online_return_policy=gsma_online_return_policy.OnlineReturnPolicy(
+                name="name_value"
+            ),
         )
 
 
@@ -2516,15 +2527,18 @@ async def test_create_online_return_policy_flattened_async():
         type(client.transport.create_online_return_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = online_return_policy.OnlineReturnPolicy()
+        call.return_value = gsma_online_return_policy.OnlineReturnPolicy()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            online_return_policy.OnlineReturnPolicy()
+            gsma_online_return_policy.OnlineReturnPolicy()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_online_return_policy(
             parent="parent_value",
+            online_return_policy=gsma_online_return_policy.OnlineReturnPolicy(
+                name="name_value"
+            ),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2533,6 +2547,9 @@ async def test_create_online_return_policy_flattened_async():
         _, args, _ = call.mock_calls[0]
         arg = args[0].parent
         mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].online_return_policy
+        mock_val = gsma_online_return_policy.OnlineReturnPolicy(name="name_value")
         assert arg == mock_val
 
 
@@ -2546,8 +2563,11 @@ async def test_create_online_return_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_online_return_policy(
-            online_return_policy.CreateOnlineReturnPolicyRequest(),
+            gsma_online_return_policy.CreateOnlineReturnPolicyRequest(),
             parent="parent_value",
+            online_return_policy=gsma_online_return_policy.OnlineReturnPolicy(
+                name="name_value"
+            ),
         )
 
 
@@ -3794,7 +3814,7 @@ def test_create_online_return_policy_rest_use_cached_wrapped_rpc():
 
 
 def test_create_online_return_policy_rest_required_fields(
-    request_type=online_return_policy.CreateOnlineReturnPolicyRequest,
+    request_type=gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
 ):
     transport_class = transports.OnlineReturnPolicyServiceRestTransport
 
@@ -3833,7 +3853,7 @@ def test_create_online_return_policy_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = online_return_policy.OnlineReturnPolicy()
+    return_value = gsma_online_return_policy.OnlineReturnPolicy()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3855,7 +3875,7 @@ def test_create_online_return_policy_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = online_return_policy.OnlineReturnPolicy.pb(return_value)
+            return_value = gsma_online_return_policy.OnlineReturnPolicy.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -3895,7 +3915,7 @@ def test_create_online_return_policy_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = online_return_policy.OnlineReturnPolicy()
+        return_value = gsma_online_return_policy.OnlineReturnPolicy()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"parent": "accounts/sample1"}
@@ -3903,6 +3923,9 @@ def test_create_online_return_policy_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
+            online_return_policy=gsma_online_return_policy.OnlineReturnPolicy(
+                name="name_value"
+            ),
         )
         mock_args.update(sample_request)
 
@@ -3910,7 +3933,7 @@ def test_create_online_return_policy_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = online_return_policy.OnlineReturnPolicy.pb(return_value)
+        return_value = gsma_online_return_policy.OnlineReturnPolicy.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3939,8 +3962,11 @@ def test_create_online_return_policy_rest_flattened_error(transport: str = "rest
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_online_return_policy(
-            online_return_policy.CreateOnlineReturnPolicyRequest(),
+            gsma_online_return_policy.CreateOnlineReturnPolicyRequest(),
             parent="parent_value",
+            online_return_policy=gsma_online_return_policy.OnlineReturnPolicy(
+                name="name_value"
+            ),
         )
 
 
@@ -4477,13 +4503,13 @@ def test_create_online_return_policy_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.create_online_return_policy), "__call__"
     ) as call:
-        call.return_value = online_return_policy.OnlineReturnPolicy()
+        call.return_value = gsma_online_return_policy.OnlineReturnPolicy()
         client.create_online_return_policy(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = online_return_policy.CreateOnlineReturnPolicyRequest()
+        request_msg = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
 
         assert args[0] == request_msg
 
@@ -4635,22 +4661,22 @@ async def test_create_online_return_policy_empty_call_grpc_asyncio():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            online_return_policy.OnlineReturnPolicy(
+            gsma_online_return_policy.OnlineReturnPolicy(
                 name="name_value",
                 return_policy_id="return_policy_id_value",
                 label="label_value",
                 countries=["countries_value"],
                 return_methods=[
-                    online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
+                    gsma_online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
                 ],
                 item_conditions=[
-                    online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
+                    gsma_online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
                 ],
                 return_policy_uri="return_policy_uri_value",
                 accept_defective_only=True,
                 process_refund_days=2034,
                 accept_exchange=True,
-                return_label_source=online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT,
+                return_label_source=gsma_online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT,
             )
         )
         await client.create_online_return_policy(request=None)
@@ -4658,7 +4684,7 @@ async def test_create_online_return_policy_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = online_return_policy.CreateOnlineReturnPolicyRequest()
+        request_msg = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
 
         assert args[0] == request_msg
 
@@ -5040,7 +5066,7 @@ def test_list_online_return_policies_rest_interceptors(null_interceptor):
 
 
 def test_create_online_return_policy_rest_bad_request(
-    request_type=online_return_policy.CreateOnlineReturnPolicyRequest,
+    request_type=gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
 ):
     client = OnlineReturnPolicyServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -5067,7 +5093,7 @@ def test_create_online_return_policy_rest_bad_request(
 @pytest.mark.parametrize(
     "request_type",
     [
-        online_return_policy.CreateOnlineReturnPolicyRequest,
+        gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
         dict,
     ],
 )
@@ -5114,7 +5140,7 @@ def test_create_online_return_policy_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = online_return_policy.CreateOnlineReturnPolicyRequest.meta.fields[
+    test_field = gsma_online_return_policy.CreateOnlineReturnPolicyRequest.meta.fields[
         "online_return_policy"
     ]
 
@@ -5185,20 +5211,22 @@ def test_create_online_return_policy_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = online_return_policy.OnlineReturnPolicy(
+        return_value = gsma_online_return_policy.OnlineReturnPolicy(
             name="name_value",
             return_policy_id="return_policy_id_value",
             label="label_value",
             countries=["countries_value"],
             return_methods=[
-                online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
+                gsma_online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
             ],
-            item_conditions=[online_return_policy.OnlineReturnPolicy.ItemCondition.NEW],
+            item_conditions=[
+                gsma_online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
+            ],
             return_policy_uri="return_policy_uri_value",
             accept_defective_only=True,
             process_refund_days=2034,
             accept_exchange=True,
-            return_label_source=online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT,
+            return_label_source=gsma_online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT,
         )
 
         # Wrap the value into a proper Response obj
@@ -5206,7 +5234,7 @@ def test_create_online_return_policy_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = online_return_policy.OnlineReturnPolicy.pb(return_value)
+        return_value = gsma_online_return_policy.OnlineReturnPolicy.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5214,16 +5242,16 @@ def test_create_online_return_policy_rest_call_success(request_type):
         response = client.create_online_return_policy(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, online_return_policy.OnlineReturnPolicy)
+    assert isinstance(response, gsma_online_return_policy.OnlineReturnPolicy)
     assert response.name == "name_value"
     assert response.return_policy_id == "return_policy_id_value"
     assert response.label == "label_value"
     assert response.countries == ["countries_value"]
     assert response.return_methods == [
-        online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
+        gsma_online_return_policy.OnlineReturnPolicy.ReturnMethod.BY_MAIL
     ]
     assert response.item_conditions == [
-        online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
+        gsma_online_return_policy.OnlineReturnPolicy.ItemCondition.NEW
     ]
     assert response.return_policy_uri == "return_policy_uri_value"
     assert response.accept_defective_only is True
@@ -5231,7 +5259,7 @@ def test_create_online_return_policy_rest_call_success(request_type):
     assert response.accept_exchange is True
     assert (
         response.return_label_source
-        == online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT
+        == gsma_online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT
     )
 
 
@@ -5262,8 +5290,8 @@ def test_create_online_return_policy_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = online_return_policy.CreateOnlineReturnPolicyRequest.pb(
-            online_return_policy.CreateOnlineReturnPolicyRequest()
+        pb_message = gsma_online_return_policy.CreateOnlineReturnPolicyRequest.pb(
+            gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -5275,20 +5303,20 @@ def test_create_online_return_policy_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = online_return_policy.OnlineReturnPolicy.to_json(
-            online_return_policy.OnlineReturnPolicy()
+        return_value = gsma_online_return_policy.OnlineReturnPolicy.to_json(
+            gsma_online_return_policy.OnlineReturnPolicy()
         )
         req.return_value.content = return_value
 
-        request = online_return_policy.CreateOnlineReturnPolicyRequest()
+        request = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = online_return_policy.OnlineReturnPolicy()
+        post.return_value = gsma_online_return_policy.OnlineReturnPolicy()
         post_with_metadata.return_value = (
-            online_return_policy.OnlineReturnPolicy(),
+            gsma_online_return_policy.OnlineReturnPolicy(),
             metadata,
         )
 
@@ -5759,7 +5787,7 @@ def test_create_online_return_policy_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = online_return_policy.CreateOnlineReturnPolicyRequest()
+        request_msg = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
 
         assert args[0] == request_msg
 

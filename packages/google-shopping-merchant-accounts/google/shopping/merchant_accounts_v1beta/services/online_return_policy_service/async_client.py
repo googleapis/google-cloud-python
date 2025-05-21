@@ -566,14 +566,17 @@ class OnlineReturnPolicyServiceAsyncClient:
     async def create_online_return_policy(
         self,
         request: Optional[
-            Union[online_return_policy.CreateOnlineReturnPolicyRequest, dict]
+            Union[gsma_online_return_policy.CreateOnlineReturnPolicyRequest, dict]
         ] = None,
         *,
         parent: Optional[str] = None,
+        online_return_policy: Optional[
+            gsma_online_return_policy.OnlineReturnPolicy
+        ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> online_return_policy.OnlineReturnPolicy:
+    ) -> gsma_online_return_policy.OnlineReturnPolicy:
         r"""Creates a new return policy for a given merchant.
 
         .. code-block:: python
@@ -613,10 +616,17 @@ class OnlineReturnPolicyServiceAsyncClient:
                 The request object. Request message for the ``CreateOnlineReturnPolicy``
                 method.
             parent (:class:`str`):
-                Required. The merchant account for which to create a
-                return policy. Format: ``accounts/{account}``
+                Required. The merchant account for which the return
+                policy will be created. Format: ``accounts/{account}``
 
                 This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            online_return_policy (:class:`google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy`):
+                Required. The return policy object to
+                create.
+
+                This corresponds to the ``online_return_policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
@@ -637,7 +647,7 @@ class OnlineReturnPolicyServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent]
+        flattened_params = [parent, online_return_policy]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -650,14 +660,16 @@ class OnlineReturnPolicyServiceAsyncClient:
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
         if not isinstance(
-            request, online_return_policy.CreateOnlineReturnPolicyRequest
+            request, gsma_online_return_policy.CreateOnlineReturnPolicyRequest
         ):
-            request = online_return_policy.CreateOnlineReturnPolicyRequest(request)
+            request = gsma_online_return_policy.CreateOnlineReturnPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if parent is not None:
             request.parent = parent
+        if online_return_policy is not None:
+            request.online_return_policy = online_return_policy
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -736,15 +748,32 @@ class OnlineReturnPolicyServiceAsyncClient:
         Args:
             request (Optional[Union[google.shopping.merchant_accounts_v1beta.types.UpdateOnlineReturnPolicyRequest, dict]]):
                 The request object. Request message for the ``UpdateOnlineReturnPolicy``
-                method.
+                method. The method supports field masks and when the
+                mask is provided, only the fields specified in the mask
+                are updated.
             online_return_policy (:class:`google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy`):
-                Required. The return policy to
-                update.
+                Required. The online return policy to update. The online
+                return policy's ``name`` field is used to identify the
+                online return policy to be updated.
 
                 This corresponds to the ``online_return_policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. List of fields being updated.
+
+                The following fields are supported (in both
+                ``snake_case`` and ``lowerCamelCase``):
+
+                -  ``accept_defective_only``
+                -  ``accept_exchange``
+                -  ``item_conditions``
+                -  ``policy``
+                -  ``process_refund_days``
+                -  ``restocking_fee``
+                -  ``return_methods``
+                -  ``return_policy_uri``
+                -  ``return_shipping_fee``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -830,8 +859,7 @@ class OnlineReturnPolicyServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes an existing return policy for a given
-        merchant.
+        r"""Deletes an existing return policy.
 
         .. code-block:: python
 

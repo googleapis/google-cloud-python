@@ -26,10 +26,10 @@ __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1beta",
     manifest={
         "GetOnlineReturnPolicyRequest",
-        "ListOnlineReturnPoliciesRequest",
         "CreateOnlineReturnPolicyRequest",
         "UpdateOnlineReturnPolicyRequest",
         "DeleteOnlineReturnPolicyRequest",
+        "ListOnlineReturnPoliciesRequest",
         "ListOnlineReturnPoliciesResponse",
         "OnlineReturnPolicy",
     },
@@ -42,6 +42,82 @@ class GetOnlineReturnPolicyRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the return policy to retrieve. Format:
+            ``accounts/{account}/onlineReturnPolicies/{return_policy}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateOnlineReturnPolicyRequest(proto.Message):
+    r"""Request message for the ``CreateOnlineReturnPolicy`` method.
+
+    Attributes:
+        parent (str):
+            Required. The merchant account for which the return policy
+            will be created. Format: ``accounts/{account}``
+        online_return_policy (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy):
+            Required. The return policy object to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    online_return_policy: "OnlineReturnPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="OnlineReturnPolicy",
+    )
+
+
+class UpdateOnlineReturnPolicyRequest(proto.Message):
+    r"""Request message for the ``UpdateOnlineReturnPolicy`` method. The
+    method supports field masks and when the mask is provided, only the
+    fields specified in the mask are updated.
+
+    Attributes:
+        online_return_policy (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy):
+            Required. The online return policy to update. The online
+            return policy's ``name`` field is used to identify the
+            online return policy to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. List of fields being updated.
+
+            The following fields are supported (in both ``snake_case``
+            and ``lowerCamelCase``):
+
+            -  ``accept_defective_only``
+            -  ``accept_exchange``
+            -  ``item_conditions``
+            -  ``policy``
+            -  ``process_refund_days``
+            -  ``restocking_fee``
+            -  ``return_methods``
+            -  ``return_policy_uri``
+            -  ``return_shipping_fee``
+    """
+
+    online_return_policy: "OnlineReturnPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="OnlineReturnPolicy",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteOnlineReturnPolicyRequest(proto.Message):
+    r"""Request message for the ``DeleteOnlineReturnPolicy`` method.
+
+    Attributes:
+        name (str):
+            Required. The name of the return policy to delete. Format:
             ``accounts/{account}/onlineReturnPolicies/{return_policy}``
     """
 
@@ -89,65 +165,6 @@ class ListOnlineReturnPoliciesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
-    )
-
-
-class CreateOnlineReturnPolicyRequest(proto.Message):
-    r"""Request message for the ``CreateOnlineReturnPolicy`` method.
-
-    Attributes:
-        parent (str):
-            Required. The merchant account for which to create a return
-            policy. Format: ``accounts/{account}``
-        online_return_policy (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy):
-            Required. The return policy to create.
-    """
-
-    parent: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    online_return_policy: "OnlineReturnPolicy" = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message="OnlineReturnPolicy",
-    )
-
-
-class UpdateOnlineReturnPolicyRequest(proto.Message):
-    r"""Request message for the ``UpdateOnlineReturnPolicy`` method.
-
-    Attributes:
-        online_return_policy (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy):
-            Required. The return policy to update.
-        update_mask (google.protobuf.field_mask_pb2.FieldMask):
-
-    """
-
-    online_return_policy: "OnlineReturnPolicy" = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message="OnlineReturnPolicy",
-    )
-    update_mask: field_mask_pb2.FieldMask = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        message=field_mask_pb2.FieldMask,
-    )
-
-
-class DeleteOnlineReturnPolicyRequest(proto.Message):
-    r"""Request message for the ``DeleteOnlineReturnPolicy`` method.
-
-    Attributes:
-        name (str):
-            Required. The name of the return policy to delete. Format:
-            ``accounts/{account}/onlineReturnPolicies/{return_policy}``
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
     )
 
 
@@ -239,26 +256,23 @@ class OnlineReturnPolicy(proto.Message):
             used by Google to do a sanity check for the
             policy. It must be a valid URL.
         accept_defective_only (bool):
-            This field specifies if merchant only accepts
-            defective products for returns, and this field
-            is required.
+            Optional. This field specifies if merchant
+            only accepts defective products for returns.
 
             This field is a member of `oneof`_ ``_accept_defective_only``.
         process_refund_days (int):
-            The field specifies the number of days it
-            takes for merchants to process refunds, field is
-            optional.
+            Optional. The field specifies the number of
+            days it takes for merchants to process refunds.
 
             This field is a member of `oneof`_ ``_process_refund_days``.
         accept_exchange (bool):
-            This field specifies if merchant allows
-            customers to exchange products, this field is
-            required.
+            Optional. This field specifies if merchant
+            allows customers to exchange products.
 
             This field is a member of `oneof`_ ``_accept_exchange``.
         return_label_source (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy.ReturnLabelSource):
-            The field specifies the return label source. This field is
-            required when return method is BY_MAIL.
+            Optional. The field specifies the return
+            label source.
 
             This field is a member of `oneof`_ ``_return_label_source``.
     """
