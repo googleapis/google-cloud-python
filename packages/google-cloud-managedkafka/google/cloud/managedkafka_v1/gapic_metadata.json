@@ -10,6 +10,16 @@
         "grpc": {
           "libraryClient": "ManagedKafkaClient",
           "rpcs": {
+            "AddAclEntry": {
+              "methods": [
+                "add_acl_entry"
+              ]
+            },
+            "CreateAcl": {
+              "methods": [
+                "create_acl"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
@@ -18,6 +28,11 @@
             "CreateTopic": {
               "methods": [
                 "create_topic"
+              ]
+            },
+            "DeleteAcl": {
+              "methods": [
+                "delete_acl"
               ]
             },
             "DeleteCluster": {
@@ -35,6 +50,11 @@
                 "delete_topic"
               ]
             },
+            "GetAcl": {
+              "methods": [
+                "get_acl"
+              ]
+            },
             "GetCluster": {
               "methods": [
                 "get_cluster"
@@ -50,6 +70,11 @@
                 "get_topic"
               ]
             },
+            "ListAcls": {
+              "methods": [
+                "list_acls"
+              ]
+            },
             "ListClusters": {
               "methods": [
                 "list_clusters"
@@ -63,6 +88,16 @@
             "ListTopics": {
               "methods": [
                 "list_topics"
+              ]
+            },
+            "RemoveAclEntry": {
+              "methods": [
+                "remove_acl_entry"
+              ]
+            },
+            "UpdateAcl": {
+              "methods": [
+                "update_acl"
               ]
             },
             "UpdateCluster": {
@@ -85,6 +120,16 @@
         "grpc-async": {
           "libraryClient": "ManagedKafkaAsyncClient",
           "rpcs": {
+            "AddAclEntry": {
+              "methods": [
+                "add_acl_entry"
+              ]
+            },
+            "CreateAcl": {
+              "methods": [
+                "create_acl"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
@@ -93,6 +138,11 @@
             "CreateTopic": {
               "methods": [
                 "create_topic"
+              ]
+            },
+            "DeleteAcl": {
+              "methods": [
+                "delete_acl"
               ]
             },
             "DeleteCluster": {
@@ -110,6 +160,11 @@
                 "delete_topic"
               ]
             },
+            "GetAcl": {
+              "methods": [
+                "get_acl"
+              ]
+            },
             "GetCluster": {
               "methods": [
                 "get_cluster"
@@ -125,6 +180,11 @@
                 "get_topic"
               ]
             },
+            "ListAcls": {
+              "methods": [
+                "list_acls"
+              ]
+            },
             "ListClusters": {
               "methods": [
                 "list_clusters"
@@ -138,6 +198,16 @@
             "ListTopics": {
               "methods": [
                 "list_topics"
+              ]
+            },
+            "RemoveAclEntry": {
+              "methods": [
+                "remove_acl_entry"
+              ]
+            },
+            "UpdateAcl": {
+              "methods": [
+                "update_acl"
               ]
             },
             "UpdateCluster": {
@@ -160,6 +230,16 @@
         "rest": {
           "libraryClient": "ManagedKafkaClient",
           "rpcs": {
+            "AddAclEntry": {
+              "methods": [
+                "add_acl_entry"
+              ]
+            },
+            "CreateAcl": {
+              "methods": [
+                "create_acl"
+              ]
+            },
             "CreateCluster": {
               "methods": [
                 "create_cluster"
@@ -168,6 +248,11 @@
             "CreateTopic": {
               "methods": [
                 "create_topic"
+              ]
+            },
+            "DeleteAcl": {
+              "methods": [
+                "delete_acl"
               ]
             },
             "DeleteCluster": {
@@ -185,6 +270,11 @@
                 "delete_topic"
               ]
             },
+            "GetAcl": {
+              "methods": [
+                "get_acl"
+              ]
+            },
             "GetCluster": {
               "methods": [
                 "get_cluster"
@@ -200,6 +290,11 @@
                 "get_topic"
               ]
             },
+            "ListAcls": {
+              "methods": [
+                "list_acls"
+              ]
+            },
             "ListClusters": {
               "methods": [
                 "list_clusters"
@@ -213,6 +308,16 @@
             "ListTopics": {
               "methods": [
                 "list_topics"
+              ]
+            },
+            "RemoveAclEntry": {
+              "methods": [
+                "remove_acl_entry"
+              ]
+            },
+            "UpdateAcl": {
+              "methods": [
+                "update_acl"
               ]
             },
             "UpdateCluster": {

@@ -83,6 +83,8 @@ class ManagedKafkaAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ManagedKafkaClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ManagedKafkaClient._DEFAULT_UNIVERSE
 
+    acl_path = staticmethod(ManagedKafkaClient.acl_path)
+    parse_acl_path = staticmethod(ManagedKafkaClient.parse_acl_path)
     cluster_path = staticmethod(ManagedKafkaClient.cluster_path)
     parse_cluster_path = staticmethod(ManagedKafkaClient.parse_cluster_path)
     consumer_group_path = staticmethod(ManagedKafkaClient.consumer_group_path)
@@ -2033,6 +2035,899 @@ class ManagedKafkaAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def list_acls(
+        self,
+        request: Optional[Union[managed_kafka.ListAclsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListAclsAsyncPager:
+        r"""Lists the acls in a given cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import managedkafka_v1
+
+            async def sample_list_acls():
+                # Create a client
+                client = managedkafka_v1.ManagedKafkaAsyncClient()
+
+                # Initialize request argument(s)
+                request = managedkafka_v1.ListAclsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_acls(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.managedkafka_v1.types.ListAclsRequest, dict]]):
+                The request object. Request for ListAcls.
+            parent (:class:`str`):
+                Required. The parent cluster whose acls are to be
+                listed. Structured like
+                ``projects/{project}/locations/{location}/clusters/{cluster}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.managedkafka_v1.services.managed_kafka.pagers.ListAclsAsyncPager:
+                Response for ListAcls.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, managed_kafka.ListAclsRequest):
+            request = managed_kafka.ListAclsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_acls
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAclsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_acl(
+        self,
+        request: Optional[Union[managed_kafka.GetAclRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.Acl:
+        r"""Returns the properties of a single acl.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import managedkafka_v1
+
+            async def sample_get_acl():
+                # Create a client
+                client = managedkafka_v1.ManagedKafkaAsyncClient()
+
+                # Initialize request argument(s)
+                request = managedkafka_v1.GetAclRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_acl(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.managedkafka_v1.types.GetAclRequest, dict]]):
+                The request object. Request for GetAcl.
+            name (:class:`str`):
+                Required. The name of the acl to return. Structured
+                like:
+                ``projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}``.
+
+                The structure of ``acl_id`` defines the Resource Pattern
+                (resource_type, resource_name, pattern_type) of the acl.
+                See ``Acl.name`` for details.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.managedkafka_v1.types.Acl:
+                Represents the set of ACLs for a given Kafka Resource Pattern, which consists
+                   of resource_type, resource_name and pattern_type.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, managed_kafka.GetAclRequest):
+            request = managed_kafka.GetAclRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_acl]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_acl(
+        self,
+        request: Optional[Union[managed_kafka.CreateAclRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        acl: Optional[resources.Acl] = None,
+        acl_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.Acl:
+        r"""Creates a new acl in the given project, location, and
+        cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import managedkafka_v1
+
+            async def sample_create_acl():
+                # Create a client
+                client = managedkafka_v1.ManagedKafkaAsyncClient()
+
+                # Initialize request argument(s)
+                acl = managedkafka_v1.Acl()
+                acl.acl_entries.principal = "principal_value"
+                acl.acl_entries.permission_type = "permission_type_value"
+                acl.acl_entries.operation = "operation_value"
+                acl.acl_entries.host = "host_value"
+
+                request = managedkafka_v1.CreateAclRequest(
+                    parent="parent_value",
+                    acl_id="acl_id_value",
+                    acl=acl,
+                )
+
+                # Make the request
+                response = await client.create_acl(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.managedkafka_v1.types.CreateAclRequest, dict]]):
+                The request object. Request for CreateAcl.
+            parent (:class:`str`):
+                Required. The parent cluster in which to create the acl.
+                Structured like
+                ``projects/{project}/locations/{location}/clusters/{cluster}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            acl (:class:`google.cloud.managedkafka_v1.types.Acl`):
+                Required. Configuration of the acl to create. Its
+                ``name`` field is ignored.
+
+                This corresponds to the ``acl`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            acl_id (:class:`str`):
+                Required. The ID to use for the acl, which will become
+                the final component of the acl's name. The structure of
+                ``acl_id`` defines the Resource Pattern (resource_type,
+                resource_name, pattern_type) of the acl. ``acl_id`` is
+                structured like one of the following:
+
+                For acls on the cluster: ``cluster``
+
+                For acls on a single resource within the cluster:
+                ``topic/{resource_name}``
+                ``consumerGroup/{resource_name}``
+                ``transactionalId/{resource_name}``
+
+                For acls on all resources that match a prefix:
+                ``topicPrefixed/{resource_name}``
+                ``consumerGroupPrefixed/{resource_name}``
+                ``transactionalIdPrefixed/{resource_name}``
+
+                For acls on all resources of a given type (i.e. the
+                wildcard literal "*"): ``allTopics`` (represents
+                ``topic/*``) ``allConsumerGroups`` (represents
+                ``consumerGroup/*``) ``allTransactionalIds`` (represents
+                ``transactionalId/*``)
+
+                This corresponds to the ``acl_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.managedkafka_v1.types.Acl:
+                Represents the set of ACLs for a given Kafka Resource Pattern, which consists
+                   of resource_type, resource_name and pattern_type.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, acl, acl_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, managed_kafka.CreateAclRequest):
+            request = managed_kafka.CreateAclRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if acl is not None:
+            request.acl = acl
+        if acl_id is not None:
+            request.acl_id = acl_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_acl
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_acl(
+        self,
+        request: Optional[Union[managed_kafka.UpdateAclRequest, dict]] = None,
+        *,
+        acl: Optional[resources.Acl] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.Acl:
+        r"""Updates the properties of a single acl.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import managedkafka_v1
+
+            async def sample_update_acl():
+                # Create a client
+                client = managedkafka_v1.ManagedKafkaAsyncClient()
+
+                # Initialize request argument(s)
+                acl = managedkafka_v1.Acl()
+                acl.acl_entries.principal = "principal_value"
+                acl.acl_entries.permission_type = "permission_type_value"
+                acl.acl_entries.operation = "operation_value"
+                acl.acl_entries.host = "host_value"
+
+                request = managedkafka_v1.UpdateAclRequest(
+                    acl=acl,
+                )
+
+                # Make the request
+                response = await client.update_acl(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.managedkafka_v1.types.UpdateAclRequest, dict]]):
+                The request object. Request for UpdateAcl.
+            acl (:class:`google.cloud.managedkafka_v1.types.Acl`):
+                Required. The updated acl. Its ``name`` and ``etag``
+                fields must be populated. ``acl_entries`` must not be
+                empty in the updated acl; to remove all acl entries for
+                an acl, use DeleteAcl.
+
+                This corresponds to the ``acl`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the Acl resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.managedkafka_v1.types.Acl:
+                Represents the set of ACLs for a given Kafka Resource Pattern, which consists
+                   of resource_type, resource_name and pattern_type.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [acl, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, managed_kafka.UpdateAclRequest):
+            request = managed_kafka.UpdateAclRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if acl is not None:
+            request.acl = acl
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_acl
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("acl.name", request.acl.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_acl(
+        self,
+        request: Optional[Union[managed_kafka.DeleteAclRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes an acl.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import managedkafka_v1
+
+            async def sample_delete_acl():
+                # Create a client
+                client = managedkafka_v1.ManagedKafkaAsyncClient()
+
+                # Initialize request argument(s)
+                request = managedkafka_v1.DeleteAclRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_acl(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.managedkafka_v1.types.DeleteAclRequest, dict]]):
+                The request object. Request for DeleteAcl.
+            name (:class:`str`):
+                Required. The name of the acl to delete. Structured
+                like:
+                ``projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}``.
+
+                The structure of ``acl_id`` defines the Resource Pattern
+                (resource_type, resource_name, pattern_type) of the acl.
+                See ``Acl.name`` for details.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, managed_kafka.DeleteAclRequest):
+            request = managed_kafka.DeleteAclRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_acl
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def add_acl_entry(
+        self,
+        request: Optional[Union[managed_kafka.AddAclEntryRequest, dict]] = None,
+        *,
+        acl: Optional[str] = None,
+        acl_entry: Optional[resources.AclEntry] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> managed_kafka.AddAclEntryResponse:
+        r"""Incremental update: Adds an acl entry to an acl.
+        Creates the acl if it does not exist yet.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import managedkafka_v1
+
+            async def sample_add_acl_entry():
+                # Create a client
+                client = managedkafka_v1.ManagedKafkaAsyncClient()
+
+                # Initialize request argument(s)
+                acl_entry = managedkafka_v1.AclEntry()
+                acl_entry.principal = "principal_value"
+                acl_entry.permission_type = "permission_type_value"
+                acl_entry.operation = "operation_value"
+                acl_entry.host = "host_value"
+
+                request = managedkafka_v1.AddAclEntryRequest(
+                    acl="acl_value",
+                    acl_entry=acl_entry,
+                )
+
+                # Make the request
+                response = await client.add_acl_entry(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.managedkafka_v1.types.AddAclEntryRequest, dict]]):
+                The request object. Request for AddAclEntry.
+            acl (:class:`str`):
+                Required. The name of the acl to add the acl entry to.
+                Structured like:
+                ``projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}``.
+
+                The structure of ``acl_id`` defines the Resource Pattern
+                (resource_type, resource_name, pattern_type) of the acl.
+                See ``Acl.name`` for details.
+
+                This corresponds to the ``acl`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            acl_entry (:class:`google.cloud.managedkafka_v1.types.AclEntry`):
+                Required. The acl entry to add.
+                This corresponds to the ``acl_entry`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.managedkafka_v1.types.AddAclEntryResponse:
+                Response for AddAclEntry.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [acl, acl_entry]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, managed_kafka.AddAclEntryRequest):
+            request = managed_kafka.AddAclEntryRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if acl is not None:
+            request.acl = acl
+        if acl_entry is not None:
+            request.acl_entry = acl_entry
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.add_acl_entry
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("acl", request.acl),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def remove_acl_entry(
+        self,
+        request: Optional[Union[managed_kafka.RemoveAclEntryRequest, dict]] = None,
+        *,
+        acl: Optional[str] = None,
+        acl_entry: Optional[resources.AclEntry] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> managed_kafka.RemoveAclEntryResponse:
+        r"""Incremental update: Removes an acl entry from an acl.
+        Deletes the acl if its acl entries become empty (i.e. if
+        the removed entry was the last one in the acl).
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import managedkafka_v1
+
+            async def sample_remove_acl_entry():
+                # Create a client
+                client = managedkafka_v1.ManagedKafkaAsyncClient()
+
+                # Initialize request argument(s)
+                acl_entry = managedkafka_v1.AclEntry()
+                acl_entry.principal = "principal_value"
+                acl_entry.permission_type = "permission_type_value"
+                acl_entry.operation = "operation_value"
+                acl_entry.host = "host_value"
+
+                request = managedkafka_v1.RemoveAclEntryRequest(
+                    acl="acl_value",
+                    acl_entry=acl_entry,
+                )
+
+                # Make the request
+                response = await client.remove_acl_entry(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.managedkafka_v1.types.RemoveAclEntryRequest, dict]]):
+                The request object. Request for RemoveAclEntry.
+            acl (:class:`str`):
+                Required. The name of the acl to remove the acl entry
+                from. Structured like:
+                ``projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}``.
+
+                The structure of ``acl_id`` defines the Resource Pattern
+                (resource_type, resource_name, pattern_type) of the acl.
+                See ``Acl.name`` for details.
+
+                This corresponds to the ``acl`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            acl_entry (:class:`google.cloud.managedkafka_v1.types.AclEntry`):
+                Required. The acl entry to remove.
+                This corresponds to the ``acl_entry`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.managedkafka_v1.types.RemoveAclEntryResponse:
+                Response for RemoveAclEntry.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [acl, acl_entry]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, managed_kafka.RemoveAclEntryRequest):
+            request = managed_kafka.RemoveAclEntryRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if acl is not None:
+            request.acl = acl
+        if acl_entry is not None:
+            request.acl_entry = acl_entry
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.remove_acl_entry
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("acl", request.acl),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def list_operations(
         self,
