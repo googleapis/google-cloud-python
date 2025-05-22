@@ -28,6 +28,7 @@ from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 from google.api_core import exceptions as core_exceptions
 from google.cloud.bigtable.data.exceptions import InvalidChunk
 from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
+from google.cloud.bigtable.data.mutations import DeleteAllFromRow
 from google.cloud.bigtable.data import TABLE_DEFAULT
 
 from google.cloud.bigtable.data.read_modify_write_rules import IncrementRule
@@ -272,9 +273,7 @@ class TestBigtableDataClientAsync:
             assert gather.call_args[1]["return_exceptions"] is True
             assert gather.call_args[1]["sync_executor"] == client_mock._executor
             # test with instances
-            client_mock._active_instances = [
-                (mock.Mock(), mock.Mock(), mock.Mock())
-            ] * 4
+            client_mock._active_instances = [(mock.Mock(), mock.Mock())] * 4
             gather.reset_mock()
             channel.reset_mock()
             result = await self._get_target_class()._ping_and_warm_instances(
@@ -292,7 +291,6 @@ class TestBigtableDataClientAsync:
             for idx, (_, kwargs) in enumerate(grpc_call_args):
                 (
                     expected_instance,
-                    expected_table,
                     expected_app_profile,
                 ) = client_mock._active_instances[idx]
                 request = kwargs["request"]
@@ -323,7 +321,7 @@ class TestBigtableDataClientAsync:
             gather.side_effect = lambda *args, **kwargs: [fn() for fn in args[0]]
             # test with large set of instances
             client_mock._active_instances = [mock.Mock()] * 100
-            test_key = ("test-instance", "test-table", "test-app-profile")
+            test_key = ("test-instance", "test-app-profile")
             result = await self._get_target_class()._ping_and_warm_instances(
                 client_mock, test_key
             )
@@ -551,7 +549,6 @@ class TestBigtableDataClientAsync:
         # ensure active_instances and instance_owners were updated properly
         expected_key = (
             "prefix/instance-1",
-            table_mock.table_name,
             table_mock.app_profile_id,
         )
         assert len(active_instances) == 1
@@ -577,7 +574,6 @@ class TestBigtableDataClientAsync:
         assert len(instance_owners) == 2
         expected_key2 = (
             "prefix/instance-2",
-            table_mock2.table_name,
             table_mock2.app_profile_id,
         )
         assert any(
@@ -612,7 +608,6 @@ class TestBigtableDataClientAsync:
         table_mock = mock.Mock()
         expected_key = (
             "prefix/instance-1",
-            table_mock.table_name,
             table_mock.app_profile_id,
         )
         # fake first registration
@@ -639,13 +634,13 @@ class TestBigtableDataClientAsync:
     @pytest.mark.parametrize(
         "insert_instances,expected_active,expected_owner_keys",
         [
-            ([("i", "t", None)], [("i", "t", None)], [("i", "t", None)]),
-            ([("i", "t", "p")], [("i", "t", "p")], [("i", "t", "p")]),
-            ([("1", "t", "p"), ("1", "t", "p")], [("1", "t", "p")], [("1", "t", "p")]),
+            ([("i", None)], [("i", None)], [("i", None)]),
+            ([("i", "p")], [("i", "p")], [("i", "p")]),
+            ([("1", "p"), ("1", "p")], [("1", "p")], [("1", "p")]),
             (
-                [("1", "t", "p"), ("2", "t", "p")],
-                [("1", "t", "p"), ("2", "t", "p")],
-                [("1", "t", "p"), ("2", "t", "p")],
+                [("1", "p"), ("2", "p")],
+                [("1", "p"), ("2", "p")],
+                [("1", "p"), ("2", "p")],
             ),
         ],
     )
@@ -666,8 +661,7 @@ class TestBigtableDataClientAsync:
         client_mock._ping_and_warm_instances = CrossSync.Mock()
         table_mock = mock.Mock()
         # register instances
-        for instance, table, profile in insert_instances:
-            table_mock.table_name = table
+        for instance, profile in insert_instances:
             table_mock.app_profile_id = profile
             await self._get_target_class()._register_instance(
                 client_mock, instance, table_mock
@@ -700,11 +694,11 @@ class TestBigtableDataClientAsync:
         instance_1_path = client._gapic_client.instance_path(
             client.project, "instance-1"
         )
-        instance_1_key = (instance_1_path, table.table_name, table.app_profile_id)
+        instance_1_key = (instance_1_path, table.app_profile_id)
         instance_2_path = client._gapic_client.instance_path(
             client.project, "instance-2"
         )
-        instance_2_key = (instance_2_path, table.table_name, table.app_profile_id)
+        instance_2_key = (instance_2_path, table.app_profile_id)
         assert len(client._instance_owners[instance_1_key]) == 1
         assert list(client._instance_owners[instance_1_key])[0] == id(table)
         assert len(client._instance_owners[instance_2_key]) == 1
@@ -735,13 +729,13 @@ class TestBigtableDataClientAsync:
                     client.project, "instance_1"
                 )
                 instance_1_key = _WarmedInstanceKey(
-                    instance_1_path, table_1.table_name, table_1.app_profile_id
+                    instance_1_path, table_1.app_profile_id
                 )
                 assert len(client._instance_owners[instance_1_key]) == 1
                 assert len(client._active_instances) == 1
                 assert id(table_1) in client._instance_owners[instance_1_key]
                 # duplicate table should register in instance_owners under same key
-                async with client.get_table("instance_1", "table_1") as table_2:
+                async with client.get_table("instance_1", "table_2") as table_2:
                     assert table_2._register_instance_future is not None
                     if not CrossSync.is_async:
                         # give the background task time to run
@@ -751,7 +745,9 @@ class TestBigtableDataClientAsync:
                     assert id(table_1) in client._instance_owners[instance_1_key]
                     assert id(table_2) in client._instance_owners[instance_1_key]
                     # unique table should register in instance_owners and active_instances
-                    async with client.get_table("instance_1", "table_3") as table_3:
+                    async with client.get_table(
+                        "instance_1", "table_3", app_profile_id="diff"
+                    ) as table_3:
                         assert table_3._register_instance_future is not None
                         if not CrossSync.is_async:
                             # give the background task time to run
@@ -760,7 +756,7 @@ class TestBigtableDataClientAsync:
                             client.project, "instance_1"
                         )
                         instance_3_key = _WarmedInstanceKey(
-                            instance_3_path, table_3.table_name, table_3.app_profile_id
+                            instance_3_path, table_3.app_profile_id
                         )
                         assert len(client._instance_owners[instance_1_key]) == 2
                         assert len(client._instance_owners[instance_3_key]) == 1
@@ -800,13 +796,13 @@ class TestBigtableDataClientAsync:
                         client.project, "instance_1"
                     )
                     instance_1_key = _WarmedInstanceKey(
-                        instance_1_path, table_1.table_name, table_1.app_profile_id
+                        instance_1_path, table_1.app_profile_id
                     )
                     instance_2_path = client._gapic_client.instance_path(
                         client.project, "instance_2"
                     )
                     instance_2_key = _WarmedInstanceKey(
-                        instance_2_path, table_2.table_name, table_2.app_profile_id
+                        instance_2_path, table_2.app_profile_id
                     )
                     assert len(client._instance_owners[instance_1_key]) == 1
                     assert len(client._instance_owners[instance_2_key]) == 1
@@ -824,8 +820,12 @@ class TestBigtableDataClientAsync:
             assert len(client._instance_owners[instance_1_key]) == 0
             assert len(client._instance_owners[instance_2_key]) == 0
 
+    @pytest.mark.parametrize("method", ["get_table", "get_authorized_view"])
     @CrossSync.pytest
-    async def test_get_table(self):
+    async def test_get_api_surface(self, method):
+        """
+        test client.get_table and client.get_authorized_view
+        """
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
 
         client = self._make_client(project="project-id")
@@ -833,67 +833,90 @@ class TestBigtableDataClientAsync:
         expected_table_id = "table-id"
         expected_instance_id = "instance-id"
         expected_app_profile_id = "app-profile-id"
-        table = client.get_table(
-            expected_instance_id,
-            expected_table_id,
-            expected_app_profile_id,
-        )
+        if method == "get_table":
+            surface = client.get_table(
+                expected_instance_id,
+                expected_table_id,
+                expected_app_profile_id,
+            )
+            assert isinstance(surface, CrossSync.TestTable._get_target_class())
+        elif method == "get_authorized_view":
+            surface = client.get_authorized_view(
+                expected_instance_id,
+                expected_table_id,
+                "view_id",
+                expected_app_profile_id,
+            )
+            assert isinstance(surface, CrossSync.TestAuthorizedView._get_target_class())
+            assert (
+                surface.authorized_view_name
+                == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}/authorizedViews/view_id"
+            )
+        else:
+            raise TypeError(f"unexpected method: {method}")
         await CrossSync.yield_to_event_loop()
-        assert isinstance(table, CrossSync.TestTable._get_target_class())
-        assert table.table_id == expected_table_id
+        assert surface.table_id == expected_table_id
         assert (
-            table.table_name
+            surface.table_name
             == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}"
         )
-        assert table.instance_id == expected_instance_id
+        assert surface.instance_id == expected_instance_id
         assert (
-            table.instance_name
+            surface.instance_name
             == f"projects/{client.project}/instances/{expected_instance_id}"
         )
-        assert table.app_profile_id == expected_app_profile_id
-        assert table.client is client
-        instance_key = _WarmedInstanceKey(
-            table.instance_name, table.table_name, table.app_profile_id
-        )
+        assert surface.app_profile_id == expected_app_profile_id
+        assert surface.client is client
+        instance_key = _WarmedInstanceKey(surface.instance_name, surface.app_profile_id)
         assert instance_key in client._active_instances
-        assert client._instance_owners[instance_key] == {id(table)}
+        assert client._instance_owners[instance_key] == {id(surface)}
         await client.close()
 
+    @pytest.mark.parametrize("method", ["get_table", "get_authorized_view"])
     @CrossSync.pytest
-    async def test_get_table_arg_passthrough(self):
+    async def test_api_surface_arg_passthrough(self, method):
         """
-        All arguments passed in get_table should be sent to constructor
+        All arguments passed in get_table and get_authorized_view should be sent to constructor
         """
+        if method == "get_table":
+            surface_type = CrossSync.TestTable._get_target_class()
+        elif method == "get_authorized_view":
+            surface_type = CrossSync.TestAuthorizedView._get_target_class()
+        else:
+            raise TypeError(f"unexpected method: {method}")
+
         async with self._make_client(project="project-id") as client:
-            with mock.patch.object(
-                CrossSync.TestTable._get_target_class(), "__init__"
-            ) as mock_constructor:
+            with mock.patch.object(surface_type, "__init__") as mock_constructor:
                 mock_constructor.return_value = None
                 assert not client._active_instances
-                expected_table_id = "table-id"
-                expected_instance_id = "instance-id"
-                expected_app_profile_id = "app-profile-id"
-                expected_args = (1, "test", {"test": 2})
+                expected_args = (
+                    "table",
+                    "instance",
+                    "view",
+                    "app_profile",
+                    1,
+                    "test",
+                    {"test": 2},
+                )
                 expected_kwargs = {"hello": "world", "test": 2}
 
-                client.get_table(
-                    expected_instance_id,
-                    expected_table_id,
-                    expected_app_profile_id,
+                getattr(client, method)(
                     *expected_args,
                     **expected_kwargs,
                 )
                 mock_constructor.assert_called_once_with(
                     client,
-                    expected_instance_id,
-                    expected_table_id,
-                    expected_app_profile_id,
                     *expected_args,
                     **expected_kwargs,
                 )
 
+    @pytest.mark.parametrize("method", ["get_table", "get_authorized_view"])
     @CrossSync.pytest
-    async def test_get_table_context_manager(self):
+    async def test_api_surface_context_manager(self, method):
+        """
+        get_table and get_authorized_view should work as context managers
+        """
+        from functools import partial
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
 
         expected_table_id = "table-id"
@@ -901,17 +924,35 @@ class TestBigtableDataClientAsync:
         expected_app_profile_id = "app-profile-id"
         expected_project_id = "project-id"
 
-        with mock.patch.object(
-            CrossSync.TestTable._get_target_class(), "close"
-        ) as close_mock:
+        if method == "get_table":
+            surface_type = CrossSync.TestTable._get_target_class()
+        elif method == "get_authorized_view":
+            surface_type = CrossSync.TestAuthorizedView._get_target_class()
+        else:
+            raise TypeError(f"unexpected method: {method}")
+
+        with mock.patch.object(surface_type, "close") as close_mock:
             async with self._make_client(project=expected_project_id) as client:
-                async with client.get_table(
-                    expected_instance_id,
-                    expected_table_id,
-                    expected_app_profile_id,
-                ) as table:
+                if method == "get_table":
+                    fn = partial(
+                        client.get_table,
+                        expected_instance_id,
+                        expected_table_id,
+                        expected_app_profile_id,
+                    )
+                elif method == "get_authorized_view":
+                    fn = partial(
+                        client.get_authorized_view,
+                        expected_instance_id,
+                        expected_table_id,
+                        "view_id",
+                        expected_app_profile_id,
+                    )
+                else:
+                    raise TypeError(f"unexpected method: {method}")
+                async with fn() as table:
                     await CrossSync.yield_to_event_loop()
-                    assert isinstance(table, CrossSync.TestTable._get_target_class())
+                    assert isinstance(table, surface_type)
                     assert table.table_id == expected_table_id
                     assert (
                         table.table_name
@@ -925,7 +966,7 @@ class TestBigtableDataClientAsync:
                     assert table.app_profile_id == expected_app_profile_id
                     assert table.client is client
                     instance_key = _WarmedInstanceKey(
-                        table.instance_name, table.table_name, table.app_profile_id
+                        table.instance_name, table.app_profile_id
                     )
                     assert instance_key in client._active_instances
                     assert client._instance_owners[instance_key] == {id(table)}
@@ -1009,8 +1050,20 @@ class TestTableAsync:
     def _get_target_class():
         return CrossSync.Table
 
+    def _make_one(
+        self,
+        client,
+        instance_id="instance",
+        table_id="table",
+        app_profile_id=None,
+        **kwargs,
+    ):
+        return self._get_target_class()(
+            client, instance_id, table_id, app_profile_id, **kwargs
+        )
+
     @CrossSync.pytest
-    async def test_table_ctor(self):
+    async def test_ctor(self):
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
 
         expected_table_id = "table-id"
@@ -1040,11 +1093,17 @@ class TestTableAsync:
         await CrossSync.yield_to_event_loop()
         assert table.table_id == expected_table_id
         assert table.instance_id == expected_instance_id
+        assert (
+            table.table_name
+            == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}"
+        )
+        assert (
+            table.instance_name
+            == f"projects/{client.project}/instances/{expected_instance_id}"
+        )
         assert table.app_profile_id == expected_app_profile_id
         assert table.client is client
-        instance_key = _WarmedInstanceKey(
-            table.instance_name, table.table_name, table.app_profile_id
-        )
+        instance_key = _WarmedInstanceKey(table.instance_name, table.app_profile_id)
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(table)}
         assert table.default_operation_timeout == expected_operation_timeout
@@ -1073,23 +1132,15 @@ class TestTableAsync:
         await client.close()
 
     @CrossSync.pytest
-    async def test_table_ctor_defaults(self):
+    async def test_ctor_defaults(self):
         """
         should provide default timeout values and app_profile_id
         """
-        expected_table_id = "table-id"
-        expected_instance_id = "instance-id"
         client = self._make_client()
         assert not client._active_instances
 
-        table = self._get_target_class()(
-            client,
-            expected_instance_id,
-            expected_table_id,
-        )
+        table = self._make_one(client)
         await CrossSync.yield_to_event_loop()
-        assert table.table_id == expected_table_id
-        assert table.instance_id == expected_instance_id
         assert table.app_profile_id is None
         assert table.client is client
         assert table.default_operation_timeout == 60
@@ -1101,7 +1152,7 @@ class TestTableAsync:
         await client.close()
 
     @CrossSync.pytest
-    async def test_table_ctor_invalid_timeout_values(self):
+    async def test_ctor_invalid_timeout_values(self):
         """
         bad timeout values should raise ValueError
         """
@@ -1120,10 +1171,10 @@ class TestTableAsync:
         ]
         for operation_timeout, attempt_timeout in timeout_pairs:
             with pytest.raises(ValueError) as e:
-                self._get_target_class()(client, "", "", **{attempt_timeout: -1})
+                self._make_one(client, **{attempt_timeout: -1})
             assert "attempt_timeout must be greater than 0" in str(e.value)
             with pytest.raises(ValueError) as e:
-                self._get_target_class()(client, "", "", **{operation_timeout: -1})
+                self._make_one(client, **{operation_timeout: -1})
             assert "operation_timeout must be greater than 0" in str(e.value)
         await client.close()
 
@@ -1173,13 +1224,13 @@ class TestTableAsync:
             ("sample_row_keys", (), False, ()),
             (
                 "mutate_row",
-                (b"row_key", [mock.Mock()]),
+                (b"row_key", [DeleteAllFromRow()]),
                 False,
                 (),
             ),
             (
                 "bulk_mutate_rows",
-                ([mutations.RowMutationEntry(b"key", [mutations.DeleteAllFromRow()])],),
+                ([mutations.RowMutationEntry(b"key", [DeleteAllFromRow()])],),
                 False,
                 (_MutateRowsIncomplete,),
             ),
@@ -1291,7 +1342,7 @@ class TestTableAsync:
             gapic_client = gapic_client._client
         gapic_client._transport = transport_mock
         gapic_client._is_universe_domain_valid = True
-        table = self._get_target_class()(client, "instance-id", "table-id", profile)
+        table = self._make_one(client, app_profile_id=profile)
         try:
             test_fn = table.__getattribute__(fn_name)
             maybe_stream = await test_fn(*fn_args)
@@ -1307,12 +1358,128 @@ class TestTableAsync:
         # expect x-goog-request-params tag
         assert metadata[0][0] == "x-goog-request-params"
         routing_str = metadata[0][1]
-        assert "table_name=" + table.table_name in routing_str
+        assert self._expected_routing_header(table) in routing_str
         if include_app_profile:
             assert "app_profile_id=profile" in routing_str
         else:
             # empty app_profile_id should send empty string
             assert "app_profile_id=" in routing_str
+
+    @staticmethod
+    def _expected_routing_header(table):
+        """
+        the expected routing header for this _ApiSurface type
+        """
+        return f"table_name={table.table_name}"
+
+
+@CrossSync.convert_class(
+    "TestAuthorizedView", add_mapping_for_name="TestAuthorizedView"
+)
+class TestAuthorizedViewsAsync(CrossSync.TestTable):
+    """
+    Inherit tests from TestTableAsync, with some modifications
+    """
+
+    @staticmethod
+    @CrossSync.convert
+    def _get_target_class():
+        return CrossSync.AuthorizedView
+
+    def _make_one(
+        self,
+        client,
+        instance_id="instance",
+        table_id="table",
+        view_id="view",
+        app_profile_id=None,
+        **kwargs,
+    ):
+        return self._get_target_class()(
+            client, instance_id, table_id, view_id, app_profile_id, **kwargs
+        )
+
+    @staticmethod
+    def _expected_routing_header(view):
+        """
+        the expected routing header for this _ApiSurface type
+        """
+        return f"authorized_view_name={view.authorized_view_name}"
+
+    @CrossSync.pytest
+    async def test_ctor(self):
+        from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
+
+        expected_table_id = "table-id"
+        expected_instance_id = "instance-id"
+        expected_view_id = "view_id"
+        expected_app_profile_id = "app-profile-id"
+        expected_operation_timeout = 123
+        expected_attempt_timeout = 12
+        expected_read_rows_operation_timeout = 1.5
+        expected_read_rows_attempt_timeout = 0.5
+        expected_mutate_rows_operation_timeout = 2.5
+        expected_mutate_rows_attempt_timeout = 0.75
+        client = self._make_client()
+        assert not client._active_instances
+
+        view = self._get_target_class()(
+            client,
+            expected_instance_id,
+            expected_table_id,
+            expected_view_id,
+            expected_app_profile_id,
+            default_operation_timeout=expected_operation_timeout,
+            default_attempt_timeout=expected_attempt_timeout,
+            default_read_rows_operation_timeout=expected_read_rows_operation_timeout,
+            default_read_rows_attempt_timeout=expected_read_rows_attempt_timeout,
+            default_mutate_rows_operation_timeout=expected_mutate_rows_operation_timeout,
+            default_mutate_rows_attempt_timeout=expected_mutate_rows_attempt_timeout,
+        )
+        await CrossSync.yield_to_event_loop()
+        assert view.table_id == expected_table_id
+        assert (
+            view.table_name
+            == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}"
+        )
+        assert view.instance_id == expected_instance_id
+        assert (
+            view.instance_name
+            == f"projects/{client.project}/instances/{expected_instance_id}"
+        )
+        assert view.authorized_view_id == expected_view_id
+        assert (
+            view.authorized_view_name
+            == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}/authorizedViews/{expected_view_id}"
+        )
+        assert view.app_profile_id == expected_app_profile_id
+        assert view.client is client
+        instance_key = _WarmedInstanceKey(view.instance_name, view.app_profile_id)
+        assert instance_key in client._active_instances
+        assert client._instance_owners[instance_key] == {id(view)}
+        assert view.default_operation_timeout == expected_operation_timeout
+        assert view.default_attempt_timeout == expected_attempt_timeout
+        assert (
+            view.default_read_rows_operation_timeout
+            == expected_read_rows_operation_timeout
+        )
+        assert (
+            view.default_read_rows_attempt_timeout == expected_read_rows_attempt_timeout
+        )
+        assert (
+            view.default_mutate_rows_operation_timeout
+            == expected_mutate_rows_operation_timeout
+        )
+        assert (
+            view.default_mutate_rows_attempt_timeout
+            == expected_mutate_rows_attempt_timeout
+        )
+        # ensure task reaches completion
+        await view._register_instance_future
+        assert view._register_instance_future.done()
+        assert not view._register_instance_future.cancelled()
+        assert view._register_instance_future.exception() is None
+        await client.close()
 
 
 @CrossSync.convert_class(
@@ -2145,11 +2312,12 @@ class TestSampleRowKeysAsync:
                     await table.sample_row_keys(attempt_timeout=expected_timeout)
                     args, kwargs = sample_row_keys.call_args
                     assert len(args) == 0
-                    assert len(kwargs) == 4
+                    assert len(kwargs) == 3
                     assert kwargs["timeout"] == expected_timeout
-                    assert kwargs["app_profile_id"] == expected_profile
-                    assert kwargs["table_name"] == table.table_name
                     assert kwargs["retry"] is None
+                    request = kwargs["request"]
+                    assert request.app_profile_id == expected_profile
+                    assert request.table_name == table.table_name
 
     @pytest.mark.parametrize(
         "retryable_exception",
@@ -2245,17 +2413,18 @@ class TestMutateRowAsync:
                     )
                     assert mock_gapic.call_count == 1
                     kwargs = mock_gapic.call_args_list[0].kwargs
+                    request = kwargs["request"]
                     assert (
-                        kwargs["table_name"]
+                        request.table_name
                         == "projects/project/instances/instance/tables/table"
                     )
-                    assert kwargs["row_key"] == b"row_key"
+                    assert request.row_key == b"row_key"
                     formatted_mutations = (
                         [mutation._to_pb() for mutation in mutation_arg]
                         if isinstance(mutation_arg, list)
                         else [mutation_arg._to_pb()]
                     )
-                    assert kwargs["mutations"] == formatted_mutations
+                    assert request.mutations == formatted_mutations
                     assert kwargs["timeout"] == expected_attempt_timeout
                     # make sure gapic layer is not retrying
                     assert kwargs["retry"] is None
@@ -2427,11 +2596,12 @@ class TestBulkMutateRowsAsync:
                     )
                     assert mock_gapic.call_count == 1
                     kwargs = mock_gapic.call_args[1]
+                    request = kwargs["request"]
                     assert (
-                        kwargs["table_name"]
+                        request.table_name
                         == "projects/project/instances/instance/tables/table"
                     )
-                    assert kwargs["entries"] == [bulk_mutation._to_pb()]
+                    assert request.entries == [bulk_mutation._to_pb()]
                     assert kwargs["timeout"] == expected_attempt_timeout
                     assert kwargs["retry"] is None
 
@@ -2452,12 +2622,13 @@ class TestBulkMutateRowsAsync:
                     )
                     assert mock_gapic.call_count == 1
                     kwargs = mock_gapic.call_args[1]
+                    request = kwargs["request"]
                     assert (
-                        kwargs["table_name"]
+                        request.table_name
                         == "projects/project/instances/instance/tables/table"
                     )
-                    assert kwargs["entries"][0] == entry_1._to_pb()
-                    assert kwargs["entries"][1] == entry_2._to_pb()
+                    assert request.entries[0] == entry_1._to_pb()
+                    assert request.entries[1] == entry_2._to_pb()
 
     @CrossSync.pytest
     @pytest.mark.parametrize(
@@ -2765,8 +2936,8 @@ class TestCheckAndMutateRowAsync:
                     )
                     row_key = b"row_key"
                     predicate = None
-                    true_mutations = [mock.Mock()]
-                    false_mutations = [mock.Mock(), mock.Mock()]
+                    true_mutations = [DeleteAllFromRow()]
+                    false_mutations = [DeleteAllFromRow(), DeleteAllFromRow()]
                     operation_timeout = 0.2
                     found = await table.check_and_mutate_row(
                         row_key,
@@ -2777,16 +2948,17 @@ class TestCheckAndMutateRowAsync:
                     )
                     assert found == gapic_result
                     kwargs = mock_gapic.call_args[1]
-                    assert kwargs["table_name"] == table.table_name
-                    assert kwargs["row_key"] == row_key
-                    assert kwargs["predicate_filter"] == predicate
-                    assert kwargs["true_mutations"] == [
+                    request = kwargs["request"]
+                    assert request.table_name == table.table_name
+                    assert request.row_key == row_key
+                    assert bool(request.predicate_filter) is False
+                    assert request.true_mutations == [
                         m._to_pb() for m in true_mutations
                     ]
-                    assert kwargs["false_mutations"] == [
+                    assert request.false_mutations == [
                         m._to_pb() for m in false_mutations
                     ]
-                    assert kwargs["app_profile_id"] == app_profile
+                    assert request.app_profile_id == app_profile
                     assert kwargs["timeout"] == operation_timeout
                     assert kwargs["retry"] is None
 
@@ -2828,16 +3000,18 @@ class TestCheckAndMutateRowAsync:
                         false_case_mutations=false_mutation,
                     )
                     kwargs = mock_gapic.call_args[1]
-                    assert kwargs["true_mutations"] == [true_mutation._to_pb()]
-                    assert kwargs["false_mutations"] == [false_mutation._to_pb()]
+                    request = kwargs["request"]
+                    assert request.true_mutations == [true_mutation._to_pb()]
+                    assert request.false_mutations == [false_mutation._to_pb()]
 
     @CrossSync.pytest
     async def test_check_and_mutate_predicate_object(self):
         """predicate filter should be passed to gapic request"""
         from google.cloud.bigtable_v2.types import CheckAndMutateRowResponse
+        from google.cloud.bigtable_v2.types.data import RowFilter
 
         mock_predicate = mock.Mock()
-        predicate_pb = {"predicate": "dict"}
+        predicate_pb = RowFilter({"sink": True})
         mock_predicate._to_pb.return_value = predicate_pb
         async with self._make_client() as client:
             async with client.get_table("instance", "table") as table:
@@ -2850,10 +3024,11 @@ class TestCheckAndMutateRowAsync:
                     await table.check_and_mutate_row(
                         b"row_key",
                         mock_predicate,
-                        false_case_mutations=[mock.Mock()],
+                        false_case_mutations=[DeleteAllFromRow()],
                     )
                     kwargs = mock_gapic.call_args[1]
-                    assert kwargs["predicate_filter"] == predicate_pb
+                    request = kwargs["request"]
+                    assert request.predicate_filter == predicate_pb
                     assert mock_predicate._to_pb.call_count == 1
                     assert kwargs["retry"] is None
 
@@ -2861,11 +3036,11 @@ class TestCheckAndMutateRowAsync:
     async def test_check_and_mutate_mutations_parsing(self):
         """mutations objects should be converted to protos"""
         from google.cloud.bigtable_v2.types import CheckAndMutateRowResponse
-        from google.cloud.bigtable.data.mutations import DeleteAllFromRow
+        from google.cloud.bigtable.data.mutations import DeleteAllFromFamily
 
         mutations = [mock.Mock() for _ in range(5)]
         for idx, mutation in enumerate(mutations):
-            mutation._to_pb.return_value = f"fake {idx}"
+            mutation._to_pb.return_value = DeleteAllFromFamily(f"fake {idx}")._to_pb()
         mutations.append(DeleteAllFromRow())
         async with self._make_client() as client:
             async with client.get_table("instance", "table") as table:
@@ -2882,11 +3057,15 @@ class TestCheckAndMutateRowAsync:
                         false_case_mutations=mutations[2:],
                     )
                     kwargs = mock_gapic.call_args[1]
-                    assert kwargs["true_mutations"] == ["fake 0", "fake 1"]
-                    assert kwargs["false_mutations"] == [
-                        "fake 2",
-                        "fake 3",
-                        "fake 4",
+                    request = kwargs["request"]
+                    assert request.true_mutations == [
+                        DeleteAllFromFamily("fake 0")._to_pb(),
+                        DeleteAllFromFamily("fake 1")._to_pb(),
+                    ]
+                    assert request.false_mutations == [
+                        DeleteAllFromFamily("fake 2")._to_pb(),
+                        DeleteAllFromFamily("fake 3")._to_pb(),
+                        DeleteAllFromFamily("fake 4")._to_pb(),
                         DeleteAllFromRow()._to_pb(),
                     ]
                     assert all(
@@ -2934,7 +3113,8 @@ class TestReadModifyWriteRowAsync:
                     await table.read_modify_write_row("key", call_rules)
                 assert mock_gapic.call_count == 1
                 found_kwargs = mock_gapic.call_args_list[0][1]
-                assert found_kwargs["rules"] == expected_rules
+                request = found_kwargs["request"]
+                assert request.rules == expected_rules
                 assert found_kwargs["retry"] is None
 
     @pytest.mark.parametrize("rules", [[], None])
@@ -2957,15 +3137,16 @@ class TestReadModifyWriteRowAsync:
                 with mock.patch.object(
                     client._gapic_client, "read_modify_write_row"
                 ) as mock_gapic:
-                    await table.read_modify_write_row(row_key, mock.Mock())
+                    await table.read_modify_write_row(row_key, IncrementRule("f", "q"))
                     assert mock_gapic.call_count == 1
                     kwargs = mock_gapic.call_args_list[0][1]
+                    request = kwargs["request"]
                     assert (
-                        kwargs["table_name"]
+                        request.table_name
                         == f"projects/{project}/instances/{instance}/tables/{table_id}"
                     )
-                    assert kwargs["app_profile_id"] is None
-                    assert kwargs["row_key"] == row_key.encode()
+                    assert bool(request.app_profile_id) is False
+                    assert request.row_key == row_key.encode()
                     assert kwargs["timeout"] > 1
 
     @CrossSync.pytest
@@ -2982,13 +3163,14 @@ class TestReadModifyWriteRowAsync:
                 ) as mock_gapic:
                     await table.read_modify_write_row(
                         row_key,
-                        mock.Mock(),
+                        IncrementRule("f", "q"),
                         operation_timeout=expected_timeout,
                     )
                     assert mock_gapic.call_count == 1
                     kwargs = mock_gapic.call_args_list[0][1]
-                    assert kwargs["app_profile_id"] is profile_id
-                    assert kwargs["row_key"] == row_key
+                    request = kwargs["request"]
+                    assert request.app_profile_id == profile_id
+                    assert request.row_key == row_key
                     assert kwargs["timeout"] == expected_timeout
 
     @CrossSync.pytest
@@ -2999,10 +3181,11 @@ class TestReadModifyWriteRowAsync:
                 with mock.patch.object(
                     client._gapic_client, "read_modify_write_row"
                 ) as mock_gapic:
-                    await table.read_modify_write_row(row_key, mock.Mock())
+                    await table.read_modify_write_row(row_key, IncrementRule("f", "q"))
                     assert mock_gapic.call_count == 1
                     kwargs = mock_gapic.call_args_list[0][1]
-                    assert kwargs["row_key"] == row_key.encode()
+                    request = kwargs["request"]
+                    assert request.row_key == row_key.encode()
 
     @CrossSync.pytest
     async def test_read_modify_write_row_building(self):
@@ -3021,7 +3204,9 @@ class TestReadModifyWriteRowAsync:
                 ) as mock_gapic:
                     with mock.patch.object(Row, "_from_pb") as constructor_mock:
                         mock_gapic.return_value = mock_response
-                        await table.read_modify_write_row("key", mock.Mock())
+                        await table.read_modify_write_row(
+                            "key", IncrementRule("f", "q")
+                        )
                         assert constructor_mock.call_count == 1
                         constructor_mock.assert_called_once_with(mock_response.row)
 

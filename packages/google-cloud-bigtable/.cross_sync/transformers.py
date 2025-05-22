@@ -81,7 +81,11 @@ class SymbolReplacer(ast.NodeTransformer):
 
     def visit_Constant(self, node):
         """Replace string type annotations"""
-        node.s = self.replacements.get(node.s, node.s)
+        try:
+            node.s = self.replacements.get(node.s, node.s)
+        except TypeError:
+            # ignore unhashable types (e.g. list)
+            pass
         return node
 
 

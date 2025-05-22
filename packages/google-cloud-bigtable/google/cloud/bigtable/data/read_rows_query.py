@@ -489,11 +489,11 @@ class ReadRowsQuery:
         ReadRowsRequest protobuf
         """
         return ReadRowsRequestPB(
-            table_name=table.table_name,
             app_profile_id=table.app_profile_id,
             filter=self.filter._to_pb() if self.filter else None,
             rows_limit=self.limit or 0,
             rows=self._row_set,
+            **table._request_path,
         )
 
     def __eq__(self, other):

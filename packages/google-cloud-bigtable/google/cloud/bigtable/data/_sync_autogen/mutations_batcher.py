@@ -32,7 +32,9 @@ from google.cloud.bigtable.data._cross_sync import CrossSync
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data.mutations import RowMutationEntry
-    from google.cloud.bigtable.data._sync_autogen.client import Table as TableType
+    from google.cloud.bigtable.data._sync_autogen.client import (
+        _DataApiTarget as TargetType,
+    )
 _MB_SIZE = 1024 * 1024
 
 
@@ -148,7 +150,7 @@ class _FlowControl:
 
 class MutationsBatcher:
     """
-    Allows users to send batches using context manager API:
+    Allows users to send batches using context manager API.
 
     Runs mutate_row,  mutate_rows, and check_and_mutate_row internally, combining
     to use as few network requests as required
@@ -160,7 +162,7 @@ class MutationsBatcher:
     - when batcher is closed or destroyed
 
     Args:
-        table: Table to preform rpc calls
+        table: table or autrhorized_view used to preform rpc calls
         flush_interval: Automatically flush every flush_interval seconds.
             If None, no time-based flushing is performed.
         flush_limit_mutation_count: Flush immediately after flush_limit_mutation_count
@@ -179,7 +181,7 @@ class MutationsBatcher:
 
     def __init__(
         self,
-        table: TableType,
+        table: TargetType,
         *,
         flush_interval: float | None = 5,
         flush_limit_mutation_count: int | None = 1000,
@@ -198,7 +200,7 @@ class MutationsBatcher:
             batch_retryable_errors, table
         )
         self._closed = CrossSync._Sync_Impl.Event()
-        self._table = table
+        self._target = table
         self._staged_entries: list[RowMutationEntry] = []
         (self._staged_count, self._staged_bytes) = (0, 0)
         self._flow_control = CrossSync._Sync_Impl._FlowControl(
@@ -324,8 +326,8 @@ class MutationsBatcher:
                 FailedMutationEntryError objects will not contain index information"""
         try:
             operation = CrossSync._Sync_Impl._MutateRowsOperation(
-                self._table.client._gapic_client,
-                self._table,
+                self._target.client._gapic_client,
+                self._target,
                 batch,
                 operation_timeout=self._operation_timeout,
                 attempt_timeout=self._attempt_timeout,
@@ -414,7 +416,7 @@ class MutationsBatcher:
         """Called when program is exited. Raises warning if unflushed mutations remain"""
         if not self._closed.is_set() and self._staged_entries:
             warnings.warn(
-                f"MutationsBatcher for table {self._table.table_name} was not closed. {len(self._staged_entries)} Unflushed mutations will not be sent to the server."
+                f"MutationsBatcher for target {self._target!r} was not closed. {len(self._staged_entries)} Unflushed mutations will not be sent to the server."
             )
 
     @staticmethod

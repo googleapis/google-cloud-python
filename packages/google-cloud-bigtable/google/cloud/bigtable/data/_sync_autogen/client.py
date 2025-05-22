@@ -18,6 +18,7 @@
 
 from __future__ import annotations
 from typing import cast, Any, Optional, Set, Sequence, TYPE_CHECKING
+import abc
 import time
 import warnings
 import random
@@ -38,6 +39,10 @@ from google.cloud.bigtable_v2.services.bigtable.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
 from google.cloud.bigtable_v2.types.bigtable import PingAndWarmRequest
+from google.cloud.bigtable_v2.types.bigtable import SampleRowKeysRequest
+from google.cloud.bigtable_v2.types.bigtable import MutateRowRequest
+from google.cloud.bigtable_v2.types.bigtable import CheckAndMutateRowRequest
+from google.cloud.bigtable_v2.types.bigtable import ReadModifyWriteRowRequest
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.api_core import retry as retries
@@ -243,7 +248,7 @@ class BigtableDataClient(ClientWithProject):
                 ],
                 wait_for_ready=True,
             )
-            for (instance_name, table_name, app_profile_id) in instance_list
+            for (instance_name, app_profile_id) in instance_list
         ]
         result_list = CrossSync._Sync_Impl.gather_partials(
             partial_list, return_exceptions=True, sync_executor=self._executor
@@ -300,7 +305,7 @@ class BigtableDataClient(ClientWithProject):
             next_sleep = max(next_refresh - (time.monotonic() - start_timestamp), 0)
 
     def _register_instance(
-        self, instance_id: str, owner: Table | ExecuteQueryIterator
+        self, instance_id: str, owner: _DataApiTarget | ExecuteQueryIterator
     ) -> None:
         """Registers an instance with the client, and warms the channel for the instance
         The client will periodically refresh grpc channel used to make
@@ -313,9 +318,7 @@ class BigtableDataClient(ClientWithProject):
               _instance_owners, and instances will only be unregistered when all
               owners call _remove_instance_registration"""
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
-        instance_key = _WarmedInstanceKey(
-            instance_name, owner.table_name, owner.app_profile_id
-        )
+        instance_key = _WarmedInstanceKey(instance_name, owner.app_profile_id)
         self._instance_owners.setdefault(instance_key, set()).add(id(owner))
         if instance_key not in self._active_instances:
             self._active_instances.add(instance_key)
@@ -325,7 +328,7 @@ class BigtableDataClient(ClientWithProject):
                 self._start_background_channel_refresh()
 
     def _remove_instance_registration(
-        self, instance_id: str, owner: Table | "ExecuteQueryIterator"
+        self, instance_id: str, owner: _DataApiTarget | ExecuteQueryIterator
     ) -> bool:
         """Removes an instance from the client's registered instances, to prevent
         warming new channels for the instance
@@ -340,9 +343,7 @@ class BigtableDataClient(ClientWithProject):
         Returns:
             bool: True if instance was removed, else False"""
         instance_name = self._gapic_client.instance_path(self.project, instance_id)
-        instance_key = _WarmedInstanceKey(
-            instance_name, owner.table_name, owner.app_profile_id
-        )
+        instance_key = _WarmedInstanceKey(instance_name, owner.app_profile_id)
         owner_list = self._instance_owners.get(instance_key, set())
         try:
             owner_list.remove(id(owner))
@@ -392,6 +393,52 @@ class BigtableDataClient(ClientWithProject):
         Raises:
             None"""
         return Table(self, instance_id, table_id, *args, **kwargs)
+
+    def get_authorized_view(
+        self, instance_id: str, table_id: str, authorized_view_id: str, *args, **kwargs
+    ) -> AuthorizedView:
+        """Returns an authorized view instance for making data API requests. All arguments are passed
+        directly to the AuthorizedView constructor.
+
+
+
+        Args:
+            instance_id: The Bigtable instance ID to associate with this client.
+                instance_id is combined with the client's project to fully
+                specify the instance
+            table_id: The ID of the table. table_id is combined with the
+                instance_id and the client's project to fully specify the table
+            authorized_view_id: The id for the authorized view to use for requests
+            app_profile_id: The app profile to associate with requests.
+                https://cloud.google.com/bigtable/docs/app-profiles
+            default_read_rows_operation_timeout: The default timeout for read rows
+                operations, in seconds. If not set, defaults to Table's value
+            default_read_rows_attempt_timeout: The default timeout for individual
+                read rows rpc requests, in seconds. If not set, defaults Table's value
+            default_mutate_rows_operation_timeout: The default timeout for mutate rows
+                operations, in seconds. If not set, defaults to Table's value
+            default_mutate_rows_attempt_timeout: The default timeout for individual
+                mutate rows rpc requests, in seconds. If not set, defaults Table's value
+            default_operation_timeout: The default timeout for all other operations, in
+                seconds. If not set, defaults to Table's value
+            default_attempt_timeout: The default timeout for all other individual rpc
+                requests, in seconds. If not set, defaults to Table's value
+            default_read_rows_retryable_errors: a list of errors that will be retried
+                if encountered during read_rows and related operations. If not set,
+                defaults to Table's value
+            default_mutate_rows_retryable_errors: a list of errors that will be retried
+                if encountered during mutate_rows and related operations. If not set,
+                defaults to Table's value
+            default_retryable_errors: a list of errors that will be retried if
+                encountered during all other operations. If not set, defaults to
+                Table's value
+        Returns:
+            AuthorizedView: a table instance for making data API requests
+        Raises:
+            None"""
+        return CrossSync._Sync_Impl.AuthorizedView(
+            self, instance_id, table_id, authorized_view_id, *args, **kwargs
+        )
 
     def execute_query(
         self,
@@ -532,13 +579,11 @@ class BigtableDataClient(ClientWithProject):
         self._gapic_client.__exit__(exc_type, exc_val, exc_tb)
 
 
-@CrossSync._Sync_Impl.add_mapping_decorator("Table")
-class Table:
+class _DataApiTarget(abc.ABC):
     """
-    Main Data API surface
+    Abstract class containing API surface for BigtableDataClient. Should not be created directly
 
-    Table object maintains table_id, and app_profile_id context, and passes them with
-    each call
+    Can be instantiated as a Table or an AuthorizedView
     """
 
     def __init__(
@@ -652,6 +697,18 @@ class Table:
             raise RuntimeError(
                 f"{self.__class__.__name__} must be created within an async event loop context."
             ) from e
+
+    @property
+    @abc.abstractmethod
+    def _request_path(self) -> dict[str, str]:
+        """Used to populate table_name or authorized_view_name for rpc requests, depending on the subclass
+
+        Unimplemented in base class"""
+        raise NotImplementedError
+
+    def __str__(self):
+        path_str = list(self._request_path.values())[0] if self._request_path else ""
+        return f"{self.__class__.__name__}<{path_str!r}>"
 
     def read_rows_stream(
         self,
@@ -979,8 +1036,9 @@ class Table:
 
         def execute_rpc():
             results = self.client._gapic_client.sample_row_keys(
-                table_name=self.table_name,
-                app_profile_id=self.app_profile_id,
+                request=SampleRowKeysRequest(
+                    app_profile_id=self.app_profile_id, **self._request_path
+                ),
                 timeout=next(attempt_timeout_gen),
                 retry=None,
             )
@@ -1096,10 +1154,14 @@ class Table:
         sleep_generator = retries.exponential_sleep_generator(0.01, 2, 60)
         target = partial(
             self.client._gapic_client.mutate_row,
-            row_key=row_key.encode("utf-8") if isinstance(row_key, str) else row_key,
-            mutations=[mutation._to_pb() for mutation in mutations_list],
-            table_name=self.table_name,
-            app_profile_id=self.app_profile_id,
+            request=MutateRowRequest(
+                row_key=row_key.encode("utf-8")
+                if isinstance(row_key, str)
+                else row_key,
+                mutations=[mutation._to_pb() for mutation in mutations_list],
+                app_profile_id=self.app_profile_id,
+                **self._request_path,
+            ),
             timeout=attempt_timeout,
             retry=None,
         )
@@ -1214,12 +1276,16 @@ class Table:
             false_case_mutations = [false_case_mutations]
         false_case_list = [m._to_pb() for m in false_case_mutations or []]
         result = self.client._gapic_client.check_and_mutate_row(
-            true_mutations=true_case_list,
-            false_mutations=false_case_list,
-            predicate_filter=predicate._to_pb() if predicate is not None else None,
-            row_key=row_key.encode("utf-8") if isinstance(row_key, str) else row_key,
-            table_name=self.table_name,
-            app_profile_id=self.app_profile_id,
+            request=CheckAndMutateRowRequest(
+                true_mutations=true_case_list,
+                false_mutations=false_case_list,
+                predicate_filter=predicate._to_pb() if predicate is not None else None,
+                row_key=row_key.encode("utf-8")
+                if isinstance(row_key, str)
+                else row_key,
+                app_profile_id=self.app_profile_id,
+                **self._request_path,
+            ),
             timeout=operation_timeout,
             retry=None,
         )
@@ -1261,10 +1327,14 @@ class Table:
         if not rules:
             raise ValueError("rules must contain at least one item")
         result = self.client._gapic_client.read_modify_write_row(
-            rules=[rule._to_pb() for rule in rules],
-            row_key=row_key.encode("utf-8") if isinstance(row_key, str) else row_key,
-            table_name=self.table_name,
-            app_profile_id=self.app_profile_id,
+            request=ReadModifyWriteRowRequest(
+                rules=[rule._to_pb() for rule in rules],
+                row_key=row_key.encode("utf-8")
+                if isinstance(row_key, str)
+                else row_key,
+                app_profile_id=self.app_profile_id,
+                **self._request_path,
+            ),
             timeout=operation_timeout,
             retry=None,
         )
@@ -1291,3 +1361,85 @@ class Table:
         Unregister this instance with the client, so that
         grpc channels will no longer be warmed"""
         self.close()
+
+
+@CrossSync._Sync_Impl.add_mapping_decorator("Table")
+class Table(_DataApiTarget):
+    """
+    Main Data API surface for interacting with a Bigtable table.
+
+    Table object maintains table_id, and app_profile_id context, and passes them with
+    each call
+    """
+
+    @property
+    def _request_path(self) -> dict[str, str]:
+        return {"table_name": self.table_name}
+
+
+@CrossSync._Sync_Impl.add_mapping_decorator("AuthorizedView")
+class AuthorizedView(_DataApiTarget):
+    """
+    Provides access to an authorized view of a table.
+
+    An authorized view is a subset of a table that you configure to include specific table data.
+    Then you grant access to the authorized view separately from access to the table.
+
+    AuthorizedView object maintains table_id, app_profile_id, and authorized_view_id context,
+    and passed them with each call
+    """
+
+    def __init__(
+        self,
+        client,
+        instance_id,
+        table_id,
+        authorized_view_id,
+        app_profile_id: str | None = None,
+        **kwargs,
+    ):
+        """Initialize an AuthorizedView instance
+
+
+
+        Args:
+            instance_id: The Bigtable instance ID to associate with this client.
+                instance_id is combined with the client's project to fully
+                specify the instance
+            table_id: The ID of the table. table_id is combined with the
+                instance_id and the client's project to fully specify the table
+            authorized_view_id: The id for the authorized view to use for requests
+            app_profile_id: The app profile to associate with requests.
+                https://cloud.google.com/bigtable/docs/app-profiles
+            default_read_rows_operation_timeout: The default timeout for read rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_read_rows_attempt_timeout: The default timeout for individual
+                read rows rpc requests, in seconds. If not set, defaults to 20 seconds
+            default_mutate_rows_operation_timeout: The default timeout for mutate rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_mutate_rows_attempt_timeout: The default timeout for individual
+                mutate rows rpc requests, in seconds. If not set, defaults to 60 seconds
+            default_operation_timeout: The default timeout for all other operations, in
+                seconds. If not set, defaults to 60 seconds
+            default_attempt_timeout: The default timeout for all other individual rpc
+                requests, in seconds. If not set, defaults to 20 seconds
+            default_read_rows_retryable_errors: a list of errors that will be retried
+                if encountered during read_rows and related operations.
+                Defaults to 4 (DeadlineExceeded), 14 (ServiceUnavailable), and 10 (Aborted)
+            default_mutate_rows_retryable_errors: a list of errors that will be retried
+                if encountered during mutate_rows and related operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+            default_retryable_errors: a list of errors that will be retried if
+                encountered during all other operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+        Raises:
+            None"""
+        super().__init__(client, instance_id, table_id, app_profile_id, **kwargs)
+        self.authorized_view_id = authorized_view_id
+        self.authorized_view_name: str = self.client._gapic_client.authorized_view_path(
+            self.client.project, instance_id, table_id, authorized_view_id
+        )
+
+    @property
+    def _request_path(self) -> dict[str, str]:
+        return {"authorized_view_name": self.authorized_view_name}

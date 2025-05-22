@@ -17,6 +17,8 @@
 
 import pytest
 from google.cloud.bigtable_v2.types import MutateRowsResponse
+from google.cloud.bigtable.data.mutations import RowMutationEntry
+from google.cloud.bigtable.data.mutations import DeleteAllFromRow
 from google.rpc import status_pb2
 from google.api_core.exceptions import DeadlineExceeded
 from google.api_core.exceptions import Forbidden
@@ -34,8 +36,11 @@ class TestMutateRowsOperation:
 
     def _make_one(self, *args, **kwargs):
         if not args:
+            fake_target = CrossSync._Sync_Impl.Mock()
+            fake_target._request_path = {"table_name": "table"}
+            fake_target.app_profile_id = None
             kwargs["gapic_client"] = kwargs.pop("gapic_client", mock.Mock())
-            kwargs["table"] = kwargs.pop("table", CrossSync._Sync_Impl.Mock())
+            kwargs["target"] = kwargs.pop("target", fake_target)
             kwargs["operation_timeout"] = kwargs.pop("operation_timeout", 5)
             kwargs["attempt_timeout"] = kwargs.pop("attempt_timeout", 0.1)
             kwargs["retryable_exceptions"] = kwargs.pop("retryable_exceptions", ())
@@ -43,9 +48,8 @@ class TestMutateRowsOperation:
         return self._target_class()(*args, **kwargs)
 
     def _make_mutation(self, count=1, size=1):
-        mutation = mock.Mock()
-        mutation.size.return_value = size
-        mutation.mutations = [mock.Mock()] * count
+        mutation = RowMutationEntry("k", [DeleteAllFromRow() for _ in range(count)])
+        mutation.size = lambda: size
         return mutation
 
     def _mock_stream(self, mutation_list, error_dict):
@@ -92,11 +96,6 @@ class TestMutateRowsOperation:
         assert client.mutate_rows.call_count == 0
         instance._gapic_fn()
         assert client.mutate_rows.call_count == 1
-        inner_kwargs = client.mutate_rows.call_args[1]
-        assert len(inner_kwargs) == 3
-        assert inner_kwargs["table_name"] == table.table_name
-        assert inner_kwargs["app_profile_id"] == table.app_profile_id
-        assert inner_kwargs["retry"] is None
         entries_w_pb = [_EntryWithProto(e, e._to_pb()) for e in entries]
         assert instance.mutations == entries_w_pb
         assert next(instance.timeout_generator) == attempt_timeout
@@ -148,6 +147,8 @@ class TestMutateRowsOperation:
         """exceptions raised from attempt should be raised in MutationsExceptionGroup"""
         client = CrossSync._Sync_Impl.Mock()
         table = mock.Mock()
+        table._request_path = {"table_name": "table"}
+        table.app_profile_id = None
         entries = [self._make_mutation(), self._make_mutation()]
         operation_timeout = 0.05
         expected_exception = exc_type("test")
@@ -260,7 +261,8 @@ class TestMutateRowsOperation:
         assert mock_gapic_fn.call_count == 1
         (_, kwargs) = mock_gapic_fn.call_args
         assert kwargs["timeout"] == expected_timeout
-        assert kwargs["entries"] == [mutation._to_pb()]
+        request = kwargs["request"]
+        assert request.entries == [mutation._to_pb()]
 
     def test_run_attempt_empty_request(self):
         """Calling with no mutations should result in no API calls"""
