@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.16...google-cloud-support-v0.1.17) (2025-05-21)
+
+
+### Documentation
+
+* Annotate all names with IDENTIFIER ([948efc5](https://github.com/googleapis/google-cloud-python/commit/948efc53b02593b76a8ba587944751e2ddb85bc8))
+* Remove unnecessary curl and Python documentation ([948efc5](https://github.com/googleapis/google-cloud-python/commit/948efc53b02593b76a8ba587944751e2ddb85bc8))
+* Use backticks around `username` in documentation for `Actor.email` ([948efc5](https://github.com/googleapis/google-cloud-python/commit/948efc53b02593b76a8ba587944751e2ddb85bc8))
+
 ## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.15...google-cloud-support-v0.1.16) (2025-05-20)
 
 
