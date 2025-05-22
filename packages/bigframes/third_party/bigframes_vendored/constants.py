@@ -52,5 +52,6 @@ WriteEngineType = Literal[
     "bigquery_load",
     "bigquery_streaming",
     "bigquery_write",
+    "_deferred",
 ]
 VALID_WRITE_ENGINES = typing.get_args(WriteEngineType)

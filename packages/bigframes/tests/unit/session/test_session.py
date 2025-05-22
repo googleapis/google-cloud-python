@@ -484,7 +484,7 @@ def test_session_init_warns_if_bf_version_is_too_old(monkeypatch):
         mocks.create_bigquery_session()
 
 
-@mock.patch("bigframes.session.MAX_INLINE_DF_BYTES", 1)
+@mock.patch("bigframes.constants.MAX_INLINE_BYTES", 1)
 def test_read_pandas_inline_exceeds_limit_raises_error():
     session = mocks.create_bigquery_session()
     pd_df = pd.DataFrame([[1, 2, 3], [4, 5, 6]])

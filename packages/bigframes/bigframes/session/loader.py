@@ -44,7 +44,7 @@ from google.cloud.bigquery_storage_v1 import types as bq_storage_types
 import pandas
 import pyarrow as pa
 
-from bigframes.core import guid, local_data, utils
+from bigframes.core import guid, identifiers, local_data, nodes, ordering, utils
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.schema as schemata
@@ -183,34 +183,55 @@ class GbqDataLoader:
             [*idx_cols, *val_cols], axis="columns"
         )
         managed_data = local_data.ManagedArrowTable.from_pandas(prepared_df)
-
-        if method == "load":
-            array_value = self.load_data(managed_data)
-        elif method == "stream":
-            array_value = self.stream_data(managed_data)
-        elif method == "write":
-            array_value = self.write_data(managed_data)
-        else:
-            raise ValueError(f"Unsupported read method {method}")
-
         block = blocks.Block(
-            array_value,
+            self.read_managed_data(managed_data, method=method),
             index_columns=idx_cols,
             column_labels=pandas_dataframe.columns,
             index_labels=pandas_dataframe.index.names,
         )
         return dataframe.DataFrame(block)
 
-    def load_data(self, data: local_data.ManagedArrowTable) -> core.ArrayValue:
+    def read_managed_data(
+        self,
+        data: local_data.ManagedArrowTable,
+        method: Literal["load", "stream", "write"],
+    ) -> core.ArrayValue:
+        offsets_col = guid.generate_guid("upload_offsets_")
+        if method == "load":
+            gbq_source = self.load_data(data, offsets_col=offsets_col)
+        elif method == "stream":
+            gbq_source = self.stream_data(data, offsets_col=offsets_col)
+        elif method == "write":
+            gbq_source = self.write_data(data, offsets_col=offsets_col)
+        else:
+            raise ValueError(f"Unsupported read method {method}")
+
+        return core.ArrayValue.from_bq_data_source(
+            source=gbq_source,
+            scan_list=nodes.ScanList(
+                tuple(
+                    nodes.ScanItem(
+                        identifiers.ColumnId(item.column), item.dtype, item.column
+                    )
+                    for item in data.schema.items
+                )
+            ),
+            session=self._session,
+        )
+
+    def load_data(
+        self,
+        data: local_data.ManagedArrowTable,
+        offsets_col: str,
+    ) -> nodes.BigqueryDataSource:
         """Load managed data into bigquery"""
-        ordering_col = guid.generate_guid("load_offsets_")
 
         # JSON support incomplete
         for item in data.schema.items:
             _validate_dtype_can_load(item.column, item.dtype)
 
         schema_w_offsets = data.schema.append(
-            schemata.SchemaItem(ordering_col, bigframes.dtypes.INT_DTYPE)
+            schemata.SchemaItem(offsets_col, bigframes.dtypes.INT_DTYPE)
         )
         bq_schema = schema_w_offsets.to_bigquery(_LOAD_JOB_TYPE_OVERRIDES)
 
@@ -226,13 +247,13 @@ class GbqDataLoader:
         job_config.schema = bq_schema
 
         load_table_destination = self._storage_manager.create_temp_table(
-            bq_schema, [ordering_col]
+            bq_schema, [offsets_col]
         )
 
         buffer = io.BytesIO()
         data.to_parquet(
             buffer,
-            offsets_col=ordering_col,
+            offsets_col=offsets_col,
             geo_format="wkt",
             duration_type="duration",
             json_type="string",
@@ -244,23 +265,24 @@ class GbqDataLoader:
         self._start_generic_job(load_job)
         # must get table metadata after load job for accurate metadata
         destination_table = self._bqclient.get_table(load_table_destination)
-        return core.ArrayValue.from_table(
-            table=destination_table,
-            schema=schema_w_offsets,
-            session=self._session,
-            offsets_col=ordering_col,
-            n_rows=data.data.num_rows,
-        ).drop_columns([ordering_col])
+        return nodes.BigqueryDataSource(
+            nodes.GbqTable.from_table(destination_table),
+            ordering=ordering.TotalOrdering.from_offset_col(offsets_col),
+            n_rows=data.metadata.row_count,
+        )
 
-    def stream_data(self, data: local_data.ManagedArrowTable) -> core.ArrayValue:
+    def stream_data(
+        self,
+        data: local_data.ManagedArrowTable,
+        offsets_col: str,
+    ) -> nodes.BigqueryDataSource:
         """Load managed data into bigquery"""
-        ordering_col = guid.generate_guid("stream_offsets_")
         schema_w_offsets = data.schema.append(
-            schemata.SchemaItem(ordering_col, bigframes.dtypes.INT_DTYPE)
+            schemata.SchemaItem(offsets_col, bigframes.dtypes.INT_DTYPE)
         )
         bq_schema = schema_w_offsets.to_bigquery(_STREAM_JOB_TYPE_OVERRIDES)
         load_table_destination = self._storage_manager.create_temp_table(
-            bq_schema, [ordering_col]
+            bq_schema, [offsets_col]
         )
 
         rows = data.itertuples(
@@ -279,24 +301,23 @@ class GbqDataLoader:
                     f"Problem loading at least one row from DataFrame: {errors}. {constants.FEEDBACK_LINK}"
                 )
         destination_table = self._bqclient.get_table(load_table_destination)
-        return core.ArrayValue.from_table(
-            table=destination_table,
-            schema=schema_w_offsets,
-            session=self._session,
-            offsets_col=ordering_col,
-            n_rows=data.data.num_rows,
-        ).drop_columns([ordering_col])
+        return nodes.BigqueryDataSource(
+            nodes.GbqTable.from_table(destination_table),
+            ordering=ordering.TotalOrdering.from_offset_col(offsets_col),
+            n_rows=data.metadata.row_count,
+        )
 
-    def write_data(self, data: local_data.ManagedArrowTable) -> core.ArrayValue:
+    def write_data(
+        self,
+        data: local_data.ManagedArrowTable,
+        offsets_col: str,
+    ) -> nodes.BigqueryDataSource:
         """Load managed data into bigquery"""
-        ordering_col = guid.generate_guid("stream_offsets_")
         schema_w_offsets = data.schema.append(
-            schemata.SchemaItem(ordering_col, bigframes.dtypes.INT_DTYPE)
+            schemata.SchemaItem(offsets_col, bigframes.dtypes.INT_DTYPE)
         )
         bq_schema = schema_w_offsets.to_bigquery(_STREAM_JOB_TYPE_OVERRIDES)
-        bq_table_ref = self._storage_manager.create_temp_table(
-            bq_schema, [ordering_col]
-        )
+        bq_table_ref = self._storage_manager.create_temp_table(bq_schema, [offsets_col])
 
         requested_stream = bq_storage_types.stream.WriteStream()
         requested_stream.type_ = bq_storage_types.stream.WriteStream.Type.COMMITTED  # type: ignore
@@ -308,7 +329,7 @@ class GbqDataLoader:
 
         def request_gen() -> Generator[bq_storage_types.AppendRowsRequest, None, None]:
             schema, batches = data.to_arrow(
-                offsets_col=ordering_col, duration_type="int"
+                offsets_col=offsets_col, duration_type="int"
             )
             offset = 0
             for batch in batches:
@@ -334,13 +355,11 @@ class GbqDataLoader:
         assert response.row_count == data.data.num_rows
 
         destination_table = self._bqclient.get_table(bq_table_ref)
-        return core.ArrayValue.from_table(
-            table=destination_table,
-            schema=schema_w_offsets,
-            session=self._session,
-            offsets_col=ordering_col,
-            n_rows=data.data.num_rows,
-        ).drop_columns([ordering_col])
+        return nodes.BigqueryDataSource(
+            nodes.GbqTable.from_table(destination_table),
+            ordering=ordering.TotalOrdering.from_offset_col(offsets_col),
+            n_rows=data.metadata.row_count,
+        )
 
     def _start_generic_job(self, job: formatting_helpers.GenericJob):
         if bigframes.options.display.progress_bar is not None:

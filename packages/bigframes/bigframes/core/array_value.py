@@ -133,8 +133,17 @@ class ArrayValue:
             ordering=ordering,
             n_rows=n_rows,
         )
+        return cls.from_bq_data_source(source_def, scan_list, session)
+
+    @classmethod
+    def from_bq_data_source(
+        cls,
+        source: nodes.BigqueryDataSource,
+        scan_list: nodes.ScanList,
+        session: Session,
+    ):
         node = nodes.ReadTableNode(
-            source=source_def,
+            source=source,
             scan_list=scan_list,
             table_session=session,
         )

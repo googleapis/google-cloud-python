@@ -128,4 +128,8 @@ REP_NOT_SUPPORTED_MESSAGE = textwrap.dedent(
 # BigQuery default is 10000, leave 100 for overhead
 MAX_COLUMNS = 9900
 
+# BigQuery has 1 MB query size limit. Don't want to take up more than a few % of that inlining a table.
+# Also must assume that text encoding as literals is much less efficient than in-memory representation.
+MAX_INLINE_BYTES = 5000
+
 SUGGEST_PEEK_PREVIEW = "Use .peek(n) to preview n arbitrary rows."

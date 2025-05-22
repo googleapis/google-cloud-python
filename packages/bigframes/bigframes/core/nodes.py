@@ -578,6 +578,9 @@ class ScanItem(typing.NamedTuple):
     def with_id(self, id: identifiers.ColumnId) -> ScanItem:
         return ScanItem(id, self.dtype, self.source_id)
 
+    def with_source_id(self, source_id: str) -> ScanItem:
+        return ScanItem(self.id, self.dtype, source_id)
+
 
 @dataclasses.dataclass(frozen=True)
 class ScanList:
@@ -614,6 +617,21 @@ class ScanList:
             result = ScanList((self.items[:1]))
         return result
 
+    def remap_source_ids(
+        self,
+        mapping: Mapping[str, str],
+    ) -> ScanList:
+        items = tuple(
+            item.with_source_id(mapping.get(item.source_id, item.source_id))
+            for item in self.items
+        )
+        return ScanList(items)
+
+    def append(
+        self, source_id: str, dtype: bigframes.dtypes.Dtype, id: identifiers.ColumnId
+    ) -> ScanList:
+        return ScanList((*self.items, ScanItem(id, dtype, source_id)))
+
 
 @dataclasses.dataclass(frozen=True, eq=False)
 class ReadLocalNode(LeafNode):
@@ -621,9 +639,9 @@ class ReadLocalNode(LeafNode):
     local_data_source: local_data.ManagedArrowTable
     # Mapping of local ids to bfet id.
     scan_list: ScanList
+    session: bigframes.session.Session
     # Offsets are generated only if this is non-null
     offsets_col: Optional[identifiers.ColumnId] = None
-    session: typing.Optional[bigframes.session.Session] = None
 
     @property
     def fields(self) -> Sequence[Field]:
