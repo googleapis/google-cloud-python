@@ -1,2 +1,2 @@
 pytest
-google-cloud-testutils==1.4.0
+google-cloud-testutils==1.6.4
