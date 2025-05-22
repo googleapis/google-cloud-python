@@ -19,6 +19,13 @@ jobs:
       with:
         python-version: '3.7'
 
+    # firestore emulator requires java 21+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '21'
+
     - name: Setup GCloud SDK
       uses: google-github-actions/setup-gcloud@v2.1.1
 
