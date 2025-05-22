@@ -663,9 +663,10 @@ class GbqDataLoader:
             renamed_cols: Dict[str, str] = {
                 col: new_name for col, new_name in zip(array_value.column_ids, names)
             }
-            index_names = [
-                renamed_cols.get(index_col, index_col) for index_col in index_cols
-            ]
+            if index_col != bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
+                index_names = [
+                    renamed_cols.get(index_col, index_col) for index_col in index_cols
+                ]
             value_columns = [renamed_cols.get(col, col) for col in value_columns]
 
         block = blocks.Block(

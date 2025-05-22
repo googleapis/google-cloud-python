@@ -109,11 +109,6 @@ CLUSTERED_OR_PARTITIONED_TABLES = [
     ("kwargs", "match"),
     [
         pytest.param(
-            {"engine": "bigquery", "dtype": {}},
-            "BigQuery engine does not support the `dtype` argument",
-            id="with_dtype",
-        ),
-        pytest.param(
             {"engine": "bigquery", "usecols": [1, 2]},
             "BigQuery engine only supports an iterable of strings for `usecols`.",
             id="with_usecols_invalid",
@@ -213,6 +208,17 @@ def test_read_csv_w_bigquery_engine_raises_error_for_invalid_names(
 
     with pytest.raises(ValueError, match=error_message):
         session.read_csv("path/to/csv.csv", engine="bigquery", names=names)
+
+
+def test_read_csv_w_bigquery_engine_raises_error_for_invalid_dtypes():
+    session = mocks.create_bigquery_session()
+
+    with pytest.raises(ValueError, match="dtype should be a dict-like object."):
+        session.read_csv(
+            "path/to/csv.csv",
+            engine="bigquery",
+            dtype=["a", "b", "c"],  # type: ignore[arg-type]
+        )
 
 
 @pytest.mark.parametrize("missing_parts_table_id", [(""), ("table")])

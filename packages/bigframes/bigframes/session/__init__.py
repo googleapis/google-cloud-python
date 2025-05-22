@@ -61,7 +61,7 @@ from bigframes import version
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
 import bigframes.constants
-from bigframes.core import blocks, log_adapter
+from bigframes.core import blocks, log_adapter, utils
 import bigframes.core.pyformat
 
 # Even though the ibis.backends.bigquery import is unused, it's needed
@@ -1108,11 +1108,8 @@ class Session(
         native CSV loading capabilities, making it suitable for large datasets
         that may not fit into local memory.
         """
-        if dtype is not None:
-            raise NotImplementedError(
-                f"BigQuery engine does not support the `dtype` argument."
-                f"{constants.FEEDBACK_LINK}"
-            )
+        if dtype is not None and not utils.is_dict_like(dtype):
+            raise ValueError("dtype should be a dict-like object.")
 
         if names is not None:
             if len(names) != len(set(names)):
@@ -1167,9 +1164,15 @@ class Session(
             job_config.skip_leading_rows = header + 1
 
         table_id = self._loader.load_file(filepath_or_buffer, job_config=job_config)
-        return self._loader.read_gbq_table(
+        df = self._loader.read_gbq_table(
             table_id, index_col=index_col, columns=columns, names=names
         )
+
+        if dtype is not None:
+            for column, dtype in dtype.items():
+                if column in df.columns:
+                    df[column] = df[column].astype(dtype)
+        return df
 
     def read_pickle(
         self,
