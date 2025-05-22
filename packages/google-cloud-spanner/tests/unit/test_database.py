@@ -120,7 +120,9 @@ class TestDatabase(_BaseTest):
     def _make_spanner_api():
         from google.cloud.spanner_v1 import SpannerClient
 
-        return mock.create_autospec(SpannerClient, instance=True)
+        api = mock.create_autospec(SpannerClient, instance=True)
+        api._transport = "transport"
+        return api
 
     def test_ctor_defaults(self):
         from google.cloud.spanner_v1.pool import BurstyPool
@@ -1300,6 +1302,19 @@ class TestDatabase(_BaseTest):
                 ],
             )
             self.assertEqual(api.begin_transaction.call_count, 2)
+            api.begin_transaction.assert_called_with(
+                session=session.name,
+                options=txn_options,
+                metadata=[
+                    ("google-cloud-resource-prefix", database.name),
+                    ("x-goog-spanner-route-to-leader", "true"),
+                    (
+                        "x-goog-spanner-request-id",
+                        # Please note that this try was by an abort and not from service unavailable.
+                        f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.3.1",
+                    ),
+                ],
+            )
         else:
             api.begin_transaction.assert_called_with(
                 session=session.name,
@@ -1314,6 +1329,18 @@ class TestDatabase(_BaseTest):
                 ],
             )
             self.assertEqual(api.begin_transaction.call_count, 1)
+            api.begin_transaction.assert_called_with(
+                session=session.name,
+                options=txn_options,
+                metadata=[
+                    ("google-cloud-resource-prefix", database.name),
+                    ("x-goog-spanner-route-to-leader", "true"),
+                    (
+                        "x-goog-spanner-request-id",
+                        f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
+                    ),
+                ],
+            )
 
         if params:
             expected_params = Struct(

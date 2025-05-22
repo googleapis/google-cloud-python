@@ -26,6 +26,7 @@ from tests._helpers import (
 )
 from google.cloud.spanner_v1._helpers import (
     _metadata_with_request_id,
+    AtomicCounter,
 )
 from google.cloud.spanner_v1.param_types import INT64
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
@@ -165,7 +166,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             metadata=[
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
                 )
             ],
         )
@@ -187,7 +188,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             metadata=[
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
                 )
             ],
         )
@@ -214,7 +215,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             metadata=[
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
                 )
             ],
         )
@@ -293,7 +294,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             metadata=[
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
                 )
             ],
         )
@@ -371,7 +372,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             metadata=[
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
                 )
             ],
         )
@@ -550,7 +551,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             metadata=[
                 (
                     "x-goog-spanner-request-id",
-                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.1.1.1",
+                    f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1",
                 )
             ],
         )
@@ -1955,10 +1956,18 @@ class TestSnapshot(OpenTelemetryBase):
 
 
 class _Client(object):
+    NTH_CLIENT = AtomicCounter()
+
     def __init__(self):
         from google.cloud.spanner_v1 import ExecuteSqlRequest
 
         self._query_options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        self._nth_client_id = _Client.NTH_CLIENT.increment()
+        self._nth_request = AtomicCounter()
+
+    @property
+    def _next_nth_request(self):
+        return self._nth_request.increment()
 
 
 class _Instance(object):
