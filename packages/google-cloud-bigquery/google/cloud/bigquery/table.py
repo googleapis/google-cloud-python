@@ -44,7 +44,7 @@ try:
     import geopandas  # type: ignore
 except ImportError:
     geopandas = None
-else:
+finally:
     _COORDINATE_REFERENCE_SYSTEM = "EPSG:4326"
 
 try:
@@ -1786,7 +1786,7 @@ class RowIterator(HTTPIterator):
             the first page is requested.
         query (Optional[str]):
             The query text used.
-        total_bytes_processed (Optinal[int]):
+        total_bytes_processed (Optional[int]):
             total bytes processed from job statistics, if present.
     """
 

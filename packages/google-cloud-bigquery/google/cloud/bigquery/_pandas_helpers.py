@@ -1144,7 +1144,7 @@ def determine_requested_streams(
     """
 
     if preserve_order:
-        # If preserve order is set, it takes precendence.
+        # If preserve order is set, it takes precedence.
         # Limit the requested streams to 1, to ensure that order
         # is preserved)
         return 1

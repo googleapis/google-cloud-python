@@ -388,7 +388,7 @@ CELL_DATA_PARSER = CellDataParser()
 
 
 class DataFrameCellDataParser(CellDataParser):
-    """Override of CellDataParser to handle differences in expection of values in DataFrame-like outputs.
+    """Override of CellDataParser to handle differences in expression of values in DataFrame-like outputs.
 
     This is used to turn the output of the REST API into a pyarrow Table,
     emulating the serialized arrow from the BigQuery Storage Read API.

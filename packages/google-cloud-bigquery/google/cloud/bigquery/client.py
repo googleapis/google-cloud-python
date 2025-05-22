@@ -4134,7 +4134,7 @@ class Client(ClientWithProject):
                 rows that were affected.
             query (Optional[str]):
                 The query text used.
-            total_bytes_processed (Optinal[int]):
+            total_bytes_processed (Optional[int]):
                 total bytes processed from job statistics, if present.
 
         Returns:
