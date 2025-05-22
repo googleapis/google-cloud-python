@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.31.0](https://github.com/googleapis/python-bigtable/compare/v2.30.1...v2.31.0) (2025-05-22)
+
+
+### Features
+
+* Add deletion_protection support for LVs ([#1108](https://github.com/googleapis/python-bigtable/issues/1108)) ([c6d384d](https://github.com/googleapis/python-bigtable/commit/c6d384d4a104c182326e22dc3f10b7b905780dee))
+* Support authorized views ([#1034](https://github.com/googleapis/python-bigtable/issues/1034)) ([97a0198](https://github.com/googleapis/python-bigtable/commit/97a019833d82e617769c56761aa5548d3ab896b9))
+* Throw better error on invalid metadata response ([#1107](https://github.com/googleapis/python-bigtable/issues/1107)) ([2642317](https://github.com/googleapis/python-bigtable/commit/2642317077b723ca8fd62aa86322b524868c2c4d))
+
+
+### Bug Fixes
+
+* Re-add py-typed file for bigtable package ([#1085](https://github.com/googleapis/python-bigtable/issues/1085)) ([0c322c7](https://github.com/googleapis/python-bigtable/commit/0c322c79ecbe4cde3e79d8e83ac655a978d07877))
+
 ## [2.30.1](https://github.com/googleapis/python-bigtable/compare/v2.30.0...v2.30.1) (2025-04-17)
 
 
