@@ -9,6 +9,7 @@ Sync Surface
 
   sync_data_client
   sync_data_table
+  sync_data_authorized_view
   sync_data_mutations_batcher
   sync_data_execute_query_iterator
 
@@ -20,6 +21,7 @@ Async Surface
 
   async_data_client
   async_data_table
+  async_data_authorized_view
   async_data_mutations_batcher
   async_data_execute_query_iterator
 

@@ -28,8 +28,8 @@ from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
 
 if TYPE_CHECKING:
     import grpc
-    from google.cloud.bigtable.data import TableAsync
-    from google.cloud.bigtable.data import Table
+    from google.cloud.bigtable.data._async.client import _DataApiTargetAsync
+    from google.cloud.bigtable.data._sync_autogen.client import _DataApiTarget
 
 """
 Helper functions used in various places in the library.
@@ -44,9 +44,10 @@ ShardedQuery = List[ReadRowsQuery]
 # used by read_rows_sharded to limit how many requests are attempted in parallel
 _CONCURRENCY_LIMIT = 10
 
-# used to register instance data with the client for channel warming
+# used to identify an active bigtable resource that needs to be warmed through PingAndWarm
+# each instance/app_profile_id pair needs to be individually tracked
 _WarmedInstanceKey = namedtuple(
-    "_WarmedInstanceKey", ["instance_name", "table_name", "app_profile_id"]
+    "_WarmedInstanceKey", ["instance_name", "app_profile_id"]
 )
 
 
@@ -121,7 +122,7 @@ def _retry_exception_factory(
 def _get_timeouts(
     operation: float | TABLE_DEFAULT,
     attempt: float | None | TABLE_DEFAULT,
-    table: "TableAsync" | "Table",
+    table: "_DataApiTargetAsync" | "_DataApiTarget",
 ) -> tuple[float, float]:
     """
     Convert passed in timeout values to floats, using table defaults if necessary.
@@ -226,7 +227,7 @@ def _get_error_type(
 
 def _get_retryable_errors(
     call_codes: Sequence["grpc.StatusCode" | int | type[Exception]] | TABLE_DEFAULT,
-    table: "TableAsync" | "Table",
+    table: "_DataApiTargetAsync" | "_DataApiTarget",
 ) -> list[type[Exception]]:
     """
     Convert passed in retryable error codes to a list of exception types.

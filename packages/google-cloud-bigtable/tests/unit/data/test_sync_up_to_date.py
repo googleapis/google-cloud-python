@@ -19,6 +19,9 @@ import ast
 import re
 from difflib import unified_diff
 
+if sys.version_info < (3, 9):
+    pytest.skip("ast.unparse is only available in 3.9+", allow_module_level=True)
+
 # add cross_sync to path
 test_dir_name = os.path.dirname(__file__)
 repo_root = os.path.join(test_dir_name, "..", "..", "..")
@@ -48,9 +51,6 @@ def test_found_files():
     ), "test proxy handler not found"
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 9), reason="ast.unparse is only available in 3.9+"
-)
 @pytest.mark.parametrize("sync_file", sync_files, ids=lambda f: f.output_path)
 def test_sync_up_to_date(sync_file):
     """

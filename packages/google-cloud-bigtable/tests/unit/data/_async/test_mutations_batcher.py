@@ -19,6 +19,8 @@ import time
 import google.api_core.exceptions as core_exceptions
 import google.api_core.retry
 from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
+from google.cloud.bigtable.data.mutations import RowMutationEntry
+from google.cloud.bigtable.data.mutations import DeleteAllFromRow
 from google.cloud.bigtable.data import TABLE_DEFAULT
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
@@ -38,9 +40,9 @@ class Test_FlowControlAsync:
 
     @staticmethod
     def _make_mutation(count=1, size=1):
-        mutation = mock.Mock()
-        mutation.size.return_value = size
-        mutation.mutations = [mock.Mock()] * count
+        mutation = RowMutationEntry("k", DeleteAllFromRow())
+        mutation.mutations = [DeleteAllFromRow() for _ in range(count)]
+        mutation.size = lambda: size
         return mutation
 
     def test_ctor(self):
@@ -308,6 +310,8 @@ class TestMutationsBatcherAsync:
 
         if table is None:
             table = mock.Mock()
+            table._request_path = {"table_name": "table"}
+            table.app_profile_id = None
             table.default_mutate_rows_operation_timeout = 10
             table.default_mutate_rows_attempt_timeout = 10
             table.default_mutate_rows_retryable_errors = (
@@ -319,9 +323,9 @@ class TestMutationsBatcherAsync:
 
     @staticmethod
     def _make_mutation(count=1, size=1):
-        mutation = mock.Mock()
-        mutation.size.return_value = size
-        mutation.mutations = [mock.Mock()] * count
+        mutation = RowMutationEntry("k", DeleteAllFromRow())
+        mutation.size = lambda: size
+        mutation.mutations = [DeleteAllFromRow() for _ in range(count)]
         return mutation
 
     @CrossSync.pytest
@@ -334,7 +338,7 @@ class TestMutationsBatcherAsync:
             table.default_mutate_rows_attempt_timeout = 8
             table.default_mutate_rows_retryable_errors = [Exception]
             async with self._make_one(table) as instance:
-                assert instance._table == table
+                assert instance._target == table
                 assert instance.closed is False
                 assert instance._flush_jobs == set()
                 assert len(instance._staged_entries) == 0
@@ -390,7 +394,7 @@ class TestMutationsBatcherAsync:
                 batch_attempt_timeout=attempt_timeout,
                 batch_retryable_errors=retryable_errors,
             ) as instance:
-                assert instance._table == table
+                assert instance._target == table
                 assert instance.closed is False
                 assert instance._flush_jobs == set()
                 assert len(instance._staged_entries) == 0
@@ -435,7 +439,7 @@ class TestMutationsBatcherAsync:
                 flush_limit_mutation_count=flush_limit_count,
                 flush_limit_bytes=flush_limit_bytes,
             ) as instance:
-                assert instance._table == table
+                assert instance._target == table
                 assert instance.closed is False
                 assert instance._staged_entries == []
                 assert len(instance._oldest_exceptions) == 0
@@ -903,10 +907,10 @@ class TestMutationsBatcherAsync:
         mutations = [self._make_mutation(count=2, size=2)] * num_mutations
 
         async with self._make_one(flush_interval=0.05) as instance:
-            instance._table.default_operation_timeout = 10
-            instance._table.default_attempt_timeout = 9
+            instance._target.default_operation_timeout = 10
+            instance._target.default_attempt_timeout = 9
             with mock.patch.object(
-                instance._table.client._gapic_client, "mutate_rows"
+                instance._target.client._gapic_client, "mutate_rows"
             ) as gapic_mock:
                 gapic_mock.side_effect = (
                     lambda *args, **kwargs: self._mock_gapic_return(num_mutations)

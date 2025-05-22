@@ -15,10 +15,10 @@
 from __future__ import annotations
 
 from typing import Sequence, TYPE_CHECKING
-import functools
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
+import google.cloud.bigtable_v2.types.bigtable as types_pb
 import google.cloud.bigtable.data.exceptions as bt_exceptions
 from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
 from google.cloud.bigtable.data._helpers import _retry_exception_factory
@@ -36,12 +36,16 @@ if TYPE_CHECKING:
         from google.cloud.bigtable_v2.services.bigtable.async_client import (
             BigtableAsyncClient as GapicClientType,
         )
-        from google.cloud.bigtable.data._async.client import TableAsync as TableType
+        from google.cloud.bigtable.data._async.client import (  # type: ignore
+            _DataApiTargetAsync as TargetType,
+        )
     else:
         from google.cloud.bigtable_v2.services.bigtable.client import (  # type: ignore
             BigtableClient as GapicClientType,
         )
-        from google.cloud.bigtable.data._sync_autogen.client import Table as TableType  # type: ignore
+        from google.cloud.bigtable.data._sync_autogen.client import (  # type: ignore
+            _DataApiTarget as TargetType,
+        )
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen._mutate_rows"
 
@@ -59,7 +63,7 @@ class _MutateRowsOperationAsync:
 
     Args:
         gapic_client: the client to use for the mutate_rows call
-        table: the table associated with the request
+        target: the table or view associated with the request
         mutation_entries: a list of RowMutationEntry objects to send to the server
         operation_timeout: the timeout to use for the entire operation, in seconds.
         attempt_timeout: the timeout to use for each mutate_rows attempt, in seconds.
@@ -70,7 +74,7 @@ class _MutateRowsOperationAsync:
     def __init__(
         self,
         gapic_client: GapicClientType,
-        table: TableType,
+        target: TargetType,
         mutation_entries: list["RowMutationEntry"],
         operation_timeout: float,
         attempt_timeout: float | None,
@@ -84,13 +88,8 @@ class _MutateRowsOperationAsync:
                 f"{_MUTATE_ROWS_REQUEST_MUTATION_LIMIT} mutations across "
                 f"all entries. Found {total_mutations}."
             )
-        # create partial function to pass to trigger rpc call
-        self._gapic_fn = functools.partial(
-            gapic_client.mutate_rows,
-            table_name=table.table_name,
-            app_profile_id=table.app_profile_id,
-            retry=None,
-        )
+        self._target = target
+        self._gapic_fn = gapic_client.mutate_rows
         # create predicate for determining which errors are retryable
         self.is_retryable = retries.if_exception_type(
             # RPC level errors
@@ -173,8 +172,12 @@ class _MutateRowsOperationAsync:
         # make gapic request
         try:
             result_generator = await self._gapic_fn(
+                request=types_pb.MutateRowsRequest(
+                    entries=request_entries,
+                    app_profile_id=self._target.app_profile_id,
+                    **self._target._request_path,
+                ),
                 timeout=next(self.timeout_generator),
-                entries=request_entries,
                 retry=None,
             )
             async for result_list in result_generator:

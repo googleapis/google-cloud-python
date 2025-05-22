@@ -37,9 +37,11 @@ if TYPE_CHECKING:
     from google.cloud.bigtable.data.mutations import RowMutationEntry
 
     if CrossSync.is_async:
-        from google.cloud.bigtable.data._async.client import TableAsync as TableType
+        from google.cloud.bigtable.data._async.client import (
+            _DataApiTargetAsync as TargetType,
+        )
     else:
-        from google.cloud.bigtable.data._sync_autogen.client import Table as TableType  # type: ignore
+        from google.cloud.bigtable.data._sync_autogen.client import _DataApiTarget as TargetType  # type: ignore
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.mutations_batcher"
 
@@ -179,7 +181,7 @@ class _FlowControlAsync:
 @CrossSync.convert_class(sync_name="MutationsBatcher")
 class MutationsBatcherAsync:
     """
-    Allows users to send batches using context manager API:
+    Allows users to send batches using context manager API.
 
     Runs mutate_row,  mutate_rows, and check_and_mutate_row internally, combining
     to use as few network requests as required
@@ -191,7 +193,7 @@ class MutationsBatcherAsync:
     - when batcher is closed or destroyed
 
     Args:
-        table: Table to preform rpc calls
+        table: table or autrhorized_view used to preform rpc calls
         flush_interval: Automatically flush every flush_interval seconds.
             If None, no time-based flushing is performed.
         flush_limit_mutation_count: Flush immediately after flush_limit_mutation_count
@@ -210,7 +212,7 @@ class MutationsBatcherAsync:
 
     def __init__(
         self,
-        table: TableType,
+        table: TargetType,
         *,
         flush_interval: float | None = 5,
         flush_limit_mutation_count: int | None = 1000,
@@ -230,7 +232,7 @@ class MutationsBatcherAsync:
         )
 
         self._closed = CrossSync.Event()
-        self._table = table
+        self._target = table
         self._staged_entries: list[RowMutationEntry] = []
         self._staged_count, self._staged_bytes = 0, 0
         self._flow_control = CrossSync._FlowControl(
@@ -380,8 +382,8 @@ class MutationsBatcherAsync:
         """
         try:
             operation = CrossSync._MutateRowsOperation(
-                self._table.client._gapic_client,
-                self._table,
+                self._target.client._gapic_client,
+                self._target,
                 batch,
                 operation_timeout=self._operation_timeout,
                 attempt_timeout=self._attempt_timeout,
@@ -491,7 +493,7 @@ class MutationsBatcherAsync:
         """
         if not self._closed.is_set() and self._staged_entries:
             warnings.warn(
-                f"MutationsBatcher for table {self._table.table_name} was not closed. "
+                f"MutationsBatcher for target {self._target!r} was not closed. "
                 f"{len(self._staged_entries)} Unflushed mutations will not be sent to the server."
             )
 

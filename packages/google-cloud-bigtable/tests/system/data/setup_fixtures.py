@@ -20,6 +20,12 @@ import pytest
 import os
 import uuid
 
+from . import TEST_FAMILY, TEST_FAMILY_2
+
+# authorized view subset to allow all qualifiers
+ALLOW_ALL = ""
+ALL_QUALIFIERS = {"qualifier_prefixes": [ALLOW_ALL]}
+
 
 @pytest.fixture(scope="session")
 def admin_client():
@@ -138,6 +144,63 @@ def table_id(
         )
     except exceptions.NotFound:
         print(f"Table {init_table_id} not found, skipping deletion")
+
+
+@pytest.fixture(scope="session")
+def authorized_view_id(
+    admin_client,
+    project_id,
+    instance_id,
+    table_id,
+):
+    """
+    Creates and returns a new temporary authorized view for the test session
+
+    Args:
+      - admin_client: Client for interacting with the Table Admin API. Supplied by the admin_client fixture.
+      - project_id: The project ID of the GCP project to test against. Supplied by the project_id fixture.
+      - instance_id: The ID of the Bigtable instance to test against. Supplied by the instance_id fixture.
+      - table_id: The ID of the table to create the authorized view for. Supplied by the table_id fixture.
+    """
+    from google.api_core import exceptions
+    from google.api_core import retry
+
+    retry = retry.Retry(
+        predicate=retry.if_exception_type(exceptions.FailedPrecondition)
+    )
+    new_view_id = uuid.uuid4().hex[:8]
+    parent_path = f"projects/{project_id}/instances/{instance_id}/tables/{table_id}"
+    new_path = f"{parent_path}/authorizedViews/{new_view_id}"
+    try:
+        print(f"Creating view: {new_path}")
+        admin_client.table_admin_client.create_authorized_view(
+            request={
+                "parent": parent_path,
+                "authorized_view_id": new_view_id,
+                "authorized_view": {
+                    "subset_view": {
+                        "row_prefixes": [ALLOW_ALL],
+                        "family_subsets": {
+                            TEST_FAMILY: ALL_QUALIFIERS,
+                            TEST_FAMILY_2: ALL_QUALIFIERS,
+                        },
+                    },
+                },
+            },
+            retry=retry,
+        )
+    except exceptions.AlreadyExists:
+        pass
+    except exceptions.MethodNotImplemented:
+        # will occur when run in emulator. Pass empty id
+        new_view_id = None
+    yield new_view_id
+    if new_view_id:
+        print(f"Deleting view: {new_path}")
+        try:
+            admin_client.table_admin_client.delete_authorized_view(name=new_path)
+        except exceptions.NotFound:
+            print(f"View {new_view_id} not found, skipping deletion")
 
 
 @pytest.fixture(scope="session")

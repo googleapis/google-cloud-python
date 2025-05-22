@@ -15,6 +15,8 @@
 import pytest
 
 from google.cloud.bigtable_v2.types import MutateRowsResponse
+from google.cloud.bigtable.data.mutations import RowMutationEntry
+from google.cloud.bigtable.data.mutations import DeleteAllFromRow
 from google.rpc import status_pb2
 from google.api_core.exceptions import DeadlineExceeded
 from google.api_core.exceptions import Forbidden
@@ -37,8 +39,11 @@ class TestMutateRowsOperationAsync:
 
     def _make_one(self, *args, **kwargs):
         if not args:
+            fake_target = CrossSync.Mock()
+            fake_target._request_path = {"table_name": "table"}
+            fake_target.app_profile_id = None
             kwargs["gapic_client"] = kwargs.pop("gapic_client", mock.Mock())
-            kwargs["table"] = kwargs.pop("table", CrossSync.Mock())
+            kwargs["target"] = kwargs.pop("target", fake_target)
             kwargs["operation_timeout"] = kwargs.pop("operation_timeout", 5)
             kwargs["attempt_timeout"] = kwargs.pop("attempt_timeout", 0.1)
             kwargs["retryable_exceptions"] = kwargs.pop("retryable_exceptions", ())
@@ -46,9 +51,8 @@ class TestMutateRowsOperationAsync:
         return self._target_class()(*args, **kwargs)
 
     def _make_mutation(self, count=1, size=1):
-        mutation = mock.Mock()
-        mutation.size.return_value = size
-        mutation.mutations = [mock.Mock()] * count
+        mutation = RowMutationEntry("k", [DeleteAllFromRow() for _ in range(count)])
+        mutation.size = lambda: size
         return mutation
 
     @CrossSync.convert
@@ -95,16 +99,10 @@ class TestMutateRowsOperationAsync:
             attempt_timeout,
             retryable_exceptions,
         )
-        # running gapic_fn should trigger a client call
+        # running gapic_fn should trigger a client call with baked-in args
         assert client.mutate_rows.call_count == 0
         instance._gapic_fn()
         assert client.mutate_rows.call_count == 1
-        # gapic_fn should call with table details
-        inner_kwargs = client.mutate_rows.call_args[1]
-        assert len(inner_kwargs) == 3
-        assert inner_kwargs["table_name"] == table.table_name
-        assert inner_kwargs["app_profile_id"] == table.app_profile_id
-        assert inner_kwargs["retry"] is None
         # entries should be passed down
         entries_w_pb = [_EntryWithProto(e, e._to_pb()) for e in entries]
         assert instance.mutations == entries_w_pb
@@ -174,6 +172,8 @@ class TestMutateRowsOperationAsync:
         """
         client = CrossSync.Mock()
         table = mock.Mock()
+        table._request_path = {"table_name": "table"}
+        table.app_profile_id = None
         entries = [self._make_mutation(), self._make_mutation()]
         operation_timeout = 0.05
         expected_exception = exc_type("test")
@@ -307,7 +307,8 @@ class TestMutateRowsOperationAsync:
         assert mock_gapic_fn.call_count == 1
         _, kwargs = mock_gapic_fn.call_args
         assert kwargs["timeout"] == expected_timeout
-        assert kwargs["entries"] == [mutation._to_pb()]
+        request = kwargs["request"]
+        assert request.entries == [mutation._to_pb()]
 
     @CrossSync.pytest
     async def test_run_attempt_empty_request(self):

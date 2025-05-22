@@ -17,9 +17,11 @@ from google.cloud.bigtable import gapic_version as package_version
 
 from google.cloud.bigtable.data._async.client import BigtableDataClientAsync
 from google.cloud.bigtable.data._async.client import TableAsync
+from google.cloud.bigtable.data._async.client import AuthorizedViewAsync
 from google.cloud.bigtable.data._async.mutations_batcher import MutationsBatcherAsync
 from google.cloud.bigtable.data._sync_autogen.client import BigtableDataClient
 from google.cloud.bigtable.data._sync_autogen.client import Table
+from google.cloud.bigtable.data._sync_autogen.client import AuthorizedView
 from google.cloud.bigtable.data._sync_autogen.mutations_batcher import MutationsBatcher
 
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
@@ -76,9 +78,11 @@ __version__: str = package_version.__version__
 __all__ = (
     "BigtableDataClientAsync",
     "TableAsync",
+    "AuthorizedViewAsync",
     "MutationsBatcherAsync",
     "BigtableDataClient",
     "Table",
+    "AuthorizedView",
     "MutationsBatcher",
     "RowKeySamples",
     "ReadRowsQuery",
