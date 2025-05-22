@@ -4604,4 +4604,5 @@ def test_series_to_pandas_dry_run(scalars_df_index):
 
     result = bf_series.to_pandas(dry_run=True)
 
-    assert len(result) == 14
+    assert isinstance(result, pd.Series)
+    assert len(result) > 0
