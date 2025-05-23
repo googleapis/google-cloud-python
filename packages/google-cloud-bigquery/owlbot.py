@@ -65,6 +65,7 @@ s.move(
     templated_files,
     excludes=[
         "noxfile.py",
+        "renovate.json",
         "docs/multiprocessing.rst",
         "docs/index.rst",
         ".coveragerc",
@@ -76,7 +77,7 @@ s.move(
         ".kokoro/continuous/prerelease-deps.cfg",
         ".kokoro/samples/python3.7/**",
         ".kokoro/samples/python3.8/**",
-        ".github/workflows",  # exclude gh actions as credentials are needed for tests
+        ".github/workflows/**",  # exclude gh actions as credentials are needed for tests
         "README.rst",
     ],
 )
