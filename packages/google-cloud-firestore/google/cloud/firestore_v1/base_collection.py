@@ -25,9 +25,10 @@ from typing import (
     Generator,
     Generic,
     Iterable,
-    Optional,
+    Sequence,
     Tuple,
     Union,
+    Optional,
 )
 
 from google.api_core import retry as retries
@@ -555,7 +556,7 @@ class BaseCollectionReference(Generic[QueryType]):
     def find_nearest(
         self,
         vector_field: str,
-        query_vector: Vector,
+        query_vector: Union[Vector, Sequence[float]],
         limit: int,
         distance_measure: DistanceMeasure,
         *,
@@ -568,7 +569,7 @@ class BaseCollectionReference(Generic[QueryType]):
         Args:
             vector_field (str): An indexed vector field to search upon. Only documents which contain
                 vectors whose dimensionality match the query_vector can be returned.
-            query_vector (Vector): The query vector that we are searching on. Must be a vector of no more
+            query_vector(Union[Vector, Sequence[float]]): The query vector that we are searching on. Must be a vector of no more
                 than 2048 dimensions.
             limit (int): The number of nearest neighbors to return. Must be a positive integer of no more than 1000.
             distance_measure (:class:`DistanceMeasure`): The Distance Measure to use.

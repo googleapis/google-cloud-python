@@ -19,13 +19,14 @@ from __future__ import annotations
 import abc
 from abc import ABC
 from enum import Enum
-from typing import TYPE_CHECKING, Any, Coroutine, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Coroutine, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.types import query
+from google.cloud.firestore_v1.vector import Vector
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
@@ -33,7 +34,6 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.query_results import QueryResultsList
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
-    from google.cloud.firestore_v1.vector import Vector
 
 
 class DistanceMeasure(Enum):
@@ -137,7 +137,7 @@ class BaseVectorQuery(ABC):
     def find_nearest(
         self,
         vector_field: str,
-        query_vector: Vector,
+        query_vector: Union[Vector, Sequence[float]],
         limit: int,
         distance_measure: DistanceMeasure,
         *,
@@ -145,8 +145,11 @@ class BaseVectorQuery(ABC):
         distance_threshold: Optional[float] = None,
     ):
         """Finds the closest vector embeddings to the given query vector."""
+        if not isinstance(query_vector, Vector):
+            self._query_vector = Vector(query_vector)
+        else:
+            self._query_vector = query_vector
         self._vector_field = vector_field
-        self._query_vector = query_vector
         self._limit = limit
         self._distance_measure = distance_measure
         self._distance_result_field = distance_result_field

@@ -533,6 +533,68 @@ def test_vector_query_collection_group(distance_measure, expected_distance):
     )
 
 
+def test_vector_query_list_as_query_vector():
+    # Create a minimal fake GAPIC.
+    firestore_api = mock.Mock(spec=["run_query"])
+    client = make_client()
+    client._firestore_api_internal = firestore_api
+
+    # Make a **real** collection reference as parent.
+    parent = client.collection("dee")
+    query = make_query(parent)
+    parent_path, expected_prefix = parent._parent_info()
+
+    data = {"snooze": 10, "embedding": Vector([1.0, 2.0, 3.0])}
+    response_pb1 = _make_query_response(
+        name="{}/test_doc".format(expected_prefix), data=data
+    )
+    response_pb2 = _make_query_response(
+        name="{}/test_doc".format(expected_prefix), data=data
+    )
+
+    kwargs = make_retry_timeout_kwargs(retry=None, timeout=None)
+
+    # Execute the vector query and check the response.
+    firestore_api.run_query.return_value = iter([response_pb1, response_pb2])
+
+    vector_query = query.where("snooze", "==", 10).find_nearest(
+        vector_field="embedding",
+        query_vector=[1.0, 2.0, 3.0],
+        distance_measure=DistanceMeasure.EUCLIDEAN,
+        limit=5,
+    )
+
+    returned = vector_query.get(transaction=_transaction(client), **kwargs)
+    assert isinstance(returned, list)
+    assert len(returned) == 2
+    assert returned[0].to_dict() == data
+
+    expected_pb = _expected_pb(
+        parent=parent,
+        vector_field="embedding",
+        vector=Vector([1.0, 2.0, 3.0]),
+        distance_type=StructuredQuery.FindNearest.DistanceMeasure.EUCLIDEAN,
+        limit=5,
+    )
+    expected_pb.where = StructuredQuery.Filter(
+        field_filter=StructuredQuery.FieldFilter(
+            field=StructuredQuery.FieldReference(field_path="snooze"),
+            op=StructuredQuery.FieldFilter.Operator.EQUAL,
+            value=encode_value(10),
+        )
+    )
+
+    firestore_api.run_query.assert_called_once_with(
+        request={
+            "parent": parent_path,
+            "structured_query": expected_pb,
+            "transaction": _TXN_ID,
+        },
+        metadata=client._rpc_metadata,
+        **kwargs,
+    )
+
+
 def test_query_stream_multiple_empty_response_in_stream():
     from google.cloud.firestore_v1 import stream_generator
 
