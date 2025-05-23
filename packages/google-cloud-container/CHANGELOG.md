@@ -4,6 +4,54 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.57.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.56.1...google-cloud-container-v2.57.0) (2025-05-23)
+
+
+### Features
+
+* add allowed_unsafe_sysctls in NodeKubeletConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add alpha_cluster_feature_gates in Cluster ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add auto_monitoring_config in ManagedPrometheusConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add autopilot_compatibility_auditing_enabled in WorkloadPolicyConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add ClusterUpgradeInfo ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add confidential_instance_type in ConfidentialNodes ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add container_log_max_files in NodeKubeletConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add container_log_max_size in NodeKubeletConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add data_cache_count in EphemeralStorageLocalSsdConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add desired_anonymous_authentication_config in ClusterUpdate ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add desired_disable_l4_lb_firewall_reconciliation in ClusterUpdate ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add desired_pod_autoscaling in ClusterUpdate ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add disable_l4_lb_firewall_reconciliation in NetworkConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add event_type in UpgradeInfoEvent ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add extended_support_end_time in UpgradeInfoEvent ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add FetchClusterUpgradeInfoRequest ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add FetchNodePoolUpgradeInfoRequest ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add flex_start in NodeConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add flex_start in UpdateNodePoolRequest ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add high_scale_checkpointing_config in AddonsConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add image_gc_high_threshold_percent in NodeKubeletConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add image_gc_low_threshold_percent in NodeKubeletConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add image_maximum_gc_age in NodeKubeletConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add image_minimum_gc_age in NodeKubeletConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add JOBSET in MonitoringComponentConfig.Component ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add KCP_HPA in LoggingComponentConfig.Component ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add max_run_duration in NodeConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add max_run_duration in UpdateNodePoolRequest ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add mitigated_versions in SecurityBulletinEvent ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add NODE_SERVICE_ACCOUNT_MISSING_PERMISSIONS in StatusCondition.Code ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add NodePoolUpgradeInfo ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add performance_monitoring_unit in AdvancedMachineFeatures ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add pod_autoscaling in Cluster ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add standard_support_end_time in UpgradeInfoEvent ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add topology_manager in NodeKubeletConfig ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add UPGRADE_INFO_EVENT in NotificationConfig.EventType ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+* add UpgradeDetails ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+
+
+### Documentation
+
+* Minor documentation updates ([4c98f4e](https://github.com/googleapis/google-cloud-python/commit/4c98f4ea1879e3a7962bf64ea42e40a8b21b6ca1))
+
 ## [2.56.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.56.0...google-cloud-container-v2.56.1) (2025-03-15)
 
 
