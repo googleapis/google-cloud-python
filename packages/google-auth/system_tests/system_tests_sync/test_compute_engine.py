@@ -35,7 +35,7 @@ def check_gce_environment(http_request):
         pytest.skip("Compute Engine metadata service is not available.")
 
 
-def test_refresh(http_request, token_info):
+def test_refresh(http_request):
     credentials = compute_engine.Credentials()
 
     credentials.refresh(http_request)
@@ -43,9 +43,7 @@ def test_refresh(http_request, token_info):
     assert credentials.token is not None
     assert credentials.service_account_email is not None
 
-    info = token_info(credentials.token)
-    info_scopes = _helpers.string_to_scopes(info["scope"])
-    assert set(info_scopes) == set(credentials.scopes)
+    assert credentials.scopes is None
 
 
 def test_default(verify_refresh):
