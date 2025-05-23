@@ -41,6 +41,8 @@ __protobuf__ = proto.module(
         "ConnectGcpConfig",
         "Connector",
         "TaskRetryPolicy",
+        "Acl",
+        "AclEntry",
     },
 )
 
@@ -763,6 +765,135 @@ class TaskRetryPolicy(proto.Message):
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
+    )
+
+
+class Acl(proto.Message):
+    r"""Represents the set of ACLs for a given Kafka Resource Pattern, which
+    consists of resource_type, resource_name and pattern_type.
+
+    Attributes:
+        name (str):
+            Identifier. The name for the acl. Represents a single
+            Resource Pattern. Structured like:
+            projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}
+
+            The structure of ``acl_id`` defines the Resource Pattern
+            (resource_type, resource_name, pattern_type) of the acl.
+            ``acl_id`` is structured like one of the following:
+
+            For acls on the cluster: ``cluster``
+
+            For acls on a single resource within the cluster:
+            ``topic/{resource_name}`` ``consumerGroup/{resource_name}``
+            ``transactionalId/{resource_name}``
+
+            For acls on all resources that match a prefix:
+            ``topicPrefixed/{resource_name}``
+            ``consumerGroupPrefixed/{resource_name}``
+            ``transactionalIdPrefixed/{resource_name}``
+
+            For acls on all resources of a given type (i.e. the wildcard
+            literal "*"): ``allTopics`` (represents ``topic/*``)
+            ``allConsumerGroups`` (represents ``consumerGroup/*``)
+            ``allTransactionalIds`` (represents ``transactionalId/*``)
+        acl_entries (MutableSequence[google.cloud.managedkafka_v1.types.AclEntry]):
+            Required. The ACL entries that apply to the
+            resource pattern. The maximum number of allowed
+            entries 100.
+        etag (str):
+            Optional. ``etag`` is used for concurrency control. An
+            ``etag`` is returned in the response to ``GetAcl`` and
+            ``CreateAcl``. Callers are required to put that etag in the
+            request to ``UpdateAcl`` to ensure that their change will be
+            applied to the same version of the acl that exists in the
+            Kafka Cluster.
+
+            A terminal 'T' character in the etag indicates that the
+            AclEntries were truncated; more entries for the Acl exist on
+            the Kafka Cluster, but can't be returned in the Acl due to
+            repeated field limits.
+        resource_type (str):
+            Output only. The ACL resource type derived from the name.
+            One of: CLUSTER, TOPIC, GROUP, TRANSACTIONAL_ID.
+        resource_name (str):
+            Output only. The ACL resource name derived from the name.
+            For cluster resource_type, this is always "kafka-cluster".
+            Can be the wildcard literal "*".
+        pattern_type (str):
+            Output only. The ACL pattern type derived
+            from the name. One of: LITERAL, PREFIXED.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    acl_entries: MutableSequence["AclEntry"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AclEntry",
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    resource_name: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    pattern_type: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class AclEntry(proto.Message):
+    r"""Represents the access granted for a given Resource Pattern in
+    an ACL.
+
+    Attributes:
+        principal (str):
+            Required. The principal. Specified as Google Cloud account,
+            with the Kafka StandardAuthorizer prefix "User:". For
+            example:
+            "User:test-kafka-client@test-project.iam.gserviceaccount.com".
+            Can be the wildcard `User:*` to refer to all users.
+        permission_type (str):
+            Required. The permission type. Accepted
+            values are (case insensitive): ALLOW, DENY.
+        operation (str):
+            Required. The operation type. Allowed values are (case
+            insensitive): ALL, READ, WRITE, CREATE, DELETE, ALTER,
+            DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS,
+            and IDEMPOTENT_WRITE. See
+            https://kafka.apache.org/documentation/#operations_resources_and_protocols
+            for valid combinations of resource_type and operation for
+            different Kafka API requests.
+        host (str):
+            Required. The host. Must be set to "*" for Managed Service
+            for Apache Kafka.
+    """
+
+    principal: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    permission_type: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    operation: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    host: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 

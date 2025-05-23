@@ -733,6 +733,199 @@ class ManagedKafkaGrpcAsyncIOTransport(ManagedKafkaTransport):
             )
         return self._stubs["delete_consumer_group"]
 
+    @property
+    def list_acls(
+        self,
+    ) -> Callable[
+        [managed_kafka.ListAclsRequest], Awaitable[managed_kafka.ListAclsResponse]
+    ]:
+        r"""Return a callable for the list acls method over gRPC.
+
+        Lists the acls in a given cluster.
+
+        Returns:
+            Callable[[~.ListAclsRequest],
+                    Awaitable[~.ListAclsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_acls" not in self._stubs:
+            self._stubs["list_acls"] = self._logged_channel.unary_unary(
+                "/google.cloud.managedkafka.v1.ManagedKafka/ListAcls",
+                request_serializer=managed_kafka.ListAclsRequest.serialize,
+                response_deserializer=managed_kafka.ListAclsResponse.deserialize,
+            )
+        return self._stubs["list_acls"]
+
+    @property
+    def get_acl(
+        self,
+    ) -> Callable[[managed_kafka.GetAclRequest], Awaitable[resources.Acl]]:
+        r"""Return a callable for the get acl method over gRPC.
+
+        Returns the properties of a single acl.
+
+        Returns:
+            Callable[[~.GetAclRequest],
+                    Awaitable[~.Acl]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_acl" not in self._stubs:
+            self._stubs["get_acl"] = self._logged_channel.unary_unary(
+                "/google.cloud.managedkafka.v1.ManagedKafka/GetAcl",
+                request_serializer=managed_kafka.GetAclRequest.serialize,
+                response_deserializer=resources.Acl.deserialize,
+            )
+        return self._stubs["get_acl"]
+
+    @property
+    def create_acl(
+        self,
+    ) -> Callable[[managed_kafka.CreateAclRequest], Awaitable[resources.Acl]]:
+        r"""Return a callable for the create acl method over gRPC.
+
+        Creates a new acl in the given project, location, and
+        cluster.
+
+        Returns:
+            Callable[[~.CreateAclRequest],
+                    Awaitable[~.Acl]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_acl" not in self._stubs:
+            self._stubs["create_acl"] = self._logged_channel.unary_unary(
+                "/google.cloud.managedkafka.v1.ManagedKafka/CreateAcl",
+                request_serializer=managed_kafka.CreateAclRequest.serialize,
+                response_deserializer=resources.Acl.deserialize,
+            )
+        return self._stubs["create_acl"]
+
+    @property
+    def update_acl(
+        self,
+    ) -> Callable[[managed_kafka.UpdateAclRequest], Awaitable[resources.Acl]]:
+        r"""Return a callable for the update acl method over gRPC.
+
+        Updates the properties of a single acl.
+
+        Returns:
+            Callable[[~.UpdateAclRequest],
+                    Awaitable[~.Acl]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_acl" not in self._stubs:
+            self._stubs["update_acl"] = self._logged_channel.unary_unary(
+                "/google.cloud.managedkafka.v1.ManagedKafka/UpdateAcl",
+                request_serializer=managed_kafka.UpdateAclRequest.serialize,
+                response_deserializer=resources.Acl.deserialize,
+            )
+        return self._stubs["update_acl"]
+
+    @property
+    def delete_acl(
+        self,
+    ) -> Callable[[managed_kafka.DeleteAclRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete acl method over gRPC.
+
+        Deletes an acl.
+
+        Returns:
+            Callable[[~.DeleteAclRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_acl" not in self._stubs:
+            self._stubs["delete_acl"] = self._logged_channel.unary_unary(
+                "/google.cloud.managedkafka.v1.ManagedKafka/DeleteAcl",
+                request_serializer=managed_kafka.DeleteAclRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_acl"]
+
+    @property
+    def add_acl_entry(
+        self,
+    ) -> Callable[
+        [managed_kafka.AddAclEntryRequest], Awaitable[managed_kafka.AddAclEntryResponse]
+    ]:
+        r"""Return a callable for the add acl entry method over gRPC.
+
+        Incremental update: Adds an acl entry to an acl.
+        Creates the acl if it does not exist yet.
+
+        Returns:
+            Callable[[~.AddAclEntryRequest],
+                    Awaitable[~.AddAclEntryResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "add_acl_entry" not in self._stubs:
+            self._stubs["add_acl_entry"] = self._logged_channel.unary_unary(
+                "/google.cloud.managedkafka.v1.ManagedKafka/AddAclEntry",
+                request_serializer=managed_kafka.AddAclEntryRequest.serialize,
+                response_deserializer=managed_kafka.AddAclEntryResponse.deserialize,
+            )
+        return self._stubs["add_acl_entry"]
+
+    @property
+    def remove_acl_entry(
+        self,
+    ) -> Callable[
+        [managed_kafka.RemoveAclEntryRequest],
+        Awaitable[managed_kafka.RemoveAclEntryResponse],
+    ]:
+        r"""Return a callable for the remove acl entry method over gRPC.
+
+        Incremental update: Removes an acl entry from an acl.
+        Deletes the acl if its acl entries become empty (i.e. if
+        the removed entry was the last one in the acl).
+
+        Returns:
+            Callable[[~.RemoveAclEntryRequest],
+                    Awaitable[~.RemoveAclEntryResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_acl_entry" not in self._stubs:
+            self._stubs["remove_acl_entry"] = self._logged_channel.unary_unary(
+                "/google.cloud.managedkafka.v1.ManagedKafka/RemoveAclEntry",
+                request_serializer=managed_kafka.RemoveAclEntryRequest.serialize,
+                response_deserializer=managed_kafka.RemoveAclEntryResponse.deserialize,
+            )
+        return self._stubs["remove_acl_entry"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -858,6 +1051,41 @@ class ManagedKafkaGrpcAsyncIOTransport(ManagedKafkaTransport):
             self.delete_consumer_group: self._wrap_method(
                 self.delete_consumer_group,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_acls: self._wrap_method(
+                self.list_acls,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_acl: self._wrap_method(
+                self.get_acl,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_acl: self._wrap_method(
+                self.create_acl,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_acl: self._wrap_method(
+                self.update_acl,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_acl: self._wrap_method(
+                self.delete_acl,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.add_acl_entry: self._wrap_method(
+                self.add_acl_entry,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.remove_acl_entry: self._wrap_method(
+                self.remove_acl_entry,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: self._wrap_method(

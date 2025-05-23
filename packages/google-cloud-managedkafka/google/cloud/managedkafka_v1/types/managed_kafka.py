@@ -42,6 +42,16 @@ __protobuf__ = proto.module(
         "GetConsumerGroupRequest",
         "UpdateConsumerGroupRequest",
         "DeleteConsumerGroupRequest",
+        "ListAclsRequest",
+        "ListAclsResponse",
+        "GetAclRequest",
+        "CreateAclRequest",
+        "UpdateAclRequest",
+        "DeleteAclRequest",
+        "AddAclEntryRequest",
+        "AddAclEntryResponse",
+        "RemoveAclEntryRequest",
+        "RemoveAclEntryResponse",
     },
 )
 
@@ -571,6 +581,301 @@ class DeleteConsumerGroupRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class ListAclsRequest(proto.Message):
+    r"""Request for ListAcls.
+
+    Attributes:
+        parent (str):
+            Required. The parent cluster whose acls are to be listed.
+            Structured like
+            ``projects/{project}/locations/{location}/clusters/{cluster}``.
+        page_size (int):
+            Optional. The maximum number of acls to
+            return. The service may return fewer than this
+            value. If unset or zero, all acls for the parent
+            is returned.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListAcls`` call. Provide this to retrieve the subsequent
+            page.
+
+            When paginating, all other parameters provided to
+            ``ListAcls`` must match the call that provided the page
+            token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListAclsResponse(proto.Message):
+    r"""Response for ListAcls.
+
+    Attributes:
+        acls (MutableSequence[google.cloud.managedkafka_v1.types.Acl]):
+            The list of acls in the requested parent. The
+            order of the acls is unspecified.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page of results. If this field is omitted, there are no
+            more results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    acls: MutableSequence[resources.Acl] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Acl,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetAclRequest(proto.Message):
+    r"""Request for GetAcl.
+
+    Attributes:
+        name (str):
+            Required. The name of the acl to return. Structured like:
+            ``projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}``.
+
+            The structure of ``acl_id`` defines the Resource Pattern
+            (resource_type, resource_name, pattern_type) of the acl. See
+            ``Acl.name`` for details.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateAclRequest(proto.Message):
+    r"""Request for CreateAcl.
+
+    Attributes:
+        parent (str):
+            Required. The parent cluster in which to create the acl.
+            Structured like
+            ``projects/{project}/locations/{location}/clusters/{cluster}``.
+        acl_id (str):
+            Required. The ID to use for the acl, which will become the
+            final component of the acl's name. The structure of
+            ``acl_id`` defines the Resource Pattern (resource_type,
+            resource_name, pattern_type) of the acl. ``acl_id`` is
+            structured like one of the following:
+
+            For acls on the cluster: ``cluster``
+
+            For acls on a single resource within the cluster:
+            ``topic/{resource_name}`` ``consumerGroup/{resource_name}``
+            ``transactionalId/{resource_name}``
+
+            For acls on all resources that match a prefix:
+            ``topicPrefixed/{resource_name}``
+            ``consumerGroupPrefixed/{resource_name}``
+            ``transactionalIdPrefixed/{resource_name}``
+
+            For acls on all resources of a given type (i.e. the wildcard
+            literal "*"): ``allTopics`` (represents ``topic/*``)
+            ``allConsumerGroups`` (represents ``consumerGroup/*``)
+            ``allTransactionalIds`` (represents ``transactionalId/*``)
+        acl (google.cloud.managedkafka_v1.types.Acl):
+            Required. Configuration of the acl to create. Its ``name``
+            field is ignored.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    acl_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    acl: resources.Acl = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.Acl,
+    )
+
+
+class UpdateAclRequest(proto.Message):
+    r"""Request for UpdateAcl.
+
+    Attributes:
+        acl (google.cloud.managedkafka_v1.types.Acl):
+            Required. The updated acl. Its ``name`` and ``etag`` fields
+            must be populated. ``acl_entries`` must not be empty in the
+            updated acl; to remove all acl entries for an acl, use
+            DeleteAcl.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Acl resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask.
+    """
+
+    acl: resources.Acl = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Acl,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteAclRequest(proto.Message):
+    r"""Request for DeleteAcl.
+
+    Attributes:
+        name (str):
+            Required. The name of the acl to delete. Structured like:
+            ``projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}``.
+
+            The structure of ``acl_id`` defines the Resource Pattern
+            (resource_type, resource_name, pattern_type) of the acl. See
+            ``Acl.name`` for details.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AddAclEntryRequest(proto.Message):
+    r"""Request for AddAclEntry.
+
+    Attributes:
+        acl (str):
+            Required. The name of the acl to add the acl entry to.
+            Structured like:
+            ``projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}``.
+
+            The structure of ``acl_id`` defines the Resource Pattern
+            (resource_type, resource_name, pattern_type) of the acl. See
+            ``Acl.name`` for details.
+        acl_entry (google.cloud.managedkafka_v1.types.AclEntry):
+            Required. The acl entry to add.
+    """
+
+    acl: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    acl_entry: resources.AclEntry = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.AclEntry,
+    )
+
+
+class AddAclEntryResponse(proto.Message):
+    r"""Response for AddAclEntry.
+
+    Attributes:
+        acl (google.cloud.managedkafka_v1.types.Acl):
+            The updated acl.
+        acl_created (bool):
+            Whether the acl was created as a result of
+            adding the acl entry.
+    """
+
+    acl: resources.Acl = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Acl,
+    )
+    acl_created: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class RemoveAclEntryRequest(proto.Message):
+    r"""Request for RemoveAclEntry.
+
+    Attributes:
+        acl (str):
+            Required. The name of the acl to remove the acl entry from.
+            Structured like:
+            ``projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}``.
+
+            The structure of ``acl_id`` defines the Resource Pattern
+            (resource_type, resource_name, pattern_type) of the acl. See
+            ``Acl.name`` for details.
+        acl_entry (google.cloud.managedkafka_v1.types.AclEntry):
+            Required. The acl entry to remove.
+    """
+
+    acl: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    acl_entry: resources.AclEntry = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.AclEntry,
+    )
+
+
+class RemoveAclEntryResponse(proto.Message):
+    r"""Response for RemoveAclEntry.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        acl (google.cloud.managedkafka_v1.types.Acl):
+            The updated acl. Returned if the removed acl
+            entry was not the last entry in the acl.
+
+            This field is a member of `oneof`_ ``result``.
+        acl_deleted (bool):
+            Returned with value true if the removed acl
+            entry was the last entry in the acl, resulting
+            in acl deletion.
+
+            This field is a member of `oneof`_ ``result``.
+    """
+
+    acl: resources.Acl = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="result",
+        message=resources.Acl,
+    )
+    acl_deleted: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+        oneof="result",
     )
 
 
