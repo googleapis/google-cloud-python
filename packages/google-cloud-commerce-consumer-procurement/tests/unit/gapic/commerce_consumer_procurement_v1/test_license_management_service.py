@@ -3404,7 +3404,7 @@ def test_update_license_pool_rest_flattened():
         # get arguments that satisfy an http rule for this method
         sample_request = {
             "license_pool": {
-                "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3"
+                "name": "billingAccounts/sample1/orders/sample2/licensePool"
             }
         }
 
@@ -3432,7 +3432,7 @@ def test_update_license_pool_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{license_pool.name=billingAccounts/*/orders/*/licensePool/*}"
+            "%s/v1/{license_pool.name=billingAccounts/*/orders/*/licensePool}"
             % client.transport._host,
             args[1],
         )
@@ -4636,9 +4636,7 @@ def test_update_license_pool_rest_bad_request(
     )
     # send a request that will satisfy transcoding
     request_init = {
-        "license_pool": {
-            "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3"
-        }
+        "license_pool": {"name": "billingAccounts/sample1/orders/sample2/licensePool"}
     }
     request = request_type(**request_init)
 
@@ -4671,12 +4669,10 @@ def test_update_license_pool_rest_call_success(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {
-        "license_pool": {
-            "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3"
-        }
+        "license_pool": {"name": "billingAccounts/sample1/orders/sample2/licensePool"}
     }
     request_init["license_pool"] = {
-        "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3",
+        "name": "billingAccounts/sample1/orders/sample2/licensePool",
         "license_assignment_protocol": {
             "manual_assignment_type": {},
             "auto_assignment_type": {

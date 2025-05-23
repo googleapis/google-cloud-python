@@ -321,7 +321,7 @@ class _BaseLicenseManagementServiceRestTransport(LicenseManagementServiceTranspo
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/v1/{license_pool.name=billingAccounts/*/orders/*/licensePool/*}",
+                    "uri": "/v1/{license_pool.name=billingAccounts/*/orders/*/licensePool}",
                     "body": "license_pool",
                 },
             ]
