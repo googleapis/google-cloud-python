@@ -73,6 +73,7 @@ for library in s.get_staging_dirs(default_version):
             "google/cloud/logging_v2/__init__.py",
             "docs/index.rst",
             "docs/logging_v2",  # Don't include gapic library docs. Users should use the hand-written layer instead
+            "docs/multiprocessing.rst",
             "scripts/fixup_logging_v2_keywords.py",  # don't include script since it only works for generated layer
         ],
     )
