@@ -1072,6 +1072,33 @@ def test_collection_add(client, cleanup, database):
     assert set(collection3.list_documents()) == {document_ref5}
 
 
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+def test_unicode_doc(client, cleanup, database):
+    collection_id = "coll-unicode" + UNIQUE_RESOURCE_ID
+    collection = client.collection(collection_id)
+    explicit_doc_id = "中餐" + UNIQUE_RESOURCE_ID
+
+    assert set(collection.list_documents()) == set()
+
+    data = {"baz": 0}
+    update_time, document_ref = collection.add(data, document_id=explicit_doc_id)
+    cleanup(document_ref.delete)
+    assert set(collection.list_documents()) == {document_ref, document_ref}
+    snapshot = document_ref.get()
+    assert snapshot.to_dict() == data
+    assert snapshot.create_time == update_time
+    assert snapshot.update_time == update_time
+    assert document_ref.id == explicit_doc_id
+    assert snapshot.reference.id == explicit_doc_id
+
+    # update doc
+    data2 = {"baz": 9}
+    snapshot.reference.update(data2)
+    snapshot2 = document_ref.get()
+    assert snapshot2.to_dict() == data2
+    assert snapshot2.reference.id == explicit_doc_id
+
+
 @pytest.fixture
 def query_docs(client, database):
     collection_id = "qs" + UNIQUE_RESOURCE_ID
