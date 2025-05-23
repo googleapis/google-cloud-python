@@ -393,6 +393,16 @@ class ClusterManagerTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.fetch_cluster_upgrade_info: gapic_v1.method.wrap_method(
+                self.fetch_cluster_upgrade_info,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_node_pool_upgrade_info: gapic_v1.method.wrap_method(
+                self.fetch_node_pool_upgrade_info,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -724,6 +734,30 @@ class ClusterManagerTransport(abc.ABC):
         Union[
             cluster_service.CheckAutopilotCompatibilityResponse,
             Awaitable[cluster_service.CheckAutopilotCompatibilityResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_cluster_upgrade_info(
+        self,
+    ) -> Callable[
+        [cluster_service.FetchClusterUpgradeInfoRequest],
+        Union[
+            cluster_service.ClusterUpgradeInfo,
+            Awaitable[cluster_service.ClusterUpgradeInfo],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_node_pool_upgrade_info(
+        self,
+    ) -> Callable[
+        [cluster_service.FetchNodePoolUpgradeInfoRequest],
+        Union[
+            cluster_service.NodePoolUpgradeInfo,
+            Awaitable[cluster_service.NodePoolUpgradeInfo],
         ],
     ]:
         raise NotImplementedError()

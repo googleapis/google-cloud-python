@@ -50,6 +50,16 @@
                 "delete_node_pool"
               ]
             },
+            "FetchClusterUpgradeInfo": {
+              "methods": [
+                "fetch_cluster_upgrade_info"
+              ]
+            },
+            "FetchNodePoolUpgradeInfo": {
+              "methods": [
+                "fetch_node_pool_upgrade_info"
+              ]
+            },
             "GetCluster": {
               "methods": [
                 "get_cluster"
@@ -225,6 +235,16 @@
                 "delete_node_pool"
               ]
             },
+            "FetchClusterUpgradeInfo": {
+              "methods": [
+                "fetch_cluster_upgrade_info"
+              ]
+            },
+            "FetchNodePoolUpgradeInfo": {
+              "methods": [
+                "fetch_node_pool_upgrade_info"
+              ]
+            },
             "GetCluster": {
               "methods": [
                 "get_cluster"
@@ -398,6 +418,16 @@
             "DeleteNodePool": {
               "methods": [
                 "delete_node_pool"
+              ]
+            },
+            "FetchClusterUpgradeInfo": {
+              "methods": [
+                "fetch_cluster_upgrade_info"
+              ]
+            },
+            "FetchNodePoolUpgradeInfo": {
+              "methods": [
+                "fetch_node_pool_upgrade_info"
               ]
             },
             "GetCluster": {
