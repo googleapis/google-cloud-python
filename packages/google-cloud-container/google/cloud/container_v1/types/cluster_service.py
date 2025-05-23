@@ -37,6 +37,8 @@ __protobuf__ = proto.module(
         "LinuxNodeConfig",
         "WindowsNodeConfig",
         "NodeKubeletConfig",
+        "TopologyManager",
+        "MemoryManager",
         "NodeConfig",
         "AdvancedMachineFeatures",
         "NodeNetworkConfig",
@@ -70,6 +72,7 @@ __protobuf__ = proto.module(
         "GcpFilestoreCsiDriverConfig",
         "GcsFuseCsiDriverConfig",
         "ParallelstoreCsiDriverConfig",
+        "HighScaleCheckpointingConfig",
         "RayOperatorConfig",
         "GkeBackupAgentConfig",
         "StatefulHAConfig",
@@ -82,6 +85,7 @@ __protobuf__ = proto.module(
         "Cluster",
         "RBACBindingConfig",
         "UserManagedKeysConfig",
+        "AnonymousAuthenticationConfig",
         "CompliancePostureConfig",
         "K8sBetaAPIConfig",
         "SecurityPostureConfig",
@@ -198,6 +202,8 @@ __protobuf__ = proto.module(
         "LoggingVariantConfig",
         "MonitoringComponentConfig",
         "ManagedPrometheusConfig",
+        "AutoMonitoringConfig",
+        "PodAutoscaling",
         "Fleet",
         "ControlPlaneEndpointsConfig",
         "LocalNvmeSsdBlockConfig",
@@ -207,6 +213,11 @@ __protobuf__ = proto.module(
         "SecretManagerConfig",
         "SecondaryBootDisk",
         "SecondaryBootDiskUpdateStrategy",
+        "FetchClusterUpgradeInfoRequest",
+        "ClusterUpgradeInfo",
+        "UpgradeDetails",
+        "FetchNodePoolUpgradeInfoRequest",
+        "NodePoolUpgradeInfo",
     },
 )
 
@@ -359,10 +370,16 @@ class LinuxNodeConfig(proto.Message):
 
             net.core.busy_poll net.core.busy_read
             net.core.netdev_max_backlog net.core.rmem_max
-            net.core.wmem_default net.core.wmem_max net.core.optmem_max
-            net.core.somaxconn net.ipv4.tcp_rmem net.ipv4.tcp_wmem
-            net.ipv4.tcp_tw_reuse kernel.shmmni kernel.shmmax
-            kernel.shmall
+            net.core.rmem_default net.core.wmem_default
+            net.core.wmem_max net.core.optmem_max net.core.somaxconn
+            net.ipv4.tcp_rmem net.ipv4.tcp_wmem net.ipv4.tcp_tw_reuse
+            net.netfilter.nf_conntrack_max
+            net.netfilter.nf_conntrack_buckets
+            net.netfilter.nf_conntrack_tcp_timeout_close_wait
+            net.netfilter.nf_conntrack_tcp_timeout_time_wait
+            net.netfilter.nf_conntrack_tcp_timeout_established
+            net.netfilter.nf_conntrack_acct kernel.shmmni kernel.shmmax
+            kernel.shmall vm.max_map_count
         cgroup_mode (google.cloud.container_v1.types.LinuxNodeConfig.CgroupMode):
             cgroup_mode specifies the cgroup mode to be used on the
             node.
@@ -439,12 +456,12 @@ class LinuxNodeConfig(proto.Message):
 class WindowsNodeConfig(proto.Message):
     r"""Parameters that can be configured on Windows nodes.
     Windows Node Config that define the parameters that will be used
-    to configure the Windows node pool settings
+    to configure the Windows node pool settings.
 
     Attributes:
         os_version (google.cloud.container_v1.types.WindowsNodeConfig.OSVersion):
             OSVersion specifies the Windows node config
-            to be used on the node
+            to be used on the node.
     """
 
     class OSVersion(proto.Enum):
@@ -452,13 +469,13 @@ class WindowsNodeConfig(proto.Message):
 
         Values:
             OS_VERSION_UNSPECIFIED (0):
-                When OSVersion is not specified
+                When OSVersion is not specified.
             OS_VERSION_LTSC2019 (1):
                 LTSC2019 specifies to use LTSC2019 as the
-                Windows Servercore Base Image
+                Windows Servercore Base Image.
             OS_VERSION_LTSC2022 (2):
                 LTSC2022 specifies to use LTSC2022 as the
-                Windows Servercore Base Image
+                Windows Servercore Base Image.
         """
         OS_VERSION_UNSPECIFIED = 0
         OS_VERSION_LTSC2019 = 1
@@ -489,6 +506,18 @@ class NodeKubeletConfig(proto.Message):
                characteristics to be granted increased CPU affinity and
                exclusivity on the node. The default value is 'none' if
                unspecified.
+        topology_manager (google.cloud.container_v1.types.TopologyManager):
+            Optional. Controls Topology Manager
+            configuration on the node. For more information,
+            see:
+
+            https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/
+        memory_manager (google.cloud.container_v1.types.MemoryManager):
+            Optional. Controls NUMA-aware Memory Manager
+            configuration on the node. For more information,
+            see:
+
+            https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/
         cpu_cfs_quota (google.protobuf.wrappers_pb2.BoolValue):
             Enable CPU CFS quota enforcement for
             containers that specify CPU limits.
@@ -522,11 +551,107 @@ class NodeKubeletConfig(proto.Message):
             Enable or disable Kubelet read only port.
 
             This field is a member of `oneof`_ ``_insecure_kubelet_readonly_port_enabled``.
+        image_gc_low_threshold_percent (int):
+            Optional. Defines the percent of disk usage before which
+            image garbage collection is never run. Lowest disk usage to
+            garbage collect to. The percent is calculated as this field
+            value out of 100.
+
+            The value must be between 10 and 85, inclusive and smaller
+            than image_gc_high_threshold_percent.
+
+            The default value is 80 if unspecified.
+        image_gc_high_threshold_percent (int):
+            Optional. Defines the percent of disk usage after which
+            image garbage collection is always run. The percent is
+            calculated as this field value out of 100.
+
+            The value must be between 10 and 85, inclusive and greater
+            than image_gc_low_threshold_percent.
+
+            The default value is 85 if unspecified.
+        image_minimum_gc_age (str):
+            Optional. Defines the minimum age for an
+            unused image before it is garbage collected.
+
+            The string must be a sequence of decimal
+            numbers, each with optional fraction and a unit
+            suffix, such as "300s", "1.5h", and "2h45m".
+            Valid time units are "ns", "us" (or "µs"), "ms",
+            "s", "m", "h".
+
+            The value must be a positive duration less than
+            or equal to 2 minutes.
+
+            The default value is "2m0s" if unspecified.
+        image_maximum_gc_age (str):
+            Optional. Defines the maximum age an image can be unused
+            before it is garbage collected. The string must be a
+            sequence of decimal numbers, each with optional fraction and
+            a unit suffix, such as "300s", "1.5h", and "2h45m". Valid
+            time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+
+            The value must be a positive duration greater than
+            image_minimum_gc_age or "0s".
+
+            The default value is "0s" if unspecified, which disables
+            this field, meaning images won't be garbage collected based
+            on being unused for too long.
+        container_log_max_size (str):
+            Optional. Defines the maximum size of the container log file
+            before it is rotated. See
+            https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation
+
+            Valid format is positive number + unit, e.g. 100Ki, 10Mi.
+            Valid units are Ki, Mi, Gi. The value must be between 10Mi
+            and 500Mi, inclusive.
+
+            Note that the total container log size
+            (container_log_max_size \* container_log_max_files) cannot
+            exceed 1% of the total storage of the node, to avoid disk
+            pressure caused by log files.
+
+            The default value is 10Mi if unspecified.
+        container_log_max_files (int):
+            Optional. Defines the maximum number of
+            container log files that can be present for a
+            container. See
+            https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation
+
+            The value must be an integer between 2 and 10,
+            inclusive. The default value is 5 if
+            unspecified.
+        allowed_unsafe_sysctls (MutableSequence[str]):
+            Optional. Defines a comma-separated allowlist of unsafe
+            sysctls or sysctl patterns (ending in ``*``).
+
+            The unsafe namespaced sysctl groups are ``kernel.shm*``,
+            ``kernel.msg*``, ``kernel.sem``, ``fs.mqueue.*``, and
+            ``net.*``. Leaving this allowlist empty means they cannot be
+            set on Pods.
+
+            To allow certain sysctls or sysctl patterns to be set on
+            Pods, list them separated by commas. For example:
+            ``kernel.msg*,net.ipv4.route.min_pmtu``.
+
+            See
+            https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/
+            for more details.
     """
 
     cpu_manager_policy: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    topology_manager: "TopologyManager" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="TopologyManager",
+    )
+    memory_manager: "MemoryManager" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="MemoryManager",
     )
     cpu_cfs_quota: wrappers_pb2.BoolValue = proto.Field(
         proto.MESSAGE,
@@ -545,6 +670,107 @@ class NodeKubeletConfig(proto.Message):
         proto.BOOL,
         number=7,
         optional=True,
+    )
+    image_gc_low_threshold_percent: int = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    image_gc_high_threshold_percent: int = proto.Field(
+        proto.INT32,
+        number=11,
+    )
+    image_minimum_gc_age: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    image_maximum_gc_age: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    container_log_max_size: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    container_log_max_files: int = proto.Field(
+        proto.INT32,
+        number=15,
+    )
+    allowed_unsafe_sysctls: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=16,
+    )
+
+
+class TopologyManager(proto.Message):
+    r"""TopologyManager defines the configuration options for
+    Topology Manager feature. See
+    https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/
+
+    Attributes:
+        policy (str):
+            Configures the strategy for resource alignment. Allowed
+            values are:
+
+            -  none: the default policy, and does not perform any
+               topology alignment.
+            -  restricted: the topology manager stores the preferred
+               NUMA node affinity for the container, and will reject the
+               pod if the affinity if not preferred.
+            -  best-effort: the topology manager stores the preferred
+               NUMA node affinity for the container. If the affinity is
+               not preferred, the topology manager will admit the pod to
+               the node anyway.
+            -  single-numa-node: the topology manager determines if the
+               single NUMA node affinity is possible. If it is, Topology
+               Manager will store this and the Hint Providers can then
+               use this information when making the resource allocation
+               decision. If, however, this is not possible then the
+               Topology Manager will reject the pod from the node. This
+               will result in a pod in a Terminated state with a pod
+               admission failure.
+
+            The default policy value is 'none' if unspecified. Details
+            about each strategy can be found
+            `here <https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/#topology-manager-policies>`__.
+        scope (str):
+            The Topology Manager aligns resources in following scopes:
+
+            -  container
+            -  pod
+
+            The default scope is 'container' if unspecified. See
+            https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/#topology-manager-scopes
+    """
+
+    policy: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    scope: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class MemoryManager(proto.Message):
+    r"""The option enables the Kubernetes NUMA-aware Memory Manager feature.
+    Detailed description about the feature can be found
+    `here <https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/>`__.
+
+    Attributes:
+        policy (str):
+            Controls the memory management policy on the Node. See
+            https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/#policies
+
+            The following values are allowed.
+
+            -  "none"
+            -  "static" The default value is 'none' if unspecified.
+    """
+
+    policy: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -783,9 +1009,13 @@ class NodeConfig(proto.Message):
             Secondary boot disk update strategy.
 
             This field is a member of `oneof`_ ``_secondary_boot_disk_update_strategy``.
+        max_run_duration (google.protobuf.duration_pb2.Duration):
+            The maximum duration for the nodes to exist.
+            If unspecified, the nodes can exist
+            indefinitely.
         local_ssd_encryption_mode (google.cloud.container_v1.types.NodeConfig.LocalSsdEncryptionMode):
             Specifies which method should be used for
-            encrypting the Local SSDs attahced to the node.
+            encrypting the Local SSDs attached to the node.
 
             This field is a member of `oneof`_ ``_local_ssd_encryption_mode``.
         effective_cgroup_mode (google.cloud.container_v1.types.NodeConfig.EffectiveCgroupMode):
@@ -793,6 +1023,10 @@ class NodeConfig(proto.Message):
             actually used by the node pool. It is determined by the
             cgroup mode specified in the LinuxNodeConfig or the default
             cgroup mode based on the cluster creation version.
+        flex_start (bool):
+            Flex Start flag for enabling Flex Start VM.
+
+            This field is a member of `oneof`_ ``_flex_start``.
     """
 
     class LocalSsdEncryptionMode(proto.Enum):
@@ -1026,6 +1260,11 @@ class NodeConfig(proto.Message):
             message="SecondaryBootDiskUpdateStrategy",
         )
     )
+    max_run_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=53,
+        message=duration_pb2.Duration,
+    )
     local_ssd_encryption_mode: LocalSsdEncryptionMode = proto.Field(
         proto.ENUM,
         number=54,
@@ -1036,6 +1275,11 @@ class NodeConfig(proto.Message):
         proto.ENUM,
         number=55,
         enum=EffectiveCgroupMode,
+    )
+    flex_start: bool = proto.Field(
+        proto.BOOL,
+        number=56,
+        optional=True,
     )
 
 
@@ -1058,7 +1302,31 @@ class AdvancedMachineFeatures(proto.Message):
             virtualization (defaults to false).
 
             This field is a member of `oneof`_ ``_enable_nested_virtualization``.
+        performance_monitoring_unit (google.cloud.container_v1.types.AdvancedMachineFeatures.PerformanceMonitoringUnit):
+            Type of Performance Monitoring Unit (PMU)
+            requested on node pool instances. If unset, PMU
+            will not be available to the node.
+
+            This field is a member of `oneof`_ ``_performance_monitoring_unit``.
     """
+
+    class PerformanceMonitoringUnit(proto.Enum):
+        r"""Level of PMU access
+
+        Values:
+            PERFORMANCE_MONITORING_UNIT_UNSPECIFIED (0):
+                PMU not enabled.
+            ARCHITECTURAL (1):
+                Architecturally defined non-LLC events.
+            STANDARD (2):
+                Most documented core/L2 events.
+            ENHANCED (3):
+                Most documented core/L2 and LLC events.
+        """
+        PERFORMANCE_MONITORING_UNIT_UNSPECIFIED = 0
+        ARCHITECTURAL = 1
+        STANDARD = 2
+        ENHANCED = 3
 
     threads_per_core: int = proto.Field(
         proto.INT64,
@@ -1069,6 +1337,12 @@ class AdvancedMachineFeatures(proto.Message):
         proto.BOOL,
         number=2,
         optional=True,
+    )
+    performance_monitoring_unit: PerformanceMonitoringUnit = proto.Field(
+        proto.ENUM,
+        number=3,
+        optional=True,
+        enum=PerformanceMonitoringUnit,
     )
 
 
@@ -1529,7 +1803,7 @@ class ContainerdConfig(proto.Message):
                 fqdns (MutableSequence[str]):
                     List of fully qualified domain names (FQDN).
                     Specifying port is supported.
-                    Wilcards are NOT supported.
+                    Wildcards are NOT supported.
                     Examples:
 
                     - my.customdomain.com
@@ -1856,6 +2130,9 @@ class AddonsConfig(proto.Message):
         ray_operator_config (google.cloud.container_v1.types.RayOperatorConfig):
             Optional. Configuration for Ray Operator
             addon.
+        high_scale_checkpointing_config (google.cloud.container_v1.types.HighScaleCheckpointingConfig):
+            Configuration for the High Scale
+            Checkpointing add-on.
     """
 
     http_load_balancing: "HttpLoadBalancing" = proto.Field(
@@ -1929,6 +2206,11 @@ class AddonsConfig(proto.Message):
         proto.MESSAGE,
         number=21,
         message="RayOperatorConfig",
+    )
+    high_scale_checkpointing_config: "HighScaleCheckpointingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message="HighScaleCheckpointingConfig",
     )
 
 
@@ -2267,6 +2549,21 @@ class ParallelstoreCsiDriverConfig(proto.Message):
     )
 
 
+class HighScaleCheckpointingConfig(proto.Message):
+    r"""Configuration for the High Scale Checkpointing.
+
+    Attributes:
+        enabled (bool):
+            Whether the High Scale Checkpointing is
+            enabled for this cluster.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
 class RayOperatorConfig(proto.Message):
     r"""Configuration options for the Ray Operator add-on.
 
@@ -2346,7 +2643,7 @@ class MasterAuthorizedNetworksConfig(proto.Message):
             cidr_blocks define up to 50 external networks that could
             access Kubernetes master through HTTPS.
         gcp_public_cidrs_access_enabled (bool):
-            Whether master is accessbile via Google
+            Whether master is accessible via Google
             Compute Engine Public IP addresses.
 
             This field is a member of `oneof`_ ``_gcp_public_cidrs_access_enabled``.
@@ -2625,6 +2922,9 @@ class IPAllocationPolicy(proto.Message):
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
             ``192.168.0.0/16``) to pick a specific range to use.
+
+            This field is deprecated due to the deprecation of 2VM TPU.
+            The end of life date for 2VM TPU is 2025-04-25.
         use_routes (bool):
             Whether routes will be used for pod IPs in the cluster. This
             is used in conjunction with use_ip_aliases. It cannot be
@@ -2821,7 +3121,7 @@ class Cluster(proto.Message):
             The monitoring service the cluster should use to write
             metrics. Currently available options:
 
-            -  "monitoring.googleapis.com/kubernetes" - The Cloud
+            -  ``monitoring.googleapis.com/kubernetes`` - The Cloud
                Monitoring service with a Kubernetes-native resource
                model
             -  ``monitoring.googleapis.com`` - The legacy Cloud
@@ -2877,6 +3177,11 @@ class Cluster(proto.Message):
             uptime and master/node upgrades are disabled.
             Alpha enabled clusters are automatically deleted
             thirty days after creation.
+        alpha_cluster_feature_gates (MutableSequence[str]):
+            The list of user specified Kubernetes feature
+            gates. Each string represents the activation
+            status of a feature gate (e.g. "featureX=true"
+            or "featureX=false")
         resource_labels (MutableMapping[str, str]):
             The resource labels for the cluster to use to
             annotate any related Google Compute Engine
@@ -3043,12 +3348,16 @@ class Cluster(proto.Message):
             in which the cluster resides.
         enable_tpu (bool):
             Enable the ability to use Cloud TPUs in this
-            cluster.
+            cluster. This field is deprecated due to the
+            deprecation of 2VM TPU. The end of life date for
+            2VM TPU is 2025-04-25.
         tpu_ipv4_cidr_block (str):
             Output only. The IP address range of the Cloud TPUs in this
             cluster, in
             `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
-            notation (e.g. ``1.2.3.4/29``).
+            notation (e.g. ``1.2.3.4/29``). This field is deprecated due
+            to the deprecation of 2VM TPU. The end of life date for 2VM
+            TPU is 2025-04-25.
         conditions (MutableSequence[google.cloud.container_v1.types.StatusCondition]):
             Which conditions caused the current cluster
             state.
@@ -3071,6 +3380,8 @@ class Cluster(proto.Message):
             auto-provisioned node pools in autopilot
             clusters and node auto-provisioning enabled
             clusters.
+        pod_autoscaling (google.cloud.container_v1.types.PodAutoscaling):
+            The config for pod autoscaling.
         etag (str):
             This checksum is computed by the server based
             on the value of cluster fields, and may be sent
@@ -3112,6 +3423,9 @@ class Cluster(proto.Message):
             created.
 
             This field is a member of `oneof`_ ``_rbac_binding_config``.
+        anonymous_authentication_config (google.cloud.container_v1.types.AnonymousAuthenticationConfig):
+            Configuration for limiting anonymous access
+            to all endpoints except the health checks.
     """
 
     class Status(proto.Enum):
@@ -3210,6 +3524,10 @@ class Cluster(proto.Message):
     enable_kubernetes_alpha: bool = proto.Field(
         proto.BOOL,
         number=14,
+    )
+    alpha_cluster_feature_gates: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=160,
     )
     resource_labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -3434,6 +3752,11 @@ class Cluster(proto.Message):
         number=136,
         message="NodePoolAutoConfig",
     )
+    pod_autoscaling: "PodAutoscaling" = proto.Field(
+        proto.MESSAGE,
+        number=138,
+        message="PodAutoscaling",
+    )
     etag: str = proto.Field(
         proto.STRING,
         number=139,
@@ -3494,6 +3817,11 @@ class Cluster(proto.Message):
         number=156,
         optional=True,
         message="RBACBindingConfig",
+    )
+    anonymous_authentication_config: "AnonymousAuthenticationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=164,
+        message="AnonymousAuthenticationConfig",
     )
 
 
@@ -3604,6 +3932,13 @@ class UserManagedKeysConfig(proto.Message):
         proto.STRING,
         number=17,
     )
+
+
+class AnonymousAuthenticationConfig(proto.Message):
+    r"""AnonymousAuthenticationConfig defines the settings needed to
+    limit endpoints that allow anonymous authentication.
+
+    """
 
 
 class CompliancePostureConfig(proto.Message):
@@ -3900,7 +4235,7 @@ class ClusterUpdate(proto.Message):
             The monitoring service the cluster should use to write
             metrics. Currently available options:
 
-            -  "monitoring.googleapis.com/kubernetes" - The Cloud
+            -  ``monitoring.googleapis.com/kubernetes`` - The Cloud
                Monitoring service with a Kubernetes-native resource
                model
             -  ``monitoring.googleapis.com`` - The legacy Cloud
@@ -4069,6 +4404,8 @@ class ClusterUpdate(proto.Message):
             auto-provisioned node pools in autopilot
             clusters and node auto-provisioning enabled
             clusters.
+        desired_pod_autoscaling (google.cloud.container_v1.types.PodAutoscaling):
+            The desired config for pod autoscaling.
         desired_gateway_api_config (google.cloud.container_v1.types.GatewayAPIConfig):
             The desired config of Gateway API on this
             cluster.
@@ -4112,8 +4449,8 @@ class ClusterUpdate(proto.Message):
 
             This field is a member of `oneof`_ ``_desired_enable_fqdn_network_policy``.
         desired_autopilot_workload_policy_config (google.cloud.container_v1.types.WorkloadPolicyConfig):
-            The desired workload policy configuration for
-            the autopilot cluster.
+            WorkloadPolicyConfig is the configuration
+            related to GCW workload policy
         desired_k8s_beta_apis (google.cloud.container_v1.types.K8sBetaAPIConfig):
             Desired Beta APIs to be enabled for cluster.
         desired_containerd_config (google.cloud.container_v1.types.ContainerdConfig):
@@ -4167,12 +4504,20 @@ class ClusterUpdate(proto.Message):
         desired_enterprise_config (google.cloud.container_v1.types.DesiredEnterpriseConfig):
             The desired enterprise configuration for the
             cluster.
+        desired_disable_l4_lb_firewall_reconciliation (bool):
+            Enable/Disable L4 LB VPC firewall
+            reconciliation for the cluster.
+
+            This field is a member of `oneof`_ ``_desired_disable_l4_lb_firewall_reconciliation``.
         desired_node_pool_auto_config_linux_node_config (google.cloud.container_v1.types.LinuxNodeConfig):
             The desired Linux node config for all auto-provisioned node
             pools in autopilot clusters and node auto-provisioning
             enabled clusters.
 
             Currently only ``cgroup_mode`` can be set here.
+        desired_anonymous_authentication_config (google.cloud.container_v1.types.AnonymousAuthenticationConfig):
+            Configuration for limiting anonymous access
+            to all endpoints except the health checks.
     """
 
     desired_node_version: str = proto.Field(
@@ -4360,6 +4705,11 @@ class ClusterUpdate(proto.Message):
         number=110,
         message="NetworkTags",
     )
+    desired_pod_autoscaling: "PodAutoscaling" = proto.Field(
+        proto.MESSAGE,
+        number=113,
+        message="PodAutoscaling",
+    )
     desired_gateway_api_config: "GatewayAPIConfig" = proto.Field(
         proto.MESSAGE,
         number=114,
@@ -4490,10 +4840,22 @@ class ClusterUpdate(proto.Message):
         number=147,
         message="DesiredEnterpriseConfig",
     )
+    desired_disable_l4_lb_firewall_reconciliation: bool = proto.Field(
+        proto.BOOL,
+        number=149,
+        optional=True,
+    )
     desired_node_pool_auto_config_linux_node_config: "LinuxNodeConfig" = proto.Field(
         proto.MESSAGE,
         number=150,
         message="LinuxNodeConfig",
+    )
+    desired_anonymous_authentication_config: "AnonymousAuthenticationConfig" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=156,
+            message="AnonymousAuthenticationConfig",
+        )
     )
 
 
@@ -4664,14 +5026,16 @@ class Operation(proto.Message):
                 to be unusable until the operation finishes.
 
                 In the event of the operation failing, the cluster will
-                enter the [ERROR state][Cluster.Status.ERROR] and eventually
-                be deleted.
+                enter the [ERROR
+                state][google.container.v1.Cluster.Status.ERROR] and
+                eventually be deleted.
             DELETE_CLUSTER (2):
                 The cluster is being deleted. The cluster should be assumed
                 to be unusable as soon as this operation starts.
 
                 In the event of the operation failing, the cluster will
-                enter the [ERROR state][Cluster.Status.ERROR] and the
+                enter the [ERROR
+                state][google.container.v1.Cluster.Status.ERROR] and the
                 deletion will be automatically retried until completed.
             UPGRADE_MASTER (3):
                 The [cluster
@@ -5091,6 +5455,9 @@ class UpdateNodePoolRequest(proto.Message):
     r"""UpdateNodePoolRequests update a node pool's image and/or
     version.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         project_id (str):
             Deprecated. The Google Developers Console `project ID or
@@ -5237,6 +5604,14 @@ class UpdateNodePoolRequest(proto.Message):
             List of Storage Pools where boot disks are
             provisioned. Existing Storage Pools will be
             replaced with storage-pools.
+        max_run_duration (google.protobuf.duration_pb2.Duration):
+            The maximum duration for the nodes to exist.
+            If unspecified, the nodes can exist
+            indefinitely.
+        flex_start (bool):
+            Flex Start flag for enabling Flex Start VM.
+
+            This field is a member of `oneof`_ ``_flex_start``.
     """
 
     project_id: str = proto.Field(
@@ -5386,6 +5761,16 @@ class UpdateNodePoolRequest(proto.Message):
         proto.STRING,
         number=43,
     )
+    max_run_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=45,
+        message=duration_pb2.Duration,
+    )
+    flex_start: bool = proto.Field(
+        proto.BOOL,
+        number=46,
+        optional=True,
+    )
 
 
 class SetNodePoolAutoscalingRequest(proto.Message):
@@ -5534,7 +5919,7 @@ class SetMonitoringServiceRequest(proto.Message):
             Required. The monitoring service the cluster should use to
             write metrics. Currently available options:
 
-            -  "monitoring.googleapis.com/kubernetes" - The Cloud
+            -  ``monitoring.googleapis.com/kubernetes`` - The Cloud
                Monitoring service with a Kubernetes-native resource
                model
             -  ``monitoring.googleapis.com`` - The legacy Cloud
@@ -7408,8 +7793,8 @@ class CompleteNodePoolUpgradeRequest(proto.Message):
 
 class RollbackNodePoolUpgradeRequest(proto.Message):
     r"""RollbackNodePoolUpgradeRequest rollbacks the previously
-    Aborted or Failed NodePool upgrade. This will be an no-op if the
-    last upgrade successfully completed.
+    Aborted or Failed  NodePool upgrade. This will be an no-op if
+    the last upgrade successfully  completed.
 
     Attributes:
         project_id (str):
@@ -7610,7 +7995,8 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             https://cloud.google.com/kubernetes-engine/docs/concepts/node-images
             for available image types.
         insecure_kubelet_readonly_port_enabled (bool):
-            Enable or disable Kubelet read only port.
+            DEPRECATED. Use
+            NodePoolAutoConfig.NodeKubeletConfig instead.
 
             This field is a member of `oneof`_ ``_insecure_kubelet_readonly_port_enabled``.
     """
@@ -8307,6 +8693,8 @@ class StatusCondition(proto.Message):
                 encryption.
             CA_EXPIRING (9):
                 Cluster CA is expiring soon.
+            NODE_SERVICE_ACCOUNT_MISSING_PERMISSIONS (10):
+                Node service account is missing permissions.
         """
         UNKNOWN = 0
         GCE_STOCKOUT = 1
@@ -8315,6 +8703,7 @@ class StatusCondition(proto.Message):
         SET_BY_OPERATOR = 4
         CLOUD_KMS_KEY_ERROR = 7
         CA_EXPIRING = 9
+        NODE_SERVICE_ACCOUNT_MISSING_PERMISSIONS = 10
 
     code: Code = proto.Field(
         proto.ENUM,
@@ -8410,6 +8799,11 @@ class NetworkConfig(proto.Message):
             [ClusterUpdate.desired_default_enable_private_nodes][google.container.v1.ClusterUpdate.desired_default_enable_private_nodes]
 
             This field is a member of `oneof`_ ``_default_enable_private_nodes``.
+        disable_l4_lb_firewall_reconciliation (bool):
+            Disable L4 load balancer VPC firewalls to
+            enable firewall policies.
+
+            This field is a member of `oneof`_ ``_disable_l4_lb_firewall_reconciliation``.
     """
 
     class ClusterNetworkPerformanceConfig(proto.Message):
@@ -8519,6 +8913,11 @@ class NetworkConfig(proto.Message):
     default_enable_private_nodes: bool = proto.Field(
         proto.BOOL,
         number=22,
+        optional=True,
+    )
+    disable_l4_lb_firewall_reconciliation: bool = proto.Field(
+        proto.BOOL,
+        number=24,
         optional=True,
     )
 
@@ -8729,7 +9128,7 @@ class Jwk(proto.Message):
 
 class GetJSONWebKeysResponse(proto.Message):
     r"""GetJSONWebKeysResponse is a valid JSON Web Key Set as
-    specififed in rfc 7517
+    specified in rfc 7517
 
     Attributes:
         keys (MutableSequence[google.cloud.container_v1.types.Jwk]):
@@ -8776,7 +9175,7 @@ class AutopilotCompatibilityIssue(proto.Message):
             The name of the resources which are subject
             to this issue.
         documentation_url (str):
-            A URL to a public documnetation, which
+            A URL to a public documentation, which
             addresses resolving this issue.
         description (str):
             The description of the issue.
@@ -9588,11 +9987,14 @@ class NotificationConfig(proto.Message):
                 Corresponds with UpgradeEvent.
             SECURITY_BULLETIN_EVENT (3):
                 Corresponds with SecurityBulletinEvent.
+            UPGRADE_INFO_EVENT (4):
+                Corresponds with UpgradeInfoEvent.
         """
         EVENT_TYPE_UNSPECIFIED = 0
         UPGRADE_AVAILABLE_EVENT = 1
         UPGRADE_EVENT = 2
         SECURITY_BULLETIN_EVENT = 3
+        UPGRADE_INFO_EVENT = 4
 
     class PubSub(proto.Message):
         r"""Pub/Sub specific notification config.
@@ -9660,11 +10062,38 @@ class ConfidentialNodes(proto.Message):
         enabled (bool):
             Whether Confidential Nodes feature is
             enabled.
+        confidential_instance_type (google.cloud.container_v1.types.ConfidentialNodes.ConfidentialInstanceType):
+            Defines the type of technology used by the
+            confidential node.
     """
+
+    class ConfidentialInstanceType(proto.Enum):
+        r"""The type of technology used by the confidential node.
+
+        Values:
+            CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED (0):
+                No type specified. Do not use this value.
+            SEV (1):
+                AMD Secure Encrypted Virtualization.
+            SEV_SNP (2):
+                AMD Secure Encrypted Virtualization - Secure
+                Nested Paging.
+            TDX (3):
+                Intel Trust Domain eXtension.
+        """
+        CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED = 0
+        SEV = 1
+        SEV_SNP = 2
+        TDX = 3
 
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+    confidential_instance_type: ConfidentialInstanceType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ConfidentialInstanceType,
     )
 
 
@@ -9721,6 +10150,9 @@ class UpgradeInfoEvent(proto.Message):
     r"""UpgradeInfoEvent is a notification sent to customers about
     the upgrade information of a resource.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         resource_type (google.cloud.container_v1.types.UpgradeResourceType):
             The resource type associated with the
@@ -9741,8 +10173,18 @@ class UpgradeInfoEvent(proto.Message):
             of the node pool.
         state (google.cloud.container_v1.types.UpgradeInfoEvent.State):
             Output only. The state of the upgrade.
+        standard_support_end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The end of standard support timestamp.
+
+            This field is a member of `oneof`_ ``_standard_support_end_time``.
+        extended_support_end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The end of extended support timestamp.
+
+            This field is a member of `oneof`_ ``_extended_support_end_time``.
         description (str):
             A brief description of the event.
+        event_type (google.cloud.container_v1.types.UpgradeInfoEvent.EventType):
+            The type of the event.
     """
 
     class State(proto.Enum):
@@ -9766,6 +10208,30 @@ class UpgradeInfoEvent(proto.Message):
         SUCCEEDED = 4
         FAILED = 5
         CANCELED = 6
+
+    class EventType(proto.Enum):
+        r"""The type of the event.
+
+        Values:
+            EVENT_TYPE_UNSPECIFIED (0):
+                EVENT_TYPE_UNSPECIFIED indicates the event type is
+                unspecified.
+            END_OF_SUPPORT (1):
+                END_OF_SUPPORT indicates GKE version reaches end of support,
+                check standard_support_end_time and
+                extended_support_end_time for more details.
+            COS_MILESTONE_VERSION_UPDATE (2):
+                COS_MILESTONE_VERSION_UPDATE indicates that the COS node
+                image will update COS milestone version for new patch
+                versions starting with the one in the description.
+            UPGRADE_LIFECYCLE (3):
+                UPGRADE_LIFECYCLE indicates the event is about the upgrade
+                lifecycle.
+        """
+        EVENT_TYPE_UNSPECIFIED = 0
+        END_OF_SUPPORT = 1
+        COS_MILESTONE_VERSION_UPDATE = 2
+        UPGRADE_LIFECYCLE = 3
 
     resource_type: "UpgradeResourceType" = proto.Field(
         proto.ENUM,
@@ -9803,9 +10269,26 @@ class UpgradeInfoEvent(proto.Message):
         number=8,
         enum=State,
     )
+    standard_support_end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        optional=True,
+        message=timestamp_pb2.Timestamp,
+    )
+    extended_support_end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        optional=True,
+        message=timestamp_pb2.Timestamp,
+    )
     description: str = proto.Field(
         proto.STRING,
         number=11,
+    )
+    event_type: EventType = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=EventType,
     )
 
 
@@ -9889,6 +10372,9 @@ class SecurityBulletinEvent(proto.Message):
             If this field is specified, it means there
             are manual steps that the user must take to make
             their clusters safe.
+        mitigated_versions (MutableSequence[str]):
+            The GKE versions where this vulnerability is
+            mitigated.
     """
 
     resource_type_affected: str = proto.Field(
@@ -9931,6 +10417,10 @@ class SecurityBulletinEvent(proto.Message):
         proto.BOOL,
         number=10,
     )
+    mitigated_versions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
 
 
 class Autopilot(proto.Message):
@@ -9941,7 +10431,8 @@ class Autopilot(proto.Message):
         enabled (bool):
             Enable Autopilot
         workload_policy_config (google.cloud.container_v1.types.WorkloadPolicyConfig):
-            Workload policy configuration for Autopilot.
+            WorkloadPolicyConfig is the configuration
+            related to GCW workload policy
     """
 
     enabled: bool = proto.Field(
@@ -9956,8 +10447,8 @@ class Autopilot(proto.Message):
 
 
 class WorkloadPolicyConfig(proto.Message):
-    r"""WorkloadPolicyConfig is the configuration of workload policy
-    for autopilot clusters.
+    r"""WorkloadPolicyConfig is the configuration related to GCW
+    workload policy
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -9967,11 +10458,21 @@ class WorkloadPolicyConfig(proto.Message):
             If true, workloads can use NET_ADMIN capability.
 
             This field is a member of `oneof`_ ``_allow_net_admin``.
+        autopilot_compatibility_auditing_enabled (bool):
+            If true, enables the GCW Auditor that audits
+            workloads on standard clusters.
+
+            This field is a member of `oneof`_ ``_autopilot_compatibility_auditing_enabled``.
     """
 
     allow_net_admin: bool = proto.Field(
         proto.BOOL,
         number=1,
+        optional=True,
+    )
+    autopilot_compatibility_auditing_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=2,
         optional=True,
     )
 
@@ -10021,6 +10522,8 @@ class LoggingComponentConfig(proto.Message):
                 kcp-sshd
             KCP_CONNECTION (8):
                 kcp connection logs
+            KCP_HPA (9):
+                horizontal pod autoscaler decision logs
         """
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
@@ -10030,6 +10533,7 @@ class LoggingComponentConfig(proto.Message):
         CONTROLLER_MANAGER = 5
         KCP_SSHD = 7
         KCP_CONNECTION = 8
+        KCP_HPA = 9
 
     enable_components: MutableSequence[Component] = proto.RepeatedField(
         proto.ENUM,
@@ -10242,6 +10746,8 @@ class MonitoringComponentConfig(proto.Message):
                 KUBELET
             DCGM (15):
                 NVIDIA Data Center GPU Manager (DCGM)
+            JOBSET (16):
+                JobSet
         """
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
@@ -10257,6 +10763,7 @@ class MonitoringComponentConfig(proto.Message):
         CADVISOR = 13
         KUBELET = 14
         DCGM = 15
+        JOBSET = 16
 
     enable_components: MutableSequence[Component] = proto.RepeatedField(
         proto.ENUM,
@@ -10272,11 +10779,92 @@ class ManagedPrometheusConfig(proto.Message):
     Attributes:
         enabled (bool):
             Enable Managed Collection.
+        auto_monitoring_config (google.cloud.container_v1.types.AutoMonitoringConfig):
+            GKE Workload Auto-Monitoring Configuration.
     """
 
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+    auto_monitoring_config: "AutoMonitoringConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AutoMonitoringConfig",
+    )
+
+
+class AutoMonitoringConfig(proto.Message):
+    r"""AutoMonitoringConfig defines the configuration for GKE
+    Workload Auto-Monitoring.
+
+    Attributes:
+        scope (google.cloud.container_v1.types.AutoMonitoringConfig.Scope):
+            Scope for GKE Workload Auto-Monitoring.
+    """
+
+    class Scope(proto.Enum):
+        r"""Scope for applications monitored by Auto-Monitoring
+
+        Values:
+            SCOPE_UNSPECIFIED (0):
+                Not set.
+            ALL (1):
+                Auto-Monitoring is enabled for all supported
+                applications.
+            NONE (2):
+                Disable Auto-Monitoring.
+        """
+        SCOPE_UNSPECIFIED = 0
+        ALL = 1
+        NONE = 2
+
+    scope: Scope = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Scope,
+    )
+
+
+class PodAutoscaling(proto.Message):
+    r"""PodAutoscaling is used for configuration of parameters
+    for workload autoscaling.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        hpa_profile (google.cloud.container_v1.types.PodAutoscaling.HPAProfile):
+            Selected Horizontal Pod Autoscaling profile.
+
+            This field is a member of `oneof`_ ``_hpa_profile``.
+    """
+
+    class HPAProfile(proto.Enum):
+        r"""Possible types of Horizontal Pod Autoscaling profile.
+
+        Values:
+            HPA_PROFILE_UNSPECIFIED (0):
+                HPA_PROFILE_UNSPECIFIED is used when no custom HPA profile
+                is set.
+            NONE (1):
+                Customers explicitly opt-out of HPA profiles.
+            PERFORMANCE (2):
+                PERFORMANCE is used when customers opt-in to
+                the performance HPA profile. In this profile we
+                support a higher number of HPAs per cluster and
+                faster metrics collection for workload
+                autoscaling.
+        """
+        HPA_PROFILE_UNSPECIFIED = 0
+        NONE = 1
+        PERFORMANCE = 2
+
+    hpa_profile: HPAProfile = proto.Field(
+        proto.ENUM,
+        number=2,
+        optional=True,
+        enum=HPAProfile,
     )
 
 
@@ -10508,11 +11096,18 @@ class EphemeralStorageLocalSsdConfig(proto.Message):
                doesn't support local ssds), 0 will be provisioned. See
                https://cloud.google.com/compute/docs/disks/local-ssd#choose_number_local_ssds
                for more info.
+        data_cache_count (int):
+            Number of local SSDs to use for GKE Data
+            Cache.
     """
 
     local_ssd_count: int = proto.Field(
         proto.INT32,
         number=1,
+    )
+    data_cache_count: int = proto.Field(
+        proto.INT32,
+        number=2,
     )
 
 
@@ -10642,6 +11237,399 @@ class SecondaryBootDiskUpdateStrategy(proto.Message):
     updating secondary boot disks.
 
     """
+
+
+class FetchClusterUpgradeInfoRequest(proto.Message):
+    r"""FetchClusterUpgradeInfoRequest fetches the upgrade
+    information of a cluster.
+
+    Attributes:
+        name (str):
+            Required. The name (project, location, cluster) of the
+            cluster to get. Specified in the format
+            ``projects/*/locations/*/clusters/*`` or
+            ``projects/*/zones/*/clusters/*``.
+        version (str):
+            API request version that initiates this
+            operation.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=100,
+    )
+
+
+class ClusterUpgradeInfo(proto.Message):
+    r"""ClusterUpgradeInfo contains the upgrade information of a
+    cluster.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        minor_target_version (str):
+            minor_target_version indicates the target version for minor
+            upgrade.
+
+            This field is a member of `oneof`_ ``_minor_target_version``.
+        patch_target_version (str):
+            patch_target_version indicates the target version for patch
+            upgrade.
+
+            This field is a member of `oneof`_ ``_patch_target_version``.
+        auto_upgrade_status (MutableSequence[google.cloud.container_v1.types.ClusterUpgradeInfo.AutoUpgradeStatus]):
+            The auto upgrade status.
+        paused_reason (MutableSequence[google.cloud.container_v1.types.ClusterUpgradeInfo.AutoUpgradePausedReason]):
+            The auto upgrade paused reason.
+        upgrade_details (MutableSequence[google.cloud.container_v1.types.UpgradeDetails]):
+            The list of past auto upgrades.
+        end_of_standard_support_timestamp (str):
+            The cluster's current minor version's end of
+            standard support timestamp.
+
+            This field is a member of `oneof`_ ``_end_of_standard_support_timestamp``.
+        end_of_extended_support_timestamp (str):
+            The cluster's current minor version's end of
+            extended support timestamp.
+
+            This field is a member of `oneof`_ ``_end_of_extended_support_timestamp``.
+    """
+
+    class AutoUpgradeStatus(proto.Enum):
+        r"""AutoUpgradeStatus indicates the status of auto upgrade.
+
+        Values:
+            UNKNOWN (0):
+                UNKNOWN indicates an unknown status.
+            ACTIVE (1):
+                ACTIVE indicates an active status.
+            MINOR_UPGRADE_PAUSED (4):
+                MINOR_UPGRADE_PAUSED indicates the minor version upgrade is
+                paused.
+            UPGRADE_PAUSED (5):
+                UPGRADE_PAUSED indicates the upgrade is paused.
+        """
+        UNKNOWN = 0
+        ACTIVE = 1
+        MINOR_UPGRADE_PAUSED = 4
+        UPGRADE_PAUSED = 5
+
+    class AutoUpgradePausedReason(proto.Enum):
+        r"""AutoUpgradePausedReason indicates the reason for auto upgrade
+        paused status.
+
+        Values:
+            AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED (0):
+                AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED indicates an
+                unspecified reason.
+            MAINTENANCE_WINDOW (1):
+                MAINTENANCE_WINDOW indicates the cluster is outside customer
+                maintenance window.
+            MAINTENANCE_EXCLUSION_NO_UPGRADES (5):
+                MAINTENANCE_EXCLUSION_NO_UPGRADES indicates the cluster is
+                in a maintenance exclusion with scope NO_UPGRADES.
+            MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES (6):
+                MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES indicates the
+                cluster is in a maintenance exclusion with scope
+                NO_MINOR_UPGRADES.
+            CLUSTER_DISRUPTION_BUDGET (4):
+                CLUSTER_DISRUPTION_BUDGET indicates the cluster is outside
+                the cluster disruption budget.
+            CLUSTER_DISRUPTION_BUDGET_MINOR_UPGRADE (7):
+                CLUSTER_DISRUPTION_BUDGET_MINOR_UPGRADE indicates the
+                cluster is outside the cluster disruption budget for minor
+                version upgrade.
+            SYSTEM_CONFIG (8):
+                SYSTEM_CONFIG indicates the cluster upgrade is paused by
+                system config.
+        """
+        AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED = 0
+        MAINTENANCE_WINDOW = 1
+        MAINTENANCE_EXCLUSION_NO_UPGRADES = 5
+        MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES = 6
+        CLUSTER_DISRUPTION_BUDGET = 4
+        CLUSTER_DISRUPTION_BUDGET_MINOR_UPGRADE = 7
+        SYSTEM_CONFIG = 8
+
+    minor_target_version: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
+    patch_target_version: str = proto.Field(
+        proto.STRING,
+        number=8,
+        optional=True,
+    )
+    auto_upgrade_status: MutableSequence[AutoUpgradeStatus] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=AutoUpgradeStatus,
+    )
+    paused_reason: MutableSequence[AutoUpgradePausedReason] = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=AutoUpgradePausedReason,
+    )
+    upgrade_details: MutableSequence["UpgradeDetails"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="UpgradeDetails",
+    )
+    end_of_standard_support_timestamp: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    end_of_extended_support_timestamp: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
+    )
+
+
+class UpgradeDetails(proto.Message):
+    r"""UpgradeDetails contains detailed information of each
+    individual upgrade operation.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        state (google.cloud.container_v1.types.UpgradeDetails.State):
+            Output only. The state of the upgrade.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The start timestamp of the upgrade.
+
+            This field is a member of `oneof`_ ``_start_time``.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The end timestamp of the upgrade.
+
+            This field is a member of `oneof`_ ``_end_time``.
+        initial_version (str):
+            The version before the upgrade.
+        target_version (str):
+            The version after the upgrade.
+        start_type (google.cloud.container_v1.types.UpgradeDetails.StartType):
+            The start type of the upgrade.
+    """
+
+    class State(proto.Enum):
+        r"""State indicates the state of the upgrade.
+
+        Values:
+            UNKNOWN (0):
+                Upgrade state is unknown.
+            FAILED (1):
+                Upgrade has failed with an error.
+            SUCCEEDED (2):
+                Upgrade has succeeded.
+            CANCELED (3):
+                Upgrade has been canceled.
+            RUNNING (4):
+                Upgrade is running.
+        """
+        UNKNOWN = 0
+        FAILED = 1
+        SUCCEEDED = 2
+        CANCELED = 3
+        RUNNING = 4
+
+    class StartType(proto.Enum):
+        r"""StartType indicates the type of starting the upgrade.
+
+        Values:
+            START_TYPE_UNSPECIFIED (0):
+                Upgrade start type is unspecified.
+            AUTOMATIC (1):
+                Upgrade started automatically.
+            MANUAL (2):
+                Upgrade started manually.
+        """
+        START_TYPE_UNSPECIFIED = 0
+        AUTOMATIC = 1
+        MANUAL = 2
+
+    state: State = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        optional=True,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=timestamp_pb2.Timestamp,
+    )
+    initial_version: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    target_version: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    start_type: StartType = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=StartType,
+    )
+
+
+class FetchNodePoolUpgradeInfoRequest(proto.Message):
+    r"""FetchNodePoolUpgradeInfoRequest fetches the upgrade
+    information of a nodepool.
+
+    Attributes:
+        name (str):
+            Required. The name (project, location, cluster, nodepool) of
+            the nodepool to get. Specified in the format
+            ``projects/*/locations/*/clusters/*/nodePools/*`` or
+            ``projects/*/zones/*/clusters/*/nodePools/*``.
+        version (str):
+            API request version that initiates this
+            operation.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=100,
+    )
+
+
+class NodePoolUpgradeInfo(proto.Message):
+    r"""NodePoolUpgradeInfo contains the upgrade information of a
+    nodepool.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        minor_target_version (str):
+            minor_target_version indicates the target version for minor
+            upgrade.
+
+            This field is a member of `oneof`_ ``_minor_target_version``.
+        patch_target_version (str):
+            patch_target_version indicates the target version for patch
+            upgrade.
+
+            This field is a member of `oneof`_ ``_patch_target_version``.
+        auto_upgrade_status (MutableSequence[google.cloud.container_v1.types.NodePoolUpgradeInfo.AutoUpgradeStatus]):
+            The auto upgrade status.
+        paused_reason (MutableSequence[google.cloud.container_v1.types.NodePoolUpgradeInfo.AutoUpgradePausedReason]):
+            The auto upgrade paused reason.
+        upgrade_details (MutableSequence[google.cloud.container_v1.types.UpgradeDetails]):
+            The list of past auto upgrades.
+        end_of_standard_support_timestamp (str):
+            The nodepool's current minor version's end of
+            standard support timestamp.
+
+            This field is a member of `oneof`_ ``_end_of_standard_support_timestamp``.
+        end_of_extended_support_timestamp (str):
+            The nodepool's current minor version's end of
+            extended support timestamp.
+
+            This field is a member of `oneof`_ ``_end_of_extended_support_timestamp``.
+    """
+
+    class AutoUpgradeStatus(proto.Enum):
+        r"""AutoUpgradeStatus indicates the status of auto upgrade.
+
+        Values:
+            UNKNOWN (0):
+                UNKNOWN indicates an unknown status.
+            ACTIVE (1):
+                ACTIVE indicates an active status.
+            MINOR_UPGRADE_PAUSED (2):
+                MINOR_UPGRADE_PAUSED indicates the minor version upgrade is
+                paused.
+            UPGRADE_PAUSED (3):
+                UPGRADE_PAUSED indicates the upgrade is paused.
+        """
+        UNKNOWN = 0
+        ACTIVE = 1
+        MINOR_UPGRADE_PAUSED = 2
+        UPGRADE_PAUSED = 3
+
+    class AutoUpgradePausedReason(proto.Enum):
+        r"""AutoUpgradePausedReason indicates the reason for auto upgrade
+        paused status.
+
+        Values:
+            AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED (0):
+                AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED indicates an
+                unspecified reason.
+            MAINTENANCE_WINDOW (1):
+                MAINTENANCE_WINDOW indicates the cluster is outside customer
+                maintenance window.
+            MAINTENANCE_EXCLUSION_NO_UPGRADES (2):
+                MAINTENANCE_EXCLUSION_NO_UPGRADES indicates the cluster is
+                in a maintenance exclusion with scope NO_UPGRADES.
+            MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES (3):
+                MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES indicates the
+                cluster is in a maintenance exclusion with scope
+                NO_MINOR_UPGRADES.
+            SYSTEM_CONFIG (4):
+                SYSTEM_CONFIG indicates the cluster upgrade is paused by
+                system config.
+        """
+        AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED = 0
+        MAINTENANCE_WINDOW = 1
+        MAINTENANCE_EXCLUSION_NO_UPGRADES = 2
+        MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES = 3
+        SYSTEM_CONFIG = 4
+
+    minor_target_version: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    patch_target_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    auto_upgrade_status: MutableSequence[AutoUpgradeStatus] = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=AutoUpgradeStatus,
+    )
+    paused_reason: MutableSequence[AutoUpgradePausedReason] = proto.RepeatedField(
+        proto.ENUM,
+        number=4,
+        enum=AutoUpgradePausedReason,
+    )
+    upgrade_details: MutableSequence["UpgradeDetails"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="UpgradeDetails",
+    )
+    end_of_standard_support_timestamp: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
+    )
+    end_of_extended_support_timestamp: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

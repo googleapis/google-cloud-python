@@ -129,6 +129,22 @@ class ClusterManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_fetch_cluster_upgrade_info(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_cluster_upgrade_info(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_fetch_node_pool_upgrade_info(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_node_pool_upgrade_info(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_cluster(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -662,6 +678,108 @@ class ClusterManagerRestInterceptor:
         `post_delete_node_pool` interceptor. The (possibly modified) response returned by
         `post_delete_node_pool` will be passed to
         `post_delete_node_pool_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_fetch_cluster_upgrade_info(
+        self,
+        request: cluster_service.FetchClusterUpgradeInfoRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.FetchClusterUpgradeInfoRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for fetch_cluster_upgrade_info
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ClusterManager server.
+        """
+        return request, metadata
+
+    def post_fetch_cluster_upgrade_info(
+        self, response: cluster_service.ClusterUpgradeInfo
+    ) -> cluster_service.ClusterUpgradeInfo:
+        """Post-rpc interceptor for fetch_cluster_upgrade_info
+
+        DEPRECATED. Please use the `post_fetch_cluster_upgrade_info_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ClusterManager server but before
+        it is returned to user code. This `post_fetch_cluster_upgrade_info` interceptor runs
+        before the `post_fetch_cluster_upgrade_info_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_cluster_upgrade_info_with_metadata(
+        self,
+        response: cluster_service.ClusterUpgradeInfo,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.ClusterUpgradeInfo, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_cluster_upgrade_info
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_cluster_upgrade_info_with_metadata`
+        interceptor in new development instead of the `post_fetch_cluster_upgrade_info` interceptor.
+        When both interceptors are used, this `post_fetch_cluster_upgrade_info_with_metadata` interceptor runs after the
+        `post_fetch_cluster_upgrade_info` interceptor. The (possibly modified) response returned by
+        `post_fetch_cluster_upgrade_info` will be passed to
+        `post_fetch_cluster_upgrade_info_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_fetch_node_pool_upgrade_info(
+        self,
+        request: cluster_service.FetchNodePoolUpgradeInfoRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.FetchNodePoolUpgradeInfoRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for fetch_node_pool_upgrade_info
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ClusterManager server.
+        """
+        return request, metadata
+
+    def post_fetch_node_pool_upgrade_info(
+        self, response: cluster_service.NodePoolUpgradeInfo
+    ) -> cluster_service.NodePoolUpgradeInfo:
+        """Post-rpc interceptor for fetch_node_pool_upgrade_info
+
+        DEPRECATED. Please use the `post_fetch_node_pool_upgrade_info_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ClusterManager server but before
+        it is returned to user code. This `post_fetch_node_pool_upgrade_info` interceptor runs
+        before the `post_fetch_node_pool_upgrade_info_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_node_pool_upgrade_info_with_metadata(
+        self,
+        response: cluster_service.NodePoolUpgradeInfo,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cluster_service.NodePoolUpgradeInfo, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_node_pool_upgrade_info
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ClusterManager server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_node_pool_upgrade_info_with_metadata`
+        interceptor in new development instead of the `post_fetch_node_pool_upgrade_info` interceptor.
+        When both interceptors are used, this `post_fetch_node_pool_upgrade_info_with_metadata` interceptor runs after the
+        `post_fetch_node_pool_upgrade_info` interceptor. The (possibly modified) response returned by
+        `post_fetch_node_pool_upgrade_info` will be passed to
+        `post_fetch_node_pool_upgrade_info_with_metadata`.
         """
         return response, metadata
 
@@ -3183,6 +3301,318 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                 )
             return resp
 
+    class _FetchClusterUpgradeInfo(
+        _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo,
+        ClusterManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClusterManagerRestTransport.FetchClusterUpgradeInfo")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cluster_service.FetchClusterUpgradeInfoRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cluster_service.ClusterUpgradeInfo:
+            r"""Call the fetch cluster upgrade
+            info method over HTTP.
+
+                Args:
+                    request (~.cluster_service.FetchClusterUpgradeInfoRequest):
+                        The request object. FetchClusterUpgradeInfoRequest
+                    fetches the upgrade information of a
+                    cluster.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.cluster_service.ClusterUpgradeInfo:
+                        ClusterUpgradeInfo contains the
+                    upgrade information of a cluster.
+
+            """
+
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_fetch_cluster_upgrade_info(
+                request, metadata
+            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.FetchClusterUpgradeInfo",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "FetchClusterUpgradeInfo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ClusterManagerRestTransport._FetchClusterUpgradeInfo._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cluster_service.ClusterUpgradeInfo()
+            pb_resp = cluster_service.ClusterUpgradeInfo.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_cluster_upgrade_info(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_cluster_upgrade_info_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.ClusterUpgradeInfo.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.fetch_cluster_upgrade_info",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "FetchClusterUpgradeInfo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _FetchNodePoolUpgradeInfo(
+        _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo,
+        ClusterManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClusterManagerRestTransport.FetchNodePoolUpgradeInfo")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: cluster_service.FetchNodePoolUpgradeInfoRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> cluster_service.NodePoolUpgradeInfo:
+            r"""Call the fetch node pool upgrade
+            info method over HTTP.
+
+                Args:
+                    request (~.cluster_service.FetchNodePoolUpgradeInfoRequest):
+                        The request object. FetchNodePoolUpgradeInfoRequest
+                    fetches the upgrade information of a
+                    nodepool.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.cluster_service.NodePoolUpgradeInfo:
+                        NodePoolUpgradeInfo contains the
+                    upgrade information of a nodepool.
+
+            """
+
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_fetch_node_pool_upgrade_info(
+                request, metadata
+            )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.container_v1.ClusterManagerClient.FetchNodePoolUpgradeInfo",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "FetchNodePoolUpgradeInfo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                ClusterManagerRestTransport._FetchNodePoolUpgradeInfo._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cluster_service.NodePoolUpgradeInfo()
+            pb_resp = cluster_service.NodePoolUpgradeInfo.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_node_pool_upgrade_info(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_node_pool_upgrade_info_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cluster_service.NodePoolUpgradeInfo.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.container_v1.ClusterManagerClient.fetch_node_pool_upgrade_info",
+                    extra={
+                        "serviceName": "google.container.v1.ClusterManager",
+                        "rpcName": "FetchNodePoolUpgradeInfo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetCluster(
         _BaseClusterManagerRestTransport._BaseGetCluster, ClusterManagerRestStub
     ):
@@ -3386,7 +3816,7 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
             Returns:
                 ~.cluster_service.GetJSONWebKeysResponse:
                     GetJSONWebKeysResponse is a valid
-                JSON Web Key Set as specififed in rfc
+                JSON Web Key Set as specified in rfc
                 7517
 
             """
@@ -4583,9 +5013,9 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
                     request (~.cluster_service.RollbackNodePoolUpgradeRequest):
                         The request object. RollbackNodePoolUpgradeRequest
                     rollbacks the previously Aborted or
-                    Failed NodePool upgrade. This will be an
-                    no-op if the last upgrade successfully
-                    completed.
+                    Failed  NodePool upgrade. This will be
+                    an no-op if the last upgrade
+                    successfully  completed.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -7290,6 +7720,28 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNodePool(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_cluster_upgrade_info(
+        self,
+    ) -> Callable[
+        [cluster_service.FetchClusterUpgradeInfoRequest],
+        cluster_service.ClusterUpgradeInfo,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchClusterUpgradeInfo(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_node_pool_upgrade_info(
+        self,
+    ) -> Callable[
+        [cluster_service.FetchNodePoolUpgradeInfoRequest],
+        cluster_service.NodePoolUpgradeInfo,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchNodePoolUpgradeInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_cluster(
