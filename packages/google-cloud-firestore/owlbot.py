@@ -147,7 +147,7 @@ templated_files = common.py_library(
 )
 
 s.move(templated_files,
-       excludes=[".github/release-please.yml"])
+       excludes=[".github/release-please.yml", "renovate.json"])
 
 python.py_samples(skip_readmes=True)
 
