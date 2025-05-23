@@ -862,7 +862,7 @@ class AclEntry(proto.Message):
             with the Kafka StandardAuthorizer prefix "User:". For
             example:
             "User:test-kafka-client@test-project.iam.gserviceaccount.com".
-            Can be the wildcard "User:*" to refer to all users.
+            Can be the wildcard `User:*` to refer to all users.
         permission_type (str):
             Required. The permission type. Accepted
             values are (case insensitive): ALLOW, DENY.
