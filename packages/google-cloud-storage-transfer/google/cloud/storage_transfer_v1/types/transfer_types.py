@@ -136,6 +136,13 @@ class ObjectConditions(proto.Message):
     field of S3 objects, and the ``Last-Modified`` header of Azure
     blobs.
 
+    For S3 objects, the ``LastModified`` value is the time the object
+    begins uploading. If the object meets your "last modification time"
+    criteria, but has not finished uploading, the object is not
+    transferred. See `Transfer from Amazon S3 to Cloud
+    Storage <https://cloud.google.com/storage-transfer/docs/create-transfers/agentless/s3#transfer_options>`__
+    for more information.
+
     Transfers with a
     [PosixFilesystem][google.storagetransfer.v1.PosixFilesystem] source
     or destination don't support ``ObjectConditions``.
@@ -499,7 +506,47 @@ class AzureBlobStorageData(proto.Message):
             [azure_credentials][google.storagetransfer.v1.AzureBlobStorageData.azure_credentials].
 
             Format: ``projects/{project_number}/secrets/{secret_name}``
+        federated_identity_config (google.cloud.storage_transfer_v1.types.AzureBlobStorageData.FederatedIdentityConfig):
+            Optional. Federated identity config of a user registered
+            Azure application.
+
+            If ``federated_identity_config`` is specified, do not
+            specify
+            [azure_credentials][google.storagetransfer.v1.AzureBlobStorageData.azure_credentials]
+            or
+            [credentials_secret][google.storagetransfer.v1.AzureBlobStorageData.credentials_secret].
     """
+
+    class FederatedIdentityConfig(proto.Message):
+        r"""The identity of an Azure application through which Storage Transfer
+        Service can authenticate requests using Azure workload identity
+        federation.
+
+        Storage Transfer Service can issue requests to Azure Storage through
+        registered Azure applications, eliminating the need to pass
+        credentials to Storage Transfer Service directly.
+
+        To configure federated identity, see `Configure access to Microsoft
+        Azure
+        Storage <https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#option_3_authenticate_using_federated_identity>`__.
+
+        Attributes:
+            client_id (str):
+                Required. The client (application) ID of the
+                application with federated credentials.
+            tenant_id (str):
+                Required. The tenant (directory) ID of the
+                application with federated credentials.
+        """
+
+        client_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        tenant_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     storage_account: str = proto.Field(
         proto.STRING,
@@ -521,6 +568,11 @@ class AzureBlobStorageData(proto.Message):
     credentials_secret: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    federated_identity_config: FederatedIdentityConfig = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=FederatedIdentityConfig,
     )
 
 
@@ -568,10 +620,11 @@ class HttpData(proto.Message):
 
     Attributes:
         list_url (str):
-            Required. The URL that points to the file
-            that stores the object list entries. This file
-            must allow public access.  Currently, only URLs
-            with HTTP and HTTPS schemes are supported.
+            Required. The URL that points to the file that stores the
+            object list entries. This file must allow public access. The
+            URL is either an HTTP/HTTPS address (e.g.
+            ``https://example.com/urllist.tsv``) or a Cloud Storage path
+            (e.g. ``gs://my-bucket/urllist.tsv``).
     """
 
     list_url: str = proto.Field(
@@ -868,7 +921,7 @@ class TransferOptions(proto.Message):
             When to overwrite objects that already exist
             in the sink. The default is that only objects
             that are different from the source are
-            ovewritten. If true, all objects in the sink
+            overwritten. If true, all objects in the sink
             whose name matches an object in the source are
             overwritten with the source object.
         delete_objects_unique_in_sink (bool):
@@ -1529,7 +1582,7 @@ class Schedule(proto.Message):
             ``end_time_of_day`` specifies the end date and time for
             starting new transfer operations. This field must be greater
             than or equal to the timestamp corresponding to the
-            combintation of
+            combination of
             [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date]
             and
             [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day],
@@ -1659,6 +1712,24 @@ class TransferJob(proto.Message):
         project_id (str):
             The ID of the Google Cloud project that owns
             the job.
+        service_account (str):
+            Optional. The user-managed service account to which to
+            delegate service agent permissions. You can grant Cloud
+            Storage bucket permissions to this service account instead
+            of to the Transfer Service service agent.
+
+            Format is
+            ``projects/-/serviceAccounts/ACCOUNT_EMAIL_OR_UNIQUEID``
+
+            Either the service account email
+            (``SERVICE_ACCOUNT_NAME@PROJECT_ID.iam.gserviceaccount.com``)
+            or the unique ID (``123456789012345678901``) are accepted in
+            the string. The ``-`` wildcard character is required;
+            replacing it with a project ID is invalid.
+
+            See
+            https://cloud.google.com//storage-transfer/docs/delegate-service-agent-permissions
+            for required permissions.
         transfer_spec (google.cloud.storage_transfer_v1.types.TransferSpec):
             Transfer specification.
         replication_spec (google.cloud.storage_transfer_v1.types.ReplicationSpec):
@@ -1739,6 +1810,10 @@ class TransferJob(proto.Message):
     project_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=18,
     )
     transfer_spec: "TransferSpec" = proto.Field(
         proto.MESSAGE,
@@ -2162,7 +2237,7 @@ class LoggingConfig(proto.Message):
                 Deleting objects at the source or the
                 destination.
             COPY (3):
-                Copying objects to Google Cloud Storage.
+                Copying objects to the destination.
         """
         LOGGABLE_ACTION_UNSPECIFIED = 0
         FIND = 1
@@ -2183,10 +2258,15 @@ class LoggingConfig(proto.Message):
                 ``LoggableAction`` terminated in an error state. ``FAILED``
                 actions are logged as
                 [ERROR][google.logging.type.LogSeverity.ERROR].
+            SKIPPED (3):
+                The ``COPY`` action was skipped for this file. Only
+                supported for agent-based transfers. ``SKIPPED`` actions are
+                logged as [INFO][google.logging.type.LogSeverity.INFO].
         """
         LOGGABLE_ACTION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
+        SKIPPED = 3
 
     log_actions: MutableSequence[LoggableAction] = proto.RepeatedField(
         proto.ENUM,
