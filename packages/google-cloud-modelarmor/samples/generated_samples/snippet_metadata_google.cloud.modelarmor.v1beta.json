@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.modelarmor.v1",
-        "version": "v1"
+        "id": "google.cloud.modelarmor.v1beta",
+        "version": "v1beta"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient",
           "shortName": "ModelArmorAsyncClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient.create_template",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient.create_template",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.CreateTemplate",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.CreateTemplate",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "CreateTemplate"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.CreateTemplateRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.CreateTemplateRequest"
           },
           {
             "name": "parent",
@@ -39,7 +39,7 @@
           },
           {
             "name": "template",
-            "type": "google.cloud.modelarmor_v1.types.Template"
+            "type": "google.cloud.modelarmor_v1beta.types.Template"
           },
           {
             "name": "template_id",
@@ -58,14 +58,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.Template",
+        "resultType": "google.cloud.modelarmor_v1beta.types.Template",
         "shortName": "create_template"
       },
       "description": "Sample for CreateTemplate",
-      "file": "modelarmor_v1_generated_model_armor_create_template_async.py",
+      "file": "modelarmor_v1beta_generated_model_armor_create_template_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_CreateTemplate_async",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_CreateTemplate_async",
       "segments": [
         {
           "end": 52,
@@ -98,20 +98,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_create_template_async.py"
+      "title": "modelarmor_v1beta_generated_model_armor_create_template_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient",
           "shortName": "ModelArmorClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorClient.create_template",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient.create_template",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.CreateTemplate",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.CreateTemplate",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "CreateTemplate"
@@ -119,7 +119,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.CreateTemplateRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.CreateTemplateRequest"
           },
           {
             "name": "parent",
@@ -127,7 +127,7 @@
           },
           {
             "name": "template",
-            "type": "google.cloud.modelarmor_v1.types.Template"
+            "type": "google.cloud.modelarmor_v1beta.types.Template"
           },
           {
             "name": "template_id",
@@ -146,14 +146,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.Template",
+        "resultType": "google.cloud.modelarmor_v1beta.types.Template",
         "shortName": "create_template"
       },
       "description": "Sample for CreateTemplate",
-      "file": "modelarmor_v1_generated_model_armor_create_template_sync.py",
+      "file": "modelarmor_v1beta_generated_model_armor_create_template_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_CreateTemplate_sync",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_CreateTemplate_sync",
       "segments": [
         {
           "end": 52,
@@ -186,21 +186,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_create_template_sync.py"
+      "title": "modelarmor_v1beta_generated_model_armor_create_template_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient",
           "shortName": "ModelArmorAsyncClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient.delete_template",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient.delete_template",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.DeleteTemplate",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.DeleteTemplate",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "DeleteTemplate"
@@ -208,7 +208,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.DeleteTemplateRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.DeleteTemplateRequest"
           },
           {
             "name": "name",
@@ -230,10 +230,10 @@
         "shortName": "delete_template"
       },
       "description": "Sample for DeleteTemplate",
-      "file": "modelarmor_v1_generated_model_armor_delete_template_async.py",
+      "file": "modelarmor_v1beta_generated_model_armor_delete_template_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_DeleteTemplate_async",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_DeleteTemplate_async",
       "segments": [
         {
           "end": 49,
@@ -264,20 +264,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_delete_template_async.py"
+      "title": "modelarmor_v1beta_generated_model_armor_delete_template_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient",
           "shortName": "ModelArmorClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorClient.delete_template",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient.delete_template",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.DeleteTemplate",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.DeleteTemplate",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "DeleteTemplate"
@@ -285,7 +285,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.DeleteTemplateRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.DeleteTemplateRequest"
           },
           {
             "name": "name",
@@ -307,10 +307,10 @@
         "shortName": "delete_template"
       },
       "description": "Sample for DeleteTemplate",
-      "file": "modelarmor_v1_generated_model_armor_delete_template_sync.py",
+      "file": "modelarmor_v1beta_generated_model_armor_delete_template_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_DeleteTemplate_sync",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_DeleteTemplate_sync",
       "segments": [
         {
           "end": 49,
@@ -341,21 +341,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_delete_template_sync.py"
+      "title": "modelarmor_v1beta_generated_model_armor_delete_template_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient",
           "shortName": "ModelArmorAsyncClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient.get_floor_setting",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient.get_floor_setting",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.GetFloorSetting",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.GetFloorSetting",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "GetFloorSetting"
@@ -363,7 +363,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.GetFloorSettingRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.GetFloorSettingRequest"
           },
           {
             "name": "name",
@@ -382,14 +382,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.FloorSetting",
+        "resultType": "google.cloud.modelarmor_v1beta.types.FloorSetting",
         "shortName": "get_floor_setting"
       },
       "description": "Sample for GetFloorSetting",
-      "file": "modelarmor_v1_generated_model_armor_get_floor_setting_async.py",
+      "file": "modelarmor_v1beta_generated_model_armor_get_floor_setting_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_GetFloorSetting_async",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_GetFloorSetting_async",
       "segments": [
         {
           "end": 51,
@@ -422,20 +422,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_get_floor_setting_async.py"
+      "title": "modelarmor_v1beta_generated_model_armor_get_floor_setting_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient",
           "shortName": "ModelArmorClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorClient.get_floor_setting",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient.get_floor_setting",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.GetFloorSetting",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.GetFloorSetting",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "GetFloorSetting"
@@ -443,7 +443,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.GetFloorSettingRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.GetFloorSettingRequest"
           },
           {
             "name": "name",
@@ -462,14 +462,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.FloorSetting",
+        "resultType": "google.cloud.modelarmor_v1beta.types.FloorSetting",
         "shortName": "get_floor_setting"
       },
       "description": "Sample for GetFloorSetting",
-      "file": "modelarmor_v1_generated_model_armor_get_floor_setting_sync.py",
+      "file": "modelarmor_v1beta_generated_model_armor_get_floor_setting_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_GetFloorSetting_sync",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_GetFloorSetting_sync",
       "segments": [
         {
           "end": 51,
@@ -502,21 +502,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_get_floor_setting_sync.py"
+      "title": "modelarmor_v1beta_generated_model_armor_get_floor_setting_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient",
           "shortName": "ModelArmorAsyncClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient.get_template",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient.get_template",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.GetTemplate",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.GetTemplate",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "GetTemplate"
@@ -524,7 +524,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.GetTemplateRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.GetTemplateRequest"
           },
           {
             "name": "name",
@@ -543,14 +543,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.Template",
+        "resultType": "google.cloud.modelarmor_v1beta.types.Template",
         "shortName": "get_template"
       },
       "description": "Sample for GetTemplate",
-      "file": "modelarmor_v1_generated_model_armor_get_template_async.py",
+      "file": "modelarmor_v1beta_generated_model_armor_get_template_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_GetTemplate_async",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_GetTemplate_async",
       "segments": [
         {
           "end": 51,
@@ -583,20 +583,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_get_template_async.py"
+      "title": "modelarmor_v1beta_generated_model_armor_get_template_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient",
           "shortName": "ModelArmorClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorClient.get_template",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient.get_template",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.GetTemplate",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.GetTemplate",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "GetTemplate"
@@ -604,7 +604,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.GetTemplateRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.GetTemplateRequest"
           },
           {
             "name": "name",
@@ -623,14 +623,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.Template",
+        "resultType": "google.cloud.modelarmor_v1beta.types.Template",
         "shortName": "get_template"
       },
       "description": "Sample for GetTemplate",
-      "file": "modelarmor_v1_generated_model_armor_get_template_sync.py",
+      "file": "modelarmor_v1beta_generated_model_armor_get_template_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_GetTemplate_sync",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_GetTemplate_sync",
       "segments": [
         {
           "end": 51,
@@ -663,21 +663,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_get_template_sync.py"
+      "title": "modelarmor_v1beta_generated_model_armor_get_template_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient",
           "shortName": "ModelArmorAsyncClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient.list_templates",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient.list_templates",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.ListTemplates",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.ListTemplates",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "ListTemplates"
@@ -685,7 +685,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.ListTemplatesRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.ListTemplatesRequest"
           },
           {
             "name": "parent",
@@ -704,14 +704,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.services.model_armor.pagers.ListTemplatesAsyncPager",
+        "resultType": "google.cloud.modelarmor_v1beta.services.model_armor.pagers.ListTemplatesAsyncPager",
         "shortName": "list_templates"
       },
       "description": "Sample for ListTemplates",
-      "file": "modelarmor_v1_generated_model_armor_list_templates_async.py",
+      "file": "modelarmor_v1beta_generated_model_armor_list_templates_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_ListTemplates_async",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_ListTemplates_async",
       "segments": [
         {
           "end": 52,
@@ -744,20 +744,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_list_templates_async.py"
+      "title": "modelarmor_v1beta_generated_model_armor_list_templates_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient",
           "shortName": "ModelArmorClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorClient.list_templates",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient.list_templates",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.ListTemplates",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.ListTemplates",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "ListTemplates"
@@ -765,7 +765,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.ListTemplatesRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.ListTemplatesRequest"
           },
           {
             "name": "parent",
@@ -784,14 +784,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.services.model_armor.pagers.ListTemplatesPager",
+        "resultType": "google.cloud.modelarmor_v1beta.services.model_armor.pagers.ListTemplatesPager",
         "shortName": "list_templates"
       },
       "description": "Sample for ListTemplates",
-      "file": "modelarmor_v1_generated_model_armor_list_templates_sync.py",
+      "file": "modelarmor_v1beta_generated_model_armor_list_templates_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_ListTemplates_sync",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_ListTemplates_sync",
       "segments": [
         {
           "end": 52,
@@ -824,21 +824,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_list_templates_sync.py"
+      "title": "modelarmor_v1beta_generated_model_armor_list_templates_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient",
           "shortName": "ModelArmorAsyncClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient.sanitize_model_response",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient.sanitize_model_response",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.SanitizeModelResponse",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.SanitizeModelResponse",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "SanitizeModelResponse"
@@ -846,7 +846,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.SanitizeModelResponseRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.SanitizeModelResponseRequest"
           },
           {
             "name": "retry",
@@ -861,14 +861,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.SanitizeModelResponseResponse",
+        "resultType": "google.cloud.modelarmor_v1beta.types.SanitizeModelResponseResponse",
         "shortName": "sanitize_model_response"
       },
       "description": "Sample for SanitizeModelResponse",
-      "file": "modelarmor_v1_generated_model_armor_sanitize_model_response_async.py",
+      "file": "modelarmor_v1beta_generated_model_armor_sanitize_model_response_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_SanitizeModelResponse_async",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_SanitizeModelResponse_async",
       "segments": [
         {
           "end": 55,
@@ -901,20 +901,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_sanitize_model_response_async.py"
+      "title": "modelarmor_v1beta_generated_model_armor_sanitize_model_response_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient",
           "shortName": "ModelArmorClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorClient.sanitize_model_response",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient.sanitize_model_response",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.SanitizeModelResponse",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.SanitizeModelResponse",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "SanitizeModelResponse"
@@ -922,7 +922,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.SanitizeModelResponseRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.SanitizeModelResponseRequest"
           },
           {
             "name": "retry",
@@ -937,14 +937,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.SanitizeModelResponseResponse",
+        "resultType": "google.cloud.modelarmor_v1beta.types.SanitizeModelResponseResponse",
         "shortName": "sanitize_model_response"
       },
       "description": "Sample for SanitizeModelResponse",
-      "file": "modelarmor_v1_generated_model_armor_sanitize_model_response_sync.py",
+      "file": "modelarmor_v1beta_generated_model_armor_sanitize_model_response_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_SanitizeModelResponse_sync",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_SanitizeModelResponse_sync",
       "segments": [
         {
           "end": 55,
@@ -977,21 +977,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_sanitize_model_response_sync.py"
+      "title": "modelarmor_v1beta_generated_model_armor_sanitize_model_response_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient",
           "shortName": "ModelArmorAsyncClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient.sanitize_user_prompt",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient.sanitize_user_prompt",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.SanitizeUserPrompt",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.SanitizeUserPrompt",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "SanitizeUserPrompt"
@@ -999,7 +999,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.SanitizeUserPromptRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.SanitizeUserPromptRequest"
           },
           {
             "name": "retry",
@@ -1014,14 +1014,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.SanitizeUserPromptResponse",
+        "resultType": "google.cloud.modelarmor_v1beta.types.SanitizeUserPromptResponse",
         "shortName": "sanitize_user_prompt"
       },
       "description": "Sample for SanitizeUserPrompt",
-      "file": "modelarmor_v1_generated_model_armor_sanitize_user_prompt_async.py",
+      "file": "modelarmor_v1beta_generated_model_armor_sanitize_user_prompt_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_SanitizeUserPrompt_async",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_SanitizeUserPrompt_async",
       "segments": [
         {
           "end": 55,
@@ -1054,20 +1054,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_sanitize_user_prompt_async.py"
+      "title": "modelarmor_v1beta_generated_model_armor_sanitize_user_prompt_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient",
           "shortName": "ModelArmorClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorClient.sanitize_user_prompt",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient.sanitize_user_prompt",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.SanitizeUserPrompt",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.SanitizeUserPrompt",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "SanitizeUserPrompt"
@@ -1075,7 +1075,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.SanitizeUserPromptRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.SanitizeUserPromptRequest"
           },
           {
             "name": "retry",
@@ -1090,14 +1090,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.SanitizeUserPromptResponse",
+        "resultType": "google.cloud.modelarmor_v1beta.types.SanitizeUserPromptResponse",
         "shortName": "sanitize_user_prompt"
       },
       "description": "Sample for SanitizeUserPrompt",
-      "file": "modelarmor_v1_generated_model_armor_sanitize_user_prompt_sync.py",
+      "file": "modelarmor_v1beta_generated_model_armor_sanitize_user_prompt_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_SanitizeUserPrompt_sync",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_SanitizeUserPrompt_sync",
       "segments": [
         {
           "end": 55,
@@ -1130,21 +1130,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_sanitize_user_prompt_sync.py"
+      "title": "modelarmor_v1beta_generated_model_armor_sanitize_user_prompt_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient",
           "shortName": "ModelArmorAsyncClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient.update_floor_setting",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient.update_floor_setting",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.UpdateFloorSetting",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.UpdateFloorSetting",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "UpdateFloorSetting"
@@ -1152,11 +1152,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.UpdateFloorSettingRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.UpdateFloorSettingRequest"
           },
           {
             "name": "floor_setting",
-            "type": "google.cloud.modelarmor_v1.types.FloorSetting"
+            "type": "google.cloud.modelarmor_v1beta.types.FloorSetting"
           },
           {
             "name": "update_mask",
@@ -1175,14 +1175,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.FloorSetting",
+        "resultType": "google.cloud.modelarmor_v1beta.types.FloorSetting",
         "shortName": "update_floor_setting"
       },
       "description": "Sample for UpdateFloorSetting",
-      "file": "modelarmor_v1_generated_model_armor_update_floor_setting_async.py",
+      "file": "modelarmor_v1beta_generated_model_armor_update_floor_setting_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_UpdateFloorSetting_async",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_UpdateFloorSetting_async",
       "segments": [
         {
           "end": 50,
@@ -1215,20 +1215,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_update_floor_setting_async.py"
+      "title": "modelarmor_v1beta_generated_model_armor_update_floor_setting_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient",
           "shortName": "ModelArmorClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorClient.update_floor_setting",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient.update_floor_setting",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.UpdateFloorSetting",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.UpdateFloorSetting",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "UpdateFloorSetting"
@@ -1236,11 +1236,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.UpdateFloorSettingRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.UpdateFloorSettingRequest"
           },
           {
             "name": "floor_setting",
-            "type": "google.cloud.modelarmor_v1.types.FloorSetting"
+            "type": "google.cloud.modelarmor_v1beta.types.FloorSetting"
           },
           {
             "name": "update_mask",
@@ -1259,14 +1259,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.FloorSetting",
+        "resultType": "google.cloud.modelarmor_v1beta.types.FloorSetting",
         "shortName": "update_floor_setting"
       },
       "description": "Sample for UpdateFloorSetting",
-      "file": "modelarmor_v1_generated_model_armor_update_floor_setting_sync.py",
+      "file": "modelarmor_v1beta_generated_model_armor_update_floor_setting_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_UpdateFloorSetting_sync",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_UpdateFloorSetting_sync",
       "segments": [
         {
           "end": 50,
@@ -1299,21 +1299,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_update_floor_setting_sync.py"
+      "title": "modelarmor_v1beta_generated_model_armor_update_floor_setting_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient",
           "shortName": "ModelArmorAsyncClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorAsyncClient.update_template",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorAsyncClient.update_template",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.UpdateTemplate",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.UpdateTemplate",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "UpdateTemplate"
@@ -1321,11 +1321,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.UpdateTemplateRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.UpdateTemplateRequest"
           },
           {
             "name": "template",
-            "type": "google.cloud.modelarmor_v1.types.Template"
+            "type": "google.cloud.modelarmor_v1beta.types.Template"
           },
           {
             "name": "update_mask",
@@ -1344,14 +1344,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.Template",
+        "resultType": "google.cloud.modelarmor_v1beta.types.Template",
         "shortName": "update_template"
       },
       "description": "Sample for UpdateTemplate",
-      "file": "modelarmor_v1_generated_model_armor_update_template_async.py",
+      "file": "modelarmor_v1beta_generated_model_armor_update_template_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_UpdateTemplate_async",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_UpdateTemplate_async",
       "segments": [
         {
           "end": 50,
@@ -1384,20 +1384,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_update_template_async.py"
+      "title": "modelarmor_v1beta_generated_model_armor_update_template_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.modelarmor_v1.ModelArmorClient",
+          "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient",
           "shortName": "ModelArmorClient"
         },
-        "fullName": "google.cloud.modelarmor_v1.ModelArmorClient.update_template",
+        "fullName": "google.cloud.modelarmor_v1beta.ModelArmorClient.update_template",
         "method": {
-          "fullName": "google.cloud.modelarmor.v1.ModelArmor.UpdateTemplate",
+          "fullName": "google.cloud.modelarmor.v1beta.ModelArmor.UpdateTemplate",
           "service": {
-            "fullName": "google.cloud.modelarmor.v1.ModelArmor",
+            "fullName": "google.cloud.modelarmor.v1beta.ModelArmor",
             "shortName": "ModelArmor"
           },
           "shortName": "UpdateTemplate"
@@ -1405,11 +1405,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.modelarmor_v1.types.UpdateTemplateRequest"
+            "type": "google.cloud.modelarmor_v1beta.types.UpdateTemplateRequest"
           },
           {
             "name": "template",
-            "type": "google.cloud.modelarmor_v1.types.Template"
+            "type": "google.cloud.modelarmor_v1beta.types.Template"
           },
           {
             "name": "update_mask",
@@ -1428,14 +1428,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.modelarmor_v1.types.Template",
+        "resultType": "google.cloud.modelarmor_v1beta.types.Template",
         "shortName": "update_template"
       },
       "description": "Sample for UpdateTemplate",
-      "file": "modelarmor_v1_generated_model_armor_update_template_sync.py",
+      "file": "modelarmor_v1beta_generated_model_armor_update_template_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "modelarmor_v1_generated_ModelArmor_UpdateTemplate_sync",
+      "regionTag": "modelarmor_v1beta_generated_ModelArmor_UpdateTemplate_sync",
       "segments": [
         {
           "end": 50,
@@ -1468,7 +1468,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "modelarmor_v1_generated_model_armor_update_template_sync.py"
+      "title": "modelarmor_v1beta_generated_model_armor_update_template_sync.py"
     }
   ]
 }
