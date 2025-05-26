@@ -40,9 +40,6 @@ async def sample_set_network_policy():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetNetworkPolicyRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
     )
 
     # Make the request

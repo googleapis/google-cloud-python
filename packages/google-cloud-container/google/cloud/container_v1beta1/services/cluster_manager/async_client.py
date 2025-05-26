@@ -76,6 +76,12 @@ class ClusterManagerAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ClusterManagerClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ClusterManagerClient._DEFAULT_UNIVERSE
 
+    ca_pool_path = staticmethod(ClusterManagerClient.ca_pool_path)
+    parse_ca_pool_path = staticmethod(ClusterManagerClient.parse_ca_pool_path)
+    crypto_key_version_path = staticmethod(ClusterManagerClient.crypto_key_version_path)
+    parse_crypto_key_version_path = staticmethod(
+        ClusterManagerClient.parse_crypto_key_version_path
+    )
     topic_path = staticmethod(ClusterManagerClient.topic_path)
     parse_topic_path = staticmethod(ClusterManagerClient.parse_topic_path)
     common_billing_account_path = staticmethod(
@@ -320,8 +326,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.ListClustersRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
                 )
 
                 # Make the request
@@ -334,8 +338,8 @@ class ClusterManagerAsyncClient:
             request (Optional[Union[google.cloud.container_v1beta1.types.ListClustersRequest, dict]]):
                 The request object. ListClustersRequest lists clusters.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
@@ -344,8 +348,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides, or "-" for all zones. This
                 field has been deprecated and replaced by the parent
@@ -449,9 +452,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.GetClusterRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                 )
 
                 # Make the request
@@ -465,8 +465,8 @@ class ClusterManagerAsyncClient:
                 The request object. GetClusterRequest gets the settings
                 of a cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -475,8 +475,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -485,8 +484,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to retrieve. This field has been
+                Deprecated. The name of the cluster
+                to retrieve. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -600,8 +599,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.CreateClusterRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
                 )
 
                 # Make the request
@@ -615,8 +612,8 @@ class ClusterManagerAsyncClient:
                 The request object. CreateClusterRequest creates a
                 cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
@@ -625,8 +622,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the parent field.
@@ -741,9 +737,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.UpdateClusterRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                 )
 
                 # Make the request
@@ -757,8 +750,8 @@ class ClusterManagerAsyncClient:
                 The request object. UpdateClusterRequest updates the
                 settings of a cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -767,8 +760,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -777,8 +769,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to upgrade. This field has been
+                Deprecated. The name of the cluster
+                to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -891,10 +883,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.UpdateNodePoolRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
-                    node_pool_id="node_pool_id_value",
                     node_version="node_version_value",
                     image_type="image_type_value",
                 )
@@ -987,10 +975,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetNodePoolAutoscalingRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
-                    node_pool_id="node_pool_id_value",
                 )
 
                 # Make the request
@@ -1082,9 +1066,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetLoggingServiceRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                     logging_service="logging_service_value",
                 )
 
@@ -1099,8 +1080,8 @@ class ClusterManagerAsyncClient:
                 The request object. SetLoggingServiceRequest sets the
                 logging service of a cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -1109,8 +1090,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -1119,8 +1099,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to upgrade. This field has been
+                Deprecated. The name of the cluster
+                to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -1250,9 +1230,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetMonitoringServiceRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                     monitoring_service="monitoring_service_value",
                 )
 
@@ -1267,8 +1244,8 @@ class ClusterManagerAsyncClient:
                 The request object. SetMonitoringServiceRequest sets the
                 monitoring service of a cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -1277,8 +1254,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -1287,8 +1263,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to upgrade. This field has been
+                Deprecated. The name of the cluster
+                to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -1299,7 +1275,7 @@ class ClusterManagerAsyncClient:
                 Required. The monitoring service the cluster should use
                 to write metrics. Currently available options:
 
-                -  "monitoring.googleapis.com/kubernetes" - The Cloud
+                -  ``monitoring.googleapis.com/kubernetes`` - The Cloud
                    Monitoring service with a Kubernetes-native resource
                    model
                 -  ``monitoring.googleapis.com`` - The legacy Cloud
@@ -1418,9 +1394,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetAddonsConfigRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                 )
 
                 # Make the request
@@ -1434,8 +1407,8 @@ class ClusterManagerAsyncClient:
                 The request object. SetAddonsRequest sets the addons
                 associated with the cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -1444,8 +1417,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -1454,8 +1426,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to upgrade. This field has been
+                Deprecated. The name of the cluster
+                to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -1574,9 +1546,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetLocationsRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                     locations=['locations_value1', 'locations_value2'],
                 )
 
@@ -1591,8 +1560,8 @@ class ClusterManagerAsyncClient:
                 The request object. SetLocationsRequest sets the
                 locations of the cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -1601,8 +1570,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -1611,8 +1579,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to upgrade. This field has been
+                Deprecated. The name of the cluster
+                to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -1739,9 +1707,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.UpdateMasterRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                     master_version="master_version_value",
                 )
 
@@ -1756,8 +1721,8 @@ class ClusterManagerAsyncClient:
                 The request object. UpdateMasterRequest updates the
                 master of the cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -1766,8 +1731,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -1776,8 +1740,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to upgrade. This field has been
+                Deprecated. The name of the cluster
+                to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -1907,9 +1871,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetMasterAuthRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                     action="SET_USERNAME",
                 )
 
@@ -2010,9 +1971,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.DeleteClusterRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                 )
 
                 # Make the request
@@ -2026,8 +1984,8 @@ class ClusterManagerAsyncClient:
                 The request object. DeleteClusterRequest deletes a
                 cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -2036,8 +1994,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -2046,8 +2003,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to delete. This field has been
+                Deprecated. The name of the cluster
+                to delete. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -2153,8 +2110,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.ListOperationsRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
                 )
 
                 # Make the request
@@ -2168,8 +2123,8 @@ class ClusterManagerAsyncClient:
                 The request object. ListOperationsRequest lists
                 operations.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
@@ -2178,8 +2133,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 to return operations for, or ``-`` for all zones. This
                 field has been deprecated and replaced by the parent
@@ -2283,9 +2237,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.GetOperationRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    operation_id="operation_id_value",
                 )
 
                 # Make the request
@@ -2299,8 +2250,8 @@ class ClusterManagerAsyncClient:
                 The request object. GetOperationRequest gets a single
                 operation.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -2309,8 +2260,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -2319,9 +2269,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             operation_id (:class:`str`):
-                Required. Deprecated. The server-assigned ``name`` of
-                the operation. This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The server-assigned ``name`` of the
+                operation. This field has been deprecated and replaced
+                by the name field.
 
                 This corresponds to the ``operation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2425,9 +2375,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.CancelOperationRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    operation_id="operation_id_value",
                 )
 
                 # Make the request
@@ -2438,8 +2385,8 @@ class ClusterManagerAsyncClient:
                 The request object. CancelOperationRequest cancels a
                 single operation.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -2448,8 +2395,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the operation resides. This field has been
                 deprecated and replaced by the name field.
@@ -2458,9 +2404,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             operation_id (:class:`str`):
-                Required. Deprecated. The server-assigned ``name`` of
-                the operation. This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The server-assigned ``name`` of the
+                operation. This field has been deprecated and replaced
+                by the name field.
 
                 This corresponds to the ``operation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2553,8 +2499,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.GetServerConfigRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
                 )
 
                 # Make the request
@@ -2568,8 +2512,8 @@ class ClusterManagerAsyncClient:
                 The request object. Gets the current Kubernetes Engine
                 service configuration.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -2578,8 +2522,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 to return operations for. This field has been deprecated
                 and replaced by the name field.
@@ -2706,7 +2649,7 @@ class ClusterManagerAsyncClient:
         Returns:
             google.cloud.container_v1beta1.types.GetJSONWebKeysResponse:
                 GetJSONWebKeysResponse is a valid
-                JSON Web Key Set as specififed in rfc
+                JSON Web Key Set as specified in rfc
                 7517
 
         """
@@ -2772,9 +2715,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.ListNodePoolsRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                 )
 
                 # Make the request
@@ -2788,8 +2728,8 @@ class ClusterManagerAsyncClient:
                 The request object. ListNodePoolsRequest lists the node
                 pool(s) for a cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
@@ -2798,8 +2738,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the parent field.
@@ -2808,9 +2747,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster. This field has been deprecated
-                and replaced by the parent field.
+                Deprecated. The name of the cluster.
+                This field has been deprecated and
+                replaced by the parent field.
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2913,10 +2852,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.GetNodePoolRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
-                    node_pool_id="node_pool_id_value",
                 )
 
                 # Make the request
@@ -2930,8 +2865,8 @@ class ClusterManagerAsyncClient:
                 The request object. GetNodePoolRequest retrieves a node
                 pool for a cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -2940,8 +2875,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -2950,18 +2884,17 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster. This field has been deprecated
-                and replaced by the name field.
+                Deprecated. The name of the cluster.
+                This field has been deprecated and
+                replaced by the name field.
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             node_pool_id (:class:`str`):
-                Required. Deprecated. The name of the
-                node pool. This field has been
-                deprecated and replaced by the name
-                field.
+                Deprecated. The name of the node
+                pool. This field has been deprecated and
+                replaced by the name field.
 
                 This corresponds to the ``node_pool_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3074,9 +3007,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.CreateNodePoolRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                 )
 
                 # Make the request
@@ -3090,8 +3020,8 @@ class ClusterManagerAsyncClient:
                 The request object. CreateNodePoolRequest creates a node
                 pool for a cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the
                 parent field.
@@ -3100,8 +3030,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the parent field.
@@ -3110,9 +3039,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster. This field has been deprecated
-                and replaced by the parent field.
+                Deprecated. The name of the cluster.
+                This field has been deprecated and
+                replaced by the parent field.
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3224,10 +3153,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.DeleteNodePoolRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
-                    node_pool_id="node_pool_id_value",
                 )
 
                 # Make the request
@@ -3241,8 +3166,8 @@ class ClusterManagerAsyncClient:
                 The request object. DeleteNodePoolRequest deletes a node
                 pool for a cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -3251,8 +3176,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -3261,16 +3185,16 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster. This field has been deprecated
-                and replaced by the name field.
+                Deprecated. The name of the cluster.
+                This field has been deprecated and
+                replaced by the name field.
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             node_pool_id (:class:`str`):
-                Required. Deprecated. The name of the
-                node pool to delete. This field has been
+                Deprecated. The name of the node pool
+                to delete. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -3460,10 +3384,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.RollbackNodePoolUpgradeRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
-                    node_pool_id="node_pool_id_value",
                 )
 
                 # Make the request
@@ -3476,12 +3396,12 @@ class ClusterManagerAsyncClient:
             request (Optional[Union[google.cloud.container_v1beta1.types.RollbackNodePoolUpgradeRequest, dict]]):
                 The request object. RollbackNodePoolUpgradeRequest
                 rollbacks the previously Aborted or
-                Failed NodePool upgrade. This will be an
-                no-op if the last upgrade successfully
-                completed.
+                Failed  NodePool upgrade. This will be
+                an no-op if the last upgrade
+                successfully  completed.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -3490,8 +3410,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -3500,8 +3419,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to rollback. This field has been
+                Deprecated. The name of the cluster
+                to rollback. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -3509,9 +3428,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             node_pool_id (:class:`str`):
-                Required. Deprecated. The name of the
-                node pool to rollback. This field has
-                been deprecated and replaced by the name
+                Deprecated. The name of the node pool
+                to rollback. This field has been
+                deprecated and replaced by the name
                 field.
 
                 This corresponds to the ``node_pool_id`` field
@@ -3622,10 +3541,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetNodePoolManagementRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
-                    node_pool_id="node_pool_id_value",
                 )
 
                 # Make the request
@@ -3640,8 +3555,8 @@ class ClusterManagerAsyncClient:
                 node management properties of a node
                 pool.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -3650,8 +3565,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -3660,8 +3574,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to update. This field has been
+                Deprecated. The name of the cluster
+                to update. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -3669,8 +3583,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             node_pool_id (:class:`str`):
-                Required. Deprecated. The name of the
-                node pool to update. This field has been
+                Deprecated. The name of the node pool
+                to update. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -3789,9 +3703,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetLabelsRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                     label_fingerprint="label_fingerprint_value",
                 )
 
@@ -3809,8 +3720,8 @@ class ClusterManagerAsyncClient:
                 turn set them for Google Compute Engine
                 resources used by that cluster
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -3819,8 +3730,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -3829,9 +3739,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster. This field has been deprecated
-                and replaced by the name field.
+                Deprecated. The name of the cluster.
+                This field has been deprecated and
+                replaced by the name field.
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3968,9 +3878,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetLegacyAbacRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                     enabled=True,
                 )
 
@@ -3986,8 +3893,8 @@ class ClusterManagerAsyncClient:
                 disables the ABAC authorization
                 mechanism for a cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -3996,8 +3903,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -4006,8 +3912,8 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster to update. This field has been
+                Deprecated. The name of the cluster
+                to update. This field has been
                 deprecated and replaced by the name
                 field.
 
@@ -4122,9 +4028,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.StartIPRotationRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                 )
 
                 # Make the request
@@ -4140,8 +4043,8 @@ class ClusterManagerAsyncClient:
                 node upgrade on each node pool to point
                 to the new IP.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -4150,8 +4053,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -4160,9 +4062,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster. This field has been deprecated
-                and replaced by the name field.
+                Deprecated. The name of the cluster.
+                This field has been deprecated and
+                replaced by the name field.
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4268,9 +4170,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.CompleteIPRotationRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                 )
 
                 # Make the request
@@ -4284,8 +4183,8 @@ class ClusterManagerAsyncClient:
                 The request object. CompleteIPRotationRequest moves the
                 cluster master back into single-IP mode.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -4294,8 +4193,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -4304,9 +4202,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster. This field has been deprecated
-                and replaced by the name field.
+                Deprecated. The name of the cluster.
+                This field has been deprecated and
+                replaced by the name field.
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4410,10 +4308,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetNodePoolSizeRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
-                    node_pool_id="node_pool_id_value",
                     node_count=1070,
                 )
 
@@ -4506,9 +4400,6 @@ class ClusterManagerAsyncClient:
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetNetworkPolicyRequest(
-                    project_id="project_id_value",
-                    zone="zone_value",
-                    cluster_id="cluster_id_value",
                 )
 
                 # Make the request
@@ -4523,8 +4414,8 @@ class ClusterManagerAsyncClient:
                 enables/disables network policy for a
                 cluster.
             project_id (:class:`str`):
-                Required. Deprecated. The Google Developers Console
-                `project ID or project
+                Deprecated. The Google Developers Console `project ID or
+                project
                 number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
                 This field has been deprecated and replaced by the name
                 field.
@@ -4533,8 +4424,7 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (:class:`str`):
-                Required. Deprecated. The name of the Google Compute
-                Engine
+                Deprecated. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
@@ -4543,9 +4433,9 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster_id (:class:`str`):
-                Required. Deprecated. The name of the
-                cluster. This field has been deprecated
-                and replaced by the name field.
+                Deprecated. The name of the cluster.
+                This field has been deprecated and
+                replaced by the name field.
 
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5097,6 +4987,238 @@ class ClusterManagerAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def fetch_cluster_upgrade_info(
+        self,
+        request: Optional[
+            Union[cluster_service.FetchClusterUpgradeInfoRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cluster_service.ClusterUpgradeInfo:
+        r"""Fetch upgrade information of a specific cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import container_v1beta1
+
+            async def sample_fetch_cluster_upgrade_info():
+                # Create a client
+                client = container_v1beta1.ClusterManagerAsyncClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.FetchClusterUpgradeInfoRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.fetch_cluster_upgrade_info(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.container_v1beta1.types.FetchClusterUpgradeInfoRequest, dict]]):
+                The request object. FetchClusterUpgradeInfoRequest
+                fetches the upgrade information of a
+                cluster.
+            name (:class:`str`):
+                Required. The name (project, location, cluster) of the
+                cluster to get. Specified in the format
+                ``projects/*/locations/*/clusters/*`` or
+                ``projects/*/zones/*/clusters/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.container_v1beta1.types.ClusterUpgradeInfo:
+                ClusterUpgradeInfo contains the
+                upgrade information of a cluster.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cluster_service.FetchClusterUpgradeInfoRequest):
+            request = cluster_service.FetchClusterUpgradeInfoRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_cluster_upgrade_info
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def fetch_node_pool_upgrade_info(
+        self,
+        request: Optional[
+            Union[cluster_service.FetchNodePoolUpgradeInfoRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cluster_service.NodePoolUpgradeInfo:
+        r"""Fetch upgrade information of a specific nodepool.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import container_v1beta1
+
+            async def sample_fetch_node_pool_upgrade_info():
+                # Create a client
+                client = container_v1beta1.ClusterManagerAsyncClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.FetchNodePoolUpgradeInfoRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.fetch_node_pool_upgrade_info(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.container_v1beta1.types.FetchNodePoolUpgradeInfoRequest, dict]]):
+                The request object. FetchNodePoolUpgradeInfoRequest
+                fetches the upgrade information of a
+                nodepool.
+            name (:class:`str`):
+                Required. The name (project, location, cluster,
+                nodepool) of the nodepool to get. Specified in the
+                format ``projects/*/locations/*/clusters/*/nodePools/*``
+                or ``projects/*/zones/*/clusters/*/nodePools/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.container_v1beta1.types.NodePoolUpgradeInfo:
+                NodePoolUpgradeInfo contains the
+                upgrade information of a nodepool.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cluster_service.FetchNodePoolUpgradeInfoRequest):
+            request = cluster_service.FetchNodePoolUpgradeInfoRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.fetch_node_pool_upgrade_info
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Validate the universe domain.

@@ -40,9 +40,6 @@ async def sample_update_cluster():
 
     # Initialize request argument(s)
     request = container_v1beta1.UpdateClusterRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
     )
 
     # Make the request

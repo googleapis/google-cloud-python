@@ -40,10 +40,6 @@ async def sample_update_node_pool():
 
     # Initialize request argument(s)
     request = container_v1beta1.UpdateNodePoolRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
-        node_pool_id="node_pool_id_value",
         node_version="node_version_value",
         image_type="image_type_value",
     )

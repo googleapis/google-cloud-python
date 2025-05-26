@@ -40,9 +40,6 @@ async def sample_set_master_auth():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetMasterAuthRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
         action="SET_USERNAME",
     )
 

@@ -40,9 +40,6 @@ def sample_set_legacy_abac():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetLegacyAbacRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
         enabled=True,
     )
 

@@ -40,10 +40,6 @@ async def sample_set_node_pool_management():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetNodePoolManagementRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
-        node_pool_id="node_pool_id_value",
     )
 
     # Make the request

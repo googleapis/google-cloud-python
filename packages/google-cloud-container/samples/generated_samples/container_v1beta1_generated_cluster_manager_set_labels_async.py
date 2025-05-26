@@ -40,9 +40,6 @@ async def sample_set_labels():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetLabelsRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
         label_fingerprint="label_fingerprint_value",
     )
 

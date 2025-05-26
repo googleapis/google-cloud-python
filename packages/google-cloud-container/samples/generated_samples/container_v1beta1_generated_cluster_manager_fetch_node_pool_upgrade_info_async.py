@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for SetLocations
+# Snippet for FetchNodePoolUpgradeInfo
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-container
 
 
-# [START container_v1beta1_generated_ClusterManager_SetLocations_sync]
+# [START container_v1beta1_generated_ClusterManager_FetchNodePoolUpgradeInfo_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,19 +34,19 @@
 from google.cloud import container_v1beta1
 
 
-def sample_set_locations():
+async def sample_fetch_node_pool_upgrade_info():
     # Create a client
-    client = container_v1beta1.ClusterManagerClient()
+    client = container_v1beta1.ClusterManagerAsyncClient()
 
     # Initialize request argument(s)
-    request = container_v1beta1.SetLocationsRequest(
-        locations=['locations_value1', 'locations_value2'],
+    request = container_v1beta1.FetchNodePoolUpgradeInfoRequest(
+        name="name_value",
     )
 
     # Make the request
-    response = client.set_locations(request=request)
+    response = await client.fetch_node_pool_upgrade_info(request=request)
 
     # Handle the response
     print(response)
 
-# [END container_v1beta1_generated_ClusterManager_SetLocations_sync]
+# [END container_v1beta1_generated_ClusterManager_FetchNodePoolUpgradeInfo_async]
