@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.10...google-cloud-managedkafka-v0.1.11) (2025-05-26)
+
+
+### Features
+
+* [google-cloud-managedkafka] add Managed Kafka ACL API ([#13939](https://github.com/googleapis/google-cloud-python/issues/13939)) ([0e1d6b0](https://github.com/googleapis/google-cloud-python/commit/0e1d6b09c6b901f137665a73ddc0a34d46d807ab))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.9...google-cloud-managedkafka-v0.1.10) (2025-05-08)
 
 

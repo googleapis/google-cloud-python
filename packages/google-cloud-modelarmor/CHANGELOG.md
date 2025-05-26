@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.4...google-cloud-modelarmor-v0.2.5) (2025-05-26)
+
+
+### Features
+
+* [google-cloud-modelarmor] add support for Model Armor v1beta API ([#13944](https://github.com/googleapis/google-cloud-python/issues/13944)) ([39f9ce6](https://github.com/googleapis/google-cloud-python/commit/39f9ce66be729031d457e9799c3f3e18aa0a1f95))
+
 ## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.3...google-cloud-modelarmor-v0.2.4) (2025-05-08)
 
 
