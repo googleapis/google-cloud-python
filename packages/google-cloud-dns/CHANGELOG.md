@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+## [0.35.1](https://github.com/googleapis/python-dns/compare/v0.35.0...v0.35.1) (2025-04-25)
+
+
+### Bug Fixes
+
+* Remove setup.cfg configuration for creating universal wheels ([#316](https://github.com/googleapis/python-dns/issues/316)) ([942de3a](https://github.com/googleapis/python-dns/commit/942de3a839386c75a9333cbb09c7020704ac253c))
+* Resolve issues where pre-release versions of dependencies are installed ([#313](https://github.com/googleapis/python-dns/issues/313)) ([5e1a6bc](https://github.com/googleapis/python-dns/commit/5e1a6bc3fa73027d9b59fe40a34e24d79415e0dd))
+
 ## [0.35.0](https://github.com/googleapis/python-dns/compare/v0.34.2...v0.35.0) (2023-11-30)
 
 
