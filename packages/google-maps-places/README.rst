@@ -51,9 +51,9 @@ dependencies.
 Code samples and snippets
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Code samples and snippets live in the `samples/`_ folder.
+Code samples and snippets live `here`_.
 
-.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-places/samples
+.. _here: https://developers.google.com/maps/documentation/places/web-service/client-library-examples#python_1
 
 
 Supported Python Versions
