@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Model Armor API.
+By default, you will get version ``modelarmor_v1``.
+
 
 API Reference
 -------------
@@ -10,6 +13,14 @@ API Reference
 
     modelarmor_v1/services_
     modelarmor_v1/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    modelarmor_v1beta/services_
+    modelarmor_v1beta/types_
 
 
 Changelog
