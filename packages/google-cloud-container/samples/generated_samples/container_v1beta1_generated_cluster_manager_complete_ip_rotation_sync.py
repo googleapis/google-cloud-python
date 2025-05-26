@@ -40,9 +40,6 @@ def sample_complete_ip_rotation():
 
     # Initialize request argument(s)
     request = container_v1beta1.CompleteIPRotationRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
     )
 
     # Make the request

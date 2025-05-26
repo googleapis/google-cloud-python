@@ -40,9 +40,6 @@ async def sample_set_locations():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetLocationsRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
         locations=['locations_value1', 'locations_value2'],
     )
 

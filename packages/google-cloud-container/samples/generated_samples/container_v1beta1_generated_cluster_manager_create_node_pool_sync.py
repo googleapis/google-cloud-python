@@ -40,9 +40,6 @@ def sample_create_node_pool():
 
     # Initialize request argument(s)
     request = container_v1beta1.CreateNodePoolRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
     )
 
     # Make the request

@@ -40,8 +40,6 @@ async def sample_list_clusters():
 
     # Initialize request argument(s)
     request = container_v1beta1.ListClustersRequest(
-        project_id="project_id_value",
-        zone="zone_value",
     )
 
     # Make the request

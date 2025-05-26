@@ -40,9 +40,6 @@ async def sample_get_operation():
 
     # Initialize request argument(s)
     request = container_v1beta1.GetOperationRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        operation_id="operation_id_value",
     )
 
     # Make the request

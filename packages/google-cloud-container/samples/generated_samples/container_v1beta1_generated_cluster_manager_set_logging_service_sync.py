@@ -40,9 +40,6 @@ def sample_set_logging_service():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetLoggingServiceRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
         logging_service="logging_service_value",
     )
 

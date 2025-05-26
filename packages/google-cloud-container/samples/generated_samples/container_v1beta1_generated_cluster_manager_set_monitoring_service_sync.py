@@ -40,9 +40,6 @@ def sample_set_monitoring_service():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetMonitoringServiceRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
         monitoring_service="monitoring_service_value",
     )
 

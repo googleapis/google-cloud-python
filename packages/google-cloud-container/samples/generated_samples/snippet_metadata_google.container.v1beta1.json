@@ -67,12 +67,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_CancelOperation_async",
       "segments": [
         {
-          "end": 51,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -82,16 +82,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 48,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -152,12 +152,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_CancelOperation_sync",
       "segments": [
         {
-          "end": 51,
+          "end": 48,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 51,
+          "end": 48,
           "start": 27,
           "type": "SHORT"
         },
@@ -167,16 +167,16 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "start": 48,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 52,
+          "end": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -392,12 +392,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_CompleteIPRotation_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -407,18 +407,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -480,12 +480,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_CompleteIPRotation_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -495,18 +495,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -716,12 +716,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_CreateCluster_async",
       "segments": [
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -731,18 +731,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -804,12 +804,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_CreateCluster_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -819,18 +819,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -897,12 +897,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_CreateNodePool_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -912,18 +912,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -989,12 +989,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_CreateNodePool_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1004,18 +1004,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1078,12 +1078,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_DeleteCluster_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1093,18 +1093,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1166,12 +1166,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_DeleteCluster_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1181,18 +1181,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1259,12 +1259,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_DeleteNodePool_async",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1274,18 +1274,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1351,12 +1351,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_DeleteNodePool_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1366,22 +1366,344 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
       "title": "container_v1beta1_generated_cluster_manager_delete_node_pool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.container_v1beta1.ClusterManagerAsyncClient",
+          "shortName": "ClusterManagerAsyncClient"
+        },
+        "fullName": "google.cloud.container_v1beta1.ClusterManagerAsyncClient.fetch_cluster_upgrade_info",
+        "method": {
+          "fullName": "google.container.v1beta1.ClusterManager.FetchClusterUpgradeInfo",
+          "service": {
+            "fullName": "google.container.v1beta1.ClusterManager",
+            "shortName": "ClusterManager"
+          },
+          "shortName": "FetchClusterUpgradeInfo"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.container_v1beta1.types.FetchClusterUpgradeInfoRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.container_v1beta1.types.ClusterUpgradeInfo",
+        "shortName": "fetch_cluster_upgrade_info"
+      },
+      "description": "Sample for FetchClusterUpgradeInfo",
+      "file": "container_v1beta1_generated_cluster_manager_fetch_cluster_upgrade_info_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "container_v1beta1_generated_ClusterManager_FetchClusterUpgradeInfo_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "container_v1beta1_generated_cluster_manager_fetch_cluster_upgrade_info_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.container_v1beta1.ClusterManagerClient",
+          "shortName": "ClusterManagerClient"
+        },
+        "fullName": "google.cloud.container_v1beta1.ClusterManagerClient.fetch_cluster_upgrade_info",
+        "method": {
+          "fullName": "google.container.v1beta1.ClusterManager.FetchClusterUpgradeInfo",
+          "service": {
+            "fullName": "google.container.v1beta1.ClusterManager",
+            "shortName": "ClusterManager"
+          },
+          "shortName": "FetchClusterUpgradeInfo"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.container_v1beta1.types.FetchClusterUpgradeInfoRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.container_v1beta1.types.ClusterUpgradeInfo",
+        "shortName": "fetch_cluster_upgrade_info"
+      },
+      "description": "Sample for FetchClusterUpgradeInfo",
+      "file": "container_v1beta1_generated_cluster_manager_fetch_cluster_upgrade_info_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "container_v1beta1_generated_ClusterManager_FetchClusterUpgradeInfo_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "container_v1beta1_generated_cluster_manager_fetch_cluster_upgrade_info_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.container_v1beta1.ClusterManagerAsyncClient",
+          "shortName": "ClusterManagerAsyncClient"
+        },
+        "fullName": "google.cloud.container_v1beta1.ClusterManagerAsyncClient.fetch_node_pool_upgrade_info",
+        "method": {
+          "fullName": "google.container.v1beta1.ClusterManager.FetchNodePoolUpgradeInfo",
+          "service": {
+            "fullName": "google.container.v1beta1.ClusterManager",
+            "shortName": "ClusterManager"
+          },
+          "shortName": "FetchNodePoolUpgradeInfo"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.container_v1beta1.types.FetchNodePoolUpgradeInfoRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.container_v1beta1.types.NodePoolUpgradeInfo",
+        "shortName": "fetch_node_pool_upgrade_info"
+      },
+      "description": "Sample for FetchNodePoolUpgradeInfo",
+      "file": "container_v1beta1_generated_cluster_manager_fetch_node_pool_upgrade_info_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "container_v1beta1_generated_ClusterManager_FetchNodePoolUpgradeInfo_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "container_v1beta1_generated_cluster_manager_fetch_node_pool_upgrade_info_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.container_v1beta1.ClusterManagerClient",
+          "shortName": "ClusterManagerClient"
+        },
+        "fullName": "google.cloud.container_v1beta1.ClusterManagerClient.fetch_node_pool_upgrade_info",
+        "method": {
+          "fullName": "google.container.v1beta1.ClusterManager.FetchNodePoolUpgradeInfo",
+          "service": {
+            "fullName": "google.container.v1beta1.ClusterManager",
+            "shortName": "ClusterManager"
+          },
+          "shortName": "FetchNodePoolUpgradeInfo"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.container_v1beta1.types.FetchNodePoolUpgradeInfoRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.container_v1beta1.types.NodePoolUpgradeInfo",
+        "shortName": "fetch_node_pool_upgrade_info"
+      },
+      "description": "Sample for FetchNodePoolUpgradeInfo",
+      "file": "container_v1beta1_generated_cluster_manager_fetch_node_pool_upgrade_info_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "container_v1beta1_generated_ClusterManager_FetchNodePoolUpgradeInfo_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "container_v1beta1_generated_cluster_manager_fetch_node_pool_upgrade_info_sync.py"
     },
     {
       "canonical": true,
@@ -1440,12 +1762,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_GetCluster_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1455,18 +1777,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1528,12 +1850,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_GetCluster_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1543,18 +1865,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1774,12 +2096,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_GetNodePool_async",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1789,18 +2111,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1866,12 +2188,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_GetNodePool_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1881,18 +2203,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -1955,12 +2277,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_GetOperation_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -1970,18 +2292,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2043,12 +2365,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_GetOperation_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -2058,18 +2380,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2128,12 +2450,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_GetServerConfig_async",
       "segments": [
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -2143,18 +2465,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2212,12 +2534,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_GetServerConfig_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -2227,18 +2549,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2297,12 +2619,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_ListClusters_async",
       "segments": [
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -2312,18 +2634,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2381,12 +2703,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_ListClusters_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -2396,18 +2718,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2631,12 +2953,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_ListNodePools_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -2646,18 +2968,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2719,12 +3041,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_ListNodePools_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -2734,18 +3056,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2804,12 +3126,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_ListOperations_async",
       "segments": [
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -2819,18 +3141,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -2888,12 +3210,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_ListOperations_sync",
       "segments": [
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 52,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -2903,18 +3225,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 46,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 49,
-          "start": 47,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 53,
-          "start": 50,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3142,12 +3464,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_RollbackNodePoolUpgrade_async",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -3157,18 +3479,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3234,12 +3556,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_RollbackNodePoolUpgrade_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -3249,18 +3571,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3327,12 +3649,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetAddonsConfig_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -3342,18 +3664,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3419,12 +3741,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetAddonsConfig_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -3434,18 +3756,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3516,12 +3838,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetLabels_async",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -3531,18 +3853,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3612,12 +3934,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetLabels_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -3627,18 +3949,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3705,12 +4027,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetLegacyAbac_async",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -3720,18 +4042,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3797,12 +4119,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetLegacyAbac_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -3812,18 +4134,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3890,12 +4212,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetLocations_async",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -3905,18 +4227,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -3982,12 +4304,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetLocations_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -3997,18 +4319,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4075,12 +4397,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetLoggingService_async",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -4090,18 +4412,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4167,12 +4489,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetLoggingService_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -4182,18 +4504,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4429,12 +4751,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetMasterAuth_async",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -4444,18 +4766,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4505,12 +4827,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetMasterAuth_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -4520,18 +4842,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4598,12 +4920,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetMonitoringService_async",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -4613,18 +4935,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4690,12 +5012,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetMonitoringService_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -4705,18 +5027,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4783,12 +5105,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetNetworkPolicy_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -4798,18 +5120,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4875,12 +5197,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetNetworkPolicy_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -4890,18 +5212,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4952,12 +5274,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolAutoscaling_async",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -4967,18 +5289,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5028,12 +5350,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolAutoscaling_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -5043,18 +5365,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5125,12 +5447,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolManagement_async",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -5140,18 +5462,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5221,12 +5543,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolManagement_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -5236,18 +5558,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5298,12 +5620,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolSize_async",
       "segments": [
         {
-          "end": 55,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -5313,18 +5635,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 49,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 52,
-          "start": 50,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
-          "start": 53,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5374,12 +5696,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_SetNodePoolSize_sync",
       "segments": [
         {
-          "end": 55,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 55,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -5389,18 +5711,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 49,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 52,
-          "start": 50,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 56,
-          "start": 53,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5463,12 +5785,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_StartIPRotation_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -5478,18 +5800,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5551,12 +5873,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_StartIPRotation_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -5566,18 +5888,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5644,12 +5966,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_UpdateCluster_async",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -5659,18 +5981,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5736,12 +6058,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_UpdateCluster_sync",
       "segments": [
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 53,
+          "end": 50,
           "start": 27,
           "type": "SHORT"
         },
@@ -5751,18 +6073,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 47,
+          "end": 44,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 50,
-          "start": 48,
+          "end": 47,
+          "start": 45,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 54,
-          "start": 51,
+          "end": 51,
+          "start": 48,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5829,12 +6151,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_UpdateMaster_async",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -5844,18 +6166,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5921,12 +6243,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_UpdateMaster_sync",
       "segments": [
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 54,
+          "end": 51,
           "start": 27,
           "type": "SHORT"
         },
@@ -5936,18 +6258,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 48,
+          "end": 45,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 51,
-          "start": 49,
+          "end": 48,
+          "start": 46,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 55,
-          "start": 52,
+          "end": 52,
+          "start": 49,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -5998,12 +6320,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_UpdateNodePool_async",
       "segments": [
         {
-          "end": 56,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -6013,18 +6335,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 46,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 51,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -6074,12 +6396,12 @@
       "regionTag": "container_v1beta1_generated_ClusterManager_UpdateNodePool_sync",
       "segments": [
         {
-          "end": 56,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -6089,18 +6411,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 46,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 51,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],

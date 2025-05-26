@@ -40,10 +40,6 @@ async def sample_set_node_pool_size():
 
     # Initialize request argument(s)
     request = container_v1beta1.SetNodePoolSizeRequest(
-        project_id="project_id_value",
-        zone="zone_value",
-        cluster_id="cluster_id_value",
-        node_pool_id="node_pool_id_value",
         node_count=1070,
     )
 
