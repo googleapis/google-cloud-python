@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-commerce-consumer-procurement-v0.1.13...google-cloud-commerce-consumer-procurement-v0.2.0) (2025-05-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* [google-cloud-commerce-consumer-procurement] An existing google.api.http annotation `http_uri` is changed for method `UpdateLicensePool` in service `LicenseManagementService` ([#13940](https://github.com/googleapis/google-cloud-python/issues/13940))
+
+### Bug Fixes
+
+* [google-cloud-commerce-consumer-procurement] An existing google.api.http annotation `http_uri` is changed for method `UpdateLicensePool` in service `LicenseManagementService` ([#13940](https://github.com/googleapis/google-cloud-python/issues/13940)) ([3e9594a](https://github.com/googleapis/google-cloud-python/commit/3e9594a149b33dd101cdd5712362681165924b76))
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-commerce-consumer-procurement-v0.1.12...google-cloud-commerce-consumer-procurement-v0.1.13) (2025-03-15)
 
 
