@@ -1477,6 +1477,7 @@ def test_create_transfer_job(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             project_id="project_id_value",
+            service_account="service_account_value",
             status=transfer_types.TransferJob.Status.ENABLED,
             latest_operation_name="latest_operation_name_value",
         )
@@ -1493,6 +1494,7 @@ def test_create_transfer_job(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.project_id == "project_id_value"
+    assert response.service_account == "service_account_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
 
@@ -1627,6 +1629,7 @@ async def test_create_transfer_job_async(
                 name="name_value",
                 description="description_value",
                 project_id="project_id_value",
+                service_account="service_account_value",
                 status=transfer_types.TransferJob.Status.ENABLED,
                 latest_operation_name="latest_operation_name_value",
             )
@@ -1644,6 +1647,7 @@ async def test_create_transfer_job_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.project_id == "project_id_value"
+    assert response.service_account == "service_account_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
 
@@ -1679,6 +1683,7 @@ def test_update_transfer_job(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             project_id="project_id_value",
+            service_account="service_account_value",
             status=transfer_types.TransferJob.Status.ENABLED,
             latest_operation_name="latest_operation_name_value",
         )
@@ -1695,6 +1700,7 @@ def test_update_transfer_job(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.project_id == "project_id_value"
+    assert response.service_account == "service_account_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
 
@@ -1835,6 +1841,7 @@ async def test_update_transfer_job_async(
                 name="name_value",
                 description="description_value",
                 project_id="project_id_value",
+                service_account="service_account_value",
                 status=transfer_types.TransferJob.Status.ENABLED,
                 latest_operation_name="latest_operation_name_value",
             )
@@ -1852,6 +1859,7 @@ async def test_update_transfer_job_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.project_id == "project_id_value"
+    assert response.service_account == "service_account_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
 
@@ -1950,6 +1958,7 @@ def test_get_transfer_job(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             project_id="project_id_value",
+            service_account="service_account_value",
             status=transfer_types.TransferJob.Status.ENABLED,
             latest_operation_name="latest_operation_name_value",
         )
@@ -1966,6 +1975,7 @@ def test_get_transfer_job(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.project_id == "project_id_value"
+    assert response.service_account == "service_account_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
 
@@ -2100,6 +2110,7 @@ async def test_get_transfer_job_async(
                 name="name_value",
                 description="description_value",
                 project_id="project_id_value",
+                service_account="service_account_value",
                 status=transfer_types.TransferJob.Status.ENABLED,
                 latest_operation_name="latest_operation_name_value",
             )
@@ -2117,6 +2128,7 @@ async def test_get_transfer_job_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.project_id == "project_id_value"
+    assert response.service_account == "service_account_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
 
@@ -8207,6 +8219,7 @@ async def test_create_transfer_job_empty_call_grpc_asyncio():
                 name="name_value",
                 description="description_value",
                 project_id="project_id_value",
+                service_account="service_account_value",
                 status=transfer_types.TransferJob.Status.ENABLED,
                 latest_operation_name="latest_operation_name_value",
             )
@@ -8240,6 +8253,7 @@ async def test_update_transfer_job_empty_call_grpc_asyncio():
                 name="name_value",
                 description="description_value",
                 project_id="project_id_value",
+                service_account="service_account_value",
                 status=transfer_types.TransferJob.Status.ENABLED,
                 latest_operation_name="latest_operation_name_value",
             )
@@ -8271,6 +8285,7 @@ async def test_get_transfer_job_empty_call_grpc_asyncio():
                 name="name_value",
                 description="description_value",
                 project_id="project_id_value",
+                service_account="service_account_value",
                 status=transfer_types.TransferJob.Status.ENABLED,
                 latest_operation_name="latest_operation_name_value",
             )
@@ -8744,6 +8759,7 @@ def test_create_transfer_job_rest_call_success(request_type):
         "name": "name_value",
         "description": "description_value",
         "project_id": "project_id_value",
+        "service_account": "service_account_value",
         "transfer_spec": {
             "gcs_data_sink": {
                 "bucket_name": "bucket_name_value",
@@ -8772,6 +8788,10 @@ def test_create_transfer_job_rest_call_success(request_type):
                 "container": "container_value",
                 "path": "path_value",
                 "credentials_secret": "credentials_secret_value",
+                "federated_identity_config": {
+                    "client_id": "client_id_value",
+                    "tenant_id": "tenant_id_value",
+                },
             },
             "aws_s3_compatible_data_source": {
                 "bucket_name": "bucket_name_value",
@@ -8940,6 +8960,7 @@ def test_create_transfer_job_rest_call_success(request_type):
             name="name_value",
             description="description_value",
             project_id="project_id_value",
+            service_account="service_account_value",
             status=transfer_types.TransferJob.Status.ENABLED,
             latest_operation_name="latest_operation_name_value",
         )
@@ -8961,6 +8982,7 @@ def test_create_transfer_job_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.project_id == "project_id_value"
+    assert response.service_account == "service_account_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
 
@@ -9076,6 +9098,7 @@ def test_update_transfer_job_rest_call_success(request_type):
             name="name_value",
             description="description_value",
             project_id="project_id_value",
+            service_account="service_account_value",
             status=transfer_types.TransferJob.Status.ENABLED,
             latest_operation_name="latest_operation_name_value",
         )
@@ -9097,6 +9120,7 @@ def test_update_transfer_job_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.project_id == "project_id_value"
+    assert response.service_account == "service_account_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
 
@@ -9210,6 +9234,7 @@ def test_get_transfer_job_rest_call_success(request_type):
             name="name_value",
             description="description_value",
             project_id="project_id_value",
+            service_account="service_account_value",
             status=transfer_types.TransferJob.Status.ENABLED,
             latest_operation_name="latest_operation_name_value",
         )
@@ -9231,6 +9256,7 @@ def test_get_transfer_job_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.project_id == "project_id_value"
+    assert response.service_account == "service_account_value"
     assert response.status == transfer_types.TransferJob.Status.ENABLED
     assert response.latest_operation_name == "latest_operation_name_value"
 
