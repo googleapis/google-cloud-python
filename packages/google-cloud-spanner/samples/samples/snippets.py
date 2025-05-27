@@ -2510,6 +2510,36 @@ def set_transaction_tag(instance_id, database_id):
     # [END spanner_set_transaction_tag]
 
 
+def set_transaction_timeout(instance_id, database_id):
+    """Executes a transaction with a transaction timeout."""
+    # [START spanner_transaction_timeout]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    def read_then_write(transaction):
+        # Read records.
+        results = transaction.execute_sql(
+            "SELECT SingerId, FirstName, LastName FROM Singers ORDER BY LastName, FirstName"
+        )
+        for result in results:
+            print("SingerId: {}, FirstName: {}, LastName: {}".format(*result))
+
+        # Insert a record.
+        row_ct = transaction.execute_update(
+            "INSERT INTO Singers (SingerId, FirstName, LastName) "
+            " VALUES (100, 'George', 'Washington')"
+        )
+        print("{} record(s) inserted.".format(row_ct))
+
+    # configure transaction timeout to 60 seconds
+    database.run_in_transaction(read_then_write, timeout_secs=60)
+
+    # [END spanner_transaction_timeout]
+
+
 def set_request_tag(instance_id, database_id):
     """Executes a snapshot read with a request tag."""
     # [START spanner_set_request_tag]
@@ -3272,6 +3302,7 @@ def update_instance_default_backup_schedule_type(instance_id):
 
     print("Updated instance {} to have default backup schedules".format(instance_id))
 
+
 # [END spanner_update_instance_default_backup_schedule_type]
 
 
@@ -3618,6 +3649,9 @@ if __name__ == "__main__":  # noqa: C901
     subparsers.add_parser("update_data", help=update_data.__doc__)
     subparsers.add_parser("set_max_commit_delay", help=set_max_commit_delay.__doc__)
     subparsers.add_parser(
+        "set_transaction_timeout", help=set_transaction_timeout.__doc__
+    )
+    subparsers.add_parser(
         "query_data_with_new_column", help=query_data_with_new_column.__doc__
     )
     subparsers.add_parser("read_write_transaction", help=read_write_transaction.__doc__)
@@ -3783,6 +3817,8 @@ if __name__ == "__main__":  # noqa: C901
         update_data(args.instance_id, args.database_id)
     elif args.command == "set_max_commit_delay":
         set_max_commit_delay(args.instance_id, args.database_id)
+    elif args.command == "set_transaction_timeout":
+        set_transaction_timeout(args.instance_id, args.database_id)
     elif args.command == "query_data_with_new_column":
         query_data_with_new_column(args.instance_id, args.database_id)
     elif args.command == "read_write_transaction":

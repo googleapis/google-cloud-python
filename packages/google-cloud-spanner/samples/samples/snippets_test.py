@@ -855,6 +855,13 @@ def test_set_transaction_tag(capsys, instance_id, sample_database):
     assert "New venue inserted." in out
 
 
+@pytest.mark.dependency(depends=["insert_datatypes_data"])
+def test_set_transaction_timeout(capsys, instance_id, sample_database):
+    snippets.set_transaction_timeout(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "1 record(s) inserted." in out
+
+
 @pytest.mark.dependency(depends=["insert_data"])
 def test_set_request_tag(capsys, instance_id, sample_database):
     snippets.set_request_tag(instance_id, sample_database.database_id)
