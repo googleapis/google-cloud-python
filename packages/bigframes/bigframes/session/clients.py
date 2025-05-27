@@ -181,6 +181,13 @@ class ClientsProvider:
             location=self._location,
         )
 
+        # If a new enough client library is available, we opt-in to the faster
+        # backend behavior. This only affects code paths where query_and_wait is
+        # used, which doesn't expose a query job directly. See internal issue
+        # b/417985981.
+        if hasattr(bq_client, "default_job_creation_mode"):
+            bq_client.default_job_creation_mode = "JOB_CREATION_OPTIONAL"
+
         if self._bq_kms_key_name:
             # Note: Key configuration only applies automatically to load and query jobs, not copy jobs.
             encryption_config = bigquery.EncryptionConfiguration(

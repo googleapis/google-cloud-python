@@ -46,6 +46,8 @@ def create_clients_provider(application_name: Optional[str] = None):
 def monkeypatch_client_constructors(monkeypatch):
     bqclient = mock.create_autospec(google.cloud.bigquery.Client)
     bqclient.return_value = bqclient
+    # Assume we have a new client library in the unit tests.
+    bqclient.default_job_creation_mode = None  # type: ignore
     monkeypatch.setattr(google.cloud.bigquery, "Client", bqclient)
 
     bqconnectionclient = mock.create_autospec(
@@ -81,6 +83,11 @@ def monkeypatch_client_constructors(monkeypatch):
     monkeypatch.setattr(
         google.cloud.resourcemanager_v3, "ProjectsClient", resourcemanagerclient
     )
+
+
+def assert_bqclient_sets_default_job_creation_mode(provider: clients.ClientsProvider):
+    bqclient = provider.bqclient
+    assert bqclient.default_job_creation_mode == "JOB_CREATION_OPTIONAL"
 
 
 def assert_constructed_w_user_agent(mock_client: mock.Mock, expected_user_agent: str):
