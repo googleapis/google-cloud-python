@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.11.0...v1.11.1) (2025-05-27)
+
+
+### Bug Fixes
+
+* Update README to include isolation level repeatable read ([#668](https://github.com/googleapis/python-spanner-sqlalchemy/issues/668)) ([d84daf6](https://github.com/googleapis/python-spanner-sqlalchemy/commit/d84daf65a496bdff6f5d9e835490785c69533238))
+
 ## [1.11.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.10.0...v1.11.0) (2025-05-07)
 
 
