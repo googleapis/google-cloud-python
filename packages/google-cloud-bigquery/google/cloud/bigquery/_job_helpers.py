@@ -37,7 +37,6 @@ predicates where it is safe to generate a new query ID.
 
 import copy
 import functools
-import os
 import uuid
 import textwrap
 from typing import Any, Dict, Optional, TYPE_CHECKING, Union
@@ -400,12 +399,6 @@ def query_and_wait(
 ) -> table.RowIterator:
     """Run the query, wait for it to finish, and return the results.
 
-    While ``jobCreationMode=JOB_CREATION_OPTIONAL`` is in preview in the
-    ``jobs.query`` REST API, use the default ``jobCreationMode`` unless
-    the environment variable ``QUERY_PREVIEW_ENABLED=true``. After
-    ``jobCreationMode`` is GA, this method will always use
-    ``jobCreationMode=JOB_CREATION_OPTIONAL``. See:
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
 
     Args:
         client:
@@ -500,9 +493,8 @@ def query_and_wait(
         request_body["maxResults"] = min(page_size, max_results)
     elif page_size is not None or max_results is not None:
         request_body["maxResults"] = page_size or max_results
-
-    if os.getenv("QUERY_PREVIEW_ENABLED", "").casefold() == "true":
-        request_body["jobCreationMode"] = "JOB_CREATION_OPTIONAL"
+    if client.default_job_creation_mode:
+        request_body["jobCreationMode"] = client.default_job_creation_mode
 
     def do_query():
         request_body["requestId"] = make_job_id()

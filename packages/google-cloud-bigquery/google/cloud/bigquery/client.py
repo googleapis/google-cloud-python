@@ -221,6 +221,10 @@ class Client(ClientWithProject):
         client_options (Optional[Union[google.api_core.client_options.ClientOptions, Dict]]):
             Client options used to set user options on the client. API Endpoint
             should be set through client_options.
+        default_job_creation_mode (Optional[str]):
+            Sets the default job creation mode used by query methods such as
+            query_and_wait().  For lightweight queries, JOB_CREATION_OPTIONAL is
+            generally recommended.
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError:
@@ -243,6 +247,7 @@ class Client(ClientWithProject):
         client_options: Optional[
             Union[google.api_core.client_options.ClientOptions, Dict[str, Any]]
         ] = None,
+        default_job_creation_mode: Optional[str] = None,
     ) -> None:
         if client_options is None:
             client_options = {}
@@ -277,6 +282,7 @@ class Client(ClientWithProject):
         self._connection = Connection(self, **kw_args)
         self._location = location
         self._default_load_job_config = copy.deepcopy(default_load_job_config)
+        self.default_job_creation_mode = default_job_creation_mode
 
         # Use property setter so validation can run.
         self.default_query_job_config = default_query_job_config
@@ -285,6 +291,15 @@ class Client(ClientWithProject):
     def location(self):
         """Default location for jobs / datasets / tables."""
         return self._location
+
+    @property
+    def default_job_creation_mode(self):
+        """Default job creation mode used for query execution."""
+        return self._default_job_creation_mode
+
+    @default_job_creation_mode.setter
+    def default_job_creation_mode(self, value: Optional[str]):
+        self._default_job_creation_mode = value
 
     @property
     def default_query_job_config(self) -> Optional[QueryJobConfig]:
@@ -3531,13 +3546,6 @@ class Client(ClientWithProject):
         max_results: Optional[int] = None,
     ) -> RowIterator:
         """Run the query, wait for it to finish, and return the results.
-
-        While ``jobCreationMode=JOB_CREATION_OPTIONAL`` is in preview in the
-        ``jobs.query`` REST API, use the default ``jobCreationMode`` unless
-        the environment variable ``QUERY_PREVIEW_ENABLED=true``. After
-        ``jobCreationMode`` is GA, this method will always use
-        ``jobCreationMode=JOB_CREATION_OPTIONAL``. See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
 
         Args:
             query (str):

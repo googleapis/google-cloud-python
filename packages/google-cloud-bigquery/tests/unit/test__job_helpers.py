@@ -554,13 +554,9 @@ def test_query_and_wait_retries_job_times_out():
     )
 
 
-def test_query_and_wait_sets_job_creation_mode(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv(
-        "QUERY_PREVIEW_ENABLED",
-        # The comparison should be case insensitive.
-        "TrUe",
-    )
+def test_query_and_wait_sets_job_creation_mode():
     client = mock.create_autospec(Client)
+    client.default_job_creation_mode = "JOB_CREATION_OPTIONAL"
     client._call_api.return_value = {
         "jobReference": {
             "projectId": "response-project",
@@ -642,6 +638,7 @@ def test_query_and_wait_sets_location():
                 "useInt64Timestamp": True,
             },
             "requestId": mock.ANY,
+            "jobCreationMode": mock.ANY,
         },
         timeout=None,
     )
@@ -658,6 +655,7 @@ def test_query_and_wait_sets_location():
 )
 def test_query_and_wait_sets_max_results(max_results, page_size, expected):
     client = mock.create_autospec(Client)
+    client.default_job_creation_mode = None
     client._call_api.return_value = {
         "jobReference": {
             "projectId": "response-project",
@@ -703,6 +701,7 @@ def test_query_and_wait_sets_max_results(max_results, page_size, expected):
 
 def test_query_and_wait_caches_completed_query_results_one_page():
     client = mock.create_autospec(Client)
+    client.default_job_creation_mode = None
     client._call_api.return_value = {
         "jobReference": {
             "projectId": "response-project",
@@ -768,6 +767,7 @@ def test_query_and_wait_caches_completed_query_results_one_page():
 
 def test_query_and_wait_caches_completed_query_results_one_page_no_rows():
     client = mock.create_autospec(Client)
+    client.default_job_creation_mode = None
     client._call_api.return_value = {
         "jobReference": {
             "projectId": "response-project",

@@ -213,6 +213,17 @@ class TestClient(unittest.TestCase):
         )
         self.assertEqual(client._connection.API_BASE_URL, "https://bigquery.foo.com")
 
+    def test_ctor_w_job_creation_mode(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            default_job_creation_mode="foo",
+        )
+        self.assertEqual(client.default_job_creation_mode, "foo")
+
     def test_ctor_w_location(self):
         from google.cloud.bigquery._http import Connection
 

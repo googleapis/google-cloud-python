@@ -407,3 +407,22 @@ class BigLakeTableFormat(object):
 
     ICEBERG = "ICEBERG"
     """Apache Iceberg format."""
+
+
+class JobCreationMode(object):
+    """Documented values for Job Creation Mode."""
+
+    JOB_CREATION_MODE_UNSPECIFIED = "JOB_CREATION_MODE_UNSPECIFIED"
+    """Job creation mode is unspecified."""
+
+    JOB_CREATION_REQUIRED = "JOB_CREATION_REQUIRED"
+    """Job creation is always required."""
+
+    JOB_CREATION_OPTIONAL = "JOB_CREATION_OPTIONAL"
+    """Job creation is optional.
+
+    Returning immediate results is prioritized.
+    BigQuery will automatically determine if a Job needs to be created.
+    The conditions under which BigQuery can decide to not create a Job are
+    subject to change.
+    """
