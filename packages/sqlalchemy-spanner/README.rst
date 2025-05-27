@@ -89,7 +89,8 @@ To pass your custom client object directly to be be used, create engine as follo
 
     engine = create_engine(
         "spanner+spanner:///projects/project-id/instances/instance-id/databases/database-id",
-        connect_args={'client': spanner.Client(project="project-id")}
+        connect_args={'client': spanner.Client(project="project-id")},
+        isolation_level="SERIALIZABLE"
     )
 
 Create a table
@@ -264,8 +265,9 @@ Create a UNIQUE index:
 Autocommit mode
 ~~~~~~~~~~~~~~~
 
-Spanner dialect supports both ``SERIALIZABLE`` and ``AUTOCOMMIT``
-isolation levels. ``SERIALIZABLE`` is the default isolation level.
+Spanner dialect supports ``SERIALIZABLE``, ``REPEATABLE_READ``, and
+``AUTOCOMMIT`` isolation levels. ``SERIALIZABLE`` is the default
+isolation level.
 
 ``AUTOCOMMIT`` mode corresponds to automatically committing each
 insert/update/delete statement right after is has been executed.
@@ -287,11 +289,17 @@ Isolation level change example:
 
 Automatic transaction retry
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In the default ``SERIALIZABLE`` mode transactions may fail with ``Aborted`` exception. This is a transient kind of errors, which mostly happen to prevent data corruption by concurrent modifications. Though the original transaction becomes non operational, a simple retry of the queries solves the issue.
+In ``SERIALIZABLE`` isolation mode, transactions may fail with an ``Aborted`` exception.
+This happens if there are conflicts between different transactions, for example if one
+transaction tries to read data that another transaction has modified. Aborted transactions
+should be retried by the client. The Spanner SQLAlchemy provider automatically retries
+aborted transactions.
 
-This, however, may require to manually repeat a long list of operations, executed in the failed transaction. To simplify it, Spanner Connection API tracks all the operations, executed inside current transaction, and their result checksums. If the transaction failed with ``Aborted`` exception, the Connection API will automatically start a new transaction and will re-run all the tracked operations, checking if their results are the same as they were in the original transaction. In case data changed, and results differ, the transaction is dropped, as there is no way to automatically retry it.
+Isolation level ``SERIALIZABLE`` takes lock for both **reads and writes**.
 
-In ``AUTOCOMMIT`` mode automatic transactions retry mechanism is disabled, as every operation is committed just in time, and there is no way an ``Aborted`` exception can happen.
+Use isolation level ``REPEATABLE READ`` to reduce the amount of locks that
+are taken by read/write transactions. ``REPEATABLE READ`` only takes locks
+for **writes** and for queries that use a ``FOR UPDATE`` clause.
 
 Auto-increment primary keys
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -340,8 +348,8 @@ Usage example:
    query = query.filter(User.name.in_(["val1", "val2"]))
    query.statement.compile(session.bind)
 
-ReadOnly transactions
-~~~~~~~~~~~~~~~~~~~~~
+Read-only transactions
+~~~~~~~~~~~~~~~~~~~~~~
 
 By default, transactions produced by a Spanner connection are in
 ReadWrite mode. However, workloads that only read data perform better
