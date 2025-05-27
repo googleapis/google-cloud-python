@@ -584,9 +584,9 @@ wrapt==1.17.2 \
     # via
     #   deprecated
     #   opentelemetry-instrumentation
-zipp==3.21.0 \
-    --hash=sha256:2c9958f6430a2040341a52eb608ed6dd93ef4392e02ffe219417c1b28b5dd1f4 \
-    --hash=sha256:ac1bbe05fd2991f160ebce24ffbac5f6d11d83dc90891255885223d42b3cd931
+zipp==3.22.0 \
+    --hash=sha256:dd2f28c3ce4bc67507bfd3781d21b7bb2be31103b51a4553ad7d90b84e57ace5 \
+    --hash=sha256:fe208f65f2aca48b81f9e6fd8cf7b8b32c26375266b009b413d45306b6148343
     # via importlib-metadata
 
 # WARNING: The following packages were not pinned, but pip requires them to be
