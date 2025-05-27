@@ -40,6 +40,8 @@ __protobuf__ = proto.module(
         "UserInfo",
         "LocalInventory",
         "PinControlMetadata",
+        "StringList",
+        "DoubleList",
     },
 )
 
@@ -1551,6 +1553,34 @@ class PinControlMetadata(proto.Message):
         proto.MESSAGE,
         number=2,
         message=ProductPins,
+    )
+
+
+class StringList(proto.Message):
+    r"""A list of string values.
+
+    Attributes:
+        values (MutableSequence[str]):
+            String values.
+    """
+
+    values: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DoubleList(proto.Message):
+    r"""A message with a list of double values.
+
+    Attributes:
+        values (MutableSequence[float]):
+            The list of double values.
+    """
+
+    values: MutableSequence[float] = proto.RepeatedField(
+        proto.DOUBLE,
+        number=1,
     )
 
 

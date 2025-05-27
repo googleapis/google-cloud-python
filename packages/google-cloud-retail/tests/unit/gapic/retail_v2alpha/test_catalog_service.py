@@ -8085,6 +8085,7 @@ def test_update_catalog_rest_call_success(request_type):
                     "feeds": [
                         {
                             "primary_feed_id": 1571,
+                            "data_source_id": 1462,
                             "primary_feed_name": "primary_feed_name_value",
                         }
                     ],
