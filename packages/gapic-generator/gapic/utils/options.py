@@ -147,7 +147,7 @@ class Options:
         if service_yaml_paths:
             # Just use the last file specified.
             with open(service_yaml_paths[-1]) as f:
-                service_yaml_config = yaml.load(f, Loader=yaml.Loader)
+                service_yaml_config = yaml.safe_load(f)
         # The yaml service files typically have this field,
         # but it is not a field in the gogle.api.Service proto.
         service_yaml_config.pop("type", None)
