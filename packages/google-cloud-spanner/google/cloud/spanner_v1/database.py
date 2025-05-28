@@ -62,6 +62,8 @@ from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import SessionCheckout
 from google.cloud.spanner_v1.session import Session
+from google.cloud.spanner_v1.session_options import SessionOptions
+from google.cloud.spanner_v1.database_sessions_manager import DatabaseSessionsManager
 from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.streamed import StreamedResultSet
@@ -199,6 +201,9 @@ class Database(object):
 
         self._pool = pool
         pool.bind(self)
+
+        self.session_options = SessionOptions()
+        self._sessions_manager = DatabaseSessionsManager(self, pool)
 
     @classmethod
     def from_pb(cls, database_pb, instance, pool=None):
@@ -759,7 +764,12 @@ class Database(object):
                 "CloudSpanner.Database.execute_partitioned_pdml",
                 observability_options=self.observability_options,
             ) as span, MetricsCapture():
-                with SessionCheckout(self._pool) as session:
+                from google.cloud.spanner_v1.session_options import TransactionType
+
+                session = self._sessions_manager.get_session(
+                    TransactionType.PARTITIONED
+                )
+                try:
                     add_span_event(span, "Starting BeginTransaction")
                     txn = api.begin_transaction(
                         session=session.name,
@@ -802,6 +812,8 @@ class Database(object):
                     list(result_set)  # consume all partials
 
                     return result_set.stats.row_count_lower_bound
+                finally:
+                    self._sessions_manager.put_session(session)
 
         return _retry_on_aborted(execute_pdml, DEFAULT_RETRY_BACKOFF)()
 
@@ -1240,6 +1252,15 @@ class Database(object):
         opts["db_name"] = self.name
         return opts
 
+    @property
+    def sessions_manager(self):
+        """Returns the database sessions manager.
+
+        :rtype: :class:`~google.cloud.spanner_v1.database_sessions_manager.DatabaseSessionsManager`
+        :returns: The sessions manager for this database.
+        """
+        return self._sessions_manager
+
 
 class BatchCheckout(object):
     """Context manager for using a batch from a database.
@@ -1290,8 +1311,12 @@ class BatchCheckout(object):
 
     def __enter__(self):
         """Begin ``with`` block."""
+        from google.cloud.spanner_v1.session_options import TransactionType
+
         current_span = get_current_span()
-        session = self._session = self._database._pool.get()
+        session = self._session = self._database.sessions_manager.get_session(
+            TransactionType.READ_WRITE
+        )
         add_span_event(current_span, "Using session", {"id": session.session_id})
         batch = self._batch = Batch(session)
         if self._request_options.transaction_tag:
@@ -1316,7 +1341,7 @@ class BatchCheckout(object):
                     "CommitStats: {}".format(self._batch.commit_stats),
                     extra={"commit_stats": self._batch.commit_stats},
                 )
-            self._database._pool.put(self._session)
+            self._database.sessions_manager.put_session(self._session)
             current_span = get_current_span()
             add_span_event(
                 current_span,
@@ -1344,7 +1369,11 @@ class MutationGroupsCheckout(object):
 
     def __enter__(self):
         """Begin ``with`` block."""
-        session = self._session = self._database._pool.get()
+        from google.cloud.spanner_v1.session_options import TransactionType
+
+        session = self._session = self._database.sessions_manager.get_session(
+            TransactionType.READ_WRITE
+        )
         return MutationGroups(session)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1355,7 +1384,7 @@ class MutationGroupsCheckout(object):
             if not self._session.exists():
                 self._session = self._database._pool._new_session()
                 self._session.create()
-        self._database._pool.put(self._session)
+        self._database.sessions_manager.put_session(self._session)
 
 
 class SnapshotCheckout(object):
@@ -1383,7 +1412,11 @@ class SnapshotCheckout(object):
 
     def __enter__(self):
         """Begin ``with`` block."""
-        session = self._session = self._database._pool.get()
+        from google.cloud.spanner_v1.session_options import TransactionType
+
+        session = self._session = self._database.sessions_manager.get_session(
+            TransactionType.READ_ONLY
+        )
         return Snapshot(session, **self._kw)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1394,7 +1427,7 @@ class SnapshotCheckout(object):
             if not self._session.exists():
                 self._session = self._database._pool._new_session()
                 self._session.create()
-        self._database._pool.put(self._session)
+        self._database.sessions_manager.put_session(self._session)
 
 
 class BatchSnapshot(object):
@@ -1474,10 +1507,13 @@ class BatchSnapshot(object):
            all partitions have been processed.
         """
         if self._session is None:
-            session = self._session = self._database.session()
-            if self._session_id is None:
-                session.create()
-            else:
+            from google.cloud.spanner_v1.session_options import TransactionType
+
+            # Use sessions manager for partition operations
+            session = self._session = self._database.sessions_manager.get_session(
+                TransactionType.PARTITIONED
+            )
+            if self._session_id is not None:
                 session._session_id = self._session_id
         return self._session
 
@@ -1888,7 +1924,8 @@ class BatchSnapshot(object):
            from all the partitions.
         """
         if self._session is not None:
-            self._session.delete()
+            if not self._session.is_multiplexed:
+                self._session.delete()
 
 
 def _check_ddl_statements(value):

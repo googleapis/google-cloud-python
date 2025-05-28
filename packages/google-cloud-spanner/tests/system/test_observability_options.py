@@ -109,8 +109,23 @@ def test_observability_options_propagation():
             len(from_inject_spans) >= 2
         )  # "Expecting at least 2 spans from the injected trace exporter"
         gotNames = [span.name for span in from_inject_spans]
+
+        # Check if multiplexed sessions are enabled
+        import os
+
+        multiplexed_enabled = (
+            os.getenv("GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS", "").lower() == "true"
+        )
+
+        # Determine expected session span name based on multiplexed sessions
+        expected_session_span_name = (
+            "CloudSpanner.CreateMultiplexedSession"
+            if multiplexed_enabled
+            else "CloudSpanner.CreateSession"
+        )
+
         wantNames = [
-            "CloudSpanner.CreateSession",
+            expected_session_span_name,
             "CloudSpanner.Snapshot.execute_sql",
         ]
         assert gotNames == wantNames
@@ -392,6 +407,7 @@ def test_transaction_update_implicit_begin_nested_inside_commit():
     reason="Tracing requires OpenTelemetry",
 )
 def test_database_partitioned_error():
+    import os
     from opentelemetry.trace.status import StatusCode
 
     db, trace_exporter = create_db_trace_exporter()
@@ -402,43 +418,84 @@ def test_database_partitioned_error():
         pass
 
     got_statuses, got_events = finished_spans_statuses(trace_exporter)
-    # Check for the series of events
-    want_events = [
-        ("Acquiring session", {"kind": "BurstyPool"}),
-        ("Waiting for a session to become available", {"kind": "BurstyPool"}),
-        ("No sessions available in pool. Creating session", {"kind": "BurstyPool"}),
-        ("Creating Session", {}),
-        ("Starting BeginTransaction", {}),
-        (
-            "exception",
-            {
-                "exception.type": "google.api_core.exceptions.InvalidArgument",
-                "exception.message": "400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^",
-                "exception.stacktrace": "EPHEMERAL",
-                "exception.escaped": "False",
-            },
-        ),
-        (
-            "exception",
-            {
-                "exception.type": "google.api_core.exceptions.InvalidArgument",
-                "exception.message": "400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^",
-                "exception.stacktrace": "EPHEMERAL",
-                "exception.escaped": "False",
-            },
-        ),
-    ]
-    assert got_events == want_events
 
-    # Check for the statues.
+    multiplexed_partitioned_enabled = (
+        os.getenv("GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_PARTITIONED_OPS") == "true"
+    )
+
+    if multiplexed_partitioned_enabled:
+        expected_event_names = [
+            "Creating Session",
+            "Using session",
+            "Starting BeginTransaction",
+            "Returning session",
+            "exception",
+            "exception",
+        ]
+        assert len(got_events) == len(expected_event_names)
+        for i, expected_name in enumerate(expected_event_names):
+            assert got_events[i][0] == expected_name
+
+        assert got_events[1][1]["multiplexed"] is True
+
+        assert got_events[3][1]["multiplexed"] is True
+
+        for i in [4, 5]:
+            assert (
+                got_events[i][1]["exception.type"]
+                == "google.api_core.exceptions.InvalidArgument"
+            )
+            assert (
+                "Table not found: NonExistent" in got_events[i][1]["exception.message"]
+            )
+    else:
+        expected_event_names = [
+            "Acquiring session",
+            "Waiting for a session to become available",
+            "No sessions available in pool. Creating session",
+            "Creating Session",
+            "Using session",
+            "Starting BeginTransaction",
+            "Returning session",
+            "exception",
+            "exception",
+        ]
+
+        assert len(got_events) == len(expected_event_names)
+        for i, expected_name in enumerate(expected_event_names):
+            assert got_events[i][0] == expected_name
+
+        assert got_events[0][1]["kind"] == "BurstyPool"
+        assert got_events[1][1]["kind"] == "BurstyPool"
+        assert got_events[2][1]["kind"] == "BurstyPool"
+
+        assert got_events[4][1]["multiplexed"] is False
+
+        assert got_events[6][1]["multiplexed"] is False
+
+        for i in [7, 8]:
+            assert (
+                got_events[i][1]["exception.type"]
+                == "google.api_core.exceptions.InvalidArgument"
+            )
+            assert (
+                "Table not found: NonExistent" in got_events[i][1]["exception.message"]
+            )
+
     codes = StatusCode
+
+    expected_session_span_name = (
+        "CloudSpanner.CreateMultiplexedSession"
+        if multiplexed_partitioned_enabled
+        else "CloudSpanner.CreateSession"
+    )
     want_statuses = [
         (
             "CloudSpanner.Database.execute_partitioned_pdml",
             codes.ERROR,
             "InvalidArgument: 400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^",
         ),
-        ("CloudSpanner.CreateSession", codes.OK, None),
+        (expected_session_span_name, codes.OK, None),
         (
             "CloudSpanner.ExecuteStreamingSql",
             codes.ERROR,

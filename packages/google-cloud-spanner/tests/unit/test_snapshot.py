@@ -608,7 +608,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             self.assertEqual(len(span_list), 2)
             for i, span in enumerate(span_list):
                 self.assertEqual(span.name, name)
-                req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.{i+1}"
+                req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.{i + 1}"
                 self.assertEqual(
                     dict(span.attributes),
                     dict(

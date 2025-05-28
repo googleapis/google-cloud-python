@@ -1228,6 +1228,7 @@ class TestDatabase(_BaseTest):
         retried=False,
         exclude_txn_from_change_streams=False,
     ):
+        import os
         from google.api_core.exceptions import Aborted
         from google.api_core.retry import Retry
         from google.protobuf.struct_pb2 import Struct
@@ -1262,6 +1263,31 @@ class TestDatabase(_BaseTest):
         session = _Session()
         pool.put(session)
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        multiplexed_partitioned_enabled = (
+            os.environ.get(
+                "GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_PARTITIONED_OPS", "false"
+            ).lower()
+            == "true"
+        )
+
+        if multiplexed_partitioned_enabled:
+            # When multiplexed sessions are enabled, create a mock multiplexed session
+            # that the sessions manager will return
+            multiplexed_session = _Session()
+            multiplexed_session.name = (
+                self.SESSION_NAME
+            )  # Use the expected session name
+            multiplexed_session.is_multiplexed = True
+            # Configure the sessions manager to return the multiplexed session
+            database._sessions_manager.get_session = mock.Mock(
+                return_value=multiplexed_session
+            )
+            expected_session = multiplexed_session
+        else:
+            # When multiplexed sessions are disabled, use the regular pool session
+            expected_session = session
+
         api = database._spanner_api = self._make_spanner_api()
         api._method_configs = {"ExecuteStreamingSql": MethodConfig(retry=Retry())}
         if retried:
@@ -1290,7 +1316,7 @@ class TestDatabase(_BaseTest):
 
         if retried:
             api.begin_transaction.assert_called_with(
-                session=session.name,
+                session=expected_session.name,
                 options=txn_options,
                 metadata=[
                     ("google-cloud-resource-prefix", database.name),
@@ -1303,7 +1329,7 @@ class TestDatabase(_BaseTest):
             )
             self.assertEqual(api.begin_transaction.call_count, 2)
             api.begin_transaction.assert_called_with(
-                session=session.name,
+                session=expected_session.name,
                 options=txn_options,
                 metadata=[
                     ("google-cloud-resource-prefix", database.name),
@@ -1317,7 +1343,7 @@ class TestDatabase(_BaseTest):
             )
         else:
             api.begin_transaction.assert_called_with(
-                session=session.name,
+                session=expected_session.name,
                 options=txn_options,
                 metadata=[
                     ("google-cloud-resource-prefix", database.name),
@@ -1330,7 +1356,7 @@ class TestDatabase(_BaseTest):
             )
             self.assertEqual(api.begin_transaction.call_count, 1)
             api.begin_transaction.assert_called_with(
-                session=session.name,
+                session=expected_session.name,
                 options=txn_options,
                 metadata=[
                     ("google-cloud-resource-prefix", database.name),
@@ -1427,6 +1453,16 @@ class TestDatabase(_BaseTest):
             )
             self.assertEqual(api.execute_streaming_sql.call_count, 1)
 
+        # Verify that the correct session type was used based on environment
+        if multiplexed_partitioned_enabled:
+            # Verify that sessions_manager.get_session was called with PARTITIONED transaction type
+            from google.cloud.spanner_v1.session_options import TransactionType
+
+            database._sessions_manager.get_session.assert_called_with(
+                TransactionType.PARTITIONED
+            )
+        # If multiplexed sessions are not enabled, the regular pool session should be used
+
     def test_execute_partitioned_dml_wo_params(self):
         self._execute_partitioned_dml_helper(dml=DML_WO_PARAM)
 
@@ -1503,7 +1539,9 @@ class TestDatabase(_BaseTest):
         self.assertEqual(session.labels, labels)
 
     def test_snapshot_defaults(self):
+        import os
         from google.cloud.spanner_v1.database import SnapshotCheckout
+        from google.cloud.spanner_v1.snapshot import Snapshot
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -1512,15 +1550,47 @@ class TestDatabase(_BaseTest):
         pool.put(session)
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
+        # Check if multiplexed sessions are enabled for read operations
+        multiplexed_enabled = (
+            os.getenv("GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS") == "true"
+        )
+
+        if multiplexed_enabled:
+            # When multiplexed sessions are enabled, configure the sessions manager
+            # to return a multiplexed session for read operations
+            multiplexed_session = _Session()
+            multiplexed_session.name = self.SESSION_NAME
+            multiplexed_session.is_multiplexed = True
+            # Override the side_effect to return the multiplexed session
+            database._sessions_manager.get_session = mock.Mock(
+                return_value=multiplexed_session
+            )
+            expected_session = multiplexed_session
+        else:
+            expected_session = session
+
         checkout = database.snapshot()
         self.assertIsInstance(checkout, SnapshotCheckout)
         self.assertIs(checkout._database, database)
         self.assertEqual(checkout._kw, {})
 
+        with checkout as snapshot:
+            if not multiplexed_enabled:
+                self.assertIsNone(pool._session)
+            self.assertIsInstance(snapshot, Snapshot)
+            self.assertIs(snapshot._session, expected_session)
+            self.assertTrue(snapshot._strong)
+            self.assertFalse(snapshot._multi_use)
+
+        if not multiplexed_enabled:
+            self.assertIs(pool._session, session)
+
     def test_snapshot_w_read_timestamp_and_multi_use(self):
         import datetime
+        import os
         from google.cloud._helpers import UTC
         from google.cloud.spanner_v1.database import SnapshotCheckout
+        from google.cloud.spanner_v1.snapshot import Snapshot
 
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         client = _Client()
@@ -1530,11 +1600,41 @@ class TestDatabase(_BaseTest):
         pool.put(session)
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
+        # Check if multiplexed sessions are enabled for read operations
+        multiplexed_enabled = (
+            os.getenv("GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS") == "true"
+        )
+
+        if multiplexed_enabled:
+            # When multiplexed sessions are enabled, configure the sessions manager
+            # to return a multiplexed session for read operations
+            multiplexed_session = _Session()
+            multiplexed_session.name = self.SESSION_NAME
+            multiplexed_session.is_multiplexed = True
+            # Override the side_effect to return the multiplexed session
+            database._sessions_manager.get_session = mock.Mock(
+                return_value=multiplexed_session
+            )
+            expected_session = multiplexed_session
+        else:
+            expected_session = session
+
         checkout = database.snapshot(read_timestamp=now, multi_use=True)
 
         self.assertIsInstance(checkout, SnapshotCheckout)
         self.assertIs(checkout._database, database)
         self.assertEqual(checkout._kw, {"read_timestamp": now, "multi_use": True})
+
+        with checkout as snapshot:
+            if not multiplexed_enabled:
+                self.assertIsNone(pool._session)
+            self.assertIsInstance(snapshot, Snapshot)
+            self.assertIs(snapshot._session, expected_session)
+            self.assertEqual(snapshot._read_timestamp, now)
+            self.assertTrue(snapshot._multi_use)
+
+        if not multiplexed_enabled:
+            self.assertIs(pool._session, session)
 
     def test_batch(self):
         from google.cloud.spanner_v1.database import BatchCheckout
@@ -2467,10 +2567,17 @@ class TestBatchSnapshot(_BaseTest):
 
     def test__get_session_new(self):
         database = self._make_database()
-        session = database.session.return_value = self._make_session()
+        session = self._make_session()
+        # Configure sessions_manager to return the session for partition operations
+        database.sessions_manager.get_session.return_value = session
         batch_txn = self._make_one(database)
         self.assertIs(batch_txn._get_session(), session)
-        session.create.assert_called_once_with()
+        # Verify that sessions_manager.get_session was called with PARTITIONED transaction type
+        from google.cloud.spanner_v1.session_options import TransactionType
+
+        database.sessions_manager.get_session.assert_called_once_with(
+            TransactionType.PARTITIONED
+        )
 
     def test__get_snapshot_already(self):
         database = self._make_database()
@@ -3105,10 +3212,24 @@ class TestBatchSnapshot(_BaseTest):
         database = self._make_database()
         batch_txn = self._make_one(database)
         session = batch_txn._session = self._make_session()
+        # Configure session as non-multiplexed (default behavior)
+        session.is_multiplexed = False
 
         batch_txn.close()
 
         session.delete.assert_called_once_with()
+
+    def test_close_w_multiplexed_session(self):
+        database = self._make_database()
+        batch_txn = self._make_one(database)
+        session = batch_txn._session = self._make_session()
+        # Configure session as multiplexed
+        session.is_multiplexed = True
+
+        batch_txn.close()
+
+        # Multiplexed sessions should not be deleted
+        session.delete.assert_not_called()
 
     def test_process_w_invalid_batch(self):
         token = b"TOKEN"
@@ -3432,6 +3553,29 @@ class _Database(object):
         self._nth_request = AtomicCounter()
         self._nth_client_id = _Database.NTH_CLIENT_ID.increment()
 
+        # Mock sessions manager for multiplexed sessions support
+        self._sessions_manager = mock.Mock()
+        # Configure get_session to return sessions from the pool
+        self._sessions_manager.get_session = mock.Mock(
+            side_effect=lambda tx_type: self._pool.get()
+            if hasattr(self, "_pool") and self._pool
+            else None
+        )
+        self._sessions_manager.put_session = mock.Mock(
+            side_effect=lambda session: self._pool.put(session)
+            if hasattr(self, "_pool") and self._pool
+            else None
+        )
+
+    @property
+    def sessions_manager(self):
+        """Returns the database sessions manager.
+
+        :rtype: Mock
+        :returns: The mock sessions manager for this database.
+        """
+        return self._sessions_manager
+
     @property
     def _next_nth_request(self):
         return self._nth_request.increment()
@@ -3479,6 +3623,7 @@ class _Session(object):
         self._database = database
         self.name = name
         self._run_transaction_function = run_transaction_function
+        self.is_multiplexed = False  # Default to non-multiplexed for tests
 
     def run_in_transaction(self, func, *args, **kw):
         if self._run_transaction_function:

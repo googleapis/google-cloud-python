@@ -261,7 +261,7 @@ class TestFixedSizePool(OpenTelemetryBase):
         want_span_names = ["CloudSpanner.FixedPool.BatchCreateSessions", "pool.Get"]
         assert got_span_names == want_span_names
 
-        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id-1}.{database._channel_id}.{_Database.NTH_REQUEST.value}.1"
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id - 1}.{database._channel_id}.{_Database.NTH_REQUEST.value}.1"
         attrs = dict(
             TestFixedSizePool.BASE_ATTRIBUTES.copy(), x_goog_spanner_request_id=req_id
         )
@@ -931,7 +931,7 @@ class TestPingingPool(OpenTelemetryBase):
         want_span_names = ["CloudSpanner.PingingPool.BatchCreateSessions"]
         assert got_span_names == want_span_names
 
-        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id-1}.{database._channel_id}.{_Database.NTH_REQUEST.value}.1"
+        req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id - 1}.{database._channel_id}.{_Database.NTH_REQUEST.value}.1"
         attrs = dict(
             TestPingingPool.BASE_ATTRIBUTES.copy(), x_goog_spanner_request_id=req_id
         )

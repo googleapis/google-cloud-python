@@ -449,6 +449,7 @@ class BurstyPool(AbstractSessionPool):
             self._sessions.put_nowait(session)
         except queue.Full:
             try:
+                # Sessions from pools are never multiplexed, so we can always delete them
                 session.delete()
             except NotFound:
                 pass
