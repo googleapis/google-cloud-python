@@ -120,7 +120,14 @@ class SQLGlotCompiler:
 
     def _compile_result_node(self, root: nodes.ResultNode) -> str:
         sqlglot_ir = self.compile_node(root.child)
-        # TODO: add order_by, limit, and selections to sqlglot_expr
+
+        selected_cols: tuple[tuple[str, sge.Expression], ...] = tuple(
+            (name, scalar_compiler.compile_scalar_expression(ref))
+            for ref, name in root.output_cols
+        )
+        sqlglot_ir = sqlglot_ir.select(selected_cols)
+
+        # TODO: add order_by, limit to sqlglot_expr
         return sqlglot_ir.sql
 
     @functools.lru_cache(maxsize=5000)
