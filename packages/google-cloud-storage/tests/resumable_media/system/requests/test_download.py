@@ -463,7 +463,7 @@ class TestRawDownload(TestDownload):
                 info[checksum],
                 checksum_type=checksum.upper(),
             )
-            assert exc_info.value.args == (msg,)
+            assert msg in exc_info.value.args[0]
 
     def test_corrupt_download_no_check(self, add_files, corrupting_transport):
         for info in ALL_FILES:

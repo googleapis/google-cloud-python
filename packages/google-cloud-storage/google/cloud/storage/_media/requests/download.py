@@ -43,6 +43,12 @@ Error writing to stream while handling a gzip-compressed file download.
 Please restart the download.
 """
 
+_RESPONSE_HEADERS_INFO = """\
+The X-Goog-Stored-Content-Length is {}. The X-Goog-Stored-Content-Encoding is {}.
+The download request read {} bytes of data.
+If the download was incomplete, please check the network connection and restart the download.
+"""
+
 
 class Download(_request_helpers.RequestsMixin, _download.Download):
     """Helper to manage downloading a resource from a Google API.
@@ -141,13 +147,30 @@ class Download(_request_helpers.RequestsMixin, _download.Download):
         ):
             actual_checksum = _helpers.prepare_checksum_digest(checksum_object.digest())
             if actual_checksum != expected_checksum:
-                msg = _CHECKSUM_MISMATCH.format(
-                    self.media_url,
-                    expected_checksum,
-                    actual_checksum,
-                    checksum_type=self.checksum.upper(),
+                headers = self._get_headers(response)
+                x_goog_encoding = headers.get("x-goog-stored-content-encoding")
+                x_goog_length = headers.get("x-goog-stored-content-length")
+                content_length_msg = _RESPONSE_HEADERS_INFO.format(
+                    x_goog_length, x_goog_encoding, self._bytes_downloaded
                 )
-                raise DataCorruption(response, msg)
+                if (
+                    x_goog_length
+                    and self._bytes_downloaded < int(x_goog_length)
+                    and x_goog_encoding != "gzip"
+                ):
+                    # The library will attempt to trigger a retry by raising a ConnectionError, if
+                    # (a) bytes_downloaded is less than response header x-goog-stored-content-length, and
+                    # (b) the object is not gzip-compressed when stored in Cloud Storage.
+                    raise ConnectionError(content_length_msg)
+                else:
+                    msg = _CHECKSUM_MISMATCH.format(
+                        self.media_url,
+                        expected_checksum,
+                        actual_checksum,
+                        checksum_type=self.checksum.upper(),
+                    )
+                    msg += content_length_msg
+                    raise DataCorruption(response, msg)
 
     def consume(
         self,
@@ -339,13 +362,31 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
             actual_checksum = _helpers.prepare_checksum_digest(checksum_object.digest())
 
             if actual_checksum != expected_checksum:
-                msg = _CHECKSUM_MISMATCH.format(
-                    self.media_url,
-                    expected_checksum,
-                    actual_checksum,
-                    checksum_type=self.checksum.upper(),
+                headers = self._get_headers(response)
+                x_goog_encoding = headers.get("x-goog-stored-content-encoding")
+                x_goog_length = headers.get("x-goog-stored-content-length")
+                content_length_msg = _RESPONSE_HEADERS_INFO.format(
+                    x_goog_length, x_goog_encoding, self._bytes_downloaded
                 )
-                raise DataCorruption(response, msg)
+                if (
+                    x_goog_length
+                    and self._bytes_downloaded < int(x_goog_length)
+                    and x_goog_encoding != "gzip"
+                ):
+                    # The library will attempt to trigger a retry by raising a ConnectionError, if
+                    # (a) bytes_downloaded is less than response header x-goog-stored-content-length, and
+                    # (b) the object is not gzip-compressed when stored in Cloud Storage.
+                    raise ConnectionError(content_length_msg)
+                else:
+                    msg = _CHECKSUM_MISMATCH.format(
+                        self.media_url,
+                        expected_checksum,
+                        actual_checksum,
+                        checksum_type=self.checksum.upper(),
+                    )
+                    msg += content_length_msg
+                    raise DataCorruption(response, msg)
+
 
     def consume(
         self,
