@@ -134,3 +134,18 @@ class JSONValue(base_ops.UnaryOp):
                 + f" Received type: {input_type}"
             )
         return dtypes.STRING_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class JSONQuery(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "json_query"
+    json_path: str
+
+    def output_type(self, *input_types):
+        input_type = input_types[0]
+        if not dtypes.is_json_like(input_type):
+            raise TypeError(
+                "Input type must be a valid JSON object or JSON-formatted string type."
+                + f" Received type: {input_type}"
+            )
+        return input_type

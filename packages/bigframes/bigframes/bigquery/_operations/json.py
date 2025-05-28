@@ -22,9 +22,11 @@ https://cloud.google.com/bigquery/docs/reference/standard-sql/json_functions
 from __future__ import annotations
 
 from typing import Any, cast, Optional, Sequence, Tuple, Union
+import warnings
 
 import bigframes.core.utils as utils
 import bigframes.dtypes
+import bigframes.exceptions as bfe
 import bigframes.operations as ops
 import bigframes.series as series
 
@@ -87,9 +89,13 @@ def json_extract(
     input: series.Series,
     json_path: str,
 ) -> series.Series:
-    """Extracts a JSON value and converts it to a SQL JSON-formatted `STRING` or `JSON`
-    value. This function uses single quotes and brackets to escape invalid JSONPath
-    characters in JSON keys.
+    """Extracts a JSON value and converts it to a SQL JSON-formatted ``STRING`` or
+    ``JSON`` value. This function uses single quotes and brackets to escape invalid
+    JSONPath characters in JSON keys.
+
+    .. deprecated:: 2.5.0
+        The ``json_extract`` is deprecated and will be removed in a future version.
+        Use ``json_query`` instead.
 
     **Examples:**
 
@@ -111,6 +117,11 @@ def json_extract(
     Returns:
         bigframes.series.Series: A new Series with the JSON or JSON-formatted STRING.
     """
+    msg = (
+        "The `json_extract` is deprecated and will be removed in a future version. "
+        "Use `json_query` instead."
+    )
+    warnings.warn(bfe.format_message(msg), category=UserWarning)
     return input._apply_unary_op(ops.JSONExtract(json_path=json_path))
 
 
@@ -229,6 +240,37 @@ def json_extract_string_array(
             ),
         )
     return array_series
+
+
+def json_query(
+    input: series.Series,
+    json_path: str,
+) -> series.Series:
+    """Extracts a JSON value and converts it to a SQL JSON-formatted ``STRING``
+    or ``JSON`` value. This function uses double quotes to escape invalid JSONPath
+    characters in JSON keys. For example: ``"a.b"``.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> bpd.options.display.progress_bar = None
+
+        >>> s = bpd.Series(['{"class": {"students": [{"id": 5}, {"id": 12}]}}'])
+        >>> bbq.json_query(s, json_path="$.class")
+        0    {"students":[{"id":5},{"id":12}]}
+        dtype: string
+
+    Args:
+        input (bigframes.series.Series):
+            The Series containing JSON data (as native JSON objects or JSON-formatted strings).
+        json_path (str):
+            The JSON path identifying the data that you want to obtain from the input.
+
+    Returns:
+        bigframes.series.Series: A new Series with the JSON or JSON-formatted STRING.
+    """
+    return input._apply_unary_op(ops.JSONQuery(json_path=json_path))
 
 
 def json_value(

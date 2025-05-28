@@ -37,6 +37,7 @@ from bigframes.bigquery._operations.json import (
     json_extract,
     json_extract_array,
     json_extract_string_array,
+    json_query,
     json_set,
     json_value,
     parse_json,
@@ -58,10 +59,11 @@ __all__ = [
     "st_distance",
     "st_intersection",
     # json ops
-    "json_set",
     "json_extract",
     "json_extract_array",
     "json_extract_string_array",
+    "json_query",
+    "json_set",
     "json_value",
     "parse_json",
     # search ops
