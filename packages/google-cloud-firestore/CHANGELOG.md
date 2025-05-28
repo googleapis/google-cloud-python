@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.21.0](https://github.com/googleapis/python-firestore/compare/v2.20.2...v2.21.0) (2025-05-23)
+
+
+### Features
+
+* Support Sequence[float] as query_vector in FindNearest ([#908](https://github.com/googleapis/python-firestore/issues/908)) ([6c81626](https://github.com/googleapis/python-firestore/commit/6c8162685eb82fc6f814f69741a2a51ddda4c2fa))
+
+
+### Bug Fixes
+
+* Add missing DocumentReference return value to .document ([#1053](https://github.com/googleapis/python-firestore/issues/1053)) ([043d9ef](https://github.com/googleapis/python-firestore/commit/043d9ef59627e5ed7f1acb5ab0c9d47dfd2178c1))
+
 ## [2.20.2](https://github.com/googleapis/python-firestore/compare/v2.20.1...v2.20.2) (2025-04-14)
 
 
