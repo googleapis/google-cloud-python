@@ -2,10 +2,6 @@
 .git
 .gitignore
 
-# Docker scaffolding
-Dockerfile
-.dockerignore
-
 # Python scaffolding
 *.py[cod]
 *.egg

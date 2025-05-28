@@ -3,11 +3,7 @@
 Local Installation
 ==================
 
-If you are just getting started with code generation for protobuf-based APIs,
-or if you do not have a robust Python environment already available, it is
-probably easier to get started using Docker: :ref:`getting-started/docker`
-
-However, this tool offers first-class support for local execution using
+This tool offers first-class support for local execution using
 ``protoc``. It is still reasonably easy, but initial setup will take a bit
 longer.
 

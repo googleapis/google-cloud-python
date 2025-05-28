@@ -1,8 +1,8 @@
 Verifying the Library
 ---------------------
 
-Once you have compiled a client library, whether using a Docker image,
-local installation or bazel, it is time for the fun part: actually running it!
+Once you have compiled a client library, whether using a local installation
+or bazel, it is time for the fun part: actually running it!
 
 Create a virtual environment for the library:
 

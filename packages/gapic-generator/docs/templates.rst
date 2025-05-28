@@ -130,33 +130,5 @@ provided by this library, use the special `DEFAULT` string:
     --python_gapic_opt="python-gapic-templates=/path/to/templates"
     --python_gapic_opt="python-gapic-templates=DEFAULT"
 
-Building with Docker
-~~~~~~~~~~~~~~~~~~~~
-
-When building with Docker, you instead provide the ``--python-gapic-templates``
-argument after the ``docker run`` command:
-
-.. code-block:: shell
-
-    $ docker run \
-      --mount type=bind,source=google/cloud/vision/v1/,destination=/in/google/cloud/vision/v1/,readonly \
-      --mount type=bind,source=dest/,destination=/out/ \
-      --mount type=bind,source=/path/to/templates,destination=/templates/,readonly \
-      --rm \
-      --user $UID \
-      gcr.io/gapic-images/gapic-generator-python \
-      --python-gapic-templates /templates/ \
-      --python-gapic-templates DEFAULT
-
-As before, to provide more than one location for templates, specify the
-argument more than once.
-
-.. warning::
-
-    If you are using custom templates with Docker, be sure to also mount
-    the directory with the templates into the Docker image; otherwise
-    the generator will not be able to read that directory. When specifying
-    the ``--python-gapic-templates`` argument, it is the path *inside*
-    the Docker image that matters!
 
 .. _Jinja: http://jinja.pocoo.org/docs/2.10/
