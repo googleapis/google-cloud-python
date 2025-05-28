@@ -5,6 +5,20 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.29.1](https://github.com/googleapis/python-pubsub/compare/v2.29.0...v2.29.1) (2025-05-23)
+
+
+### Bug Fixes
+
+* Remove setup.cfg configuration for creating universal wheels ([#1376](https://github.com/googleapis/python-pubsub/issues/1376)) ([60639c4](https://github.com/googleapis/python-pubsub/commit/60639c4928105ae8a72c8e37b1f48f75cc2ffcc3))
+
+
+### Documentation
+
+* **sample:** Add samples for topic and subscription SMTs ([#1386](https://github.com/googleapis/python-pubsub/issues/1386)) ([4d072e0](https://github.com/googleapis/python-pubsub/commit/4d072e088b59f692dc3d59c3197a2993c125917e))
+* Update documentation for JavaScriptUDF to indicate that the `message_id` metadata field is optional instead of required ([#1380](https://github.com/googleapis/python-pubsub/issues/1380)) ([be90054](https://github.com/googleapis/python-pubsub/commit/be9005412fea06bea917c8b6861546b7e6c62a1e))
+* Update readme links ([#1409](https://github.com/googleapis/python-pubsub/issues/1409)) ([77ba05d](https://github.com/googleapis/python-pubsub/commit/77ba05d4ba5b84a25c1a07c5397bbc184fa6041d))
+
 ## [2.29.0](https://github.com/googleapis/python-pubsub/compare/v2.28.0...v2.29.0) (2025-03-19)
 
 
