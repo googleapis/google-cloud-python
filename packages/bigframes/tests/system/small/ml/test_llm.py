@@ -158,12 +158,6 @@ def test_gemini_text_generator_predict_default_params_success(
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-1.5-pro-preview-0514",
-        "gemini-1.5-flash-preview-0514",
-        "gemini-1.5-pro-001",
-        "gemini-1.5-pro-002",
-        "gemini-1.5-flash-001",
-        "gemini-1.5-flash-002",
         "gemini-2.0-flash-exp",
         "gemini-2.0-flash-001",
         "gemini-2.0-flash-lite-001",
@@ -212,13 +206,9 @@ def test_gemini_text_generator_multi_cols_predict_success(
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-1.5-pro-preview-0514",
-        "gemini-1.5-flash-preview-0514",
-        "gemini-1.5-pro-001",
-        "gemini-1.5-pro-002",
-        "gemini-1.5-flash-001",
-        "gemini-1.5-flash-002",
         "gemini-2.0-flash-exp",
+        "gemini-2.0-flash-001",
+        "gemini-2.0-flash-lite-001",
     ),
 )
 @pytest.mark.flaky(retries=2)
@@ -738,8 +728,6 @@ def test_text_embedding_generator_retry_no_progress(session, bq_connection):
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-1.5-pro-002",
-        "gemini-1.5-flash-002",
         "gemini-2.0-flash-001",
         "gemini-2.0-flash-lite-001",
     ),
@@ -768,8 +756,6 @@ def test_llm_gemini_score(llm_fine_tune_df_default_index, model_name):
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-1.5-pro-002",
-        "gemini-1.5-flash-002",
         "gemini-2.0-flash-001",
         "gemini-2.0-flash-lite-001",
     ),
@@ -797,11 +783,7 @@ def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index, model_name)
 
 @pytest.mark.parametrize(
     "model_name",
-    (
-        "gemini-1.5-pro-preview-0514",
-        "gemini-1.5-flash-preview-0514",
-        "gemini-2.0-flash-exp",
-    ),
+    ("gemini-2.0-flash-exp",),
 )
 def test_gemini_preview_model_warnings(model_name):
     with pytest.warns(exceptions.PreviewWarning):
