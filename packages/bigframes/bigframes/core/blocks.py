@@ -2166,7 +2166,7 @@ class Block:
                 result_columns.append(get_column_left[col_id])
         for col_id in other.value_columns:
             if col_id in right_join_ids:
-                if other.col_id_to_label[matching_right_id] in matching_join_labels:
+                if other.col_id_to_label[col_id] in matching_join_labels:
                     pass
                 else:
                     result_columns.append(get_column_right[col_id])

@@ -1635,6 +1635,29 @@ def test_merge_left_on_right_on(scalars_dfs, merge_how):
     )
 
 
+def test_self_merge_self_w_on_args():
+    data = {
+        "A": pd.Series([1, 2, 3], dtype="Int64"),
+        "B": pd.Series([1, 2, 3], dtype="Int64"),
+        "C": pd.Series([100, 200, 300], dtype="Int64"),
+        "D": pd.Series(["alpha", "beta", "gamma"], dtype="string[pyarrow]"),
+    }
+    df = pd.DataFrame(data)
+
+    df1 = df[["A", "C"]]
+    df2 = df[["B", "C", "D"]]
+    pd_result = df1.merge(df2, left_on=["A", "C"], right_on=["B", "C"], how="inner")
+
+    bf_df = bpd.DataFrame(data)
+
+    bf_df1 = bf_df[["A", "C"]]
+    bf_df2 = bf_df[["B", "C", "D"]]
+    bf_result = bf_df1.merge(
+        bf_df2, left_on=["A", "C"], right_on=["B", "C"], how="inner"
+    ).to_pandas()
+    pd.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
+
+
 @pytest.mark.parametrize(
     ("decimals",),
     [
