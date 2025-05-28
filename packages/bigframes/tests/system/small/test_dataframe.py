@@ -5652,3 +5652,29 @@ def test_astype_invalid_type_fail(scalars_dfs):
 
     with pytest.raises(TypeError, match=r".*Share your usecase with.*"):
         bf_df.astype(123)
+
+
+def test_agg_with_dict(scalars_dfs):
+    bf_df, pd_df = scalars_dfs
+    agg_funcs = {
+        "int64_too": ["min", "max"],
+        "int64_col": ["min", "count"],
+    }
+
+    bf_result = bf_df.agg(agg_funcs).to_pandas()
+    pd_result = pd_df.agg(agg_funcs)
+
+    pd.testing.assert_frame_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
+def test_agg_with_dict_containing_non_existing_col_raise_key_error(scalars_dfs):
+    bf_df, _ = scalars_dfs
+    agg_funcs = {
+        "int64_too": ["min", "max"],
+        "nonexisting_col": ["count"],
+    }
+
+    with pytest.raises(KeyError):
+        bf_df.agg(agg_funcs)
