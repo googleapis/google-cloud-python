@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.32.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.31.0...v2.32.0) (2025-05-27)
+
+
+### Features
+
+* Add BigQuery Metastore Partition Service API version v1beta ([#941](https://github.com/googleapis/python-bigquery-storage/issues/941)) ([fa8c533](https://github.com/googleapis/python-bigquery-storage/commit/fa8c53390cf99f74090db12a3f846077643d5397))
+
+
+### Bug Fixes
+
+* Separate create_stream() in pyarrow sample ([#946](https://github.com/googleapis/python-bigquery-storage/issues/946)) ([127e70c](https://github.com/googleapis/python-bigquery-storage/commit/127e70c487f6b31f4d75327075392148a85b1abc))
+
 ## [2.31.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.30.0...v2.31.0) (2025-04-22)
 
 
