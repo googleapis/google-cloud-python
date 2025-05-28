@@ -329,6 +329,9 @@ class ConversationalSearchResponse(proto.Message):
 
         class SuggestedAnswer(proto.Message):
             r"""Suggested answers to the follow-up question.
+            If it's numerical attribute, only ProductAttributeInterval will
+            be set. If it's textual attribute, only productAttributeValue
+            will be set.
 
             Attributes:
                 product_attribute_value (google.cloud.retail_v2alpha.types.ProductAttributeValue):

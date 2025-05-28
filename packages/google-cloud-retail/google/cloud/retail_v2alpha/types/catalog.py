@@ -831,7 +831,10 @@ class MerchantCenterFeedFilter(proto.Message):
 
     Attributes:
         primary_feed_id (int):
-            Merchant Center primary feed ID.
+            Merchant Center primary feed ID. Deprecated: use
+            data_source_id instead.
+        data_source_id (int):
+            AFM data source ID.
         primary_feed_name (str):
             Merchant Center primary feed name. The name
             is used for the display purposes only.
@@ -840,6 +843,10 @@ class MerchantCenterFeedFilter(proto.Message):
     primary_feed_id: int = proto.Field(
         proto.INT64,
         number=1,
+    )
+    data_source_id: int = proto.Field(
+        proto.INT64,
+        number=3,
     )
     primary_feed_name: str = proto.Field(
         proto.STRING,
