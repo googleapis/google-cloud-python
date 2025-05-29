@@ -15,6 +15,8 @@
 from typing import Tuple
 
 import google.api_core.exceptions
+import numpy
+import numpy.testing
 import pandas as pd
 import pandas.testing
 import pyarrow as pa
@@ -1061,3 +1063,12 @@ def test_to_sql_query_named_index_excluded(
     utils.assert_pandas_df_equal(
         roundtrip.to_pandas(), pd_df, check_index_type=False, ignore_order=True
     )
+
+
+def test_to_numpy(scalars_dfs):
+    bf_df, pd_df = scalars_dfs
+
+    bf_result = numpy.array(bf_df[["int64_too"]], dtype="int64")
+    pd_result = numpy.array(pd_df[["int64_too"]], dtype="int64")
+
+    numpy.testing.assert_array_equal(bf_result, pd_result)

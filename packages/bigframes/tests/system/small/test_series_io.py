@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import numpy
+import numpy.testing
 import pandas as pd
 import pytest
 
@@ -114,3 +116,12 @@ def test_to_pandas_batches(scalars_dfs, page_size, max_results, allow_large_resu
         total_rows += actual_rows
 
     assert total_rows == expected_total_rows
+
+
+def test_to_numpy(scalars_dfs):
+    bf_df, pd_df = scalars_dfs
+
+    bf_result = numpy.array(bf_df["int64_too"], dtype="int64")
+    pd_result = numpy.array(pd_df["int64_too"], dtype="int64")
+
+    numpy.testing.assert_array_equal(bf_result, pd_result)

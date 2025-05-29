@@ -17,6 +17,7 @@ from bigframes_vendored import constants
 import bigframes_vendored.pandas.core.generic as generic
 import numpy as np
 import pandas as pd
+from pandas.api import extensions as pd_ext
 
 # -----------------------------------------------------------------------
 # DataFrame class
@@ -369,7 +370,7 @@ class DataFrame(generic.NDFrame):
         self,
         dtype=None,
         copy=False,
-        na_value=None,
+        na_value=pd_ext.no_default,
         *,
         allow_large_results=None,
         **kwargs,

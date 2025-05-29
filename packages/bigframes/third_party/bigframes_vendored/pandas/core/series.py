@@ -19,8 +19,8 @@ from typing import (
 from bigframes_vendored.pandas.core.generic import NDFrame
 import numpy
 import numpy as np
-from pandas._libs import lib
 from pandas._typing import Axis, FilePath, NaPosition, WriteBuffer
+from pandas.api import extensions as pd_ext
 
 from bigframes import constants
 
@@ -323,7 +323,7 @@ class Series(NDFrame):  # type: ignore[misc]
         self,
         *,
         drop: bool = False,
-        name=lib.no_default,
+        name=pd_ext.no_default,
     ) -> DataFrame | Series | None:
         """
         Generate a new DataFrame or Series with the index reset.
@@ -730,7 +730,9 @@ class Series(NDFrame):  # type: ignore[misc]
 
     to_list = tolist
 
-    def to_numpy(self, dtype, copy=False, na_value=None, *, allow_large_results=None):
+    def to_numpy(
+        self, dtype, copy=False, na_value=pd_ext.no_default, *, allow_large_results=None
+    ):
         """
         A NumPy ndarray representing the values in this Series or Index.
 

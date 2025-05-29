@@ -47,6 +47,7 @@ import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import numpy
 import pandas
+from pandas.api import extensions as pd_ext
 import pandas.io.formats.format
 import pyarrow
 import tabulate
@@ -4097,7 +4098,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self,
         dtype=None,
         copy=False,
-        na_value=None,
+        na_value=pd_ext.no_default,
         *,
         allow_large_results=None,
         **kwargs,
