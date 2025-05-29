@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.29.0...google-cloud-dlp-v3.30.0) (2025-05-29)
+
+
+### Features
+
+* add a project ID to table reference so that org parents can create single table discovery configs. ([f92f4eb](https://github.com/googleapis/google-cloud-python/commit/f92f4eb2cea860c46e19ee0c5b55a27db6699e55))
+* add Dataplex Catalog action for discovery configs ([f92f4eb](https://github.com/googleapis/google-cloud-python/commit/f92f4eb2cea860c46e19ee0c5b55a27db6699e55))
+* new fields for data profile finding. ([f92f4eb](https://github.com/googleapis/google-cloud-python/commit/f92f4eb2cea860c46e19ee0c5b55a27db6699e55))
+
+
+### Documentation
+
+* various doc revisions ([f92f4eb](https://github.com/googleapis/google-cloud-python/commit/f92f4eb2cea860c46e19ee0c5b55a27db6699e55))
+
 ## [3.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.28.1...google-cloud-dlp-v3.29.0) (2025-03-19)
 
 

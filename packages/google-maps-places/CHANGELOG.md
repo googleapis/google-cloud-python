@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.2.0...google-maps-places-v0.2.1) (2025-05-29)
+
+
+### Documentation
+
+* add link to handwritten samples for google-maps-places ([#13953](https://github.com/googleapis/google-cloud-python/issues/13953)) ([ff38a2f](https://github.com/googleapis/google-cloud-python/commit/ff38a2f251311ca9c70fd010a954a49fa72ef3ed))
+* remove auto-generated snippets for google/maps/places/v1 ([2a9a069](https://github.com/googleapis/google-cloud-python/commit/2a9a0698759a369c1bfae9d8a39c0231dace5ff8))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.25...google-maps-places-v0.2.0) (2025-05-15)
 
 

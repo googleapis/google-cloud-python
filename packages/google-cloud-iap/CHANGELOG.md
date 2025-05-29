@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.17.0...google-cloud-iap-v1.17.1) (2025-05-29)
+
+
+### Documentation
+
+* Add clarifications on IAP CorsSettings behavior ([80c61d3](https://github.com/googleapis/google-cloud-python/commit/80c61d3fb32e124be9c02d0439a00d12f67d890a))
+* Minor updates on GcipSettings description ([80c61d3](https://github.com/googleapis/google-cloud-python/commit/80c61d3fb32e124be9c02d0439a00d12f67d890a))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.16.2...google-cloud-iap-v1.17.0) (2025-04-12)
 
 
