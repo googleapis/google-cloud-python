@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import importlib
 import json
 import os
+import pathlib
+
+Path = pathlib.Path
+
 
 # The identifier for GCP VS Code extension
 # https://cloud.google.com/code/docs/vscode/install
@@ -29,40 +34,36 @@ BIGQUERY_JUPYTER_PLUGIN_NAME = "bigquery_jupyter_plugin"
 def _is_vscode_extension_installed(extension_id: str) -> bool:
     """
     Checks if a given Visual Studio Code extension is installed.
-
     Args:
         extension_id: The ID of the extension (e.g., "ms-python.python").
-
     Returns:
         True if the extension is installed, False otherwise.
     """
     try:
         # Determine the user's VS Code extensions directory.
-        user_home = os.path.expanduser("~")
-        if os.name == "nt":  # Windows
-            vscode_extensions_dir = os.path.join(user_home, ".vscode", "extensions")
-        elif os.name == "posix":  # macOS and Linux
-            vscode_extensions_dir = os.path.join(user_home, ".vscode", "extensions")
-        else:
-            raise OSError("Unsupported operating system.")
+        user_home = Path.home()
+        vscode_extensions_dir = user_home / ".vscode" / "extensions"
 
         # Check if the extensions directory exists.
-        if os.path.exists(vscode_extensions_dir):
-            # Iterate through the subdirectories in the extensions directory.
-            for item in os.listdir(vscode_extensions_dir):
-                item_path = os.path.join(vscode_extensions_dir, item)
-                if os.path.isdir(item_path) and item.startswith(extension_id + "-"):
-                    # Check if the folder starts with the extension ID.
-                    # Further check for manifest file, as a more robust check.
-                    manifest_path = os.path.join(item_path, "package.json")
-                    if os.path.exists(manifest_path):
-                        try:
-                            with open(manifest_path, "r", encoding="utf-8") as f:
-                                json.load(f)
-                            return True
-                        except (FileNotFoundError, json.JSONDecodeError):
-                            # Corrupted or incomplete extension, or manifest missing.
-                            pass
+        if not vscode_extensions_dir.exists():
+            return False
+
+        # Iterate through the subdirectories in the extensions directory.
+        extension_dirs = filter(
+            lambda p: p.is_dir() and p.name.startswith(extension_id + "-"),
+            vscode_extensions_dir.iterdir(),
+        )
+        for extension_dir in extension_dirs:
+            # As a more robust check, the manifest file must exist.
+            manifest_path = extension_dir / "package.json"
+            if not manifest_path.exists() or not manifest_path.is_file():
+                continue
+
+            # Finally, the manifest file must be a valid json
+            with open(manifest_path, "r", encoding="utf-8") as f:
+                json.load(f)
+
+            return True
     except Exception:
         pass
 
@@ -72,10 +73,8 @@ def _is_vscode_extension_installed(extension_id: str) -> bool:
 def _is_package_installed(package_name: str) -> bool:
     """
     Checks if a Python package is installed.
-
     Args:
         package_name: The name of the package to check (e.g., "requests", "numpy").
-
     Returns:
         True if the package is installed, False otherwise.
     """
