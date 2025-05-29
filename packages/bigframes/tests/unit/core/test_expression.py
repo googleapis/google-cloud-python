@@ -12,43 +12,107 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import typing
+
+import pytest
+
+from bigframes.core import field
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
 import bigframes.dtypes as dtypes
 import bigframes.operations as ops
 
 
-def test_expression_dtype_simple():
+def test_simple_expression_dtype():
     expression = ops.add_op.as_expr("a", "b")
-    result = expression.output_type(
-        {ids.ColumnId("a"): dtypes.INT_DTYPE, ids.ColumnId("b"): dtypes.INT_DTYPE}
+    field_bindings = _create_field_bindings(
+        {"a": dtypes.INT_DTYPE, "b": dtypes.INT_DTYPE}
     )
-    assert result == dtypes.INT_DTYPE
+
+    result = ex.bind_schema_fields(expression, field_bindings)
+
+    _assert_output_type(result, dtypes.INT_DTYPE)
 
 
-def test_expression_dtype_nested():
+def test_nested_expression_dtype():
     expression = ops.add_op.as_expr(
         "a", ops.abs_op.as_expr(ops.sub_op.as_expr("b", ex.const(3.14)))
     )
-
-    result = expression.output_type(
-        {ids.ColumnId("a"): dtypes.INT_DTYPE, ids.ColumnId("b"): dtypes.INT_DTYPE}
+    field_bindings = _create_field_bindings(
+        {"a": dtypes.INT_DTYPE, "b": dtypes.INT_DTYPE}
     )
 
-    assert result == dtypes.FLOAT_DTYPE
+    result = ex.bind_schema_fields(expression, field_bindings)
+
+    _assert_output_type(result, dtypes.FLOAT_DTYPE)
 
 
-def test_expression_dtype_where():
+def test_where_op_dtype():
     expression = ops.where_op.as_expr(ex.const(3), ex.const(True), ex.const(None))
 
-    result = expression.output_type({})
-
-    assert result == dtypes.INT_DTYPE
+    _assert_output_type(expression, dtypes.INT_DTYPE)
 
 
-def test_expression_dtype_astype():
+def test_astype_op_dtype():
     expression = ops.AsTypeOp(dtypes.INT_DTYPE).as_expr(ex.const(3.14159))
 
-    result = expression.output_type({})
+    _assert_output_type(expression, dtypes.INT_DTYPE)
 
-    assert result == dtypes.INT_DTYPE
+
+def test_deref_op_dtype_unavailable():
+    expression = ex.deref("mycol")
+
+    assert not expression.is_resolved
+    with pytest.raises(ValueError):
+        expression.output_type
+
+
+def test_deref_op_dtype_resolution():
+    expression = ex.deref("mycol")
+    field_bindings = _create_field_bindings({"mycol": dtypes.STRING_DTYPE})
+
+    result = ex.bind_schema_fields(expression, field_bindings)
+
+    _assert_output_type(result, dtypes.STRING_DTYPE)
+
+
+def test_field_ref_expr_dtype_resolution_short_circuit():
+    expression = ex.SchemaFieldRefExpression(
+        field.Field(ids.ColumnId("mycol"), dtype=dtypes.INT_DTYPE)
+    )
+    field_bindings = _create_field_bindings({"anotherCol": dtypes.STRING_DTYPE})
+
+    result = ex.bind_schema_fields(expression, field_bindings)
+
+    _assert_output_type(result, dtypes.INT_DTYPE)
+
+
+def test_nested_expression_dtypes_are_cached():
+    expression = ops.add_op.as_expr(ex.deref("left_col"), ex.deref("right_col"))
+    field_bindings = _create_field_bindings(
+        {
+            "right_col": dtypes.INT_DTYPE,
+            "left_col": dtypes.FLOAT_DTYPE,
+        }
+    )
+
+    result = ex.bind_schema_fields(expression, field_bindings)
+
+    _assert_output_type(result, dtypes.FLOAT_DTYPE)
+    assert isinstance(result, ex.OpExpression)
+    _assert_output_type(result.inputs[0], dtypes.FLOAT_DTYPE)
+    _assert_output_type(result.inputs[1], dtypes.INT_DTYPE)
+
+
+def _create_field_bindings(
+    col_dtypes: typing.Dict[str, dtypes.Dtype]
+) -> typing.Dict[ids.ColumnId, field.Field]:
+    return {
+        ids.ColumnId(col): field.Field(ids.ColumnId(col), dtype)
+        for col, dtype in col_dtypes.items()
+    }
+
+
+def _assert_output_type(expr: ex.Expression, dtype: dtypes.Dtype):
+    assert expr.is_resolved
+    assert expr.output_type == dtype

@@ -26,6 +26,7 @@ from bigframes.core.compile import configs
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 import bigframes.core.compile.sqlglot.sqlglot_ir as ir
 import bigframes.core.ordering as bf_ordering
+from bigframes.core.rewrite import schema_binding
 
 
 class SQLGlotCompiler:
@@ -183,6 +184,6 @@ class SQLGlotCompiler:
 
 def _replace_unsupported_ops(node: nodes.BigFrameNode):
     node = nodes.bottom_up(node, rewrite.rewrite_slice)
-    node = nodes.bottom_up(node, rewrite.rewrite_timedelta_expressions)
+    node = nodes.bottom_up(node, schema_binding.bind_schema_to_expressions)
     node = nodes.bottom_up(node, rewrite.rewrite_range_rolling)
     return node

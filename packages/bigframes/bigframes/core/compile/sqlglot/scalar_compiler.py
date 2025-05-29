@@ -36,6 +36,13 @@ def compile_deref_expression(expr: expression.DerefOp) -> sge.Expression:
 
 
 @compile_scalar_expression.register
+def compile_field_ref_expression(
+    expr: expression.SchemaFieldRefExpression,
+) -> sge.Expression:
+    return sge.ColumnDef(this=sge.to_identifier(expr.field.id.sql, quoted=True))
+
+
+@compile_scalar_expression.register
 def compile_constant_expression(
     expr: expression.ScalarConstantExpression,
 ) -> sge.Expression:

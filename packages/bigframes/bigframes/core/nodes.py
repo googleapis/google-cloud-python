@@ -34,8 +34,9 @@ from typing import (
 import google.cloud.bigquery as bq
 
 from bigframes.core import identifiers, local_data, sequences
-from bigframes.core.bigframe_node import BigFrameNode, COLUMN_SET, Field
+from bigframes.core.bigframe_node import BigFrameNode, COLUMN_SET
 import bigframes.core.expression as ex
+from bigframes.core.field import Field
 from bigframes.core.ordering import OrderingExpression, RowOrdering
 import bigframes.core.slices as slices
 import bigframes.core.window_spec as window
@@ -1190,26 +1191,25 @@ class ProjectionNode(UnaryNode, AdditiveNode):
     assignments: typing.Tuple[typing.Tuple[ex.Expression, identifiers.ColumnId], ...]
 
     def _validate(self):
-        input_types = self.child._dtype_lookup
-        for expression, id in self.assignments:
+        for expression, _ in self.assignments:
             # throws TypeError if invalid
-            _ = expression.output_type(input_types)
+            _ = ex.bind_schema_fields(expression, self.child.field_by_id).output_type
         # Cannot assign to existing variables - append only!
         assert all(name not in self.child.schema.names for _, name in self.assignments)
 
     @functools.cached_property
     def added_fields(self) -> Tuple[Field, ...]:
-        input_types = self.child._dtype_lookup
-
         fields = []
         for expr, id in self.assignments:
+            bound_expr = ex.bind_schema_fields(expr, self.child.field_by_id)
             field = Field(
                 id,
-                bigframes.dtypes.dtype_for_etype(expr.output_type(input_types)),
-                nullable=expr.nullable,
+                bigframes.dtypes.dtype_for_etype(bound_expr.output_type),
+                nullable=bound_expr.nullable,
             )
+
             # Special case until we get better nullability inference in expression objects themselves
-            if expr.is_identity and not any(
+            if bound_expr.is_identity and not any(
                 self.child.field_by_id[id].nullable for id in expr.column_references
             ):
                 field = field.with_nonnull()
@@ -1300,7 +1300,7 @@ class AggregateNode(UnaryNode):
             Field(
                 id,
                 bigframes.dtypes.dtype_for_etype(
-                    agg.output_type(self.child._dtype_lookup)
+                    agg.output_type(self.child.field_by_id)
                 ),
                 nullable=True,
             )
@@ -1410,11 +1410,11 @@ class WindowOpNode(UnaryNode, AdditiveNode):
 
     @functools.cached_property
     def added_field(self) -> Field:
-        input_types = self.child._dtype_lookup
+        input_fields = self.child.field_by_id
         # TODO: Determine if output could be non-null
         return Field(
             self.output_name,
-            bigframes.dtypes.dtype_for_etype(self.expression.output_type(input_types)),
+            bigframes.dtypes.dtype_for_etype(self.expression.output_type(input_fields)),
         )
 
     @property
