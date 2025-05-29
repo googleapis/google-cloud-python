@@ -23,10 +23,10 @@ from tests.system import utils
 
 @pytest.mark.flaky(retries=2)
 def test_multimodal_embedding_generator_predict_default_params_success(
-    images_mm_df, test_session, bq_connection
+    images_mm_df, session, bq_connection
 ):
     text_embedding_model = llm.MultimodalEmbeddingGenerator(
-        connection_name=bq_connection, session=test_session
+        connection_name=bq_connection, session=session
     )
     df = text_embedding_model.predict(images_mm_df).to_pandas()
     utils.check_pandas_df_schema_and_index(
@@ -48,10 +48,10 @@ def test_multimodal_embedding_generator_predict_default_params_success(
 )
 @pytest.mark.flaky(retries=2)
 def test_gemini_text_generator_multimodal_input(
-    images_mm_df: bpd.DataFrame, model_name, test_session, bq_connection
+    images_mm_df: bpd.DataFrame, model_name, session, bq_connection
 ):
     gemini_text_generator_model = llm.GeminiTextGenerator(
-        model_name=model_name, connection_name=bq_connection, session=test_session
+        model_name=model_name, connection_name=bq_connection, session=session
     )
     pd_df = gemini_text_generator_model.predict(
         images_mm_df, prompt=["Describe", images_mm_df["blob_col"]]
@@ -73,10 +73,10 @@ def test_gemini_text_generator_multimodal_input(
 )
 @pytest.mark.flaky(retries=2)
 def test_gemini_text_generator_multimodal_structured_output(
-    images_mm_df: bpd.DataFrame, model_name, test_session, bq_connection
+    images_mm_df: bpd.DataFrame, model_name, session, bq_connection
 ):
     gemini_text_generator_model = llm.GeminiTextGenerator(
-        model_name=model_name, connection_name=bq_connection, session=test_session
+        model_name=model_name, connection_name=bq_connection, session=session
     )
     output_schema = {
         "bool_output": "bool",

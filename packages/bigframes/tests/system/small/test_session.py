@@ -1814,16 +1814,6 @@ def test_read_json_gcs_default_engine(session, scalars_dfs, gcs_folder):
     pd.testing.assert_series_equal(df.dtypes, scalars_df.dtypes)
 
 
-def test_read_gbq_test(test_session: bigframes.Session):
-    test_project_id = "bigframes-dev"
-    test_dataset_id = "test_env_only"
-    test_table_id = "one_table"
-    table_id = f"{test_project_id}.{test_dataset_id}.{test_table_id}"
-    actual = test_session.read_gbq(table_id).to_pandas()
-
-    assert actual.shape == (1, 1)
-
-
 @pytest.mark.parametrize(
     ("query_or_table", "index_col", "columns"),
     [

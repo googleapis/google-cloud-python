@@ -19,9 +19,9 @@ import bigframes.pandas as bpd
 
 
 def test_blob_create_from_uri_str(
-    bq_connection: str, test_session: bigframes.Session, images_uris
+    bq_connection: str, session: bigframes.Session, images_uris
 ):
-    uri_series = bpd.Series(images_uris, session=test_session)
+    uri_series = bpd.Series(images_uris, session=session)
     blob_series = uri_series.str.to_blob(connection=bq_connection)
 
     pd_blob_df = blob_series.struct.explode().to_pandas()
@@ -40,9 +40,9 @@ def test_blob_create_from_uri_str(
 
 
 def test_blob_create_from_glob_path(
-    bq_connection: str, test_session: bigframes.Session, images_gcs_path, images_uris
+    bq_connection: str, session: bigframes.Session, images_gcs_path, images_uris
 ):
-    blob_df = test_session.from_glob_path(
+    blob_df = session.from_glob_path(
         images_gcs_path, connection=bq_connection, name="blob_col"
     )
     pd_blob_df = (
@@ -68,11 +68,11 @@ def test_blob_create_from_glob_path(
 
 
 def test_blob_create_read_gbq_object_table(
-    bq_connection: str, test_session: bigframes.Session, images_gcs_path, images_uris
+    bq_connection: str, session: bigframes.Session, images_gcs_path, images_uris
 ):
-    obj_table = test_session._create_object_table(images_gcs_path, bq_connection)
+    obj_table = session._create_object_table(images_gcs_path, bq_connection)
 
-    blob_df = test_session.read_gbq_object_table(obj_table, name="blob_col")
+    blob_df = session.read_gbq_object_table(obj_table, name="blob_col")
     pd_blob_df = (
         blob_df["blob_col"]
         .struct.explode()

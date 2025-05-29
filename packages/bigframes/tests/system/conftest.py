@@ -920,8 +920,8 @@ def llm_text_pandas_df():
 
 
 @pytest.fixture(scope="session")
-def llm_text_df(test_session, llm_text_pandas_df):
-    return test_session.read_pandas(llm_text_pandas_df)
+def llm_text_df(session, llm_text_pandas_df):
+    return session.read_pandas(llm_text_pandas_df)
 
 
 @pytest.fixture(scope="session")
@@ -1494,9 +1494,9 @@ def images_uris() -> list[str]:
 
 @pytest.fixture(scope="session")
 def images_mm_df(
-    images_uris, test_session: bigframes.Session, bq_connection: str
+    images_uris, session: bigframes.Session, bq_connection: str
 ) -> bpd.DataFrame:
-    blob_series = bpd.Series(images_uris, session=test_session).str.to_blob(
+    blob_series = bpd.Series(images_uris, session=session).str.to_blob(
         connection=bq_connection
     )
     return blob_series.rename("blob_col").to_frame()
@@ -1518,8 +1518,6 @@ def pdf_gcs_path() -> str:
 
 @pytest.fixture(scope="session")
 def pdf_mm_df(
-    pdf_gcs_path, test_session: bigframes.Session, bq_connection: str
+    pdf_gcs_path, session: bigframes.Session, bq_connection: str
 ) -> bpd.DataFrame:
-    return test_session.from_glob_path(
-        pdf_gcs_path, name="pdf", connection=bq_connection
-    )
+    return session.from_glob_path(pdf_gcs_path, name="pdf", connection=bq_connection)
