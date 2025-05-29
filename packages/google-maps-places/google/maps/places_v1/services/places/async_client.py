@@ -314,35 +314,6 @@ class PlacesAsyncClient:
     ) -> places_service.SearchNearbyResponse:
         r"""Search for places near locations.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.maps import places_v1
-
-            async def sample_search_nearby():
-                # Create a client
-                client = places_v1.PlacesAsyncClient()
-
-                # Initialize request argument(s)
-                location_restriction = places_v1.LocationRestriction()
-                location_restriction.circle.radius = 0.648
-
-                request = places_v1.SearchNearbyRequest(
-                    location_restriction=location_restriction,
-                )
-
-                # Make the request
-                response = await client.search_nearby(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Optional[Union[google.maps.places_v1.types.SearchNearbyRequest, dict]]):
                 The request object. Request proto for Search Nearby.
@@ -393,32 +364,6 @@ class PlacesAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> places_service.SearchTextResponse:
         r"""Text query based place search.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.maps import places_v1
-
-            async def sample_search_text():
-                # Create a client
-                client = places_v1.PlacesAsyncClient()
-
-                # Initialize request argument(s)
-                request = places_v1.SearchTextRequest(
-                    text_query="text_query_value",
-                )
-
-                # Make the request
-                response = await client.search_text(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Optional[Union[google.maps.places_v1.types.SearchTextRequest, dict]]):
@@ -471,32 +416,6 @@ class PlacesAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> places_service.PhotoMedia:
         r"""Get a photo media with a photo reference string.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.maps import places_v1
-
-            async def sample_get_photo_media():
-                # Create a client
-                client = places_v1.PlacesAsyncClient()
-
-                # Initialize request argument(s)
-                request = places_v1.GetPhotoMediaRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_photo_media(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Optional[Union[google.maps.places_v1.types.GetPhotoMediaRequest, dict]]):
@@ -589,32 +508,6 @@ class PlacesAsyncClient:
         r"""Get the details of a place based on its resource name, which is
         a string in the ``places/{place_id}`` format.
 
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.maps import places_v1
-
-            async def sample_get_place():
-                # Create a client
-                client = places_v1.PlacesAsyncClient()
-
-                # Initialize request argument(s)
-                request = places_v1.GetPlaceRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                response = await client.get_place(request=request)
-
-                # Handle the response
-                print(response)
-
         Args:
             request (Optional[Union[google.maps.places_v1.types.GetPlaceRequest, dict]]):
                 The request object. Request for fetching a Place based on its resource name,
@@ -698,32 +591,6 @@ class PlacesAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> places_service.AutocompletePlacesResponse:
         r"""Returns predictions for the given input.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.maps import places_v1
-
-            async def sample_autocomplete_places():
-                # Create a client
-                client = places_v1.PlacesAsyncClient()
-
-                # Initialize request argument(s)
-                request = places_v1.AutocompletePlacesRequest(
-                    input="input_value",
-                )
-
-                # Make the request
-                response = await client.autocomplete_places(request=request)
-
-                # Handle the response
-                print(response)
 
         Args:
             request (Optional[Union[google.maps.places_v1.types.AutocompletePlacesRequest, dict]]):
