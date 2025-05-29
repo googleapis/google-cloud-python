@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.1.0...google-cloud-retail-v2.2.0) (2025-05-29)
+
+
+### Features
+
+* add a model_scores field in SearchResponse.results to expose model quality signals ([3eb9d24](https://github.com/googleapis/google-cloud-python/commit/3eb9d240d80df37241b59813726947b1b7429e1c))
+* add a user_attributes field in SearchRequest that can be used for personalization ([3eb9d24](https://github.com/googleapis/google-cloud-python/commit/3eb9d240d80df37241b59813726947b1b7429e1c))
+* data_source_id replaces primary_feed_id in MerchantCenterFeedFilter ([3eb9d24](https://github.com/googleapis/google-cloud-python/commit/3eb9d240d80df37241b59813726947b1b7429e1c))
+
 ## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.0.0...google-cloud-retail-v2.1.0) (2025-04-29)
 
 
