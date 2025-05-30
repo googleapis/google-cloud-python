@@ -18,13 +18,13 @@ from google.cloud.parallelstore import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.parallelstore_v1beta.services.parallelstore.async_client import (
+from google.cloud.parallelstore_v1.services.parallelstore.async_client import (
     ParallelstoreAsyncClient,
 )
-from google.cloud.parallelstore_v1beta.services.parallelstore.client import (
+from google.cloud.parallelstore_v1.services.parallelstore.client import (
     ParallelstoreClient,
 )
-from google.cloud.parallelstore_v1beta.types.parallelstore import (
+from google.cloud.parallelstore_v1.types.parallelstore import (
     CreateInstanceRequest,
     DeleteInstanceRequest,
     DeploymentType,
@@ -48,7 +48,6 @@ from google.cloud.parallelstore_v1beta.types.parallelstore import (
     TransferCounters,
     TransferErrorLogEntry,
     TransferErrorSummary,
-    TransferMetadataOptions,
     TransferOperationMetadata,
     TransferType,
     UpdateInstanceRequest,
@@ -77,7 +76,6 @@ __all__ = (
     "TransferCounters",
     "TransferErrorLogEntry",
     "TransferErrorSummary",
-    "TransferMetadataOptions",
     "TransferOperationMetadata",
     "UpdateInstanceRequest",
     "DeploymentType",
