@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Kubernetes Engine.
+This package includes clients for multiple versions of Kubernetes Engine API.
 By default, you will get version ``container_v1``.
 
 
@@ -21,7 +21,6 @@ API Reference
 
     container_v1beta1/services_
     container_v1beta1/types_
-
 
 Changelog
 ---------

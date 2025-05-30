@@ -2369,7 +2369,7 @@ class PrivateClusterConfig(proto.Message):
         private_endpoint_subnetwork (str):
             Subnet to provision the master's private endpoint during
             cluster creation. Specified in
-            projects/\ */regions/*/subnetworks/\* format.
+            projects/*/regions/*/subnetworks/\* format.
 
             Deprecated: Use
             [ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint_subnetwork][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint_subnetwork]
@@ -10984,8 +10984,8 @@ class ControlPlaneEndpointsConfig(proto.Message):
             private_endpoint_subnetwork (str):
                 Subnet to provision the master's private endpoint during
                 cluster creation. Specified in
-                projects/\ */regions/*/subnetworks/\* format. It is invalid
-                to specify both
+                projects/*/regions/*/subnetworks/\* format. It is invalid to
+                specify both
                 [PrivateClusterConfig.privateEndpointSubnetwork][] and this
                 field at the same time.
         """
