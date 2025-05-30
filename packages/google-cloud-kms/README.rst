@@ -1,9 +1,9 @@
-Python Client for Google Cloud Key Management Service
-=====================================================
+Python Client for Cloud Key Management Service (KMS) API
+========================================================
 
 |stable| |pypi| |versions|
 
-`Google Cloud Key Management Service`_: a cloud-hosted key management service that lets you manage cryptographic keys for your cloud services the same way you do on-premises. You can generate, use, rotate, and destroy AES256, RSA 2048, RSA 3072, RSA 4096, EC P256, and EC P384 cryptographic keys. Cloud KMS is integrated with Cloud IAM and Cloud Audit Logging so that you can manage permissions on individual keys and monitor how these are used. Use Cloud KMS to protect secrets and other sensitive data that you need to store in Google Cloud Platform.
+`Cloud Key Management Service (KMS) API`_: Manages keys and performs cryptographic operations in a central cloud service, for direct use by other cloud resources and applications.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,8 +14,8 @@ Python Client for Google Cloud Key Management Service
    :target: https://pypi.org/project/google-cloud-kms/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-kms.svg
    :target: https://pypi.org/project/google-cloud-kms/
-.. _Google Cloud Key Management Service: https://cloud.google.com/kms
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudkms/latest/summary_overview
+.. _Cloud Key Management Service (KMS) API: https://cloud.google.com/kms
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/kms/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/kms
 
 Quick Start
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Key Management Service.`_
+3. `Enable the Cloud Key Management Service (KMS) API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Key Management Service.:  https://cloud.google.com/kms
+.. _Enable the Cloud Key Management Service (KMS) API.:  https://cloud.google.com/kms
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Key Management Service
+-  Read the `Client Library Documentation`_ for Cloud Key Management Service (KMS) API
    to see other available methods on the client.
--  Read the `Google Cloud Key Management Service Product documentation`_ to learn
+-  Read the `Cloud Key Management Service (KMS) API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Key Management Service Product documentation:  https://cloud.google.com/kms
+.. _Cloud Key Management Service (KMS) API Product documentation:  https://cloud.google.com/kms
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

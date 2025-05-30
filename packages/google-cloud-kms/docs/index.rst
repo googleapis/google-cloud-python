@@ -11,7 +11,6 @@ API Reference
     kms_v1/services_
     kms_v1/types_
 
-
 Changelog
 ---------
 

@@ -1424,7 +1424,7 @@ class KeyManagementServiceAsyncClient:
                    key.
 
                    For more information, see [Importing a
-                   key](\ https://cloud.google.com/kms/docs/importing-a-key).
+                   key](https://cloud.google.com/kms/docs/importing-a-key).
 
         """
         # Create or coerce a protobuf request object.
@@ -2137,7 +2137,7 @@ class KeyManagementServiceAsyncClient:
                    key.
 
                    For more information, see [Importing a
-                   key](\ https://cloud.google.com/kms/docs/importing-a-key).
+                   key](https://cloud.google.com/kms/docs/importing-a-key).
 
         """
         # Create or coerce a protobuf request object.

@@ -937,7 +937,7 @@
             "currentVersion": "3.5.1",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "c6d7efa277aeac971f46988c48ca1f348b76f91f",
             "apiPaths": [
                 "google/cloud/kms/v1"
             ],
