@@ -1,5 +1,9 @@
 # Changelog
 
+### Features
+
+* Added support for the Iceberg in Creating a Cluster ([04785f](https://github.com/googleapis/google-cloud-python/commit/37e4fa43ce16f1d451a7a32261a183f5b404785f))
+
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
