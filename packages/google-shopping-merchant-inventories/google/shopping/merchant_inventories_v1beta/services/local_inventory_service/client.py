@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
 
 from google.shopping.merchant_inventories_v1beta.services.local_inventory_service import (
@@ -921,7 +921,7 @@ class LocalInventoryServiceClient(metaclass=LocalInventoryServiceClientMeta):
                    [storeCode][google.shopping.merchant.inventories.v1beta.LocalInventory.store_code].
                    For a list of all accepted attribute values, see the
                    [local product inventory data
-                   specification](\ https://support.google.com/merchants/answer/3061342).
+                   specification](https://support.google.com/merchants/answer/3061342).
 
         """
         # Create or coerce a protobuf request object.
