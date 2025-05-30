@@ -1,9 +1,9 @@
-Python Client for Cloud Workflows
-=================================
+Python Client for Workflows API
+===============================
 
 |stable| |pypi| |versions|
 
-`Cloud Workflows`_: Orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.
+`Workflows API`_: Manage workflow definitions. To execute workflows and manage executions, see the Workflows Executions API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Workflows
    :target: https://pypi.org/project/google-cloud-workflows/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-workflows.svg
    :target: https://pypi.org/project/google-cloud-workflows/
-.. _Cloud Workflows: https://cloud.google.com/workflows/
+.. _Workflows API: https://cloud.google.com/workflows/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/workflows/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/workflows/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Workflows.`_
+3. `Enable the Workflows API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Workflows.:  https://cloud.google.com/workflows/
+.. _Enable the Workflows API.:  https://cloud.google.com/workflows/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Workflows
+-  Read the `Client Library Documentation`_ for Workflows API
    to see other available methods on the client.
--  Read the `Cloud Workflows Product documentation`_ to learn
+-  Read the `Workflows API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Workflows Product documentation:  https://cloud.google.com/workflows/
+.. _Workflows API Product documentation:  https://cloud.google.com/workflows/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

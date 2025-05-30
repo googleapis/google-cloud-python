@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Workflows.
+This package includes clients for multiple versions of Workflows API.
 By default, you will get version ``workflows_v1``.
 
 
@@ -19,14 +19,6 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    workflows_v1beta/services_
-    workflows_v1beta/types_
-
-API Reference
--------------
-.. toctree::
-    :maxdepth: 2
-
     executions_v1/services_
     executions_v1/types_
 
@@ -37,6 +29,14 @@ API Reference
 
     executions_v1beta/services_
     executions_v1beta/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    workflows_v1beta/services_
+    workflows_v1beta/types_
 
 Changelog
 ---------
