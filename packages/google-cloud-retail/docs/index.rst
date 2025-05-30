@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Retail.
+This package includes clients for multiple versions of Vertex AI Search for commerce API.
 By default, you will get version ``retail_v2``.
 
 
@@ -19,17 +19,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    retail_v2alpha/services_
-    retail_v2alpha/types_
+    cloud_retail_v2alpha/services_
+    cloud_retail_v2alpha/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    retail_v2beta/services_
-    retail_v2beta/types_
-
+    cloud_retail_v2beta/services_
+    cloud_retail_v2beta/types_
 
 Changelog
 ---------

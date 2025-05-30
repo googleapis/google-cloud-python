@@ -3376,7 +3376,11 @@ def test_create_merchant_center_account_link_rest_call_success(request_type):
         "feed_label": "feed_label_value",
         "language_code": "language_code_value",
         "feed_filters": [
-            {"primary_feed_id": 1571, "primary_feed_name": "primary_feed_name_value"}
+            {
+                "primary_feed_id": 1571,
+                "data_source_id": 1462,
+                "primary_feed_name": "primary_feed_name_value",
+            }
         ],
         "state": 1,
         "project_id": "project_id_value",
