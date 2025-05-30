@@ -11,7 +11,6 @@ API Reference
     iap_v1/services_
     iap_v1/types_
 
-
 Changelog
 ---------
 

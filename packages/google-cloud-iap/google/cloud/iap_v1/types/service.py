@@ -417,17 +417,19 @@ class AccessSettings(proto.Message):
 
 
 class GcipSettings(proto.Message):
-    r"""Allows customers to configure tenant_id for GCIP instance per-app.
+    r"""Allows customers to configure tenant IDs for a Cloud Identity
+    Platform (GCIP) instance for each application.
 
     Attributes:
         tenant_ids (MutableSequence[str]):
-            Optional. GCIP tenant ids that are linked to the IAP
-            resource. tenant_ids could be a string beginning with a
+            Optional. GCIP tenant IDs that are linked to the IAP
+            resource. ``tenant_ids`` could be a string beginning with a
             number character to indicate authenticating with GCIP tenant
-            flow, or in the format of \_ to indicate authenticating with
-            GCIP agent flow. If agent flow is used, tenant_ids should
-            only contain one single element, while for tenant flow,
-            tenant_ids can contain multiple elements.
+            flow, or in the format of ``_<ProjectNumber>`` to indicate
+            authenticating with GCIP agent flow. If agent flow is used,
+            ``tenant_ids`` should only contain one single element, while
+            for tenant flow, ``tenant_ids`` can contain multiple
+            elements.
         login_page_uri (google.protobuf.wrappers_pb2.StringValue):
             Login page URI associated with the GCIP
             tenants. Typically, all resources within the
@@ -448,15 +450,14 @@ class GcipSettings(proto.Message):
 
 
 class CorsSettings(proto.Message):
-    r"""Allows customers to configure HTTP request paths that'll
-    allow HTTP OPTIONS call to bypass authentication and
-    authorization.
+    r"""Allows customers to configure HTTP request paths that'll allow HTTP
+    ``OPTIONS`` call to bypass authentication and authorization.
 
     Attributes:
         allow_http_options (google.protobuf.wrappers_pb2.BoolValue):
-            Configuration to allow HTTP OPTIONS calls to
-            skip authorization. If undefined, IAP will not
-            apply any special logic to OPTIONS requests.
+            Configuration to allow HTTP ``OPTIONS`` calls to skip
+            authentication and authorization. If undefined, IAP will not
+            apply any special logic to ``OPTIONS`` requests.
     """
 
     allow_http_options: wrappers_pb2.BoolValue = proto.Field(
