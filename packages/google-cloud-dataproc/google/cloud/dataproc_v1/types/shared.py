@@ -73,6 +73,8 @@ class Component(proto.Enum):
             accessing HCatalog).
         HUDI (18):
             Hudi.
+        ICEBERG (420):
+            Iceberg.
         JUPYTER (1):
             The Jupyter Notebook.
         PRESTO (6):
