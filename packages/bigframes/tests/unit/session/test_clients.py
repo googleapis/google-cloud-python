@@ -15,25 +15,22 @@
 import os
 import pathlib
 import tempfile
-from typing import Optional
+from typing import cast, Optional
 import unittest.mock as mock
 
-import google.api_core.client_info
-import google.api_core.client_options
-import google.api_core.exceptions
-import google.api_core.gapic_v1.client_info
 import google.auth.credentials
 import google.cloud.bigquery
 import google.cloud.bigquery_connection_v1
 import google.cloud.bigquery_storage_v1
 import google.cloud.functions_v2
 import google.cloud.resourcemanager_v3
+import requests.adapters
 
 import bigframes.session.clients as clients
 import bigframes.version
 
 
-def create_clients_provider(application_name: Optional[str] = None):
+def create_clients_provider(application_name: Optional[str] = None, **kwargs):
     credentials = mock.create_autospec(google.auth.credentials.Credentials)
     return clients.ClientsProvider(
         project="test-project",
@@ -42,6 +39,7 @@ def create_clients_provider(application_name: Optional[str] = None):
         credentials=credentials,
         application_name=application_name,
         bq_kms_key_name="projects/my-project/locations/us/keyRings/myKeyRing/cryptoKeys/myKey",
+        **kwargs,
     )
 
 
@@ -134,6 +132,24 @@ def assert_clients_wo_user_agent(
     assert_constructed_wo_user_agent(
         provider.resourcemanagerclient, not_expected_user_agent
     )
+
+
+def test_requests_transport_adapters_pool_maxsize(monkeypatch):
+    monkeypatch_client_constructors(monkeypatch)
+    requests_transport_adapters = (
+        ("http://", requests.adapters.HTTPAdapter(pool_maxsize=123)),
+        ("https://", requests.adapters.HTTPAdapter(pool_maxsize=123)),
+    )  # doctest: +SKIP
+    provider = create_clients_provider(
+        requests_transport_adapters=requests_transport_adapters
+    )
+
+    _, kwargs = cast(mock.Mock, provider.bqclient).call_args
+    requests_session = kwargs.get("_http")
+    adapter: requests.adapters.HTTPAdapter = requests_session.get_adapter(
+        "https://bigquery.googleapis.com/"
+    )
+    assert adapter._pool_maxsize == 123  # type: ignore
 
 
 def test_user_agent_default(monkeypatch):

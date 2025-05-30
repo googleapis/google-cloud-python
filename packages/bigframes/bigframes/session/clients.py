@@ -17,18 +17,20 @@
 import os
 import threading
 import typing
-from typing import Optional
+from typing import Optional, Sequence, Tuple
 
 import google.api_core.client_info
 import google.api_core.client_options
 import google.api_core.gapic_v1.client_info
 import google.auth.credentials
+import google.auth.transport.requests
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1
 import google.cloud.bigquery_storage_v1
 import google.cloud.functions_v2
 import google.cloud.resourcemanager_v3
 import pydata_google_auth
+import requests
 
 import bigframes.constants
 import bigframes.version
@@ -79,6 +81,10 @@ class ClientsProvider:
         application_name: Optional[str] = None,
         bq_kms_key_name: Optional[str] = None,
         client_endpoints_override: dict = {},
+        *,
+        requests_transport_adapters: Sequence[
+            Tuple[str, requests.adapters.BaseAdapter]
+        ] = (),
     ):
         credentials_project = None
         if credentials is None:
@@ -124,6 +130,7 @@ class ClientsProvider:
                 )
         self._location = location
         self._use_regional_endpoints = use_regional_endpoints
+        self._requests_transport_adapters = requests_transport_adapters
 
         self._credentials = credentials
         self._bq_kms_key_name = bq_kms_key_name
@@ -173,12 +180,21 @@ class ClientsProvider:
             user_agent=self._application_name
         )
 
+        requests_session = google.auth.transport.requests.AuthorizedSession(
+            self._credentials
+        )
+        for prefix, adapter in self._requests_transport_adapters:
+            requests_session.mount(prefix, adapter)
+
         bq_client = bigquery.Client(
             client_info=bq_info,
             client_options=bq_options,
-            credentials=self._credentials,
             project=self._project,
             location=self._location,
+            # Instead of credentials, use _http so that users can override
+            # requests options with transport adapters. See internal issue
+            # b/419106112.
+            _http=requests_session,
         )
 
         # If a new enough client library is available, we opt-in to the faster

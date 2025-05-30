@@ -16,10 +16,11 @@
 
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Literal, Optional, Sequence, Tuple
 import warnings
 
 import google.auth.credentials
+import requests.adapters
 
 import bigframes.enums
 import bigframes.exceptions as bfe
@@ -90,6 +91,9 @@ class BigQueryOptions:
         allow_large_results: bool = False,
         ordering_mode: Literal["strict", "partial"] = "strict",
         client_endpoints_override: Optional[dict] = None,
+        requests_transport_adapters: Sequence[
+            Tuple[str, requests.adapters.BaseAdapter]
+        ] = (),
     ):
         self._credentials = credentials
         self._project = project
@@ -100,6 +104,7 @@ class BigQueryOptions:
         self._kms_key_name = kms_key_name
         self._skip_bq_connection_check = skip_bq_connection_check
         self._allow_large_results = allow_large_results
+        self._requests_transport_adapters = requests_transport_adapters
         self._session_started = False
         # Determines the ordering strictness for the session.
         self._ordering_mode = _validate_ordering_mode(ordering_mode)
@@ -379,3 +384,43 @@ class BigQueryOptions:
             )
 
         self._client_endpoints_override = value
+
+    @property
+    def requests_transport_adapters(
+        self,
+    ) -> Sequence[Tuple[str, requests.adapters.BaseAdapter]]:
+        """Transport adapters for requests-based REST clients such as the
+        google-cloud-bigquery package.
+
+        For more details, see the explanation in `requests guide to transport
+        adapters
+        <https://requests.readthedocs.io/en/latest/user/advanced/#transport-adapters>`_.
+
+        **Examples:**
+
+        Increase the connection pool size using the requests `HTTPAdapter
+        <https://requests.readthedocs.io/en/latest/api/#requests.adapters.HTTPAdapter>`_.
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.bigquery.requests_transport_adapters = (
+            ...     ("http://", requests.adapters.HTTPAdapter(pool_maxsize=100)),
+            ...     ("https://", requests.adapters.HTTPAdapter(pool_maxsize=100)),
+            ... )  # doctest: +SKIP
+
+        Returns:
+            Sequence[Tuple[str, requests.adapters.BaseAdapter]]:
+                Prefixes and corresponding transport adapters to `mount
+                <https://requests.readthedocs.io/en/latest/api/#requests.Session.mount>`_
+                in requests-based REST clients.
+        """
+        return self._requests_transport_adapters
+
+    @requests_transport_adapters.setter
+    def requests_transport_adapters(
+        self, value: Sequence[Tuple[str, requests.adapters.BaseAdapter]]
+    ) -> None:
+        if self._session_started and self._requests_transport_adapters != value:
+            raise ValueError(
+                SESSION_STARTED_MESSAGE.format(attribute="requests_transport_adapters")
+            )
+        self._requests_transport_adapters = value

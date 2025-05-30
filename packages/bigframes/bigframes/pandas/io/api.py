@@ -496,6 +496,7 @@ def _set_default_session_location_if_possible(query):
             application_name=config.options.bigquery.application_name,
             bq_kms_key_name=config.options.bigquery.kms_key_name,
             client_endpoints_override=config.options.bigquery.client_endpoints_override,
+            requests_transport_adapters=config.options.bigquery.requests_transport_adapters,
         )
 
         bqclient = clients_provider.bqclient

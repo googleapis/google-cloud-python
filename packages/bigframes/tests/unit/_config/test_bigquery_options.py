@@ -38,6 +38,7 @@ import bigframes.exceptions
         ("skip_bq_connection_check", False, True),
         ("client_endpoints_override", {}, {"bqclient": "endpoint_address"}),
         ("ordering_mode", "strict", "partial"),
+        ("requests_transport_adapters", object(), object()),
     ],
 )
 def test_setter_raises_if_session_started(attribute, original_value, new_value):

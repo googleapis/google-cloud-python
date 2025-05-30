@@ -279,16 +279,18 @@ def test_credentials_need_reauthentication(
     # Call get_global_session() *after* read_gbq so that our location detection
     # has a chance to work.
     session = bpd.get_global_session()
-    assert session.bqclient._credentials.valid
+    assert session.bqclient._http.credentials.valid
 
     with monkeypatch.context() as m:
         # Simulate expired credentials to trigger the credential refresh flow
-        m.setattr(session.bqclient._credentials, "expiry", datetime.datetime.utcnow())
-        assert not session.bqclient._credentials.valid
+        m.setattr(
+            session.bqclient._http.credentials, "expiry", datetime.datetime.utcnow()
+        )
+        assert not session.bqclient._http.credentials.valid
 
         # Simulate an exception during the credential refresh flow
         m.setattr(
-            session.bqclient._credentials,
+            session.bqclient._http.credentials,
             "refresh",
             mock.Mock(side_effect=google.auth.exceptions.RefreshError()),
         )
