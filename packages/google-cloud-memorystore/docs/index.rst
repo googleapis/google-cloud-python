@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Memorystore.
+This package includes clients for multiple versions of Memorystore API.
 By default, you will get version ``memorystore_v1``.
 
 
@@ -19,9 +19,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    memorystore_v1beta/services_
-    memorystore_v1beta/types_
-
+    cloud_memorystore_v1beta/services_
+    cloud_memorystore_v1beta/types_
 
 Changelog
 ---------
