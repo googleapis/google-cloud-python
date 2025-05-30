@@ -115,6 +115,8 @@
         uid: bigframes.ml.decomposition
       - name: PCA
         uid: bigframes.ml.decomposition.PCA
+      - name: MatrixFactorization
+        uid: bigframes.ml.decomposition.MatrixFactorization
       name: decomposition
     - items:
       - name: Overview
