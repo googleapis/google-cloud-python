@@ -1,9 +1,9 @@
-Python Client for Backup for GKE
-================================
+Python Client for Backup for GKE API
+====================================
 
 |preview| |pypi| |versions|
 
-`Backup for GKE`_: An API for backing up and restoring workloads in GKE.
+`Backup for GKE API`_: Backup for GKE is a managed Kubernetes workload backup and restore service for GKE clusters.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,8 +14,8 @@ Python Client for Backup for GKE
    :target: https://pypi.org/project/google-cloud-gke-backup/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-backup.svg
    :target: https://pypi.org/project/google-cloud-gke-backup/
-.. _Backup for GKE: https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkebackup/latest/summary_overview
+.. _Backup for GKE API: https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gke backup/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
 
 Quick Start
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Backup for GKE.`_
+3. `Enable the Backup for GKE API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Backup for GKE.:  https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
+.. _Enable the Backup for GKE API.:  https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Backup for GKE
+-  Read the `Client Library Documentation`_ for Backup for GKE API
    to see other available methods on the client.
--  Read the `Backup for GKE Product documentation`_ to learn
+-  Read the `Backup for GKE API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Backup for GKE Product documentation:  https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
+.. _Backup for GKE API Product documentation:  https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

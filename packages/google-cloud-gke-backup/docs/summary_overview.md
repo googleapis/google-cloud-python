@@ -14,9 +14,9 @@ Overview of the APIs available for Backup for GKE API.
 Classes, methods and properties & attributes for
 Backup for GKE API.
 
-[classes](https://cloud.google.com/python/docs/reference/gkebackup/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/gke backup/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/gkebackup/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/gke backup/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/gkebackup/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/gke backup/latest/summary_property.html)
