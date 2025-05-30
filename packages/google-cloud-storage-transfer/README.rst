@@ -1,9 +1,9 @@
-Python Client for Storage Transfer Service
-==========================================
+Python Client for Storage Transfer API
+======================================
 
 |stable| |pypi| |versions|
 
-`Storage Transfer Service`_: Secure, low-cost services for transferring data from cloud or on-premises sources.
+`Storage Transfer API`_: Transfers data from external data sources to a Google Cloud Storage bucket or between Google Cloud Storage buckets.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,8 +14,8 @@ Python Client for Storage Transfer Service
    :target: https://pypi.org/project/google-cloud-storage-transfer/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage-transfer.svg
    :target: https://pypi.org/project/google-cloud-storage-transfer/
-.. _Storage Transfer Service: https://cloud.google.com/storage-transfer/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storagetransfer/latest/summary_overview
+.. _Storage Transfer API: https://cloud.google.com/storage-transfer/
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storage transfer/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/storage-transfer/
 
 Quick Start
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Storage Transfer Service.`_
+3. `Enable the Storage Transfer API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Storage Transfer Service.:  https://cloud.google.com/storage-transfer/
+.. _Enable the Storage Transfer API.:  https://cloud.google.com/storage-transfer/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Storage Transfer Service
+-  Read the `Client Library Documentation`_ for Storage Transfer API
    to see other available methods on the client.
--  Read the `Storage Transfer Service Product documentation`_ to learn
+-  Read the `Storage Transfer API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Storage Transfer Service Product documentation:  https://cloud.google.com/storage-transfer/
+.. _Storage Transfer API Product documentation:  https://cloud.google.com/storage-transfer/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

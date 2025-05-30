@@ -11,7 +11,6 @@ API Reference
     storage_transfer_v1/services_
     storage_transfer_v1/types_
 
-
 Changelog
 ---------
 
