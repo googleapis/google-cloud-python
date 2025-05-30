@@ -11,7 +11,6 @@ API Reference
     bigquery_connection_v1/services_
     bigquery_connection_v1/types_
 
-
 Changelog
 ---------
 
