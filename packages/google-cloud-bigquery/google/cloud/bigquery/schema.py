@@ -232,11 +232,9 @@ class SchemaField(object):
         if max_length is not _DEFAULT_VALUE:
             self._properties["maxLength"] = max_length
         if policy_tags is not _DEFAULT_VALUE:
-            # TODO: The typehinting for this needs work. Setting this pragma to temporarily
-            # manage a pytype issue that came up in another PR. See Issue: #2132
             self._properties["policyTags"] = (
-                policy_tags.to_api_repr()  # pytype: disable=attribute-error
-                if policy_tags is not None
+                policy_tags.to_api_repr()
+                if isinstance(policy_tags, PolicyTagList)
                 else None
             )
         if isinstance(range_element_type, str):

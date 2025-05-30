@@ -518,23 +518,17 @@ class RoutineReference(object):
     @property
     def project(self):
         """str: ID of the project containing the routine."""
-        # TODO: The typehinting for this needs work. Setting this pragma to temporarily
-        # manage a pytype issue that came up in another PR. See Issue: #2132
-        return self._properties["projectId"]  # pytype: disable=typed-dict-error
+        return self._properties.get("projectId", "")
 
     @property
     def dataset_id(self):
         """str: ID of dataset containing the routine."""
-        # TODO: The typehinting for this needs work. Setting this pragma to temporarily
-        # manage a pytype issue that came up in another PR. See Issue: #2132
-        return self._properties["datasetId"]  # pytype: disable=typed-dict-error
+        return self._properties.get("datasetId", "")
 
     @property
     def routine_id(self):
         """str: The routine ID."""
-        # TODO: The typehinting for this needs work. Setting this pragma to temporarily
-        # manage a pytype issue that came up in another PR. See Issue: #2132
-        return self._properties["routineId"]  # pytype: disable=typed-dict-error
+        return self._properties.get("routineId", "")
 
     @property
     def path(self):
