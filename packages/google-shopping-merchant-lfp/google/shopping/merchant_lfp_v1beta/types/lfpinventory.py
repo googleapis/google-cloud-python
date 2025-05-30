@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -66,7 +66,7 @@ class LfpInventory(proto.Message):
             product.
 
             This field is a member of `oneof`_ ``_gtin``.
-        price (google.shopping.type.types.Price):
+        price (google.shopping.type.types_pb2.Price):
             Optional. The current price of the product.
         availability (str):
             Required. Availability of the product at this store. For
@@ -137,10 +137,10 @@ class LfpInventory(proto.Message):
         number=7,
         optional=True,
     )
-    price: types.Price = proto.Field(
+    price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     availability: str = proto.Field(
         proto.STRING,

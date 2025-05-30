@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -63,7 +63,7 @@ class LfpSale(proto.Message):
         gtin (str):
             Required. The Global Trade Item Number of the
             sold product.
-        price (google.shopping.type.types.Price):
+        price (google.shopping.type.types_pb2.Price):
             Required. The unit price of the product.
         quantity (int):
             Required. The relative change of the
@@ -112,10 +112,10 @@ class LfpSale(proto.Message):
         proto.STRING,
         number=7,
     )
-    price: types.Price = proto.Field(
+    price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=8,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     quantity: int = proto.Field(
         proto.INT64,
