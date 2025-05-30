@@ -18,11 +18,9 @@ from google.cloud.dataform import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.dataform_v1beta1.services.dataform.async_client import (
-    DataformAsyncClient,
-)
-from google.cloud.dataform_v1beta1.services.dataform.client import DataformClient
-from google.cloud.dataform_v1beta1.types.dataform import (
+from google.cloud.dataform_v1.services.dataform.async_client import DataformAsyncClient
+from google.cloud.dataform_v1.services.dataform.client import DataformClient
+from google.cloud.dataform_v1.types.dataform import (
     CancelWorkflowInvocationRequest,
     CancelWorkflowInvocationResponse,
     CodeCompilationConfig,
