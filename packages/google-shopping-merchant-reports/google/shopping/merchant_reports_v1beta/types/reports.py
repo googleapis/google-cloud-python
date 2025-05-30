@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -378,7 +378,7 @@ class ProductPerformanceView(proto.Message):
             Available only for the ``FREE`` traffic source.
 
             This field is a member of `oneof`_ ``_conversions``.
-        conversion_value (google.shopping.type.types.Price):
+        conversion_value (google.shopping.type.types_pb2.Price):
             Value of conversions attributed to the product, reported on
             the conversion date. Metric.
 
@@ -523,10 +523,10 @@ class ProductPerformanceView(proto.Message):
         number=26,
         optional=True,
     )
-    conversion_value: types.Price = proto.Field(
+    conversion_value: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=27,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     conversion_rate: float = proto.Field(
         proto.DOUBLE,
@@ -561,7 +561,7 @@ class ProductView(proto.Message):
             Required in the ``SELECT`` clause.
 
             This field is a member of `oneof`_ ``_id``.
-        channel (google.shopping.type.types.Channel.ChannelEnum):
+        channel (google.shopping.type.types_pb2.ChannelEnum):
             Channel of the product. Can be ``ONLINE`` or ``LOCAL``.
 
             This field is a member of `oneof`_ ``_channel``.
@@ -636,7 +636,7 @@ class ProductView(proto.Message):
             taxonomy <https://support.google.com/merchants/answer/6324406>`__.
 
             This field is a member of `oneof`_ ``_product_type_l5``.
-        price (google.shopping.type.types.Price):
+        price (google.shopping.type.types_pb2.Price):
             Product price. Absent if the information
             about the price of the product is not available.
         condition (str):
@@ -870,7 +870,7 @@ class ProductView(proto.Message):
                 .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
                 Attributes:
-                    reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+                    reporting_context (google.shopping.type.types_pb2.ReportingContextEnum):
                         Reporting context the issue applies to.
 
                         This field is a member of `oneof`_ ``_reporting_context``.
@@ -883,12 +883,12 @@ class ProductView(proto.Message):
                         context, represented in ISO 3166 format.
                 """
 
-                reporting_context: types.ReportingContext.ReportingContextEnum = (
+                reporting_context: types_pb2.ReportingContext.ReportingContextEnum = (
                     proto.Field(
                         proto.ENUM,
                         number=1,
                         optional=True,
-                        enum=types.ReportingContext.ReportingContextEnum,
+                        enum=types_pb2.ReportingContext.ReportingContextEnum,
                     )
                 )
                 disapproved_countries: MutableSequence[str] = proto.RepeatedField(
@@ -936,11 +936,11 @@ class ProductView(proto.Message):
         number=1,
         optional=True,
     )
-    channel: types.Channel.ChannelEnum = proto.Field(
+    channel: types_pb2.Channel.ChannelEnum = proto.Field(
         proto.ENUM,
         number=28,
         optional=True,
-        enum=types.Channel.ChannelEnum,
+        enum=types_pb2.Channel.ChannelEnum,
     )
     language_code: str = proto.Field(
         proto.STRING,
@@ -1017,10 +1017,10 @@ class ProductView(proto.Message):
         number=16,
         optional=True,
     )
-    price: types.Price = proto.Field(
+    price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=17,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     condition: str = proto.Field(
         proto.STRING,
@@ -1176,9 +1176,9 @@ class PriceCompetitivenessProductView(proto.Message):
             taxonomy <https://support.google.com/merchants/answer/6324406>`__.
 
             This field is a member of `oneof`_ ``_product_type_l5``.
-        price (google.shopping.type.types.Price):
+        price (google.shopping.type.types_pb2.Price):
             Current price of the product.
-        benchmark_price (google.shopping.type.types.Price):
+        benchmark_price (google.shopping.type.types_pb2.Price):
             Latest available price benchmark for the
             product's catalog in the benchmark country.
     """
@@ -1258,15 +1258,15 @@ class PriceCompetitivenessProductView(proto.Message):
         number=15,
         optional=True,
     )
-    price: types.Price = proto.Field(
+    price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=16,
-        message=types.Price,
+        message=types_pb2.Price,
     )
-    benchmark_price: types.Price = proto.Field(
+    benchmark_price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=17,
-        message=types.Price,
+        message=types_pb2.Price,
     )
 
 
@@ -1354,9 +1354,9 @@ class PriceInsightsProductView(proto.Message):
             taxonomy <https://support.google.com/merchants/answer/6324406>`__.
 
             This field is a member of `oneof`_ ``_product_type_l5``.
-        price (google.shopping.type.types.Price):
+        price (google.shopping.type.types_pb2.Price):
             Current price of the product.
-        suggested_price (google.shopping.type.types.Price):
+        suggested_price (google.shopping.type.types_pb2.Price):
             Latest suggested price for the product.
         predicted_impressions_change_fraction (float):
             Predicted change in impressions as a fraction
@@ -1479,15 +1479,15 @@ class PriceInsightsProductView(proto.Message):
         number=14,
         optional=True,
     )
-    price: types.Price = proto.Field(
+    price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=15,
-        message=types.Price,
+        message=types_pb2.Price,
     )
-    suggested_price: types.Price = proto.Field(
+    suggested_price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=16,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     predicted_impressions_change_fraction: float = proto.Field(
         proto.DOUBLE,
