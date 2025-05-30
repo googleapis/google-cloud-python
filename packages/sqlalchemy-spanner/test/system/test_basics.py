@@ -209,3 +209,32 @@ class TestBasics(fixtures.TablesTest):
                 select(SchemaUser).where(SchemaUser.name == "NewName")
             ).all()
             eq_(0, len(users))
+
+    def test_multi_row_insert(self, connection):
+        """Ensures we can perform multi-row inserts."""
+
+        class Base(DeclarativeBase):
+            pass
+
+        class User(Base):
+            __tablename__ = "users"
+            ID: Mapped[int] = mapped_column(primary_key=True)
+            name: Mapped[str] = mapped_column(String(20))
+
+        with connection.engine.begin() as conn:
+            inserted_rows = list(
+                conn.execute(
+                    User.__table__.insert()
+                    .values([{"name": "a"}, {"name": "b"}])
+                    .returning(User.__table__.c.ID, User.__table__.c.name)
+                )
+            )
+
+        eq_(2, len(inserted_rows))
+        eq_({"a", "b"}, {row.name for row in inserted_rows})
+
+        with connection.engine.connect() as conn:
+            selected_rows = list(conn.execute(User.__table__.select()))
+
+        eq_(len(inserted_rows), len(selected_rows))
+        eq_(set(inserted_rows), set(selected_rows))
