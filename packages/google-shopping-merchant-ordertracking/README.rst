@@ -3,7 +3,7 @@ Python Client for Merchant API
 
 |preview| |pypi| |versions|
 
-`Merchant API`_: Programmatically manage your Merchant Center Accounts. 
+`Merchant API`_: Programmatically manage your Merchant Center Accounts.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -15,7 +15,7 @@ Python Client for Merchant API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-shopping-merchant-ordertracking.svg
    :target: https://pypi.org/project/google-shopping-merchant-ordertracking/
 .. _Merchant API: https://developers.google.com/merchant/api
-.. _Client Library Documentation: https://googleapis.dev/python/google-shopping-merchant-ordertracking/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/merchant ordertracking/latest
 .. _Product Documentation:  https://developers.google.com/merchant/api
 
 Quick Start
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

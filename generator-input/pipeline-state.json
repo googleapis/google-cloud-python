@@ -1322,7 +1322,7 @@
             "currentVersion": "0.1.0",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "bab01b38ef7a0f3a756d38862d37e4380ff85753",
             "apiPaths": [
                 "google/shopping/merchant/ordertracking/v1beta"
             ],

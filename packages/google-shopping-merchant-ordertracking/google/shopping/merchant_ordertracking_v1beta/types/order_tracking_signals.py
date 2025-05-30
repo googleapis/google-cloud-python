@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -97,7 +97,7 @@ class OrderTrackingSignal(proto.Message):
         shipment_line_item_mapping (MutableSequence[google.shopping.merchant_ordertracking_v1beta.types.OrderTrackingSignal.ShipmentLineItemMapping]):
             Optional. The mapping of the line items to
             the shipment information.
-        customer_shipping_fee (google.shopping.type.types.Price):
+        customer_shipping_fee (google.shopping.type.types_pb2.Price):
             Optional. The shipping fee of the order;
             this value should be set to zero in the case of
             free shipping.
@@ -357,11 +357,11 @@ class OrderTrackingSignal(proto.Message):
         number=5,
         message=ShipmentLineItemMapping,
     )
-    customer_shipping_fee: types.Price = proto.Field(
+    customer_shipping_fee: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=6,
         optional=True,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     delivery_postal_code: str = proto.Field(
         proto.STRING,
