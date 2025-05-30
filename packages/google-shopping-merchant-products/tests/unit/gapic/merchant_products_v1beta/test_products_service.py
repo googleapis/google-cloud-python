@@ -51,7 +51,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 
 from google.shopping.merchant_products_v1beta.services.products_service import (
     ProductsServiceAsyncClient,
@@ -1157,7 +1157,7 @@ def test_get_product(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = products.Product(
             name="name_value",
-            channel=types.Channel.ChannelEnum.ONLINE,
+            channel=types_pb2.Channel.ChannelEnum.ONLINE,
             offer_id="offer_id_value",
             content_language="content_language_value",
             feed_label="feed_label_value",
@@ -1175,7 +1175,7 @@ def test_get_product(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, products.Product)
     assert response.name == "name_value"
-    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.channel == types_pb2.Channel.ChannelEnum.ONLINE
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"
@@ -1307,7 +1307,7 @@ async def test_get_product_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             products.Product(
                 name="name_value",
-                channel=types.Channel.ChannelEnum.ONLINE,
+                channel=types_pb2.Channel.ChannelEnum.ONLINE,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
                 feed_label="feed_label_value",
@@ -1326,7 +1326,7 @@ async def test_get_product_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, products.Product)
     assert response.name == "name_value"
-    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.channel == types_pb2.Channel.ChannelEnum.ONLINE
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"
@@ -2600,7 +2600,7 @@ async def test_get_product_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             products.Product(
                 name="name_value",
-                channel=types.Channel.ChannelEnum.ONLINE,
+                channel=types_pb2.Channel.ChannelEnum.ONLINE,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
                 feed_label="feed_label_value",
@@ -2696,7 +2696,7 @@ def test_get_product_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = products.Product(
             name="name_value",
-            channel=types.Channel.ChannelEnum.ONLINE,
+            channel=types_pb2.Channel.ChannelEnum.ONLINE,
             offer_id="offer_id_value",
             content_language="content_language_value",
             feed_label="feed_label_value",
@@ -2719,7 +2719,7 @@ def test_get_product_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, products.Product)
     assert response.name == "name_value"
-    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.channel == types_pb2.Channel.ChannelEnum.ONLINE
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"

@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -201,7 +201,7 @@ class Attributes(proto.Message):
             The item's pattern (for example, polka dots).
 
             This field is a member of `oneof`_ ``_pattern``.
-        price (google.shopping.type.types.Price):
+        price (google.shopping.type.types_pb2.Price):
             Price of the item.
         installment (google.shopping.merchant_products_v1beta.types.Installment):
             Number and amount of installments to pay for
@@ -221,7 +221,7 @@ class Attributes(proto.Message):
         product_types (MutableSequence[str]):
             Categories of the item (formatted as in `product data
             specification <https://support.google.com/merchants/answer/188494#product_type>`__).
-        sale_price (google.shopping.type.types.Price):
+        sale_price (google.shopping.type.types_pb2.Price):
             Advertised sale price of the item.
         sale_price_effective_date (google.type.interval_pb2.Interval):
             Date range during which the item is on sale (see `product
@@ -346,7 +346,7 @@ class Attributes(proto.Message):
             Product ads.
 
             This field is a member of `oneof`_ ``_ads_redirect``.
-        cost_of_goods_sold (google.shopping.type.types.Price):
+        cost_of_goods_sold (google.shopping.type.types_pb2.Price):
             Cost of goods sold. Used for gross profit
             reporting.
         product_details (MutableSequence[google.shopping.merchant_products_v1beta.types.ProductDetail]):
@@ -480,7 +480,7 @@ class Attributes(proto.Message):
             (AI)-generated descriptions.
 
             This field is a member of `oneof`_ ``_structured_description``.
-        auto_pricing_min_price (google.shopping.type.types.Price):
+        auto_pricing_min_price (google.shopping.type.types_pb2.Price):
             A safeguard in the "Automated Discounts"
             (https://support.google.com/merchants/answer/10295759)
             and "Dynamic Promotions"
@@ -616,10 +616,10 @@ class Attributes(proto.Message):
         number=30,
         optional=True,
     )
-    price: types.Price = proto.Field(
+    price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=31,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     installment: "Installment" = proto.Field(
         proto.MESSAGE,
@@ -645,10 +645,10 @@ class Attributes(proto.Message):
         proto.STRING,
         number=35,
     )
-    sale_price: types.Price = proto.Field(
+    sale_price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=36,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     sale_price_effective_date: interval_pb2.Interval = proto.Field(
         proto.MESSAGE,
@@ -800,10 +800,10 @@ class Attributes(proto.Message):
         number=61,
         optional=True,
     )
-    cost_of_goods_sold: types.Price = proto.Field(
+    cost_of_goods_sold: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=62,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     product_details: MutableSequence["ProductDetail"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -942,10 +942,10 @@ class Attributes(proto.Message):
         optional=True,
         message="ProductStructuredDescription",
     )
-    auto_pricing_min_price: types.Price = proto.Field(
+    auto_pricing_min_price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=124,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     sustainability_incentives: MutableSequence[
         "ProductSustainabilityIncentive"
@@ -1104,7 +1104,7 @@ class SubscriptionCost(proto.Message):
         period_length (int):
             The number of subscription periods the buyer
             has to pay.
-        amount (google.shopping.type.types.Price):
+        amount (google.shopping.type.types_pb2.Price):
             The amount the buyer has to pay per
             subscription period.
     """
@@ -1118,10 +1118,10 @@ class SubscriptionCost(proto.Message):
         proto.INT64,
         number=2,
     )
-    amount: types.Price = proto.Field(
+    amount: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=3,
-        message=types.Price,
+        message=types_pb2.Price,
     )
 
 
@@ -1134,9 +1134,9 @@ class Installment(proto.Message):
         months (int):
             The number of installments the buyer has to
             pay.
-        amount (google.shopping.type.types.Price):
+        amount (google.shopping.type.types_pb2.Price):
             The amount the buyer has to pay per month.
-        downpayment (google.shopping.type.types.Price):
+        downpayment (google.shopping.type.types_pb2.Price):
             The up-front down payment amount the buyer
             has to pay.
 
@@ -1154,16 +1154,16 @@ class Installment(proto.Message):
         proto.INT64,
         number=1,
     )
-    amount: types.Price = proto.Field(
+    amount: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=2,
-        message=types.Price,
+        message=types_pb2.Price,
     )
-    downpayment: types.Price = proto.Field(
+    downpayment: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=3,
         optional=True,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     credit_type: str = proto.Field(
         proto.STRING,
@@ -1227,13 +1227,13 @@ class LoyaltyProgram(proto.Message):
             program.
 
             This field is a member of `oneof`_ ``_tier_label``.
-        price (google.shopping.type.types.Price):
+        price (google.shopping.type.types_pb2.Price):
             The price for members of the given tier, that
             is, the instant discount price. Must be smaller
             or equal to the regular price.
 
             This field is a member of `oneof`_ ``_price``.
-        cashback_for_future_use (google.shopping.type.types.Price):
+        cashback_for_future_use (google.shopping.type.types_pb2.Price):
             The cashback that can be used for future
             purchases.
 
@@ -1271,17 +1271,17 @@ class LoyaltyProgram(proto.Message):
         number=2,
         optional=True,
     )
-    price: types.Price = proto.Field(
+    price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=3,
         optional=True,
-        message=types.Price,
+        message=types_pb2.Price,
     )
-    cashback_for_future_use: types.Price = proto.Field(
+    cashback_for_future_use: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=4,
         optional=True,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     loyalty_points: int = proto.Field(
         proto.INT64,
@@ -1307,7 +1307,7 @@ class Shipping(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        price (google.shopping.type.types.Price):
+        price (google.shopping.type.types_pb2.Price):
             Fixed shipping price, represented as a
             number.
         country (str):
@@ -1391,10 +1391,10 @@ class Shipping(proto.Message):
             This field is a member of `oneof`_ ``_max_transit_time``.
     """
 
-    price: types.Price = proto.Field(
+    price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=1,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     country: str = proto.Field(
         proto.STRING,
@@ -1454,7 +1454,7 @@ class FreeShippingThreshold(proto.Message):
             of the country to which an item will ship.
 
             This field is a member of `oneof`_ ``_country``.
-        price_threshold (google.shopping.type.types.Price):
+        price_threshold (google.shopping.type.types_pb2.Price):
             The minimum product price for the shipping
             cost to become free. Represented as a number.
 
@@ -1466,11 +1466,11 @@ class FreeShippingThreshold(proto.Message):
         number=1,
         optional=True,
     )
-    price_threshold: types.Price = proto.Field(
+    price_threshold: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=2,
         optional=True,
-        message=types.Price,
+        message=types_pb2.Price,
     )
 
 
@@ -1699,7 +1699,7 @@ class ProductStatus(proto.Message):
         r"""The destination status of the product status.
 
         Attributes:
-            reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+            reporting_context (google.shopping.type.types_pb2.ReportingContextEnum):
                 The name of the reporting context.
             approved_countries (MutableSequence[str]):
                 List of country codes (ISO 3166-1 alpha-2)
@@ -1712,10 +1712,12 @@ class ProductStatus(proto.Message):
                 where the offer is disapproved.
         """
 
-        reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
-            proto.ENUM,
-            number=1,
-            enum=types.ReportingContext.ReportingContextEnum,
+        reporting_context: types_pb2.ReportingContext.ReportingContextEnum = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum=types_pb2.ReportingContext.ReportingContextEnum,
+            )
         )
         approved_countries: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
@@ -1744,7 +1746,7 @@ class ProductStatus(proto.Message):
             attribute (str):
                 The attribute's name, if the issue is caused
                 by a single attribute.
-            reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+            reporting_context (google.shopping.type.types_pb2.ReportingContextEnum):
                 The reporting context the issue applies to.
             description (str):
                 A short issue description in English.
@@ -1795,10 +1797,12 @@ class ProductStatus(proto.Message):
             proto.STRING,
             number=4,
         )
-        reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
-            proto.ENUM,
-            number=5,
-            enum=types.ReportingContext.ReportingContextEnum,
+        reporting_context: types_pb2.ReportingContext.ReportingContextEnum = (
+            proto.Field(
+                proto.ENUM,
+                number=5,
+                enum=types_pb2.ReportingContext.ReportingContextEnum,
+            )
         )
         description: str = proto.Field(
             proto.STRING,
@@ -1952,7 +1956,7 @@ class ProductSustainabilityIncentive(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        amount (google.shopping.type.types.Price):
+        amount (google.shopping.type.types_pb2.Price):
             The fixed amount of the incentive.
 
             This field is a member of `oneof`_ ``value``.
@@ -1991,11 +1995,11 @@ class ProductSustainabilityIncentive(proto.Message):
         EV_TAX_CREDIT = 1
         EV_PRICE_DISCOUNT = 2
 
-    amount: types.Price = proto.Field(
+    amount: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="value",
-        message=types.Price,
+        message=types_pb2.Price,
     )
     percentage: float = proto.Field(
         proto.DOUBLE,
@@ -2014,37 +2018,37 @@ class AutomatedDiscounts(proto.Message):
     r"""Information regarding Automated Discounts.
 
     Attributes:
-        prior_price (google.shopping.type.types.Price):
+        prior_price (google.shopping.type.types_pb2.Price):
             The price prior to the application of the
             first price reduction. Absent if the information
             about the prior price of the product is not
             available.
-        prior_price_progressive (google.shopping.type.types.Price):
+        prior_price_progressive (google.shopping.type.types_pb2.Price):
             The price prior to the application of
             consecutive price reductions. Absent if the
             information about the prior price of the product
             is not available.
-        gad_price (google.shopping.type.types.Price):
+        gad_price (google.shopping.type.types_pb2.Price):
             The current sale price for products with a price optimized
             using Google Automated Discounts (GAD). Absent if the
             information about the GAD_price of the product is not
             available.
     """
 
-    prior_price: types.Price = proto.Field(
+    prior_price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=1,
-        message=types.Price,
+        message=types_pb2.Price,
     )
-    prior_price_progressive: types.Price = proto.Field(
+    prior_price_progressive: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=2,
-        message=types.Price,
+        message=types_pb2.Price,
     )
-    gad_price: types.Price = proto.Field(
+    gad_price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=3,
-        message=types.Price,
+        message=types_pb2.Price,
     )
 
 

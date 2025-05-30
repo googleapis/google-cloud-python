@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.shopping.merchant_products_v1beta.types import products_common
@@ -59,7 +59,7 @@ class Product(proto.Message):
             ``channel~content_language~feed_label~offer_id`` example for
             product name is
             ``accounts/123/products/online~en~US~sku123``
-        channel (google.shopping.type.types.Channel.ChannelEnum):
+        channel (google.shopping.type.types_pb2.ChannelEnum):
             Output only. The
             `channel <https://support.google.com/merchants/answer/7361332>`__
             of the product.
@@ -98,7 +98,7 @@ class Product(proto.Message):
             This field is a member of `oneof`_ ``_version_number``.
         attributes (google.shopping.merchant_products_v1beta.types.Attributes):
             Output only. A list of product attributes.
-        custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
+        custom_attributes (MutableSequence[google.shopping.type.types_pb2.CustomAttribute]):
             Output only. A list of custom (merchant-provided)
             attributes. It can also be used to submit any attribute of
             the data specification in its generic form (for example,
@@ -119,10 +119,10 @@ class Product(proto.Message):
         proto.STRING,
         number=1,
     )
-    channel: types.Channel.ChannelEnum = proto.Field(
+    channel: types_pb2.Channel.ChannelEnum = proto.Field(
         proto.ENUM,
         number=2,
-        enum=types.Channel.ChannelEnum,
+        enum=types_pb2.Channel.ChannelEnum,
     )
     offer_id: str = proto.Field(
         proto.STRING,
@@ -150,10 +150,10 @@ class Product(proto.Message):
         number=8,
         message=products_common.Attributes,
     )
-    custom_attributes: MutableSequence[types.CustomAttribute] = proto.RepeatedField(
+    custom_attributes: MutableSequence[types_pb2.CustomAttribute] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
-        message=types.CustomAttribute,
+        message=types_pb2.CustomAttribute,
     )
     product_status: products_common.ProductStatus = proto.Field(
         proto.MESSAGE,

@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 
 from google.shopping.merchant_products_v1beta.services.products_service import pagers
 from google.shopping.merchant_products_v1beta.types import products, products_common
@@ -789,7 +789,7 @@ class ProductsServiceClient(metaclass=ProductsServiceClientMeta):
                    All fields in the processed product and its
                    sub-messages match the name of their corresponding
                    attribute in the [Product data
-                   specification](\ https://support.google.com/merchants/answer/7052112)
+                   specification](https://support.google.com/merchants/answer/7052112)
                    with some exceptions.
 
         """
