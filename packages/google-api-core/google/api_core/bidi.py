@@ -624,12 +624,15 @@ class BackgroundConsumer(object):
             ``open()``ed yet.
         on_response (Callable[[protobuf.Message], None]): The callback to
             be called for every response on the stream.
+        on_fatal_exception (Callable[[Exception], None]): The callback to
+            be called on fatal errors during consumption. Default None.
     """
 
-    def __init__(self, bidi_rpc, on_response):
+    def __init__(self, bidi_rpc, on_response, on_fatal_exception=None):
         self._bidi_rpc = bidi_rpc
         self._on_response = on_response
         self._paused = False
+        self._on_fatal_exception = on_fatal_exception
         self._wake = threading.Condition()
         self._thread = None
         self._operational_lock = threading.Lock()
@@ -676,6 +679,8 @@ class BackgroundConsumer(object):
                 exc,
                 exc_info=True,
             )
+            if self._on_fatal_exception is not None:
+                self._on_fatal_exception(exc)
 
         except Exception as exc:
             _LOGGER.exception(
@@ -683,6 +688,8 @@ class BackgroundConsumer(object):
                 _BIDIRECTIONAL_CONSUMER_NAME,
                 exc,
             )
+            if self._on_fatal_exception is not None:
+                self._on_fatal_exception(exc)
 
         _LOGGER.info("%s exiting", _BIDIRECTIONAL_CONSUMER_NAME)
 
@@ -694,8 +701,8 @@ class BackgroundConsumer(object):
                 name=_BIDIRECTIONAL_CONSUMER_NAME,
                 target=self._thread_main,
                 args=(ready,),
+                daemon=True,
             )
-            thread.daemon = True
             thread.start()
             # Other parts of the code rely on `thread.is_alive` which
             # isn't sufficient to know if a thread is active, just that it may
@@ -706,7 +713,11 @@ class BackgroundConsumer(object):
             _LOGGER.debug("Started helper thread %s", thread.name)
 
     def stop(self):
-        """Stop consuming the stream and shutdown the background thread."""
+        """Stop consuming the stream and shutdown the background thread.
+
+        NOTE: Cannot be called within `_thread_main`, since it is not
+        possible to join a thread to itself.
+        """
         with self._operational_lock:
             self._bidi_rpc.close()
 
@@ -721,6 +732,7 @@ class BackgroundConsumer(object):
 
             self._thread = None
             self._on_response = None
+            self._on_fatal_exception = None
 
     @property
     def is_active(self):
