@@ -39,11 +39,16 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
         ordered: bool,
         peek: Optional[int] = None,
     ) -> Optional[executor.ExecuteResult]:
-        node = self._try_adapt_plan(plan, ordered)
-        if not node:
+        adapt_result = self._try_adapt_plan(plan, ordered)
+        if not adapt_result:
             return None
+        node, limit = adapt_result
         if node.explicitly_ordered and ordered:
             return None
+
+        if limit is not None:
+            if peek is None or limit < peek:
+                peek = limit
 
         import google.cloud.bigquery_storage_v1.types as bq_storage_types
         from google.protobuf import timestamp_pb2
@@ -117,11 +122,20 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
         self,
         plan: bigframe_node.BigFrameNode,
         ordered: bool,
-    ) -> Optional[nodes.ReadTableNode]:
+    ) -> Optional[tuple[nodes.ReadTableNode, Optional[int]]]:
         """
-        Tries to simplify the plan to an equivalent single ReadTableNode. Otherwise, returns None.
+        Tries to simplify the plan to an equivalent single ReadTableNode and a limit. Otherwise, returns None.
         """
+        plan, limit = rewrite.pull_out_limit(plan)
+        # bake_order does not allow slice ops
+        plan = plan.bottom_up(rewrite.rewrite_slice)
         if not ordered:
             # gets rid of order_by ops
             plan = rewrite.bake_order(plan)
-        return rewrite.try_reduce_to_table_scan(plan)
+        read_table_node = rewrite.try_reduce_to_table_scan(plan)
+        if read_table_node is None:
+            return None
+        if (limit is not None) and (read_table_node.source.ordering is not None):
+            # read api can only use physical ordering to limit, not a logical ordering
+            return None
+        return (read_table_node, limit)

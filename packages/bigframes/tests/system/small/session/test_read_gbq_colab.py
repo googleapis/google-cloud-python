@@ -19,6 +19,7 @@ import pandas.testing
 
 
 def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_session):
+    executions_before_sql = maybe_ordered_session._metrics.execution_count
     df = maybe_ordered_session._read_gbq_colab(
         """
         SELECT
@@ -32,9 +33,11 @@ def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_sessi
         LIMIT 300
         """
     )
+    executions_before_python = maybe_ordered_session._metrics.execution_count
     batches = df.to_pandas_batches(
         page_size=100,
     )
+    executions_after = maybe_ordered_session._metrics.execution_count
 
     total_rows = 0
     for batch in batches:
@@ -42,6 +45,55 @@ def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_sessi
         total_rows += len(batch.index)
 
     assert total_rows > 0
+    assert executions_after == executions_before_python == executions_before_sql + 1
+
+
+def test_read_gbq_colab_peek_avoids_requery(maybe_ordered_session):
+    executions_before_sql = maybe_ordered_session._metrics.execution_count
+    df = maybe_ordered_session._read_gbq_colab(
+        """
+        SELECT
+            name,
+            SUM(number) AS total
+        FROM
+            `bigquery-public-data.usa_names.usa_1910_2013`
+        WHERE state LIKE 'W%'
+        GROUP BY name
+        ORDER BY total DESC
+        LIMIT 300
+        """
+    )
+    executions_before_python = maybe_ordered_session._metrics.execution_count
+    result = df.peek(100)
+    executions_after = maybe_ordered_session._metrics.execution_count
+
+    # Ok, this isn't guaranteed by peek, but should happen with read api based impl
+    # if starts failing, maybe stopped using read api?
+    assert result["total"].is_monotonic_decreasing
+
+    assert len(result) == 100
+    assert executions_after == executions_before_python == executions_before_sql + 1
+
+
+def test_read_gbq_colab_repr_avoids_requery(maybe_ordered_session):
+    executions_before_sql = maybe_ordered_session._metrics.execution_count
+    df = maybe_ordered_session._read_gbq_colab(
+        """
+        SELECT
+            name,
+            SUM(number) AS total
+        FROM
+            `bigquery-public-data.usa_names.usa_1910_2013`
+        WHERE state LIKE 'W%'
+        GROUP BY name
+        ORDER BY total DESC
+        LIMIT 300
+        """
+    )
+    executions_before_python = maybe_ordered_session._metrics.execution_count
+    _ = repr(df)
+    executions_after = maybe_ordered_session._metrics.execution_count
+    assert executions_after == executions_before_python == executions_before_sql + 1
 
 
 def test_read_gbq_colab_includes_formatted_scalars(session):

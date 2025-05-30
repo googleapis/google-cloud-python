@@ -387,6 +387,7 @@ class GbqDataLoader:
         enable_snapshot: bool = ...,
         dry_run: Literal[False] = ...,
         force_total_order: Optional[bool] = ...,
+        n_rows: Optional[int] = None,
     ) -> dataframe.DataFrame:
         ...
 
@@ -408,6 +409,7 @@ class GbqDataLoader:
         enable_snapshot: bool = ...,
         dry_run: Literal[True] = ...,
         force_total_order: Optional[bool] = ...,
+        n_rows: Optional[int] = None,
     ) -> pandas.Series:
         ...
 
@@ -428,6 +430,7 @@ class GbqDataLoader:
         enable_snapshot: bool = True,
         dry_run: bool = False,
         force_total_order: Optional[bool] = None,
+        n_rows: Optional[int] = None,
     ) -> dataframe.DataFrame | pandas.Series:
         import bigframes._tools.strings
         import bigframes.dataframe as dataframe
@@ -618,6 +621,7 @@ class GbqDataLoader:
             at_time=time_travel_timestamp if enable_snapshot else None,
             primary_key=primary_key,
             session=self._session,
+            n_rows=n_rows,
         )
         # if we don't have a unique index, we order by row hash if we are in strict mode
         if (
@@ -852,6 +856,7 @@ class GbqDataLoader:
             columns=columns,
             use_cache=configuration["query"]["useQueryCache"],
             force_total_order=force_total_order,
+            n_rows=query_job.result().total_rows,
             # max_results and filters are omitted because they are already
             # handled by to_query(), above.
         )

@@ -26,7 +26,7 @@ import bigframes.operations as ops
 
 
 def pull_up_limits(root: nodes.ResultNode) -> nodes.ResultNode:
-    new_child, pulled_limit = _pullup_slice_inner(root.child)
+    new_child, pulled_limit = pull_out_limit(root.child)
     if new_child == root.child:
         return root
     elif pulled_limit is None:
@@ -37,7 +37,7 @@ def pull_up_limits(root: nodes.ResultNode) -> nodes.ResultNode:
         return dataclasses.replace(root, child=new_child, limit=new_limit)
 
 
-def _pullup_slice_inner(
+def pull_out_limit(
     root: nodes.BigFrameNode,
 ) -> Tuple[nodes.BigFrameNode, Optional[int]]:
     """
@@ -53,7 +53,7 @@ def _pullup_slice_inner(
             assert root.step == 1
             assert root.stop is not None
             limit = root.stop
-            new_root, prior_limit = _pullup_slice_inner(root.child)
+            new_root, prior_limit = pull_out_limit(root.child)
             if (prior_limit is not None) and (prior_limit < limit):
                 limit = prior_limit
             return new_root, limit
@@ -61,7 +61,7 @@ def _pullup_slice_inner(
         isinstance(root, (nodes.SelectionNode, nodes.ProjectionNode))
         and root.row_preserving
     ):
-        new_child, prior_limit = _pullup_slice_inner(root.child)
+        new_child, prior_limit = pull_out_limit(root.child)
         if prior_limit is not None:
             return root.transform_children(lambda _: new_child), prior_limit
     # Most ops don't support pulling up slice, like filter, agg, join, etc.

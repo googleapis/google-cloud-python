@@ -45,26 +45,13 @@ def can_fast_head(node: nodes.BigFrameNode) -> bool:
     # To do fast head operation:
     # (1) the underlying data must be arranged/indexed according to the logical ordering
     # (2) transformations must support pushing down LIMIT or a filter on row numbers
-    return has_fast_offset_address(node) or has_fast_offset_address(node)
-
-
-def has_fast_orderby_limit(node: nodes.BigFrameNode) -> bool:
-    """True iff ORDER BY LIMIT can be performed without a large full table scan."""
-    # TODO: In theory compatible with some Slice nodes, potentially by adding OFFSET
-    if isinstance(node, nodes.LeafNode):
-        return node.fast_ordered_limit
+    if isinstance(node, nodes.ReadLocalNode):
+        # always cheap to push slice into local data
+        return True
+    if isinstance(node, nodes.ReadTableNode):
+        return (node.source.ordering is None) or (node.fast_ordered_limit)
     if isinstance(node, (nodes.ProjectionNode, nodes.SelectionNode)):
-        return has_fast_orderby_limit(node.child)
-    return False
-
-
-def has_fast_offset_address(node: nodes.BigFrameNode) -> bool:
-    """True iff specific offsets can be scanned without a large full table scan."""
-    # TODO: In theory can push offset lookups through slice operators by translating indices
-    if isinstance(node, nodes.LeafNode):
-        return node.fast_offsets
-    if isinstance(node, (nodes.ProjectionNode, nodes.SelectionNode)):
-        return has_fast_offset_address(node.child)
+        return can_fast_head(node.child)
     return False
 
 

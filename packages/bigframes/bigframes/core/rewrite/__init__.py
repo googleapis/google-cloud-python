@@ -22,7 +22,7 @@ from bigframes.core.rewrite.scan_reduction import (
     try_reduce_to_local_scan,
     try_reduce_to_table_scan,
 )
-from bigframes.core.rewrite.slices import pull_up_limits, rewrite_slice
+from bigframes.core.rewrite.slices import pull_out_limit, pull_up_limits, rewrite_slice
 from bigframes.core.rewrite.timedeltas import rewrite_timedelta_expressions
 from bigframes.core.rewrite.windows import rewrite_range_rolling
 
@@ -32,6 +32,7 @@ __all__ = [
     "rewrite_slice",
     "rewrite_timedelta_expressions",
     "pull_up_limits",
+    "pull_out_limit",
     "remap_variables",
     "defer_order",
     "column_pruning",
