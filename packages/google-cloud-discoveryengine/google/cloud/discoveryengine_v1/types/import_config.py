@@ -1225,7 +1225,7 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
         parent (str):
             Required. The parent data store resource name for which to
             import denylist entries. Follows pattern
-            projects/\ */locations/*/collections/*/dataStores/*.
+            projects/*/locations/*/collections/*/dataStores/*.
     """
 
     class InlineSource(proto.Message):
