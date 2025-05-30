@@ -19,9 +19,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    cloudcontrolspartner_v1beta/services_
-    cloudcontrolspartner_v1beta/types_
-
+    cloud_cloudcontrolspartner_v1beta/services_
+    cloud_cloudcontrolspartner_v1beta/types_
 
 Changelog
 ---------
