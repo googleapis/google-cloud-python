@@ -370,7 +370,7 @@
             "currentVersion": "0.1.0",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "ee4dca4347ad712ee6893e8a83cea17bcd75758d",
             "apiPaths": [
                 "google/cloud/chronicle/v1"
             ],

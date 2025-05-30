@@ -15,7 +15,7 @@ Python Client for Chronicle API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-chronicle.svg
    :target: https://pypi.org/project/google-cloud-chronicle/
 .. _Chronicle API: https://cloud.google.com/chronicle/docs/secops/secops-overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-chronicle/latest/summary_overview
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/chronicle/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/chronicle/docs/secops/secops-overview
 
 Quick Start
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
