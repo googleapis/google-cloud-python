@@ -19,9 +19,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    support_v2beta/services_
-    support_v2beta/types_
-
+    cloud_support_v2beta/services_
+    cloud_support_v2beta/types_
 
 Changelog
 ---------
