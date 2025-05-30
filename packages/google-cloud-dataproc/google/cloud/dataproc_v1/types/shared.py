@@ -98,6 +98,7 @@ class Component(proto.Enum):
     HBASE = 11
     HIVE_WEBHCAT = 3
     HUDI = 18
+    ICEBERG = 42
     JUPYTER = 1
     PRESTO = 6
     TRINO = 17
