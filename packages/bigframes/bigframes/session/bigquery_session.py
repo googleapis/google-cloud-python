@@ -84,7 +84,9 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
 
             ddl = f"CREATE TEMP TABLE `_SESSION`.{googlesql.identifier(table_ref.table_id)} ({fields_string}){cluster_string}"
 
-            job = self.bqclient.query(ddl, job_config=job_config)
+            job = self.bqclient.query(
+                ddl, job_config=job_config, location=self.location
+            )
             job.result()
             # return the fully qualified table, so it can be used outside of the session
             return job.destination
@@ -94,7 +96,10 @@ class SessionResourceManager(temporary_storage.TemporaryStorageManager):
             self._sessiondaemon.stop()
 
         if self._session_id is not None and self.bqclient is not None:
-            self.bqclient.query_and_wait(f"CALL BQ.ABORT_SESSION('{self._session_id}')")
+            self.bqclient.query_and_wait(
+                f"CALL BQ.ABORT_SESSION('{self._session_id}')",
+                location=self.location,
+            )
 
     def _get_session_id(self) -> str:
         if self._session_id:
