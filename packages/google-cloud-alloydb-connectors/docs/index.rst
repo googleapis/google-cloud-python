@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of AlloyDB connectors.
+This package includes clients for multiple versions of .
 By default, you will get version ``connectors_v1``.
 
 
@@ -19,17 +19,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    connectors_v1alpha/services_
-    connectors_v1alpha/types_
+    cloud_alloydb_connectors_v1alpha/services_
+    cloud_alloydb_connectors_v1alpha/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    connectors_v1beta/services_
-    connectors_v1beta/types_
-
+    cloud_alloydb_connectors_v1beta/services_
+    cloud_alloydb_connectors_v1beta/types_
 
 Changelog
 ---------
