@@ -2082,15 +2082,67 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _resolve_levels(self, level: LevelsType) -> typing.Sequence[str]:
         return self._block.index.resolve_level(level)
 
+    @overload
     def rename(self, *, columns: Mapping[blocks.Label, blocks.Label]) -> DataFrame:
+        ...
+
+    @overload
+    def rename(
+        self, *, columns: Mapping[blocks.Label, blocks.Label], inplace: Literal[False]
+    ) -> DataFrame:
+        ...
+
+    @overload
+    def rename(
+        self, *, columns: Mapping[blocks.Label, blocks.Label], inplace: Literal[True]
+    ) -> None:
+        ...
+
+    def rename(
+        self, *, columns: Mapping[blocks.Label, blocks.Label], inplace: bool = False
+    ) -> Optional[DataFrame]:
         block = self._block.rename(columns=columns)
-        return DataFrame(block)
+
+        if inplace:
+            self._block = block
+            return None
+        else:
+            return DataFrame(block)
+
+    @overload
+    def rename_axis(
+        self,
+        mapper: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
+    ) -> DataFrame:
+        ...
+
+    @overload
+    def rename_axis(
+        self,
+        mapper: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
+        *,
+        inplace: Literal[False],
+        **kwargs,
+    ) -> DataFrame:
+        ...
+
+    @overload
+    def rename_axis(
+        self,
+        mapper: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
+        *,
+        inplace: Literal[True],
+        **kwargs,
+    ) -> None:
+        ...
 
     def rename_axis(
         self,
         mapper: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
+        *,
+        inplace: bool = False,
         **kwargs,
-    ) -> DataFrame:
+    ) -> Optional[DataFrame]:
         if len(kwargs) != 0:
             raise NotImplementedError(
                 f"rename_axis does not currently support any keyword arguments. {constants.FEEDBACK_LINK}"
@@ -2100,7 +2152,14 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             labels = mapper
         else:
             labels = [mapper]
-        return DataFrame(self._block.with_index_labels(labels))
+
+        block = self._block.with_index_labels(labels)
+
+        if inplace:
+            self._block = block
+            return None
+        else:
+            return DataFrame(block)
 
     @validations.requires_ordering()
     def equals(self, other: typing.Union[bigframes.series.Series, DataFrame]) -> bool:

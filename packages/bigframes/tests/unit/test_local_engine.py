@@ -79,6 +79,33 @@ def test_polars_local_engine_filter(small_inline_frame: pd.DataFrame, polars_ses
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_polars_local_engine_series_rename_with_mapping(polars_session):
+    pd_series = pd.Series(
+        ["a", "b", "c"], index=[1, 2, 3], dtype="string[pyarrow]", name="test_name"
+    )
+    bf_series = bpd.Series(pd_series, session=polars_session)
+
+    bf_result = bf_series.rename({1: 100, 2: 200, 3: 300}).to_pandas()
+    pd_result = pd_series.rename({1: 100, 2: 200, 3: 300})
+    # pd default index is int64, bf is Int64
+    pandas.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
+
+
+def test_polars_local_engine_series_rename_with_mapping_inplace(polars_session):
+    pd_series = pd.Series(
+        ["a", "b", "c"], index=[1, 2, 3], dtype="string[pyarrow]", name="test_name"
+    )
+    bf_series = bpd.Series(pd_series, session=polars_session)
+
+    pd_series.rename({1: 100, 2: 200, 3: 300}, inplace=True)
+    assert bf_series.rename({1: 100, 2: 200, 3: 300}, inplace=True) is None
+
+    bf_result = bf_series.to_pandas()
+    pd_result = pd_series
+    # pd default index is int64, bf is Int64
+    pandas.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
+
+
 def test_polars_local_engine_reset_index(
     small_inline_frame: pd.DataFrame, polars_session
 ):

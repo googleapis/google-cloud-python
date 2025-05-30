@@ -12,7 +12,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import cast
+
+import pytest
+
 import bigframes.series
+from bigframes.testing import mocks
+
+
+def test_series_rename(monkeypatch: pytest.MonkeyPatch):
+    series = cast(bigframes.series.Series, mocks.create_dataframe(monkeypatch)["col"])
+    assert series.name == "col"
+    renamed = series.rename("renamed_col")
+    assert renamed.name == "renamed_col"
+
+
+def test_series_rename_inplace_returns_none(monkeypatch: pytest.MonkeyPatch):
+    series = cast(bigframes.series.Series, mocks.create_dataframe(monkeypatch)["col"])
+    assert series.name == "col"
+    assert series.rename("renamed_col", inplace=True) is None
+    assert series.name == "renamed_col"
+
+
+def test_series_rename_axis(monkeypatch: pytest.MonkeyPatch):
+    series = mocks.create_dataframe(
+        monkeypatch, data={"index1": [], "index2": [], "col1": [], "col2": []}
+    ).set_index(["index1", "index2"])["col1"]
+    assert list(series.index.names) == ["index1", "index2"]
+    renamed = series.rename_axis(["a", "b"])
+    assert list(renamed.index.names) == ["a", "b"]
+
+
+def test_series_rename_axis_inplace_returns_none(monkeypatch: pytest.MonkeyPatch):
+    series = mocks.create_dataframe(
+        monkeypatch, data={"index1": [], "index2": [], "col1": [], "col2": []}
+    ).set_index(["index1", "index2"])["col1"]
+    assert list(series.index.names) == ["index1", "index2"]
+    assert series.rename_axis(["a", "b"], inplace=True) is None
+    assert list(series.index.names) == ["a", "b"]
 
 
 def test_series_repr_with_uninitialized_object():

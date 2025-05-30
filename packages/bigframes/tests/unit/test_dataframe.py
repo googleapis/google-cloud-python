@@ -90,6 +90,45 @@ def test_dataframe_to_gbq_writes_to_anonymous_dataset(
     assert destination.startswith(anonymous_dataset_id)
 
 
+def test_dataframe_rename_columns(monkeypatch: pytest.MonkeyPatch):
+    dataframe = mocks.create_dataframe(
+        monkeypatch, data={"col1": [], "col2": [], "col3": []}
+    )
+    assert dataframe.columns.to_list() == ["col1", "col2", "col3"]
+    renamed = dataframe.rename(columns={"col1": "a", "col2": "b", "col3": "c"})
+    assert renamed.columns.to_list() == ["a", "b", "c"]
+
+
+def test_dataframe_rename_columns_inplace_returns_none(monkeypatch: pytest.MonkeyPatch):
+    dataframe = mocks.create_dataframe(
+        monkeypatch, data={"col1": [], "col2": [], "col3": []}
+    )
+    assert dataframe.columns.to_list() == ["col1", "col2", "col3"]
+    assert (
+        dataframe.rename(columns={"col1": "a", "col2": "b", "col3": "c"}, inplace=True)
+        is None
+    )
+    assert dataframe.columns.to_list() == ["a", "b", "c"]
+
+
+def test_dataframe_rename_axis(monkeypatch: pytest.MonkeyPatch):
+    dataframe = mocks.create_dataframe(
+        monkeypatch, data={"index1": [], "index2": [], "col1": [], "col2": []}
+    ).set_index(["index1", "index2"])
+    assert list(dataframe.index.names) == ["index1", "index2"]
+    renamed = dataframe.rename_axis(["a", "b"])
+    assert list(renamed.index.names) == ["a", "b"]
+
+
+def test_dataframe_rename_axis_inplace_returns_none(monkeypatch: pytest.MonkeyPatch):
+    dataframe = mocks.create_dataframe(
+        monkeypatch, data={"index1": [], "index2": [], "col1": [], "col2": []}
+    ).set_index(["index1", "index2"])
+    assert list(dataframe.index.names) == ["index1", "index2"]
+    assert dataframe.rename_axis(["a", "b"], inplace=True) is None
+    assert list(dataframe.index.names) == ["a", "b"]
+
+
 def test_dataframe_semantics_property_future_warning(
     monkeypatch: pytest.MonkeyPatch,
 ):

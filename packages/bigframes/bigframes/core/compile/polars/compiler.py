@@ -92,6 +92,8 @@ if polars_installed:
                 return args[0] < args[1]
             if isinstance(op, ops.eq_op.__class__):
                 return args[0] == args[1]
+            if isinstance(op, ops.ne_op.__class__):
+                return args[0] != args[1]
             if isinstance(op, ops.mod_op.__class__):
                 return args[0] % args[1]
             if isinstance(op, ops.coalesce_op.__class__):
@@ -101,6 +103,9 @@ if polars_installed:
                 for pred, result in zip(args[2::2], args[3::2]):
                     return expr.when(pred).then(result)
                 return expr
+            if isinstance(op, ops.where_op.__class__):
+                original, condition, otherwise = args
+                return pl.when(condition).then(original).otherwise(otherwise)
             raise NotImplementedError(f"Polars compiler hasn't implemented {op}")
 
     @dataclasses.dataclass(frozen=True)

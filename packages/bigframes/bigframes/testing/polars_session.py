@@ -16,6 +16,7 @@ import dataclasses
 from typing import Optional, Union
 import weakref
 
+import pandas
 import polars
 
 import bigframes
@@ -87,5 +88,7 @@ class TestSession(bigframes.session.Session):
 
     def read_pandas(self, pandas_dataframe, write_engine="default"):
         # override read_pandas to always keep data local-only
+        if isinstance(pandas_dataframe, pandas.Series):
+            pandas_dataframe = pandas_dataframe.to_frame()
         local_block = bigframes.core.blocks.Block.from_local(pandas_dataframe, self)
         return bigframes.dataframe.DataFrame(local_block)

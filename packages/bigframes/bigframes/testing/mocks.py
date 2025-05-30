@@ -14,7 +14,7 @@
 
 import copy
 import datetime
-from typing import Optional, Sequence
+from typing import Any, Dict, Optional, Sequence
 import unittest.mock as mock
 
 import google.auth.credentials
@@ -23,12 +23,9 @@ import pytest
 
 import bigframes
 import bigframes.clients
-import bigframes.core.ordering
+import bigframes.core.global_session
 import bigframes.dataframe
-import bigframes.series
 import bigframes.session.clients
-import bigframes.session.executor
-import bigframes.session.metrics
 
 """Utilities for creating test resources."""
 
@@ -129,7 +126,10 @@ def create_bigquery_session(
 
 
 def create_dataframe(
-    monkeypatch: pytest.MonkeyPatch, *, session: Optional[bigframes.Session] = None
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    session: Optional[bigframes.Session] = None,
+    data: Optional[Dict[str, Sequence[Any]]] = None,
 ) -> bigframes.dataframe.DataFrame:
     """[Experimental] Create a mock DataFrame that avoids making Google Cloud API calls.
 
@@ -138,8 +138,11 @@ def create_dataframe(
     if session is None:
         session = create_bigquery_session()
 
+    if data is None:
+        data = {"col": []}
+
     # Since this may create a ReadLocalNode, the session we explicitly pass in
     # might not actually be used. Mock out the global session, too.
     monkeypatch.setattr(bigframes.core.global_session, "_global_session", session)
     bigframes.options.bigquery._session_started = True
-    return bigframes.dataframe.DataFrame({"col": []}, session=session)
+    return bigframes.dataframe.DataFrame(data, session=session)

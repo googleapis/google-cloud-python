@@ -941,7 +941,7 @@ class Index:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def rename(self, name) -> Index:
+    def rename(self, name, *, inplace):
         """
         Alter Index or MultiIndex name.
 
@@ -960,10 +960,13 @@ class Index:
         Args:
             name (label or list of labels):
                 Name(s) to set.
+            inplace (bool):
+                Default False.  Modifies the object directly, instead of
+                creating a new Index or MultiIndex.
 
         Returns:
-            bigframes.pandas.Index:
-                The same type as the caller.
+            bigframes.pandas.Index | None:
+                The same type as the caller or None if ``inplace=True``.
 
         Raises:
             ValueError:
