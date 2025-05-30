@@ -161,8 +161,8 @@ class Instance(proto.Message):
             between 12000 and 100000, in multiples of 4000;
             e.g., 12000, 16000, 20000, ...
         daos_version (str):
-            Output only. Deprecated 'daos_version' field. Output only.
-            The version of DAOS software running in the instance.
+            Output only. Deprecated: The version of DAOS
+            software running in the instance.
         access_points (MutableSequence[str]):
             Output only. A list of IPv4 addresses used
             for client side configuration.
@@ -320,7 +320,7 @@ class TransferMetadataOptions(proto.Message):
     """
 
     class Uid(proto.Enum):
-        r"""The UID perservation behavior.
+        r"""The UID preservation behavior.
 
         Values:
             UID_UNSPECIFIED (0):
@@ -506,11 +506,11 @@ class CreateInstanceRequest(proto.Message):
             for at least 60 minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -559,11 +559,11 @@ class UpdateInstanceRequest(proto.Message):
             for at least 60 minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -603,11 +603,11 @@ class DeleteInstanceRequest(proto.Message):
             for at least 60 minutes after the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -777,11 +777,11 @@ class ImportDataRequest(proto.Message):
             for at least 60 minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -861,11 +861,11 @@ class ExportDataRequest(proto.Message):
             for at least 60 minutes since the first request.
 
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -1230,10 +1230,10 @@ class TransferCounters(proto.Message):
             Bytes that are copied to the data
             destination.
         objects_failed (int):
-            Objects that are failed to write to the data
+            Objects that failed to be written to the data
             destination.
         bytes_failed (int):
-            Bytes that are failed to write to the data
+            Bytes that failed to be written to the data
             destination.
     """
 
