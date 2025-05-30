@@ -6859,21 +6859,12 @@ class Action(proto.Message):
         """
 
     class Deidentify(proto.Message):
-        r"""Create a de-identified copy of the requested table or files.
+        r"""Create a de-identified copy of a storage bucket. Only
+        compatible with Cloud Storage buckets.
 
         A TransformationDetail will be created for each transformation.
 
-        If any rows in BigQuery are skipped during de-identification
-        (transformation errors or row size exceeds BigQuery insert API
-        limits) they are placed in the failure output table. If the original
-        row exceeds the BigQuery insert API limit it will be truncated when
-        written to the failure output table. The failure output table can be
-        set in the
-        action.deidentify.output.big_query_output.deidentified_failure_output_table
-        field, if no table is set, a table will be automatically created in
-        the same project and dataset as the original table.
-
-        Compatible with: Inspect
+        Compatible with: Inspection of Cloud Storage
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -6884,14 +6875,76 @@ class Action(proto.Message):
                 configs for structured, unstructured, and image
                 files.
             transformation_details_storage_config (google.cloud.dlp_v2.types.TransformationDetailsStorageConfig):
-                Config for storing transformation details. This is separate
-                from the de-identified content, and contains metadata about
-                the successful transformations and/or failures that occurred
-                while de-identifying. This needs to be set in order for
-                users to access information about the status of each
-                transformation (see
+                Config for storing transformation details.
+
+                This field specifies the configuration for storing detailed
+                metadata about each transformation performed during a
+                de-identification process. The metadata is stored separately
+                from the de-identified content itself and provides a
+                granular record of both successful transformations and any
+                failures that occurred.
+
+                Enabling this configuration is essential for users who need
+                to access comprehensive information about the status,
+                outcome, and specifics of each transformation. The details
+                are captured in the
                 [TransformationDetails][google.privacy.dlp.v2.TransformationDetails]
-                message for more information about what is noted).
+                message for each operation.
+
+                Key use cases:
+
+                -  **Auditing and compliance**
+
+                   -  Provides a verifiable audit trail of de-identification
+                      activities, which is crucial for meeting regulatory
+                      requirements and internal data governance policies.
+                   -  Logs what data was transformed, what transformations
+                      were applied, when they occurred, and their success
+                      status. This helps demonstrate accountability and due
+                      diligence in protecting sensitive data.
+
+                -  **Troubleshooting and debugging**
+
+                   -  Offers detailed error messages and context if a
+                      transformation fails. This information is useful for
+                      diagnosing and resolving issues in the
+                      de-identification pipeline.
+                   -  Helps pinpoint the exact location and nature of
+                      failures, speeding up the debugging process.
+
+                -  **Process verification and quality assurance**
+
+                   -  Allows users to confirm that de-identification rules
+                      and transformations were applied correctly and
+                      consistently across the dataset as intended.
+                   -  Helps in verifying the effectiveness of the chosen
+                      de-identification strategies.
+
+                -  **Data lineage and impact analysis**
+
+                   -  Creates a record of how data elements were modified,
+                      contributing to data lineage. This is useful for
+                      understanding the provenance of de-identified data.
+                   -  Aids in assessing the potential impact of
+                      de-identification choices on downstream analytical
+                      processes or data usability.
+
+                -  **Reporting and operational insights**
+
+                   -  You can analyze the metadata stored in a queryable
+                      BigQuery table to generate reports on transformation
+                      success rates, common error types, processing volumes
+                      (e.g., transformedBytes), and the types of
+                      transformations applied.
+                   -  These insights can inform optimization of
+                      de-identification configurations and resource
+                      planning.
+
+                To take advantage of these benefits, set this configuration.
+                The stored details include a description of the
+                transformation, success or error codes, error messages, the
+                number of bytes transformed, the location of the transformed
+                content, and identifiers for the job and source data.
             cloud_storage_output (str):
                 Required. User settable Cloud Storage bucket
                 and folders to store de-identified files. This
@@ -7910,6 +7963,12 @@ class DataProfileAction(proto.Message):
             specified tag values.
 
             This field is a member of `oneof`_ ``action``.
+        publish_to_dataplex_catalog (google.cloud.dlp_v2.types.DataProfileAction.PublishToDataplexCatalog):
+            Publishes a portion of each profile to
+            Dataplex Catalog with the aspect type Sensitive
+            Data Protection Profile.
+
+            This field is a member of `oneof`_ ``action``.
     """
 
     class EventType(proto.Enum):
@@ -8070,6 +8129,29 @@ class DataProfileAction(proto.Message):
 
         """
 
+    class PublishToDataplexCatalog(proto.Message):
+        r"""Create Dataplex Catalog aspects for profiled resources with
+        the aspect type Sensitive Data Protection Profile. To learn more
+        about aspects, see
+        https://cloud.google.com/sensitive-data-protection/docs/add-aspects.
+
+        Attributes:
+            lower_data_risk_to_low (bool):
+                Whether creating a Dataplex Catalog aspect
+                for a profiled resource should lower the risk of
+                the profile for that resource. This also lowers
+                the data risk of resources at the lower levels
+                of the resource hierarchy. For example, reducing
+                the data risk of a table data profile also
+                reduces the data risk of the constituent column
+                data profiles.
+        """
+
+        lower_data_risk_to_low: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+
     class TagResources(proto.Message):
         r"""If set, attaches the [tags]
         (https://cloud.google.com/resource-manager/docs/tags/tags-overview)
@@ -8203,6 +8285,12 @@ class DataProfileAction(proto.Message):
         oneof="action",
         message=TagResources,
     )
+    publish_to_dataplex_catalog: PublishToDataplexCatalog = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="action",
+        message=PublishToDataplexCatalog,
+    )
 
 
 class DataProfileFinding(proto.Message):
@@ -8234,6 +8322,12 @@ class DataProfileFinding(proto.Message):
             Where the content was found.
         resource_visibility (google.cloud.dlp_v2.types.ResourceVisibility):
             How broadly a resource has been shared.
+        full_resource_name (str):
+            The `full resource
+            name <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
+            of the resource profiled for this finding.
+        data_source_type (google.cloud.dlp_v2.types.DataSourceType):
+            The type of the resource that was profiled.
     """
 
     quote: str = proto.Field(
@@ -8272,6 +8366,15 @@ class DataProfileFinding(proto.Message):
         proto.ENUM,
         number=8,
         enum="ResourceVisibility",
+    )
+    full_resource_name: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    data_source_type: "DataSourceType" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="DataSourceType",
     )
 
 
@@ -13050,7 +13153,8 @@ class FileStoreDataProfile(proto.Message):
             The BigQuery table to which the sample
             findings are written.
         file_store_is_empty (bool):
-            The file store does not have any files.
+            The file store does not have any files. If
+            the profiling operation failed, this is false.
         tags (MutableSequence[google.cloud.dlp_v2.types.Tag]):
             The tags attached to the resource, including
             any tags attached during profiling.

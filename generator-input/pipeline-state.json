@@ -627,7 +627,7 @@
             "currentVersion": "3.29.0",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "d8bb284d3d556975e9dafbc736cf4ef6d34c3a52",
             "apiPaths": [
                 "google/privacy/dlp/v2"
             ],

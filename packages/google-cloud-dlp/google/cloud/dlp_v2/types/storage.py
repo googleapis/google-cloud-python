@@ -1509,6 +1509,12 @@ class TableReference(proto.Message):
             Dataset ID of the table.
         table_id (str):
             Name of the table.
+        project_id (str):
+            The Google Cloud project ID of the project
+            containing the table. If omitted, the project ID
+            is inferred from the parent project. This field
+            is required if the parent resource is an
+            organization.
     """
 
     dataset_id: str = proto.Field(
@@ -1518,6 +1524,10 @@ class TableReference(proto.Message):
     table_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

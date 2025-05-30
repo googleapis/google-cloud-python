@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Cloud Data Loss Prevention API
+# Sensitive Data Protection (DLP)
 
-Overview of the APIs available for Cloud Data Loss Prevention API.
+Overview of the APIs available for Sensitive Data Protection (DLP).
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Cloud Data Loss Prevention API.
+Sensitive Data Protection (DLP).
 
 [classes](https://cloud.google.com/python/docs/reference/dlp/latest/summary_class.html)
 

@@ -11,7 +11,6 @@ API Reference
     dlp_v2/services_
     dlp_v2/types_
 
-
 Changelog
 ---------
 
