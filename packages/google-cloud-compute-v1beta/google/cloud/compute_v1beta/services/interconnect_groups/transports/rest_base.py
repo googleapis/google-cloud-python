@@ -123,7 +123,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -132,7 +132,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -141,6 +141,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseDelete:
@@ -178,7 +179,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -187,6 +188,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -224,7 +226,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -233,6 +235,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetIamPolicy:
@@ -270,7 +273,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -279,6 +282,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGetOperationalStatus:
@@ -318,7 +322,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -327,6 +331,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInsert:
@@ -365,7 +370,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -374,7 +379,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -383,6 +388,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -420,7 +426,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -429,6 +435,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatch:
@@ -467,7 +474,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -476,7 +483,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -485,6 +492,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseSetIamPolicy:
@@ -523,7 +531,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -532,7 +540,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -541,6 +549,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseTestIamPermissions:
@@ -579,7 +588,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -588,7 +597,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -597,6 +606,7 @@ class _BaseInterconnectGroupsRestTransport(InterconnectGroupsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

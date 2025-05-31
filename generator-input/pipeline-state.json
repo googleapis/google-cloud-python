@@ -2539,7 +2539,7 @@
             "currentVersion": "0.1.1",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "a72e9397ba746b25ed0dcb187de6690e4dd64b48",
             "apiPaths": [
                 "google/cloud/compute/v1beta"
             ],

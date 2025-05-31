@@ -122,7 +122,7 @@ class _BasePreviewFeaturesRestTransport(PreviewFeaturesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -131,6 +131,7 @@ class _BasePreviewFeaturesRestTransport(PreviewFeaturesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -168,7 +169,7 @@ class _BasePreviewFeaturesRestTransport(PreviewFeaturesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -177,6 +178,7 @@ class _BasePreviewFeaturesRestTransport(PreviewFeaturesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseUpdate:
@@ -215,7 +217,7 @@ class _BasePreviewFeaturesRestTransport(PreviewFeaturesTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -224,7 +226,7 @@ class _BasePreviewFeaturesRestTransport(PreviewFeaturesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -233,6 +235,7 @@ class _BasePreviewFeaturesRestTransport(PreviewFeaturesTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

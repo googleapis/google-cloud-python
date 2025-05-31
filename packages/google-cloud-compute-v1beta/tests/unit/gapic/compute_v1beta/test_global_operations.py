@@ -1083,7 +1083,7 @@ def test_aggregated_list_rest_required_fields(
 
             response = client.aggregated_list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1346,7 +1346,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteGlobalOperationR
 
             response = client.delete(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1536,7 +1536,7 @@ def test_get_rest_required_fields(request_type=compute.GetGlobalOperationRequest
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1732,7 +1732,7 @@ def test_list_rest_required_fields(request_type=compute.ListGlobalOperationsRequ
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1984,7 +1984,7 @@ def test_wait_rest_required_fields(request_type=compute.WaitGlobalOperationReque
 
             response = client.wait(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 

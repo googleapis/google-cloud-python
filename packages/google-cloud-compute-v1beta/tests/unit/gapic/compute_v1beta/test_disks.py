@@ -1028,7 +1028,7 @@ def test_add_resource_policies_rest_required_fields(
 
             response = client.add_resource_policies(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1246,7 +1246,7 @@ def test_add_resource_policies_unary_rest_required_fields(
 
             response = client.add_resource_policies_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1456,7 +1456,7 @@ def test_aggregated_list_rest_required_fields(
 
             response = client.aggregated_list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1726,7 +1726,7 @@ def test_bulk_insert_rest_required_fields(request_type=compute.BulkInsertDiskReq
 
             response = client.bulk_insert(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1932,7 +1932,7 @@ def test_bulk_insert_unary_rest_required_fields(
 
             response = client.bulk_insert_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2143,7 +2143,7 @@ def test_bulk_set_labels_rest_required_fields(
 
             response = client.bulk_set_labels(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2367,7 +2367,7 @@ def test_bulk_set_labels_unary_rest_required_fields(
 
             response = client.bulk_set_labels_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2595,7 +2595,7 @@ def test_create_snapshot_rest_required_fields(
 
             response = client.create_snapshot(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2814,7 +2814,7 @@ def test_create_snapshot_unary_rest_required_fields(
 
             response = client.create_snapshot_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3025,7 +3025,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteDiskRequest):
 
             response = client.delete(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3228,7 +3228,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteDiskReques
 
             response = client.delete_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3425,7 +3425,7 @@ def test_get_rest_required_fields(request_type=compute.GetDiskRequest):
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3626,7 +3626,7 @@ def test_get_iam_policy_rest_required_fields(
 
             response = client.get_iam_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3835,7 +3835,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertDiskRequest):
 
             response = client.insert(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4045,7 +4045,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertDiskReques
 
             response = client.insert_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4253,7 +4253,7 @@ def test_list_rest_required_fields(request_type=compute.ListDisksRequest):
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4530,7 +4530,7 @@ def test_remove_resource_policies_rest_required_fields(
 
             response = client.remove_resource_policies(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4748,7 +4748,7 @@ def test_remove_resource_policies_unary_rest_required_fields(
 
             response = client.remove_resource_policies_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -4959,7 +4959,7 @@ def test_resize_rest_required_fields(request_type=compute.ResizeDiskRequest):
 
             response = client.resize(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5166,7 +5166,7 @@ def test_resize_unary_rest_required_fields(request_type=compute.ResizeDiskReques
 
             response = client.resize_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5369,7 +5369,7 @@ def test_set_iam_policy_rest_required_fields(
 
             response = client.set_iam_policy(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5584,7 +5584,7 @@ def test_set_labels_rest_required_fields(request_type=compute.SetLabelsDiskReque
 
             response = client.set_labels(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5801,7 +5801,7 @@ def test_set_labels_unary_rest_required_fields(
 
             response = client.set_labels_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -6023,7 +6023,7 @@ def test_start_async_replication_rest_required_fields(
 
             response = client.start_async_replication(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -6241,7 +6241,7 @@ def test_start_async_replication_unary_rest_required_fields(
 
             response = client.start_async_replication_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -6458,7 +6458,7 @@ def test_stop_async_replication_rest_required_fields(
 
             response = client.stop_async_replication(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -6668,7 +6668,7 @@ def test_stop_async_replication_unary_rest_required_fields(
 
             response = client.stop_async_replication_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -6875,7 +6875,7 @@ def test_stop_group_async_replication_rest_required_fields(
 
             response = client.stop_group_async_replication(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -7086,7 +7086,7 @@ def test_stop_group_async_replication_unary_rest_required_fields(
 
             response = client.stop_group_async_replication_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -7296,7 +7296,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response = client.test_iam_permissions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -7517,7 +7517,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateDiskRequest):
 
             response = client.update(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -7736,7 +7736,7 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateDiskReques
 
             response = client.update_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
