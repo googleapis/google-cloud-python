@@ -50,7 +50,7 @@ from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.geo.type.types import viewport
+from google.geo.type import viewport_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.type import datetime_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
