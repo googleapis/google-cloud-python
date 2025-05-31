@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 
 from google.shopping.merchant_reviews_v1beta.services.product_reviews_service import (
     pagers,
@@ -363,7 +363,7 @@ class ProductReviewsServiceAsyncClient:
             google.shopping.merchant_reviews_v1beta.types.ProductReview:
                 A review for a product. For more information, see
                    [Introduction to Product Review
-                   Feeds](\ https://developers.google.com/product-review-feeds)
+                   Feeds](https://developers.google.com/product-review-feeds)
 
         """
         # Create or coerce a protobuf request object.
@@ -599,7 +599,7 @@ class ProductReviewsServiceAsyncClient:
             google.shopping.merchant_reviews_v1beta.types.ProductReview:
                 A review for a product. For more information, see
                    [Introduction to Product Review
-                   Feeds](\ https://developers.google.com/product-review-feeds)
+                   Feeds](https://developers.google.com/product-review-feeds)
 
         """
         # Create or coerce a protobuf request object.
