@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -310,7 +310,7 @@ class ProductChange(proto.Message):
             applicable)
 
             This field is a member of `oneof`_ ``_region_code``.
-        reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+        reporting_context (google.shopping.type.types_pb2.ReportingContextEnum):
             Reporting contexts that have the change (if
             applicable)
 
@@ -332,11 +332,11 @@ class ProductChange(proto.Message):
         number=3,
         optional=True,
     )
-    reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
+    reporting_context: types_pb2.ReportingContext.ReportingContextEnum = proto.Field(
         proto.ENUM,
         number=4,
         optional=True,
-        enum=types.ReportingContext.ReportingContextEnum,
+        enum=types_pb2.ReportingContext.ReportingContextEnum,
     )
 
 
