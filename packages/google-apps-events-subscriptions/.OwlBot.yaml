@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-deep-preserve-regex:
-    - /owl-bot-staging/google-apps-events-subscriptions/v1beta
 deep-copy-regex:
     - source: /google/apps/events/subscriptions/(v.*)/.*-py
       dest: /owl-bot-staging/google-apps-events-subscriptions/$1
