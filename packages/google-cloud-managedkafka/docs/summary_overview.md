@@ -14,9 +14,9 @@ Overview of the APIs available for Managed Service for Apache Kafka API.
 Classes, methods and properties & attributes for
 Managed Service for Apache Kafka API.
 
-[classes](https://cloud.google.com/python/docs/reference/google-cloud-managedkafka/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/managedkafka/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/google-cloud-managedkafka/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/managedkafka/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/google-cloud-managedkafka/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/managedkafka/latest/summary_property.html)
