@@ -2055,7 +2055,7 @@
             "currentVersion": "2.19.0",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "8fe4ca0046ec135a6d5423965e170e149b14ef95",
             "apiPaths": [
                 "google/iam/v3",
                 "google/iam/v3beta",
