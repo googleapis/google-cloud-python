@@ -11,7 +11,6 @@ API Reference
     bigquery_analyticshub_v1/services_
     bigquery_analyticshub_v1/types_
 
-
 Changelog
 ---------
 
