@@ -646,6 +646,10 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
             raise ValueError(
                 "client_options.api_key and credentials are mutually exclusive"
             )
+        if api_key_value and api_key_value[-1] == '\x0a':
+            raise ValueError(
+                "client_options.api_key cannot end in a new_line (x0a) character"
+            )
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
