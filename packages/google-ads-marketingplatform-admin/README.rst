@@ -15,7 +15,7 @@ Python Client for Google Marketing Platform Admin API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-ads-marketingplatform-admin.svg
    :target: https://pypi.org/project/google-ads-marketingplatform-admin/
 .. _Google Marketing Platform Admin API: https://developers.google.com/analytics/devguides/config/gmp/v1
-.. _Client Library Documentation: https://googleapis.dev/python/google-ads-marketingplatform-admin/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/marketingplatform admin/latest
 .. _Product Documentation:  https://developers.google.com/analytics/devguides/config/gmp/v1
 
 Quick Start
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
