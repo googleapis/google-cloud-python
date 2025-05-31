@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -192,7 +192,7 @@ class Attributes(proto.Message):
             running. Depending on type of the selected coupon value
             `some attributes are
             required <https://support.google.com/merchants/answer/6393006?ref_topic=7322920>`__.
-        promotion_destinations (MutableSequence[google.shopping.type.types.Destination.DestinationEnum]):
+        promotion_destinations (MutableSequence[google.shopping.type.types_pb2.DestinationEnum]):
             Required. The list of destinations where the promotion
             applies to. If you don't specify a destination by including
             a supported value in your data source, your promotion will
@@ -258,7 +258,7 @@ class Attributes(proto.Message):
             applies when the products eligible for promotion product
             applicability ``product_applicability`` attribute is set to
             `specific_products <https://support.google.com/merchants/answer/13837299?ref_topic=13773355&sjid=17642868584668136159-NC>`__.
-        minimum_purchase_amount (google.shopping.type.types.Price):
+        minimum_purchase_amount (google.shopping.type.types_pb2.Price):
             Optional. `Minimum purchase
             amount <https://support.google.com/merchants/answer/13837705?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
@@ -270,7 +270,7 @@ class Attributes(proto.Message):
             Optional. `Maximum purchase
             quantity <https://support.google.com/merchants/answer/13861564?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
-        limit_value (google.shopping.type.types.Price):
+        limit_value (google.shopping.type.types_pb2.Price):
             Optional. `Maximum product
             price <https://support.google.com/merchants/answer/2906014>`__
             for promotion.
@@ -278,7 +278,7 @@ class Attributes(proto.Message):
             Optional. The `percentage
             discount <https://support.google.com/merchants/answer/13837404?sjid=17642868584668136159-NC>`__
             offered in the promotion.
-        money_off_amount (google.shopping.type.types.Price):
+        money_off_amount (google.shopping.type.types_pb2.Price):
             Optional. The `money off
             amount <https://support.google.com/merchants/answer/13838101?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             offered in the promotion.
@@ -286,7 +286,7 @@ class Attributes(proto.Message):
             Optional. The number of items discounted in the promotion.
             The attribute is set when ``couponValueType`` is equal to
             ``buy_m_get_n_money_off`` or ``buy_m_get_n_percent_off``.
-        free_gift_value (google.shopping.type.types.Price):
+        free_gift_value (google.shopping.type.types_pb2.Price):
             Optional. `Free gift
             value <https://support.google.com/merchants/answer/13844477?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
@@ -370,11 +370,11 @@ class Attributes(proto.Message):
         enum="CouponValueType",
     )
     promotion_destinations: MutableSequence[
-        types.Destination.DestinationEnum
+        types_pb2.Destination.DestinationEnum
     ] = proto.RepeatedField(
         proto.ENUM,
         number=6,
-        enum=types.Destination.DestinationEnum,
+        enum=types_pb2.Destination.DestinationEnum,
     )
     item_id_inclusion: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -408,10 +408,10 @@ class Attributes(proto.Message):
         proto.STRING,
         number=14,
     )
-    minimum_purchase_amount: types.Price = proto.Field(
+    minimum_purchase_amount: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=15,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     minimum_purchase_quantity: int = proto.Field(
         proto.INT64,
@@ -421,28 +421,28 @@ class Attributes(proto.Message):
         proto.INT64,
         number=17,
     )
-    limit_value: types.Price = proto.Field(
+    limit_value: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=18,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     percent_off: int = proto.Field(
         proto.INT64,
         number=19,
     )
-    money_off_amount: types.Price = proto.Field(
+    money_off_amount: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=20,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     get_this_quantity_discounted: int = proto.Field(
         proto.INT64,
         number=21,
     )
-    free_gift_value: types.Price = proto.Field(
+    free_gift_value: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=22,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     free_gift_description: str = proto.Field(
         proto.STRING,
@@ -508,7 +508,7 @@ class PromotionStatus(proto.Message):
         r"""The status for the specified destination.
 
         Attributes:
-            reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+            reporting_context (google.shopping.type.types_pb2.ReportingContextEnum):
                 Output only. The name of the promotion
                 destination.
             status (google.shopping.merchant_promotions_v1beta.types.PromotionStatus.DestinationStatus.State):
@@ -545,10 +545,12 @@ class PromotionStatus(proto.Message):
             EXPIRED = 5
             PENDING = 6
 
-        reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
-            proto.ENUM,
-            number=1,
-            enum=types.ReportingContext.ReportingContextEnum,
+        reporting_context: types_pb2.ReportingContext.ReportingContextEnum = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum=types_pb2.ReportingContext.ReportingContextEnum,
+            )
         )
         status: "PromotionStatus.DestinationStatus.State" = proto.Field(
             proto.ENUM,
@@ -571,7 +573,7 @@ class PromotionStatus(proto.Message):
             attribute (str):
                 Output only. The attribute's name, if the
                 issue is caused by a single attribute.
-            reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+            reporting_context (google.shopping.type.types_pb2.ReportingContextEnum):
                 Output only. The destination the issue
                 applies to.
             description (str):
@@ -626,10 +628,12 @@ class PromotionStatus(proto.Message):
             proto.STRING,
             number=4,
         )
-        reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
-            proto.ENUM,
-            number=5,
-            enum=types.ReportingContext.ReportingContextEnum,
+        reporting_context: types_pb2.ReportingContext.ReportingContextEnum = (
+            proto.Field(
+                proto.ENUM,
+                number=5,
+                enum=types_pb2.ReportingContext.ReportingContextEnum,
+            )
         )
         description: str = proto.Field(
             proto.STRING,

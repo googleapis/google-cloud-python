@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 
 from google.shopping.merchant_promotions_v1beta.services.promotions_service import (
     pagers,
@@ -364,9 +364,9 @@ class PromotionsServiceAsyncClient:
                    validation checks are primarily defined below:
 
                    \* [Promotions data
-                   specification](\ https://support.google.com/merchants/answer/2906014)
+                   specification](https://support.google.com/merchants/answer/2906014)
                    \* [Local promotions data
-                   specification](\ https://support.google.com/merchants/answer/10146130)
+                   specification](https://support.google.com/merchants/answer/10146130)
 
                    After inserting, updating a promotion input, it may
                    take several minutes before the final promotion can
@@ -473,9 +473,9 @@ class PromotionsServiceAsyncClient:
                    validation checks are primarily defined below:
 
                    \* [Promotions data
-                   specification](\ https://support.google.com/merchants/answer/2906014)
+                   specification](https://support.google.com/merchants/answer/2906014)
                    \* [Local promotions data
-                   specification](\ https://support.google.com/merchants/answer/10146130)
+                   specification](https://support.google.com/merchants/answer/10146130)
 
                    After inserting, updating a promotion input, it may
                    take several minutes before the final promotion can
