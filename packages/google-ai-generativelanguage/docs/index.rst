@@ -3,16 +3,8 @@
 .. include:: multiprocessing.rst
 
 This package includes clients for multiple versions of Generative Language API.
-By default, you will get version ``generativelanguage_v1beta``.
+By default, you will get version ``generativelanguage_v1``.
 
-
-API Reference
--------------
-.. toctree::
-    :maxdepth: 2
-
-    generativelanguage_v1beta/services_
-    generativelanguage_v1beta/types_
 
 API Reference
 -------------
@@ -27,25 +19,32 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    generativelanguage_v1alpha/services_
-    generativelanguage_v1alpha/types_
+    ai_generativelanguage_v1beta/services_
+    ai_generativelanguage_v1beta/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    generativelanguage_v1beta2/services_
-    generativelanguage_v1beta2/types_
+    ai_generativelanguage_v1beta3/services_
+    ai_generativelanguage_v1beta3/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    generativelanguage_v1beta3/services_
-    generativelanguage_v1beta3/types_
+    ai_generativelanguage_v1beta2/services_
+    ai_generativelanguage_v1beta2/types_
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    ai_generativelanguage_v1alpha/services_
+    ai_generativelanguage_v1alpha/types_
 
 Changelog
 ---------
@@ -56,3 +55,6 @@ For a list of all ``google-ai-generativelanguage`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:

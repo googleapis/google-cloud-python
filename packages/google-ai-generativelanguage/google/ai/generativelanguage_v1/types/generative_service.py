@@ -1156,7 +1156,7 @@ class CountTokensRequest(proto.Message):
             instructions <https://ai.google.dev/gemini-api/docs/system-instructions>`__,
             and/or function declarations for `function
             calling <https://ai.google.dev/gemini-api/docs/function-calling>`__.
-            ``Model``\ s/\ ``Content``\ s and
+            ``Model``\ s/``Content``\ s and
             ``generate_content_request``\ s are mutually exclusive. You
             can either send ``Model`` + ``Content``\ s or a
             ``generate_content_request``, but never both.
