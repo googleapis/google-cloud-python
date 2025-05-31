@@ -42,7 +42,7 @@ DEFAULT_PYTHON_VERSION = ALL_PYTHON[-1]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
-PACKAGE_NAME = "google-cloud-security-publicca"
+PACKAGE_NAME = "google-cloud-public-ca"
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
