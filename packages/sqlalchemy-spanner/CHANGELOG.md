@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.11.1...v1.12.0) (2025-06-02)
+
+
+### Features
+
+* Document the use of statement and transaction tags ([#676](https://github.com/googleapis/python-spanner-sqlalchemy/issues/676)) ([c78ad04](https://github.com/googleapis/python-spanner-sqlalchemy/commit/c78ad04dc7a3e1c773bde21ef927d5250f47992d))
+* Support database role in connect arguments ([#667](https://github.com/googleapis/python-spanner-sqlalchemy/issues/667)) ([47aa27c](https://github.com/googleapis/python-spanner-sqlalchemy/commit/47aa27c489cb7051cb55468ab4d6b79f8c0ce1f3))
+* Support multi-row inserts ([#671](https://github.com/googleapis/python-spanner-sqlalchemy/issues/671)) ([f5d94cd](https://github.com/googleapis/python-spanner-sqlalchemy/commit/f5d94cd15cba43684fc584072018ab3bc826f457)), closes [#670](https://github.com/googleapis/python-spanner-sqlalchemy/issues/670)
+
 ## [1.11.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.11.0...v1.11.1) (2025-05-27)
 
 
