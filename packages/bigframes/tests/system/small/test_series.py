@@ -629,6 +629,18 @@ def test_series_replace_list_scalar(scalars_dfs):
     )
 
 
+def test_series_replace_nans_with_pd_na(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_result = scalars_df[col_name].replace({pd.NA: "UNKNOWN"}).to_pandas()
+    pd_result = scalars_pandas_df[col_name].replace({pd.NA: "UNKNOWN"})
+
+    pd.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
 @pytest.mark.parametrize(
     ("replacement_dict",),
     (

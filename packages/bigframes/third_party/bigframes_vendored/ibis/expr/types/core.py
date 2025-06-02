@@ -19,6 +19,7 @@ from bigframes_vendored.ibis.expr.format import pretty
 import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis.expr.types.pretty import to_rich
 from bigframes_vendored.ibis.util import experimental
+import pandas as pd
 from public import public
 from rich.console import Console
 from rich.jupyter import JupyterMixin
@@ -34,7 +35,6 @@ if TYPE_CHECKING:
         EdgeAttributeGetter,
         NodeAttributeGetter,
     )
-    import pandas as pd
     import polars as pl
     import pyarrow as pa
     import torch
@@ -744,9 +744,9 @@ def _binop(op_class: type[ops.Binary], left: ir.Value, right: ir.Value) -> ir.Va
 
 def _is_null_literal(value: Any) -> bool:
     """Detect whether `value` will be treated by ibis as a null literal."""
-    if value is None:
-        return True
     if isinstance(value, Expr):
         op = value.op()
         return isinstance(op, ops.Literal) and op.value is None
+    if pd.isna(value):
+        return True
     return False

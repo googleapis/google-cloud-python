@@ -754,7 +754,7 @@ def bf_type_from_type_kind(
 
 def is_dtype(scalar: typing.Any, dtype: Dtype) -> bool:
     """Captures whether a scalar can be losslessly represented by a dtype."""
-    if scalar is None:
+    if pd.isna(scalar):
         return True
     if pd.api.types.is_bool_dtype(dtype):
         return pd.api.types.is_bool(scalar)
