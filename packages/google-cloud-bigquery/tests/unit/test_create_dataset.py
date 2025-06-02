@@ -372,7 +372,12 @@ def test_create_dataset_alreadyexists_w_exists_ok_true(PROJECT, DS_ID, LOCATION)
                 },
                 timeout=DEFAULT_TIMEOUT,
             ),
-            mock.call(method="GET", path=get_path, timeout=DEFAULT_TIMEOUT),
+            mock.call(
+                method="GET",
+                path=get_path,
+                timeout=DEFAULT_TIMEOUT,
+                query_params={},
+            ),
         ]
     )
 

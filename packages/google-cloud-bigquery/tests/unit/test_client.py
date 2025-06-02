@@ -61,7 +61,7 @@ from google.cloud import bigquery
 from google.cloud.bigquery import job as bqjob
 import google.cloud.bigquery._job_helpers
 from google.cloud.bigquery.dataset import DatasetReference, Dataset
-from google.cloud.bigquery.enums import UpdateMode
+from google.cloud.bigquery.enums import UpdateMode, DatasetView
 from google.cloud.bigquery import exceptions
 from google.cloud.bigquery import ParquetOptions
 import google.cloud.bigquery.retry
@@ -753,7 +753,7 @@ class TestClient(unittest.TestCase):
         final_attributes.assert_called_once_with({"path": "/%s" % path}, client, None)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path="/%s" % path, timeout=7.5
+            method="GET", path="/%s" % path, timeout=7.5, query_params={}
         )
         self.assertEqual(dataset.dataset_id, self.DS_ID)
 
@@ -818,6 +818,72 @@ class TestClient(unittest.TestCase):
         final_attributes.assert_called_once_with({"path": "/%s" % path}, client, None)
 
         self.assertEqual(dataset.dataset_id, self.DS_ID)
+
+    def test_get_dataset_with_dataset_view(self):
+        path = "projects/%s/datasets/%s" % (self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        resource = {
+            "id": "%s:%s" % (self.PROJECT, self.DS_ID),
+            "datasetReference": {"projectId": self.PROJECT, "datasetId": self.DS_ID},
+        }
+        dataset_ref = DatasetReference(self.PROJECT, self.DS_ID)
+
+        test_cases = [
+            (None, None),
+            (DatasetView.DATASET_VIEW_UNSPECIFIED, "DATASET_VIEW_UNSPECIFIED"),
+            (DatasetView.METADATA, "METADATA"),
+            (DatasetView.ACL, "ACL"),
+            (DatasetView.FULL, "FULL"),
+        ]
+
+        for dataset_view_arg, expected_param_value in test_cases:
+            with self.subTest(
+                dataset_view_arg=dataset_view_arg,
+                expected_param_value=expected_param_value,
+            ):
+                # Re-initialize the connection mock for each sub-test to reset side_effect
+                conn = client._connection = make_connection(resource)
+
+                dataset = client.get_dataset(dataset_ref, dataset_view=dataset_view_arg)
+
+                self.assertEqual(dataset.dataset_id, self.DS_ID)
+
+                if expected_param_value:
+                    expected_query_params = {"datasetView": expected_param_value}
+                else:
+                    expected_query_params = {}
+
+                conn.api_request.assert_called_once_with(
+                    method="GET",
+                    path="/%s" % path,
+                    timeout=DEFAULT_TIMEOUT,
+                    query_params=expected_query_params if expected_query_params else {},
+                )
+
+    def test_get_dataset_with_invalid_dataset_view(self):
+        invalid_view_values = [
+            "INVALID_STRING",
+            123,
+            123.45,
+            object(),
+        ]
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        resource = {
+            "id": "%s:%s" % (self.PROJECT, self.DS_ID),
+            "datasetReference": {"projectId": self.PROJECT, "datasetId": self.DS_ID},
+        }
+        conn = client._connection = make_connection(resource)
+        dataset_ref = DatasetReference(self.PROJECT, self.DS_ID)
+
+        for invalid_view_value in invalid_view_values:
+            with self.subTest(invalid_view_value=invalid_view_value):
+                conn.api_request.reset_mock()  # Reset mock for each sub-test
+                with self.assertRaises(AttributeError):
+                    client.get_dataset(dataset_ref, dataset_view=invalid_view_value)
 
     def test_ensure_bqstorage_client_creating_new_instance(self):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
