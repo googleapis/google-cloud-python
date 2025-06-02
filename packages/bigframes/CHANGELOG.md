@@ -4,6 +4,66 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.5.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.4.0...v2.5.0) (2025-05-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* the updated `ai.map()` parameter list is not backward-compatible
+
+### Features
+
+* Add `bpd.options.bigquery.requests_transport_adapters` option ([#1755](https://github.com/googleapis/python-bigquery-dataframes/issues/1755)) ([bb45db8](https://github.com/googleapis/python-bigquery-dataframes/commit/bb45db8afdffa1417f11c050d40d4ec6d15b8654))
+* Add bbq.json_query and warn bbq.json_extract deprecated ([#1756](https://github.com/googleapis/python-bigquery-dataframes/issues/1756)) ([ec81dd2](https://github.com/googleapis/python-bigquery-dataframes/commit/ec81dd2228697d5bf193d86396cf7f3212e0289d))
+* Add bpd.options.reset() method ([#1743](https://github.com/googleapis/python-bigquery-dataframes/issues/1743)) ([36c359d](https://github.com/googleapis/python-bigquery-dataframes/commit/36c359d2521089e186a412d353daf9de6cfbc8f4))
+* Add DataFrame.round method ([#1742](https://github.com/googleapis/python-bigquery-dataframes/issues/1742)) ([3ea6043](https://github.com/googleapis/python-bigquery-dataframes/commit/3ea6043be7025fa7a11cca27b02f5505bbc9b129))
+* Add deferred data uploading ([#1720](https://github.com/googleapis/python-bigquery-dataframes/issues/1720)) ([1f6442e](https://github.com/googleapis/python-bigquery-dataframes/commit/1f6442e576c35ec784ccf9cab3d081d46e45a5ce))
+* Add deprecation warning to Gemini-1.5-X, text-embedding-004, and remove remove legacy models in notebooks and docs ([#1723](https://github.com/googleapis/python-bigquery-dataframes/issues/1723)) ([80aad9a](https://github.com/googleapis/python-bigquery-dataframes/commit/80aad9af794c2e06d1608c879f459a836fd4448b))
+* Add structured output for ai map, ai filter and ai join ([#1746](https://github.com/googleapis/python-bigquery-dataframes/issues/1746)) ([133ac6b](https://github.com/googleapis/python-bigquery-dataframes/commit/133ac6b0e1f1e7a12844a4b6fd5b26df59f7ef37))
+* Add support for df.loc[list, column(s)] ([#1761](https://github.com/googleapis/python-bigquery-dataframes/issues/1761)) ([768a757](https://github.com/googleapis/python-bigquery-dataframes/commit/768a7570845c4eb88f495d7f3c0f3158accdc231))
+* Include bq schema and query string in dry run results ([#1752](https://github.com/googleapis/python-bigquery-dataframes/issues/1752)) ([bb51147](https://github.com/googleapis/python-bigquery-dataframes/commit/bb511475b74cc253230725846098a9045be2e324))
+* Support `inplace=True` in `rename` and `rename_axis` ([#1744](https://github.com/googleapis/python-bigquery-dataframes/issues/1744)) ([734cc65](https://github.com/googleapis/python-bigquery-dataframes/commit/734cc652e435dc5d97a23411735aa51b7824e381))
+* Support `unique()`  for Index ([#1750](https://github.com/googleapis/python-bigquery-dataframes/issues/1750)) ([27fac78](https://github.com/googleapis/python-bigquery-dataframes/commit/27fac78cb5654e5655aec861062837a7d4f3f679))
+* Support astype conversions to and from JSON dtypes ([#1716](https://github.com/googleapis/python-bigquery-dataframes/issues/1716)) ([8ef4de1](https://github.com/googleapis/python-bigquery-dataframes/commit/8ef4de10151717f88364a909b29fa7600e959ada))
+* Support dict param for dataframe.agg() ([#1772](https://github.com/googleapis/python-bigquery-dataframes/issues/1772)) ([f9c29c8](https://github.com/googleapis/python-bigquery-dataframes/commit/f9c29c85053d8111a74ce382490daed36f8bb35b))
+* Support dtype parameter in read_csv for bigquery engine ([#1749](https://github.com/googleapis/python-bigquery-dataframes/issues/1749)) ([50dca4c](https://github.com/googleapis/python-bigquery-dataframes/commit/50dca4c706d78673b03f90eccf776118247ba30b))
+* Use read api for some peek ops ([#1731](https://github.com/googleapis/python-bigquery-dataframes/issues/1731)) ([108f4d2](https://github.com/googleapis/python-bigquery-dataframes/commit/108f4d259e1bcfbe6c7aa3c3c3f8f605cf7615ee))
+
+
+### Bug Fixes
+
+* Fix clip int series with float bounds ([#1739](https://github.com/googleapis/python-bigquery-dataframes/issues/1739)) ([d451aef](https://github.com/googleapis/python-bigquery-dataframes/commit/d451aefd2181aef250c3b48cceac09063081cab2))
+* Fix error with self-merge operations ([#1774](https://github.com/googleapis/python-bigquery-dataframes/issues/1774)) ([e5fe143](https://github.com/googleapis/python-bigquery-dataframes/commit/e5fe14339b4a40ab4a25657ee0453e4108cf8bba))
+* Fix the default value for na_value for numpy conversions ([#1766](https://github.com/googleapis/python-bigquery-dataframes/issues/1766)) ([0629cac](https://github.com/googleapis/python-bigquery-dataframes/commit/0629cac7f9a9370a72c1ae25e014eb478a4c8c08))
+* Include location in Session-based temporary storage manager DDL queries ([#1780](https://github.com/googleapis/python-bigquery-dataframes/issues/1780)) ([acba032](https://github.com/googleapis/python-bigquery-dataframes/commit/acba0321cafeb49f3e560a364ebbf3d15fb8af88))
+* Prevent creating unnecessary client objects in multithreaded environments ([#1757](https://github.com/googleapis/python-bigquery-dataframes/issues/1757)) ([1cf9f5e](https://github.com/googleapis/python-bigquery-dataframes/commit/1cf9f5e8dba733ee26d15fc5edc44c81e094e9a0))
+* Reduce bigquery table modification via DML for to_gbq ([#1737](https://github.com/googleapis/python-bigquery-dataframes/issues/1737)) ([545cdca](https://github.com/googleapis/python-bigquery-dataframes/commit/545cdcac1361607678c2574f0f31eb43950073e5))
+* Stop ignoring arguments to `MatrixFactorization.score(X, y)` ([#1726](https://github.com/googleapis/python-bigquery-dataframes/issues/1726)) ([55c07e9](https://github.com/googleapis/python-bigquery-dataframes/commit/55c07e9d4315949c37ffa3e03c8fedc6daf17faf))
+* Support JSON and STRUCT for bbq.sql_scalar ([#1754](https://github.com/googleapis/python-bigquery-dataframes/issues/1754)) ([190390b](https://github.com/googleapis/python-bigquery-dataframes/commit/190390b804c2131c2eaa624d7f025febb7784b01))
+* Support str.replace re.compile with flags ([#1736](https://github.com/googleapis/python-bigquery-dataframes/issues/1736)) ([f8d2cd2](https://github.com/googleapis/python-bigquery-dataframes/commit/f8d2cd24281415f4a8f9193b676f5483128cd173))
+
+
+### Performance Improvements
+
+* Faster local data comparison using idenitity ([#1738](https://github.com/googleapis/python-bigquery-dataframes/issues/1738)) ([2858b1e](https://github.com/googleapis/python-bigquery-dataframes/commit/2858b1efb4fe74097dcb17c086ee1dc18e53053c))
+* Optimize repr for unordered gbq table ([#1778](https://github.com/googleapis/python-bigquery-dataframes/issues/1778)) ([2bc4fbc](https://github.com/googleapis/python-bigquery-dataframes/commit/2bc4fbc78eba4bb2ee335e0475700a7ca5bc84d7))
+* Use JOB_CREATION_OPTIONAL when `allow_large_results=False` ([#1763](https://github.com/googleapis/python-bigquery-dataframes/issues/1763)) ([15f3f2a](https://github.com/googleapis/python-bigquery-dataframes/commit/15f3f2aa42cfe4a2233f62c5f8906e7f7658f9fa))
+
+
+### Dependencies
+
+* Avoid `gcsfs==2025.5.0` ([#1762](https://github.com/googleapis/python-bigquery-dataframes/issues/1762)) ([68d5e2c](https://github.com/googleapis/python-bigquery-dataframes/commit/68d5e2cbef3510cadc7e9dd199117c1e3b02d19f))
+
+
+### Documentation
+
+* Add llm output_schema notebook ([#1732](https://github.com/googleapis/python-bigquery-dataframes/issues/1732)) ([b2261cc](https://github.com/googleapis/python-bigquery-dataframes/commit/b2261cc07cd58b51d212f9bf495c5022e587f816))
+* Add MatrixFactorization to the table of contents ([#1725](https://github.com/googleapis/python-bigquery-dataframes/issues/1725)) ([611e43b](https://github.com/googleapis/python-bigquery-dataframes/commit/611e43b156483848a5470f889fb7b2b473ecff4d))
+* Fix typo for "population" in the `GeminiTextGenerator.predict(..., output_schema={...})` sample notebook ([#1748](https://github.com/googleapis/python-bigquery-dataframes/issues/1748)) ([bd07e05](https://github.com/googleapis/python-bigquery-dataframes/commit/bd07e05d26820313c052eaf41c267a1ab20b4fc6))
+* Integrations notebook extracts token from `bqclient._http.credentials` instead of `bqclient._credentials` ([#1784](https://github.com/googleapis/python-bigquery-dataframes/issues/1784)) ([6e63eca](https://github.com/googleapis/python-bigquery-dataframes/commit/6e63eca29f20d83435878273604816ce7595c396))
+* Updated multimodal notebook instructions ([#1745](https://github.com/googleapis/python-bigquery-dataframes/issues/1745)) ([1df8ca6](https://github.com/googleapis/python-bigquery-dataframes/commit/1df8ca6312ee428d55c2091a00c73b13d9a6b193))
+* Use partial ordering mode in the quickstart sample ([#1734](https://github.com/googleapis/python-bigquery-dataframes/issues/1734)) ([476b7dd](https://github.com/googleapis/python-bigquery-dataframes/commit/476b7dd7c2639cb6804272d06aa5c1db666819da))
+
 ## [2.4.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.3.0...v2.4.0) (2025-05-12)
 
 
