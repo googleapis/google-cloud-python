@@ -78,6 +78,11 @@ def read_only_transaction(session):
 
 
 @nox.session()
+def database_role(session):
+    _sample(session)
+
+
+@nox.session()
 def _all_samples(session):
     _sample(session)
 

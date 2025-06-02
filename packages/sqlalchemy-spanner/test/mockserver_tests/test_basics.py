@@ -267,6 +267,25 @@ LIMIT 1
             session.add(singer)
             session.commit()
 
+    def test_database_role(self):
+        add_select1_result()
+        engine = create_engine(
+            "spanner:///projects/p/instances/i/databases/d",
+            connect_args={
+                "client": self.client,
+                "pool": FixedSizePool(size=10),
+                "database_role": "my_role",
+            },
+        )
+        with Session(engine.execution_options(isolation_level="autocommit")) as session:
+            session.execute(select(1))
+        requests = self.spanner_service.requests
+        eq_(2, len(requests))
+        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[1], ExecuteSqlRequest)
+        request: BatchCreateSessionsRequest = requests[0]
+        eq_("my_role", request.session_template.creator_role)
+
     def test_select_table_in_named_schema(self):
         class Base(DeclarativeBase):
             pass
