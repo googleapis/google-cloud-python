@@ -65,6 +65,11 @@ class TestStaleReads(MockServerTestBase):
         from test.mockserver_tests.tags_model import Singer
 
         add_singer_query_result("SELECT singers.id, singers.name\n" + "FROM singers")
+        add_single_singer_query_result(
+            "SELECT singers.id AS singers_id, singers.name AS singers_name\n"
+            "FROM singers\n"
+            "WHERE singers.id = @a0"
+        )
         add_update_count("INSERT INTO singers (id, name) VALUES (@a0, @a1)", 1)
         engine = create_engine(
             "spanner:///projects/p/instances/i/databases/d",
@@ -75,26 +80,32 @@ class TestStaleReads(MockServerTestBase):
             engine.execution_options(transaction_tag="my-transaction-tag")
         ) as session:
             # Execute a query and an insert statement in a read/write transaction.
+            session.get(Singer, 1, execution_options={"request_tag": "my-tag-1"})
             session.scalars(
-                select(Singer).execution_options(request_tag="my-tag-1")
+                select(Singer).execution_options(request_tag="my-tag-2")
             ).all()
+            session.connection().execution_options(request_tag="insert-singer")
             session.add(Singer(id=1, name="Some Singer"))
             session.commit()
 
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(5, len(requests))
+        eq_(6, len(requests))
         is_instance_of(requests[0], BatchCreateSessionsRequest)
         is_instance_of(requests[1], BeginTransactionRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         is_instance_of(requests[3], ExecuteSqlRequest)
-        is_instance_of(requests[4], CommitRequest)
+        is_instance_of(requests[4], ExecuteSqlRequest)
+        is_instance_of(requests[5], CommitRequest)
         for request in requests[2:]:
             eq_("my-transaction-tag", request.request_options.transaction_tag)
+        eq_("my-tag-1", requests[2].request_options.request_tag)
+        eq_("my-tag-2", requests[3].request_options.request_tag)
+        eq_("insert-singer", requests[4].request_options.request_tag)
 
 
-def add_singer_query_result(sql: str):
-    result = result_set.ResultSet(
+def empty_singer_result_set():
+    return result_set.ResultSet(
         dict(
             metadata=result_set.ResultSetMetadata(
                 dict(
@@ -124,6 +135,10 @@ def add_singer_query_result(sql: str):
             ),
         )
     )
+
+
+def add_singer_query_result(sql: str):
+    result = empty_singer_result_set()
     result.rows.extend(
         [
             (
@@ -133,6 +148,19 @@ def add_singer_query_result(sql: str):
             (
                 "2",
                 "John Doe",
+            ),
+        ]
+    )
+    add_result(sql, result)
+
+
+def add_single_singer_query_result(sql: str):
+    result = empty_singer_result_set()
+    result.rows.extend(
+        [
+            (
+                "1",
+                "Jane Doe",
             ),
         ]
     )
