@@ -67,6 +67,7 @@ class GBQIOMixin:
             >>> df = bpd.read_gbq("bigquery-public-data.ml_datasets.penguins")
 
         Read table path with wildcard suffix and filters:
+
             >>> df = bpd.read_gbq_table("bigquery-public-data.noaa_gsod.gsod19*", filters=[("_table_suffix", ">=", "30"), ("_table_suffix", "<=", "39")])
 
         Preserve ordering in a query input.

@@ -4253,6 +4253,7 @@ class DataFrame(generic.NDFrame):
         correlations.
 
         **Examples:**
+
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 

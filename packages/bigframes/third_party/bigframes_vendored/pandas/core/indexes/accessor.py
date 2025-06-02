@@ -204,6 +204,7 @@ class DatetimeProperties:
         Calculate year, week, and day according to the ISO 8601 standard.
 
         **Examples:**
+
             >>> import pandas as pd
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
