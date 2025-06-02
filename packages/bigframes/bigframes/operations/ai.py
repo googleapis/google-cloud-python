@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import re
 import typing
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 import warnings
 
 import numpy as np
@@ -257,6 +257,101 @@ class AIAccessor:
         from bigframes.core.reshape.api import concat
 
         return concat([self._df, *attach_columns], axis=1)
+
+    def classify(
+        self,
+        instruction: str,
+        model,
+        labels: Sequence[str],
+        output_column: str = "result",
+        ground_with_google_search: bool = False,
+        attach_logprobs=False,
+    ):
+        """
+        Classifies the rows of dataframes based on user instruction into the provided labels.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
+
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+
+            >>> df = bpd.DataFrame({
+            ...     "feedback_text": [
+            ...         "The product is amazing, but the shipping was slow.",
+            ...         "I had an issue with my recent bill.",
+            ...         "The user interface is very intuitive."
+            ...     ],
+            ... })
+            >>> df.ai.classify("{feedback_text}", model=model, labels=["Shipping", "Billing", "UI"])
+                                                   feedback_text     result
+            0  The product is amazing, but the shipping was s...   Shipping
+            1                I had an issue with my recent bill.    Billing
+            2              The user interface is very intuitive.         UI
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
+        Args:
+            instruction (str):
+                An instruction on how to classify the data. This value must contain
+                column references by name, which should be wrapped in a pair of braces.
+                For example, if you have a column "feedback", you can refer to this column
+                with"{food}".
+
+            model (bigframes.ml.llm.GeminiTextGenerator):
+                A GeminiTextGenerator provided by Bigframes ML package.
+
+            labels (Sequence[str]):
+                A collection of labels (categories). It must contain at least two and at most 20 elements.
+                Labels are case sensitive. Duplicated labels are not allowed.
+
+            output_column (str, default "result"):
+                The name of column for the output.
+
+            ground_with_google_search (bool, default False):
+                Enables Grounding with Google Search for the GeminiTextGenerator model.
+                When set to True, the model incorporates relevant information from Google
+                Search results into its responses, enhancing their accuracy and factualness.
+                Note: Using this feature may impact billing costs. Refer to the pricing
+                page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
+                The default is `False`.
+
+            attach_logprobs (bool, default False):
+                Controls whether to attach an additional "logprob" column for each result. Logprobs are float-point values reflecting the confidence level
+                of the LLM for their responses. Higher values indicate more confidence. The value is in the range between negative infinite and 0.
+
+
+        Returns:
+            bigframes.pandas.DataFrame: DataFrame with classification result.
+
+        Raises:
+            NotImplementedError: when the AI operator experiment is off.
+            ValueError: when the instruction refers to a non-existing column, when no
+                columns are referred to, or when the count of labels does not meet the
+                requirement.
+        """
+
+        if len(labels) < 2 or len(labels) > 20:
+            raise ValueError(
+                f"The number of labels should be between 2 and 20 (inclusive), but {len(labels)} labels are provided."
+            )
+
+        if len(set(labels)) != len(labels):
+            raise ValueError("There are duplicate labels.")
+
+        updated_instruction = f"Based on the user instruction {instruction}, you must provide an answer that must exist in the following list of labels: {labels}"
+
+        return self.map(
+            updated_instruction,
+            model,
+            output_schema={output_column: "string"},
+            ground_with_google_search=ground_with_google_search,
+            attach_logprobs=attach_logprobs,
+        )
 
     def join(
         self,

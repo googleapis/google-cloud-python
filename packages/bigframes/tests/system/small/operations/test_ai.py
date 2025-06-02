@@ -108,6 +108,65 @@ def test_map(session):
     )
 
 
+def test_classify(session):
+    df = dataframe.DataFrame({"col": ["A", "B"]}, session=session)
+    model = FakeGeminiTextGenerator(
+        dataframe.DataFrame(
+            {
+                "result": ["A", "B"],
+                "full_response": _create_dummy_full_response(2),
+            },
+            session=session,
+        ),
+    )
+
+    with bigframes.option_context(
+        AI_OP_EXP_OPTION,
+        True,
+        THRESHOLD_OPTION,
+        50,
+    ):
+        result = df.ai.classify(
+            "classify {col}", model=model, labels=["A", "B"]
+        ).to_pandas()
+
+    pandas.testing.assert_frame_equal(
+        result,
+        pd.DataFrame(
+            {"col": ["A", "B"], "result": ["A", "B"]}, dtype=dtypes.STRING_DTYPE
+        ),
+        check_index_type=False,
+    )
+
+
+@pytest.mark.parametrize(
+    "labels",
+    [
+        pytest.param([], id="empty-label"),
+        pytest.param(["A", "A", "B"], id="duplicate-labels"),
+    ],
+)
+def test_classify_invalid_labels_raise_error(session, labels):
+    df = dataframe.DataFrame({"col": ["A", "B"]}, session=session)
+    model = FakeGeminiTextGenerator(
+        dataframe.DataFrame(
+            {
+                "result": ["A", "B"],
+                "full_response": _create_dummy_full_response(2),
+            },
+            session=session,
+        ),
+    )
+
+    with bigframes.option_context(
+        AI_OP_EXP_OPTION,
+        True,
+        THRESHOLD_OPTION,
+        50,
+    ), pytest.raises(ValueError):
+        df.ai.classify("classify {col}", model=model, labels=labels)
+
+
 def test_join(session):
     left_df = dataframe.DataFrame({"col_A": ["A"]}, session=session)
     right_df = dataframe.DataFrame({"col_B": ["B"]}, session=session)

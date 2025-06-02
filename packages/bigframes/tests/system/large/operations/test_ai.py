@@ -398,6 +398,33 @@ def test_map_invalid_model_raise_error():
         )
 
 
+def test_classify(gemini_flash_model, session):
+    df = dataframe.DataFrame(data={"creature": ["dog", "rose"]}, session=session)
+
+    with bigframes.option_context(
+        AI_OP_EXP_OPTION,
+        True,
+        THRESHOLD_OPTION,
+        10,
+    ):
+        actual_result = df.ai.classify(
+            "{creature}",
+            gemini_flash_model,
+            labels=["animal", "plant"],
+            output_column="result",
+        ).to_pandas()
+
+    expected_result = pd.DataFrame(
+        {
+            "creature": ["dog", "rose"],
+            "result": ["animal", "plant"],
+        }
+    )
+    pandas.testing.assert_frame_equal(
+        actual_result, expected_result, check_index_type=False, check_dtype=False
+    )
+
+
 @pytest.mark.parametrize(
     "instruction",
     [
