@@ -2989,6 +2989,7 @@ def test_get_rest_call_success(request_type):
             id=205,
             kind="kind_value",
             name="name_value",
+            reconciling=True,
             self_link="self_link_value",
         )
 
@@ -3012,6 +3013,7 @@ def test_get_rest_call_success(request_type):
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.reconciling is True
     assert response.self_link == "self_link_value"
 
 
@@ -3120,6 +3122,7 @@ def test_insert_rest_call_success(request_type):
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
+        "reconciling": True,
         "self_link": "self_link_value",
         "topology": {"endpoints": [{"city": "city_value", "label": "label_value"}]},
         "wire_group_properties": {"type_": "type__value"},
@@ -3517,6 +3520,7 @@ def test_patch_rest_call_success(request_type):
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
+        "reconciling": True,
         "self_link": "self_link_value",
         "topology": {"endpoints": [{"city": "city_value", "label": "label_value"}]},
         "wire_group_properties": {"type_": "type__value"},

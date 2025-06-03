@@ -9498,6 +9498,7 @@ def test_get_rest_call_success(request_type):
             kind="kind_value",
             name="name_value",
             parent="parent_value",
+            policy_type="policy_type_value",
             region="region_value",
             rule_tuple_count=1737,
             self_link="self_link_value",
@@ -9527,6 +9528,7 @@ def test_get_rest_call_success(request_type):
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.parent == "parent_value"
+    assert response.policy_type == "policy_type_value"
     assert response.region == "region_value"
     assert response.rule_tuple_count == 1737
     assert response.self_link == "self_link_value"
@@ -10300,6 +10302,7 @@ def test_insert_rest_call_success(request_type):
             }
         ],
         "parent": "parent_value",
+        "policy_type": "policy_type_value",
         "region": "region_value",
         "rule_tuple_count": 1737,
         "rules": {},
@@ -10762,6 +10765,7 @@ def test_patch_rest_call_success(request_type):
             }
         ],
         "parent": "parent_value",
+        "policy_type": "policy_type_value",
         "region": "region_value",
         "rule_tuple_count": 1737,
         "rules": {},

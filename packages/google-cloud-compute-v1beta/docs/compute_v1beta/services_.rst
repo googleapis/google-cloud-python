@@ -91,6 +91,7 @@ Services for Google Cloud Compute v1beta API
     region_zones
     reservation_blocks
     reservations
+    reservation_sub_blocks
     resource_policies
     routers
     routes

@@ -7935,6 +7935,7 @@ def test_insert_rest_call_success(request_type):
         ],
         "ncc_gateway": "ncc_gateway_value",
         "network": "network_value",
+        "params": {"resource_manager_tags": {}},
         "region": "region_value",
         "self_link": "self_link_value",
     }
@@ -8703,6 +8704,7 @@ def test_patch_rest_call_success(request_type):
         ],
         "ncc_gateway": "ncc_gateway_value",
         "network": "network_value",
+        "params": {"resource_manager_tags": {}},
         "region": "region_value",
         "self_link": "self_link_value",
     }
@@ -9328,6 +9330,7 @@ def test_preview_rest_call_success(request_type):
         ],
         "ncc_gateway": "ncc_gateway_value",
         "network": "network_value",
+        "params": {"resource_manager_tags": {}},
         "region": "region_value",
         "self_link": "self_link_value",
     }
@@ -9857,6 +9860,7 @@ def test_update_rest_call_success(request_type):
         ],
         "ncc_gateway": "ncc_gateway_value",
         "network": "network_value",
+        "params": {"resource_manager_tags": {}},
         "region": "region_value",
         "self_link": "self_link_value",
     }
