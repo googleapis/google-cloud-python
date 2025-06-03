@@ -965,11 +965,17 @@ class AutotuningConfig(proto.Message):
                 broadcasts.
             MEMORY (4):
                 Memory management for workloads.
+            NONE (5):
+                No autotuning.
+            AUTO (6):
+                Automatic selection of scenarios.
         """
         SCENARIO_UNSPECIFIED = 0
         SCALING = 2
         BROADCAST_HASH_JOIN = 3
         MEMORY = 4
+        NONE = 5
+        AUTO = 6
 
     scenarios: MutableSequence[Scenario] = proto.RepeatedField(
         proto.ENUM,
