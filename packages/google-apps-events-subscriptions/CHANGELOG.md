@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.2.0...google-apps-events-subscriptions-v0.2.1) (2025-06-03)
+
+
+### Features
+
+* Enable client libraries generation of v1beta for Workspace Events API ([fca56e3](https://github.com/googleapis/google-cloud-python/commit/fca56e31288650fb0645ed5d83110ea4fb97f4ba))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.7...google-apps-events-subscriptions-v0.2.0) (2025-05-08)
 
 

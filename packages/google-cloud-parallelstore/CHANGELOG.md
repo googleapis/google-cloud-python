@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.14...google-cloud-parallelstore-v0.2.15) (2025-06-03)
+
+
+### Documentation
+
+* fix various typos in commentary ([b68e488](https://github.com/googleapis/google-cloud-python/commit/b68e488b98aa196c1bab717f170913792b43261b))
+
 ## [0.2.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.13...google-cloud-parallelstore-v0.2.14) (2025-04-15)
 
 
