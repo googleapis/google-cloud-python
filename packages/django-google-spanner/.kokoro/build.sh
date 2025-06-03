@@ -21,7 +21,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 export GOOGLE_CLOUD_PROJECT=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
-export RUNNING_SPANNER_BACKEND_TESTS=1
+export RUNNING_SPANNER_BACKEND_TESTS=0
 
 if [[ $KOKORO_JOB_NAME == *"docs"* ]]
 then
@@ -33,7 +33,7 @@ then
     python3 -m pip install --upgrade --quiet nox
     # Generate docs.
     python3 -m nox -s docs docfx
-else
+elif [[ $RUNNING_SPANNER_BACKEND_TESTS == 1 ]]; then
     pip3 install .
     export DJANGO_TESTS_DIR="django_tests_dir"
     mkdir -p $DJANGO_TESTS_DIR && git clone --depth 1 --single-branch --branch "django/stable/2.2.x" https://github.com/googleapis/python-spanner-django.git $DJANGO_TESTS_DIR/django
@@ -57,4 +57,7 @@ else
     fi
 
     python3 ./run_testing_worker.py
+else
+    echo "Running unit tests"
+    nox -s unit
 fi

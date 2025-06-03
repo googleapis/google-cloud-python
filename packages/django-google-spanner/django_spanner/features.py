@@ -437,7 +437,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # Spanner does not support SELECTing an arbitrary expression that also
         # appears in the GROUP BY clause.
         "annotations.tests.NonAggregateAnnotationTestCase.test_grouping_by_q_expression_annotation",
-        # Tests that expect it to be empty untill saved in db.
+        # Tests that expect it to be empty until saved in db.
         "test_utils.test_testcase.TestDataTests.test_class_attribute_identity",
         "model_fields.test_jsonfield.TestSerialization.test_dumping",
         "model_fields.test_jsonfield.TestSerialization.test_dumping",
@@ -558,6 +558,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
             "backends.base.test_base.DatabaseWrapperLoggingTests.test_commit_debug_log",
             "backends.base.test_base.DatabaseWrapperLoggingTests.test_rollback_debug_log",
             "backends.base.test_base.MultiDatabaseTests.test_multi_database_init_connection_state_called_once",
+            # Spanner does not support automatic coercion from float64 to int64
+            "lookup.tests.LookupQueryingTests.test_annotate_greater_than_or_equal_float",
+            "lookup.tests.LookupQueryingTests.test_annotate_less_than_float",
         )
 
     if os.environ.get("SPANNER_EMULATOR_HOST", None):
