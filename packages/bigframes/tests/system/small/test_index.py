@@ -375,10 +375,42 @@ def test_index_drop_duplicates(scalars_df_index, scalars_pandas_df_index, keep):
     )
 
 
-def test_index_isin(scalars_df_index, scalars_pandas_df_index):
+def test_index_isin_list(scalars_df_index, scalars_pandas_df_index):
     col_name = "int64_col"
     bf_series = (
         scalars_df_index.set_index(col_name).index.isin([2, 55555, 4]).to_pandas()
+    )
+    pd_result_array = scalars_pandas_df_index.set_index(col_name).index.isin(
+        [2, 55555, 4]
+    )
+    pd.testing.assert_index_equal(
+        pd.Index(pd_result_array).set_names(col_name),
+        bf_series,
+    )
+
+
+def test_index_isin_bf_series(scalars_df_index, scalars_pandas_df_index, session):
+    col_name = "int64_col"
+    bf_series = (
+        scalars_df_index.set_index(col_name)
+        .index.isin(bpd.Series([2, 55555, 4], session=session))
+        .to_pandas()
+    )
+    pd_result_array = scalars_pandas_df_index.set_index(col_name).index.isin(
+        [2, 55555, 4]
+    )
+    pd.testing.assert_index_equal(
+        pd.Index(pd_result_array).set_names(col_name),
+        bf_series,
+    )
+
+
+def test_index_isin_bf_index(scalars_df_index, scalars_pandas_df_index, session):
+    col_name = "int64_col"
+    bf_series = (
+        scalars_df_index.set_index(col_name)
+        .index.isin(bpd.Index([2, 55555, 4], session=session))
+        .to_pandas()
     )
     pd_result_array = scalars_pandas_df_index.set_index(col_name).index.isin(
         [2, 55555, 4]

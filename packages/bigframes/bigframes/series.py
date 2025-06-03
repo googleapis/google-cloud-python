@@ -979,8 +979,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
 
     def isin(self, values) -> "Series" | None:
-        if isinstance(values, (Series,)):
+        if isinstance(values, Series):
             return Series(self._block.isin(values._block))
+        if isinstance(values, indexes.Index):
+            return Series(self._block.isin(values.to_series()._block))
         if not _is_list_like(values):
             raise TypeError(
                 "only list-like objects are allowed to be passed to "

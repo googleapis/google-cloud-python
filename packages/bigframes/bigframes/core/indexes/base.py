@@ -504,6 +504,10 @@ class Index(vendored_pandas_index.Index):
         return self.get_level_values(level).drop_duplicates()
 
     def isin(self, values) -> Index:
+        import bigframes.series as series
+
+        if isinstance(values, (series.Series, Index)):
+            return Index(self.to_series().isin(values))
         if not utils.is_list_like(values):
             raise TypeError(
                 "only list-like objects are allowed to be passed to "

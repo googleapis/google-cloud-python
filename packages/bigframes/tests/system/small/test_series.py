@@ -1380,6 +1380,24 @@ def test_isin_bigframes_values(scalars_dfs, col_name, test_set, session):
     )
 
 
+def test_isin_bigframes_index(scalars_dfs, session):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = (
+        scalars_df["string_col"]
+        .isin(bigframes.pandas.Index(["Hello, World!", "Hi", "こんにちは"], session=session))
+        .to_pandas()
+    )
+    pd_result = (
+        scalars_pandas_df["string_col"]
+        .isin(pd.Index(["Hello, World!", "Hi", "こんにちは"]))
+        .astype("boolean")
+    )
+    pd.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
 @pytest.mark.parametrize(
     (
         "col_name",
