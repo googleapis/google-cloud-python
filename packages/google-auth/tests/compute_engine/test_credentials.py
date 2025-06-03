@@ -99,7 +99,18 @@ class TestCredentials(object):
     )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_success(self, get, utcnow):
-        get.side_effect = [{"access_token": "token", "expires_in": 500}]
+        get.side_effect = [
+            {
+                # First request is for sevice account info.
+                "email": "service-account@example.com",
+                "scopes": ["one", "two"],
+            },
+            {
+                # Second request is for the token.
+                "access_token": "token",
+                "expires_in": 500,
+            },
+        ]
 
         # Refresh credentials
         self.credentials.refresh(None)
@@ -109,8 +120,8 @@ class TestCredentials(object):
         assert self.credentials.expiry == (utcnow() + datetime.timedelta(seconds=500))
 
         # Check the credential info
-        assert self.credentials.service_account_email == "default"
-        assert self.credentials._scopes is None
+        assert self.credentials.service_account_email == "service-account@example.com"
+        assert self.credentials._scopes == ["one", "two"]
 
         # Check that the credentials are valid (have a token and are not
         # expired)
@@ -126,7 +137,18 @@ class TestCredentials(object):
     )
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_success_with_scopes(self, get, utcnow, mock_metrics_header_value):
-        get.side_effect = [{"access_token": "token", "expires_in": 500}]
+        get.side_effect = [
+            {
+                # First request is for sevice account info.
+                "email": "service-account@example.com",
+                "scopes": ["one", "two"],
+            },
+            {
+                # Second request is for the token.
+                "access_token": "token",
+                "expires_in": 500,
+            },
+        ]
 
         # Refresh credentials
         scopes = ["three", "four"]
@@ -138,7 +160,7 @@ class TestCredentials(object):
         assert self.credentials.expiry == (utcnow() + datetime.timedelta(seconds=500))
 
         # Check the credential info
-        assert self.credentials.service_account_email == "default"
+        assert self.credentials.service_account_email == "service-account@example.com"
         assert self.credentials._scopes == scopes
 
         # Check that the credentials are valid (have a token and are not
@@ -162,7 +184,18 @@ class TestCredentials(object):
 
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_before_request_refreshes(self, get):
-        get.side_effect = [{"access_token": "token", "expires_in": 500}]
+        get.side_effect = [
+            {
+                # First request is for sevice account info.
+                "email": "service-account@example.com",
+                "scopes": "one two",
+            },
+            {
+                # Second request is for the token.
+                "access_token": "token",
+                "expires_in": 500,
+            },
+        ]
 
         # Credentials should start as invalid
         assert not self.credentials.valid
@@ -440,6 +473,20 @@ class TestIDTokenCredentials(object):
         have been mocked.
         """
 
+        # mock information about credentials
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={
+                "scopes": "email",
+                "email": "service-account@example.com",
+                "aliases": ["default"],
+            },
+        )
+
         # mock information about universe_domain
         responses.add(
             responses.GET,
@@ -454,7 +501,7 @@ class TestIDTokenCredentials(object):
         responses.add(
             responses.GET,
             "http://metadata.google.internal/computeMetadata/v1/instance/"
-            "service-accounts/default/token",
+            "service-accounts/service-account@example.com/token",
             status=200,
             content_type="application/json",
             json={
@@ -594,11 +641,25 @@ class TestIDTokenCredentials(object):
         have been mocked.
         """
 
+        # mock information about credentials
+        responses.add(
+            responses.GET,
+            "http://metadata.google.internal/computeMetadata/v1/instance/"
+            "service-accounts/default/?recursive=true",
+            status=200,
+            content_type="application/json",
+            json={
+                "scopes": "email",
+                "email": "service-account@example.com",
+                "aliases": ["default"],
+            },
+        )
+
         # mock token for credentials
         responses.add(
             responses.GET,
             "http://metadata.google.internal/computeMetadata/v1/instance/"
-            "service-accounts/default/token",
+            "service-accounts/service-account@example.com/token",
             status=200,
             content_type="application/json",
             json={
