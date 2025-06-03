@@ -95,6 +95,10 @@ AS r\"\"\"
             sql,
             job_config=bigquery.QueryJobConfig(),
             metrics=self._session._metrics,
+            location=None,
+            project=None,
+            timeout=None,
+            query_with_job=True,
         )
 
         return udf_name

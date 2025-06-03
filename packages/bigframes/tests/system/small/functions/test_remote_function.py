@@ -764,6 +764,11 @@ def test_read_gbq_function_runs_existing_udf_array_output(session, routine_id_un
             """
         ),
         job_config=bigquery.QueryJobConfig(),
+        location=None,
+        project=None,
+        timeout=None,
+        metrics=None,
+        query_with_job=True,
     )
     func = session.read_gbq_function(routine_id_unique)
 
@@ -797,6 +802,11 @@ def test_read_gbq_function_runs_existing_udf_2_params_array_output(
             """
         ),
         job_config=bigquery.QueryJobConfig(),
+        location=None,
+        project=None,
+        timeout=None,
+        metrics=None,
+        query_with_job=True,
     )
     func = session.read_gbq_function(routine_id_unique)
 
@@ -832,6 +842,11 @@ def test_read_gbq_function_runs_existing_udf_4_params_array_output(
             """
         ),
         job_config=bigquery.QueryJobConfig(),
+        location=None,
+        project=None,
+        timeout=None,
+        metrics=None,
+        query_with_job=True,
     )
     func = session.read_gbq_function(routine_id_unique)
 

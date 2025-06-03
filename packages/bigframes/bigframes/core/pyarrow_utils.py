@@ -85,3 +85,12 @@ def truncate_pyarrow_iterable(
         else:
             yield batch
             total_yielded += batch.num_rows
+
+
+def append_offsets(
+    pa_table: pa.Table,
+    offsets_col: str,
+) -> pa.Table:
+    return pa_table.append_column(
+        offsets_col, pa.array(range(pa_table.num_rows), type=pa.int64())
+    )

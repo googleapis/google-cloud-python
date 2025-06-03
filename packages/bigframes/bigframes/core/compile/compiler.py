@@ -22,10 +22,9 @@ import bigframes_vendored.ibis.backends.bigquery as ibis_bigquery
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.types as ibis_types
-import pyarrow as pa
 
 from bigframes import dtypes, operations
-from bigframes.core import expression
+from bigframes.core import expression, pyarrow_utils
 import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.configs as configs
@@ -172,9 +171,7 @@ def compile_readlocal(node: nodes.ReadLocalNode, *args):
     pa_table = pa_table.rename_columns([item.id.sql for item in node.scan_list.items])
 
     if offsets:
-        pa_table = pa_table.append_column(
-            offsets, pa.array(range(pa_table.num_rows), type=pa.int64())
-        )
+        pa_table = pyarrow_utils.append_offsets(pa_table, offsets)
     return compiled.UnorderedIR.from_polars(pa_table, bq_schema)
 
 

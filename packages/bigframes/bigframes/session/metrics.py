@@ -79,17 +79,24 @@ def get_performance_stats(
         return None
 
     bytes_processed = query_job.total_bytes_processed
-    if not isinstance(bytes_processed, int):
+    if bytes_processed and not isinstance(bytes_processed, int):
         return None  # filter out mocks
 
     slot_millis = query_job.slot_millis
-    if not isinstance(slot_millis, int):
+    if slot_millis and not isinstance(slot_millis, int):
         return None  # filter out mocks
 
     execution_secs = (query_job.ended - query_job.created).total_seconds()
     query_char_count = len(query_job.query)
 
-    return query_char_count, bytes_processed, slot_millis, execution_secs
+    return (
+        query_char_count,
+        # Not every job populates these. For example, slot_millis is missing
+        # from queries that came from cached results.
+        bytes_processed if bytes_processed else 0,
+        slot_millis if slot_millis else 0,
+        execution_secs,
+    )
 
 
 def write_stats_to_disk(

@@ -295,7 +295,7 @@ def _adapt_chunked_array(
 
 
 def _adapt_arrow_array(array: pa.Array) -> tuple[pa.Array, bigframes.dtypes.Dtype]:
-    """Normalize the array to managed storage types. Preverse shapes, only transforms values."""
+    """Normalize the array to managed storage types. Preserve shapes, only transforms values."""
     if array.offset != 0:  # Offset arrays don't have all operations implemented
         return _adapt_arrow_array(pa.concat_arrays([array]))
 

@@ -57,6 +57,9 @@ def pull_out_limit(
             if (prior_limit is not None) and (prior_limit < limit):
                 limit = prior_limit
             return new_root, limit
+        if root.is_noop:
+            new_root, prior_limit = pull_out_limit(root.child)
+            return new_root, prior_limit
     elif (
         isinstance(root, (nodes.SelectionNode, nodes.ProjectionNode))
         and root.row_preserving

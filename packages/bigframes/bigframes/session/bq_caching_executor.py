@@ -320,6 +320,10 @@ class BigQueryCachingExecutor(executor.Executor):
             export_data_statement,
             job_config=bigquery.QueryJobConfig(),
             metrics=self.metrics,
+            project=None,
+            location=None,
+            timeout=None,
+            query_with_job=True,
         )
         return query_job
 
@@ -383,14 +387,29 @@ class BigQueryCachingExecutor(executor.Executor):
             job_config.labels["bigframes-mode"] = "unordered"
 
         try:
-            iterator, query_job = bq_io.start_query_with_client(
-                self.bqclient,
-                sql,
-                job_config=job_config,
-                metrics=self.metrics,
-                query_with_job=query_with_job,
-            )
-            return iterator, query_job
+            # Trick the type checker into thinking we got a literal.
+            if query_with_job:
+                return bq_io.start_query_with_client(
+                    self.bqclient,
+                    sql,
+                    job_config=job_config,
+                    metrics=self.metrics,
+                    project=None,
+                    location=None,
+                    timeout=None,
+                    query_with_job=True,
+                )
+            else:
+                return bq_io.start_query_with_client(
+                    self.bqclient,
+                    sql,
+                    job_config=job_config,
+                    metrics=self.metrics,
+                    project=None,
+                    location=None,
+                    timeout=None,
+                    query_with_job=False,
+                )
 
         except google.api_core.exceptions.BadRequest as e:
             # Unfortunately, this error type does not have a separate error code or exception type

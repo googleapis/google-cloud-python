@@ -18,10 +18,9 @@ import functools
 import typing
 
 from google.cloud import bigquery
-import pyarrow as pa
 import sqlglot.expressions as sge
 
-from bigframes.core import expression, guid, identifiers, nodes, rewrite
+from bigframes.core import expression, guid, identifiers, nodes, pyarrow_utils, rewrite
 from bigframes.core.compile import configs
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 import bigframes.core.compile.sqlglot.sqlglot_ir as ir
@@ -155,9 +154,7 @@ class SQLGlotCompiler:
 
         offsets = node.offsets_col.sql if node.offsets_col else None
         if offsets:
-            pa_table = pa_table.append_column(
-                offsets, pa.array(range(pa_table.num_rows), type=pa.int64())
-            )
+            pa_table = pyarrow_utils.append_offsets(pa_table, offsets)
 
         return ir.SQLGlotIR.from_pyarrow(pa_table, node.schema, uid_gen=self.uid_gen)
 

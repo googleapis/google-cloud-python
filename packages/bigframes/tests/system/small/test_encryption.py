@@ -70,7 +70,7 @@ def test_session_query_job(bq_cmek, session_with_bq_cmek):
     if not bq_cmek:  # pragma: NO COVER
         pytest.skip("no cmek set for testing")  # pragma: NO COVER
 
-    _, query_job = session_with_bq_cmek._loader._start_query(
+    query_job = session_with_bq_cmek._loader._start_query_with_job(
         "SELECT 123", job_config=bigquery.QueryJobConfig(use_query_cache=False)
     )
     query_job.result()

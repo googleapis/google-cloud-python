@@ -30,11 +30,17 @@ class LocalScanExecutor(semi_executor.SemiExecutor):
         ordered: bool,
         peek: Optional[int] = None,
     ) -> Optional[executor.ExecuteResult]:
-        node = rewrite.try_reduce_to_local_scan(plan)
-        if not node:
+        reduced_result = rewrite.try_reduce_to_local_scan(plan)
+        if not reduced_result:
             return None
 
-        # TODO: Can support some slicing, sorting
+        node, limit = reduced_result
+
+        if limit is not None:
+            if peek is None or limit < peek:
+                peek = limit
+
+        # TODO: Can support some sorting
         offsets_col = node.offsets_col.sql if (node.offsets_col is not None) else None
         arrow_table = node.local_data_source.to_pyarrow_table(offsets_col=offsets_col)
         if peek:
@@ -46,8 +52,8 @@ class LocalScanExecutor(semi_executor.SemiExecutor):
 
         arrow_table = arrow_table.select(needed_cols)
         arrow_table = arrow_table.rename_columns([id.sql for id in node.ids])
-
         total_rows = node.row_count
+
         if (peek is not None) and (total_rows is not None):
             total_rows = min(peek, total_rows)
 

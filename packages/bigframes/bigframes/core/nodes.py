@@ -155,6 +155,16 @@ class SliceNode(UnaryNode):
         )
 
     @property
+    def is_noop(self) -> bool:
+        """Returns whether this node doesn't actually change the results."""
+        # TODO: Handle tail case.
+        return (
+            ((not self.start) or (self.start == 0))
+            and (self.step == 1)
+            and ((self.stop is None) or (self.stop == self.row_count))
+        )
+
+    @property
     def row_count(self) -> typing.Optional[int]:
         child_length = self.child.row_count
         if child_length is None:

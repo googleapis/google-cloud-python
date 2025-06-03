@@ -81,14 +81,17 @@ def test_infer_unique_columns(index_cols, primary_keys, values_distinct, expecte
     }
     bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
     bqclient.project = "test-project"
-    bqclient.get_table.return_value = table
-
-    bqclient.query_and_wait.return_value = (
-        {"total_count": 3, "distinct_count": 3 if values_distinct else 2},
-    )
     session = mocks.create_bigquery_session(
         bqclient=bqclient, table_schema=table.schema
     )
+
+    # Mock bqclient _after_ creating session to override its mocks.
+    bqclient.get_table.return_value = table
+    bqclient.query_and_wait.side_effect = None
+    bqclient.query_and_wait.return_value = (
+        {"total_count": 3, "distinct_count": 3 if values_distinct else 2},
+    )
+
     table._properties["location"] = session._location
 
     result = bf_read_gbq_table.infer_unique_columns(bqclient, table, index_cols)

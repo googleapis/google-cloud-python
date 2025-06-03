@@ -273,7 +273,11 @@ def test_default_index_warning_raised_by_read_gbq(table):
     bqclient.project = "test-project"
     bqclient.get_table.return_value = table
     bqclient.query_and_wait.return_value = ({"total_count": 3, "distinct_count": 2},)
-    session = mocks.create_bigquery_session(bqclient=bqclient)
+    session = mocks.create_bigquery_session(
+        bqclient=bqclient,
+        # DefaultIndexWarning is only relevant for strict mode.
+        ordering_mode="strict",
+    )
     table._properties["location"] = session._location
 
     with pytest.warns(bigframes.exceptions.DefaultIndexWarning):
@@ -296,7 +300,11 @@ def test_default_index_warning_not_raised_by_read_gbq_index_col_sequential_int64
     bqclient.project = "test-project"
     bqclient.get_table.return_value = table
     bqclient.query_and_wait.return_value = ({"total_count": 4, "distinct_count": 3},)
-    session = mocks.create_bigquery_session(bqclient=bqclient)
+    session = mocks.create_bigquery_session(
+        bqclient=bqclient,
+        # DefaultIndexWarning is only relevant for strict mode.
+        ordering_mode="strict",
+    )
     table._properties["location"] = session._location
 
     # No warnings raised because we set the option allowing the default indexes.
@@ -344,7 +352,10 @@ def test_default_index_warning_not_raised_by_read_gbq_index_col_columns(
         {"total_count": total_count, "distinct_count": distinct_count},
     )
     session = mocks.create_bigquery_session(
-        bqclient=bqclient, table_schema=table.schema
+        bqclient=bqclient,
+        table_schema=table.schema,
+        # DefaultIndexWarning is only relevant for strict mode.
+        ordering_mode="strict",
     )
     table._properties["location"] = session._location
 
@@ -386,7 +397,10 @@ def test_default_index_warning_not_raised_by_read_gbq_primary_key(table):
     bqclient.project = "test-project"
     bqclient.get_table.return_value = table
     session = mocks.create_bigquery_session(
-        bqclient=bqclient, table_schema=table.schema
+        bqclient=bqclient,
+        table_schema=table.schema,
+        # DefaultIndexWarning is only relevant for strict mode.
+        ordering_mode="strict",
     )
     table._properties["location"] = session._location
 

@@ -34,7 +34,6 @@ from bigframes.core.ordering import OrderingExpression
 import bigframes.core.ordering as orderings
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties
-import bigframes.core.utils
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
 import bigframes.exceptions as bfe

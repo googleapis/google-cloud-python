@@ -14,7 +14,7 @@
 
 import datetime
 import re
-from typing import Iterable
+from typing import Iterable, Optional
 from unittest import mock
 
 import google.cloud.bigquery as bigquery
@@ -203,7 +203,7 @@ def test_add_and_trim_labels_length_limit_met():
     [(None, None), (30.0, "test_api")],
 )
 def test_start_query_with_client_labels_length_limit_met(
-    mock_bq_client, timeout, api_name
+    mock_bq_client: bigquery.Client, timeout: Optional[float], api_name
 ):
     sql = "select * from abc"
     cur_labels = {
@@ -229,8 +229,12 @@ def test_start_query_with_client_labels_length_limit_met(
     io_bq.start_query_with_client(
         mock_bq_client,
         sql,
-        job_config,
+        job_config=job_config,
+        location=None,
+        project=None,
         timeout=timeout,
+        metrics=None,
+        query_with_job=True,
     )
 
     assert job_config.labels is not None

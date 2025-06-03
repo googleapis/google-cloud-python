@@ -16,6 +16,7 @@ import functools
 from typing import Optional
 
 from bigframes.core import nodes
+import bigframes.core.rewrite.slices
 
 
 def try_reduce_to_table_scan(root: nodes.BigFrameNode) -> Optional[nodes.ReadTableNode]:
@@ -28,7 +29,15 @@ def try_reduce_to_table_scan(root: nodes.BigFrameNode) -> Optional[nodes.ReadTab
     return None
 
 
-def try_reduce_to_local_scan(node: nodes.BigFrameNode) -> Optional[nodes.ReadLocalNode]:
+def try_reduce_to_local_scan(
+    node: nodes.BigFrameNode,
+) -> Optional[tuple[nodes.ReadLocalNode, Optional[int]]]:
+    """Create a ReadLocalNode with optional limit, if possible.
+
+    Similar to ReadApiSemiExecutor._try_adapt_plan.
+    """
+    node, limit = bigframes.core.rewrite.slices.pull_out_limit(node)
+
     if not all(
         map(
             lambda x: isinstance(x, (nodes.ReadLocalNode, nodes.SelectionNode)),
@@ -38,7 +47,7 @@ def try_reduce_to_local_scan(node: nodes.BigFrameNode) -> Optional[nodes.ReadLoc
         return None
     result = node.bottom_up(merge_scan)
     if isinstance(result, nodes.ReadLocalNode):
-        return result
+        return result, limit
     return None
 
 

@@ -19,18 +19,22 @@ import pandas.testing
 
 
 def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_session):
+    # This query should return enough results to be too big to fit in a single
+    # page from jobs.query.
     executions_before_sql = maybe_ordered_session._metrics.execution_count
     df = maybe_ordered_session._read_gbq_colab(
         """
         SELECT
             name,
+            state,
+            gender,
+            year,
             SUM(number) AS total
         FROM
             `bigquery-public-data.usa_names.usa_1910_2013`
         WHERE state LIKE 'W%'
-        GROUP BY name
+        GROUP BY name, state, gender, year
         ORDER BY total DESC
-        LIMIT 300
         """
     )
     executions_before_python = maybe_ordered_session._metrics.execution_count
@@ -39,12 +43,17 @@ def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_sessi
     )
     executions_after = maybe_ordered_session._metrics.execution_count
 
-    total_rows = 0
+    num_batches = 0
     for batch in batches:
         assert batch["total"].is_monotonic_decreasing
-        total_rows += len(batch.index)
+        assert len(batch.index) == 100
+        num_batches += 1
 
-    assert total_rows > 0
+        # Only test the first few pages to avoid downloading unnecessary data
+        # and so we can confirm we have full pages in each batch.
+        if num_batches >= 3:
+            break
+
     assert executions_after == executions_before_python == executions_before_sql + 1
 
 
@@ -103,6 +112,9 @@ def test_read_gbq_colab_includes_formatted_scalars(session):
         # This is not a supported type, but ignored if not referenced.
         "some_object": object(),
     }
+
+    # This query should return few enough results to be small enough to fit in a
+    # single page from jobs.query.
     df = session._read_gbq_colab(
         """
         SELECT {some_integer} as some_integer,
@@ -124,6 +136,7 @@ def test_read_gbq_colab_includes_formatted_scalars(session):
                 "escaped": pandas.Series(["{escaped}"], dtype="string[pyarrow]"),
             }
         ),
+        check_index_type=False,  # int64 vs Int64
     )
 
 
@@ -152,4 +165,8 @@ def test_read_gbq_colab_includes_formatted_bigframes_dataframe(
         .assign(int64_col=scalars_pandas_df_index["int64_too"])
         .reset_index(drop=False)[["int64_col", "rowindex"]]
     )
-    pandas.testing.assert_frame_equal(result, expected)
+    pandas.testing.assert_frame_equal(
+        result,
+        expected,
+        check_index_type=False,  # int64 vs Int64
+    )

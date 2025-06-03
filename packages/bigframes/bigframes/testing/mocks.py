@@ -14,11 +14,14 @@
 
 import copy
 import datetime
-from typing import Any, Dict, Optional, Sequence
+from typing import Any, Dict, Literal, Optional, Sequence
 import unittest.mock as mock
 
+from bigframes_vendored.google_cloud_bigquery import _pandas_helpers
 import google.auth.credentials
 import google.cloud.bigquery
+import google.cloud.bigquery.table
+import pyarrow
 import pytest
 
 import bigframes
@@ -40,6 +43,7 @@ def create_bigquery_session(
     table_schema: Sequence[google.cloud.bigquery.SchemaField] = TEST_SCHEMA,
     anonymous_dataset: Optional[google.cloud.bigquery.DatasetReference] = None,
     location: str = "test-region",
+    ordering_mode: Literal["strict", "partial"] = "partial",
 ) -> bigframes.Session:
     """[Experimental] Create a mock BigQuery DataFrames session that avoids making Google Cloud API calls.
 
@@ -79,43 +83,75 @@ def create_bigquery_session(
     queries = []
     job_configs = []
 
-    def query_mock(query, *args, job_config=None, **kwargs):
+    def query_mock(
+        query,
+        *args,
+        job_config: Optional[google.cloud.bigquery.QueryJobConfig] = None,
+        **kwargs,
+    ):
         queries.append(query)
         job_configs.append(copy.deepcopy(job_config))
-        query_job = mock.create_autospec(google.cloud.bigquery.QueryJob)
+        query_job = mock.create_autospec(google.cloud.bigquery.QueryJob, instance=True)
         query_job._properties = {}
         type(query_job).destination = mock.PropertyMock(
             return_value=anonymous_dataset.table("test_table"),
         )
-        type(query_job).session_info = google.cloud.bigquery.SessionInfo(
-            {"sessionInfo": {"sessionId": session_id}},
-        )
+        type(query_job).statement_type = mock.PropertyMock(return_value="SELECT")
+
+        if job_config is not None and job_config.create_session:
+            type(query_job).session_info = google.cloud.bigquery.SessionInfo(
+                {"sessionId": session_id},
+            )
 
         if query.startswith("SELECT CURRENT_TIMESTAMP()"):
             query_job.result = mock.MagicMock(return_value=[[bq_time]])
+        elif "CREATE TEMP TABLE".casefold() in query.casefold():
+            type(query_job).destination = mock.PropertyMock(
+                return_value=anonymous_dataset.table("temp_table_from_session"),
+            )
         else:
             type(query_job).schema = mock.PropertyMock(return_value=table_schema)
 
         return query_job
 
-    existing_query_and_wait = bqclient.query_and_wait
-
     def query_and_wait_mock(query, *args, job_config=None, **kwargs):
         queries.append(query)
         job_configs.append(copy.deepcopy(job_config))
+
         if query.startswith("SELECT CURRENT_TIMESTAMP()"):
             return iter([[datetime.datetime.now()]])
-        else:
-            return existing_query_and_wait(query, *args, **kwargs)
 
-    bqclient.query = query_mock
-    bqclient.query_and_wait = query_and_wait_mock
+        rows = mock.create_autospec(
+            google.cloud.bigquery.table.RowIterator, instance=True
+        )
+        row = mock.create_autospec(google.cloud.bigquery.table.Row, instance=True)
+        rows.__iter__.return_value = [row]
+        type(rows).schema = mock.PropertyMock(return_value=table_schema)
+        rows.to_arrow.return_value = pyarrow.Table.from_pydict(
+            {field.name: [None] for field in table_schema},
+            schema=pyarrow.schema(
+                _pandas_helpers.bq_to_arrow_field(field) for field in table_schema
+            ),
+        )
+
+        if job_config is not None and job_config.destination is None:
+            # Assume that the query finishes fast enough for jobless mode.
+            type(rows).job_id = mock.PropertyMock(return_value=None)
+
+        return rows
+
+    bqclient.query.side_effect = query_mock
+    bqclient.query_and_wait.side_effect = query_and_wait_mock
 
     clients_provider = mock.create_autospec(bigframes.session.clients.ClientsProvider)
     type(clients_provider).bqclient = mock.PropertyMock(return_value=bqclient)
     clients_provider._credentials = credentials
 
-    bqoptions = bigframes.BigQueryOptions(credentials=credentials, location=location)
+    bqoptions = bigframes.BigQueryOptions(
+        credentials=credentials,
+        location=location,
+        ordering_mode=ordering_mode,
+    )
     session = bigframes.Session(context=bqoptions, clients_provider=clients_provider)
     session._bq_connection_manager = mock.create_autospec(
         bigframes.clients.BqConnectionManager, instance=True

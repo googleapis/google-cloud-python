@@ -80,3 +80,19 @@ def test_read_gbq_colab_includes_formatted_values_in_dry_run(monkeypatch):
 
     assert config.dry_run
     assert query.strip() == expected.strip()
+
+
+def test_read_gbq_colab_doesnt_set_destination_table():
+    """For best performance, we don't try to workaround the 10 GB query results limitation."""
+    session = mocks.create_bigquery_session()
+
+    _ = session._read_gbq_colab("SELECT 'my-test-query';")
+    queries = session._queries  # type: ignore
+    configs = session._job_configs  # type: ignore
+
+    for query, config in zip(queries, configs):
+        if query == "SELECT 'my-test-query';" and not config.dry_run:
+            break
+
+    assert query == "SELECT 'my-test-query';"
+    assert config.destination is None

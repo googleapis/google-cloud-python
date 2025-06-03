@@ -22,6 +22,7 @@ import itertools
 import os
 import typing
 from typing import (
+    cast,
     Dict,
     Generator,
     Hashable,
@@ -39,6 +40,7 @@ import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import google.api_core.exceptions
 from google.cloud import bigquery_storage_v1
+import google.cloud.bigquery
 import google.cloud.bigquery as bigquery
 from google.cloud.bigquery_storage_v1 import types as bq_storage_types
 import pandas
@@ -52,6 +54,7 @@ import bigframes.dtypes
 import bigframes.formatting_helpers as formatting_helpers
 from bigframes.session import dry_runs
 import bigframes.session._io.bigquery as bf_io_bigquery
+import bigframes.session._io.bigquery.read_gbq_query as bf_read_gbq_query
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
 import bigframes.session.metrics
 import bigframes.session.temporary_storage
@@ -736,6 +739,7 @@ class GbqDataLoader:
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[False] = ...,
         force_total_order: Optional[bool] = ...,
+        allow_large_results: bool = ...,
     ) -> dataframe.DataFrame:
         ...
 
@@ -752,6 +756,7 @@ class GbqDataLoader:
         filters: third_party_pandas_gbq.FiltersType = ...,
         dry_run: Literal[True] = ...,
         force_total_order: Optional[bool] = ...,
+        allow_large_results: bool = ...,
     ) -> pandas.Series:
         ...
 
@@ -767,9 +772,8 @@ class GbqDataLoader:
         filters: third_party_pandas_gbq.FiltersType = (),
         dry_run: bool = False,
         force_total_order: Optional[bool] = None,
+        allow_large_results: bool = True,
     ) -> dataframe.DataFrame | pandas.Series:
-        import bigframes.dataframe as dataframe
-
         configuration = _transform_read_gbq_configuration(configuration)
 
         if "query" not in configuration:
@@ -824,29 +828,72 @@ class GbqDataLoader:
                 query_job, list(columns), index_cols
             )
 
-        # No cluster candidates as user query might not be clusterable (eg because of ORDER BY clause)
-        destination, query_job = self._query_to_destination(
-            query,
-            cluster_candidates=[],
-            configuration=configuration,
-        )
+        query_job_for_metrics: Optional[bigquery.QueryJob] = None
+        destination: Optional[bigquery.TableReference] = None
 
+        # TODO(b/421161077): If an explicit destination table is set in
+        # configuration, should we respect that setting?
+        if allow_large_results:
+            destination, query_job = self._query_to_destination(
+                query,
+                # No cluster candidates as user query might not be clusterable
+                # (eg because of ORDER BY clause)
+                cluster_candidates=[],
+                configuration=configuration,
+            )
+            query_job_for_metrics = query_job
+            rows = None
+        else:
+            job_config = typing.cast(
+                bigquery.QueryJobConfig,
+                bigquery.QueryJobConfig.from_api_repr(configuration),
+            )
+
+            # TODO(b/420984164): We may want to set a page_size here to limit
+            # the number of results in the first jobs.query response.
+            rows = self._start_query_with_job_optional(
+                query,
+                job_config=job_config,
+            )
+
+            # If there is a query job, fetch it so that we can get the
+            # statistics and destination table, if needed.
+            if rows.job_id and rows.location and rows.project:
+                query_job = cast(
+                    bigquery.QueryJob,
+                    self._bqclient.get_job(
+                        rows.job_id, project=rows.project, location=rows.location
+                    ),
+                )
+                destination = query_job.destination
+                query_job_for_metrics = query_job
+
+        # We split query execution from results fetching so that we can log
+        # metrics from either the query job, row iterator, or both.
         if self._metrics is not None:
-            self._metrics.count_job_stats(query_job)
+            self._metrics.count_job_stats(
+                query_job=query_job_for_metrics, row_iterator=rows
+            )
 
-        # If there was no destination table, that means the query must have
-        # been DDL or DML. Return some job metadata, instead.
+        # It's possible that there's no job and corresponding destination table.
+        # In this case, we must create a local node.
+        #
+        # TODO(b/420984164): Tune the threshold for which we download to
+        # local node. Likely there are a wide range of sizes in which it
+        # makes sense to download the results beyond the first page, even if
+        # there is a job and destination table available.
+        if rows is not None and destination is None:
+            return bf_read_gbq_query.create_dataframe_from_row_iterator(
+                rows,
+                session=self._session,
+            )
+
+        # If there was no destination table and we've made it this far, that
+        # means the query must have been DDL or DML. Return some job metadata,
+        # instead.
         if not destination:
-            return dataframe.DataFrame(
-                data=pandas.DataFrame(
-                    {
-                        "statement_type": [
-                            query_job.statement_type if query_job else "unknown"
-                        ],
-                        "job_id": [query_job.job_id if query_job else "unknown"],
-                        "location": [query_job.location if query_job else "unknown"],
-                    }
-                ),
+            return bf_read_gbq_query.create_dataframe_from_query_job_stats(
+                query_job_for_metrics,
                 session=self._session,
             )
 
@@ -872,9 +919,12 @@ class GbqDataLoader:
         # bother trying to do a CREATE TEMP TABLE ... AS SELECT ... statement.
         dry_run_config = bigquery.QueryJobConfig()
         dry_run_config.dry_run = True
-        _, dry_run_job = self._start_query(query, job_config=dry_run_config)
+        dry_run_job = self._start_query_with_job(
+            query,
+            job_config=dry_run_config,
+        )
         if dry_run_job.statement_type != "SELECT":
-            _, query_job = self._start_query(query)
+            query_job = self._start_query_with_job(query)
             return query_job.destination, query_job
 
         # Create a table to workaround BigQuery 10 GB query results limit. See:
@@ -908,7 +958,7 @@ class GbqDataLoader:
             # Write to temp table to workaround BigQuery 10 GB query results
             # limit. See: internal issue 303057336.
             job_config.labels["error_caught"] = "true"
-            _, query_job = self._start_query(
+            query_job = self._start_query_with_job(
                 query,
                 job_config=job_config,
                 timeout=timeout,
@@ -919,34 +969,72 @@ class GbqDataLoader:
             # tables as the destination. For example, if the query has a
             # top-level ORDER BY, this conflicts with our ability to cluster
             # the table by the index column(s).
-            _, query_job = self._start_query(query, timeout=timeout)
+            query_job = self._start_query_with_job(query, timeout=timeout)
             return query_job.destination, query_job
 
-    def _start_query(
+    def _prepare_job_config(
         self,
-        sql: str,
         job_config: Optional[google.cloud.bigquery.QueryJobConfig] = None,
-        timeout: Optional[float] = None,
-    ) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
-        """
-        Starts BigQuery query job and waits for results.
-
-        Do not execute dataframe through this API, instead use the executor.
-        """
+    ) -> google.cloud.bigquery.QueryJobConfig:
         job_config = bigquery.QueryJobConfig() if job_config is None else job_config
+
         if bigframes.options.compute.maximum_bytes_billed is not None:
             # Maybe this should be pushed down into start_query_with_client
             job_config.maximum_bytes_billed = (
                 bigframes.options.compute.maximum_bytes_billed
             )
-        iterator, query_job = bf_io_bigquery.start_query_with_client(
+
+        return job_config
+
+    def _start_query_with_job_optional(
+        self,
+        sql: str,
+        *,
+        job_config: Optional[google.cloud.bigquery.QueryJobConfig] = None,
+        timeout: Optional[float] = None,
+    ) -> google.cloud.bigquery.table.RowIterator:
+        """
+        Starts BigQuery query with job optional and waits for results.
+
+        Do not execute dataframe through this API, instead use the executor.
+        """
+        job_config = self._prepare_job_config(job_config)
+        rows, _ = bf_io_bigquery.start_query_with_client(
             self._bqclient,
             sql,
             job_config=job_config,
             timeout=timeout,
+            location=None,
+            project=None,
+            metrics=None,
+            query_with_job=False,
         )
-        assert query_job is not None
-        return iterator, query_job
+        return rows
+
+    def _start_query_with_job(
+        self,
+        sql: str,
+        *,
+        job_config: Optional[google.cloud.bigquery.QueryJobConfig] = None,
+        timeout: Optional[float] = None,
+    ) -> bigquery.QueryJob:
+        """
+        Starts BigQuery query job and waits for results.
+
+        Do not execute dataframe through this API, instead use the executor.
+        """
+        job_config = self._prepare_job_config(job_config)
+        _, query_job = bf_io_bigquery.start_query_with_client(
+            self._bqclient,
+            sql,
+            job_config=job_config,
+            timeout=timeout,
+            location=None,
+            project=None,
+            metrics=None,
+            query_with_job=True,
+        )
+        return query_job
 
 
 def _transform_read_gbq_configuration(configuration: Optional[dict]) -> dict:
