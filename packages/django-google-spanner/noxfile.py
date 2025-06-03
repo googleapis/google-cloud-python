@@ -24,6 +24,7 @@ BLACK_PATHS = [
     "setup.py",
 ]
 
+MOCKSERVER_TEST_PYTHON_VERSION = "3.12"
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10"]
@@ -69,6 +70,7 @@ def lint_setup_py(session):
 def default(session, django_version="3.2"):
     # Install all test dependencies, then install this package in-place.
     session.install(
+        "setuptools",
         "django~={}".format(django_version),
         "mock",
         "mock-import",
@@ -105,6 +107,32 @@ def unit(session):
     default(session)
     print("Unit tests with django 4.2")
     default(session, django_version="4.2")
+
+
+@nox.session(python=MOCKSERVER_TEST_PYTHON_VERSION)
+def mockserver(session):
+    # Install all test dependencies, then install this package in-place.
+    session.install(
+        "setuptools",
+        "django~=4.2",
+        "mock",
+        "mock-import",
+        "pytest",
+        "pytest-cov",
+        "coverage",
+        "sqlparse>=0.4.4",
+        "google-cloud-spanner>=3.55.0",
+        "opentelemetry-api==1.1.0",
+        "opentelemetry-sdk==1.1.0",
+        "opentelemetry-instrumentation==0.20b0",
+    )
+    session.install("-e", ".")
+    session.run(
+        "py.test",
+        "--quiet",
+        os.path.join("tests", "mockserver_tests"),
+        *session.posargs,
+    )
 
 
 def system_test(session, django_version="3.2"):

@@ -120,9 +120,11 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
         :returns: A new instance owned by the existing Spanner Client.
         """
-        return spanner.Client(
-            project=os.environ["GOOGLE_CLOUD_PROJECT"]
-        ).instance(self.settings_dict["INSTANCE"])
+        if "client" in self.settings_dict["OPTIONS"]:
+            client = self.settings_dict["OPTIONS"]["client"]
+        else:
+            client = spanner.Client(project=os.environ["GOOGLE_CLOUD_PROJECT"])
+        return client.instance(self.settings_dict["INSTANCE"])
 
     @property
     def allow_transactions_in_auto_commit(self):
