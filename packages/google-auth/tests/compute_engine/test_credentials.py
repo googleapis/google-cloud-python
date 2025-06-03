@@ -501,7 +501,7 @@ class TestIDTokenCredentials(object):
         responses.add(
             responses.GET,
             "http://metadata.google.internal/computeMetadata/v1/instance/"
-            "service-accounts/service-account@example.com/token",
+            "service-accounts/default/token",
             status=200,
             content_type="application/json",
             json={
@@ -659,7 +659,7 @@ class TestIDTokenCredentials(object):
         responses.add(
             responses.GET,
             "http://metadata.google.internal/computeMetadata/v1/instance/"
-            "service-accounts/service-account@example.com/token",
+            "service-accounts/default/token",
             status=200,
             content_type="application/json",
             json={

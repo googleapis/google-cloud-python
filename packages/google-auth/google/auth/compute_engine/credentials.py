@@ -124,8 +124,9 @@ class Credentials(
         scopes = self._scopes if self._scopes is not None else self._default_scopes
         try:
             self._retrieve_info(request)
+            # Always fetch token with default service account email.
             self.token, self.expiry = _metadata.get_service_account_token(
-                request, service_account=self._service_account_email, scopes=scopes
+                request, service_account="default", scopes=scopes
             )
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
