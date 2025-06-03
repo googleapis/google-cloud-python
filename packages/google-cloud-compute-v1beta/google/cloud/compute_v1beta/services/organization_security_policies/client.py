@@ -720,9 +720,12 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Inserts an association for the specified security
-        policy. Use of this API to modify firewall policies is
-        deprecated. Use firewallPolicies.addAssociation instead
-        if possible.
+        policy. This has billing implications. Projects in the
+        hierarchy with effective hierarchical security policies
+        will be automatically enrolled into Cloud Armor
+        Enterprise if not already enrolled. Use of this API to
+        modify firewall policies is deprecated. Use
+        firewallPolicies.addAssociation instead if possible.
 
         .. code-block:: python
 
@@ -850,9 +853,12 @@ class OrganizationSecurityPoliciesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Inserts an association for the specified security
-        policy. Use of this API to modify firewall policies is
-        deprecated. Use firewallPolicies.addAssociation instead
-        if possible.
+        policy. This has billing implications. Projects in the
+        hierarchy with effective hierarchical security policies
+        will be automatically enrolled into Cloud Armor
+        Enterprise if not already enrolled. Use of this API to
+        modify firewall policies is deprecated. Use
+        firewallPolicies.addAssociation instead if possible.
 
         .. code-block:: python
 

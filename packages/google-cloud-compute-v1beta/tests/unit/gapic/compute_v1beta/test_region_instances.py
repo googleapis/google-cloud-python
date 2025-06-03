@@ -1681,6 +1681,7 @@ def test_bulk_insert_rest_call_success(request_type):
                 "on_instance_stop_action": {"discard_local_ssd": True},
                 "preemptible": True,
                 "provisioning_model": "provisioning_model_value",
+                "skip_guest_os_shutdown": True,
                 "termination_time": "termination_time_value",
             },
             "service_accounts": [

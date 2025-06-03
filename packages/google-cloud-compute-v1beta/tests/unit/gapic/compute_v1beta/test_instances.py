@@ -24182,6 +24182,7 @@ def test_bulk_insert_rest_call_success(request_type):
                 "on_instance_stop_action": {"discard_local_ssd": True},
                 "preemptible": True,
                 "provisioning_model": "provisioning_model_value",
+                "skip_guest_os_shutdown": True,
                 "termination_time": "termination_time_value",
             },
             "service_accounts": [
@@ -26535,6 +26536,7 @@ def test_insert_rest_call_success(request_type):
             "on_instance_stop_action": {"discard_local_ssd": True},
             "preemptible": True,
             "provisioning_model": "provisioning_model_value",
+            "skip_guest_os_shutdown": True,
             "termination_time": "termination_time_value",
         },
         "self_link": "self_link_value",
@@ -30608,6 +30610,7 @@ def test_set_scheduling_rest_call_success(request_type):
         "on_instance_stop_action": {"discard_local_ssd": True},
         "preemptible": True,
         "provisioning_model": "provisioning_model_value",
+        "skip_guest_os_shutdown": True,
         "termination_time": "termination_time_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -33426,6 +33429,7 @@ def test_update_rest_call_success(request_type):
             "on_instance_stop_action": {"discard_local_ssd": True},
             "preemptible": True,
             "provisioning_model": "provisioning_model_value",
+            "skip_guest_os_shutdown": True,
             "termination_time": "termination_time_value",
         },
         "self_link": "self_link_value",
