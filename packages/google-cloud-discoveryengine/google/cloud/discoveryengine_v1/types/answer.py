@@ -146,6 +146,20 @@ class Answer(proto.Message):
 
                 Google skips the answer if a well grounded
                 answer was unable to be generated.
+            USER_DEFINED_CLASSIFICATION_QUERY_IGNORED (10):
+                The user defined query classification ignored
+                case.
+                Google skips the answer if the query is
+                classified as a user defined query
+                classification.
+            UNHELPFUL_ANSWER (11):
+                The unhelpful answer case.
+
+                Google skips the answer if the answer is not
+                helpful. This can be due to a variety of
+                factors, including but not limited to: the query
+                is not answerable, the answer is not relevant to
+                the query, or the answer is not well-formatted.
         """
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
         ADVERSARIAL_QUERY_IGNORED = 1
@@ -157,6 +171,8 @@ class Answer(proto.Message):
         CUSTOMER_POLICY_VIOLATION = 7
         NON_ANSWER_SEEKING_QUERY_IGNORED_V2 = 8
         LOW_GROUNDED_ANSWER = 9
+        USER_DEFINED_CLASSIFICATION_QUERY_IGNORED = 10
+        UNHELPFUL_ANSWER = 11
 
     class Citation(proto.Message):
         r"""Citation info for a segment.
@@ -753,12 +769,15 @@ class Answer(proto.Message):
                     NON_ANSWER_SEEKING_QUERY_V2 (4):
                         Non-answer-seeking query classification type,
                         for no clear intent.
+                    USER_DEFINED_CLASSIFICATION_QUERY (5):
+                        User defined query classification type.
                 """
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2
                 JAIL_BREAKING_QUERY = 3
                 NON_ANSWER_SEEKING_QUERY_V2 = 4
+                USER_DEFINED_CLASSIFICATION_QUERY = 5
 
             type_: "Answer.QueryUnderstandingInfo.QueryClassificationInfo.Type" = (
                 proto.Field(

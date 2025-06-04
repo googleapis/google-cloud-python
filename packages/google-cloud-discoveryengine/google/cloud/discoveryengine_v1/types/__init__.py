@@ -15,11 +15,24 @@
 #
 from .answer import Answer
 from .chunk import Chunk
+from .cmek_config_service import (
+    CmekConfig,
+    DeleteCmekConfigMetadata,
+    DeleteCmekConfigRequest,
+    GetCmekConfigRequest,
+    ListCmekConfigsRequest,
+    ListCmekConfigsResponse,
+    SingleRegionKey,
+    UpdateCmekConfigMetadata,
+    UpdateCmekConfigRequest,
+)
 from .common import (
     CustomAttribute,
     DoubleList,
+    HealthcareFhirConfig,
     IndustryVertical,
     Interval,
+    Principal,
     SearchAddOn,
     SearchLinkPromotion,
     SearchTier,
@@ -108,6 +121,21 @@ from .grounded_generation_service import (
     GroundedGenerationContent,
 )
 from .grounding import FactChunk, GroundingFact
+from .identity_mapping_store import IdentityMappingEntry, IdentityMappingStore
+from .identity_mapping_store_service import (
+    CreateIdentityMappingStoreRequest,
+    DeleteIdentityMappingStoreMetadata,
+    DeleteIdentityMappingStoreRequest,
+    GetIdentityMappingStoreRequest,
+    IdentityMappingEntryOperationMetadata,
+    ImportIdentityMappingsRequest,
+    ImportIdentityMappingsResponse,
+    ListIdentityMappingsRequest,
+    ListIdentityMappingsResponse,
+    ListIdentityMappingStoresRequest,
+    ListIdentityMappingStoresResponse,
+    PurgeIdentityMappingsRequest,
+)
 from .import_config import (
     AlloyDbSource,
     BigQuerySource,
@@ -227,13 +255,32 @@ from .user_event import (
     UserEvent,
 )
 from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
+from .user_license import UserLicense
+from .user_license_service import (
+    BatchUpdateUserLicensesMetadata,
+    BatchUpdateUserLicensesRequest,
+    BatchUpdateUserLicensesResponse,
+    ListUserLicensesRequest,
+    ListUserLicensesResponse,
+)
 
 __all__ = (
     "Answer",
     "Chunk",
+    "CmekConfig",
+    "DeleteCmekConfigMetadata",
+    "DeleteCmekConfigRequest",
+    "GetCmekConfigRequest",
+    "ListCmekConfigsRequest",
+    "ListCmekConfigsResponse",
+    "SingleRegionKey",
+    "UpdateCmekConfigMetadata",
+    "UpdateCmekConfigRequest",
     "CustomAttribute",
     "DoubleList",
+    "HealthcareFhirConfig",
     "Interval",
+    "Principal",
     "SearchLinkPromotion",
     "UserInfo",
     "IndustryVertical",
@@ -314,6 +361,20 @@ __all__ = (
     "GroundedGenerationContent",
     "FactChunk",
     "GroundingFact",
+    "IdentityMappingEntry",
+    "IdentityMappingStore",
+    "CreateIdentityMappingStoreRequest",
+    "DeleteIdentityMappingStoreMetadata",
+    "DeleteIdentityMappingStoreRequest",
+    "GetIdentityMappingStoreRequest",
+    "IdentityMappingEntryOperationMetadata",
+    "ImportIdentityMappingsRequest",
+    "ImportIdentityMappingsResponse",
+    "ListIdentityMappingsRequest",
+    "ListIdentityMappingsResponse",
+    "ListIdentityMappingStoresRequest",
+    "ListIdentityMappingStoresResponse",
+    "PurgeIdentityMappingsRequest",
     "AlloyDbSource",
     "BigQuerySource",
     "BigtableOptions",
@@ -427,4 +488,10 @@ __all__ = (
     "UserEvent",
     "CollectUserEventRequest",
     "WriteUserEventRequest",
+    "UserLicense",
+    "BatchUpdateUserLicensesMetadata",
+    "BatchUpdateUserLicensesRequest",
+    "BatchUpdateUserLicensesResponse",
+    "ListUserLicensesRequest",
+    "ListUserLicensesResponse",
 )

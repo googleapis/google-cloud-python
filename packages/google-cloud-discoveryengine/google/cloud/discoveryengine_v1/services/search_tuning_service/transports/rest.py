@@ -381,6 +381,11 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
                     },
                     {
                         "method": "post",
+                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}:cancel",
+                        "body": "*",
+                    },
+                    {
+                        "method": "post",
                         "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
                         "body": "*",
                     },

@@ -369,6 +369,11 @@ class SearchRequest(proto.Message):
                 Optional. Boost specification to boost certain documents.
                 For more information on boosting, see
                 `Boosting <https://cloud.google.com/generative-ai-app-builder/docs/boost-search-results>`__
+            custom_search_operators (str):
+                Optional. Custom search operators which if specified will be
+                used to filter results from workspace data stores. For more
+                information on custom search operators, see
+                `SearchOperators <https://support.google.com/cloudsearch/answer/6172299>`__.
         """
 
         data_store: str = proto.Field(
@@ -383,6 +388,10 @@ class SearchRequest(proto.Message):
             proto.MESSAGE,
             number=6,
             message="SearchRequest.BoostSpec",
+        )
+        custom_search_operators: str = proto.Field(
+            proto.STRING,
+            number=7,
         )
 
     class FacetSpec(proto.Message):

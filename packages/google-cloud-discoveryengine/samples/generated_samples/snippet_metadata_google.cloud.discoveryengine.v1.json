@@ -16,6 +16,650 @@
       "clientMethod": {
         "async": true,
         "client": {
+          "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient",
+          "shortName": "CmekConfigServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient.delete_cmek_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.CmekConfigService",
+            "shortName": "CmekConfigService"
+          },
+          "shortName": "DeleteCmekConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.DeleteCmekConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_cmek_config"
+      },
+      "description": "Sample for DeleteCmekConfig",
+      "file": "discoveryengine_v1_generated_cmek_config_service_delete_cmek_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_CmekConfigService_DeleteCmekConfig_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_cmek_config_service_delete_cmek_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceClient",
+          "shortName": "CmekConfigServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceClient.delete_cmek_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.CmekConfigService",
+            "shortName": "CmekConfigService"
+          },
+          "shortName": "DeleteCmekConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.DeleteCmekConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_cmek_config"
+      },
+      "description": "Sample for DeleteCmekConfig",
+      "file": "discoveryengine_v1_generated_cmek_config_service_delete_cmek_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_CmekConfigService_DeleteCmekConfig_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_cmek_config_service_delete_cmek_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient",
+          "shortName": "CmekConfigServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient.get_cmek_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.CmekConfigService.GetCmekConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.CmekConfigService",
+            "shortName": "CmekConfigService"
+          },
+          "shortName": "GetCmekConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.GetCmekConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.CmekConfig",
+        "shortName": "get_cmek_config"
+      },
+      "description": "Sample for GetCmekConfig",
+      "file": "discoveryengine_v1_generated_cmek_config_service_get_cmek_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_CmekConfigService_GetCmekConfig_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_cmek_config_service_get_cmek_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceClient",
+          "shortName": "CmekConfigServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceClient.get_cmek_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.CmekConfigService.GetCmekConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.CmekConfigService",
+            "shortName": "CmekConfigService"
+          },
+          "shortName": "GetCmekConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.GetCmekConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.CmekConfig",
+        "shortName": "get_cmek_config"
+      },
+      "description": "Sample for GetCmekConfig",
+      "file": "discoveryengine_v1_generated_cmek_config_service_get_cmek_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_CmekConfigService_GetCmekConfig_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_cmek_config_service_get_cmek_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient",
+          "shortName": "CmekConfigServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient.list_cmek_configs",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.CmekConfigService",
+            "shortName": "CmekConfigService"
+          },
+          "shortName": "ListCmekConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListCmekConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.ListCmekConfigsResponse",
+        "shortName": "list_cmek_configs"
+      },
+      "description": "Sample for ListCmekConfigs",
+      "file": "discoveryengine_v1_generated_cmek_config_service_list_cmek_configs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_CmekConfigService_ListCmekConfigs_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_cmek_config_service_list_cmek_configs_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceClient",
+          "shortName": "CmekConfigServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceClient.list_cmek_configs",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.CmekConfigService",
+            "shortName": "CmekConfigService"
+          },
+          "shortName": "ListCmekConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListCmekConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.ListCmekConfigsResponse",
+        "shortName": "list_cmek_configs"
+      },
+      "description": "Sample for ListCmekConfigs",
+      "file": "discoveryengine_v1_generated_cmek_config_service_list_cmek_configs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_CmekConfigService_ListCmekConfigs_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_cmek_config_service_list_cmek_configs_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient",
+          "shortName": "CmekConfigServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceAsyncClient.update_cmek_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.CmekConfigService.UpdateCmekConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.CmekConfigService",
+            "shortName": "CmekConfigService"
+          },
+          "shortName": "UpdateCmekConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.UpdateCmekConfigRequest"
+          },
+          {
+            "name": "config",
+            "type": "google.cloud.discoveryengine_v1.types.CmekConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_cmek_config"
+      },
+      "description": "Sample for UpdateCmekConfig",
+      "file": "discoveryengine_v1_generated_cmek_config_service_update_cmek_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_CmekConfigService_UpdateCmekConfig_async",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_cmek_config_service_update_cmek_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceClient",
+          "shortName": "CmekConfigServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.CmekConfigServiceClient.update_cmek_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.CmekConfigService.UpdateCmekConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.CmekConfigService",
+            "shortName": "CmekConfigService"
+          },
+          "shortName": "UpdateCmekConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.UpdateCmekConfigRequest"
+          },
+          {
+            "name": "config",
+            "type": "google.cloud.discoveryengine_v1.types.CmekConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_cmek_config"
+      },
+      "description": "Sample for UpdateCmekConfig",
+      "file": "discoveryengine_v1_generated_cmek_config_service_update_cmek_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_CmekConfigService_UpdateCmekConfig_sync",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_cmek_config_service_update_cmek_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
           "fullName": "google.cloud.discoveryengine_v1.CompletionServiceAsyncClient",
           "shortName": "CompletionServiceAsyncClient"
         },
@@ -3922,12 +4566,12 @@
       "regionTag": "discoveryengine_v1_generated_DataStoreService_CreateDataStore_async",
       "segments": [
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "SHORT"
         },
@@ -3937,18 +4581,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 57,
-          "start": 51,
+          "end": 58,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
-          "start": 58,
+          "end": 62,
+          "start": 59,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -4010,12 +4654,12 @@
       "regionTag": "discoveryengine_v1_generated_DataStoreService_CreateDataStore_sync",
       "segments": [
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 60,
+          "end": 61,
           "start": 27,
           "type": "SHORT"
         },
@@ -4025,18 +4669,18 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 51,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 57,
-          "start": 51,
+          "end": 58,
+          "start": 52,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 61,
-          "start": 58,
+          "end": 62,
+          "start": 59,
           "type": "RESPONSE_HANDLING"
         }
       ],
@@ -7271,6 +7915,1125 @@
         }
       ],
       "title": "discoveryengine_v1_generated_grounded_generation_service_stream_generate_grounded_content_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient",
+          "shortName": "IdentityMappingStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient.create_identity_mapping_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.CreateIdentityMappingStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "CreateIdentityMappingStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.CreateIdentityMappingStoreRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "identity_mapping_store",
+            "type": "google.cloud.discoveryengine_v1.types.IdentityMappingStore"
+          },
+          {
+            "name": "identity_mapping_store_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.IdentityMappingStore",
+        "shortName": "create_identity_mapping_store"
+      },
+      "description": "Sample for CreateIdentityMappingStore",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_create_identity_mapping_store_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_CreateIdentityMappingStore_async",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_create_identity_mapping_store_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient",
+          "shortName": "IdentityMappingStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.create_identity_mapping_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.CreateIdentityMappingStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "CreateIdentityMappingStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.CreateIdentityMappingStoreRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "identity_mapping_store",
+            "type": "google.cloud.discoveryengine_v1.types.IdentityMappingStore"
+          },
+          {
+            "name": "identity_mapping_store_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.IdentityMappingStore",
+        "shortName": "create_identity_mapping_store"
+      },
+      "description": "Sample for CreateIdentityMappingStore",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_create_identity_mapping_store_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_CreateIdentityMappingStore_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_create_identity_mapping_store_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient",
+          "shortName": "IdentityMappingStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient.delete_identity_mapping_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "DeleteIdentityMappingStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.DeleteIdentityMappingStoreRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_identity_mapping_store"
+      },
+      "description": "Sample for DeleteIdentityMappingStore",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_delete_identity_mapping_store_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_DeleteIdentityMappingStore_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_delete_identity_mapping_store_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient",
+          "shortName": "IdentityMappingStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.delete_identity_mapping_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "DeleteIdentityMappingStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.DeleteIdentityMappingStoreRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_identity_mapping_store"
+      },
+      "description": "Sample for DeleteIdentityMappingStore",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_delete_identity_mapping_store_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_DeleteIdentityMappingStore_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_delete_identity_mapping_store_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient",
+          "shortName": "IdentityMappingStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient.get_identity_mapping_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.GetIdentityMappingStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "GetIdentityMappingStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.GetIdentityMappingStoreRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.IdentityMappingStore",
+        "shortName": "get_identity_mapping_store"
+      },
+      "description": "Sample for GetIdentityMappingStore",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_get_identity_mapping_store_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_GetIdentityMappingStore_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_get_identity_mapping_store_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient",
+          "shortName": "IdentityMappingStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.get_identity_mapping_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.GetIdentityMappingStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "GetIdentityMappingStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.GetIdentityMappingStoreRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.IdentityMappingStore",
+        "shortName": "get_identity_mapping_store"
+      },
+      "description": "Sample for GetIdentityMappingStore",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_get_identity_mapping_store_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_GetIdentityMappingStore_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_get_identity_mapping_store_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient",
+          "shortName": "IdentityMappingStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient.import_identity_mappings",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "ImportIdentityMappings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ImportIdentityMappingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "import_identity_mappings"
+      },
+      "description": "Sample for ImportIdentityMappings",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_import_identity_mappings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_ImportIdentityMappings_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_import_identity_mappings_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient",
+          "shortName": "IdentityMappingStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.import_identity_mappings",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "ImportIdentityMappings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ImportIdentityMappingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "import_identity_mappings"
+      },
+      "description": "Sample for ImportIdentityMappings",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_import_identity_mappings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_ImportIdentityMappings_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_import_identity_mappings_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient",
+          "shortName": "IdentityMappingStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient.list_identity_mapping_stores",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "ListIdentityMappingStores"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListIdentityMappingStoresRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.services.identity_mapping_store_service.pagers.ListIdentityMappingStoresAsyncPager",
+        "shortName": "list_identity_mapping_stores"
+      },
+      "description": "Sample for ListIdentityMappingStores",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_list_identity_mapping_stores_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_ListIdentityMappingStores_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_list_identity_mapping_stores_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient",
+          "shortName": "IdentityMappingStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.list_identity_mapping_stores",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "ListIdentityMappingStores"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListIdentityMappingStoresRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.services.identity_mapping_store_service.pagers.ListIdentityMappingStoresPager",
+        "shortName": "list_identity_mapping_stores"
+      },
+      "description": "Sample for ListIdentityMappingStores",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_list_identity_mapping_stores_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_ListIdentityMappingStores_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_list_identity_mapping_stores_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient",
+          "shortName": "IdentityMappingStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient.list_identity_mappings",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "ListIdentityMappings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListIdentityMappingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.services.identity_mapping_store_service.pagers.ListIdentityMappingsAsyncPager",
+        "shortName": "list_identity_mappings"
+      },
+      "description": "Sample for ListIdentityMappings",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_list_identity_mappings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_ListIdentityMappings_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_list_identity_mappings_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient",
+          "shortName": "IdentityMappingStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.list_identity_mappings",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "ListIdentityMappings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListIdentityMappingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.services.identity_mapping_store_service.pagers.ListIdentityMappingsPager",
+        "shortName": "list_identity_mappings"
+      },
+      "description": "Sample for ListIdentityMappings",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_list_identity_mappings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_ListIdentityMappings_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_list_identity_mappings_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient",
+          "shortName": "IdentityMappingStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceAsyncClient.purge_identity_mappings",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.PurgeIdentityMappings",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "PurgeIdentityMappings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.PurgeIdentityMappingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "purge_identity_mappings"
+      },
+      "description": "Sample for PurgeIdentityMappings",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_purge_identity_mappings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_PurgeIdentityMappings_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_purge_identity_mappings_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient",
+          "shortName": "IdentityMappingStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.IdentityMappingStoreServiceClient.purge_identity_mappings",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService.PurgeIdentityMappings",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+            "shortName": "IdentityMappingStoreService"
+          },
+          "shortName": "PurgeIdentityMappings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.PurgeIdentityMappingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "purge_identity_mappings"
+      },
+      "description": "Sample for PurgeIdentityMappings",
+      "file": "discoveryengine_v1_generated_identity_mapping_store_service_purge_identity_mappings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_IdentityMappingStoreService_PurgeIdentityMappings_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_identity_mapping_store_service_purge_identity_mappings_sync.py"
     },
     {
       "canonical": true,
@@ -12327,6 +14090,320 @@
         }
       ],
       "title": "discoveryengine_v1_generated_user_event_service_write_user_event_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.UserLicenseServiceAsyncClient",
+          "shortName": "UserLicenseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.UserLicenseServiceAsyncClient.batch_update_user_licenses",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.UserLicenseService",
+            "shortName": "UserLicenseService"
+          },
+          "shortName": "BatchUpdateUserLicenses"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.BatchUpdateUserLicensesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "batch_update_user_licenses"
+      },
+      "description": "Sample for BatchUpdateUserLicenses",
+      "file": "discoveryengine_v1_generated_user_license_service_batch_update_user_licenses_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_UserLicenseService_BatchUpdateUserLicenses_async",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_user_license_service_batch_update_user_licenses_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.UserLicenseServiceClient",
+          "shortName": "UserLicenseServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.UserLicenseServiceClient.batch_update_user_licenses",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.UserLicenseService",
+            "shortName": "UserLicenseService"
+          },
+          "shortName": "BatchUpdateUserLicenses"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.BatchUpdateUserLicensesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "batch_update_user_licenses"
+      },
+      "description": "Sample for BatchUpdateUserLicenses",
+      "file": "discoveryengine_v1_generated_user_license_service_batch_update_user_licenses_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_UserLicenseService_BatchUpdateUserLicenses_sync",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_user_license_service_batch_update_user_licenses_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.UserLicenseServiceAsyncClient",
+          "shortName": "UserLicenseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.UserLicenseServiceAsyncClient.list_user_licenses",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.UserLicenseService",
+            "shortName": "UserLicenseService"
+          },
+          "shortName": "ListUserLicenses"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListUserLicensesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.services.user_license_service.pagers.ListUserLicensesAsyncPager",
+        "shortName": "list_user_licenses"
+      },
+      "description": "Sample for ListUserLicenses",
+      "file": "discoveryengine_v1_generated_user_license_service_list_user_licenses_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_UserLicenseService_ListUserLicenses_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_user_license_service_list_user_licenses_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.UserLicenseServiceClient",
+          "shortName": "UserLicenseServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.UserLicenseServiceClient.list_user_licenses",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.UserLicenseService",
+            "shortName": "UserLicenseService"
+          },
+          "shortName": "ListUserLicenses"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListUserLicensesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.services.user_license_service.pagers.ListUserLicensesPager",
+        "shortName": "list_user_licenses"
+      },
+      "description": "Sample for ListUserLicenses",
+      "file": "discoveryengine_v1_generated_user_license_service_list_user_licenses_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_UserLicenseService_ListUserLicenses_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_user_license_service_list_user_licenses_sync.py"
     }
   ]
 }

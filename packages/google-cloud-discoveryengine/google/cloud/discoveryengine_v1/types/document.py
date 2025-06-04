@@ -22,6 +22,8 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1.types import common
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
     manifest={
@@ -72,9 +74,9 @@ class Document(proto.Message):
             The identifier of the schema located in the
             same data store.
         content (google.cloud.discoveryengine_v1.types.Document.Content):
-            The unstructured data linked to this document. Content must
-            be set if this document is under a ``CONTENT_REQUIRED`` data
-            store.
+            The unstructured data linked to this document. Content can
+            only be set and must be set if this document is under a
+            ``CONTENT_REQUIRED`` data store.
         parent_document_id (str):
             The identifier of the parent document. Currently supports at
             most two level document hierarchy.
@@ -85,6 +87,8 @@ class Document(proto.Message):
         derived_struct_data (google.protobuf.struct_pb2.Struct):
             Output only. This field is OUTPUT_ONLY. It contains derived
             data that are not in the original input document.
+        acl_info (google.cloud.discoveryengine_v1.types.Document.AclInfo):
+            Access control information for the document.
         index_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last time the document was indexed. If this
             field is set, the document could be returned in search
@@ -139,11 +143,25 @@ class Document(proto.Message):
                 -  ``application/pdf`` (PDF, only native PDFs are supported
                    for now)
                 -  ``text/html`` (HTML)
+                -  ``text/plain`` (TXT)
+                -  ``application/xml`` or ``text/xml`` (XML)
+                -  ``application/json`` (JSON)
                 -  ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
                    (DOCX)
                 -  ``application/vnd.openxmlformats-officedocument.presentationml.presentation``
                    (PPTX)
-                -  ``text/plain`` (TXT)
+                -  ``application/vnd.openxmlformats-officedocument.spreadsheetml.sheet``
+                   (XLSX)
+                -  ``application/vnd.ms-excel.sheet.macroenabled.12`` (XLSM)
+
+                The following types are supported only if layout parser is
+                enabled in the data store:
+
+                -  ``image/bmp`` (BMP)
+                -  ``image/gif`` (GIF)
+                -  ``image/jpeg`` (JPEG)
+                -  ``image/png`` (PNG)
+                -  ``image/tiff`` (TIFF)
 
                 See
                 https://www.iana.org/assignments/media-types/media-types.xhtml.
@@ -162,6 +180,58 @@ class Document(proto.Message):
         mime_type: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+
+    class AclInfo(proto.Message):
+        r"""ACL Information of the Document.
+
+        Attributes:
+            readers (MutableSequence[google.cloud.discoveryengine_v1.types.Document.AclInfo.AccessRestriction]):
+                Readers of the document.
+        """
+
+        class AccessRestriction(proto.Message):
+            r"""AclRestriction to model complex inheritance restrictions.
+
+            Example: Modeling a "Both Permit" inheritance, where to access a
+            child document, user needs to have access to parent document.
+
+            Document Hierarchy - Space_S --> Page_P.
+
+            Readers: Space_S: group_1, user_1 Page_P: group_2, group_3, user_2
+
+            Space_S ACL Restriction - { "acl_info": { "readers": [ {
+            "principals": [ { "group_id": "group_1" }, { "user_id": "user_1" } ]
+            } ] } }
+
+            Page_P ACL Restriction. { "acl_info": { "readers": [ { "principals":
+            [ { "group_id": "group_2" }, { "group_id": "group_3" }, { "user_id":
+            "user_2" } ], }, { "principals": [ { "group_id": "group_1" }, {
+            "user_id": "user_1" } ], } ] } }
+
+            Attributes:
+                principals (MutableSequence[google.cloud.discoveryengine_v1.types.Principal]):
+                    List of principals.
+                idp_wide (bool):
+                    All users within the Identity Provider.
+            """
+
+            principals: MutableSequence[common.Principal] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=common.Principal,
+            )
+            idp_wide: bool = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
+
+        readers: MutableSequence[
+            "Document.AclInfo.AccessRestriction"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Document.AclInfo.AccessRestriction",
         )
 
     class IndexStatus(proto.Message):
@@ -233,6 +303,11 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,
+    )
+    acl_info: AclInfo = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=AclInfo,
     )
     index_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

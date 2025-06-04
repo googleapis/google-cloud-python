@@ -4471,6 +4471,7 @@ def test_create_control_rest_call_success(request_type):
             "search_link_promotion": {
                 "title": "title_value",
                 "uri": "uri_value",
+                "document": "document_value",
                 "image_uri": "image_uri_value",
                 "description": "description_value",
                 "enabled": True,
@@ -4842,6 +4843,7 @@ def test_update_control_rest_call_success(request_type):
             "search_link_promotion": {
                 "title": "title_value",
                 "uri": "uri_value",
+                "document": "document_value",
                 "image_uri": "image_uri_value",
                 "description": "description_value",
                 "enabled": True,
@@ -6089,8 +6091,42 @@ def test_parse_data_store_path():
     assert expected == actual
 
 
+def test_document_path():
+    project = "whelk"
+    location = "octopus"
+    data_store = "oyster"
+    branch = "nudibranch"
+    document = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        branch=branch,
+        document=document,
+    )
+    actual = ControlServiceClient.document_path(
+        project, location, data_store, branch, document
+    )
+    assert expected == actual
+
+
+def test_parse_document_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "data_store": "nautilus",
+        "branch": "scallop",
+        "document": "abalone",
+    }
+    path = ControlServiceClient.document_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ControlServiceClient.parse_document_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6100,7 +6136,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "clam",
     }
     path = ControlServiceClient.common_billing_account_path(**expected)
 
@@ -6110,7 +6146,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6120,7 +6156,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "octopus",
     }
     path = ControlServiceClient.common_folder_path(**expected)
 
@@ -6130,7 +6166,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6140,7 +6176,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nudibranch",
     }
     path = ControlServiceClient.common_organization_path(**expected)
 
@@ -6150,7 +6186,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6160,7 +6196,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "mussel",
     }
     path = ControlServiceClient.common_project_path(**expected)
 
@@ -6170,8 +6206,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6182,8 +6218,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = ControlServiceClient.common_location_path(**expected)
 

@@ -56,6 +56,16 @@ class Engine(proto.Message):
             [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH].
 
             This field is a member of `oneof`_ ``engine_config``.
+        media_recommendation_engine_config (google.cloud.discoveryengine_v1.types.Engine.MediaRecommendationEngineConfig):
+            Configurations for the Media Engine. Only applicable on the
+            data stores with
+            [solution_type][google.cloud.discoveryengine.v1.Engine.solution_type]
+            [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+            and
+            [IndustryVertical.MEDIA][google.cloud.discoveryengine.v1.IndustryVertical.MEDIA]
+            vertical.
+
+            This field is a member of `oneof`_ ``engine_config``.
         chat_engine_metadata (google.cloud.discoveryengine_v1.types.Engine.ChatEngineMetadata):
             Output only. Additional information of the Chat Engine. Only
             applicable if
@@ -65,7 +75,8 @@ class Engine(proto.Message):
 
             This field is a member of `oneof`_ ``engine_metadata``.
         name (str):
-            Immutable. The fully qualified resource name of the engine.
+            Immutable. Identifier. The fully qualified resource name of
+            the engine.
 
             This field must be a UTF-8 encoded string with a length
             limit of 1024 characters.
@@ -86,7 +97,7 @@ class Engine(proto.Message):
             Output only. Timestamp the Recommendation
             Engine was last updated.
         data_store_ids (MutableSequence[str]):
-            The data stores associated with this engine.
+            Optional. The data stores associated with this engine.
 
             For
             [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH]
@@ -112,8 +123,8 @@ class Engine(proto.Message):
         solution_type (google.cloud.discoveryengine_v1.types.SolutionType):
             Required. The solutions of the engine.
         industry_vertical (google.cloud.discoveryengine_v1.types.IndustryVertical):
-            The industry vertical that the engine registers. The
-            restriction of the Engine industry vertical is based on
+            Optional. The industry vertical that the engine registers.
+            The restriction of the Engine industry vertical is based on
             [DataStore][google.cloud.discoveryengine.v1.DataStore]:
             Vertical on Engine has to match vertical of the DataStore
             linked to the engine.
@@ -151,6 +162,195 @@ class Engine(proto.Message):
             proto.ENUM,
             number=2,
             enum=common.SearchAddOn,
+        )
+
+    class MediaRecommendationEngineConfig(proto.Message):
+        r"""Additional config specs for a Media Recommendation engine.
+
+        Attributes:
+            type_ (str):
+                Required. The type of engine. e.g., ``recommended-for-you``.
+
+                This field together with
+                [optimization_objective][google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.optimization_objective]
+                describe engine metadata to use to control engine training
+                and serving.
+
+                Currently supported values: ``recommended-for-you``,
+                ``others-you-may-like``, ``more-like-this``,
+                ``most-popular-items``.
+            optimization_objective (str):
+                The optimization objective. e.g., ``cvr``.
+
+                This field together with
+                [optimization_objective][google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.type]
+                describe engine metadata to use to control engine training
+                and serving.
+
+                Currently supported values: ``ctr``, ``cvr``.
+
+                If not specified, we choose default based on engine type.
+                Default depends on type of recommendation:
+
+                ``recommended-for-you`` => ``ctr``
+
+                ``others-you-may-like`` => ``ctr``
+            optimization_objective_config (google.cloud.discoveryengine_v1.types.Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig):
+                Name and value of the custom threshold for cvr
+                optimization_objective. For target_field ``watch-time``,
+                target_field_value must be an integer value indicating the
+                media progress time in seconds between (0, 86400] (excludes
+                0, includes 86400) (e.g., 90). For target_field
+                ``watch-percentage``, the target_field_value must be a valid
+                float value between (0, 1.0] (excludes 0, includes 1.0)
+                (e.g., 0.5).
+            training_state (google.cloud.discoveryengine_v1.types.Engine.MediaRecommendationEngineConfig.TrainingState):
+                The training state that the engine is in (e.g. ``TRAINING``
+                or ``PAUSED``).
+
+                Since part of the cost of running the service is frequency
+                of training - this can be used to determine when to train
+                engine in order to control cost. If not specified: the
+                default value for ``CreateEngine`` method is ``TRAINING``.
+                The default value for ``UpdateEngine`` method is to keep the
+                state the same as before.
+            engine_features_config (google.cloud.discoveryengine_v1.types.Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig):
+                Optional. Additional engine features config.
+        """
+
+        class TrainingState(proto.Enum):
+            r"""The training state of the engine.
+
+            Values:
+                TRAINING_STATE_UNSPECIFIED (0):
+                    Unspecified training state.
+                PAUSED (1):
+                    The engine training is paused.
+                TRAINING (2):
+                    The engine is training.
+            """
+            TRAINING_STATE_UNSPECIFIED = 0
+            PAUSED = 1
+            TRAINING = 2
+
+        class OptimizationObjectiveConfig(proto.Message):
+            r"""Custom threshold for ``cvr`` optimization_objective.
+
+            Attributes:
+                target_field (str):
+                    Required. The name of the field to target. Currently
+                    supported values: ``watch-percentage``, ``watch-time``.
+                target_field_value_float (float):
+                    Required. The threshold to be applied to the
+                    target (e.g., 0.5).
+            """
+
+            target_field: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            target_field_value_float: float = proto.Field(
+                proto.FLOAT,
+                number=2,
+            )
+
+        class EngineFeaturesConfig(proto.Message):
+            r"""More feature configs of the selected engine type.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                recommended_for_you_config (google.cloud.discoveryengine_v1.types.Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig):
+                    Recommended for you engine feature config.
+
+                    This field is a member of `oneof`_ ``type_dedicated_config``.
+                most_popular_config (google.cloud.discoveryengine_v1.types.Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig):
+                    Most popular engine feature config.
+
+                    This field is a member of `oneof`_ ``type_dedicated_config``.
+            """
+
+            recommended_for_you_config: "Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="type_dedicated_config",
+                message="Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig",
+            )
+            most_popular_config: "Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="type_dedicated_config",
+                message="Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig",
+            )
+
+        class RecommendedForYouFeatureConfig(proto.Message):
+            r"""Additional feature configurations for creating a
+            ``recommended-for-you`` engine.
+
+            Attributes:
+                context_event_type (str):
+                    The type of event with which the engine is queried at
+                    prediction time. If set to ``generic``, only ``view-item``,
+                    ``media-play``,and ``media-complete`` will be used as
+                    ``context-event`` in engine training. If set to
+                    ``view-home-page``, ``view-home-page`` will also be used as
+                    ``context-events`` in addition to ``view-item``,
+                    ``media-play``, and ``media-complete``. Currently supported
+                    for the ``recommended-for-you`` engine. Currently supported
+                    values: ``view-home-page``, ``generic``.
+            """
+
+            context_event_type: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        class MostPopularFeatureConfig(proto.Message):
+            r"""Feature configurations that are required for creating a Most
+            Popular engine.
+
+            Attributes:
+                time_window_days (int):
+                    The time window of which the engine is queried at training
+                    and prediction time. Positive integers only. The value
+                    translates to the last X days of events. Currently required
+                    for the ``most-popular-items`` engine.
+            """
+
+            time_window_days: int = proto.Field(
+                proto.INT64,
+                number=1,
+            )
+
+        type_: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        optimization_objective: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        optimization_objective_config: "Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig",
+        )
+        training_state: "Engine.MediaRecommendationEngineConfig.TrainingState" = (
+            proto.Field(
+                proto.ENUM,
+                number=4,
+                enum="Engine.MediaRecommendationEngineConfig.TrainingState",
+            )
+        )
+        engine_features_config: "Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig",
         )
 
     class ChatEngineConfig(proto.Message):
@@ -312,6 +512,12 @@ class Engine(proto.Message):
         number=13,
         oneof="engine_config",
         message=SearchEngineConfig,
+    )
+    media_recommendation_engine_config: MediaRecommendationEngineConfig = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="engine_config",
+        message=MediaRecommendationEngineConfig,
     )
     chat_engine_metadata: ChatEngineMetadata = proto.Field(
         proto.MESSAGE,

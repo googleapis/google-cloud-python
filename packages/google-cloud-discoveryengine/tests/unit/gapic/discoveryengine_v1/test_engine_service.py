@@ -4531,6 +4531,21 @@ def test_create_engine_rest_call_success(request_type):
             "allow_cross_region": True,
         },
         "search_engine_config": {"search_tier": 1, "search_add_ons": [1]},
+        "media_recommendation_engine_config": {
+            "type_": "type__value",
+            "optimization_objective": "optimization_objective_value",
+            "optimization_objective_config": {
+                "target_field": "target_field_value",
+                "target_field_value_float": 0.2523,
+            },
+            "training_state": 1,
+            "engine_features_config": {
+                "recommended_for_you_config": {
+                    "context_event_type": "context_event_type_value"
+                },
+                "most_popular_config": {"time_window_days": 1718},
+            },
+        },
         "chat_engine_metadata": {"dialogflow_agent": "dialogflow_agent_value"},
         "name": "name_value",
         "display_name": "display_name_value",
@@ -4879,6 +4894,21 @@ def test_update_engine_rest_call_success(request_type):
             "allow_cross_region": True,
         },
         "search_engine_config": {"search_tier": 1, "search_add_ons": [1]},
+        "media_recommendation_engine_config": {
+            "type_": "type__value",
+            "optimization_objective": "optimization_objective_value",
+            "optimization_objective_config": {
+                "target_field": "target_field_value",
+                "target_field_value_float": 0.2523,
+            },
+            "training_state": 1,
+            "engine_features_config": {
+                "recommended_for_you_config": {
+                    "context_event_type": "context_event_type_value"
+                },
+                "most_popular_config": {"time_window_days": 1718},
+            },
+        },
         "chat_engine_metadata": {"dialogflow_agent": "dialogflow_agent_value"},
         "name": "projects/sample1/locations/sample2/collections/sample3/engines/sample4",
         "display_name": "display_name_value",
