@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.40.3](https://github.com/googleapis/google-auth-library-python/compare/v2.40.2...v2.40.3) (2025-06-04)
+
+
+### Bug Fixes
+
+* Auth fetch token from default endpoint ([#1779](https://github.com/googleapis/google-auth-library-python/issues/1779)) ([88891cc](https://github.com/googleapis/google-auth-library-python/commit/88891cc596640b0bb3a2891532e2d32f2c9f0ec3))
+* Remove unnecessary call to mds service ([#1769](https://github.com/googleapis/google-auth-library-python/issues/1769)) ([7c61c7d](https://github.com/googleapis/google-auth-library-python/commit/7c61c7d0a42ceec3eab693065745a74f524acab0))
+* Retry 504 errors ([#1767](https://github.com/googleapis/google-auth-library-python/issues/1767)) ([554f967](https://github.com/googleapis/google-auth-library-python/commit/554f967620da2b02e5d44ac7463dcc2407ace5dd))
+
 ## [2.40.2](https://github.com/googleapis/google-auth-library-python/compare/v2.40.1...v2.40.2) (2025-05-21)
 
 
