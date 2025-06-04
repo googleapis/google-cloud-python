@@ -6,6 +6,7 @@
 
 import io
 import os
+import re
 
 from setuptools import find_packages, setup
 
@@ -27,15 +28,17 @@ extras = {
 }
 
 BASE_DIR = os.path.dirname(__file__)
-VERSION_FILENAME = os.path.join(BASE_DIR, "version.py")
-PACKAGE_INFO = {}
-with open(VERSION_FILENAME) as f:
-    exec(f.read(), PACKAGE_INFO)
-version = PACKAGE_INFO["__version__"]
-
-# Setup boilerplate below this line.
 
 package_root = os.path.abspath(BASE_DIR)
+
+version = None
+
+with open(os.path.join(package_root, "django_spanner/version.py")) as fp:
+    version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
+    assert len(version_candidates) == 1
+    version = version_candidates[0]
+
+# Setup boilerplate below this line.
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
