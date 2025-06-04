@@ -563,6 +563,7 @@ class LustreAsyncClient:
                 instance.filesystem = "filesystem_value"
                 instance.capacity_gib = 1247
                 instance.network = "network_value"
+                instance.per_unit_storage_throughput = 2931
 
                 request = lustre_v1.CreateInstanceRequest(
                     parent="parent_value",
@@ -719,6 +720,7 @@ class LustreAsyncClient:
                 instance.filesystem = "filesystem_value"
                 instance.capacity_gib = 1247
                 instance.network = "network_value"
+                instance.per_unit_storage_throughput = 2931
 
                 request = lustre_v1.UpdateInstanceRequest(
                     instance=instance,
@@ -1018,7 +1020,10 @@ class LustreAsyncClient:
             request (Optional[Union[google.cloud.lustre_v1.types.ImportDataRequest, dict]]):
                 The request object. Message for importing data to Lustre.
             name (:class:`str`):
-                Required. Name of the resource.
+                Required. The name of the Managed Lustre instance in the
+                format
+                ``projects/{project}/locations/{location}/instances/{instance}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1143,8 +1148,8 @@ class LustreAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.lustre_v1.types.ExportDataRequest, dict]]):
-                The request object. Message for exporting data from
-                Lustre.
+                The request object. Export data from Managed Lustre to a
+                Cloud Storage bucket.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

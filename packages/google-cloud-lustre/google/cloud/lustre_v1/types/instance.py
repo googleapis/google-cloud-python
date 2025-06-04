@@ -50,7 +50,7 @@ class Instance(proto.Message):
             contain letters and numbers.
         capacity_gib (int):
             Required. The storage capacity of the instance in gibibytes
-            (GiB). Allowed values are from ``18000`` to ``936000``, in
+            (GiB). Allowed values are from ``18000`` to ``954000``, in
             increments of 9000.
         network (str):
             Required. Immutable. The full name of the VPC network to
@@ -73,9 +73,8 @@ class Instance(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. Labels as key value pairs.
         per_unit_storage_throughput (int):
-            Optional. The throughput of the instance in
-            MB/s/TiB. Valid values are 250, 500, 1000.
-            Default value is 1000.
+            Required. The throughput of the instance in
+            MB/s/TiB. Valid values are 125, 250, 500, 1000.
         gke_support_enabled (bool):
             Optional. Indicates whether you want to
             enable support for GKE clients. By default, GKE
