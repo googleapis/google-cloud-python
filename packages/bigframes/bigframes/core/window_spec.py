@@ -234,7 +234,9 @@ class WindowSpec:
         This is relevant for determining whether the window requires a total order
         to calculate deterministically.
         """
-        return isinstance(self.bounds, RowsWindowBounds)
+        return isinstance(self.bounds, RowsWindowBounds) and (
+            (self.bounds.start is not None) or (self.bounds.end is not None)
+        )
 
     @property
     def is_range_bounded(self):
@@ -254,7 +256,9 @@ class WindowSpec:
         This is relevant for determining whether the window requires a total order
         to calculate deterministically.
         """
-        return self.bounds is None
+        return self.bounds is None or (
+            self.bounds.start is None and self.bounds.end is None
+        )
 
     @property
     def all_referenced_columns(self) -> Set[ids.ColumnId]:
@@ -266,9 +270,9 @@ class WindowSpec:
         )
         return set(itertools.chain((i.id for i in self.grouping_keys), ordering_vars))
 
-    def without_order(self) -> WindowSpec:
+    def without_order(self, force: bool = False) -> WindowSpec:
         """Removes ordering clause if ordering isn't required to define bounds."""
-        if self.is_row_bounded:
+        if self.is_row_bounded and not force:
             raise ValueError("Cannot remove order from row-bounded window")
         return replace(self, ordering=())
 

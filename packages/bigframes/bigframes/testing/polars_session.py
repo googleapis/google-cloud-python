@@ -20,12 +20,9 @@ import pandas
 import polars
 
 import bigframes
-import bigframes.clients
 import bigframes.core.blocks
 import bigframes.core.compile.polars
-import bigframes.core.ordering
 import bigframes.dataframe
-import bigframes.session.clients
 import bigframes.session.executor
 import bigframes.session.metrics
 
@@ -34,6 +31,26 @@ import bigframes.session.metrics
 @dataclasses.dataclass
 class TestExecutor(bigframes.session.executor.Executor):
     compiler = bigframes.core.compile.polars.PolarsCompiler()
+
+    def peek(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        n_rows: int,
+        use_explicit_destination: Optional[bool] = False,
+    ):
+        """
+        A 'peek' efficiently accesses a small number of rows in the dataframe.
+        """
+        lazy_frame: polars.LazyFrame = self.compiler.compile(array_value)
+        pa_table = lazy_frame.collect().limit(n_rows).to_arrow()
+        # Currently, pyarrow types might not quite be exactly the ones in the bigframes schema.
+        # Nullability may be different, and might use large versions of list, string datatypes.
+        return bigframes.session.executor.ExecuteResult(
+            arrow_batches=pa_table.to_batches(),
+            schema=array_value.schema,
+            total_bytes=pa_table.nbytes,
+            total_rows=pa_table.num_rows,
+        )
 
     def execute(
         self,
@@ -57,6 +74,14 @@ class TestExecutor(bigframes.session.executor.Executor):
             total_bytes=pa_table.nbytes,
             total_rows=pa_table.num_rows,
         )
+
+    def cached(
+        self,
+        array_value: bigframes.core.ArrayValue,
+        *,
+        config,
+    ) -> None:
+        return
 
 
 class TestSession(bigframes.session.Session):
@@ -92,3 +117,8 @@ class TestSession(bigframes.session.Session):
             pandas_dataframe = pandas_dataframe.to_frame()
         local_block = bigframes.core.blocks.Block.from_local(pandas_dataframe, self)
         return bigframes.dataframe.DataFrame(local_block)
+
+    @property
+    def bqclient(self):
+        # prevents logger from trying to call bq upon any errors
+        return None

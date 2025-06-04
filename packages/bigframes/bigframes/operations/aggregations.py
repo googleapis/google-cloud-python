@@ -439,7 +439,6 @@ class RowNumberOp(NullaryWindowOp):
         return dtypes.INT_DTYPE
 
 
-# TODO: Convert to NullaryWindowOp
 @dataclasses.dataclass(frozen=True)
 class RankOp(UnaryWindowOp):
     name: ClassVar[str] = "rank"
@@ -456,7 +455,6 @@ class RankOp(UnaryWindowOp):
         return False
 
 
-# TODO: Convert to NullaryWindowOp
 @dataclasses.dataclass(frozen=True)
 class DenseRankOp(UnaryWindowOp):
     @property
