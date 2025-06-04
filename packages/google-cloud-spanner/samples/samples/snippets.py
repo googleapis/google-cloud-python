@@ -2540,6 +2540,32 @@ def set_transaction_timeout(instance_id, database_id):
     # [END spanner_transaction_timeout]
 
 
+def set_statement_timeout(instance_id, database_id):
+    """Executes a transaction with a statement timeout."""
+    # [START spanner_set_statement_timeout]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    def write(transaction):
+        # Insert a record and configure the statement timeout to 60 seconds
+        # This timeout can however ONLY BE SHORTER than the default timeout
+        # for the RPC. If you set a timeout that is longer than the default timeout,
+        # then the default timeout will be used.
+        row_ct = transaction.execute_update(
+            "INSERT INTO Singers (SingerId, FirstName, LastName) "
+            " VALUES (110, 'George', 'Washington')",
+            timeout=60,
+        )
+        print("{} record(s) inserted.".format(row_ct))
+
+    database.run_in_transaction(write)
+
+    # [END spanner_set_statement_timeout]
+
+
 def set_request_tag(instance_id, database_id):
     """Executes a snapshot read with a request tag."""
     # [START spanner_set_request_tag]
@@ -3651,6 +3677,7 @@ if __name__ == "__main__":  # noqa: C901
     subparsers.add_parser(
         "set_transaction_timeout", help=set_transaction_timeout.__doc__
     )
+    subparsers.add_parser("set_statement_timeout", help=set_statement_timeout.__doc__)
     subparsers.add_parser(
         "query_data_with_new_column", help=query_data_with_new_column.__doc__
     )
@@ -3819,6 +3846,8 @@ if __name__ == "__main__":  # noqa: C901
         set_max_commit_delay(args.instance_id, args.database_id)
     elif args.command == "set_transaction_timeout":
         set_transaction_timeout(args.instance_id, args.database_id)
+    elif args.command == "set_statement_timeout":
+        set_statement_timeout(args.instance_id, args.database_id)
     elif args.command == "query_data_with_new_column":
         query_data_with_new_column(args.instance_id, args.database_id)
     elif args.command == "read_write_transaction":
