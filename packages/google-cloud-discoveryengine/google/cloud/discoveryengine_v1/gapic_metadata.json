@@ -5,6 +5,85 @@
   "protoPackage": "google.cloud.discoveryengine.v1",
   "schema": "1.0",
   "services": {
+    "CmekConfigService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CmekConfigServiceClient",
+          "rpcs": {
+            "DeleteCmekConfig": {
+              "methods": [
+                "delete_cmek_config"
+              ]
+            },
+            "GetCmekConfig": {
+              "methods": [
+                "get_cmek_config"
+              ]
+            },
+            "ListCmekConfigs": {
+              "methods": [
+                "list_cmek_configs"
+              ]
+            },
+            "UpdateCmekConfig": {
+              "methods": [
+                "update_cmek_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CmekConfigServiceAsyncClient",
+          "rpcs": {
+            "DeleteCmekConfig": {
+              "methods": [
+                "delete_cmek_config"
+              ]
+            },
+            "GetCmekConfig": {
+              "methods": [
+                "get_cmek_config"
+              ]
+            },
+            "ListCmekConfigs": {
+              "methods": [
+                "list_cmek_configs"
+              ]
+            },
+            "UpdateCmekConfig": {
+              "methods": [
+                "update_cmek_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CmekConfigServiceClient",
+          "rpcs": {
+            "DeleteCmekConfig": {
+              "methods": [
+                "delete_cmek_config"
+              ]
+            },
+            "GetCmekConfig": {
+              "methods": [
+                "get_cmek_config"
+              ]
+            },
+            "ListCmekConfigs": {
+              "methods": [
+                "list_cmek_configs"
+              ]
+            },
+            "UpdateCmekConfig": {
+              "methods": [
+                "update_cmek_config"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CompletionService": {
       "clients": {
         "grpc": {
@@ -813,6 +892,130 @@
         }
       }
     },
+    "IdentityMappingStoreService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "IdentityMappingStoreServiceClient",
+          "rpcs": {
+            "CreateIdentityMappingStore": {
+              "methods": [
+                "create_identity_mapping_store"
+              ]
+            },
+            "DeleteIdentityMappingStore": {
+              "methods": [
+                "delete_identity_mapping_store"
+              ]
+            },
+            "GetIdentityMappingStore": {
+              "methods": [
+                "get_identity_mapping_store"
+              ]
+            },
+            "ImportIdentityMappings": {
+              "methods": [
+                "import_identity_mappings"
+              ]
+            },
+            "ListIdentityMappingStores": {
+              "methods": [
+                "list_identity_mapping_stores"
+              ]
+            },
+            "ListIdentityMappings": {
+              "methods": [
+                "list_identity_mappings"
+              ]
+            },
+            "PurgeIdentityMappings": {
+              "methods": [
+                "purge_identity_mappings"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "IdentityMappingStoreServiceAsyncClient",
+          "rpcs": {
+            "CreateIdentityMappingStore": {
+              "methods": [
+                "create_identity_mapping_store"
+              ]
+            },
+            "DeleteIdentityMappingStore": {
+              "methods": [
+                "delete_identity_mapping_store"
+              ]
+            },
+            "GetIdentityMappingStore": {
+              "methods": [
+                "get_identity_mapping_store"
+              ]
+            },
+            "ImportIdentityMappings": {
+              "methods": [
+                "import_identity_mappings"
+              ]
+            },
+            "ListIdentityMappingStores": {
+              "methods": [
+                "list_identity_mapping_stores"
+              ]
+            },
+            "ListIdentityMappings": {
+              "methods": [
+                "list_identity_mappings"
+              ]
+            },
+            "PurgeIdentityMappings": {
+              "methods": [
+                "purge_identity_mappings"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "IdentityMappingStoreServiceClient",
+          "rpcs": {
+            "CreateIdentityMappingStore": {
+              "methods": [
+                "create_identity_mapping_store"
+              ]
+            },
+            "DeleteIdentityMappingStore": {
+              "methods": [
+                "delete_identity_mapping_store"
+              ]
+            },
+            "GetIdentityMappingStore": {
+              "methods": [
+                "get_identity_mapping_store"
+              ]
+            },
+            "ImportIdentityMappings": {
+              "methods": [
+                "import_identity_mappings"
+              ]
+            },
+            "ListIdentityMappingStores": {
+              "methods": [
+                "list_identity_mapping_stores"
+              ]
+            },
+            "ListIdentityMappings": {
+              "methods": [
+                "list_identity_mappings"
+              ]
+            },
+            "PurgeIdentityMappings": {
+              "methods": [
+                "purge_identity_mappings"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ProjectService": {
       "clients": {
         "grpc": {
@@ -1458,6 +1661,55 @@
             "WriteUserEvent": {
               "methods": [
                 "write_user_event"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "UserLicenseService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "UserLicenseServiceClient",
+          "rpcs": {
+            "BatchUpdateUserLicenses": {
+              "methods": [
+                "batch_update_user_licenses"
+              ]
+            },
+            "ListUserLicenses": {
+              "methods": [
+                "list_user_licenses"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "UserLicenseServiceAsyncClient",
+          "rpcs": {
+            "BatchUpdateUserLicenses": {
+              "methods": [
+                "batch_update_user_licenses"
+              ]
+            },
+            "ListUserLicenses": {
+              "methods": [
+                "list_user_licenses"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "UserLicenseServiceClient",
+          "rpcs": {
+            "BatchUpdateUserLicenses": {
+              "methods": [
+                "batch_update_user_licenses"
+              ]
+            },
+            "ListUserLicenses": {
+              "methods": [
+                "list_user_licenses"
               ]
             }
           }

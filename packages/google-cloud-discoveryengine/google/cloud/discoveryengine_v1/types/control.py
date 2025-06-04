@@ -51,7 +51,8 @@ class Condition(proto.Message):
             Optional. Query regex to match the whole search query.
             Cannot be set when
             [Condition.query_terms][google.cloud.discoveryengine.v1.Condition.query_terms]
-            is set. This is currently supporting promotion use case.
+            is set. Only supported for Basic Site Search promotion
+            serving controls.
     """
 
     class QueryTerm(proto.Message):
@@ -156,7 +157,6 @@ class Control(proto.Message):
         promote_action (google.cloud.discoveryengine_v1.types.Control.PromoteAction):
             Promote certain links based on predefined
             trigger queries.
-            This now only supports basic site search.
 
             This field is a member of `oneof`_ ``action``.
         name (str):

@@ -1092,12 +1092,15 @@ class AnswerQueryRequest(proto.Message):
                     NON_ANSWER_SEEKING_QUERY_V2 (4):
                         Non-answer-seeking query classification type,
                         for no clear intent.
+                    USER_DEFINED_CLASSIFICATION_QUERY (5):
+                        User defined query classification type.
                 """
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2
                 JAIL_BREAKING_QUERY = 3
                 NON_ANSWER_SEEKING_QUERY_V2 = 4
+                USER_DEFINED_CLASSIFICATION_QUERY = 5
 
             types: MutableSequence[
                 "AnswerQueryRequest.QueryUnderstandingSpec.QueryClassificationSpec.Type"

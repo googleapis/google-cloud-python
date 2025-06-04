@@ -129,12 +129,19 @@ class TargetSite(proto.Message):
                     successful;
                 2. state reverts to SUCCEEDED if the unindexing
                     fails.
+            CANCELLABLE (5):
+                The target site change is pending but
+                cancellable.
+            CANCELLED (6):
+                The target site change is cancelled.
         """
         INDEXING_STATUS_UNSPECIFIED = 0
         PENDING = 1
         FAILED = 2
         SUCCEEDED = 3
         DELETING = 4
+        CANCELLABLE = 5
+        CANCELLED = 6
 
     class FailureReason(proto.Message):
         r"""Site search indexing failure reasons.

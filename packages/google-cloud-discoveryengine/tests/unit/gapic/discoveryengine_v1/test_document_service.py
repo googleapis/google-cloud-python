@@ -80,6 +80,7 @@ from google.cloud.discoveryengine_v1.types import (
     import_config,
     purge_config,
 )
+from google.cloud.discoveryengine_v1.types import common
 from google.cloud.discoveryengine_v1.types import document
 from google.cloud.discoveryengine_v1.types import document as gcd_document
 
@@ -6300,6 +6301,20 @@ def test_create_document_rest_call_success(request_type):
         },
         "parent_document_id": "parent_document_id_value",
         "derived_struct_data": {},
+        "acl_info": {
+            "readers": [
+                {
+                    "principals": [
+                        {
+                            "user_id": "user_id_value",
+                            "group_id": "group_id_value",
+                            "external_entity_id": "external_entity_id_value",
+                        }
+                    ],
+                    "idp_wide": True,
+                }
+            ]
+        },
         "index_time": {"seconds": 751, "nanos": 543},
         "index_status": {
             "index_time": {},
@@ -6540,6 +6555,20 @@ def test_update_document_rest_call_success(request_type):
         },
         "parent_document_id": "parent_document_id_value",
         "derived_struct_data": {},
+        "acl_info": {
+            "readers": [
+                {
+                    "principals": [
+                        {
+                            "user_id": "user_id_value",
+                            "group_id": "group_id_value",
+                            "external_entity_id": "external_entity_id_value",
+                        }
+                    ],
+                    "idp_wide": True,
+                }
+            ]
+        },
         "index_time": {"seconds": 751, "nanos": 543},
         "index_status": {
             "index_time": {},

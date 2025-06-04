@@ -88,6 +88,8 @@ class ControlServiceAsyncClient:
     parse_control_path = staticmethod(ControlServiceClient.parse_control_path)
     data_store_path = staticmethod(ControlServiceClient.data_store_path)
     parse_data_store_path = staticmethod(ControlServiceClient.parse_data_store_path)
+    document_path = staticmethod(ControlServiceClient.document_path)
+    parse_document_path = staticmethod(ControlServiceClient.parse_document_path)
     common_billing_account_path = staticmethod(
         ControlServiceClient.common_billing_account_path
     )

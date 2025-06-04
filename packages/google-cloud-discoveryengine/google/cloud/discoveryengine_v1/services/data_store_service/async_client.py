@@ -58,7 +58,7 @@ from google.cloud.discoveryengine_v1.types import (
     document_processing_config,
     schema,
 )
-from google.cloud.discoveryengine_v1.types import common
+from google.cloud.discoveryengine_v1.types import cmek_config_service, common
 from google.cloud.discoveryengine_v1.types import data_store
 from google.cloud.discoveryengine_v1.types import data_store as gcd_data_store
 
@@ -91,8 +91,18 @@ class DataStoreServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = DataStoreServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DataStoreServiceClient._DEFAULT_UNIVERSE
 
+    cmek_config_path = staticmethod(DataStoreServiceClient.cmek_config_path)
+    parse_cmek_config_path = staticmethod(DataStoreServiceClient.parse_cmek_config_path)
     collection_path = staticmethod(DataStoreServiceClient.collection_path)
     parse_collection_path = staticmethod(DataStoreServiceClient.parse_collection_path)
+    crypto_keys_path = staticmethod(DataStoreServiceClient.crypto_keys_path)
+    parse_crypto_keys_path = staticmethod(DataStoreServiceClient.parse_crypto_keys_path)
+    crypto_key_versions_path = staticmethod(
+        DataStoreServiceClient.crypto_key_versions_path
+    )
+    parse_crypto_key_versions_path = staticmethod(
+        DataStoreServiceClient.parse_crypto_key_versions_path
+    )
     data_store_path = staticmethod(DataStoreServiceClient.data_store_path)
     parse_data_store_path = staticmethod(DataStoreServiceClient.parse_data_store_path)
     document_processing_config_path = staticmethod(
@@ -100,6 +110,12 @@ class DataStoreServiceAsyncClient:
     )
     parse_document_processing_config_path = staticmethod(
         DataStoreServiceClient.parse_document_processing_config_path
+    )
+    identity_mapping_store_path = staticmethod(
+        DataStoreServiceClient.identity_mapping_store_path
+    )
+    parse_identity_mapping_store_path = staticmethod(
+        DataStoreServiceClient.parse_identity_mapping_store_path
     )
     schema_path = staticmethod(DataStoreServiceClient.schema_path)
     parse_schema_path = staticmethod(DataStoreServiceClient.parse_schema_path)
@@ -359,6 +375,7 @@ class DataStoreServiceAsyncClient:
                 data_store.display_name = "display_name_value"
 
                 request = discoveryengine_v1.CreateDataStoreRequest(
+                    cmek_config_name="cmek_config_name_value",
                     parent="parent_value",
                     data_store=data_store,
                     data_store_id="data_store_id_value",

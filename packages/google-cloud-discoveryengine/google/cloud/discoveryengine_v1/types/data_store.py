@@ -23,7 +23,7 @@ import proto  # type: ignore
 from google.cloud.discoveryengine_v1.types import (
     document_processing_config as gcd_document_processing_config,
 )
-from google.cloud.discoveryengine_v1.types import common
+from google.cloud.discoveryengine_v1.types import cmek_config_service, common
 from google.cloud.discoveryengine_v1.types import schema
 
 __protobuf__ = proto.module(
@@ -42,7 +42,8 @@ class DataStore(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The full resource name of the data store. Format:
+            Immutable. Identifier. The full resource name of the data
+            store. Format:
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
             This field must be a UTF-8 encoded string with a length
@@ -81,9 +82,40 @@ class DataStore(proto.Message):
         advanced_site_search_config (google.cloud.discoveryengine_v1.types.AdvancedSiteSearchConfig):
             Optional. Configuration for advanced site
             search.
+        kms_key_name (str):
+            Input only. The KMS key to be used to protect this DataStore
+            at creation time.
+
+            Must be set for requests that need to comply with CMEK Org
+            Policy protections.
+
+            If this field is set and processed successfully, the
+            DataStore will be protected by the KMS key, as indicated in
+            the cmek_config field.
+        cmek_config (google.cloud.discoveryengine_v1.types.CmekConfig):
+            Output only. CMEK-related information for the
+            DataStore.
         billing_estimation (google.cloud.discoveryengine_v1.types.DataStore.BillingEstimation):
             Output only. Data size estimation for
             billing.
+        acl_enabled (bool):
+            Immutable. Whether data in the
+            [DataStore][google.cloud.discoveryengine.v1.DataStore] has
+            ACL information. If set to ``true``, the source data must
+            have ACL. ACL will be ingested when data is ingested by
+            [DocumentService.ImportDocuments][google.cloud.discoveryengine.v1.DocumentService.ImportDocuments]
+            methods.
+
+            When ACL is enabled for the
+            [DataStore][google.cloud.discoveryengine.v1.DataStore],
+            [Document][google.cloud.discoveryengine.v1.Document] can't
+            be accessed by calling
+            [DocumentService.GetDocument][google.cloud.discoveryengine.v1.DocumentService.GetDocument]
+            or
+            [DocumentService.ListDocuments][google.cloud.discoveryengine.v1.DocumentService.ListDocuments].
+
+            Currently ACL is only supported in ``GENERIC`` industry
+            vertical with non-\ ``PUBLIC_WEBSITE`` content config.
         workspace_config (google.cloud.discoveryengine_v1.types.WorkspaceConfig):
             Config to store data store type configuration for workspace
             data. This must be set when
@@ -112,6 +144,15 @@ class DataStore(proto.Message):
             The provided schema will be validated against certain rules
             on schema. Learn more from `this
             doc <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
+        healthcare_fhir_config (google.cloud.discoveryengine_v1.types.HealthcareFhirConfig):
+            Optional. Configuration for ``HEALTHCARE_FHIR`` vertical.
+        identity_mapping_store (str):
+            Immutable. The fully qualified resource name of the
+            associated
+            [IdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStore].
+            This field can only be set for acl_enabled DataStores with
+            ``THIRD_PARTY`` or ``GSUITE`` IdP. Format:
+            ``projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}``.
     """
 
     class ContentConfig(proto.Enum):
@@ -225,10 +266,23 @@ class DataStore(proto.Message):
         number=12,
         message="AdvancedSiteSearchConfig",
     )
+    kms_key_name: str = proto.Field(
+        proto.STRING,
+        number=32,
+    )
+    cmek_config: cmek_config_service.CmekConfig = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=cmek_config_service.CmekConfig,
+    )
     billing_estimation: BillingEstimation = proto.Field(
         proto.MESSAGE,
         number=23,
         message=BillingEstimation,
+    )
+    acl_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=24,
     )
     workspace_config: "WorkspaceConfig" = proto.Field(
         proto.MESSAGE,
@@ -244,6 +298,15 @@ class DataStore(proto.Message):
         proto.MESSAGE,
         number=28,
         message=schema.Schema,
+    )
+    healthcare_fhir_config: common.HealthcareFhirConfig = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        message=common.HealthcareFhirConfig,
+    )
+    identity_mapping_store: str = proto.Field(
+        proto.STRING,
+        number=31,
     )
 
 

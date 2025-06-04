@@ -43,6 +43,7 @@ def sample_create_data_store():
     data_store.display_name = "display_name_value"
 
     request = discoveryengine_v1.CreateDataStoreRequest(
+        cmek_config_name="cmek_config_name_value",
         parent="parent_value",
         data_store=data_store,
         data_store_id="data_store_id_value",

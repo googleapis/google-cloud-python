@@ -842,11 +842,21 @@ class CheckGroundingSpec(proto.Message):
             default to 0.6.
 
             This field is a member of `oneof`_ ``_citation_threshold``.
+        enable_claim_level_score (bool):
+            The control flag that enables claim-level
+            grounding score in the response.
+
+            This field is a member of `oneof`_ ``_enable_claim_level_score``.
     """
 
     citation_threshold: float = proto.Field(
         proto.DOUBLE,
         number=1,
+        optional=True,
+    )
+    enable_claim_level_score: bool = proto.Field(
+        proto.BOOL,
+        number=4,
         optional=True,
     )
 
@@ -1015,6 +1025,13 @@ class CheckGroundingResponse(proto.Message):
                 should not be returned.
 
                 This field is a member of `oneof`_ ``_grounding_check_required``.
+            score (float):
+                Confidence score for the claim in the answer candidate, in
+                the range of [0, 1]. This is set only when
+                ``CheckGroundingRequest.grounding_spec.enable_claim_level_score``
+                is true.
+
+                This field is a member of `oneof`_ ``_score``.
         """
 
         start_pos: int = proto.Field(
@@ -1038,6 +1055,11 @@ class CheckGroundingResponse(proto.Message):
         grounding_check_required: bool = proto.Field(
             proto.BOOL,
             number=6,
+            optional=True,
+        )
+        score: float = proto.Field(
+            proto.DOUBLE,
+            number=7,
             optional=True,
         )
 
