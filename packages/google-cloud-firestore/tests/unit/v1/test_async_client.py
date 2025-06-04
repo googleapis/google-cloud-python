@@ -187,7 +187,7 @@ def test_asyncclient_document_factory_w_nested_path():
     assert isinstance(document2, AsyncDocumentReference)
 
 
-async def _collections_helper(retry=None, timeout=None):
+async def _collections_helper(retry=None, timeout=None, read_time=None):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 
@@ -206,7 +206,7 @@ async def _collections_helper(retry=None, timeout=None):
     client._firestore_api_internal = firestore_api
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
-    collections = [c async for c in client.collections(**kwargs)]
+    collections = [c async for c in client.collections(read_time=read_time, **kwargs)]
 
     assert len(collections) == len(collection_ids)
     for collection, collection_id in zip(collections, collection_ids):
@@ -215,8 +215,13 @@ async def _collections_helper(retry=None, timeout=None):
         assert collection.id == collection_id
 
     base_path = client._database_string + "/documents"
+    expected_request = {
+        "parent": base_path,
+    }
+    if read_time is not None:
+        expected_request["read_time"] = read_time
     firestore_api.list_collection_ids.assert_called_once_with(
-        request={"parent": base_path},
+        request=expected_request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -236,6 +241,12 @@ async def test_asyncclient_collections_w_retry_timeout():
     await _collections_helper(retry=retry, timeout=timeout)
 
 
+@pytest.mark.asyncio
+async def test_asyncclient_collections_read_time():
+    read_time = datetime.datetime.now(tz=datetime.timezone.utc)
+    await _collections_helper(read_time=read_time)
+
+
 async def _invoke_get_all(client, references, document_pbs, **kwargs):
     # Create a minimal fake GAPIC with a dummy response.
     firestore_api = AsyncMock(spec=["batch_get_documents"])
@@ -252,7 +263,13 @@ async def _invoke_get_all(client, references, document_pbs, **kwargs):
     return [s async for s in snapshots]
 
 
-async def _get_all_helper(num_snapshots=2, txn_id=None, retry=None, timeout=None):
+async def _get_all_helper(
+    num_snapshots=2,
+    txn_id=None,
+    retry=None,
+    timeout=None,
+    read_time=None,
+):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.async_document import DocumentSnapshot
     from google.cloud.firestore_v1.types import common
@@ -261,13 +278,13 @@ async def _get_all_helper(num_snapshots=2, txn_id=None, retry=None, timeout=None
 
     data1 = {"a": "cheese"}
     document1 = client.document("pineapple", "lamp1")
-    document_pb1, read_time = _doc_get_info(document1._document_path, data1)
-    response1 = _make_batch_response(found=document_pb1, read_time=read_time)
+    document_pb1, doc_read_time = _doc_get_info(document1._document_path, data1)
+    response1 = _make_batch_response(found=document_pb1, read_time=doc_read_time)
 
     data2 = {"b": True, "c": 18}
     document2 = client.document("pineapple", "lamp2")
-    document, read_time = _doc_get_info(document2._document_path, data2)
-    response2 = _make_batch_response(found=document, read_time=read_time)
+    document, doc_read_time = _doc_get_info(document2._document_path, data2)
+    response2 = _make_batch_response(found=document, read_time=doc_read_time)
 
     document3 = client.document("pineapple", "lamp3")
     response3 = _make_batch_response(missing=document3._document_path)
@@ -290,6 +307,7 @@ async def _get_all_helper(num_snapshots=2, txn_id=None, retry=None, timeout=None
         documents,
         responses,
         field_paths=field_paths,
+        read_time=read_time,
         **kwargs,
     )
 
@@ -308,14 +326,17 @@ async def _get_all_helper(num_snapshots=2, txn_id=None, retry=None, timeout=None
     mask = common.DocumentMask(field_paths=field_paths)
 
     kwargs.pop("transaction", None)
+    expected_request = {
+        "database": client._database_string,
+        "documents": doc_paths,
+        "mask": mask,
+        "transaction": txn_id,
+    }
+    if read_time is not None:
+        expected_request["read_time"] = read_time
 
     client._firestore_api.batch_get_documents.assert_called_once_with(
-        request={
-            "database": client._database_string,
-            "documents": doc_paths,
-            "mask": mask,
-            "transaction": txn_id,
-        },
+        request=expected_request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -344,6 +365,12 @@ async def test_asyncclient_get_all_w_retry_timeout():
 @pytest.mark.asyncio
 async def test_asyncclient_get_all_wrong_order():
     await _get_all_helper(num_snapshots=3)
+
+
+@pytest.mark.asyncio
+async def test_asyncclient_get_all_read_time():
+    read_time = datetime.datetime.now(tz=datetime.timezone.utc)
+    await _get_all_helper(read_time=read_time)
 
 
 @pytest.mark.asyncio

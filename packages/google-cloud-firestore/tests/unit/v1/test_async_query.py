@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import types
 
 import mock
@@ -41,7 +42,7 @@ def test_asyncquery_constructor():
     assert not query._all_descendants
 
 
-async def _get_helper(retry=None, timeout=None, explain_options=None):
+async def _get_helper(retry=None, timeout=None, explain_options=None, read_time=None):
     from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC.
@@ -68,7 +69,9 @@ async def _get_helper(retry=None, timeout=None, explain_options=None):
 
     # Execute the query and check the response.
     query = make_async_query(parent)
-    returned = await query.get(**kwargs, explain_options=explain_options)
+    returned = await query.get(
+        **kwargs, explain_options=explain_options, read_time=read_time
+    )
 
     assert isinstance(returned, QueryResultsList)
     assert len(returned) == 1
@@ -94,6 +97,8 @@ async def _get_helper(retry=None, timeout=None, explain_options=None):
     }
     if explain_options:
         request["explain_options"] = explain_options._to_dict()
+    if read_time:
+        request["read_time"] = read_time
 
     # Verify the mock call.
     firestore_api.run_query.assert_called_once_with(
@@ -115,6 +120,12 @@ async def test_asyncquery_get_w_retry_timeout():
     retry = Retry(predicate=object())
     timeout = 123.0
     await _get_helper(retry=retry, timeout=timeout)
+
+
+@pytest.mark.asyncio
+async def test_asyncquery_get_w_read_time():
+    read_time = datetime.datetime.now(tz=datetime.timezone.utc)
+    await _get_helper(read_time=read_time)
 
 
 @pytest.mark.asyncio
@@ -336,7 +347,9 @@ async def test_asyncquery_chunkify_w_chunksize_gt_limit():
     assert [snapshot.id for snapshot in chunks[0]] == expected_ids
 
 
-async def _stream_helper(retry=None, timeout=None, explain_options=None):
+async def _stream_helper(
+    retry=None, timeout=None, explain_options=None, read_time=None
+):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
 
@@ -367,7 +380,9 @@ async def _stream_helper(retry=None, timeout=None, explain_options=None):
     # Execute the query and check the response.
     query = make_async_query(parent)
 
-    stream_response = query.stream(**kwargs, explain_options=explain_options)
+    stream_response = query.stream(
+        **kwargs, explain_options=explain_options, read_time=read_time
+    )
     assert isinstance(stream_response, AsyncStreamGenerator)
 
     returned = [x async for x in stream_response]
@@ -395,6 +410,8 @@ async def _stream_helper(retry=None, timeout=None, explain_options=None):
     }
     if explain_options is not None:
         request["explain_options"] = explain_options._to_dict()
+    if read_time is not None:
+        request["read_time"] = read_time
 
     # Verify the mock call.
     firestore_api.run_query.assert_called_once_with(
@@ -416,6 +433,12 @@ async def test_asyncquery_stream_w_retry_timeout():
     retry = Retry(predicate=object())
     timeout = 123.0
     await _stream_helper(retry=retry, timeout=timeout)
+
+
+@pytest.mark.asyncio
+async def test_asyncquery_stream_w_read_time():
+    read_time = datetime.datetime.now(tz=datetime.timezone.utc)
+    await _stream_helper(read_time=read_time)
 
 
 @pytest.mark.asyncio
@@ -476,6 +499,57 @@ async def test_asyncquery_stream_with_transaction():
             "parent": parent_path,
             "structured_query": query._to_protobuf(),
             "transaction": txn_id,
+        },
+        metadata=client._rpc_metadata,
+    )
+
+
+@pytest.mark.asyncio
+async def test_asyncquery_stream_with_transaction_and_read_time():
+    from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
+
+    # Create a minimal fake GAPIC.
+    firestore_api = AsyncMock(spec=["run_query"])
+
+    # Attach the fake GAPIC to a real client.
+    client = make_async_client()
+    client._firestore_api_internal = firestore_api
+
+    # Create a real-ish transaction for this client.
+    transaction = client.transaction()
+    txn_id = b"\x00\x00\x01-work-\xf2"
+    transaction._id = txn_id
+
+    # Create a read_time for this client.
+    read_time = datetime.datetime.now(tz=datetime.timezone.utc)
+
+    # Make a **real** collection reference as parent.
+    parent = client.collection("declaration")
+
+    # Add a dummy response to the minimal fake GAPIC.
+    parent_path, expected_prefix = parent._parent_info()
+    name = "{}/burger".format(expected_prefix)
+    data = {"lettuce": b"\xee\x87"}
+    response_pb = _make_query_response(name=name, data=data)
+    firestore_api.run_query.return_value = AsyncIter([response_pb])
+
+    # Execute the query and check the response.
+    query = make_async_query(parent)
+    get_response = query.stream(transaction=transaction, read_time=read_time)
+    assert isinstance(get_response, AsyncStreamGenerator)
+    returned = [x async for x in get_response]
+    assert len(returned) == 1
+    snapshot = returned[0]
+    assert snapshot.reference._path == ("declaration", "burger")
+    assert snapshot.to_dict() == data
+
+    # Verify the mock call.
+    firestore_api.run_query.assert_called_once_with(
+        request={
+            "parent": parent_path,
+            "structured_query": query._to_protobuf(),
+            "transaction": txn_id,
+            "read_time": read_time,
         },
         metadata=client._rpc_metadata,
     )
@@ -718,7 +792,7 @@ def test_asynccollectiongroup_constructor_all_descendents_is_false():
 
 
 @pytest.mark.asyncio
-async def _get_partitions_helper(retry=None, timeout=None):
+async def _get_partitions_helper(retry=None, timeout=None, read_time=None):
     from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC.
@@ -743,7 +817,7 @@ async def _get_partitions_helper(retry=None, timeout=None):
 
     # Execute the query and check the response.
     query = _make_async_collection_group(parent)
-    get_response = query.get_partitions(2, **kwargs)
+    get_response = query.get_partitions(2, read_time=read_time, **kwargs)
 
     assert isinstance(get_response, types.AsyncGeneratorType)
     returned = [i async for i in get_response]
@@ -755,12 +829,15 @@ async def _get_partitions_helper(retry=None, timeout=None):
         parent,
         orders=(query._make_order("__name__", query.ASCENDING),),
     )
+    expected_request = {
+        "parent": parent_path,
+        "structured_query": partition_query._to_protobuf(),
+        "partition_count": 2,
+    }
+    if read_time is not None:
+        expected_request["read_time"] = read_time
     firestore_api.partition_query.assert_called_once_with(
-        request={
-            "parent": parent_path,
-            "structured_query": partition_query._to_protobuf(),
-            "partition_count": 2,
-        },
+        request=expected_request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -778,6 +855,12 @@ async def test_asynccollectiongroup_get_partitions_w_retry_timeout():
     retry = Retry(predicate=object())
     timeout = 123.0
     await _get_partitions_helper(retry=retry, timeout=timeout)
+
+
+@pytest.mark.asyncio
+async def test_asynccollectiongroup_get_partitions_w_read_time():
+    read_time = datetime.datetime.now(tz=datetime.timezone.utc)
+    await _get_partitions_helper(read_time=read_time)
 
 
 @pytest.mark.asyncio

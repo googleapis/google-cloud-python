@@ -25,6 +25,7 @@ In the hierarchy of API concepts
 """
 from __future__ import annotations
 
+import datetime
 import os
 from typing import (
     Any,
@@ -437,6 +438,7 @@ class BaseClient(ClientWithProject):
         transaction: BaseTransaction | None = None,
         retry: retries.Retry | retries.AsyncRetry | object | None = None,
         timeout: float | None = None,
+        read_time: datetime.datetime | None = None,
     ) -> Tuple[dict, dict, dict]:
         """Shared setup for async/sync :meth:`get_all`."""
         document_paths, reference_map = _reference_info(references)
@@ -447,6 +449,8 @@ class BaseClient(ClientWithProject):
             "mask": mask,
             "transaction": _helpers.get_transaction_id(transaction),
         }
+        if read_time is not None:
+            request["read_time"] = read_time
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         return request, reference_map, kwargs
@@ -458,6 +462,8 @@ class BaseClient(ClientWithProject):
         transaction=None,
         retry: retries.Retry | retries.AsyncRetry | object | None = None,
         timeout: float | None = None,
+        *,
+        read_time: datetime.datetime | None = None,
     ) -> Union[
         AsyncGenerator[DocumentSnapshot, Any], Generator[DocumentSnapshot, Any, Any]
     ]:
@@ -467,9 +473,14 @@ class BaseClient(ClientWithProject):
         self,
         retry: retries.Retry | retries.AsyncRetry | object | None = None,
         timeout: float | None = None,
+        read_time: datetime.datetime | None = None,
     ) -> Tuple[dict, dict]:
         """Shared setup for async/sync :meth:`collections`."""
-        request = {"parent": "{}/documents".format(self._database_string)}
+        request = {
+            "parent": "{}/documents".format(self._database_string),
+        }
+        if read_time is not None:
+            request["read_time"] = read_time
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         return request, kwargs
@@ -478,6 +489,8 @@ class BaseClient(ClientWithProject):
         self,
         retry: retries.Retry | retries.AsyncRetry | object | None = None,
         timeout: float | None = None,
+        *,
+        read_time: datetime.datetime | None = None,
     ):
         raise NotImplementedError
 

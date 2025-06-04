@@ -16,6 +16,7 @@ import types
 
 import mock
 
+from datetime import datetime, timezone
 from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT
 
 
@@ -266,7 +267,7 @@ def test_add_w_retry_timeout():
     _add_helper(retry=retry, timeout=timeout)
 
 
-def _list_documents_helper(page_size=None, retry=None, timeout=None):
+def _list_documents_helper(page_size=None, retry=None, timeout=None, read_time=None):
     from google.api_core.page_iterator import Iterator, Page
 
     from google.cloud.firestore_v1 import _helpers as _fs_v1_helpers
@@ -299,9 +300,15 @@ def _list_documents_helper(page_size=None, retry=None, timeout=None):
     kwargs = _fs_v1_helpers.make_retry_timeout_kwargs(retry, timeout)
 
     if page_size is not None:
-        documents = list(collection.list_documents(page_size=page_size, **kwargs))
+        documents = list(
+            collection.list_documents(
+                page_size=page_size,
+                **kwargs,
+                read_time=read_time,
+            )
+        )
     else:
-        documents = list(collection.list_documents(**kwargs))
+        documents = list(collection.list_documents(**kwargs, read_time=read_time))
 
     # Verify the response and the mocks.
     assert len(documents) == len(document_ids)
@@ -311,14 +318,18 @@ def _list_documents_helper(page_size=None, retry=None, timeout=None):
         assert document.id == document_id
 
     parent, _ = collection._parent_info()
+    expected_request = {
+        "parent": parent,
+        "collection_id": collection.id,
+        "page_size": page_size,
+        "show_missing": True,
+        "mask": {"field_paths": None},
+    }
+    if read_time is not None:
+        expected_request["read_time"] = read_time
+
     api_client.list_documents.assert_called_once_with(
-        request={
-            "parent": parent,
-            "collection_id": collection.id,
-            "page_size": page_size,
-            "show_missing": True,
-            "mask": {"field_paths": None},
-        },
+        request=expected_request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -338,6 +349,10 @@ def test_list_documents_w_retry_timeout():
 
 def test_list_documents_w_page_size():
     _list_documents_helper(page_size=25)
+
+
+def test_list_documents_w_read_time():
+    _list_documents_helper(read_time=datetime.now())
 
 
 @mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
@@ -404,6 +419,22 @@ def test_get_w_explain_options(query_class):
 
 
 @mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
+def test_get_w_read_time(query_class):
+    read_time = datetime.now(tz=timezone.utc)
+    collection = _make_collection_reference("collection")
+    get_response = collection.get(read_time=read_time)
+
+    query_class.assert_called_once_with(collection)
+    query_instance = query_class.return_value
+
+    assert get_response is query_instance.get.return_value
+    query_instance.get.assert_called_once_with(
+        transaction=None,
+        read_time=read_time,
+    )
+
+
+@mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
 def test_stream(query_class):
     collection = _make_collection_reference("collection")
     stream_response = collection.stream()
@@ -460,6 +491,22 @@ def test_stream_w_explain_options(query_class):
     query_instance.stream.assert_called_once_with(
         transaction=None,
         explain_options=explain_options,
+    )
+
+
+@mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
+def test_stream_w_read_time(query_class):
+    read_time = datetime.now(tz=timezone.utc)
+    collection = _make_collection_reference("collection")
+    get_response = collection.stream(read_time=read_time)
+
+    query_class.assert_called_once_with(collection)
+    query_instance = query_class.return_value
+
+    assert get_response is query_instance.stream.return_value
+    query_instance.stream.assert_called_once_with(
+        transaction=None,
+        read_time=read_time,
     )
 
 

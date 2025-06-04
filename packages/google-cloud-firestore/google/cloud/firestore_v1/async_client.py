@@ -48,8 +48,10 @@ from google.cloud.firestore_v1.services.firestore.transports import (
     grpc_asyncio as firestore_grpc_transport,
 )
 
-if TYPE_CHECKING:
-    from google.cloud.firestore_v1.bulk_writer import BulkWriter  # pragma: NO COVER
+if TYPE_CHECKING:  # pragma: NO COVER
+    import datetime
+
+    from google.cloud.firestore_v1.bulk_writer import BulkWriter
 
 
 class AsyncClient(BaseClient):
@@ -227,6 +229,8 @@ class AsyncClient(BaseClient):
         transaction: AsyncTransaction | None = None,
         retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
+        *,
+        read_time: datetime.datetime | None = None,
     ) -> AsyncGenerator[DocumentSnapshot, Any]:
         """Retrieve a batch of documents.
 
@@ -261,13 +265,17 @@ class AsyncClient(BaseClient):
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
                 system-specified value.
+            read_time (Optional[datetime.datetime]): If set, reads documents as they were at the given
+                time. This must be a timestamp within the past one hour, or if Point-in-Time Recovery
+                is enabled, can additionally be a whole minute timestamp within the past 7 days. If no
+                timezone is specified in the :class:`datetime.datetime` object, it is assumed to be UTC.
 
         Yields:
             .DocumentSnapshot: The next document snapshot that fulfills the
             query, or :data:`None` if the document does not exist.
         """
         request, reference_map, kwargs = self._prep_get_all(
-            references, field_paths, transaction, retry, timeout
+            references, field_paths, transaction, retry, timeout, read_time
         )
 
         response_iterator = await self._firestore_api.batch_get_documents(
@@ -283,6 +291,8 @@ class AsyncClient(BaseClient):
         self,
         retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
+        *,
+        read_time: datetime.datetime | None = None,
     ) -> AsyncGenerator[AsyncCollectionReference, Any]:
         """List top-level collections of the client's database.
 
@@ -291,12 +301,16 @@ class AsyncClient(BaseClient):
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
                 system-specified value.
+            read_time (Optional[datetime.datetime]): If set, reads documents as they were at the given
+                time. This must be a timestamp within the past one hour, or if Point-in-Time Recovery
+                is enabled, can additionally be a whole minute timestamp within the past 7 days. If no
+                timezone is specified in the :class:`datetime.datetime` object, it is assumed to be UTC.
 
         Returns:
             Sequence[:class:`~google.cloud.firestore_v1.async_collection.AsyncCollectionReference`]:
                 iterator of subcollections of the current document.
         """
-        request, kwargs = self._prep_collections(retry, timeout)
+        request, kwargs = self._prep_collections(retry, timeout, read_time)
         iterator = await self._firestore_api.list_collection_ids(
             request=request,
             metadata=self._rpc_metadata,

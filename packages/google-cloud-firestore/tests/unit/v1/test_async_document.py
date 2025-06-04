@@ -17,6 +17,9 @@ import collections
 import mock
 import pytest
 
+from datetime import datetime
+
+from google.protobuf import timestamp_pb2
 from tests.unit.v1._test_helpers import make_async_client
 from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 
@@ -399,6 +402,7 @@ async def _get_helper(
     return_empty=False,
     retry=None,
     timeout=None,
+    read_time=None,
 ):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.transaction import Transaction
@@ -407,10 +411,14 @@ async def _get_helper(
     # Create a minimal fake GAPIC with a dummy response.
     create_time = 123
     update_time = 234
-    read_time = 345
+    if read_time:
+        response_read_time = timestamp_pb2.Timestamp()
+        response_read_time.FromDatetime(read_time)
+    else:
+        response_read_time = 345
     firestore_api = AsyncMock(spec=["batch_get_documents"])
     response = mock.create_autospec(firestore.BatchGetDocumentsResponse)
-    response.read_time = 345
+    response.read_time = response_read_time
     response.found = mock.create_autospec(document.Document)
     response.found.fields = {}
     response.found.create_time = create_time
@@ -445,6 +453,7 @@ async def _get_helper(
         field_paths=field_paths,
         transaction=transaction,
         **kwargs,
+        read_time=read_time,
     )
 
     assert snapshot.reference is document_reference
@@ -457,7 +466,7 @@ async def _get_helper(
     else:
         assert snapshot.to_dict() == {}
         assert snapshot.exists
-        assert snapshot.read_time is read_time
+        assert snapshot.read_time is response_read_time
         assert snapshot.create_time is create_time
         assert snapshot.update_time is update_time
 
@@ -472,13 +481,17 @@ async def _get_helper(
     else:
         expected_transaction_id = None
 
+    expected_request = {
+        "database": client._database_string,
+        "documents": [document_reference._document_path],
+        "mask": mask,
+        "transaction": expected_transaction_id,
+    }
+    if read_time is not None:
+        expected_request["read_time"] = read_time
+
     firestore_api.batch_get_documents.assert_called_once_with(
-        request={
-            "database": client._database_string,
-            "documents": [document_reference._document_path],
-            "mask": mask,
-            "transaction": expected_transaction_id,
-        },
+        request=expected_request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -530,7 +543,12 @@ async def test_asyncdocumentreference_get_with_transaction():
 
 
 @pytest.mark.asyncio
-async def _collections_helper(page_size=None, retry=None, timeout=None):
+async def test_asyncdocumentreference_get_with_read_time():
+    await _get_helper(read_time=datetime.now())
+
+
+@pytest.mark.asyncio
+async def _collections_helper(page_size=None, retry=None, timeout=None, read_time=None):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 
@@ -553,10 +571,15 @@ async def _collections_helper(page_size=None, retry=None, timeout=None):
     document = _make_async_document_reference("where", "we-are", client=client)
     if page_size is not None:
         collections = [
-            c async for c in document.collections(page_size=page_size, **kwargs)
+            c
+            async for c in document.collections(
+                page_size=page_size, **kwargs, read_time=read_time
+            )
         ]
     else:
-        collections = [c async for c in document.collections(**kwargs)]
+        collections = [
+            c async for c in document.collections(**kwargs, read_time=read_time)
+        ]
 
     # Verify the response and the mocks.
     assert len(collections) == len(collection_ids)
@@ -565,8 +588,15 @@ async def _collections_helper(page_size=None, retry=None, timeout=None):
         assert collection.parent == document
         assert collection.id == collection_id
 
+    expected_result = {
+        "parent": document._document_path,
+        "page_size": page_size,
+    }
+    if read_time is not None:
+        expected_result["read_time"] = read_time
+
     firestore_api.list_collection_ids.assert_called_once_with(
-        request={"parent": document._document_path, "page_size": page_size},
+        request=expected_result,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -584,6 +614,11 @@ async def test_asyncdocumentreference_collections_w_retry_timeout():
     retry = Retry(predicate=object())
     timeout = 123.0
     await _collections_helper(retry=retry, timeout=timeout)
+
+
+@pytest.mark.asyncio
+async def test_documentreference_collections_w_read_time():
+    await _collections_helper(read_time=datetime.now())
 
 
 @pytest.mark.asyncio

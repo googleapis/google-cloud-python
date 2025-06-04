@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import mock
 import pytest
 
@@ -294,13 +295,15 @@ async def test_asynctransaction__commit_failure():
     )
 
 
-async def _get_all_helper(retry=None, timeout=None):
+async def _get_all_helper(retry=None, timeout=None, read_time=None):
     from google.cloud.firestore_v1 import _helpers
 
     client = AsyncMock(spec=["get_all"])
     transaction = _make_async_transaction(client)
     ref1, ref2 = mock.Mock(), mock.Mock()
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+    if read_time is not None:
+        kwargs["read_time"] = read_time
 
     result = await transaction.get_all([ref1, ref2], **kwargs)
 
@@ -326,7 +329,15 @@ async def test_asynctransaction_get_all_w_retry_timeout():
     await _get_all_helper(retry=retry, timeout=timeout)
 
 
-async def _get_w_document_ref_helper(retry=None, timeout=None, explain_options=None):
+@pytest.mark.asyncio
+async def test_asynctransaction_get_all_w_read_time():
+    read_time = datetime.datetime.now(tz=datetime.timezone.utc)
+    await _get_all_helper(read_time=read_time)
+
+
+async def _get_w_document_ref_helper(
+    retry=None, timeout=None, explain_options=None, read_time=None
+):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 
@@ -335,7 +346,12 @@ async def _get_w_document_ref_helper(retry=None, timeout=None, explain_options=N
     ref = AsyncDocumentReference("documents", "doc-id")
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
-    result = await transaction.get(ref, **kwargs, explain_options=explain_options)
+    if explain_options is not None:
+        kwargs["explain_options"] = explain_options
+    if read_time is not None:
+        kwargs["read_time"] = read_time
+
+    result = await transaction.get(ref, **kwargs)
 
     client.get_all.assert_called_once_with([ref], transaction=transaction, **kwargs)
     assert result is client.get_all.return_value
@@ -356,7 +372,7 @@ async def test_asynctransaction_get_w_document_ref_w_retry_timeout():
 
 
 @pytest.mark.asyncio
-async def test_transaction_get_w_document_ref_w_explain_options():
+async def test_asynctransaction_get_w_document_ref_w_explain_options():
     from google.cloud.firestore_v1.query_profile import ExplainOptions
 
     with pytest.raises(ValueError, match="`explain_options` cannot be provided."):
@@ -365,7 +381,16 @@ async def test_transaction_get_w_document_ref_w_explain_options():
         )
 
 
-async def _get_w_query_helper(retry=None, timeout=None, explain_options=None):
+@pytest.mark.asyncio
+async def test_asynctransaction_get_w_document_ref_w_read_time():
+    await _get_w_document_ref_helper(
+        read_time=datetime.datetime.now(tz=datetime.timezone.utc)
+    )
+
+
+async def _get_w_query_helper(
+    retry=None, timeout=None, explain_options=None, read_time=None
+):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.async_query import AsyncQuery
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
@@ -407,6 +432,7 @@ async def _get_w_query_helper(retry=None, timeout=None, explain_options=None):
         query,
         **kwargs,
         explain_options=explain_options,
+        read_time=read_time,
     )
 
     # Verify the response.
@@ -435,6 +461,8 @@ async def _get_w_query_helper(retry=None, timeout=None, explain_options=None):
     }
     if explain_options is not None:
         request["explain_options"] = explain_options._to_dict()
+    if read_time is not None:
+        request["read_time"] = read_time
 
     # Verify the mock call.
     firestore_api.run_query.assert_called_once_with(
@@ -460,6 +488,12 @@ async def test_transaction_get_w_query_w_explain_options():
     from google.cloud.firestore_v1.query_profile import ExplainOptions
 
     await _get_w_query_helper(explain_options=ExplainOptions(analyze=True))
+
+
+@pytest.mark.asyncio
+async def test_asynctransaction_get_w_query_w_read_time():
+    read_time = datetime.datetime.now(tz=datetime.timezone.utc)
+    await _get_w_query_helper(read_time=read_time)
 
 
 @pytest.mark.asyncio

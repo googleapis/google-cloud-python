@@ -26,6 +26,8 @@ from google.cloud.firestore_v1.base_aggregation import (
 from google.cloud.firestore_v1.query_profile import ExplainMetrics, QueryExplainError
 from google.cloud.firestore_v1.query_results import QueryResultsList
 from google.cloud.firestore_v1.stream_generator import StreamGenerator
+from google.cloud.firestore_v1.types import RunAggregationQueryResponse
+from google.protobuf.timestamp_pb2 import Timestamp
 from tests.unit.v1._test_helpers import (
     make_aggregation_query,
     make_aggregation_query_response,
@@ -384,11 +386,74 @@ def test_aggregation_query_prep_stream_with_explain_options():
     assert kwargs == {"retry": None}
 
 
+def test_aggregation_query_prep_stream_with_read_time():
+    client = make_client()
+    parent = client.collection("dee")
+    query = make_query(parent)
+    aggregation_query = make_aggregation_query(query)
+
+    aggregation_query.count(alias="all")
+    aggregation_query.sum("someref", alias="sumall")
+    aggregation_query.avg("anotherref", alias="avgall")
+
+    # 1800 seconds after epoch
+    read_time = datetime.now()
+
+    request, kwargs = aggregation_query._prep_stream(read_time=read_time)
+
+    parent_path, _ = parent._parent_info()
+    expected_request = {
+        "parent": parent_path,
+        "structured_aggregation_query": aggregation_query._to_protobuf(),
+        "transaction": None,
+        "read_time": read_time,
+    }
+    assert request == expected_request
+    assert kwargs == {"retry": None}
+
+
+@pytest.mark.parametrize("timezone", [None, timezone.utc, timezone(timedelta(hours=5))])
+def test_aggregation_query_get_stream_iterator_read_time_different_timezones(timezone):
+    client = make_client()
+    parent = client.collection("dee")
+    query = make_query(parent)
+    aggregation_query = make_aggregation_query(query)
+
+    aggregation_query.count(alias="all")
+    aggregation_query.sum("someref", alias="sumall")
+    aggregation_query.avg("anotherref", alias="avgall")
+
+    # 1800 seconds after epoch
+    read_time = datetime(1970, 1, 1, 0, 30)
+    if timezone is not None:
+        read_time = read_time.astimezone(timezone)
+
+    # The internal firestore API needs to be initialized before it gets mocked.
+    client._firestore_api
+
+    # Validate that the same timestamp_pb object would be sent in the actual request.
+    with mock.patch.object(
+        type(client._firestore_api_internal.transport.run_aggregation_query), "__call__"
+    ) as call:
+        call.return_value = iter([RunAggregationQueryResponse()])
+        aggregation_query._get_stream_iterator(
+            transaction=None, retry=None, timeout=None, read_time=read_time
+        )
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request_read_time = args[0].read_time
+
+        # Verify that the timestamp is correct.
+        expected_timestamp = Timestamp(seconds=1800)
+        assert request_read_time.timestamp_pb() == expected_timestamp
+
+
 def _aggregation_query_get_helper(
     retry=None,
     timeout=None,
-    read_time=None,
     explain_options=None,
+    response_read_time=None,
+    query_read_time=None,
 ):
     from google.cloud._helpers import _datetime_to_pb_timestamp
 
@@ -411,7 +476,11 @@ def _aggregation_query_get_helper(
     aggregation_query = make_aggregation_query(query)
     aggregation_query.count(alias="all")
 
-    aggregation_result = AggregationResult(alias="total", value=5, read_time=read_time)
+    aggregation_result = AggregationResult(
+        alias="total",
+        value=5,
+        read_time=response_read_time,
+    )
 
     if explain_options is not None:
         explain_metrics = {"execution_stats": {"results_returned": 1}}
@@ -419,14 +488,18 @@ def _aggregation_query_get_helper(
         explain_metrics = None
     response_pb = make_aggregation_query_response(
         [aggregation_result],
-        read_time=read_time,
+        read_time=response_read_time,
         explain_metrics=explain_metrics,
     )
     firestore_api.run_aggregation_query.return_value = iter([response_pb])
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
-    returned = aggregation_query.get(**kwargs, explain_options=explain_options)
+    returned = aggregation_query.get(
+        **kwargs,
+        explain_options=explain_options,
+        read_time=query_read_time,
+    )
     assert isinstance(returned, QueryResultsList)
     assert len(returned) == 1
 
@@ -434,9 +507,9 @@ def _aggregation_query_get_helper(
         for r in result:
             assert r.alias == aggregation_result.alias
             assert r.value == aggregation_result.value
-            if read_time is not None:
+            if response_read_time is not None:
                 result_datetime = _datetime_to_pb_timestamp(r.read_time)
-                assert result_datetime == read_time
+                assert result_datetime == response_read_time
 
     assert returned._explain_options == explain_options
     assert returned.explain_options == explain_options
@@ -457,6 +530,8 @@ def _aggregation_query_get_helper(
     }
     if explain_options is not None:
         expected_request["explain_options"] = explain_options._to_dict()
+    if query_read_time is not None:
+        expected_request["read_time"] = query_read_time
 
     # Verify the mock call.
     firestore_api.run_aggregation_query.assert_called_once_with(
@@ -473,9 +548,11 @@ def test_aggregation_query_get():
 def test_aggregation_query_get_with_readtime():
     from google.cloud._helpers import _datetime_to_pb_timestamp
 
-    one_hour_ago = datetime.now(tz=timezone.utc) - timedelta(hours=1)
-    read_time = _datetime_to_pb_timestamp(one_hour_ago)
-    _aggregation_query_get_helper(read_time=read_time)
+    query_read_time = datetime.now(tz=timezone.utc) - timedelta(hours=1)
+    response_read_time = _datetime_to_pb_timestamp(query_read_time)
+    _aggregation_query_get_helper(
+        response_read_time=response_read_time, query_read_time=query_read_time
+    )
 
 
 def test_aggregation_query_get_retry_timeout():
@@ -555,6 +632,7 @@ def _aggregation_query_stream_w_retriable_exc_helper(
     timeout=None,
     transaction=None,
     expect_retry=True,
+    read_time=None,
 ):
     from google.api_core import exceptions, gapic_v1
 
@@ -598,7 +676,9 @@ def _aggregation_query_stream_w_retriable_exc_helper(
     query = make_query(parent)
     aggregation_query = make_aggregation_query(query)
 
-    get_response = aggregation_query.stream(transaction=transaction, **kwargs)
+    get_response = aggregation_query.stream(
+        transaction=transaction, **kwargs, read_time=read_time
+    )
 
     assert isinstance(get_response, stream_generator.StreamGenerator)
     if expect_retry:
@@ -629,23 +709,31 @@ def _aggregation_query_stream_w_retriable_exc_helper(
     else:
         expected_transaction_id = None
 
+    expected_request = {
+        "parent": parent_path,
+        "structured_aggregation_query": aggregation_query._to_protobuf(),
+        "transaction": expected_transaction_id,
+    }
+    if read_time is not None:
+        expected_request["read_time"] = read_time
+
     assert calls[0] == mock.call(
-        request={
-            "parent": parent_path,
-            "structured_aggregation_query": aggregation_query._to_protobuf(),
-            "transaction": expected_transaction_id,
-        },
+        request=expected_request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
 
     if expect_retry:
+        expected_request = {
+            "parent": parent_path,
+            "structured_aggregation_query": aggregation_query._to_protobuf(),
+            "transaction": None,
+        }
+        if read_time is not None:
+            expected_request["read_time"] = read_time
+
         assert calls[1] == mock.call(
-            request={
-                "parent": parent_path,
-                "structured_aggregation_query": aggregation_query._to_protobuf(),
-                "transaction": None,
-            },
+            request=expected_request,
             metadata=client._rpc_metadata,
             **kwargs,
         )
@@ -659,6 +747,12 @@ def test_aggregation_query_stream_w_retriable_exc_w_retry():
     retry = mock.Mock(spec=["_predicate"])
     retry._predicate = lambda exc: False
     _aggregation_query_stream_w_retriable_exc_helper(retry=retry, expect_retry=False)
+
+
+def test_aggregation_query_stream_w_retriable_exc_w_read_time():
+    _aggregation_query_stream_w_retriable_exc_helper(
+        read_time=datetime.now(tz=timezone.utc)
+    )
 
 
 def test_aggregation_query_stream_w_retriable_exc_w_transaction():
@@ -713,7 +807,9 @@ def _aggregation_query_stream_helper(
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
-    returned = aggregation_query.stream(**kwargs, explain_options=explain_options)
+    returned = aggregation_query.stream(
+        **kwargs, explain_options=explain_options, read_time=read_time
+    )
     assert isinstance(returned, StreamGenerator)
 
     results = []
@@ -743,6 +839,8 @@ def _aggregation_query_stream_helper(
     }
     if explain_options is not None:
         expected_request["explain_options"] = explain_options._to_dict()
+    if read_time is not None:
+        expected_request["read_time"] = read_time
 
     # Verify the mock call.
     firestore_api.run_aggregation_query.assert_called_once_with(
@@ -756,7 +854,7 @@ def test_aggregation_query_stream():
     _aggregation_query_stream_helper()
 
 
-def test_aggregation_query_stream_with_readtime():
+def test_aggregation_query_stream_with_read_time():
     from google.cloud._helpers import _datetime_to_pb_timestamp
 
     one_hour_ago = datetime.now(tz=timezone.utc) - timedelta(hours=1)

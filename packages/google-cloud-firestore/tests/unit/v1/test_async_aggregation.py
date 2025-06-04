@@ -321,9 +321,39 @@ def test_async_aggregation_query_prep_stream_with_explain_options():
     assert kwargs == {"retry": None}
 
 
+def test_async_aggregation_query_prep_stream_with_read_time():
+    client = make_async_client()
+    parent = client.collection("dee")
+    query = make_async_query(parent)
+    aggregation_query = make_async_aggregation_query(query)
+
+    aggregation_query.count(alias="all")
+    aggregation_query.sum("someref", alias="sumall")
+    aggregation_query.avg("anotherref", alias="avgall")
+
+    # 1800 seconds after epoch
+    read_time = datetime.now()
+
+    request, kwargs = aggregation_query._prep_stream(read_time=read_time)
+
+    parent_path, _ = parent._parent_info()
+    expected_request = {
+        "parent": parent_path,
+        "structured_aggregation_query": aggregation_query._to_protobuf(),
+        "transaction": None,
+        "read_time": read_time,
+    }
+    assert request == expected_request
+    assert kwargs == {"retry": None}
+
+
 @pytest.mark.asyncio
 async def _async_aggregation_query_get_helper(
-    retry=None, timeout=None, read_time=None, explain_options=None
+    retry=None,
+    timeout=None,
+    explain_options=None,
+    response_read_time=None,
+    query_read_time=None,
 ):
     from google.cloud._helpers import _datetime_to_pb_timestamp
 
@@ -342,7 +372,11 @@ async def _async_aggregation_query_get_helper(
     aggregation_query = make_async_aggregation_query(query)
     aggregation_query.count(alias="all")
 
-    aggregation_result = AggregationResult(alias="total", value=5, read_time=read_time)
+    aggregation_result = AggregationResult(
+        alias="total",
+        value=5,
+        read_time=response_read_time,
+    )
 
     if explain_options is not None:
         explain_metrics = {"execution_stats": {"results_returned": 1}}
@@ -351,14 +385,18 @@ async def _async_aggregation_query_get_helper(
 
     response_pb = make_aggregation_query_response(
         [aggregation_result],
-        read_time=read_time,
+        read_time=response_read_time,
         explain_metrics=explain_metrics,
     )
     firestore_api.run_aggregation_query.return_value = AsyncIter([response_pb])
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
-    returned = await aggregation_query.get(**kwargs, explain_options=explain_options)
+    returned = await aggregation_query.get(
+        **kwargs,
+        explain_options=explain_options,
+        read_time=query_read_time,
+    )
     assert isinstance(returned, QueryResultsList)
     assert len(returned) == 1
 
@@ -366,9 +404,9 @@ async def _async_aggregation_query_get_helper(
         for r in result:
             assert r.alias == aggregation_result.alias
             assert r.value == aggregation_result.value
-            if read_time is not None:
+            if response_read_time is not None:
                 result_datetime = _datetime_to_pb_timestamp(r.read_time)
-                assert result_datetime == read_time
+                assert result_datetime == response_read_time
 
     if explain_options is None:
         with pytest.raises(QueryExplainError, match="explain_options not set"):
@@ -387,6 +425,8 @@ async def _async_aggregation_query_get_helper(
     }
     if explain_options is not None:
         expected_request["explain_options"] = explain_options._to_dict()
+    if query_read_time is not None:
+        expected_request["read_time"] = query_read_time
     firestore_api.run_aggregation_query.assert_called_once_with(
         request=expected_request,
         metadata=client._rpc_metadata,
@@ -405,7 +445,9 @@ async def test_async_aggregation_query_get_with_readtime():
 
     one_hour_ago = datetime.now(tz=timezone.utc) - timedelta(hours=1)
     read_time = _datetime_to_pb_timestamp(one_hour_ago)
-    await _async_aggregation_query_get_helper(read_time=read_time)
+    await _async_aggregation_query_get_helper(
+        query_read_time=one_hour_ago, response_read_time=read_time
+    )
 
 
 @pytest.mark.asyncio
@@ -583,7 +625,11 @@ async def _async_aggregation_query_stream_helper(
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     # Execute the query and check the response.
-    returned = aggregation_query.stream(**kwargs, explain_options=explain_options)
+    returned = aggregation_query.stream(
+        **kwargs,
+        explain_options=explain_options,
+        read_time=read_time,
+    )
     assert isinstance(returned, AsyncStreamGenerator)
 
     results = []
@@ -611,6 +657,8 @@ async def _async_aggregation_query_stream_helper(
     }
     if explain_options is not None:
         expected_request["explain_options"] = explain_options._to_dict()
+    if read_time is not None:
+        expected_request["read_time"] = read_time
 
     # Verify the mock call.
     firestore_api.run_aggregation_query.assert_called_once_with(
@@ -623,6 +671,15 @@ async def _async_aggregation_query_stream_helper(
 @pytest.mark.asyncio
 async def test_aggregation_query_stream():
     await _async_aggregation_query_stream_helper()
+
+
+@pytest.mark.asyncio
+async def test_async_aggregation_query_stream_with_read_time():
+    from google.cloud._helpers import _datetime_to_pb_timestamp
+
+    one_hour_ago = datetime.now(tz=timezone.utc) - timedelta(hours=1)
+    read_time = _datetime_to_pb_timestamp(one_hour_ago)
+    await _async_aggregation_query_stream_helper(read_time=read_time)
 
 
 @pytest.mark.asyncio

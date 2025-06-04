@@ -329,6 +329,8 @@ class AsyncDocumentReference(BaseDocumentReference):
         transaction=None,
         retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
+        *,
+        read_time: datetime.datetime | None = None,
     ) -> DocumentSnapshot:
         """Retrieve a snapshot of the current document.
 
@@ -351,6 +353,10 @@ class AsyncDocumentReference(BaseDocumentReference):
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
                 system-specified value.
+            read_time (Optional[datetime.datetime]): If set, reads documents as they were at the given
+                time. This must be a timestamp within the past one hour, or if Point-in-Time Recovery
+                is enabled, can additionally be a whole minute timestamp within the past 7 days. If no
+                timezone is specified in the :class:`datetime.datetime` object, it is assumed to be UTC.
 
         Returns:
             :class:`~google.cloud.firestore_v1.base_document.DocumentSnapshot`:
@@ -362,7 +368,9 @@ class AsyncDocumentReference(BaseDocumentReference):
         """
         from google.cloud.firestore_v1.base_client import _parse_batch_get
 
-        request, kwargs = self._prep_batch_get(field_paths, transaction, retry, timeout)
+        request, kwargs = self._prep_batch_get(
+            field_paths, transaction, retry, timeout, read_time
+        )
 
         response_iter = await self._client._firestore_api.batch_get_documents(
             request=request,
@@ -397,6 +405,8 @@ class AsyncDocumentReference(BaseDocumentReference):
         page_size: int | None = None,
         retry: retries.AsyncRetry | object | None = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
+        *,
+        read_time: datetime.datetime | None = None,
     ) -> AsyncGenerator:
         """List subcollections of the current document.
 
@@ -408,6 +418,10 @@ class AsyncDocumentReference(BaseDocumentReference):
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
                 system-specified value.
+            read_time (Optional[datetime.datetime]): If set, reads documents as they were at the given
+                time. This must be a timestamp within the past one hour, or if Point-in-Time Recovery
+                is enabled, can additionally be a whole minute timestamp within the past 7 days. If no
+                timezone is specified in the :class:`datetime.datetime` object, it is assumed to be UTC.
 
         Returns:
             Sequence[:class:`~google.cloud.firestore_v1.async_collection.AsyncCollectionReference`]:
@@ -415,7 +429,7 @@ class AsyncDocumentReference(BaseDocumentReference):
                 document does not exist at the time of `snapshot`, the
                 iterator will be empty
         """
-        request, kwargs = self._prep_collections(page_size, retry, timeout)
+        request, kwargs = self._prep_collections(page_size, retry, timeout, read_time)
 
         iterator = await self._client._firestore_api.list_collection_ids(
             request=request,

@@ -17,6 +17,7 @@ import types
 import mock
 import pytest
 
+from datetime import datetime, timezone
 from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT, make_async_client
 from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 
@@ -302,7 +303,9 @@ async def test_asynccollectionreference_chunkify():
 
 
 @pytest.mark.asyncio
-async def _list_documents_helper(page_size=None, retry=None, timeout=None):
+async def _list_documents_helper(
+    page_size=None, retry=None, timeout=None, read_time=None
+):
     from google.api_core.page_iterator import Page
     from google.api_core.page_iterator_async import AsyncIterator
 
@@ -338,12 +341,13 @@ async def _list_documents_helper(page_size=None, retry=None, timeout=None):
         documents = [
             i
             async for i in collection.list_documents(
-                page_size=page_size,
-                **kwargs,
+                page_size=page_size, **kwargs, read_time=read_time
             )
         ]
     else:
-        documents = [i async for i in collection.list_documents(**kwargs)]
+        documents = [
+            i async for i in collection.list_documents(**kwargs, read_time=read_time)
+        ]
 
     # Verify the response and the mocks.
     assert len(documents) == len(document_ids)
@@ -353,14 +357,17 @@ async def _list_documents_helper(page_size=None, retry=None, timeout=None):
         assert document.id == document_id
 
     parent, _ = collection._parent_info()
+    expected_request = {
+        "parent": parent,
+        "collection_id": collection.id,
+        "page_size": page_size,
+        "show_missing": True,
+        "mask": {"field_paths": None},
+    }
+    if read_time is not None:
+        expected_request["read_time"] = read_time
     firestore_api.list_documents.assert_called_once_with(
-        request={
-            "parent": parent,
-            "collection_id": collection.id,
-            "page_size": page_size,
-            "show_missing": True,
-            "mask": {"field_paths": None},
-        },
+        request=expected_request,
         metadata=client._rpc_metadata,
         **kwargs,
     )
@@ -383,6 +390,11 @@ async def test_asynccollectionreference_list_documents_w_retry_timeout():
 @pytest.mark.asyncio
 async def test_asynccollectionreference_list_documents_w_page_size():
     await _list_documents_helper(page_size=25)
+
+
+@pytest.mark.asyncio
+async def test_asynccollectionreference_list_documents_w_read_time():
+    await _list_documents_helper(read_time=datetime.now(tz=timezone.utc))
 
 
 @mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
@@ -447,6 +459,21 @@ async def test_asynccollectionreference_get_w_explain_options(query_class):
     query_instance = query_class.return_value
     query_instance.get.assert_called_once_with(
         transaction=None, explain_options=explain_options
+    )
+
+
+@mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
+@pytest.mark.asyncio
+async def test_asynccollectionreference_get_w_read_time(query_class):
+    read_time = datetime.now(tz=timezone.utc)
+    collection = _make_async_collection_reference("collection")
+    await collection.get(read_time=read_time)
+
+    query_class.assert_called_once_with(collection)
+    query_instance = query_class.return_value
+    query_instance.get.assert_called_once_with(
+        transaction=None,
+        read_time=read_time,
     )
 
 
@@ -550,6 +577,23 @@ async def test_asynccollectionreference_stream_w_explain_options(query_class):
     explain_metrics = await stream_response.get_explain_metrics()
     assert isinstance(explain_metrics, ExplainMetrics)
     assert explain_metrics.execution_stats.results_returned == 1
+
+
+@mock.patch("google.cloud.firestore_v1.async_query.AsyncQuery", autospec=True)
+@pytest.mark.asyncio
+async def test_asynccollectionreference_stream_w_read_time(query_class):
+    read_time = datetime.now(tz=timezone.utc)
+    collection = _make_async_collection_reference("collection")
+    get_response = collection.stream(read_time=read_time)
+
+    query_class.assert_called_once_with(collection)
+    query_instance = query_class.return_value
+
+    assert get_response is query_instance.stream.return_value
+    query_instance.stream.assert_called_once_with(
+        transaction=None,
+        read_time=read_time,
+    )
 
 
 def test_asynccollectionreference_recursive():

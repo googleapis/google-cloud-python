@@ -37,6 +37,8 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
     from google.cloud.firestore_v1.types import write as write_pb
 
+    import datetime
+
 
 MAX_ATTEMPTS = 5
 """int: Default number of transaction attempts (with retries)."""
@@ -148,6 +150,8 @@ class BaseTransaction(object):
         references: list,
         retry: retries.Retry | retries.AsyncRetry | object | None = None,
         timeout: float | None = None,
+        *,
+        read_time: datetime.datetime | None = None,
     ) -> (
         Generator[DocumentSnapshot, Any, None]
         | Coroutine[Any, Any, AsyncGenerator[DocumentSnapshot, Any]]
@@ -161,6 +165,7 @@ class BaseTransaction(object):
         timeout: float | None = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
+        read_time: Optional[datetime.datetime] = None,
     ) -> (
         StreamGenerator[DocumentSnapshot]
         | Generator[DocumentSnapshot, Any, None]

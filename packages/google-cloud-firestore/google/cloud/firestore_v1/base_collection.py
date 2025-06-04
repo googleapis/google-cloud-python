@@ -16,6 +16,7 @@
 from __future__ import annotations
 
 import random
+
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -52,6 +53,8 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.transaction import Transaction
     from google.cloud.firestore_v1.vector import Vector
     from google.cloud.firestore_v1.vector_query import VectorQuery
+
+    import datetime
 
 _AUTO_ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -203,6 +206,7 @@ class BaseCollectionReference(Generic[QueryType]):
         page_size: Optional[int] = None,
         retry: retries.Retry | retries.AsyncRetry | object | None = None,
         timeout: Optional[float] = None,
+        read_time: Optional[datetime.datetime] = None,
     ) -> Tuple[dict, dict]:
         """Shared setup for async / sync :method:`list_documents`"""
         parent, _ = self._parent_info()
@@ -216,6 +220,8 @@ class BaseCollectionReference(Generic[QueryType]):
             # to include no fields
             "mask": {"field_paths": None},
         }
+        if read_time is not None:
+            request["read_time"] = read_time
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         return request, kwargs
@@ -225,6 +231,8 @@ class BaseCollectionReference(Generic[QueryType]):
         page_size: Optional[int] = None,
         retry: retries.Retry | retries.AsyncRetry | object | None = None,
         timeout: Optional[float] = None,
+        *,
+        read_time: Optional[datetime.datetime] = None,
     ) -> Union[
         Generator[DocumentReference, Any, Any], AsyncGenerator[DocumentReference, Any]
     ]:
@@ -498,6 +506,7 @@ class BaseCollectionReference(Generic[QueryType]):
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
+        read_time: Optional[datetime.datetime] = None,
     ) -> (
         QueryResultsList[DocumentSnapshot]
         | Coroutine[Any, Any, QueryResultsList[DocumentSnapshot]]
@@ -511,6 +520,7 @@ class BaseCollectionReference(Generic[QueryType]):
         timeout: Optional[float] = None,
         *,
         explain_options: Optional[ExplainOptions] = None,
+        read_time: Optional[datetime.datetime] = None,
     ) -> StreamGenerator[DocumentSnapshot] | AsyncIterator[DocumentSnapshot]:
         raise NotImplementedError
 
