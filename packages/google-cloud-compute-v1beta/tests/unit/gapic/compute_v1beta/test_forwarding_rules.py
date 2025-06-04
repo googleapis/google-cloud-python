@@ -4525,6 +4525,7 @@ def test_get_rest_call_success(request_type):
             psc_connection_status="psc_connection_status_value",
             region="region_value",
             self_link="self_link_value",
+            self_link_with_id="self_link_with_id_value",
             service_label="service_label_value",
             service_name="service_name_value",
             source_ip_ranges=["source_ip_ranges_value"],
@@ -4583,6 +4584,7 @@ def test_get_rest_call_success(request_type):
     assert response.psc_connection_status == "psc_connection_status_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
+    assert response.self_link_with_id == "self_link_with_id_value"
     assert response.service_label == "service_label_value"
     assert response.service_name == "service_name_value"
     assert response.source_ip_ranges == ["source_ip_ranges_value"]
@@ -4727,6 +4729,7 @@ def test_insert_rest_call_success(request_type):
         "psc_connection_status": "psc_connection_status_value",
         "region": "region_value",
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "service_directory_registrations": [
             {
                 "namespace": "namespace_value",
@@ -5155,6 +5158,7 @@ def test_patch_rest_call_success(request_type):
         "psc_connection_status": "psc_connection_status_value",
         "region": "region_value",
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "service_directory_registrations": [
             {
                 "namespace": "namespace_value",
