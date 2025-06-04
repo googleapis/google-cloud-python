@@ -6,7 +6,7 @@
 
 
 from .models import Author
-from django.db import NotSupportedError, connection
+from django.db import NotSupportedError, connection, connections
 from django.db.models import Index
 from django.db.models.fields import AutoField, IntegerField
 from django_spanner import gen_rand_int64
@@ -433,3 +433,27 @@ class TestUtils(SpannerSimpleTestClass):
         assert gen_rand_int64 != field.default
         assert mock_func == field.default
         connection.settings_dict["ENGINE"] = "django_spanner"
+
+    def test_autofield_spanner_as_non_default_db_random_generation_enabled(
+        self,
+    ):
+        """Not Spanner as the default db, default for field not provided."""
+        connections.settings["default"]["ENGINE"] = "another_db"
+        connections.settings["secondary"]["ENGINE"] = "django_spanner"
+        connections.settings["secondary"][
+            "RANDOM_ID_GENERATION_ENABLED"
+        ] = "true"
+        field = AutoField(name="field_name")
+        assert gen_rand_int64 == field.default
+        connections.settings["default"]["ENGINE"] = "django_spanner"
+        connections.settings["secondary"]["ENGINE"] = "django_spanner"
+        del connections.settings["secondary"]["RANDOM_ID_GENERATION_ENABLED"]
+
+    def test_autofield_random_generation_disabled(self):
+        """Spanner, default is not provided."""
+        connections.settings["default"][
+            "RANDOM_ID_GENERATION_ENABLED"
+        ] = "false"
+        field = AutoField(name="field_name")
+        assert gen_rand_int64 != field.default
+        del connections.settings["default"]["RANDOM_ID_GENERATION_ENABLED"]

@@ -38,7 +38,17 @@ DATABASES = {
         "INSTANCE": INSTANCE_ID,
         "NAME": DATABASE_NAME,
         "TEST": {"NAME": DATABASE_NAME},
-    }
+    },
+    "secondary": {
+        "ENGINE": "django_spanner",
+        "PROJECT": PROJECT_ID,
+        "INSTANCE": INSTANCE_ID,
+        "NAME": DATABASE_NAME,
+        "TEST": {"NAME": DATABASE_NAME},
+    },
+    "other": {
+        "ENGINE": "django.db.backends.sqlite3",
+    },
 }
 
 SECRET_KEY = "spanner env secret key"

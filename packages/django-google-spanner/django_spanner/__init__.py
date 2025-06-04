@@ -12,7 +12,11 @@ import django
 # do that.
 from uuid import uuid4
 
+RANDOM_ID_GENERATION_ENABLED_SETTING = "RANDOM_ID_GENERATION_ENABLED"
+
 import pkg_resources
+from django.conf.global_settings import DATABASES
+from django.db import DEFAULT_DB_ALIAS
 from google.cloud.spanner_v1 import JsonObject
 from django.db.models.fields import (
     NOT_PROVIDED,
@@ -64,11 +68,25 @@ def autofield_init(self, *args, **kwargs):
     kwargs["blank"] = True
     Field.__init__(self, *args, **kwargs)
 
-    if (
-        django.db.connection.settings_dict["ENGINE"] == "django_spanner"
-        and self.default == NOT_PROVIDED
-    ):
-        self.default = gen_rand_int64
+    # The following behavior is chosen to prevent breaking changes with the original behavior.
+    # 1. We use a client-side randomly generated int64 value for autofields if Spanner is the
+    #    default database, and DISABLE_RANDOM_ID_GENERATION has not been set.
+    # 2. If Spanner is one of the non-default databases, and no value at all has been set for
+    #    DISABLE_RANDOM_ID_GENERATION, then we do not enable it. If there is a value for this
+    #    configuration option, then we use that value.
+    databases = django.db.connections.databases
+    for db, config in databases.items():
+        default_enabled = str(db == DEFAULT_DB_ALIAS)
+        if (
+            config["ENGINE"] == "django_spanner"
+            and self.default == NOT_PROVIDED
+            and config.get(
+                RANDOM_ID_GENERATION_ENABLED_SETTING, default_enabled
+            ).lower()
+            == "true"
+        ):
+            self.default = gen_rand_int64
+            break
 
 
 AutoField.__init__ = autofield_init

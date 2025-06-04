@@ -15,7 +15,7 @@
 import os
 import unittest
 
-from django.db import connection
+from django.db import connection, connections
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 import google.cloud.spanner_v1.types.type as spanner_type
 import google.cloud.spanner_v1.types.result_set as result_set
@@ -37,6 +37,7 @@ from tests.mockserver_tests.mock_spanner import (
     start_mock_server,
 )
 from tests.mockserver_tests.mock_database_admin import DatabaseAdminServicer
+from tests.settings import DATABASES
 
 
 def add_result(sql: str, result: ResultSet):
@@ -178,11 +179,17 @@ class MockServerTestBase(unittest.TestCase):
             MockServerTestBase.server = None
 
     def setup_method(self, test_method):
-        connection.settings_dict["OPTIONS"]["client"] = self.client
-        connection.settings_dict["OPTIONS"]["pool"] = self.pool
+        for db, config in DATABASES.items():
+            if config["ENGINE"] == "django_spanner":
+                connections[db].settings_dict["OPTIONS"][
+                    "client"
+                ] = self.client
+                connections[db].settings_dict["OPTIONS"]["pool"] = self.pool
 
     def teardown_method(self, test_method):
-        connection.close()
+        for db, config in DATABASES.items():
+            if config["ENGINE"] == "django_spanner":
+                connections[db].close()
         MockServerTestBase.spanner_service.clear_requests()
         MockServerTestBase.database_admin_service.clear_requests()
         self._client = None
