@@ -325,6 +325,11 @@ def test_isalpha(weird_strings, weird_strings_pd):
     )
 
 
+@pytest.mark.skipif(
+    "dev" in pa.__version__,
+    # b/333484335 pyarrow is inconsistent on the behavior
+    reason="pyarrow dev version is inconsistent on isdigit behavior.",
+)
 def test_isdigit(weird_strings, weird_strings_pd):
     pd_result = weird_strings_pd.str.isdigit()
     bf_result = weird_strings.str.isdigit().to_pandas()
