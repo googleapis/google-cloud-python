@@ -1087,8 +1087,8 @@ class LustreRestTransport(_BaseLustreRestTransport):
 
             Args:
                 request (~.transfer.ExportDataRequest):
-                    The request object. Message for exporting data from
-                Lustre.
+                    The request object. Export data from Managed Lustre to a
+                Cloud Storage bucket.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
