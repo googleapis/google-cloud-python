@@ -574,6 +574,10 @@ class Dataset(object):
             A pointer to a dataset. If ``dataset_ref`` is a string, it must
             include both the project ID and the dataset ID, separated by
             ``.``.
+
+    Note:
+        Fields marked as "Output Only" are populated by the server and will only be
+        available after calling :meth:`google.cloud.bigquery.client.Client.get_dataset`.
     """
 
     _PROPERTY_TO_API_FIELD = {
@@ -692,7 +696,7 @@ class Dataset(object):
 
     @property
     def created(self):
-        """Union[datetime.datetime, None]: Datetime at which the dataset was
+        """Union[datetime.datetime, None]: Output only. Datetime at which the dataset was
         created (:data:`None` until set from the server).
         """
         creation_time = self._properties.get("creationTime")
@@ -709,8 +713,8 @@ class Dataset(object):
 
     @property
     def full_dataset_id(self):
-        """Union[str, None]: ID for the dataset resource (:data:`None` until
-        set from the server)
+        """Union[str, None]: Output only. ID for the dataset resource
+        (:data:`None` until set from the server).
 
         In the format ``project_id:dataset_id``.
         """
@@ -725,14 +729,14 @@ class Dataset(object):
 
     @property
     def etag(self):
-        """Union[str, None]: ETag for the dataset resource (:data:`None` until
-        set from the server).
+        """Union[str, None]: Output only. ETag for the dataset resource
+        (:data:`None` until set from the server).
         """
         return self._properties.get("etag")
 
     @property
     def modified(self):
-        """Union[datetime.datetime, None]: Datetime at which the dataset was
+        """Union[datetime.datetime, None]: Output only. Datetime at which the dataset was
         last modified (:data:`None` until set from the server).
         """
         modified_time = self._properties.get("lastModifiedTime")
@@ -744,8 +748,8 @@ class Dataset(object):
 
     @property
     def self_link(self):
-        """Union[str, None]: URL for the dataset resource (:data:`None` until
-        set from the server).
+        """Union[str, None]: Output only. URL for the dataset resource
+        (:data:`None` until set from the server).
         """
         return self._properties.get("selfLink")
 
