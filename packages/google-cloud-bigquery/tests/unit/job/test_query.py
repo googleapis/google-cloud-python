@@ -1682,6 +1682,78 @@ class TestQueryJob(_Base):
             tabledata_list_request[1]["query_params"]["maxResults"], page_size
         )
 
+    def test_result_with_start_index_multi_page(self):
+        # When there are multiple pages of response and the user has set
+        # start_index, we should supply start_index to the server in the first
+        # request. However, in the subsequent requests, we will pass only
+        # page_token but not start_index, because the server only allows one
+        # of them.
+        from google.cloud.bigquery.table import RowIterator
+
+        query_resource = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "7",
+        }
+
+        # Although the result has 7 rows, the response only returns 6, because
+        # start_index is 1.
+        tabledata_resource_1 = {
+            "totalRows": "7",
+            "pageToken": "page_token_1",
+            "rows": [
+                {"f": [{"v": "abc"}]},
+                {"f": [{"v": "def"}]},
+                {"f": [{"v": "ghi"}]},
+            ],
+        }
+        tabledata_resource_2 = {
+            "totalRows": "7",
+            "pageToken": None,
+            "rows": [
+                {"f": [{"v": "jkl"}]},
+                {"f": [{"v": "mno"}]},
+                {"f": [{"v": "pqe"}]},
+            ],
+        }
+
+        connection = make_connection(
+            query_resource, tabledata_resource_1, tabledata_resource_2
+        )
+        client = _make_client(self.PROJECT, connection=connection)
+        resource = self._make_resource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        start_index = 1
+        page_size = 3
+
+        result = job.result(page_size=page_size, start_index=start_index)
+
+        self.assertIsInstance(result, RowIterator)
+        self.assertEqual(result.total_rows, 7)
+
+        rows = list(result)
+
+        self.assertEqual(len(rows), 6)
+        self.assertEqual(len(connection.api_request.call_args_list), 3)
+
+        # First call has both startIndex and maxResults.
+        tabledata_list_request_1 = connection.api_request.call_args_list[1]
+        self.assertEqual(
+            tabledata_list_request_1[1]["query_params"]["startIndex"], start_index
+        )
+        self.assertEqual(
+            tabledata_list_request_1[1]["query_params"]["maxResults"], page_size
+        )
+
+        # Second call only has maxResults.
+        tabledata_list_request_2 = connection.api_request.call_args_list[2]
+        self.assertFalse("startIndex" in tabledata_list_request_2[1]["query_params"])
+        self.assertEqual(
+            tabledata_list_request_2[1]["query_params"]["maxResults"], page_size
+        )
+
     def test_result_error(self):
         from google.cloud import exceptions
 

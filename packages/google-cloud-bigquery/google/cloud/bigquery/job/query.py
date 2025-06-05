@@ -1409,6 +1409,7 @@ class QueryJob(_AsyncJob):
         retry: "retries.Retry" = DEFAULT_RETRY,
         timeout: Optional[float] = None,
         page_size: int = 0,
+        start_index: Optional[int] = None,
     ):
         """Refresh the cached query results unless already cached and complete.
 
@@ -1421,6 +1422,9 @@ class QueryJob(_AsyncJob):
             page_size (int):
                 Maximum number of rows in a single response. See maxResults in
                 the jobs.getQueryResults REST API.
+            start_index (Optional[int]):
+                Zero-based index of the starting row. See startIndex in the
+                jobs.getQueryResults REST API.
         """
         # Optimization: avoid a call to jobs.getQueryResults if it's already
         # been fetched, e.g. from jobs.query first page of results.
@@ -1468,6 +1472,7 @@ class QueryJob(_AsyncJob):
             location=self.location,
             timeout=transport_timeout,
             page_size=page_size,
+            start_index=start_index,
         )
 
     def result(  # type: ignore  # (incompatible with supertype)
@@ -1569,6 +1574,9 @@ class QueryJob(_AsyncJob):
 
         if page_size is not None:
             reload_query_results_kwargs["page_size"] = page_size
+
+        if start_index is not None:
+            reload_query_results_kwargs["start_index"] = start_index
 
         try:
             retry_do_query = getattr(self, "_retry_do_query", None)
