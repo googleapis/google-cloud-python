@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.18.1...google-cloud-dataproc-v5.19.0) (2025-06-05)
+
+
+### Features
+
+* [google-cloud-dataproc] add scenarios AUTO/NONE to autotuning config ([#13969](https://github.com/googleapis/google-cloud-python/issues/13969)) ([134af69](https://github.com/googleapis/google-cloud-python/commit/134af69b0494f3a96280f32a1435a91989271d13))
+
 ## [5.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.18.0...google-cloud-dataproc-v5.18.1) (2025-03-15)
 
 

@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.13.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.8...google-cloud-discoveryengine-v0.13.9) (2025-06-05)
+
+
+### Features
+
+* add CMEK config service ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* add ConnectorRunErrorContext to error log ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* add custom search operators for Workspace search ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* add HealthcareFhirConfig to FHIR data store ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* add identity mapping service ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* add more indexing state for site search engine ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* add more options for layout parser config ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* add user license config service ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* enable claim level score for grounding ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* support ACL data store and document ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* support media recommendation engine ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+* support structured content for chunk ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([4b5d19b](https://github.com/googleapis/google-cloud-python/commit/4b5d19b1b6e52de1a54630b38b226f0cb301cb05))
+
 ## [0.13.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.7...google-cloud-discoveryengine-v0.13.8) (2025-03-27)
 
 
