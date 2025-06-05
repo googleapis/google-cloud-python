@@ -10302,6 +10302,7 @@ def test_create_secret_rest_call_success(request_type):
         "annotations": {},
         "version_destroy_ttl": {},
         "customer_managed_encryption": {},
+        "tags": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10778,6 +10779,7 @@ def test_update_secret_rest_call_success(request_type):
         "annotations": {},
         "version_destroy_ttl": {},
         "customer_managed_encryption": {},
+        "tags": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -155,6 +155,18 @@ class Secret(proto.Message):
             added afterwards. They do not apply retroactively to
             existing
             [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Mapping of
+            Tag keys/values directly bound to this resource.
+            For example:
+
+              "123/environment": "production",
+              "123/costCenter": "marketing"
+
+            Tags are used to organize and group resources.
+
+            Tags can be used to control policy evaluation
+            for the resource.
     """
 
     name: str = proto.Field(
@@ -221,6 +233,11 @@ class Secret(proto.Message):
         proto.MESSAGE,
         number=15,
         message="CustomerManagedEncryption",
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=16,
     )
 
 
