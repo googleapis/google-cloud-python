@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.12.0...v1.13.0) (2025-06-05)
+
+
+### Features
+
+* Introduce compatibility with native namespace packages ([#375](https://github.com/googleapis/python-spanner-sqlalchemy/issues/375)) ([052e699](https://github.com/googleapis/python-spanner-sqlalchemy/commit/052e699f82a795def518f4f0a32039e1c68174a0))
+
 ## [1.12.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.11.1...v1.12.0) (2025-06-02)
 
 
