@@ -18,7 +18,6 @@ import datetime
 import decimal
 import operator
 import os
-import pkg_resources
 import pytest
 import random
 import time
@@ -125,6 +124,8 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     UnicodeTextTest as _UnicodeTextTest,
 )
 from test._helpers import get_db_url, get_project
+
+from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 
 config.test_schema = ""
 
@@ -1632,12 +1633,10 @@ class UserAgentTest(SpannerSpecificTestBase):
     """Check that SQLAlchemy dialect uses correct user agent."""
 
     def test_user_agent(self):
-        dist = pkg_resources.get_distribution("sqlalchemy-spanner")
-
         with self._engine.connect() as connection:
             assert (
                 connection.connection.instance._client._client_info.user_agent
-                == f"gl-{dist.project_name}/{dist.version}"
+                == f"gl-sqlalchemy-spanner/{sqlalchemy_spanner_version.__version__}"
             )
 
 
@@ -1689,7 +1688,6 @@ class LimitOffsetTest(fixtures.TestBase):
 
     def test_offset_only(self):
         for offset in [1, 7, 10, 100, 1000, 10000]:
-
             with self._engine.connect().execution_options(read_only=True) as connection:
                 list(connection.execute(self._table.select().offset(offset)).fetchall())
 

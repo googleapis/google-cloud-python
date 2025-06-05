@@ -14,4 +14,7 @@
 
 from .sqlalchemy_spanner import SpannerDialect
 
-__all__ = (SpannerDialect,)
+from .version import __version__
+
+
+__all__ = (SpannerDialect, __version__)

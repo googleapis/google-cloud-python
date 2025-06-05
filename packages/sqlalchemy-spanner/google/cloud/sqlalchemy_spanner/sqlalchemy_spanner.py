@@ -13,7 +13,6 @@
 # limitations under the License.
 import base64
 
-import pkg_resources
 import re
 
 from alembic.ddl.base import (
@@ -50,6 +49,7 @@ from sqlalchemy.sql import expression
 from google.cloud.spanner_v1.data_types import JsonObject
 from google.cloud import spanner_dbapi
 from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
+from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 import sqlalchemy
 
 USING_SQLACLCHEMY_20 = False
@@ -928,8 +928,8 @@ class SpannerDialect(DefaultDialect):
             ),
             url.database,
         )
-        dist = pkg_resources.get_distribution("sqlalchemy-spanner")
-        options = {"user_agent": f"gl-{dist.project_name}/{dist.version}"}
+        dist_version = sqlalchemy_spanner_version.__version__
+        options = {"user_agent": f"gl-sqlalchemy-spanner/{dist_version}"}
         connect_opts = url.translate_connect_args()
         if (
             "host" in connect_opts

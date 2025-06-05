@@ -18,7 +18,6 @@ from datetime import timezone
 import decimal
 import operator
 import os
-import pkg_resources
 import pytest
 import random
 import time
@@ -142,6 +141,9 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     _UnicodeFixture as __UnicodeFixture,
 )
 from test._helpers import get_db_url, get_project
+
+from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
+
 
 config.test_schema = ""
 
@@ -557,7 +559,6 @@ class ComponentReflectionTest(_ComponentReflectionTest):
     def test_get_table_names(
         self, connection, order_by, include_plain, include_views, use_schema
     ):
-
         if use_schema:
             schema = config.test_schema
         else:
@@ -1905,12 +1906,10 @@ class UserAgentTest(fixtures.TestBase):
         self._metadata = MetaData(bind=self._engine)
 
     def test_user_agent(self):
-        dist = pkg_resources.get_distribution("sqlalchemy-spanner")
-
         with self._engine.connect() as connection:
             assert (
                 connection.connection.instance._client._client_info.user_agent
-                == "gl-" + dist.project_name + "/" + dist.version
+                == f"gl-sqlalchemy-spanner/{sqlalchemy_spanner_version.__version__}"
             )
 
 
