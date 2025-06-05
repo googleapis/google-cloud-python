@@ -3932,6 +3932,7 @@ def test_get_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.InterconnectAttachment(
             admin_enabled=True,
+            attachment_group="attachment_group_value",
             bandwidth="bandwidth_value",
             candidate_ipv6_subnets=["candidate_ipv6_subnets_value"],
             candidate_subnets=["candidate_subnets_value"],
@@ -3984,6 +3985,7 @@ def test_get_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.InterconnectAttachment)
     assert response.admin_enabled is True
+    assert response.attachment_group == "attachment_group_value"
     assert response.bandwidth == "bandwidth_value"
     assert response.candidate_ipv6_subnets == ["candidate_ipv6_subnets_value"]
     assert response.candidate_subnets == ["candidate_subnets_value"]
@@ -4132,6 +4134,7 @@ def test_insert_rest_call_success(request_type):
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["interconnect_attachment_resource"] = {
         "admin_enabled": True,
+        "attachment_group": "attachment_group_value",
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
             "candidate_ipv6_subnets_value1",
@@ -4572,6 +4575,7 @@ def test_patch_rest_call_success(request_type):
     }
     request_init["interconnect_attachment_resource"] = {
         "admin_enabled": True,
+        "attachment_group": "attachment_group_value",
         "bandwidth": "bandwidth_value",
         "candidate_ipv6_subnets": [
             "candidate_ipv6_subnets_value1",

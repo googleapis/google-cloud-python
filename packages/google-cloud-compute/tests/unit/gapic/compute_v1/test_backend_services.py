@@ -7539,7 +7539,13 @@ def test_insert_rest_call_success(request_type):
             "failover_ratio": 0.1494,
         },
         "fingerprint": "fingerprint_value",
-        "ha_policy": {"fast_i_p_move": "fast_i_p_move_value"},
+        "ha_policy": {
+            "fast_i_p_move": "fast_i_p_move_value",
+            "leader": {
+                "backend_group": "backend_group_value",
+                "network_endpoint": {"instance": "instance_value"},
+            },
+        },
         "health_checks": ["health_checks_value1", "health_checks_value2"],
         "iap": {
             "enabled": True,
@@ -8220,7 +8226,13 @@ def test_patch_rest_call_success(request_type):
             "failover_ratio": 0.1494,
         },
         "fingerprint": "fingerprint_value",
-        "ha_policy": {"fast_i_p_move": "fast_i_p_move_value"},
+        "ha_policy": {
+            "fast_i_p_move": "fast_i_p_move_value",
+            "leader": {
+                "backend_group": "backend_group_value",
+                "network_endpoint": {"instance": "instance_value"},
+            },
+        },
         "health_checks": ["health_checks_value1", "health_checks_value2"],
         "iap": {
             "enabled": True,
@@ -9586,7 +9598,13 @@ def test_update_rest_call_success(request_type):
             "failover_ratio": 0.1494,
         },
         "fingerprint": "fingerprint_value",
-        "ha_policy": {"fast_i_p_move": "fast_i_p_move_value"},
+        "ha_policy": {
+            "fast_i_p_move": "fast_i_p_move_value",
+            "leader": {
+                "backend_group": "backend_group_value",
+                "network_endpoint": {"instance": "instance_value"},
+            },
+        },
         "health_checks": ["health_checks_value1", "health_checks_value2"],
         "iap": {
             "enabled": True,

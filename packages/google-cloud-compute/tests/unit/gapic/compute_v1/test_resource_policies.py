@@ -4350,6 +4350,7 @@ def test_insert_rest_call_success(request_type):
         "group_placement_policy": {
             "availability_domain_count": 2650,
             "collocation": "collocation_value",
+            "gpu_topology": "gpu_topology_value",
             "vm_count": 875,
         },
         "id": 205,
@@ -4407,6 +4408,11 @@ def test_insert_rest_call_success(request_type):
             },
         },
         "status": "status_value",
+        "workload_policy": {
+            "accelerator_topology": "accelerator_topology_value",
+            "max_topology_distance": "max_topology_distance_value",
+            "type_": "type__value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4794,6 +4800,7 @@ def test_patch_rest_call_success(request_type):
         "group_placement_policy": {
             "availability_domain_count": 2650,
             "collocation": "collocation_value",
+            "gpu_topology": "gpu_topology_value",
             "vm_count": 875,
         },
         "id": 205,
@@ -4851,6 +4858,11 @@ def test_patch_rest_call_success(request_type):
             },
         },
         "status": "status_value",
+        "workload_policy": {
+            "accelerator_topology": "accelerator_topology_value",
+            "max_topology_distance": "max_topology_distance_value",
+            "type_": "type__value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

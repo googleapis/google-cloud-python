@@ -3767,6 +3767,8 @@ def test_get_rest_call_success(request_type):
             base_forwarding_rule="base_forwarding_rule_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
+            external_managed_backend_bucket_migration_state="external_managed_backend_bucket_migration_state_value",
+            external_managed_backend_bucket_migration_testing_percentage=0.6294000000000001,
             fingerprint="fingerprint_value",
             id=205,
             ip_collection="ip_collection_value",
@@ -3785,6 +3787,7 @@ def test_get_rest_call_success(request_type):
             psc_connection_status="psc_connection_status_value",
             region="region_value",
             self_link="self_link_value",
+            self_link_with_id="self_link_with_id_value",
             service_label="service_label_value",
             service_name="service_name_value",
             source_ip_ranges=["source_ip_ranges_value"],
@@ -3815,6 +3818,15 @@ def test_get_rest_call_success(request_type):
     assert response.base_forwarding_rule == "base_forwarding_rule_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
+    assert (
+        response.external_managed_backend_bucket_migration_state
+        == "external_managed_backend_bucket_migration_state_value"
+    )
+    assert math.isclose(
+        response.external_managed_backend_bucket_migration_testing_percentage,
+        0.6294000000000001,
+        rel_tol=1e-6,
+    )
     assert response.fingerprint == "fingerprint_value"
     assert response.id == 205
     assert response.ip_collection == "ip_collection_value"
@@ -3833,6 +3845,7 @@ def test_get_rest_call_success(request_type):
     assert response.psc_connection_status == "psc_connection_status_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
+    assert response.self_link_with_id == "self_link_with_id_value"
     assert response.service_label == "service_label_value"
     assert response.service_name == "service_name_value"
     assert response.source_ip_ranges == ["source_ip_ranges_value"]
@@ -3951,6 +3964,8 @@ def test_insert_rest_call_success(request_type):
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "external_managed_backend_bucket_migration_state": "external_managed_backend_bucket_migration_state_value",
+        "external_managed_backend_bucket_migration_testing_percentage": 0.6294000000000001,
         "fingerprint": "fingerprint_value",
         "id": 205,
         "ip_collection": "ip_collection_value",
@@ -3976,6 +3991,7 @@ def test_insert_rest_call_success(request_type):
         "psc_connection_status": "psc_connection_status_value",
         "region": "region_value",
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "service_directory_registrations": [
             {
                 "namespace": "namespace_value",
@@ -4368,6 +4384,8 @@ def test_patch_rest_call_success(request_type):
         "base_forwarding_rule": "base_forwarding_rule_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "external_managed_backend_bucket_migration_state": "external_managed_backend_bucket_migration_state_value",
+        "external_managed_backend_bucket_migration_testing_percentage": 0.6294000000000001,
         "fingerprint": "fingerprint_value",
         "id": 205,
         "ip_collection": "ip_collection_value",
@@ -4393,6 +4411,7 @@ def test_patch_rest_call_success(request_type):
         "psc_connection_status": "psc_connection_status_value",
         "region": "region_value",
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "service_directory_registrations": [
             {
                 "namespace": "namespace_value",

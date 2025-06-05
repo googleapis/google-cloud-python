@@ -30,7 +30,9 @@ Services for Google Cloud Compute v1 API
     instance_settings_service
     instance_templates
     instant_snapshots
+    interconnect_attachment_groups
     interconnect_attachments
+    interconnect_groups
     interconnect_locations
     interconnect_remote_locations
     interconnects
@@ -78,6 +80,7 @@ Services for Google Cloud Compute v1 API
     region_zones
     reservation_blocks
     reservations
+    reservation_sub_blocks
     resource_policies
     routers
     routes

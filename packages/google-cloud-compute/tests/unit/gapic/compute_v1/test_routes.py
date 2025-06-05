@@ -2606,6 +2606,7 @@ def test_insert_rest_call_success(request_type):
         "next_hop_origin": "next_hop_origin_value",
         "next_hop_peering": "next_hop_peering_value",
         "next_hop_vpn_tunnel": "next_hop_vpn_tunnel_value",
+        "params": {"resource_manager_tags": {}},
         "priority": 898,
         "route_status": "route_status_value",
         "route_type": "route_type_value",

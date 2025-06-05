@@ -152,6 +152,11 @@ class DisksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.bulk_set_labels: gapic_v1.method.wrap_method(
+                self.bulk_set_labels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_snapshot: gapic_v1.method.wrap_method(
                 self.create_snapshot,
                 default_timeout=None,
@@ -261,6 +266,15 @@ class DisksTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.BulkInsertDiskRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def bulk_set_labels(
+        self,
+    ) -> Callable[
+        [compute.BulkSetLabelsDiskRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
