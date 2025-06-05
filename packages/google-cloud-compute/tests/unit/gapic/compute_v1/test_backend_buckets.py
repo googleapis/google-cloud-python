@@ -5614,6 +5614,7 @@ def test_get_rest_call_success(request_type):
             enable_cdn=True,
             id=205,
             kind="kind_value",
+            load_balancing_scheme="load_balancing_scheme_value",
             name="name_value",
             self_link="self_link_value",
         )
@@ -5641,6 +5642,7 @@ def test_get_rest_call_success(request_type):
     assert response.enable_cdn is True
     assert response.id == 205
     assert response.kind == "kind_value"
+    assert response.load_balancing_scheme == "load_balancing_scheme_value"
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
 
@@ -5914,6 +5916,7 @@ def test_insert_rest_call_success(request_type):
         "enable_cdn": True,
         "id": 205,
         "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
         "self_link": "self_link_value",
         "used_by": [{"reference": "reference_value"}],
@@ -6326,6 +6329,7 @@ def test_patch_rest_call_success(request_type):
         "enable_cdn": True,
         "id": 205,
         "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
         "self_link": "self_link_value",
         "used_by": [{"reference": "reference_value"}],
@@ -7310,6 +7314,7 @@ def test_update_rest_call_success(request_type):
         "enable_cdn": True,
         "id": 205,
         "kind": "kind_value",
+        "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
         "self_link": "self_link_value",
         "used_by": [{"reference": "reference_value"}],

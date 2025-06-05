@@ -5442,6 +5442,12 @@ def test_get_rest_call_success(request_type):
             self_link="self_link_value",
             stack_type="stack_type_value",
             state="state_value",
+            system_reserved_external_ipv6_ranges=[
+                "system_reserved_external_ipv6_ranges_value"
+            ],
+            system_reserved_internal_ipv6_ranges=[
+                "system_reserved_internal_ipv6_ranges_value"
+            ],
         )
 
         # Wrap the value into a proper Response obj
@@ -5483,6 +5489,12 @@ def test_get_rest_call_success(request_type):
     assert response.self_link == "self_link_value"
     assert response.stack_type == "stack_type_value"
     assert response.state == "state_value"
+    assert response.system_reserved_external_ipv6_ranges == [
+        "system_reserved_external_ipv6_ranges_value"
+    ]
+    assert response.system_reserved_internal_ipv6_ranges == [
+        "system_reserved_internal_ipv6_ranges_value"
+    ]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -5738,6 +5750,7 @@ def test_insert_rest_call_success(request_type):
         },
         "name": "name_value",
         "network": "network_value",
+        "params": {"resource_manager_tags": {}},
         "private_ip_google_access": True,
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
@@ -5754,6 +5767,14 @@ def test_insert_rest_call_success(request_type):
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "system_reserved_external_ipv6_ranges": [
+            "system_reserved_external_ipv6_ranges_value1",
+            "system_reserved_external_ipv6_ranges_value2",
+        ],
+        "system_reserved_internal_ipv6_ranges": [
+            "system_reserved_internal_ipv6_ranges_value1",
+            "system_reserved_internal_ipv6_ranges_value2",
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6130,6 +6151,7 @@ def test_list_usable_rest_call_success(request_type):
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
+            unreachables=["unreachables_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -6150,6 +6172,7 @@ def test_list_usable_rest_call_success(request_type):
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
+    assert response.unreachables == ["unreachables_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6281,6 +6304,7 @@ def test_patch_rest_call_success(request_type):
         },
         "name": "name_value",
         "network": "network_value",
+        "params": {"resource_manager_tags": {}},
         "private_ip_google_access": True,
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
@@ -6297,6 +6321,14 @@ def test_patch_rest_call_success(request_type):
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
         "state": "state_value",
+        "system_reserved_external_ipv6_ranges": [
+            "system_reserved_external_ipv6_ranges_value1",
+            "system_reserved_external_ipv6_ranges_value2",
+        ],
+        "system_reserved_internal_ipv6_ranges": [
+            "system_reserved_internal_ipv6_ranges_value1",
+            "system_reserved_internal_ipv6_ranges_value2",
+        ],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

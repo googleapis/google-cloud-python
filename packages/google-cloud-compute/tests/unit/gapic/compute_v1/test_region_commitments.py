@@ -3040,8 +3040,11 @@ def test_insert_rest_call_success(request_type):
                 },
                 "commitment": "commitment_value",
                 "creation_timestamp": "creation_timestamp_value",
+                "delete_after_duration": {"nanos": 543, "seconds": 751},
+                "delete_at_time": "delete_at_time_value",
                 "deployment_type": "deployment_type_value",
                 "description": "description_value",
+                "enable_emergent_maintenance": True,
                 "id": 205,
                 "kind": "kind_value",
                 "linked_commitments": [
@@ -3527,8 +3530,11 @@ def test_update_rest_call_success(request_type):
                 },
                 "commitment": "commitment_value",
                 "creation_timestamp": "creation_timestamp_value",
+                "delete_after_duration": {"nanos": 543, "seconds": 751},
+                "delete_at_time": "delete_at_time_value",
                 "deployment_type": "deployment_type_value",
                 "description": "description_value",
+                "enable_emergent_maintenance": True,
                 "id": 205,
                 "kind": "kind_value",
                 "linked_commitments": [

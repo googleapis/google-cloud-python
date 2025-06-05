@@ -5504,6 +5504,7 @@ def test_insert_rest_call_success(request_type):
         "name": "name_value",
         "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
         "network_profile": "network_profile_value",
+        "params": {"resource_manager_tags": {}},
         "peerings": [
             {
                 "auto_create_routes": True,
@@ -6037,6 +6038,7 @@ def test_patch_rest_call_success(request_type):
         "name": "name_value",
         "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
         "network_profile": "network_profile_value",
+        "params": {"resource_manager_tags": {}},
         "peerings": [
             {
                 "auto_create_routes": True,

@@ -3675,6 +3675,7 @@ def test_get_rest_call_success(request_type):
             google_reference_id="google_reference_id_value",
             id=205,
             interconnect_attachments=["interconnect_attachments_value"],
+            interconnect_groups=["interconnect_groups_value"],
             interconnect_type="interconnect_type_value",
             kind="kind_value",
             label_fingerprint="label_fingerprint_value",
@@ -3717,6 +3718,7 @@ def test_get_rest_call_success(request_type):
     assert response.google_reference_id == "google_reference_id_value"
     assert response.id == 205
     assert response.interconnect_attachments == ["interconnect_attachments_value"]
+    assert response.interconnect_groups == ["interconnect_groups_value"]
     assert response.interconnect_type == "interconnect_type_value"
     assert response.kind == "kind_value"
     assert response.label_fingerprint == "label_fingerprint_value"
@@ -4131,6 +4133,10 @@ def test_insert_rest_call_success(request_type):
         "interconnect_attachments": [
             "interconnect_attachments_value1",
             "interconnect_attachments_value2",
+        ],
+        "interconnect_groups": [
+            "interconnect_groups_value1",
+            "interconnect_groups_value2",
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
@@ -4564,6 +4570,10 @@ def test_patch_rest_call_success(request_type):
         "interconnect_attachments": [
             "interconnect_attachments_value1",
             "interconnect_attachments_value2",
+        ],
+        "interconnect_groups": [
+            "interconnect_groups_value1",
+            "interconnect_groups_value2",
         ],
         "interconnect_type": "interconnect_type_value",
         "kind": "kind_value",
