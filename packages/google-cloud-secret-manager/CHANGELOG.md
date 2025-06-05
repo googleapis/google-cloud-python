@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.23.3...google-cloud-secret-manager-v2.24.0) (2025-06-05)
+
+
+### Features
+
+* [google-cloud-secret-manager] update secret manager protos for tags ([#13976](https://github.com/googleapis/google-cloud-python/issues/13976)) ([998c300](https://github.com/googleapis/google-cloud-python/commit/998c300dfb93942baf80fe5dbb21365a84ce45c5))
+
 ## [2.23.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.23.2...google-cloud-secret-manager-v2.23.3) (2025-04-17)
 
 
