@@ -4285,13 +4285,16 @@ def test_apply_lambda(scalars_dfs, col, lambda_):
     bf_result = bf_col.apply(lambda_, by_row=False).to_pandas()
 
     pd_col = scalars_pandas_df[col]
-    if pd.__version__.startswith("2.2"):
+    if pd.__version__[:3] in ("2.2", "2.3"):
         pd_result = pd_col.apply(lambda_, by_row=False)
     else:
         pd_result = pd_col.apply(lambda_)
 
     # ignore dtype check, which are Int64 and object respectively
-    assert_series_equal(bf_result, pd_result, check_dtype=False)
+    # Some columns implicitly convert to floating point. Use check_exact=False to ensure we're "close enough"
+    assert_series_equal(
+        bf_result, pd_result, check_dtype=False, check_exact=False, rtol=0.001
+    )
 
 
 @pytest.mark.parametrize(
@@ -4375,13 +4378,16 @@ def test_apply_simple_udf(scalars_dfs):
 
     pd_col = scalars_pandas_df["int64_col"]
 
-    if pd.__version__.startswith("2.2"):
+    if pd.__version__[:3] in ("2.2", "2.3"):
         pd_result = pd_col.apply(foo, by_row=False)
     else:
         pd_result = pd_col.apply(foo)
 
     # ignore dtype check, which are Int64 and object respectively
-    assert_series_equal(bf_result, pd_result, check_dtype=False)
+    # Some columns implicitly convert to floating point. Use check_exact=False to ensure we're "close enough"
+    assert_series_equal(
+        bf_result, pd_result, check_dtype=False, check_exact=False, rtol=0.001
+    )
 
 
 @pytest.mark.parametrize(
