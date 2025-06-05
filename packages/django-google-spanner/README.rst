@@ -140,6 +140,28 @@ configured:
            }
        }
 
+Configuring primary key generation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Spanner Django engine by default uses random int64 values that are generated
+by the client as primary key values. This default is applied to all databases that are
+configured, including databases that use a different engine than Spanner. You can
+disable this behavior with the RANDOM_ID_GENERATION_ENABLED setting:
+
+   .. code:: python
+
+       DATABASES = {
+           'default': {
+               'ENGINE': 'django_spanner',
+               'PROJECT': '$PROJECT',
+               'INSTANCE': '$INSTANCE',
+               'NAME': '$DATABASE',
+               'RANDOM_ID_GENERATION_ENABLED': false,
+           }
+       }
+
+
+
 Transaction support in autocommit mode
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
