@@ -1170,7 +1170,11 @@ class Session(
 
         table_id = self._loader.load_file(filepath_or_buffer, job_config=job_config)
         df = self._loader.read_gbq_table(
-            table_id, index_col=index_col, columns=columns, names=names
+            table_id,
+            index_col=index_col,
+            columns=columns,
+            names=names,
+            index_col_in_columns=True,
         )
 
         if dtype is not None:
