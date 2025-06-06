@@ -263,7 +263,7 @@ class FieldPath(object):
             Indicating path of the key to be used.
     """
 
-    def __init__(self, *parts):
+    def __init__(self, *parts: str):
         for part in parts:
             if not isinstance(part, str) or not part:
                 error = "One or more components is not a string or is empty."
@@ -271,7 +271,7 @@ class FieldPath(object):
         self.parts = tuple(parts)
 
     @classmethod
-    def from_api_repr(cls, api_repr: str):
+    def from_api_repr(cls, api_repr: str) -> "FieldPath":
         """Factory: create a FieldPath from the string formatted per the API.
 
         Args:
@@ -288,7 +288,7 @@ class FieldPath(object):
         return cls(*parse_field_path(api_repr))
 
     @classmethod
-    def from_string(cls, path_string: str):
+    def from_string(cls, path_string: str) -> "FieldPath":
         """Factory: create a FieldPath from a unicode string representation.
 
         This method splits on the character `.` and disallows the
@@ -351,7 +351,7 @@ class FieldPath(object):
         else:
             return NotImplemented
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> str:
         """Render a quoted string representation of the FieldPath
 
         Returns:
@@ -360,7 +360,7 @@ class FieldPath(object):
         """
         return render_field_path(self.parts)
 
-    def eq_or_parent(self, other):
+    def eq_or_parent(self, other) -> bool:
         """Check whether ``other`` is an ancestor.
 
         Returns:
@@ -369,7 +369,7 @@ class FieldPath(object):
         """
         return self.parts[: len(other.parts)] == other.parts[: len(self.parts)]
 
-    def lineage(self):
+    def lineage(self) -> set["FieldPath"]:
         """Return field paths for all parents.
 
         Returns: Set[:class:`FieldPath`]
@@ -378,7 +378,7 @@ class FieldPath(object):
         return {FieldPath(*self.parts[:index]) for index in indexes}
 
     @staticmethod
-    def document_id():
+    def document_id() -> str:
         """A special FieldPath value to refer to the ID of a document. It can be used
            in queries to sort or filter by the document ID.
 

@@ -110,7 +110,7 @@ class AsyncBulkWriterMixin:
                 # For code parity, even `SendMode.serial` scenarios should return
                 # a future here. Anything else would badly complicate calling code.
                 result = fn(self, *args, **kwargs)
-                future = concurrent.futures.Future()
+                future: concurrent.futures.Future = concurrent.futures.Future()
                 future.set_result(result)
                 return future
 
@@ -319,6 +319,7 @@ class BulkWriter(AsyncBulkWriterMixin):
         self._total_batches_sent: int = 0
         self._total_write_operations: int = 0
 
+        self._executor: concurrent.futures.ThreadPoolExecutor
         self._ensure_executor()
 
     @staticmethod

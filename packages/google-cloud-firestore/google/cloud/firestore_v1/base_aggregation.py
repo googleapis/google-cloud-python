@@ -83,23 +83,26 @@ class CountAggregation(BaseAggregation):
     def _to_protobuf(self):
         """Convert this instance to the protobuf representation"""
         aggregation_pb = StructuredAggregationQuery.Aggregation()
-        aggregation_pb.alias = self.alias
+        if self.alias:
+            aggregation_pb.alias = self.alias
         aggregation_pb.count = StructuredAggregationQuery.Aggregation.Count()
         return aggregation_pb
 
 
 class SumAggregation(BaseAggregation):
     def __init__(self, field_ref: str | FieldPath, alias: str | None = None):
-        if isinstance(field_ref, FieldPath):
-            # convert field path to string
-            field_ref = field_ref.to_api_repr()
-        self.field_ref = field_ref
+        # convert field path to string if needed
+        field_str = (
+            field_ref.to_api_repr() if isinstance(field_ref, FieldPath) else field_ref
+        )
+        self.field_ref: str = field_str
         super(SumAggregation, self).__init__(alias=alias)
 
     def _to_protobuf(self):
         """Convert this instance to the protobuf representation"""
         aggregation_pb = StructuredAggregationQuery.Aggregation()
-        aggregation_pb.alias = self.alias
+        if self.alias:
+            aggregation_pb.alias = self.alias
         aggregation_pb.sum = StructuredAggregationQuery.Aggregation.Sum()
         aggregation_pb.sum.field.field_path = self.field_ref
         return aggregation_pb
@@ -107,16 +110,18 @@ class SumAggregation(BaseAggregation):
 
 class AvgAggregation(BaseAggregation):
     def __init__(self, field_ref: str | FieldPath, alias: str | None = None):
-        if isinstance(field_ref, FieldPath):
-            # convert field path to string
-            field_ref = field_ref.to_api_repr()
-        self.field_ref = field_ref
+        # convert field path to string if needed
+        field_str = (
+            field_ref.to_api_repr() if isinstance(field_ref, FieldPath) else field_ref
+        )
+        self.field_ref: str = field_str
         super(AvgAggregation, self).__init__(alias=alias)
 
     def _to_protobuf(self):
         """Convert this instance to the protobuf representation"""
         aggregation_pb = StructuredAggregationQuery.Aggregation()
-        aggregation_pb.alias = self.alias
+        if self.alias:
+            aggregation_pb.alias = self.alias
         aggregation_pb.avg = StructuredAggregationQuery.Aggregation.Avg()
         aggregation_pb.avg.field.field_path = self.field_ref
         return aggregation_pb

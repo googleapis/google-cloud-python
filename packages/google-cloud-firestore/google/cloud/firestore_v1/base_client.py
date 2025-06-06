@@ -476,7 +476,7 @@ class BaseClient(ClientWithProject):
         read_time: datetime.datetime | None = None,
     ) -> Tuple[dict, dict]:
         """Shared setup for async/sync :meth:`collections`."""
-        request = {
+        request: dict[str, Any] = {
             "parent": "{}/documents".format(self._database_string),
         }
         if read_time is not None:

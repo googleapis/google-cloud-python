@@ -182,7 +182,7 @@ def _validate_opation(op_string, value):
 class FieldFilter(BaseFilter):
     """Class representation of a Field Filter."""
 
-    def __init__(self, field_path, op_string, value=None):
+    def __init__(self, field_path: str, op_string: str, value: Any | None = None):
         self.field_path = field_path
         self.value = value
         self.op_string = _validate_opation(op_string, value)
@@ -208,8 +208,8 @@ class BaseCompositeFilter(BaseFilter):
 
     def __init__(
         self,
-        operator=StructuredQuery.CompositeFilter.Operator.OPERATOR_UNSPECIFIED,
-        filters=None,
+        operator: int = StructuredQuery.CompositeFilter.Operator.OPERATOR_UNSPECIFIED,
+        filters: list[BaseFilter] | None = None,
     ):
         self.operator = operator
         if filters is None:
@@ -241,7 +241,7 @@ class BaseCompositeFilter(BaseFilter):
 class Or(BaseCompositeFilter):
     """Class representation of an OR Filter."""
 
-    def __init__(self, filters):
+    def __init__(self, filters: list[BaseFilter]):
         super().__init__(
             operator=StructuredQuery.CompositeFilter.Operator.OR, filters=filters
         )
@@ -250,7 +250,7 @@ class Or(BaseCompositeFilter):
 class And(BaseCompositeFilter):
     """Class representation of an AND Filter."""
 
-    def __init__(self, filters):
+    def __init__(self, filters: list[BaseFilter]):
         super().__init__(
             operator=StructuredQuery.CompositeFilter.Operator.AND, filters=filters
         )

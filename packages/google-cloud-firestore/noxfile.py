@@ -155,9 +155,16 @@ def pytype(session):
 def mypy(session):
     """Verify type hints are mypy compatible."""
     session.install("-e", ".")
-    session.install("mypy", "types-setuptools")
-    # TODO: also verify types on tests, all of google package
-    session.run("mypy", "-p", "google.cloud.firestore", "--no-incremental")
+    session.install("mypy", "types-setuptools", "types-protobuf")
+    session.run(
+        "mypy",
+        "-p",
+        "google.cloud.firestore_v1",
+        "--no-incremental",
+        "--check-untyped-defs",
+        "--exclude",
+        "services",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
 
 import collections
 import functools
@@ -232,7 +233,7 @@ class Watch(object):
     def _init_stream(self):
         rpc_request = self._get_rpc_request
 
-        self._rpc = ResumableBidiRpc(
+        self._rpc: ResumableBidiRpc | None = ResumableBidiRpc(
             start_rpc=self._api._transport.listen,
             should_recover=_should_recover,
             should_terminate=_should_terminate,
@@ -243,7 +244,9 @@ class Watch(object):
         self._rpc.add_done_callback(self._on_rpc_done)
 
         # The server assigns and updates the resume token.
-        self._consumer = BackgroundConsumer(self._rpc, self.on_snapshot)
+        self._consumer: BackgroundConsumer | None = BackgroundConsumer(
+            self._rpc, self.on_snapshot
+        )
         self._consumer.start()
 
     @classmethod
@@ -330,16 +333,18 @@ class Watch(object):
                 return
 
             # Stop consuming messages.
-            if self.is_active:
-                _LOGGER.debug("Stopping consumer.")
-                self._consumer.stop()
-            self._consumer._on_response = None
+            if self._consumer:
+                if self.is_active:
+                    _LOGGER.debug("Stopping consumer.")
+                    self._consumer.stop()
+                self._consumer._on_response = None
             self._consumer = None
 
             self._snapshot_callback = None
-            self._rpc.close()
-            self._rpc._initial_request = None
-            self._rpc._callbacks = []
+            if self._rpc:
+                self._rpc.close()
+                self._rpc._initial_request = None
+                self._rpc._callbacks = []
             self._rpc = None
             self._closed = True
             _LOGGER.debug("Finished stopping manager.")
@@ -460,13 +465,13 @@ class Watch(object):
                 message = f"Unknown target change type: {target_change_type}"
                 _LOGGER.info(f"on_snapshot: {message}")
                 self.close(reason=ValueError(message))
-
-            try:
-                # Use 'proto' vs 'pb' for datetime handling
-                meth(self, proto.target_change)
-            except Exception as exc2:
-                _LOGGER.debug(f"meth(proto) exc: {exc2}")
-                raise
+            else:
+                try:
+                    # Use 'proto' vs 'pb' for datetime handling
+                    meth(self, proto.target_change)
+                except Exception as exc2:
+                    _LOGGER.debug(f"meth(proto) exc: {exc2}")
+                    raise
 
             # NOTE:
             # in other implementations, such as node, the backoff is reset here

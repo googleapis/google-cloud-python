@@ -322,6 +322,15 @@ def test_watch_close():
     assert inst._closed
 
 
+def test_watch_close_w_empty_attrs():
+    inst = _make_watch()
+    inst._consumer = None
+    inst._rpc = None
+    inst.close()
+    assert inst._consumer is None
+    assert inst._rpc is None
+
+
 def test_watch__get_rpc_request_wo_resume_token():
     inst = _make_watch()
 
