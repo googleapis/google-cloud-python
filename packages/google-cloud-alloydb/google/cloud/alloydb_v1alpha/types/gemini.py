@@ -46,18 +46,13 @@ class GCAEntitlementType(proto.Enum):
 
 
 class GeminiClusterConfig(proto.Message):
-    r"""Cluster level configuration parameters related to the Gemini
-    in Databases add-on.
+    r"""Deprecated and unused. This message will be removed in the
+    near future.
 
     Attributes:
         entitled (bool):
-            Output only. Whether the Gemini in Databases
-            add-on is enabled for the cluster. It will be
-            true only if the add-on has been enabled for the
-            billing account corresponding to the cluster.
-            Its status is toggled from the Admin Control
-            Center (ACC) and cannot be toggled using
-            AlloyDB's APIs.
+            Output only. Deprecated and unused. This
+            field will be removed in the near future.
     """
 
     entitled: bool = proto.Field(
@@ -67,18 +62,13 @@ class GeminiClusterConfig(proto.Message):
 
 
 class GeminiInstanceConfig(proto.Message):
-    r"""Instance level configuration parameters related to the Gemini
-    in Databases add-on.
+    r"""Deprecated and unused. This message will be removed in the
+    near future.
 
     Attributes:
         entitled (bool):
-            Output only. Whether the Gemini in Databases
-            add-on is enabled for the instance. It will be
-            true only if the add-on has been enabled for the
-            billing account corresponding to the instance.
-            Its status is toggled from the Admin Control
-            Center (ACC) and cannot be toggled using
-            AlloyDB's APIs.
+            Output only. Deprecated and unused. This
+            field will be removed in the near future.
     """
 
     entitled: bool = proto.Field(
