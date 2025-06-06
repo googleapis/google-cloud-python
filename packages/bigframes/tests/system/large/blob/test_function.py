@@ -385,3 +385,54 @@ def test_blob_pdf_chunk(
         check_dtype=False,
         check_index=False,
     )
+
+
+@pytest.mark.parametrize(
+    "model_name, verbose",
+    [
+        ("gemini-2.0-flash-001", True),
+        ("gemini-2.0-flash-001", False),
+        ("gemini-2.0-flash-lite-001", True),
+        ("gemini-2.0-flash-lite-001", False),
+    ],
+)
+def test_blob_transcribe(
+    audio_mm_df: bpd.DataFrame,
+    model_name: str,
+    verbose: bool,
+):
+    actual = (
+        audio_mm_df["audio"]
+        .blob.audio_transcribe(
+            model_name=model_name,
+            verbose=verbose,
+        )
+        .to_pandas()
+    )
+
+    # check relative length
+    expected_text = "Now, as all books not primarily intended as picture-books consist principally of types composed to form letterpress"
+    expected_len = len(expected_text)
+
+    actual_text = ""
+    if verbose:
+        actual_text = actual[0]["content"]
+    else:
+        actual_text = actual[0]
+    actual_len = len(actual_text)
+
+    relative_length_tolerance = 0.2
+    min_acceptable_len = expected_len * (1 - relative_length_tolerance)
+    max_acceptable_len = expected_len * (1 + relative_length_tolerance)
+    assert min_acceptable_len <= actual_len <= max_acceptable_len, (
+        f"Item (verbose={verbose}): Transcribed text length {actual_len} is outside the acceptable range "
+        f"[{min_acceptable_len:.0f}, {max_acceptable_len:.0f}]. "
+        f"Expected reference length was {expected_len}. "
+    )
+
+    # check for major keywords
+    major_keywords = ["book", "picture"]
+    for keyword in major_keywords:
+        assert (
+            keyword.lower() in actual_text.lower()
+        ), f"Item (verbose={verbose}): Expected keyword '{keyword}' not found in transcribed text. "

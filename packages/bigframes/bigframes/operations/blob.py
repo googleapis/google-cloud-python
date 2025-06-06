@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import os
-from typing import cast, Optional, Union
+from typing import cast, Literal, Optional, Union
 import warnings
 
 import IPython.display as ipy_display
@@ -736,3 +736,77 @@ class BlobAccessor(base.SeriesMethods):
             return struct_series
         else:
             return content_series
+
+    def audio_transcribe(
+        self,
+        *,
+        connection: Optional[str] = None,
+        model_name: Optional[
+            Literal[
+                "gemini-2.0-flash-001",
+                "gemini-2.0-flash-lite-001",
+            ]
+        ] = None,
+        verbose: bool = False,
+    ) -> bigframes.series.Series:
+        """
+        Transcribe audio content using a Gemini multimodal model.
+
+        Args:
+            connection (str or None, default None): BQ connection used for
+                function internet transactions, and the output blob if "dst"
+                is str. If None, uses default connection of the session.
+            model_name (str): The model for natural language tasks. Accepted
+                values are "gemini-2.0-flash-lite-001", and "gemini-2.0-flash-001".
+                See "https://ai.google.dev/gemini-api/docs/models" for model choices.
+            verbose (bool, default "False"): controls the verbosity of the output.
+                When set to True, both error messages and the transcribed content
+                are displayed. Conversely, when set to False, only the transcribed
+                content is presented, suppressing error messages.
+
+        Returns:
+            bigframes.series.Series: str or struct[str, str],
+                depend on the "verbose" parameter.
+                Contains the transcribed text from the audio file.
+                Includes error messages if verbosity is enabled.
+        """
+        import bigframes.bigquery as bbq
+        import bigframes.ml.llm as llm
+        import bigframes.pandas as bpd
+
+        # col name doesn't matter here. Rename to avoid column name conflicts
+        audio_series = bigframes.series.Series(self._block)
+
+        prompt_text = "**Task:** Transcribe the provided audio. **Instructions:** - Your response must contain only the verbatim transcription of the audio. - Do not include any introductory text, summaries, or conversational filler in your response. The output should begin directly with the first word of the audio."
+
+        llm_model = llm.GeminiTextGenerator(
+            model_name=model_name,
+            session=self._block.session,
+            connection_name=connection,
+        )
+
+        # transcribe audio using ML.GENERATE_TEXT
+        transcribed_results = llm_model.predict(
+            X=audio_series,
+            prompt=[prompt_text, audio_series],
+            temperature=0.0,
+        )
+
+        transcribed_content_series = cast(
+            bpd.Series, transcribed_results["ml_generate_text_llm_result"]
+        ).rename("transcribed_content")
+
+        if verbose:
+            transcribed_status_series = cast(
+                bpd.Series, transcribed_results["ml_generate_text_status"]
+            )
+            results_df = bpd.DataFrame(
+                {
+                    "status": transcribed_status_series,
+                    "content": transcribed_content_series,
+                }
+            )
+            results_struct = bbq.struct(results_df).rename("transcription_results")
+            return results_struct
+        else:
+            return transcribed_content_series
