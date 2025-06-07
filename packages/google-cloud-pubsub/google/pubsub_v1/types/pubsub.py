@@ -828,6 +828,11 @@ class IngestionFailureEvent(proto.Message):
             Confluent Cloud.
 
             This field is a member of `oneof`_ ``failure``.
+        aws_kinesis_failure (google.pubsub_v1.types.IngestionFailureEvent.AwsKinesisFailureReason):
+            Optional. Failure when ingesting from AWS
+            Kinesis.
+
+            This field is a member of `oneof`_ ``failure``.
     """
 
     class ApiViolationReason(proto.Message):
@@ -847,6 +852,12 @@ class IngestionFailureEvent(proto.Message):
         r"""Set when an Avro file is unsupported or its format is not
         valid. When this occurs, one or more Avro objects won't be
         ingested.
+
+        """
+
+    class SchemaViolationReason(proto.Message):
+        r"""Set when a Pub/Sub message fails to get published due to a
+        schema validation violation.
 
         """
 
@@ -882,6 +893,11 @@ class IngestionFailureEvent(proto.Message):
                 the desired message from being published.
 
                 This field is a member of `oneof`_ ``reason``.
+            schema_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.SchemaViolationReason):
+                Optional. The Pub/Sub message failed schema
+                validation.
+
+                This field is a member of `oneof`_ ``reason``.
         """
 
         bucket: str = proto.Field(
@@ -908,9 +924,22 @@ class IngestionFailureEvent(proto.Message):
             oneof="reason",
             message="IngestionFailureEvent.ApiViolationReason",
         )
+        schema_violation_reason: "IngestionFailureEvent.SchemaViolationReason" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=7,
+                oneof="reason",
+                message="IngestionFailureEvent.SchemaViolationReason",
+            )
+        )
 
     class AwsMskFailureReason(proto.Message):
         r"""Failure when ingesting from an Amazon MSK source.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -930,6 +959,11 @@ class IngestionFailureEvent(proto.Message):
             api_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.ApiViolationReason):
                 Optional. The Pub/Sub API limits prevented
                 the desired message from being published.
+
+                This field is a member of `oneof`_ ``reason``.
+            schema_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.SchemaViolationReason):
+                Optional. The Pub/Sub message failed schema
+                validation.
 
                 This field is a member of `oneof`_ ``reason``.
         """
@@ -956,9 +990,22 @@ class IngestionFailureEvent(proto.Message):
             oneof="reason",
             message="IngestionFailureEvent.ApiViolationReason",
         )
+        schema_violation_reason: "IngestionFailureEvent.SchemaViolationReason" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=6,
+                oneof="reason",
+                message="IngestionFailureEvent.SchemaViolationReason",
+            )
+        )
 
     class AzureEventHubsFailureReason(proto.Message):
         r"""Failure when ingesting from an Azure Event Hubs source.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -978,6 +1025,11 @@ class IngestionFailureEvent(proto.Message):
             api_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.ApiViolationReason):
                 Optional. The Pub/Sub API limits prevented
                 the desired message from being published.
+
+                This field is a member of `oneof`_ ``reason``.
+            schema_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.SchemaViolationReason):
+                Optional. The Pub/Sub message failed schema
+                validation.
 
                 This field is a member of `oneof`_ ``reason``.
         """
@@ -1004,9 +1056,22 @@ class IngestionFailureEvent(proto.Message):
             oneof="reason",
             message="IngestionFailureEvent.ApiViolationReason",
         )
+        schema_violation_reason: "IngestionFailureEvent.SchemaViolationReason" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=6,
+                oneof="reason",
+                message="IngestionFailureEvent.SchemaViolationReason",
+            )
+        )
 
     class ConfluentCloudFailureReason(proto.Message):
         r"""Failure when ingesting from a Confluent Cloud source.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1026,6 +1091,11 @@ class IngestionFailureEvent(proto.Message):
             api_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.ApiViolationReason):
                 Optional. The Pub/Sub API limits prevented
                 the desired message from being published.
+
+                This field is a member of `oneof`_ ``reason``.
+            schema_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.SchemaViolationReason):
+                Optional. The Pub/Sub message failed schema
+                validation.
 
                 This field is a member of `oneof`_ ``reason``.
         """
@@ -1051,6 +1121,57 @@ class IngestionFailureEvent(proto.Message):
             number=5,
             oneof="reason",
             message="IngestionFailureEvent.ApiViolationReason",
+        )
+        schema_violation_reason: "IngestionFailureEvent.SchemaViolationReason" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=6,
+                oneof="reason",
+                message="IngestionFailureEvent.SchemaViolationReason",
+            )
+        )
+
+    class AwsKinesisFailureReason(proto.Message):
+        r"""Failure when ingesting from an AWS Kinesis source.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            stream_arn (str):
+                Optional. The stream ARN of the Kinesis
+                stream being ingested from.
+            partition_key (str):
+                Optional. The partition key of the message
+                that failed to be ingested.
+            sequence_number (str):
+                Optional. The sequence number of the message
+                that failed to be ingested.
+            schema_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.SchemaViolationReason):
+                Optional. The Pub/Sub message failed schema
+                validation.
+
+                This field is a member of `oneof`_ ``reason``.
+        """
+
+        stream_arn: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        partition_key: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        sequence_number: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        schema_violation_reason: "IngestionFailureEvent.SchemaViolationReason" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="reason",
+                message="IngestionFailureEvent.SchemaViolationReason",
+            )
         )
 
     topic: str = proto.Field(
@@ -1084,6 +1205,12 @@ class IngestionFailureEvent(proto.Message):
         number=6,
         oneof="failure",
         message=ConfluentCloudFailureReason,
+    )
+    aws_kinesis_failure: AwsKinesisFailureReason = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="failure",
+        message=AwsKinesisFailureReason,
     )
 
 
@@ -1784,8 +1911,8 @@ class Subscription(proto.Message):
             This generally implies that messages will be
             retried as soon as possible for healthy
             subscribers. RetryPolicy will be triggered on
-            NACKs or acknowledgement deadline exceeded
-            events for a given message.
+            NACKs or acknowledgment deadline exceeded events
+            for a given message.
         detached (bool):
             Optional. Indicates whether the subscription is detached
             from its topic. Detached subscriptions don't receive
@@ -1799,7 +1926,7 @@ class Subscription(proto.Message):
             ``message_id`` on this subscription:
 
             -  The message sent to a subscriber is guaranteed not to be
-               resent before the message's acknowledgement deadline
+               resent before the message's acknowledgment deadline
                expires.
             -  An acknowledged message will not be resent to a
                subscriber.
@@ -1977,7 +2104,7 @@ class RetryPolicy(proto.Message):
     Retry delay will be exponential based on provided minimum and
     maximum backoffs. https://en.wikipedia.org/wiki/Exponential_backoff.
 
-    RetryPolicy will be triggered on NACKs or acknowledgement deadline
+    RetryPolicy will be triggered on NACKs or acknowledgment deadline
     exceeded events for a given message.
 
     Retry Policy is implemented on a best effort basis. At times, the
@@ -2037,7 +2164,7 @@ class DeadLetterPolicy(proto.Message):
             message. The value must be between 5 and 100.
 
             The number of delivery attempts is defined as 1 + (the sum
-            of number of NACKs and number of times the acknowledgement
+            of number of NACKs and number of times the acknowledgment
             deadline has been exceeded for the message).
 
             A NACK is any call to ModifyAckDeadline with a 0 deadline.
@@ -2386,7 +2513,7 @@ class CloudStorageConfig(proto.Message):
             elapse before a new Cloud Storage file is
             created. Min 1 minute, max 10 minutes, default 5
             minutes. May not exceed the subscription's
-            acknowledgement deadline.
+            acknowledgment deadline.
         max_bytes (int):
             Optional. The maximum bytes that can be written to a Cloud
             Storage file before a new file is created. Min 1 KB, max 10
@@ -2838,7 +2965,7 @@ class AcknowledgeRequest(proto.Message):
 class StreamingPullRequest(proto.Message):
     r"""Request for the ``StreamingPull`` streaming RPC method. This request
     is used to establish the initial stream as well as to stream
-    acknowledgements and ack deadline modifications from the client to
+    acknowledgments and ack deadline modifications from the client to
     the server.
 
     Attributes:
@@ -2849,12 +2976,12 @@ class StreamingPullRequest(proto.Message):
             client to server. Format is
             ``projects/{project}/subscriptions/{sub}``.
         ack_ids (MutableSequence[str]):
-            Optional. List of acknowledgement IDs for acknowledging
+            Optional. List of acknowledgment IDs for acknowledging
             previously received messages (received on this stream or a
             different stream). If an ack ID has expired, the
             corresponding message may be redelivered later.
             Acknowledging a message more than once will not result in an
-            error. If the acknowledgement ID is malformed, the stream
+            error. If the acknowledgment ID is malformed, the stream
             will be aborted with status ``INVALID_ARGUMENT``.
         modify_deadline_seconds (MutableSequence[int]):
             Optional. The list of new ack deadlines for the IDs listed
@@ -2872,7 +2999,7 @@ class StreamingPullRequest(proto.Message):
             request. If the value is < 0 (an error), the stream will be
             aborted with status ``INVALID_ARGUMENT``.
         modify_deadline_ack_ids (MutableSequence[str]):
-            Optional. List of acknowledgement IDs whose deadline will be
+            Optional. List of acknowledgment IDs whose deadline will be
             modified based on the corresponding element in
             ``modify_deadline_seconds``. This field can be used to
             indicate that more time is needed to process a message by
@@ -2974,22 +3101,22 @@ class StreamingPullResponse(proto.Message):
     """
 
     class AcknowledgeConfirmation(proto.Message):
-        r"""Acknowledgement IDs sent in one or more previous requests to
+        r"""Acknowledgment IDs sent in one or more previous requests to
         acknowledge a previously received message.
 
         Attributes:
             ack_ids (MutableSequence[str]):
                 Optional. Successfully processed
-                acknowledgement IDs.
+                acknowledgment IDs.
             invalid_ack_ids (MutableSequence[str]):
-                Optional. List of acknowledgement IDs that
-                were malformed or whose acknowledgement deadline
+                Optional. List of acknowledgment IDs that
+                were malformed or whose acknowledgment deadline
                 has expired.
             unordered_ack_ids (MutableSequence[str]):
-                Optional. List of acknowledgement IDs that
+                Optional. List of acknowledgment IDs that
                 were out of order.
             temporary_failed_ack_ids (MutableSequence[str]):
-                Optional. List of acknowledgement IDs that
+                Optional. List of acknowledgment IDs that
                 failed processing with temporary issues.
         """
 
@@ -3011,19 +3138,19 @@ class StreamingPullResponse(proto.Message):
         )
 
     class ModifyAckDeadlineConfirmation(proto.Message):
-        r"""Acknowledgement IDs sent in one or more previous requests to
+        r"""Acknowledgment IDs sent in one or more previous requests to
         modify the deadline for a specific message.
 
         Attributes:
             ack_ids (MutableSequence[str]):
                 Optional. Successfully processed
-                acknowledgement IDs.
+                acknowledgment IDs.
             invalid_ack_ids (MutableSequence[str]):
-                Optional. List of acknowledgement IDs that
-                were malformed or whose acknowledgement deadline
+                Optional. List of acknowledgment IDs that
+                were malformed or whose acknowledgment deadline
                 has expired.
             temporary_failed_ack_ids (MutableSequence[str]):
-                Optional. List of acknowledgement IDs that
+                Optional. List of acknowledgment IDs that
                 failed processing with temporary issues.
         """
 

@@ -571,7 +571,7 @@ class SubscriberGrpcTransport(SubscriberTransport):
         r"""Return a callable for the streaming pull method over gRPC.
 
         Establishes a stream with the server, which sends messages down
-        to the client. The client streams acknowledgements and ack
+        to the client. The client streams acknowledgments and ack
         deadline modifications back to the server. The server will close
         the stream and return the status on any error. The server may
         close the stream with status ``UNAVAILABLE`` to reassign

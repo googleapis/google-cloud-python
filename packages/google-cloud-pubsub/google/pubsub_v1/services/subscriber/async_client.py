@@ -1377,7 +1377,7 @@ class SubscriberAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Awaitable[AsyncIterable[pubsub.StreamingPullResponse]]:
         r"""Establishes a stream with the server, which sends messages down
-        to the client. The client streams acknowledgements and ack
+        to the client. The client streams acknowledgments and ack
         deadline modifications back to the server. The server will close
         the stream and return the status on any error. The server may
         close the stream with status ``UNAVAILABLE`` to reassign
@@ -1427,7 +1427,7 @@ class SubscriberAsyncClient:
             requests (AsyncIterator[`google.pubsub_v1.types.StreamingPullRequest`]):
                 The request object AsyncIterator. Request for the ``StreamingPull`` streaming RPC method.
                 This request is used to establish the initial stream as
-                well as to stream acknowledgements and ack deadline
+                well as to stream acknowledgments and ack deadline
                 modifications from the client to the server.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
