@@ -1,9 +1,9 @@
-Python Client for BeyondCorp AppGateways
-========================================
+Python Client for BeyondCorp API
+================================
 
 |preview| |pypi| |versions|
 
-`BeyondCorp AppGateways`_: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
+`BeyondCorp API`_: Beyondcorp Enterprise provides identity and context aware access controls for enterprise resources and enables zero-trust access. Using the Beyondcorp Enterprise APIs, enterprises can set up multi-cloud and on-prem connectivity using the App Connector hybrid connectivity solution.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,8 +14,8 @@ Python Client for BeyondCorp AppGateways
    :target: https://pypi.org/project/google-cloud-beyondcorp-appgateways/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-beyondcorp-appgateways.svg
    :target: https://pypi.org/project/google-cloud-beyondcorp-appgateways/
-.. _BeyondCorp AppGateways: https://cloud.google.com/beyondcorp/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/beyondcorpappgateways/latest/summary_overview
+.. _BeyondCorp API: https://cloud.google.com/beyondcorp/
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/beyondcorp appgateways/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/beyondcorp/
 
 Quick Start
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the BeyondCorp AppGateways.`_
+3. `Enable the BeyondCorp API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the BeyondCorp AppGateways.:  https://cloud.google.com/beyondcorp/
+.. _Enable the BeyondCorp API.:  https://cloud.google.com/beyondcorp/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for BeyondCorp AppGateways
+-  Read the `Client Library Documentation`_ for BeyondCorp API
    to see other available methods on the client.
--  Read the `BeyondCorp AppGateways Product documentation`_ to learn
+-  Read the `BeyondCorp API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BeyondCorp AppGateways Product documentation:  https://cloud.google.com/beyondcorp/
+.. _BeyondCorp API Product documentation:  https://cloud.google.com/beyondcorp/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
