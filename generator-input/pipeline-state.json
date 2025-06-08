@@ -261,7 +261,7 @@
             "currentVersion": "0.3.23",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "90c451942dbdb9361faadfc062580303a1460e8c",
             "apiPaths": [
                 "google/cloud/netapp/v1"
             ],

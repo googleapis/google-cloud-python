@@ -11,7 +11,6 @@ API Reference
     netapp_v1/services_
     netapp_v1/types_
 
-
 Changelog
 ---------
 
