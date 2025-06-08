@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 #
-# google-cloud-security-publicca documentation build configuration file
+# google-cloud-public-ca documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -81,7 +81,7 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "google-cloud-security-publicca"
+project = "google-cloud-public-ca"
 copyright = "2025, Google, LLC"
 author = "Google APIs"
 
@@ -155,7 +155,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Security Client Libraries for google-cloud-security-publicca",
+    "description": "Google Cloud Security Client Libraries for google-cloud-public-ca",
     "github_user": "googleapis",
     "github_repo": "google-cloud-python",
     "github_banner": True,
@@ -249,7 +249,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-security-publicca-doc"
+htmlhelp_basename = "google-cloud-public-ca-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -282,8 +282,8 @@ latex_elements = {
 latex_documents = [
     (
         root_doc,
-        "google-cloud-security-publicca.tex",
-        "google-cloud-security-publicca Documentation",
+        "google-cloud-public-ca.tex",
+        "google-cloud-public-ca Documentation",
         author,
         "manual",
     )
@@ -317,8 +317,8 @@ latex_documents = [
 man_pages = [
     (
         root_doc,
-        "google-cloud-security-publicca",
-        "google-cloud-security-publicca Documentation",
+        "google-cloud-public-ca",
+        "google-cloud-public-ca Documentation",
         [author],
         1,
     )
@@ -336,11 +336,11 @@ man_pages = [
 texinfo_documents = [
     (
         root_doc,
-        "google-cloud-security-publicca",
-        "google-cloud-security-publicca Documentation",
+        "google-cloud-public-ca",
+        "google-cloud-public-ca Documentation",
         author,
-        "google-cloud-security-publicca",
-        "google-cloud-security-publicca Library",
+        "google-cloud-public-ca",
+        "google-cloud-public-ca Library",
         "APIs",
     )
 ]

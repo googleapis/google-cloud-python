@@ -2041,7 +2041,7 @@
             "currentVersion": "0.3.17",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "443957ba92ed5f5445b688b1376397d66005f0df",
             "apiPaths": [
                 "google/cloud/security/publicca/v1",
                 "google/cloud/security/publicca/v1beta1"

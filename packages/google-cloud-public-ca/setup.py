@@ -21,10 +21,10 @@ import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-cloud-security-publicca"
+name = "google-cloud-public-ca"
 
 
-description = "Google Cloud Security Publicca API client library"
+description = "Google Cloud Public Ca API client library"
 
 version = None
 
@@ -50,7 +50,7 @@ dependencies = [
     "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
 ]
 extras = {}
-url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-security-publicca"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-public-ca"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
