@@ -11,7 +11,6 @@ API Reference
     merchant_products_v1beta/services_
     merchant_products_v1beta/types_
 
-
 Changelog
 ---------
 
@@ -21,3 +20,6 @@ For a list of all ``google-shopping-merchant-products`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:

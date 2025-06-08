@@ -53,7 +53,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
 
 from google.shopping.merchant_products_v1beta.services.product_inputs_service import (
@@ -1201,7 +1201,7 @@ def test_insert_product_input(request_type, transport: str = "grpc"):
         call.return_value = productinputs.ProductInput(
             name="name_value",
             product="product_value",
-            channel=types.Channel.ChannelEnum.ONLINE,
+            channel=types_pb2.Channel.ChannelEnum.ONLINE,
             offer_id="offer_id_value",
             content_language="content_language_value",
             feed_label="feed_label_value",
@@ -1219,7 +1219,7 @@ def test_insert_product_input(request_type, transport: str = "grpc"):
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
     assert response.product == "product_value"
-    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.channel == types_pb2.Channel.ChannelEnum.ONLINE
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"
@@ -1362,7 +1362,7 @@ async def test_insert_product_input_async(
             productinputs.ProductInput(
                 name="name_value",
                 product="product_value",
-                channel=types.Channel.ChannelEnum.ONLINE,
+                channel=types_pb2.Channel.ChannelEnum.ONLINE,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
                 feed_label="feed_label_value",
@@ -1381,7 +1381,7 @@ async def test_insert_product_input_async(
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
     assert response.product == "product_value"
-    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.channel == types_pb2.Channel.ChannelEnum.ONLINE
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"
@@ -1483,7 +1483,7 @@ def test_update_product_input(request_type, transport: str = "grpc"):
         call.return_value = productinputs.ProductInput(
             name="name_value",
             product="product_value",
-            channel=types.Channel.ChannelEnum.ONLINE,
+            channel=types_pb2.Channel.ChannelEnum.ONLINE,
             offer_id="offer_id_value",
             content_language="content_language_value",
             feed_label="feed_label_value",
@@ -1501,7 +1501,7 @@ def test_update_product_input(request_type, transport: str = "grpc"):
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
     assert response.product == "product_value"
-    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.channel == types_pb2.Channel.ChannelEnum.ONLINE
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"
@@ -1642,7 +1642,7 @@ async def test_update_product_input_async(
             productinputs.ProductInput(
                 name="name_value",
                 product="product_value",
-                channel=types.Channel.ChannelEnum.ONLINE,
+                channel=types_pb2.Channel.ChannelEnum.ONLINE,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
                 feed_label="feed_label_value",
@@ -1661,7 +1661,7 @@ async def test_update_product_input_async(
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
     assert response.product == "product_value"
-    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.channel == types_pb2.Channel.ChannelEnum.ONLINE
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"
@@ -2938,7 +2938,7 @@ async def test_insert_product_input_empty_call_grpc_asyncio():
             productinputs.ProductInput(
                 name="name_value",
                 product="product_value",
-                channel=types.Channel.ChannelEnum.ONLINE,
+                channel=types_pb2.Channel.ChannelEnum.ONLINE,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
                 feed_label="feed_label_value",
@@ -2973,7 +2973,7 @@ async def test_update_product_input_empty_call_grpc_asyncio():
             productinputs.ProductInput(
                 name="name_value",
                 product="product_value",
-                channel=types.Channel.ChannelEnum.ONLINE,
+                channel=types_pb2.Channel.ChannelEnum.ONLINE,
                 offer_id="offer_id_value",
                 content_language="content_language_value",
                 feed_label="feed_label_value",
@@ -3340,7 +3340,7 @@ def test_insert_product_input_rest_call_success(request_type):
         return_value = productinputs.ProductInput(
             name="name_value",
             product="product_value",
-            channel=types.Channel.ChannelEnum.ONLINE,
+            channel=types_pb2.Channel.ChannelEnum.ONLINE,
             offer_id="offer_id_value",
             content_language="content_language_value",
             feed_label="feed_label_value",
@@ -3363,7 +3363,7 @@ def test_insert_product_input_rest_call_success(request_type):
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
     assert response.product == "product_value"
-    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.channel == types_pb2.Channel.ChannelEnum.ONLINE
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"
@@ -3751,7 +3751,7 @@ def test_update_product_input_rest_call_success(request_type):
         return_value = productinputs.ProductInput(
             name="name_value",
             product="product_value",
-            channel=types.Channel.ChannelEnum.ONLINE,
+            channel=types_pb2.Channel.ChannelEnum.ONLINE,
             offer_id="offer_id_value",
             content_language="content_language_value",
             feed_label="feed_label_value",
@@ -3774,7 +3774,7 @@ def test_update_product_input_rest_call_success(request_type):
     assert isinstance(response, productinputs.ProductInput)
     assert response.name == "name_value"
     assert response.product == "product_value"
-    assert response.channel == types.Channel.ChannelEnum.ONLINE
+    assert response.channel == types_pb2.Channel.ChannelEnum.ONLINE
     assert response.offer_id == "offer_id_value"
     assert response.content_language == "content_language_value"
     assert response.feed_label == "feed_label_value"

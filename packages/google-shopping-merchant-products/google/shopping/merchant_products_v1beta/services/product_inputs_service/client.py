@@ -62,7 +62,7 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 
 from google.shopping.merchant_products_v1beta.types import (
     productinputs,
@@ -810,7 +810,7 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                    Required product input attributes to pass data
                    validation checks are primarily defined in the
                    [Products Data
-                   Specification](\ https://support.google.com/merchants/answer/188494).
+                   Specification](https://support.google.com/merchants/answer/188494).
 
                    The following attributes are required:
                    [feedLabel][google.shopping.merchant.products.v1beta.Product.feed_label],
@@ -825,7 +825,7 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                    All fields in the product input and its sub-messages
                    match the English name of their corresponding
                    attribute in the vertical spec with [some
-                   exceptions](\ https://support.google.com/merchants/answer/7052112).
+                   exceptions](https://support.google.com/merchants/answer/7052112).
 
         """
         # Create or coerce a protobuf request object.
@@ -966,7 +966,7 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                    Required product input attributes to pass data
                    validation checks are primarily defined in the
                    [Products Data
-                   Specification](\ https://support.google.com/merchants/answer/188494).
+                   Specification](https://support.google.com/merchants/answer/188494).
 
                    The following attributes are required:
                    [feedLabel][google.shopping.merchant.products.v1beta.Product.feed_label],
@@ -981,7 +981,7 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                    All fields in the product input and its sub-messages
                    match the English name of their corresponding
                    attribute in the vertical spec with [some
-                   exceptions](\ https://support.google.com/merchants/answer/7052112).
+                   exceptions](https://support.google.com/merchants/answer/7052112).
 
         """
         # Create or coerce a protobuf request object.
