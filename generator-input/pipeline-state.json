@@ -679,7 +679,7 @@
             "currentVersion": "0.1.0",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "90926b6dcbc8511fb4c075732f08e9e6c9a17437",
             "apiPaths": [
                 "google/cloud/devicestreaming/v1"
             ],
