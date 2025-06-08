@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -176,7 +176,7 @@ class PrimaryProductDataSource(proto.Message):
         selections.
 
         Attributes:
-            destination (google.shopping.type.types.Destination.DestinationEnum):
+            destination (google.shopping.type.types_pb2.DestinationEnum):
                 `Marketing
                 methods <https://support.google.com/merchants/answer/15130232>`__
                 (also known as destination) selections.
@@ -199,10 +199,10 @@ class PrimaryProductDataSource(proto.Message):
             ENABLED = 1
             DISABLED = 2
 
-        destination: types.Destination.DestinationEnum = proto.Field(
+        destination: types_pb2.Destination.DestinationEnum = proto.Field(
             proto.ENUM,
             number=1,
-            enum=types.Destination.DestinationEnum,
+            enum=types_pb2.Destination.DestinationEnum,
         )
         state: "PrimaryProductDataSource.Destination.State" = proto.Field(
             proto.ENUM,
