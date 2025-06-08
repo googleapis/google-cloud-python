@@ -14,9 +14,9 @@ Overview of the APIs available for Bare Metal Solution API.
 Classes, methods and properties & attributes for
 Bare Metal Solution API.
 
-[classes](https://cloud.google.com/python/docs/reference/baremetalsolution/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/bare metal solution/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/baremetalsolution/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/bare metal solution/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/baremetalsolution/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/bare metal solution/latest/summary_property.html)

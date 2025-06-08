@@ -1,9 +1,9 @@
-Python Client for Bare Metal Solution
-=====================================
+Python Client for Bare Metal Solution API
+=========================================
 
 |stable| |pypi| |versions|
 
-`Bare Metal Solution`_: Bring your Oracle workloads to Google Cloud with Bare Metal Solution and jumpstart your cloud journey with minimal risk.
+`Bare Metal Solution API`_: Provides ways to manage Bare Metal Solution hardware installed in a regional extension located near a Google Cloud data center.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,8 +14,8 @@ Python Client for Bare Metal Solution
    :target: https://pypi.org/project/google-cloud-bare-metal-solution/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bare-metal-solution.svg
    :target: https://pypi.org/project/google-cloud-bare-metal-solution/
-.. _Bare Metal Solution: https://cloud.google.com/bare-metal/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/baremetalsolution/latest/summary_overview
+.. _Bare Metal Solution API: https://cloud.google.com/bare-metal/docs
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bare metal solution/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/bare-metal/docs
 
 Quick Start
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Bare Metal Solution.`_
+3. `Enable the Bare Metal Solution API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Bare Metal Solution.:  https://cloud.google.com/bare-metal/docs
+.. _Enable the Bare Metal Solution API.:  https://cloud.google.com/bare-metal/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Bare Metal Solution
+-  Read the `Client Library Documentation`_ for Bare Metal Solution API
    to see other available methods on the client.
--  Read the `Bare Metal Solution Product documentation`_ to learn
+-  Read the `Bare Metal Solution API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Bare Metal Solution Product documentation:  https://cloud.google.com/bare-metal/docs
+.. _Bare Metal Solution API Product documentation:  https://cloud.google.com/bare-metal/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

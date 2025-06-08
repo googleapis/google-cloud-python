@@ -11,7 +11,6 @@ API Reference
     bare_metal_solution_v2/services_
     bare_metal_solution_v2/types_
 
-
 Changelog
 ---------
 
