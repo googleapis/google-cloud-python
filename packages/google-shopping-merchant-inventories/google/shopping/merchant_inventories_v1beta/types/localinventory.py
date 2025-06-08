@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -59,9 +59,9 @@ class LocalInventory(proto.Message):
             in. See the `Local product inventory data
             specification <https://support.google.com/merchants/answer/3061342>`__
             for more information.
-        price (google.shopping.type.types.Price):
+        price (google.shopping.type.types_pb2.Price):
             Price of the product at this store.
-        sale_price (google.shopping.type.types.Price):
+        sale_price (google.shopping.type.types_pb2.Price):
             Sale price of the product at this store. Mandatory if
             [``salePriceEffectiveDate``][google.shopping.merchant.inventories.v1beta.LocalInventory.sale_price_effective_date]
             is defined.
@@ -99,7 +99,7 @@ class LocalInventory(proto.Message):
             Maximum length is 20 bytes.
 
             This field is a member of `oneof`_ ``_instore_product_location``.
-        custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
+        custom_attributes (MutableSequence[google.shopping.type.types_pb2.CustomAttribute]):
             A list of custom (merchant-provided) attributes. You can
             also use ``CustomAttribute`` to submit any attribute of the
             data specification in its generic form.
@@ -117,15 +117,15 @@ class LocalInventory(proto.Message):
         proto.STRING,
         number=3,
     )
-    price: types.Price = proto.Field(
+    price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=4,
-        message=types.Price,
+        message=types_pb2.Price,
     )
-    sale_price: types.Price = proto.Field(
+    sale_price: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=5,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     sale_price_effective_date: interval_pb2.Interval = proto.Field(
         proto.MESSAGE,
@@ -157,10 +157,10 @@ class LocalInventory(proto.Message):
         number=11,
         optional=True,
     )
-    custom_attributes: MutableSequence[types.CustomAttribute] = proto.RepeatedField(
+    custom_attributes: MutableSequence[types_pb2.CustomAttribute] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
-        message=types.CustomAttribute,
+        message=types_pb2.CustomAttribute,
     )
 
 
