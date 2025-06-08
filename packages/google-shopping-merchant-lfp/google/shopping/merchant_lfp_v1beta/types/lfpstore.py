@@ -88,7 +88,7 @@ class LfpStore(proto.Message):
         matching_state_hint (str):
             Optional. Output only. The hint of why the matching has
             failed. This is only set when
-            [matchingState][google.shopping.merchant.lfp.v1beta.LfpStore.matching_state]=``STORE_MATCHING_STATE_FAILED``.
+            [matchingState][google.shopping.merchant.lfp.v1beta.LfpStore.matching_state]=\ ``STORE_MATCHING_STATE_FAILED``.
 
             Possible values are:
 
