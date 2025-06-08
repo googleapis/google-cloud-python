@@ -1,9 +1,9 @@
-Python Client for Advisory Notifications
-========================================
+Python Client for Advisory Notifications API
+============================================
 
 |preview| |pypi| |versions|
 
-`Advisory Notifications`_: Advisory Notifications provides well-targeted, timely, and compliant communications about critical security and privacy events in the Google Cloud console and allows you to securely investigate the event, take action, and get support.
+`Advisory Notifications API`_: An API for accessing Advisory Notifications in Google Cloud
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Advisory Notifications
    :target: https://pypi.org/project/google-cloud-advisorynotifications/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-advisorynotifications.svg
    :target: https://pypi.org/project/google-cloud-advisorynotifications/
-.. _Advisory Notifications: https://cloud.google.com/advisory-notifications/
+.. _Advisory Notifications API: https://cloud.google.com/advisory-notifications/docs/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/advisorynotifications/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/advisory-notifications/
+.. _Product Documentation:  https://cloud.google.com/advisory-notifications/docs/overview
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Advisory Notifications.`_
+3. `Enable the Advisory Notifications API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Advisory Notifications.:  https://cloud.google.com/advisory-notifications/
+.. _Enable the Advisory Notifications API.:  https://cloud.google.com/advisory-notifications/docs/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Advisory Notifications
+-  Read the `Client Library Documentation`_ for Advisory Notifications API
    to see other available methods on the client.
--  Read the `Advisory Notifications Product documentation`_ to learn
+-  Read the `Advisory Notifications API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Advisory Notifications Product documentation:  https://cloud.google.com/advisory-notifications/
+.. _Advisory Notifications API Product documentation:  https://cloud.google.com/advisory-notifications/docs/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

@@ -11,7 +11,6 @@ API Reference
     advisorynotifications_v1/services_
     advisorynotifications_v1/types_
 
-
 Changelog
 ---------
 
