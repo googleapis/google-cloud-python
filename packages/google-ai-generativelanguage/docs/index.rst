@@ -27,8 +27,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    generativelanguage_v1alpha/services_
-    generativelanguage_v1alpha/types_
+    generativelanguage_v1beta3/services_
+    generativelanguage_v1beta3/types_
 
 API Reference
 -------------
@@ -43,9 +43,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    generativelanguage_v1beta3/services_
-    generativelanguage_v1beta3/types_
-
+    generativelanguage_v1alpha/services_
+    generativelanguage_v1alpha/types_
 
 Changelog
 ---------
@@ -56,3 +55,6 @@ For a list of all ``google-ai-generativelanguage`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:

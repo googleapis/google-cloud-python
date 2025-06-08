@@ -15,7 +15,7 @@ Python Client for Generative Language API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-ai-generativelanguage.svg
    :target: https://pypi.org/project/google-ai-generativelanguage/
 .. _Generative Language API: https://ai.google.dev/docs
-.. _Client Library Documentation: https://googleapis.dev/python/generativelanguage/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/generativelanguage/latest
 .. _Product Documentation:  https://ai.google.dev/docs
 
 Quick Start
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
