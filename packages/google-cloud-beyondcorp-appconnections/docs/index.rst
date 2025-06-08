@@ -11,7 +11,6 @@ API Reference
     beyondcorp_appconnections_v1/services_
     beyondcorp_appconnections_v1/types_
 
-
 Changelog
 ---------
 
