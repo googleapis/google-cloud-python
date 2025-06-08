@@ -349,7 +349,7 @@ class PurgeSuggestionDenyListEntriesRequest(proto.Message):
         parent (str):
             Required. The parent data store resource name for which to
             import denylist entries. Follows pattern
-            projects/\ */locations/*/collections/*/dataStores/*.
+            projects/*/locations/*/collections/*/dataStores/*.
     """
 
     parent: str = proto.Field(
@@ -417,7 +417,7 @@ class PurgeCompletionSuggestionsRequest(proto.Message):
         parent (str):
             Required. The parent data store resource name for which to
             purge completion suggestions. Follows pattern
-            projects/\ */locations/*/collections/*/dataStores/*.
+            projects/*/locations/*/collections/*/dataStores/*.
     """
 
     parent: str = proto.Field(

@@ -115,7 +115,7 @@ class DataStore(proto.Message):
             [DocumentService.ListDocuments][google.cloud.discoveryengine.v1.DocumentService.ListDocuments].
 
             Currently ACL is only supported in ``GENERIC`` industry
-            vertical with non-\ ``PUBLIC_WEBSITE`` content config.
+            vertical with non-``PUBLIC_WEBSITE`` content config.
         workspace_config (google.cloud.discoveryengine_v1.types.WorkspaceConfig):
             Config to store data store type configuration for workspace
             data. This must be set when
