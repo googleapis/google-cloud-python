@@ -11,7 +11,6 @@ API Reference
     service_usage_v1/services_
     service_usage_v1/types_
 
-
 Changelog
 ---------
 

@@ -14,9 +14,9 @@ Overview of the APIs available for Service Usage API.
 Classes, methods and properties & attributes for
 Service Usage API.
 
-[classes](https://cloud.google.com/python/docs/reference/serviceusage/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/service usage/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/serviceusage/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/service usage/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/serviceusage/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/service usage/latest/summary_property.html)
