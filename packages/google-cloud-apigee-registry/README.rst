@@ -3,7 +3,7 @@ Python Client for Apigee Registry API
 
 |preview| |pypi| |versions|
 
-`Apigee Registry API`_: allows teams to upload and share machine-readable descriptions of APIs that are in use and in development.
+`Apigee Registry API`_:
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -15,7 +15,7 @@ Python Client for Apigee Registry API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apigee-registry.svg
    :target: https://pypi.org/project/google-cloud-apigee-registry/
 .. _Apigee Registry API: https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigeeregistry/latest/summary_overview
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigee registry/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/apigee/docs/api-hub/get-started-registry-api
 
 Quick Start
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
