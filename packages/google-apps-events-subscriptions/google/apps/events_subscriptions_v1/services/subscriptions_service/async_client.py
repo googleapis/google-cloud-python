@@ -386,7 +386,7 @@ class SubscriptionsServiceAsyncClient:
                 The result type for the operation will be :class:`google.apps.events_subscriptions_v1.types.Subscription` A subscription to receive events about a Google Workspace resource. To learn
                    more about subscriptions, see the [Google Workspace
                    Events API
-                   overview](\ https://developers.google.com/workspace/events).
+                   overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.
@@ -644,7 +644,7 @@ class SubscriptionsServiceAsyncClient:
                 A subscription to receive events about a Google Workspace resource. To learn
                    more about subscriptions, see the [Google Workspace
                    Events API
-                   overview](\ https://developers.google.com/workspace/events).
+                   overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.
@@ -942,7 +942,7 @@ class SubscriptionsServiceAsyncClient:
                 The result type for the operation will be :class:`google.apps.events_subscriptions_v1.types.Subscription` A subscription to receive events about a Google Workspace resource. To learn
                    more about subscriptions, see the [Google Workspace
                    Events API
-                   overview](\ https://developers.google.com/workspace/events).
+                   overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.
@@ -1082,7 +1082,7 @@ class SubscriptionsServiceAsyncClient:
                 The result type for the operation will be :class:`google.apps.events_subscriptions_v1.types.Subscription` A subscription to receive events about a Google Workspace resource. To learn
                    more about subscriptions, see the [Google Workspace
                    Events API
-                   overview](\ https://developers.google.com/workspace/events).
+                   overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.

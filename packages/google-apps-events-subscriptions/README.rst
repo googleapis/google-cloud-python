@@ -15,7 +15,7 @@ Python Client for Google Workspace Events API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-apps-events-subscriptions.svg
    :target: https://pypi.org/project/google-apps-events-subscriptions/
 .. _Google Workspace Events API: https://developers.google.com/workspace/events
-.. _Client Library Documentation: https://googleapis.dev/python/google-apps-events-subscriptions/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/events subscriptions/latest
 .. _Product Documentation:  https://developers.google.com/workspace/events
 
 Quick Start
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

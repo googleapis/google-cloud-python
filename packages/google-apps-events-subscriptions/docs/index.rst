@@ -11,7 +11,6 @@ API Reference
     events_subscriptions_v1/services_
     events_subscriptions_v1/types_
 
-
 Changelog
 ---------
 
@@ -21,3 +20,6 @@ For a list of all ``google-apps-events-subscriptions`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
