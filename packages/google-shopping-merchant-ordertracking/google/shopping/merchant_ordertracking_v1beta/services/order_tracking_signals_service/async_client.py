@@ -46,7 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 
 from google.shopping.merchant_ordertracking_v1beta.types import order_tracking_signals
