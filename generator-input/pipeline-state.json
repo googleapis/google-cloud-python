@@ -1573,7 +1573,7 @@
             "currentVersion": "1.5.0",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "e6c5fab81918fda9facc0ee0b1a470e94ba05f18",
             "apiPaths": [
                 "google/storage/control/v2"
             ],

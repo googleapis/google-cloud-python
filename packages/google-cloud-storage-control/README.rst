@@ -3,7 +3,7 @@ Python Client for Storage Control API
 
 |stable| |pypi| |versions|
 
-`Storage Control API`_: Lets you perform metadata-specific, control plane, and long-running operations apart from the Storage API. Separating these operations from the Storage API improves API standardization and lets you run faster releases.
+`Storage Control API`_: The Storage Control API lets you perform metadata-specific, control plane, and long-running operations.  The Storage Control API creates one space to perform metadata-specific, control plane, and long-running operations apart from the Storage API. Separating these operations from the Storage API improves API standardization and lets you run faster releases.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Storage Control API
    :target: https://pypi.org/project/google-cloud-storage-control/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage-control.svg
    :target: https://pypi.org/project/google-cloud-storage-control/
-.. _Storage Control API: https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-storage-control/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
+.. _Storage Control API: https://cloud.google.com/storage/docs/overview
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/storage control/latest/summary_overview
+.. _Product Documentation:  https://cloud.google.com/storage/docs/overview
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Storage Control API.:  https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
+.. _Enable the Storage Control API.:  https://cloud.google.com/storage/docs/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Storage Control API Product documentation:  https://cloud.google.com/storage/docs/reference/rpc/google.storage.control.v2
+.. _Storage Control API Product documentation:  https://cloud.google.com/storage/docs/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

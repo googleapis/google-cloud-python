@@ -11,7 +11,6 @@ API Reference
     storage_control_v2/services_
     storage_control_v2/types_
 
-
 Changelog
 ---------
 
