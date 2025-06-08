@@ -11,7 +11,6 @@ API Reference
     card_v1/services_
     card_v1/types_
 
-
 Changelog
 ---------
 
@@ -21,3 +20,6 @@ For a list of all ``google-apps-card`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:

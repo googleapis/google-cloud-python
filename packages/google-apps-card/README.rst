@@ -1,9 +1,9 @@
-Python Client for Google Apps Card Protos
-=========================================
+Python Client for
+==================
 
 |preview| |pypi| |versions|
 
-`Google Apps Card Protos`_: Google Apps Card Protos
+``_:
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Google Apps Card Protos
    :target: https://pypi.org/project/google-apps-card/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-apps-card.svg
    :target: https://pypi.org/project/google-apps-card/
-.. _Google Apps Card Protos: https://developers.google.com/chat
-.. _Client Library Documentation: https://googleapis.dev/python/google-apps-card/latest
-.. _Product Documentation:  https://developers.google.com/chat
+.. _:
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/card/latest
+.. _Product Documentation:
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Apps Card Protos.`_
+3. `Enable the .`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Apps Card Protos.:  https://developers.google.com/chat
+.. _Enable the .:
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Apps Card Protos
+-  Read the `Client Library Documentation`_ for
    to see other available methods on the client.
--  Read the `Google Apps Card Protos Product documentation`_ to learn
+-  Read the ` Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Apps Card Protos Product documentation:  https://developers.google.com/chat
+.. _ Product documentation:
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
