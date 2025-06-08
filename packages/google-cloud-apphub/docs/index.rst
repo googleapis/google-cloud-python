@@ -11,7 +11,6 @@ API Reference
     apphub_v1/services_
     apphub_v1/types_
 
-
 Changelog
 ---------
 
