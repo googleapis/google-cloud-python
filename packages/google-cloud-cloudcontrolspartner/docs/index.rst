@@ -22,7 +22,6 @@ API Reference
     cloudcontrolspartner_v1beta/services_
     cloudcontrolspartner_v1beta/types_
 
-
 Changelog
 ---------
 

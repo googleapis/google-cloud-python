@@ -303,7 +303,7 @@ class DeleteCustomerRequest(proto.Message):
     Attributes:
         name (str):
             Required. name of the resource to be deleted format:
-            name=organizations/\ */locations/*/customers/\*
+            name=organizations/*/locations/*/customers/\*
     """
 
     name: str = proto.Field(
