@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Assured Workloads for Government.
+This package includes clients for multiple versions of Assured Workloads API.
 By default, you will get version ``assuredworkloads_v1``.
 
 
@@ -21,7 +21,6 @@ API Reference
 
     assuredworkloads_v1beta1/services_
     assuredworkloads_v1beta1/types_
-
 
 Changelog
 ---------
