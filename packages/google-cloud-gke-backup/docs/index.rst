@@ -11,7 +11,6 @@ API Reference
     gke_backup_v1/services_
     gke_backup_v1/types_
 
-
 Changelog
 ---------
 
