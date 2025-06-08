@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Billing Budget.
+This package includes clients for multiple versions of Cloud Billing Budget API.
 By default, you will get version ``budgets_v1``.
 
 
@@ -21,7 +21,6 @@ API Reference
 
     budgets_v1beta1/services_
     budgets_v1beta1/types_
-
 
 Changelog
 ---------

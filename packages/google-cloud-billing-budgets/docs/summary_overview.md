@@ -14,9 +14,9 @@ Overview of the APIs available for Cloud Billing Budget API.
 Classes, methods and properties & attributes for
 Cloud Billing Budget API.
 
-[classes](https://cloud.google.com/python/docs/reference/billingbudgets/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/budgets/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/billingbudgets/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/budgets/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/billingbudgets/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/budgets/latest/summary_property.html)
