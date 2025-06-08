@@ -14,9 +14,9 @@ Overview of the APIs available for API Keys API.
 Classes, methods and properties & attributes for
 API Keys API.
 
-[classes](https://cloud.google.com/python/docs/reference/apikeys/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/api keys/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/apikeys/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/api keys/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/apikeys/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/api keys/latest/summary_property.html)
