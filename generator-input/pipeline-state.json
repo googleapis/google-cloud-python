@@ -897,7 +897,7 @@
             "currentVersion": "0.2.15",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "021fc2e17e44fb13c0583b24ea8a27364632211e",
             "apiPaths": [
                 "google/cloud/parallelstore/v1",
                 "google/cloud/parallelstore/v1beta"
