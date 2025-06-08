@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 
 from google.shopping.merchant_reviews_v1beta.services.merchant_reviews_service import (
     pagers,
@@ -779,7 +779,7 @@ class MerchantReviewsServiceClient(metaclass=MerchantReviewsServiceClientMeta):
             google.shopping.merchant_reviews_v1beta.types.MerchantReview:
                 A review for a merchant. For more information, see
                    [Introduction to Merchant Review
-                   Feeds](\ https://developers.google.com/merchant-review-feeds)
+                   Feeds](https://developers.google.com/merchant-review-feeds)
 
         """
         # Create or coerce a protobuf request object.
@@ -1012,7 +1012,7 @@ class MerchantReviewsServiceClient(metaclass=MerchantReviewsServiceClientMeta):
             google.shopping.merchant_reviews_v1beta.types.MerchantReview:
                 A review for a merchant. For more information, see
                    [Introduction to Merchant Review
-                   Feeds](\ https://developers.google.com/merchant-review-feeds)
+                   Feeds](https://developers.google.com/merchant-review-feeds)
 
         """
         # Create or coerce a protobuf request object.

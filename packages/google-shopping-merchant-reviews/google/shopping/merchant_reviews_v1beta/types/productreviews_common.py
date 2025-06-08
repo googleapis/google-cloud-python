@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -397,15 +397,17 @@ class ProductReviewStatus(proto.Message):
         r"""The destination status of the product review status.
 
         Attributes:
-            reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+            reporting_context (google.shopping.type.types_pb2.ReportingContextEnum):
                 Output only. The name of the reporting
                 context.
         """
 
-        reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
-            proto.ENUM,
-            number=1,
-            enum=types.ReportingContext.ReportingContextEnum,
+        reporting_context: types_pb2.ReportingContext.ReportingContextEnum = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum=types_pb2.ReportingContext.ReportingContextEnum,
+            )
         )
 
     class ProductReviewItemLevelIssue(proto.Message):
@@ -423,7 +425,7 @@ class ProductReviewStatus(proto.Message):
             attribute (str):
                 Output only. The attribute's name, if the
                 issue is caused by a single attribute.
-            reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+            reporting_context (google.shopping.type.types_pb2.ReportingContextEnum):
                 Output only. The reporting context the issue
                 applies to.
             description (str):
@@ -472,10 +474,12 @@ class ProductReviewStatus(proto.Message):
             proto.STRING,
             number=4,
         )
-        reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
-            proto.ENUM,
-            number=5,
-            enum=types.ReportingContext.ReportingContextEnum,
+        reporting_context: types_pb2.ReportingContext.ReportingContextEnum = (
+            proto.Field(
+                proto.ENUM,
+                number=5,
+                enum=types_pb2.ReportingContext.ReportingContextEnum,
+            )
         )
         description: str = proto.Field(
             proto.STRING,

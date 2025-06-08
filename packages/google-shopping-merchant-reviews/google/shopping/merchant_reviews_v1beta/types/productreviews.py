@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.shopping.merchant_reviews_v1beta.types import productreviews_common
@@ -175,7 +175,7 @@ class ProductReview(proto.Message):
         attributes (google.shopping.merchant_reviews_v1beta.types.ProductReviewAttributes):
             Optional. A list of product review
             attributes.
-        custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
+        custom_attributes (MutableSequence[google.shopping.type.types_pb2.CustomAttribute]):
             Optional. A list of custom
             (merchant-provided) attributes.
         data_source (str):
@@ -200,10 +200,10 @@ class ProductReview(proto.Message):
         number=3,
         message=productreviews_common.ProductReviewAttributes,
     )
-    custom_attributes: MutableSequence[types.CustomAttribute] = proto.RepeatedField(
+    custom_attributes: MutableSequence[types_pb2.CustomAttribute] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
-        message=types.CustomAttribute,
+        message=types_pb2.CustomAttribute,
     )
     data_source: str = proto.Field(
         proto.STRING,
