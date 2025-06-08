@@ -1,9 +1,9 @@
-Python Client for Service Management
-====================================
+Python Client for Service Management API
+========================================
 
 |stable| |pypi| |versions|
 
-`Service Management`_: is a foundational platform for creating, managing, securing, and consuming APIs and services across organizations. It is used by Google APIs, Cloud APIs, Cloud Endpoints, and API Gateway. Service Infrastructure provides a wide range of features to service consumers and service producers, including authentication, authorization, auditing, rate limiting, analytics, billing, logging, and monitoring.
+`Service Management API`_: Google Service Management allows service producers to publish their services on Google Cloud Platform so that they can be discovered and used by service consumers.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Service Management
    :target: https://pypi.org/project/google-cloud-service-management/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-management.svg
    :target: https://pypi.org/project/google-cloud-service-management/
-.. _Service Management: https://cloud.google.com/service-infrastructure/docs/overview/
+.. _Service Management API: https://cloud.google.com/service-infrastructure/docs/overview/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/servicemanagement/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/service-infrastructure/docs/overview/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Service Management.`_
+3. `Enable the Service Management API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Service Management.:  https://cloud.google.com/service-infrastructure/docs/overview/
+.. _Enable the Service Management API.:  https://cloud.google.com/service-infrastructure/docs/overview/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Service Management
+-  Read the `Client Library Documentation`_ for Service Management API
    to see other available methods on the client.
--  Read the `Service Management Product documentation`_ to learn
+-  Read the `Service Management API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Service Management Product documentation:  https://cloud.google.com/service-infrastructure/docs/overview/
+.. _Service Management API Product documentation:  https://cloud.google.com/service-infrastructure/docs/overview/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

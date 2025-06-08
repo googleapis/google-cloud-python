@@ -11,7 +11,6 @@ API Reference
     servicemanagement_v1/services_
     servicemanagement_v1/types_
 
-
 Changelog
 ---------
 
