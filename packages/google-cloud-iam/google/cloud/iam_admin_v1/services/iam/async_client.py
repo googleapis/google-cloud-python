@@ -509,7 +509,7 @@ class IAMAsyncClient:
                    a virtual machine (VM) instance, not a person. You
                    can use a service account to call Google APIs. To
                    learn more, read the [overview of service
-                   accounts](\ https://cloud.google.com/iam/help/service-accounts/overview).
+                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
                    When you create a service account, you specify the
                    project ID that owns the service account, as well as
@@ -653,7 +653,7 @@ class IAMAsyncClient:
                    a virtual machine (VM) instance, not a person. You
                    can use a service account to call Google APIs. To
                    learn more, read the [overview of service
-                   accounts](\ https://cloud.google.com/iam/help/service-accounts/overview).
+                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
                    When you create a service account, you specify the
                    project ID that owns the service account, as well as
@@ -787,7 +787,7 @@ class IAMAsyncClient:
                    a virtual machine (VM) instance, not a person. You
                    can use a service account to call Google APIs. To
                    learn more, read the [overview of service
-                   accounts](\ https://cloud.google.com/iam/help/service-accounts/overview).
+                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
                    When you create a service account, you specify the
                    project ID that owns the service account, as well as
@@ -891,7 +891,7 @@ class IAMAsyncClient:
                    a virtual machine (VM) instance, not a person. You
                    can use a service account to call Google APIs. To
                    learn more, read the [overview of service
-                   accounts](\ https://cloud.google.com/iam/help/service-accounts/overview).
+                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
                    When you create a service account, you specify the
                    project ID that owns the service account, as well as
@@ -2324,7 +2324,7 @@ class IAMAsyncClient:
         Returns:
             google.cloud.iam_admin_v1.types.SignBlobResponse:
                 Deprecated. [Migrate to Service Account Credentials
-                   API](\ https://cloud.google.com/iam/help/credentials/migrate-api).
+                   API](https://cloud.google.com/iam/help/credentials/migrate-api).
 
                    The service account sign blob response.
 
@@ -2482,7 +2482,7 @@ class IAMAsyncClient:
         Returns:
             google.cloud.iam_admin_v1.types.SignJwtResponse:
                 Deprecated. [Migrate to Service Account Credentials
-                   API](\ https://cloud.google.com/iam/help/credentials/migrate-api).
+                   API](https://cloud.google.com/iam/help/credentials/migrate-api).
 
                    The service account sign JWT response.
 
@@ -2626,7 +2626,7 @@ class IAMAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
@@ -2638,7 +2638,7 @@ class IAMAsyncClient:
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2786,7 +2786,7 @@ class IAMAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
@@ -2798,7 +2798,7 @@ class IAMAsyncClient:
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.

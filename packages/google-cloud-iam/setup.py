@@ -28,9 +28,7 @@ description = "Google Cloud Iam API client library"
 
 version = None
 
-with open(
-    os.path.join(package_root, "google/cloud/iam_credentials/gapic_version.py")
-) as fp:
+with open(os.path.join(package_root, "google/cloud/iam/gapic_version.py")) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
     assert len(version_candidates) == 1
     version = version_candidates[0]
