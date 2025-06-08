@@ -11,7 +11,6 @@ API Reference
     chat_v1/services_
     chat_v1/types_
 
-
 Changelog
 ---------
 
@@ -21,3 +20,6 @@ For a list of all ``google-apps-chat`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:

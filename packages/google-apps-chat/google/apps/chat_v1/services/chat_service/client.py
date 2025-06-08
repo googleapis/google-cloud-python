@@ -4170,7 +4170,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Returns:
             google.apps.chat_v1.types.CustomEmoji:
                 Represents a [custom
-                emoji](\ https://support.google.com/chat/answer/12800149).
+                emoji](https://support.google.com/chat/answer/12800149).
 
         """
         # Create or coerce a protobuf request object.
@@ -4290,7 +4290,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
         Returns:
             google.apps.chat_v1.types.CustomEmoji:
                 Represents a [custom
-                emoji](\ https://support.google.com/chat/answer/12800149).
+                emoji](https://support.google.com/chat/answer/12800149).
 
         """
         # Create or coerce a protobuf request object.
@@ -5059,7 +5059,7 @@ class ChatServiceClient(metaclass=ChatServiceClientMeta):
             google.apps.chat_v1.types.SpaceEvent:
                 An event that represents a change or activity in a Google Chat space. To
                    learn more, see [Work with events from Google
-                   Chat](\ https://developers.google.com/workspace/chat/events-overview).
+                   Chat](https://developers.google.com/workspace/chat/events-overview).
 
         """
         # Create or coerce a protobuf request object.

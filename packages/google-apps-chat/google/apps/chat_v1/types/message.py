@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.apps.card_v1.types import card as gac_card
+from google.apps.card.v1 import card_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -512,16 +512,16 @@ class ActionResponse(proto.Message):
         r"""List of widget autocomplete results.
 
         Attributes:
-            items (MutableSequence[google.apps.card_v1.types.SelectionInput.SelectionItem]):
+            items (MutableSequence[google.apps.card.v1.card_pb2.SelectionItem]):
                 An array of the SelectionItem objects.
         """
 
         items: MutableSequence[
-            gac_card.SelectionInput.SelectionItem
+            card_pb2.SelectionInput.SelectionItem
         ] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message=gac_card.SelectionInput.SelectionItem,
+            message=card_pb2.SelectionInput.SelectionItem,
         )
 
     class UpdatedWidget(proto.Message):
@@ -584,17 +584,17 @@ class AccessoryWidget(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        button_list (google.apps.card_v1.types.ButtonList):
+        button_list (google.apps.card.v1.card_pb2.ButtonList):
             A list of buttons.
 
             This field is a member of `oneof`_ ``action``.
     """
 
-    button_list: gac_card.ButtonList = proto.Field(
+    button_list: card_pb2.ButtonList = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="action",
-        message=gac_card.ButtonList,
+        message=card_pb2.ButtonList,
     )
 
 
@@ -991,16 +991,16 @@ class Dialog(proto.Message):
     r"""Wrapper around the card body of the dialog.
 
     Attributes:
-        body (google.apps.card_v1.types.Card):
+        body (google.apps.card.v1.card_pb2.Card):
             Input only. Body of the dialog, which is rendered in a
             modal. Google Chat apps don't support the following card
             entities: ``DateTimePicker``, ``OnChangeAction``.
     """
 
-    body: gac_card.Card = proto.Field(
+    body: card_pb2.Card = proto.Field(
         proto.MESSAGE,
         number=1,
-        message=gac_card.Card,
+        message=card_pb2.Card,
     )
 
 
@@ -1021,7 +1021,7 @@ class CardWithId(proto.Message):
             Required if the message contains multiple
             cards. A unique identifier for a card in a
             message.
-        card (google.apps.card_v1.types.Card):
+        card (google.apps.card.v1.card_pb2.Card):
             A card. Maximum size is 32 KB.
     """
 
@@ -1029,10 +1029,10 @@ class CardWithId(proto.Message):
         proto.STRING,
         number=1,
     )
-    card: gac_card.Card = proto.Field(
+    card: card_pb2.Card = proto.Field(
         proto.MESSAGE,
         number=2,
-        message=gac_card.Card,
+        message=card_pb2.Card,
     )
 
 

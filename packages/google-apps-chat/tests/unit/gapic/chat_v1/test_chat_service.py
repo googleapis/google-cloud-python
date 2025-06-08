@@ -47,7 +47,7 @@ from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_tem
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-from google.apps.card_v1.types import card
+from google.apps.card.v1 import card_pb2  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -22058,7 +22058,7 @@ def test_create_message_rest_call_success(request_type):
                                         "label": "label_value",
                                         "hint_text": "hint_text_value",
                                         "value": "value_value",
-                                        "type_": 1,
+                                        "type": 1,
                                         "on_change_action": {},
                                         "initial_suggestions": {
                                             "items": [{"text": "text_value"}]
@@ -22069,7 +22069,7 @@ def test_create_message_rest_call_success(request_type):
                                     "selection_input": {
                                         "name": "name_value",
                                         "label": "label_value",
-                                        "type_": 1,
+                                        "type": 1,
                                         "items": [
                                             {
                                                 "text": "text_value",
@@ -22090,7 +22090,7 @@ def test_create_message_rest_call_success(request_type):
                                     "date_time_picker": {
                                         "name": "name_value",
                                         "label": "label_value",
-                                        "type_": 1,
+                                        "type": 1,
                                         "value_ms_epoch": 1482,
                                         "timezone_offset_date": 2126,
                                         "on_change_action": {},
@@ -22105,11 +22105,11 @@ def test_create_message_rest_call_success(request_type):
                                                     "image_uri": "image_uri_value",
                                                     "alt_text": "alt_text_value",
                                                     "crop_style": {
-                                                        "type_": 1,
+                                                        "type": 1,
                                                         "aspect_ratio": 0.1278,
                                                     },
                                                     "border_style": {
-                                                        "type_": 1,
+                                                        "type": 1,
                                                         "stroke_color": {},
                                                         "corner_radius": 1392,
                                                     },
@@ -23174,7 +23174,7 @@ def test_update_message_rest_call_success(request_type):
                                         "label": "label_value",
                                         "hint_text": "hint_text_value",
                                         "value": "value_value",
-                                        "type_": 1,
+                                        "type": 1,
                                         "on_change_action": {},
                                         "initial_suggestions": {
                                             "items": [{"text": "text_value"}]
@@ -23185,7 +23185,7 @@ def test_update_message_rest_call_success(request_type):
                                     "selection_input": {
                                         "name": "name_value",
                                         "label": "label_value",
-                                        "type_": 1,
+                                        "type": 1,
                                         "items": [
                                             {
                                                 "text": "text_value",
@@ -23206,7 +23206,7 @@ def test_update_message_rest_call_success(request_type):
                                     "date_time_picker": {
                                         "name": "name_value",
                                         "label": "label_value",
-                                        "type_": 1,
+                                        "type": 1,
                                         "value_ms_epoch": 1482,
                                         "timezone_offset_date": 2126,
                                         "on_change_action": {},
@@ -23221,11 +23221,11 @@ def test_update_message_rest_call_success(request_type):
                                                     "image_uri": "image_uri_value",
                                                     "alt_text": "alt_text_value",
                                                     "crop_style": {
-                                                        "type_": 1,
+                                                        "type": 1,
                                                         "aspect_ratio": 0.1278,
                                                     },
                                                     "border_style": {
-                                                        "type_": 1,
+                                                        "type": 1,
                                                         "stroke_color": {},
                                                         "corner_radius": 1392,
                                                     },
