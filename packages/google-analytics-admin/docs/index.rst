@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Analytics Admin.
+This package includes clients for multiple versions of Google Analytics Admin API.
 By default, you will get version ``admin_v1alpha``.
 
 
@@ -22,7 +22,6 @@ API Reference
     admin_v1beta/services_
     admin_v1beta/types_
 
-
 Changelog
 ---------
 
@@ -32,3 +31,6 @@ For a list of all ``google-analytics-admin`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:

@@ -1,9 +1,9 @@
-Python Client for Analytics Admin
-=================================
+Python Client for Google Analytics Admin API
+============================================
 
 |preview| |pypi| |versions|
 
-`Analytics Admin`_: allows you to manage Google Analytics accounts and properties.
+`Google Analytics Admin API`_: Manage properties in Google Analytics.  Warning: Creating multiple Customer Applications, Accounts, or Projects to simulate or act as a single Customer Application, Account, or Project (respectively) or to circumvent Service-specific usage limits or quotas is a direct violation of Google Cloud Platform Terms of Service as well as Google APIs Terms of Service. These actions can result in immediate termination of your GCP project(s) without any warning.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,8 +14,8 @@ Python Client for Analytics Admin
    :target: https://pypi.org/project/google-analytics-admin/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-analytics-admin.svg
    :target: https://pypi.org/project/google-analytics-admin/
-.. _Analytics Admin: https://developers.google.com/analytics/
-.. _Client Library Documentation: https://googleapis.dev/python/analyticsadmin/latest
+.. _Google Analytics Admin API: https://developers.google.com/analytics/
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/admin/latest
 .. _Product Documentation:  https://developers.google.com/analytics/
 
 Quick Start
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Analytics Admin.`_
+3. `Enable the Google Analytics Admin API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Analytics Admin.:  https://developers.google.com/analytics/
+.. _Enable the Google Analytics Admin API.:  https://developers.google.com/analytics/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Analytics Admin
+-  Read the `Client Library Documentation`_ for Google Analytics Admin API
    to see other available methods on the client.
--  Read the `Analytics Admin Product documentation`_ to learn
+-  Read the `Google Analytics Admin API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Analytics Admin Product documentation:  https://developers.google.com/analytics/
+.. _Google Analytics Admin API Product documentation:  https://developers.google.com/analytics/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
