@@ -11,7 +11,6 @@ API Reference
     beyondcorp_clientgateways_v1/services_
     beyondcorp_clientgateways_v1/types_
 
-
 Changelog
 ---------
 
