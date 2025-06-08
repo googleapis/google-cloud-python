@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport as ggt_viewport
+from google.geo.type import viewport_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
@@ -140,7 +140,7 @@ class Place(proto.Message):
             Plus code of the place location lat/long.
         location (google.type.latlng_pb2.LatLng):
             The position of this place.
-        viewport (google.geo.type.types.Viewport):
+        viewport (google.geo.type.viewport_pb2.Viewport):
             A viewport suitable for displaying the place
             on an average-sized map. This viewport should
             not be used as the physical boundary or the
@@ -1162,10 +1162,10 @@ class Place(proto.Message):
         number=12,
         message=latlng_pb2.LatLng,
     )
-    viewport: ggt_viewport.Viewport = proto.Field(
+    viewport: viewport_pb2.Viewport = proto.Field(
         proto.MESSAGE,
         number=13,
-        message=ggt_viewport.Viewport,
+        message=viewport_pb2.Viewport,
     )
     rating: float = proto.Field(
         proto.DOUBLE,

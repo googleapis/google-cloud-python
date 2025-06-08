@@ -11,7 +11,6 @@ API Reference
     places_v1/services_
     places_v1/types_
 
-
 Changelog
 ---------
 
@@ -21,3 +20,6 @@ For a list of all ``google-maps-places`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
