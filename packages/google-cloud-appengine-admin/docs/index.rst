@@ -11,7 +11,6 @@ API Reference
     appengine_admin_v1/services_
     appengine_admin_v1/types_
 
-
 Changelog
 ---------
 

@@ -14,9 +14,9 @@ Overview of the APIs available for App Engine Admin API.
 Classes, methods and properties & attributes for
 App Engine Admin API.
 
-[classes](https://cloud.google.com/python/docs/reference/appengine/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/appengine admin/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/appengine/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/appengine admin/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/appengine/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/appengine admin/latest/summary_property.html)
