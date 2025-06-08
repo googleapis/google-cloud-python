@@ -22,7 +22,6 @@ API Reference
     cloudquotas_v1beta/services_
     cloudquotas_v1beta/types_
 
-
 Changelog
 ---------
 

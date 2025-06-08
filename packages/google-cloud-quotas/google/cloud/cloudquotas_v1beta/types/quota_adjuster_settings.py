@@ -86,13 +86,12 @@ class QuotaAdjusterSettings(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. Name of the configuration, in the following
-            format:
-            ``projects/PROJECT_NUMBER/locations/global/quotaAdjusterSettings``.
-            Replace PROJECT_NUMBER with the project number for your
-            project.
+            Identifier. Name of the config would be of the format:
+            projects/PROJECT_NUMBER/locations/global/quotaAdjusterSettings
+            folders/FOLDER_NUMBER/locations/global/quotaAdjusterSettings
+            organizations/ORGANIZATION_NUMBER/locations/global/quotaAdjusterSettings
         enablement (google.cloud.cloudquotas_v1beta.types.QuotaAdjusterSettings.Enablement):
-            Required. The configured value of the
+            Optional. The configured value of the
             enablement at the given resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the
@@ -105,6 +104,17 @@ class QuotaAdjusterSettings(proto.Message):
             is blocked and returns an ABORTED error. See
             https://google.aip.dev/134#etags for more
             details on ETags.
+        inherited (bool):
+            Optional. Indicates whether the setting is
+            inherited or explicitly specified.
+        inherited_from (str):
+            Output only. The resource container from which the setting
+            is inherited. This refers to the nearest ancestor with
+            enablement set (either ENABLED or DISABLED). The value can
+            be an organizations/{organization_id}, folders/{folder_id},
+            or can be 'default' if no ancestor exists with enablement
+            set. The value will be empty when enablement is directly set
+            on this container.
     """
 
     class Enablement(proto.Enum):
@@ -139,6 +149,14 @@ class QuotaAdjusterSettings(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    inherited: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    inherited_from: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 

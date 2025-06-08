@@ -769,11 +769,7 @@ class QuotaAdjusterSettingsManagerClient(
                 client = cloudquotas_v1beta.QuotaAdjusterSettingsManagerClient()
 
                 # Initialize request argument(s)
-                quota_adjuster_settings = cloudquotas_v1beta.QuotaAdjusterSettings()
-                quota_adjuster_settings.enablement = "DISABLED"
-
                 request = cloudquotas_v1beta.UpdateQuotaAdjusterSettingsRequest(
-                    quota_adjuster_settings=quota_adjuster_settings,
                 )
 
                 # Make the request

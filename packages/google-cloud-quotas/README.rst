@@ -14,9 +14,9 @@ Python Client for Cloud Quotas API
    :target: https://pypi.org/project/google-cloud-quotas/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-quotas.svg
    :target: https://pypi.org/project/google-cloud-quotas/
-.. _Cloud Quotas API: https://cloud.google.com/docs/quota/api-overview
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-cloudquotas/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/docs/quota/api-overview
+.. _Cloud Quotas API: https://cloud.google.com/docs/quotas/api-overview
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudquotas/latest/summary_overview
+.. _Product Documentation:  https://cloud.google.com/docs/quotas/api-overview
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Quotas API.:  https://cloud.google.com/docs/quota/api-overview
+.. _Enable the Cloud Quotas API.:  https://cloud.google.com/docs/quotas/api-overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -104,7 +104,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Quotas API Product documentation:  https://cloud.google.com/docs/quota/api-overview
+.. _Cloud Quotas API Product documentation:  https://cloud.google.com/docs/quotas/api-overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

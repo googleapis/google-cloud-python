@@ -1601,7 +1601,7 @@
             "currentVersion": "0.1.17",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "818eab111d50df57f4b09b7044f72c039c556d42",
             "apiPaths": [
                 "google/api/cloudquotas/v1beta",
                 "google/api/cloudquotas/v1"

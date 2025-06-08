@@ -1224,6 +1224,8 @@ def test_update_quota_adjuster_settings(request_type, transport: str = "grpc"):
             name="name_value",
             enablement=gac_quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED,
             etag="etag_value",
+            inherited=True,
+            inherited_from="inherited_from_value",
         )
         response = client.update_quota_adjuster_settings(request)
 
@@ -1241,6 +1243,8 @@ def test_update_quota_adjuster_settings(request_type, transport: str = "grpc"):
         == gac_quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED
     )
     assert response.etag == "etag_value"
+    assert response.inherited is True
+    assert response.inherited_from == "inherited_from_value"
 
 
 def test_update_quota_adjuster_settings_non_empty_request_with_auto_populated_field():
@@ -1377,6 +1381,8 @@ async def test_update_quota_adjuster_settings_async(
                 name="name_value",
                 enablement=gac_quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED,
                 etag="etag_value",
+                inherited=True,
+                inherited_from="inherited_from_value",
             )
         )
         response = await client.update_quota_adjuster_settings(request)
@@ -1395,6 +1401,8 @@ async def test_update_quota_adjuster_settings_async(
         == gac_quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED
     )
     assert response.etag == "etag_value"
+    assert response.inherited is True
+    assert response.inherited_from == "inherited_from_value"
 
 
 @pytest.mark.asyncio
@@ -1597,6 +1605,8 @@ def test_get_quota_adjuster_settings(request_type, transport: str = "grpc"):
             name="name_value",
             enablement=quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED,
             etag="etag_value",
+            inherited=True,
+            inherited_from="inherited_from_value",
         )
         response = client.get_quota_adjuster_settings(request)
 
@@ -1614,6 +1624,8 @@ def test_get_quota_adjuster_settings(request_type, transport: str = "grpc"):
         == quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED
     )
     assert response.etag == "etag_value"
+    assert response.inherited is True
+    assert response.inherited_from == "inherited_from_value"
 
 
 def test_get_quota_adjuster_settings_non_empty_request_with_auto_populated_field():
@@ -1752,6 +1764,8 @@ async def test_get_quota_adjuster_settings_async(
                 name="name_value",
                 enablement=quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED,
                 etag="etag_value",
+                inherited=True,
+                inherited_from="inherited_from_value",
             )
         )
         response = await client.get_quota_adjuster_settings(request)
@@ -1770,6 +1784,8 @@ async def test_get_quota_adjuster_settings_async(
         == quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED
     )
     assert response.etag == "etag_value"
+    assert response.inherited is True
+    assert response.inherited_from == "inherited_from_value"
 
 
 @pytest.mark.asyncio
@@ -2510,6 +2526,8 @@ async def test_update_quota_adjuster_settings_empty_call_grpc_asyncio():
                 name="name_value",
                 enablement=gac_quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED,
                 etag="etag_value",
+                inherited=True,
+                inherited_from="inherited_from_value",
             )
         )
         await client.update_quota_adjuster_settings(request=None)
@@ -2541,6 +2559,8 @@ async def test_get_quota_adjuster_settings_empty_call_grpc_asyncio():
                 name="name_value",
                 enablement=quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED,
                 etag="etag_value",
+                inherited=True,
+                inherited_from="inherited_from_value",
             )
         )
         await client.get_quota_adjuster_settings(request=None)
@@ -2612,6 +2632,8 @@ def test_update_quota_adjuster_settings_rest_call_success(request_type):
         "enablement": 2,
         "update_time": {"seconds": 751, "nanos": 543},
         "etag": "etag_value",
+        "inherited": True,
+        "inherited_from": "inherited_from_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -2695,6 +2717,8 @@ def test_update_quota_adjuster_settings_rest_call_success(request_type):
             name="name_value",
             enablement=gac_quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED,
             etag="etag_value",
+            inherited=True,
+            inherited_from="inherited_from_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2719,6 +2743,8 @@ def test_update_quota_adjuster_settings_rest_call_success(request_type):
         == gac_quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED
     )
     assert response.etag == "etag_value"
+    assert response.inherited is True
+    assert response.inherited_from == "inherited_from_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2839,6 +2865,8 @@ def test_get_quota_adjuster_settings_rest_call_success(request_type):
             name="name_value",
             enablement=quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED,
             etag="etag_value",
+            inherited=True,
+            inherited_from="inherited_from_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2861,6 +2889,8 @@ def test_get_quota_adjuster_settings_rest_call_success(request_type):
         == quota_adjuster_settings.QuotaAdjusterSettings.Enablement.ENABLED
     )
     assert response.etag == "etag_value"
+    assert response.inherited is True
+    assert response.inherited_from == "inherited_from_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
