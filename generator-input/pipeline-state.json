@@ -88,7 +88,7 @@
             "currentVersion": "2.2.0",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "6d0928013062d760c960c73dea7cd74f3f90c37f",
             "apiPaths": [
                 "google/cloud/retail/v2alpha",
                 "google/cloud/retail/v2",
