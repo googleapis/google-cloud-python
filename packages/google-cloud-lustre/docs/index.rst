@@ -11,7 +11,6 @@ API Reference
     lustre_v1/services_
     lustre_v1/types_
 
-
 Changelog
 ---------
 

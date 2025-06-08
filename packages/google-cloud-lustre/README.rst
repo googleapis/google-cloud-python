@@ -3,7 +3,7 @@ Python Client for Google Cloud Managed Lustre API
 
 |preview| |pypi| |versions|
 
-`Google Cloud Managed Lustre API`_: null 
+`Google Cloud Managed Lustre API`_:
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -15,7 +15,7 @@ Python Client for Google Cloud Managed Lustre API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-lustre.svg
    :target: https://pypi.org/project/google-cloud-lustre/
 .. _Google Cloud Managed Lustre API: https://cloud.google.com/managed-lustre/docs
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-lustre/latest/summary_overview
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/lustre/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/managed-lustre/docs
 
 Quick Start
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
