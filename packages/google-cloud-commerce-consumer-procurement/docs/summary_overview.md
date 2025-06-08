@@ -5,18 +5,18 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Cloud Commerce Consumer Procurement API API
+# Cloud Commerce Consumer Procurement API
 
-Overview of the APIs available for Cloud Commerce Consumer Procurement API API.
+Overview of the APIs available for Cloud Commerce Consumer Procurement API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Cloud Commerce Consumer Procurement API API.
+Cloud Commerce Consumer Procurement API.
 
-[classes](https://cloud.google.com/python/docs/reference/procurement/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/commerce consumer procurement/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/procurement/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/commerce consumer procurement/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/procurement/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/commerce consumer procurement/latest/summary_property.html)

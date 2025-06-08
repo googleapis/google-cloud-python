@@ -19,9 +19,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    commerce_consumer_procurement_v1alpha1/services_
-    commerce_consumer_procurement_v1alpha1/types_
-
+    procurement_v1alpha1/services_
+    procurement_v1alpha1/types_
 
 Changelog
 ---------
