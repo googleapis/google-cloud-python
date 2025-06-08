@@ -3,7 +3,7 @@ Python Client for Storage Insights API
 
 |preview| |pypi| |versions|
 
-`Storage Insights API`_: The Storage Insights inventory report feature helps you manage your object storage at scale.
+`Storage Insights API`_: Provides insights capability on Google Cloud Storage
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

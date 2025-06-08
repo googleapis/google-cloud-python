@@ -11,7 +11,6 @@ API Reference
     storageinsights_v1/services_
     storageinsights_v1/types_
 
-
 Changelog
 ---------
 

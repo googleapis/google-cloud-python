@@ -1724,7 +1724,7 @@
             "currentVersion": "0.1.16",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "ac3603904988b26d41a85e09be9211c8fb16a822",
             "apiPaths": [
                 "google/cloud/storageinsights/v1"
             ],
