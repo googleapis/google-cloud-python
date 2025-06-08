@@ -786,7 +786,7 @@ class AutomaticImprovementsServiceClient(
         Returns:
             google.shopping.merchant_accounts_v1beta.types.AutomaticImprovements:
                 Collection of information related to the [automatic
-                   improvements](\ https://developers.google.com/shopping-content/guides/automatic-improvements)
+                   improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
                    of an account.
 
         """
@@ -918,7 +918,7 @@ class AutomaticImprovementsServiceClient(
         Returns:
             google.shopping.merchant_accounts_v1beta.types.AutomaticImprovements:
                 Collection of information related to the [automatic
-                   improvements](\ https://developers.google.com/shopping-content/guides/automatic-improvements)
+                   improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
                    of an account.
 
         """

@@ -2617,7 +2617,7 @@
             "currentVersion": "0.3.4",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "c3203b36e53fc6e6cf39a7a6f1ca4181046dfc4b",
             "apiPaths": [
                 "google/shopping/merchant/accounts/v1beta"
             ],

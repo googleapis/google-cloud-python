@@ -378,7 +378,7 @@ class OnlineReturnPolicyServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy:
-                [Online return policy](\ https://support.google.com/merchants/answer/10220642)
+                [Online return policy](https://support.google.com/merchants/answer/10220642)
                    object. This is currently used to represent return
                    policies for ads and free listings programs.
 
@@ -639,7 +639,7 @@ class OnlineReturnPolicyServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy:
-                [Online return policy](\ https://support.google.com/merchants/answer/10220642)
+                [Online return policy](https://support.google.com/merchants/answer/10220642)
                    object. This is currently used to represent return
                    policies for ads and free listings programs.
 
@@ -788,7 +788,7 @@ class OnlineReturnPolicyServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy:
-                [Online return policy](\ https://support.google.com/merchants/answer/10220642)
+                [Online return policy](https://support.google.com/merchants/answer/10220642)
                    object. This is currently used to represent return
                    policies for ads and free listings programs.
 

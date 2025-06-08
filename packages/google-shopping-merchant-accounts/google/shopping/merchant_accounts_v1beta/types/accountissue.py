@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -78,7 +78,7 @@ class AccountIssue(proto.Message):
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
-            reporting_context (google.shopping.type.types.ReportingContext.ReportingContextEnum):
+            reporting_context (google.shopping.type.types_pb2.ReportingContextEnum):
                 The impacted reporting context.
 
                 This field is a member of `oneof`_ ``_reporting_context``.
@@ -109,11 +109,13 @@ class AccountIssue(proto.Message):
                 enum="AccountIssue.Severity",
             )
 
-        reporting_context: types.ReportingContext.ReportingContextEnum = proto.Field(
-            proto.ENUM,
-            number=1,
-            optional=True,
-            enum=types.ReportingContext.ReportingContextEnum,
+        reporting_context: types_pb2.ReportingContext.ReportingContextEnum = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                optional=True,
+                enum=types_pb2.ReportingContext.ReportingContextEnum,
+            )
         )
         impacts: MutableSequence[
             "AccountIssue.ImpactedDestination.Impact"

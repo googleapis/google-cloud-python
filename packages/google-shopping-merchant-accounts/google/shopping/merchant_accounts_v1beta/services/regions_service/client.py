@@ -791,7 +791,7 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
                    can define regions as collections of either postal
                    codes or, in some countries, using predefined
                    geotargets. For more information, see [Set up regions
-                   ](\ https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
+                   ](https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
                    for more information.
 
         """
@@ -920,7 +920,7 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
                    can define regions as collections of either postal
                    codes or, in some countries, using predefined
                    geotargets. For more information, see [Set up regions
-                   ](\ https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
+                   ](https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
                    for more information.
 
         """
@@ -1043,7 +1043,7 @@ class RegionsServiceClient(metaclass=RegionsServiceClientMeta):
                    can define regions as collections of either postal
                    codes or, in some countries, using predefined
                    geotargets. For more information, see [Set up regions
-                   ](\ https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
+                   ](https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
                    for more information.
 
         """

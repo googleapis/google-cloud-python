@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -336,7 +336,7 @@ class OnlineReturnPolicy(proto.Message):
         Attributes:
             type_ (google.shopping.merchant_accounts_v1beta.types.OnlineReturnPolicy.ReturnShippingFee.Type):
                 Required. Type of return shipping fee.
-            fixed_fee (google.shopping.type.types.Price):
+            fixed_fee (google.shopping.type.types_pb2.Price):
                 Fixed return shipping fee amount. This value is only
                 applicable when type is ``FIXED``. We will treat the return
                 shipping fee as free if type is ``FIXED`` and this value is
@@ -364,10 +364,10 @@ class OnlineReturnPolicy(proto.Message):
             number=1,
             enum="OnlineReturnPolicy.ReturnShippingFee.Type",
         )
-        fixed_fee: types.Price = proto.Field(
+        fixed_fee: types_pb2.Price = proto.Field(
             proto.MESSAGE,
             number=2,
-            message=types.Price,
+            message=types_pb2.Price,
         )
 
     class RestockingFee(proto.Message):
@@ -382,7 +382,7 @@ class OnlineReturnPolicy(proto.Message):
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
-            fixed_fee (google.shopping.type.types.Price):
+            fixed_fee (google.shopping.type.types_pb2.Price):
                 Fixed restocking fee.
 
                 This field is a member of `oneof`_ ``type``.
@@ -393,11 +393,11 @@ class OnlineReturnPolicy(proto.Message):
                 This field is a member of `oneof`_ ``type``.
         """
 
-        fixed_fee: types.Price = proto.Field(
+        fixed_fee: types_pb2.Price = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="type",
-            message=types.Price,
+            message=types_pb2.Price,
         )
         micro_percent: int = proto.Field(
             proto.INT32,

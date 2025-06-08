@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -149,7 +149,7 @@ class Service(proto.Message):
             to.
 
             This field is a member of `oneof`_ ``_shipment_type``.
-        minimum_order_value (google.shopping.type.types.Price):
+        minimum_order_value (google.shopping.type.types_pb2.Price):
             Minimum order value for this service. If set, indicates that
             customers will have to spend at least this amount. All
             prices within a service must have the same currency. Cannot
@@ -438,11 +438,11 @@ class Service(proto.Message):
         optional=True,
         enum=ShipmentType,
     )
-    minimum_order_value: types.Price = proto.Field(
+    minimum_order_value: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=8,
         optional=True,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     minimum_order_value_table: "MinimumOrderValueTable" = proto.Field(
         proto.MESSAGE,
@@ -1183,7 +1183,7 @@ class MinimumOrderValueTable(proto.Message):
             store_codes (MutableSequence[str]):
                 Optional. A list of unique store codes or
                 empty for the catch all.
-            value (google.shopping.type.types.Price):
+            value (google.shopping.type.types_pb2.Price):
                 The minimum order value for the given stores.
 
                 This field is a member of `oneof`_ ``_value``.
@@ -1193,11 +1193,11 @@ class MinimumOrderValueTable(proto.Message):
             proto.STRING,
             number=1,
         )
-        value: types.Price = proto.Field(
+        value: types_pb2.Price = proto.Field(
             proto.MESSAGE,
             number=2,
             optional=True,
-            message=types.Price,
+            message=types_pb2.Price,
         )
 
     store_code_set_with_movs: MutableSequence[
@@ -1215,7 +1215,7 @@ class Headers(proto.Message):
     ``postal_code_group_names``, or ``location`` must be set.
 
     Attributes:
-        prices (MutableSequence[google.shopping.type.types.Price]):
+        prices (MutableSequence[google.shopping.type.types_pb2.Price]):
             Required. A list of inclusive order price upper bounds. The
             last price's value can be infinity by setting price
             amount_micros = -1. For example
@@ -1224,7 +1224,7 @@ class Headers(proto.Message):
             All prices within a service must have the same currency.
             Must be non-empty. Must be positive except -1. Can only be
             set if all other fields are not set.
-        weights (MutableSequence[google.shopping.type.types.Weight]):
+        weights (MutableSequence[google.shopping.type.types_pb2.Weight]):
             Required. A list of inclusive order weight upper bounds. The
             last weight's value can be infinity by setting price
             amount_micros = -1. For example
@@ -1252,15 +1252,15 @@ class Headers(proto.Message):
             are not set.
     """
 
-    prices: MutableSequence[types.Price] = proto.RepeatedField(
+    prices: MutableSequence[types_pb2.Price] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message=types.Price,
+        message=types_pb2.Price,
     )
-    weights: MutableSequence[types.Weight] = proto.RepeatedField(
+    weights: MutableSequence[types_pb2.Weight] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message=types.Weight,
+        message=types_pb2.Weight,
     )
     number_of_items: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -1329,7 +1329,7 @@ class Value(proto.Message):
             other fields are not set.
 
             This field is a member of `oneof`_ ``_no_shipping``.
-        flat_rate (google.shopping.type.types.Price):
+        flat_rate (google.shopping.type.types_pb2.Price):
             A flat rate. Can only be set if all other
             fields are not set.
 
@@ -1360,11 +1360,11 @@ class Value(proto.Message):
         number=1,
         optional=True,
     )
-    flat_rate: types.Price = proto.Field(
+    flat_rate: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=2,
         optional=True,
-        message=types.Price,
+        message=types_pb2.Price,
     )
     price_percentage: str = proto.Field(
         proto.STRING,
@@ -1417,7 +1417,7 @@ class CarrierRate(proto.Message):
             3%.
 
             This field is a member of `oneof`_ ``_percentage_adjustment``.
-        flat_adjustment (google.shopping.type.types.Price):
+        flat_adjustment (google.shopping.type.types_pb2.Price):
             Optional. Additive shipping rate modifier. Can be negative.
             For example
             ``{ "amount_micros": 1, "currency_code" : "USD" }`` adds $1
@@ -1453,11 +1453,11 @@ class CarrierRate(proto.Message):
         number=5,
         optional=True,
     )
-    flat_adjustment: types.Price = proto.Field(
+    flat_adjustment: types_pb2.Price = proto.Field(
         proto.MESSAGE,
         number=6,
         optional=True,
-        message=types.Price,
+        message=types_pb2.Price,
     )
 
 
