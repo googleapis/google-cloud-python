@@ -1,9 +1,9 @@
-Python Client for AlloyDB
-=========================
+Python Client for AlloyDB API
+=============================
 
 |preview| |pypi| |versions|
 
-`AlloyDB`_: 
+`AlloyDB API`_: AlloyDB for PostgreSQL is an open source-compatible database service that provides a powerful option for migrating, modernizing, or building commercial-grade applications. It offers full compatibility with standard PostgreSQL, and is more than 4x faster for transactional workloads and up to 100x faster for analytical queries than standard PostgreSQL in our performance tests. AlloyDB for PostgreSQL offers a 99.99 percent availability SLA inclusive of maintenance. <br><br> AlloyDB is optimized for the most demanding use cases, allowing you to build new applications that require high transaction throughput, large database sizes, or multiple read resources; scale existing PostgreSQL workloads with no application changes; and modernize legacy proprietary databases.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for AlloyDB
    :target: https://pypi.org/project/google-cloud-alloydb/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-alloydb.svg
    :target: https://pypi.org/project/google-cloud-alloydb/
-.. _AlloyDB: https://cloud.google.com/alloydb/
+.. _AlloyDB API: https://cloud.google.com/alloydb/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/alloydb/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/alloydb/
+.. _Product Documentation:  https://cloud.google.com/alloydb/docs
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the AlloyDB.`_
+3. `Enable the AlloyDB API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the AlloyDB.:  https://cloud.google.com/alloydb/
+.. _Enable the AlloyDB API.:  https://cloud.google.com/alloydb/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for AlloyDB
+-  Read the `Client Library Documentation`_ for AlloyDB API
    to see other available methods on the client.
--  Read the `AlloyDB Product documentation`_ to learn
+-  Read the `AlloyDB API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _AlloyDB Product documentation:  https://cloud.google.com/alloydb/
+.. _AlloyDB API Product documentation:  https://cloud.google.com/alloydb/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

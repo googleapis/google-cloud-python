@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of AlloyDB.
+This package includes clients for multiple versions of AlloyDB API.
 By default, you will get version ``alloydb_v1``.
 
 
@@ -19,17 +19,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    alloydb_v1alpha/services_
-    alloydb_v1alpha/types_
+    alloydb_v1beta/services_
+    alloydb_v1beta/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    alloydb_v1beta/services_
-    alloydb_v1beta/types_
-
+    alloydb_v1alpha/services_
+    alloydb_v1alpha/types_
 
 Changelog
 ---------

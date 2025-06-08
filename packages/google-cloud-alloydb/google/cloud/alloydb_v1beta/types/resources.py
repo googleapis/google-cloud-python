@@ -2080,7 +2080,7 @@ class ConnectionInfo(proto.Message):
     Attributes:
         name (str):
             The name of the ConnectionInfo singleton resource, e.g.:
-            projects/{project}/locations/{location}/clusters/\ */instances/*/connectionInfo
+            projects/{project}/locations/{location}/clusters/*/instances/*/connectionInfo
             This field currently has no semantic meaning.
         ip_address (str):
             Output only. The private network IP address for the
