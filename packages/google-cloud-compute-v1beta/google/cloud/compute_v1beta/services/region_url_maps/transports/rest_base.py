@@ -122,7 +122,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -131,6 +131,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseGet:
@@ -168,7 +169,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -177,6 +178,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInsert:
@@ -215,7 +217,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -224,7 +226,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -233,6 +235,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseInvalidateCache:
@@ -271,7 +274,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -280,7 +283,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -289,6 +292,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseList:
@@ -326,7 +330,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -335,6 +339,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BasePatch:
@@ -373,7 +378,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -382,7 +387,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -391,6 +396,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseTestIamPermissions:
@@ -429,7 +435,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -438,7 +444,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -447,6 +453,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseUpdate:
@@ -485,7 +492,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -494,7 +501,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -503,6 +510,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
     class _BaseValidate:
@@ -541,7 +549,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+                transcoded_request["body"], use_integers_for_enums=True
             )
             return body
 
@@ -550,7 +558,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+                    use_integers_for_enums=True,
                 )
             )
             query_params.update(
@@ -559,6 +567,7 @@ class _BaseRegionUrlMapsRestTransport(RegionUrlMapsTransport):
                 )
             )
 
+            query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 

@@ -11,7 +11,6 @@ API Reference
     compute_v1beta/services_
     compute_v1beta/types_
 
-
 Changelog
 ---------
 

@@ -1037,7 +1037,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteFirewallRequest)
 
             response = client.delete(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1233,7 +1233,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteFirewallRe
 
             response = client.delete_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1423,7 +1423,7 @@ def test_get_rest_required_fields(request_type=compute.GetFirewallRequest):
 
             response = client.get(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1616,7 +1616,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallRequest)
 
             response = client.insert(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -1813,7 +1813,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertFirewallRe
 
             response = client.insert_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2013,7 +2013,7 @@ def test_list_rest_required_fields(request_type=compute.ListFirewallsRequest):
 
             response = client.list(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2272,7 +2272,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchFirewallRequest):
 
             response = client.patch(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2476,7 +2476,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchFirewallRequ
 
             response = client.patch_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2680,7 +2680,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response = client.test_iam_permissions(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -2884,7 +2884,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateFirewallRequest)
 
             response = client.update(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -3088,7 +3088,7 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateFirewallRe
 
             response = client.update_unary(request)
 
-            expected_params = []
+            expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
