@@ -11,7 +11,6 @@ API Reference
     admanager_v1/services_
     admanager_v1/types_
 
-
 Changelog
 ---------
 
@@ -21,3 +20,6 @@ For a list of all ``google-ads-admanager`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
