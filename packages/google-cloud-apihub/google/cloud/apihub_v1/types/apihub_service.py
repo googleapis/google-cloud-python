@@ -263,16 +263,16 @@ class ListApisRequest(proto.Message):
 
             -  ``owner.email = \"apihub@google.com\"`` - - The owner
                team email is *apihub@google.com*.
-            -  ``owner.email = \"apihub@google.com\" AND create_time < \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
+            -  ``owner.email = \"apihub@google.com\" AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
                - The owner team email is *apihub@google.com* and the api
                was created before *2021-08-15 14:50:00 UTC* and after
                *2021-08-10 12:00:00 UTC*.
-            -  ``owner.email = \"apihub@google.com\" OR team.enum_values.values.id: apihub-team-id``
+            -  ``owner.email = \"apihub@google.com\" OR team.enum_values.values.id:    apihub-team-id``
                - The filter string specifies the APIs where the owner
                team email is *apihub@google.com* or the id of the
                allowed value associated with the team attribute is
                *apihub-team-id*.
-            -  ``owner.email = \"apihub@google.com\" OR team.enum_values.values.display_name: ApiHub Team``
+            -  ``owner.email = \"apihub@google.com\" OR    team.enum_values.values.display_name: ApiHub Team``
                - The filter string specifies the APIs where the owner
                team email is *apihub@google.com* or the display name of
                the allowed value associated with the team attribute is
@@ -513,13 +513,13 @@ class ListVersionsRequest(proto.Message):
             -  ``lifecycle.enum_values.values.display_name: \"Preview Display Name\"``
                - The filter string specifies that the display name of
                the allowed value associated with the lifecycle attribute
-               of the Version is ``Preview Display Name``.
-            -  ``lifecycle.enum_values.values.id: preview-id AND create_time < \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
+               of the Version is ``Preview    Display Name``.
+            -  ``lifecycle.enum_values.values.id: preview-id AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
                - The id of the allowed value associated with the
                lifecycle attribute of the Version is *preview-id* and it
                was created before *2021-08-15 14:50:00 UTC* and after
                *2021-08-10 12:00:00 UTC*.
-            -  ``compliance.enum_values.values.id: gdpr-id OR compliance.enum_values.values.id: pci-dss-id``
+            -  ``compliance.enum_values.values.id: gdpr-id OR    compliance.enum_values.values.id: pci-dss-id``
 
             -  The id of the allowed value associated with the
                compliance attribute is *gdpr-id* or *pci-dss-id*.
@@ -739,12 +739,12 @@ class ListSpecsRequest(proto.Message):
                - The filter string specifies that the display name of
                the allowed value associated with the spec_type attribute
                is ``Rest Display Name``.
-            -  ``spec_type.enum_values.values.id: grpc-id AND create_time < \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
+            -  ``spec_type.enum_values.values.id: grpc-id AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
                - The id of the allowed value associated with the
                spec_type attribute is *grpc-id* and the spec was created
                before *2021-08-15 14:50:00 UTC* and after *2021-08-10
                12:00:00 UTC*.
-            -  ``spec_type.enum_values.values.id: rest-id OR spec_type.enum_values.values.id: grpc-id``
+            -  ``spec_type.enum_values.values.id: rest-id OR    spec_type.enum_values.values.id: grpc-id``
 
             -  The id of the allowed value associated with the spec_type
                attribute is *rest-id* or *grpc-id*.
@@ -894,11 +894,11 @@ class ListApiOperationsRequest(proto.Message):
 
             -  ``details.deprecated = True`` - The ApiOperation is
                deprecated.
-            -  ``details.http_operation.method = GET AND create_time < \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
+            -  ``details.http_operation.method = GET AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
                - The method of the http operation of the ApiOperation is
                *GET* and the spec was created before *2021-08-15
                14:50:00 UTC* and after *2021-08-10 12:00:00 UTC*.
-            -  ``details.http_operation.method = GET OR details.http_operation.method = POST``.
+            -  ``details.http_operation.method = GET OR details.http_operation.method =    POST``.
                - The http operation of the method of ApiOperation is
                *GET* or *POST*.
         page_size (int):
@@ -1154,12 +1154,12 @@ class ListDeploymentsRequest(proto.Message):
                - The allowed value display name of the environment
                attribute associated with the Deployment is
                ``Staging Deployment``.
-            -  ``environment.enum_values.values.id: production-id AND create_time < \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
+            -  ``environment.enum_values.values.id: production-id AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"``
                - The allowed value id of the environment attribute
                associated with the Deployment is *production-id* and
                Deployment was created before *2021-08-15 14:50:00 UTC*
                and after *2021-08-10 12:00:00 UTC*.
-            -  ``environment.enum_values.values.id: production-id OR slo.string_values.values: \"99.99%\"``
+            -  ``environment.enum_values.values.id: production-id OR    slo.string_values.values: \"99.99%\"``
 
             -  The allowed value id of the environment attribute
                Deployment is *production-id* or string value of the slo
@@ -1373,7 +1373,7 @@ class ListAttributesRequest(proto.Message):
 
             -  ``display_name = production`` - - The display name of the
                attribute is *production*.
-            -  ``(display_name = production) AND (create_time < \"2021-08-15T14:50:00Z\") AND (create_time > \"2021-08-10T12:00:00Z\")``
+            -  ``(display_name = production) AND (create_time <    \"2021-08-15T14:50:00Z\") AND (create_time > \"2021-08-10T12:00:00Z\")``
                - The display name of the attribute is *production* and
                the attribute was created before *2021-08-15 14:50:00
                UTC* and after *2021-08-10 12:00:00 UTC*.

@@ -5,18 +5,18 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# API Hub API API
+# API hub API
 
-Overview of the APIs available for API Hub API API.
+Overview of the APIs available for API hub API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-API Hub API API.
+API hub API.
 
-[classes](https://cloud.google.com/python/docs/reference/google-cloud-apihub/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/apihub/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/google-cloud-apihub/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/apihub/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/google-cloud-apihub/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/apihub/latest/summary_property.html)

@@ -11,7 +11,6 @@ API Reference
     apihub_v1/services_
     apihub_v1/types_
 
-
 Changelog
 ---------
 
