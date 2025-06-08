@@ -14,9 +14,9 @@ Overview of the APIs available for Certificate Manager API.
 Classes, methods and properties & attributes for
 Certificate Manager API.
 
-[classes](https://cloud.google.com/python/docs/reference/certificatemanager/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/certificate manager/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/certificatemanager/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/certificate manager/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/certificatemanager/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/certificate manager/latest/summary_property.html)

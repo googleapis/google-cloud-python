@@ -11,7 +11,6 @@ API Reference
     certificate_manager_v1/services_
     certificate_manager_v1/types_
 
-
 Changelog
 ---------
 
