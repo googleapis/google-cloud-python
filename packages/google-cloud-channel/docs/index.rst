@@ -11,7 +11,6 @@ API Reference
     channel_v1/services_
     channel_v1/types_
 
-
 Changelog
 ---------
 
