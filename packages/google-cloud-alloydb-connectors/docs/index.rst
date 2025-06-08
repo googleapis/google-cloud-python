@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of AlloyDB connectors.
+This package includes clients for multiple versions of .
 By default, you will get version ``connectors_v1``.
 
 
@@ -29,7 +29,6 @@ API Reference
 
     connectors_v1beta/services_
     connectors_v1beta/types_
-
 
 Changelog
 ---------
