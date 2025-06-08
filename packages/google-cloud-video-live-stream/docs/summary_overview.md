@@ -14,9 +14,9 @@ Overview of the APIs available for Live Stream API.
 Classes, methods and properties & attributes for
 Live Stream API.
 
-[classes](https://cloud.google.com/python/docs/reference/livestream/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/live stream/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/livestream/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/live stream/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/livestream/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/live stream/latest/summary_property.html)
