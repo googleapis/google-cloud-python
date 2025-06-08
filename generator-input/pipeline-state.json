@@ -1747,7 +1747,7 @@
             "currentVersion": "0.6.2",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "b1161bf17c14603fb8980d341b1427c7a6a43c45",
             "apiPaths": [
                 "google/cloud/dataform/v1beta1",
                 "google/cloud/dataform/v1"

@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Cloud Dataform API
+# Dataform API
 
-Overview of the APIs available for Cloud Dataform API.
+Overview of the APIs available for Dataform API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Cloud Dataform API.
+Dataform API.
 
 [classes](https://cloud.google.com/python/docs/reference/dataform/latest/summary_class.html)
 
