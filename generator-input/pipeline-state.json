@@ -2028,7 +2028,7 @@
             "currentVersion": "0.1.11",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "10878b0339718e339d95d3bb41ff6e9a686ff67e",
             "apiPaths": [
                 "google/cloud/managedkafka/v1"
             ],

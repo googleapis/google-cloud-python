@@ -11,7 +11,6 @@ API Reference
     managedkafka_v1/services_
     managedkafka_v1/types_
 
-
 Changelog
 ---------
 
