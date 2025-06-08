@@ -5,18 +5,18 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# App Engine Logging Protos API
+#
 
-Overview of the APIs available for App Engine Logging Protos API.
+Overview of the APIs available for .
 
 ## All entries
 
 Classes, methods and properties & attributes for
-App Engine Logging Protos API.
+.
 
-[classes](https://cloud.google.com/python/docs/reference/appenginelogging/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/appengine logging/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/appenginelogging/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/appengine logging/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/appenginelogging/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/appengine logging/latest/summary_property.html)

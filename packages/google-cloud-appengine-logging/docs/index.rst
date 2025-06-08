@@ -11,7 +11,6 @@ API Reference
     appengine_logging_v1/services_
     appengine_logging_v1/types_
 
-
 Changelog
 ---------
 
