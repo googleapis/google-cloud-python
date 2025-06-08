@@ -5,18 +5,18 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# BeyondCorp AppConnectors API
+# BeyondCorp API
 
-Overview of the APIs available for BeyondCorp AppConnectors API.
+Overview of the APIs available for BeyondCorp API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-BeyondCorp AppConnectors API.
+BeyondCorp API.
 
-[classes](https://cloud.google.com/python/docs/reference/beyondcorpappconnectors/latest/summary_class.html)
+[classes](https://cloud.google.com/python/docs/reference/beyondcorp appconnectors/latest/summary_class.html)
 
-[methods](https://cloud.google.com/python/docs/reference/beyondcorpappconnectors/latest/summary_method.html)
+[methods](https://cloud.google.com/python/docs/reference/beyondcorp appconnectors/latest/summary_method.html)
 
 [properties and
-attributes](https://cloud.google.com/python/docs/reference/beyondcorpappconnectors/latest/summary_property.html)
+attributes](https://cloud.google.com/python/docs/reference/beyondcorp appconnectors/latest/summary_property.html)
