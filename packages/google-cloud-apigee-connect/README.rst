@@ -1,9 +1,9 @@
-Python Client for Apigee Connect
-================================
+Python Client for Apigee Connect API
+====================================
 
 |stable| |pypi| |versions|
 
-`Apigee Connect`_: allows the Apigee hybrid management plane to connect securely to the MART service in the runtime plane without requiring you to expose the MART endpoint on the internet.
+`Apigee Connect API`_:
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Apigee Connect
    :target: https://pypi.org/project/google-cloud-apigee-connect/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apigee-connect.svg
    :target: https://pypi.org/project/google-cloud-apigee-connect/
-.. _Apigee Connect: https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
+.. _Apigee Connect API: https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/apigeeconnect/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Apigee Connect.`_
+3. `Enable the Apigee Connect API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Apigee Connect.:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
+.. _Enable the Apigee Connect API.:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Apigee Connect
+-  Read the `Client Library Documentation`_ for Apigee Connect API
    to see other available methods on the client.
--  Read the `Apigee Connect Product documentation`_ to learn
+-  Read the `Apigee Connect API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Apigee Connect Product documentation:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
+.. _Apigee Connect API Product documentation:  https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
