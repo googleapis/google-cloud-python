@@ -22,7 +22,6 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -221,16 +220,6 @@ class SecretManagerServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_location: gapic_v1.method.wrap_method(
-                self.get_location,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_locations: gapic_v1.method.wrap_method(
-                self.list_locations,
-                default_timeout=None,
-                client_info=client_info,
-            ),
         }
 
     def close(self):
@@ -381,27 +370,6 @@ class SecretManagerServiceTransport(abc.ABC):
         Union[
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_location(
-        self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_locations(
-        self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
         ],
     ]:
         raise NotImplementedError()

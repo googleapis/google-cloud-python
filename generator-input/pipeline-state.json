@@ -544,7 +544,7 @@
             "currentVersion": "2.24.0",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "02838cfff3c0aacdeb5142271bc60a82b6936b59",
             "apiPaths": [
                 "google/cloud/secretmanager/v1",
                 "google/cloud/secretmanager/v1beta2",

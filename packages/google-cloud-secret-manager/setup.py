@@ -21,10 +21,10 @@ import setuptools  # type: ignore
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
-name = "google-cloud-secret-manager"
+name = "google-cloud-secretmanager"
 
 
-description = "Google Cloud Secret Manager API client library"
+description = "Google Cloud Secretmanager API client library"
 
 version = None
 
@@ -51,7 +51,7 @@ dependencies = [
     "grpc-google-iam-v1 >= 0.14.0, <1.0.0",
 ]
 extras = {}
-url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-secret-manager"
+url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-secretmanager"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
