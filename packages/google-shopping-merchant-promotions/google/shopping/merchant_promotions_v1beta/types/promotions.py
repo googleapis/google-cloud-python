@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.shopping.merchant_promotions_v1beta.types import promotions_common
@@ -86,7 +86,7 @@ class Promotion(proto.Message):
             promotion.
         attributes (google.shopping.merchant_promotions_v1beta.types.Attributes):
             Optional. A list of promotion attributes.
-        custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
+        custom_attributes (MutableSequence[google.shopping.type.types_pb2.CustomAttribute]):
             Optional. A list of custom (merchant-provided) attributes.
             It can also be used for submitting any attribute of the data
             specification in its generic form (for example,
@@ -147,10 +147,10 @@ class Promotion(proto.Message):
         number=7,
         message=promotions_common.Attributes,
     )
-    custom_attributes: MutableSequence[types.CustomAttribute] = proto.RepeatedField(
+    custom_attributes: MutableSequence[types_pb2.CustomAttribute] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
-        message=types.CustomAttribute,
+        message=types_pb2.CustomAttribute,
     )
     promotion_status: promotions_common.PromotionStatus = proto.Field(
         proto.MESSAGE,

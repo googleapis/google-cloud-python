@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.shopping.type.types import types
+from google.shopping.type import types_pb2  # type: ignore
 
 from google.shopping.merchant_promotions_v1beta.services.promotions_service import (
     pagers,
@@ -783,9 +783,9 @@ class PromotionsServiceClient(metaclass=PromotionsServiceClientMeta):
                    validation checks are primarily defined below:
 
                    \* [Promotions data
-                   specification](\ https://support.google.com/merchants/answer/2906014)
+                   specification](https://support.google.com/merchants/answer/2906014)
                    \* [Local promotions data
-                   specification](\ https://support.google.com/merchants/answer/10146130)
+                   specification](https://support.google.com/merchants/answer/10146130)
 
                    After inserting, updating a promotion input, it may
                    take several minutes before the final promotion can
@@ -890,9 +890,9 @@ class PromotionsServiceClient(metaclass=PromotionsServiceClientMeta):
                    validation checks are primarily defined below:
 
                    \* [Promotions data
-                   specification](\ https://support.google.com/merchants/answer/2906014)
+                   specification](https://support.google.com/merchants/answer/2906014)
                    \* [Local promotions data
-                   specification](\ https://support.google.com/merchants/answer/10146130)
+                   specification](https://support.google.com/merchants/answer/10146130)
 
                    After inserting, updating a promotion input, it may
                    take several minutes before the final promotion can
