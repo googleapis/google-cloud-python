@@ -1,9 +1,9 @@
-Python Client for Binary Authorization
-======================================
+Python Client for Binary Authorization API
+==========================================
 
 |stable| |pypi| |versions|
 
-`Binary Authorization`_:  is a service on Google Cloud that provides centralized software supply-chain security for applications that run on Google Kubernetes Engine (GKE) and Anthos clusters on VMware
+`Binary Authorization API`_: The management interface for Binary Authorization, a system providing policy control for images deployed to Kubernetes Engine clusters, Anthos clusters on VMware, and Cloud Run.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Binary Authorization
    :target: https://pypi.org/project/google-cloud-binary-authorization/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-binary-authorization.svg
    :target: https://pypi.org/project/google-cloud-binary-authorization/
-.. _Binary Authorization: https://cloud.google.com/binary-authorization
+.. _Binary Authorization API: https://cloud.google.com/binary-authorization
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/binaryauthorization/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/binary-authorization
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Binary Authorization.`_
+3. `Enable the Binary Authorization API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Binary Authorization.:  https://cloud.google.com/binary-authorization
+.. _Enable the Binary Authorization API.:  https://cloud.google.com/binary-authorization
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Binary Authorization
+-  Read the `Client Library Documentation`_ for Binary Authorization API
    to see other available methods on the client.
--  Read the `Binary Authorization Product documentation`_ to learn
+-  Read the `Binary Authorization API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Binary Authorization Product documentation:  https://cloud.google.com/binary-authorization
+.. _Binary Authorization API Product documentation:  https://cloud.google.com/binary-authorization
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

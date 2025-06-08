@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Binary Authorization.
+This package includes clients for multiple versions of Binary Authorization API.
 By default, you will get version ``binaryauthorization_v1``.
 
 
@@ -21,7 +21,6 @@ API Reference
 
     binaryauthorization_v1beta1/services_
     binaryauthorization_v1beta1/types_
-
 
 Changelog
 ---------
