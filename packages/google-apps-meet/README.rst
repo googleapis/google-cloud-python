@@ -15,7 +15,7 @@ Python Client for Google Meet API
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-apps-meet.svg
    :target: https://pypi.org/project/google-apps-meet/
 .. _Google Meet API: https://developers.google.com/meet/api/guides/overview
-.. _Client Library Documentation: https://googleapis.dev/python/google-apps-meet/latest
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/meet/latest
 .. _Product Documentation:  https://developers.google.com/meet/api/guides/overview
 
 Quick Start
@@ -161,9 +161,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)
@@ -173,9 +173,9 @@ Code-Based Examples
 .. code-block:: python
 
     import logging
-    
+
     from google.cloud import library_v1
-    
+
     base_logger = logging.getLogger("google.cloud.library_v1")
     base_logger.addHandler(logging.StreamHandler())
     base_logger.setLevel(logging.DEBUG)

@@ -1173,7 +1173,7 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
                    WebRTC.
 
                    See [Meet Media API
-                   overview](\ https://developers.google.com/meet/media-api/guides/overview)
+                   overview](https://developers.google.com/meet/media-api/guides/overview)
                    for more details about this connection.
 
         """
