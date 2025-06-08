@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Analytics Data.
+This package includes clients for multiple versions of Google Analytics Data API.
 By default, you will get version ``data_v1beta``.
 
 
@@ -22,7 +22,6 @@ API Reference
     data_v1alpha/services_
     data_v1alpha/types_
 
-
 Changelog
 ---------
 
@@ -32,3 +31,6 @@ For a list of all ``google-analytics-data`` releases:
     :maxdepth: 2
 
     CHANGELOG
+
+.. toctree::
+  :hidden:
