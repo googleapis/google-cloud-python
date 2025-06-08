@@ -11,7 +11,6 @@ API Reference
     apigateway_v1/services_
     apigateway_v1/types_
 
-
 Changelog
 ---------
 
