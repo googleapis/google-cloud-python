@@ -22,7 +22,6 @@ API Reference
     modelarmor_v1beta/services_
     modelarmor_v1beta/types_
 
-
 Changelog
 ---------
 
