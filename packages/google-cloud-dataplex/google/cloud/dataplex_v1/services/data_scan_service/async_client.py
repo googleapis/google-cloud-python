@@ -422,18 +422,18 @@ class DataScanServiceAsyncClient:
                       and runs against the data to get data quality
                       check results. For more information, see [Auto
                       data quality
-                      overview](\ https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
+                      overview](https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
                    -  Data profile: analyzes the data in tables and
                       generates insights about the structure, content
                       and relationships (such as null percent,
                       cardinality, min/max/mean, etc). For more
                       information, see [About data
-                      profiling](\ https://cloud.google.com/dataplex/docs/data-profiling-overview).
+                      profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview).
                    -  Data discovery: scans data in Cloud Storage
                       buckets to extract and then catalog metadata. For
                       more information, see [Discover and catalog Cloud
                       Storage
-                      data](\ https://cloud.google.com/bigquery/docs/automatic-discovery).
+                      data](https://cloud.google.com/bigquery/docs/automatic-discovery).
 
         """
         # Create or coerce a protobuf request object.
@@ -580,18 +580,18 @@ class DataScanServiceAsyncClient:
                       and runs against the data to get data quality
                       check results. For more information, see [Auto
                       data quality
-                      overview](\ https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
+                      overview](https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
                    -  Data profile: analyzes the data in tables and
                       generates insights about the structure, content
                       and relationships (such as null percent,
                       cardinality, min/max/mean, etc). For more
                       information, see [About data
-                      profiling](\ https://cloud.google.com/dataplex/docs/data-profiling-overview).
+                      profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview).
                    -  Data discovery: scans data in Cloud Storage
                       buckets to extract and then catalog metadata. For
                       more information, see [Discover and catalog Cloud
                       Storage
-                      data](\ https://cloud.google.com/bigquery/docs/automatic-discovery).
+                      data](https://cloud.google.com/bigquery/docs/automatic-discovery).
 
         """
         # Create or coerce a protobuf request object.
@@ -859,18 +859,18 @@ class DataScanServiceAsyncClient:
                       and runs against the data to get data quality
                       check results. For more information, see [Auto
                       data quality
-                      overview](\ https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
+                      overview](https://cloud.google.com/dataplex/docs/auto-data-quality-overview).
                    -  Data profile: analyzes the data in tables and
                       generates insights about the structure, content
                       and relationships (such as null percent,
                       cardinality, min/max/mean, etc). For more
                       information, see [About data
-                      profiling](\ https://cloud.google.com/dataplex/docs/data-profiling-overview).
+                      profiling](https://cloud.google.com/dataplex/docs/data-profiling-overview).
                    -  Data discovery: scans data in Cloud Storage
                       buckets to extract and then catalog metadata. For
                       more information, see [Discover and catalog Cloud
                       Storage
-                      data](\ https://cloud.google.com/bigquery/docs/automatic-discovery).
+                      data](https://cloud.google.com/bigquery/docs/automatic-discovery).
 
         """
         # Create or coerce a protobuf request object.

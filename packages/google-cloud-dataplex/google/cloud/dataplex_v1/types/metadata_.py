@@ -312,7 +312,7 @@ class ListPartitionsRequest(proto.Message):
 
                -  The right hand of a LIKE operator supports "." and "*"
                   for wildcard searches, for example "value1 LIKE
-                  ".*oo.*"
+                  ".\ *oo.*"
 
             -  parenthetical grouping: ( )
 

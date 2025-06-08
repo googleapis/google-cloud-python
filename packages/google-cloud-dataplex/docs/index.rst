@@ -11,7 +11,6 @@ API Reference
     dataplex_v1/services_
     dataplex_v1/types_
 
-
 Changelog
 ---------
 

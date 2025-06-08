@@ -2552,7 +2552,7 @@
             "currentVersion": "2.10.2",
             "generationAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
             "releaseAutomationLevel": "AUTOMATION_LEVEL_AUTOMATIC",
-            "lastGeneratedCommit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
+            "lastGeneratedCommit": "9f0a2fde557a5ad5a552cafc62a248715e79b689",
             "apiPaths": [
                 "google/cloud/dataplex/v1"
             ],
