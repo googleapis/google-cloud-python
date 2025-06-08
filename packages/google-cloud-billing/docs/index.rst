@@ -11,7 +11,6 @@ API Reference
     billing_v1/services_
     billing_v1/types_
 
-
 Changelog
 ---------
 

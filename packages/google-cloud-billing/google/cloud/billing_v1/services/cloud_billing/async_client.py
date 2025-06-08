@@ -362,8 +362,8 @@ class CloudBillingAsyncClient:
             google.cloud.billing_v1.types.BillingAccount:
                 A billing account in the
                    [Google Cloud
-                   Console](\ https://console.cloud.google.com/). You
-                   can assign a billing account to one or more projects.
+                   Console](https://console.cloud.google.com/). You can
+                   assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -614,8 +614,8 @@ class CloudBillingAsyncClient:
             google.cloud.billing_v1.types.BillingAccount:
                 A billing account in the
                    [Google Cloud
-                   Console](\ https://console.cloud.google.com/). You
-                   can assign a billing account to one or more projects.
+                   Console](https://console.cloud.google.com/). You can
+                   assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -757,8 +757,8 @@ class CloudBillingAsyncClient:
             google.cloud.billing_v1.types.BillingAccount:
                 A billing account in the
                    [Google Cloud
-                   Console](\ https://console.cloud.google.com/). You
-                   can assign a billing account to one or more projects.
+                   Console](https://console.cloud.google.com/). You can
+                   assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -1302,7 +1302,7 @@ class CloudBillingAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
@@ -1314,7 +1314,7 @@ class CloudBillingAsyncClient:
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1444,7 +1444,7 @@ class CloudBillingAsyncClient:
                    constraints based on attributes of the request, the
                    resource, or both. To learn which resources support
                    conditions in their IAM policies, see the [IAM
-                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
 
                    **JSON example:**
 
@@ -1456,7 +1456,7 @@ class CloudBillingAsyncClient:
 
                    For a description of IAM and its features, see the
                    [IAM
-                   documentation](\ https://cloud.google.com/iam/docs/).
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1683,8 +1683,8 @@ class CloudBillingAsyncClient:
             google.cloud.billing_v1.types.BillingAccount:
                 A billing account in the
                    [Google Cloud
-                   Console](\ https://console.cloud.google.com/). You
-                   can assign a billing account to one or more projects.
+                   Console](https://console.cloud.google.com/). You can
+                   assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
