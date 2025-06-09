@@ -647,12 +647,6 @@ def test_to_dataframe_bqstorage_no_pyarrow_compression():
     )
 
 
-# TODO: The test needs work to account for pandas 2.0+. See Issue: #2132
-# pragma added due to issues with coverage.
-@pytest.mark.skipif(
-    pandas.__version__.startswith("2."),
-    reason="pandas 2.0 changes some default dtypes and we haven't update the test to account for those",
-)
 @pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_to_dataframe_column_dtypes():
     from google.cloud.bigquery.job import QueryJob as target_class
@@ -704,13 +698,17 @@ def test_to_dataframe_column_dtypes():
     exp_columns = [field["name"] for field in query_resource["schema"]["fields"]]
     assert list(df) == exp_columns  # verify the column names
 
-    assert df.start_timestamp.dtype.name == "datetime64[ns, UTC]"
     assert df.seconds.dtype.name == "Int64"
     assert df.miles.dtype.name == "float64"
     assert df.km.dtype.name == "float16"
     assert df.payment_type.dtype.name == "object"
     assert df.complete.dtype.name == "boolean"
     assert df.date.dtype.name == "dbdate"
+
+    if pandas.__version__.startswith("2."):
+        assert df.start_timestamp.dtype.name == "datetime64[us, UTC]"
+    else:
+        assert df.start_timestamp.dtype.name == "datetime64[ns, UTC]"
 
 
 def test_to_dataframe_column_date_dtypes():

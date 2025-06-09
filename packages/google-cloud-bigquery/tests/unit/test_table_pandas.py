@@ -34,12 +34,6 @@ def class_under_test():
     return RowIterator
 
 
-# TODO: The test needs work to account for pandas 2.0+. See Issue: #2132
-# pragma added due to issues with coverage.
-@pytest.mark.skipif(
-    pandas.__version__.startswith("2."),
-    reason="pandas 2.0 changes some default dtypes and we haven't update the test to account for those",
-)
 def test_to_dataframe_nullable_scalars(
     monkeypatch, class_under_test
 ):  # pragma: NO COVER
@@ -113,14 +107,18 @@ def test_to_dataframe_nullable_scalars(
     assert df.dtypes["bool_col"].name == "boolean"
     assert df.dtypes["bytes_col"].name == "object"
     assert df.dtypes["date_col"].name == "dbdate"
-    assert df.dtypes["datetime_col"].name == "datetime64[ns]"
     assert df.dtypes["float64_col"].name == "float64"
     assert df.dtypes["int64_col"].name == "Int64"
     assert df.dtypes["numeric_col"].name == "object"
     assert df.dtypes["string_col"].name == "object"
     assert df.dtypes["time_col"].name == "dbtime"
-    assert df.dtypes["timestamp_col"].name == "datetime64[ns, UTC]"
     assert df.dtypes["json_col"].name == "object"
+    if pandas.__version__.startswith("2."):
+        assert df.dtypes["datetime_col"].name == "datetime64[us]"
+        assert df.dtypes["timestamp_col"].name == "datetime64[us, UTC]"
+    else:
+        assert df.dtypes["datetime_col"].name == "datetime64[ns]"
+        assert df.dtypes["timestamp_col"].name == "datetime64[ns, UTC]"
 
     # Check for expected values.
     assert df["bignumeric_col"][0] == decimal.Decimal("123.456789101112131415")
