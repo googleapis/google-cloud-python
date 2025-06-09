@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.30.0](https://github.com/googleapis/python-pubsub/compare/v2.29.1...v2.30.0) (2025-06-07)
+
+
+### Features
+
+* Add SchemaViolationReason to IngestionFailureEvent ([#1411](https://github.com/googleapis/python-pubsub/issues/1411)) ([c046ca2](https://github.com/googleapis/python-pubsub/commit/c046ca22e9bddff6b50f7670bf6b9b9470bf78e8))
+
 ## [2.29.1](https://github.com/googleapis/python-pubsub/compare/v2.29.0...v2.29.1) (2025-05-23)
 
 
