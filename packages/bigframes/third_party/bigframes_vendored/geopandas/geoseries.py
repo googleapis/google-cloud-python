@@ -483,3 +483,25 @@ class GeoSeries:
                 each aligned geometry with other.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def is_closed(self: GeoSeries) -> bigframes.series.Series:
+        """
+        [Not Implemented] Use ``bigframes.bigquery.st_isclosed(series)``
+        instead to return a boolean indicating if a shape is closed.
+
+        In GeoPandas, this returns a Series of booleans with value True if a
+        LineString's or LinearRing's first and last points are equal.
+
+        Returns False for any other geometry type.
+
+        Returns:
+            bigframes.pandas.Series:
+                Series of booleans.
+
+        Raises:
+            NotImplementedError:
+                GeoSeries.is_closed is not supported. Use
+                ``bigframes.bigquery.st_isclosed(series)``, instead.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

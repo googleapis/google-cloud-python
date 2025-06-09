@@ -63,6 +63,15 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
         series.name = None
         return series
 
+    @property
+    def is_closed(self) -> bigframes.series.Series:
+        # TODO(tswast): GeoPandas doesn't treat Point as closed. Use ST_LENGTH
+        # when available to filter out "closed" shapes that return false in
+        # GeoPandas.
+        raise NotImplementedError(
+            f"GeoSeries.is_closed is not supported. Use bigframes.bigquery.st_isclosed(series), instead. {constants.FEEDBACK_LINK}"
+        )
+
     @classmethod
     def from_wkt(cls, data, index=None) -> GeoSeries:
         series = bigframes.series.Series(data, index=index)

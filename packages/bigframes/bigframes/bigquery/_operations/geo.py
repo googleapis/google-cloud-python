@@ -382,6 +382,66 @@ def st_intersection(
     return series._apply_binary_op(other, ops.geo_st_intersection_op)
 
 
+def st_isclosed(
+    series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
+) -> bigframes.series.Series:
+    """
+    Returns TRUE for a non-empty Geography, where each element in the
+    Geography has an empty boundary.
+
+    .. note::
+        BigQuery's Geography functions, like `st_isclosed`, interpret the geometry
+        data type as a point set on the Earth's surface. A point set is a set
+        of points, lines, and polygons on the WGS84 reference spheroid, with
+        geodesic edges. See: https://cloud.google.com/bigquery/docs/geospatial-data
+
+    **Examples:**
+
+        >>> import bigframes.geopandas
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+
+        >>> from shapely.geometry import Point, LineString, Polygon
+        >>> bpd.options.display.progress_bar = None
+
+        >>> series = bigframes.geopandas.GeoSeries(
+        ...     [
+        ...         Point(0, 0),  # Point
+        ...         LineString([(0, 0), (1, 1)]),  # Open LineString
+        ...         LineString([(0, 0), (1, 1), (0, 1), (0, 0)]),  # Closed LineString
+        ...         Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
+        ...         None,
+        ...     ]
+        ... )
+        >>> series
+        0                                       POINT (0 0)
+        1                            LINESTRING (0 0, 1 1)
+        2             LINESTRING (0 0, 1 1, 0 1, 0 0)
+        3             POLYGON ((0 0, 1 1, 0 1, 0 0))
+        4                                           None
+        dtype: geometry
+
+        >>> bbq.st_isclosed(series)
+        0     True
+        1    False
+        2     True
+        3     False
+        4     <NA>
+        dtype: boolean
+
+    Args:
+        series (bigframes.pandas.Series | bigframes.geopandas.GeoSeries):
+            A series containing geography objects.
+
+    Returns:
+        bigframes.pandas.Series:
+            Series of booleans indicating whether each geometry is closed.
+    """
+    series = series._apply_unary_op(ops.geo_st_isclosed_op)
+    series.name = None
+    return series
+
+
 def st_length(
     series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
     *,
@@ -407,6 +467,7 @@ def st_length(
         >>> import bigframes.geopandas
         >>> import bigframes.pandas as bpd
         >>> import bigframes.bigquery as bbq
+
         >>> from shapely.geometry import Polygon, LineString, Point, GeometryCollection
         >>> bpd.options.display.progress_bar = None
 
@@ -418,8 +479,6 @@ def st_length(
         ...             GeometryCollection([LineString([(0,0),(0,1)]), Point(1,1)]) # Length of LineString only
         ...         ]
         ... )
-
-    Default behavior (use_spheroid=False):
 
         >>> result = bbq.st_length(series)
         >>> result

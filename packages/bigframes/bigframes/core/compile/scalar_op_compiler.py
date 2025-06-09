@@ -1073,6 +1073,11 @@ def geo_st_intersection_op_impl(x: ibis_types.Value, y: ibis_types.Value):
     )
 
 
+@scalar_op_compiler.register_unary_op(ops.geo_st_isclosed_op, pass_op=False)
+def geo_st_isclosed_op_impl(x: ibis_types.Value):
+    return st_isclosed(x)
+
+
 @scalar_op_compiler.register_unary_op(ops.geo_x_op)
 def geo_x_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.GeoSpatialValue, x).x()
@@ -2189,6 +2194,11 @@ def str_lstrip_op(  # type: ignore[empty-body]
     x: ibis_dtypes.String, to_strip: ibis_dtypes.String
 ) -> ibis_dtypes.String:
     """Remove leading and trailing characters."""
+
+
+@ibis_udf.scalar.builtin
+def st_isclosed(a: ibis_dtypes.geography) -> ibis_dtypes.boolean:  # type: ignore
+    """Checks if a geography is closed."""
 
 
 @ibis_udf.scalar.builtin(name="rtrim")
