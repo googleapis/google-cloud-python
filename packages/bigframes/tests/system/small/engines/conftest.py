@@ -19,7 +19,7 @@ import pandas as pd
 import pytest
 
 import bigframes
-from bigframes.core import local_data
+from bigframes.core import ArrayValue, local_data
 from bigframes.session import (
     direct_gbq_execution,
     local_scan_executor,
@@ -60,6 +60,13 @@ def managed_data_source(
     scalars_pandas_df_index: pd.DataFrame,
 ) -> local_data.ManagedArrowTable:
     return local_data.ManagedArrowTable.from_pandas(scalars_pandas_df_index)
+
+
+@pytest.fixture(scope="module")
+def scalars_array_value(
+    managed_data_source: local_data.ManagedArrowTable, fake_session: bigframes.Session
+):
+    return ArrayValue.from_managed(managed_data_source, fake_session)
 
 
 @pytest.fixture(scope="module")
