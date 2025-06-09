@@ -265,7 +265,13 @@ def _adapt_pandas_series(
 ) -> tuple[Union[pa.ChunkedArray, pa.Array], bigframes.dtypes.Dtype]:
     # Mostly rely on pyarrow conversions, but have to convert geo without its help.
     if series.dtype == bigframes.dtypes.GEO_DTYPE:
-        series = geopandas.GeoSeries(series).to_wkt(rounding_precision=-1)
+        # geoseries produces eg "POINT (1, 1)", while bq uses style "POINT(1, 1)"
+        # we normalize to bq style for consistency
+        series = (
+            geopandas.GeoSeries(series)
+            .to_wkt(rounding_precision=-1)
+            .str.replace(r"(\w+) \(", repl=r"\1(", regex=True)
+        )
         return pa.array(series, type=pa.string()), bigframes.dtypes.GEO_DTYPE
     try:
         return _adapt_arrow_array(pa.array(series))
@@ -326,7 +332,7 @@ def _adapt_arrow_array(array: pa.Array) -> tuple[pa.Array, bigframes.dtypes.Dtyp
         return new_value.fill_null([]), bigframes.dtypes.list_type(values_type)
     if array.type == bigframes.dtypes.JSON_ARROW_TYPE:
         return _canonicalize_json(array), bigframes.dtypes.JSON_DTYPE
-    target_type = _logical_type_replacements(array.type)
+    target_type = logical_type_replacements(array.type)
     if target_type != array.type:
         # TODO: Maybe warn if lossy conversion?
         array = array.cast(target_type)
@@ -372,6 +378,10 @@ def _recursive_map_types(
             if new_field_t != type.value_type:
                 return pa.list_(new_field_t)
             return type
+        # polars can produce large lists, and we want to map these down to regular lists
+        if pa.types.is_large_list(type):
+            new_field_t = recursive_f(type.value_type)
+            return pa.list_(new_field_t)
         if pa.types.is_struct(type):
             struct_type = cast(pa.StructType, type)
             new_fields: list[pa.Field] = []
@@ -385,7 +395,7 @@ def _recursive_map_types(
 
 
 @_recursive_map_types
-def _logical_type_replacements(type: pa.DataType) -> pa.DataType:
+def logical_type_replacements(type: pa.DataType) -> pa.DataType:
     if pa.types.is_timestamp(type):
         # This is potentially lossy, but BigFrames doesn't support ns
         new_tz = "UTC" if (type.tz is not None) else None
@@ -403,8 +413,11 @@ def _logical_type_replacements(type: pa.DataType) -> pa.DataType:
     if pa.types.is_large_string(type):
         # simple string type can handle the largest strings needed
         return pa.string()
+    if pa.types.is_large_binary(type):
+        # simple string type can handle the largest strings needed
+        return pa.binary()
     if pa.types.is_dictionary(type):
-        return _logical_type_replacements(type.value_type)
+        return logical_type_replacements(type.value_type)
     if pa.types.is_null(type):
         # null as a type not allowed, default type is float64 for bigframes
         return pa.float64()

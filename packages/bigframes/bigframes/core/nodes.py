@@ -601,6 +601,10 @@ class ScanList:
 
     items: typing.Tuple[ScanItem, ...]
 
+    @classmethod
+    def from_items(cls, items: Iterable[ScanItem]) -> ScanList:
+        return cls(tuple(items))
+
     def filter_cols(
         self,
         ids: AbstractSet[identifiers.ColumnId],
