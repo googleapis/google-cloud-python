@@ -252,15 +252,12 @@ class StringMethods:
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
-            >>> s = bpd.Series(['1. Ant.', '  2. Bee? ', '\\t3. Cat!\\n', bpd.NA])
-            >>> s
-            0        1. Ant.
-            1       2. Bee?
-            2       3. Cat!
-            <BLANKLINE>
-            3      <NA>
-            dtype: string
-
+            >>> s = bpd.Series([
+            ...     '1. Ant.',
+            ...     '  2. Bee? ',
+            ...     '\\t3. Cat!\\n',
+            ...     bpd.NA,
+            ... ])
             >>> s.str.strip()
             0    1. Ant.
             1    2. Bee?
@@ -269,10 +266,10 @@ class StringMethods:
             dtype: string
 
             >>> s.str.strip('123.!? \\n\\t')
-            0     Ant
-            1     Bee
-            2     Cat
-            3    <NA>
+            0       Ant
+            1       Bee
+            2       Cat
+            3       <NA>
             dtype: string
 
         Args:
@@ -543,7 +540,7 @@ class StringMethods:
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rstrip(self, to_strip: typing.Optional[str] = None):
-        """Remove trailing characters.
+        r"""Remove trailing characters.
 
         Strip whitespaces (including newlines) or a set of specified characters
         from each string in the Series/Index from right side.
@@ -555,19 +552,11 @@ class StringMethods:
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
-            >>> s = bpd.Series(['Ant', '  Bee ', '\\tCat\\n', bpd.NA])
-            >>> s
-            0       Ant
-            1      Bee
-            2       Cat
-            <BLANKLINE>
-            3      <NA>
-            dtype: string
-
+            >>> s = bpd.Series(['Ant', '  Bee ', '\tCat\n', bpd.NA])
             >>> s.str.rstrip()
             0      Ant
             1      Bee
-            2       Cat
+            2    \tCat
             3     <NA>
             dtype: string
 
@@ -584,7 +573,7 @@ class StringMethods:
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def lstrip(self, to_strip: typing.Optional[str] = None):
-        """Remove leading characters.
+        r"""Remove leading characters.
 
         Strip whitespaces (including newlines) or a set of specified characters
         from each string in the Series/Index from left side.
@@ -596,21 +585,12 @@ class StringMethods:
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
-            >>> s = bpd.Series(['Ant', '  Bee ', '\\tCat\\n', bpd.NA])
-            >>> s
-            0       Ant
-            1      Bee
-            2       Cat
-            <BLANKLINE>
-            3      <NA>
-            dtype: string
-
+            >>> s = bpd.Series(['Ant', '  Bee ', '\tCat\n', bpd.NA])
             >>> s.str.lstrip()
-            0     Ant
-            1    Bee
-            2    Cat
-            <BLANKLINE>
-            3    <NA>
+            0      Ant
+            1     Bee
+            2    Cat\n
+            3     <NA>
             dtype: string
 
         Args:
