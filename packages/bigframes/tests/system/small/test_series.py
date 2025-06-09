@@ -4642,3 +4642,42 @@ def test_series_to_pandas_dry_run(scalars_df_index):
 
     assert isinstance(result, pd.Series)
     assert len(result) > 0
+
+
+def test_series_item(session):
+    # Test with a single item
+    bf_s_single = bigframes.pandas.Series([42], session=session)
+    pd_s_single = pd.Series([42])
+    assert bf_s_single.item() == pd_s_single.item()
+
+
+def test_series_item_with_multiple(session):
+    # Test with multiple items
+    bf_s_multiple = bigframes.pandas.Series([1, 2, 3], session=session)
+    pd_s_multiple = pd.Series([1, 2, 3])
+
+    try:
+        pd_s_multiple.item()
+    except ValueError as e:
+        expected_message = str(e)
+    else:
+        raise AssertionError("Expected ValueError from pandas, but didn't get one")
+
+    with pytest.raises(ValueError, match=re.escape(expected_message)):
+        bf_s_multiple.item()
+
+
+def test_series_item_with_empty(session):
+    # Test with an empty Series
+    bf_s_empty = bigframes.pandas.Series([], dtype="Int64", session=session)
+    pd_s_empty = pd.Series([], dtype="Int64")
+
+    try:
+        pd_s_empty.item()
+    except ValueError as e:
+        expected_message = str(e)
+    else:
+        raise AssertionError("Expected ValueError from pandas, but didn't get one")
+
+    with pytest.raises(ValueError, match=re.escape(expected_message)):
+        bf_s_empty.item()

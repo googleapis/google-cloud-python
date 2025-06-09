@@ -960,6 +960,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         as_series.name = self.name
         return as_series
 
+    def item(self):
+        # Docstring is in third_party/bigframes_vendored/pandas/core/series.py
+        return self.peek(2).item()
+
     def nlargest(self, n: int = 5, keep: str = "first") -> Series:
         if keep not in ("first", "last", "all"):
             raise ValueError("'keep must be one of 'first', 'last', or 'all'")

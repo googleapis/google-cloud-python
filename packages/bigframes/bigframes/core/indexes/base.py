@@ -618,6 +618,10 @@ class Index(vendored_pandas_index.Index):
     def __len__(self):
         return self.shape[0]
 
+    def item(self):
+        # Docstring is in third_party/bigframes_vendored/pandas/core/indexes/base.py
+        return self.to_series().peek(2).item()
+
 
 def _should_create_datetime_index(block: blocks.Block) -> bool:
     if len(block.index.dtypes) != 1:

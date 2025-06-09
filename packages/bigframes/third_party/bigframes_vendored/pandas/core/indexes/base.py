@@ -1087,6 +1087,25 @@ class Index:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def item(self, *args, **kwargs):
+        """Return the first element of the underlying data as a Python scalar.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series([1], index=['a'])
+            >>> s.index.item()
+            'a'
+
+        Returns:
+            scalar: The first element of Index.
+
+        Raises:
+            ValueError: If the data is not length = 1.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def to_numpy(self, dtype, *, allow_large_results=None):
         """
         A NumPy ndarray representing the values in this Series or Index.

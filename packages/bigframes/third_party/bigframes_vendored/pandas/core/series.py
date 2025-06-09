@@ -4933,6 +4933,26 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def item(self: Series, *args, **kwargs):
+        """Return the first element of the underlying data as a Python scalar.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import numpy as np
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series([1])
+            >>> s.item()
+            np.int64(1)
+
+        Returns:
+            scalar: The first element of Series.
+
+        Raises:
+            ValueError: If the data is not length = 1.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def items(self):
         """
         Lazily iterate over (index, value) tuples.

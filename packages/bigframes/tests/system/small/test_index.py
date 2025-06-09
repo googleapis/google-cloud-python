@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
+
 import numpy
 import pandas as pd
 import pytest
@@ -458,3 +460,42 @@ def test_multiindex_repr_includes_all_names(session):
     )
     index = session.read_pandas(df).set_index(["A", "B"]).index
     assert "names=['A', 'B']" in repr(index)
+
+
+def test_index_item(session):
+    # Test with a single item
+    bf_idx_single = bpd.Index([42], session=session)
+    pd_idx_single = pd.Index([42])
+    assert bf_idx_single.item() == pd_idx_single.item()
+
+
+def test_index_item_with_multiple(session):
+    # Test with multiple items
+    bf_idx_multiple = bpd.Index([1, 2, 3], session=session)
+    pd_idx_multiple = pd.Index([1, 2, 3])
+
+    try:
+        pd_idx_multiple.item()
+    except ValueError as e:
+        expected_message = str(e)
+    else:
+        raise AssertionError("Expected ValueError from pandas, but didn't get one")
+
+    with pytest.raises(ValueError, match=re.escape(expected_message)):
+        bf_idx_multiple.item()
+
+
+def test_index_item_with_empty(session):
+    # Test with an empty Index
+    bf_idx_empty = bpd.Index([], dtype="Int64", session=session)
+    pd_idx_empty: pd.Index = pd.Index([], dtype="Int64")
+
+    try:
+        pd_idx_empty.item()
+    except ValueError as e:
+        expected_message = str(e)
+    else:
+        raise AssertionError("Expected ValueError from pandas, but didn't get one")
+
+    with pytest.raises(ValueError, match=re.escape(expected_message)):
+        bf_idx_empty.item()
