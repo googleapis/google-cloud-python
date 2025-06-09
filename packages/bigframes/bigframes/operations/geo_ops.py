@@ -80,3 +80,12 @@ class GeoStDistanceOp(base_ops.BinaryOp):
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.FLOAT_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class GeoStLengthOp(base_ops.UnaryOp):
+    name = "geo_st_length"
+    use_spheroid: bool = False
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.FLOAT_DTYPE

@@ -31,6 +31,12 @@ class GeoSeries(vendored_geoseries.GeoSeries, bigframes.series.Series):
         )
 
     @property
+    def length(self):
+        raise NotImplementedError(
+            "GeoSeries.length is not yet implemented. Please use bigframes.bigquery.st_length(geoseries) instead."
+        )
+
+    @property
     def x(self) -> bigframes.series.Series:
         series = self._apply_unary_op(ops.geo_x_op)
         series.name = None

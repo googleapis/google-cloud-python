@@ -380,3 +380,67 @@ def st_intersection(
             each aligned geometry with other.
     """
     return series._apply_binary_op(other, ops.geo_st_intersection_op)
+
+
+def st_length(
+    series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
+    *,
+    use_spheroid: bool = False,
+) -> bigframes.series.Series:
+    """Returns the total length in meters of the lines in the input GEOGRAPHY.
+
+    If a series element is a point or a polygon, returns zero for that row.
+    If a series element is a collection, returns the length of the lines
+    in the collection; if the collection doesn't contain lines, returns
+    zero.
+
+    The optional use_spheroid parameter determines how this function
+    measures distance. If use_spheroid is FALSE, the function measures
+    distance on the surface of a perfect sphere.
+
+    The use_spheroid parameter currently only supports the value FALSE.  The
+    default value of use_spheroid is FALSE. See:
+    https://cloud.google.com/bigquery/docs/reference/standard-sql/geography_functions#st_length
+
+    **Examples:**
+
+        >>> import bigframes.geopandas
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> from shapely.geometry import Polygon, LineString, Point, GeometryCollection
+        >>> bpd.options.display.progress_bar = None
+
+        >>> series = bigframes.geopandas.GeoSeries(
+        ...         [
+        ...             LineString([(0, 0), (1, 0)]),  # Length will be approx 1 degree in meters
+        ...             Polygon([(0.0, 0.0), (0.1, 0.1), (0.0, 0.1)]), # Length is 0
+        ...             Point(0, 1),  # Length is 0
+        ...             GeometryCollection([LineString([(0,0),(0,1)]), Point(1,1)]) # Length of LineString only
+        ...         ]
+        ... )
+
+    Default behavior (use_spheroid=False):
+
+        >>> result = bbq.st_length(series)
+        >>> result
+        0    111195.101177
+        1              0.0
+        2              0.0
+        3    111195.101177
+        dtype: Float64
+
+    Args:
+        series (bigframes.series.Series | bigframes.geopandas.GeoSeries):
+            A series containing geography objects.
+        use_spheroid (bool, optional):
+            Determines how this function measures distance.
+            If FALSE (default), measures distance on a perfect sphere.
+            Currently, only FALSE is supported.
+
+    Returns:
+        bigframes.series.Series:
+            Series of floats representing the lengths in meters.
+    """
+    series = series._apply_unary_op(ops.GeoStLengthOp(use_spheroid=use_spheroid))
+    series.name = None
+    return series
