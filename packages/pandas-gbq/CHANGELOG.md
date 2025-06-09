@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.29.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.29.0...v0.29.1) (2025-06-03)
+
+
+### Bug Fixes
+
+* Remove pandas-gbq client ID for authentication ([#927](https://github.com/googleapis/python-bigquery-pandas/issues/927)) ([8bb7401](https://github.com/googleapis/python-bigquery-pandas/commit/8bb74015ca47ccca37cb5077bae265a257bec8cc))
+
 ## [0.29.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.28.1...v0.29.0) (2025-05-14)
 
 
