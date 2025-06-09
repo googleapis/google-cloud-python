@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.26.0](https://github.com/googleapis/gapic-generator-python/compare/v1.25.0...v1.26.0) (2025-05-28)
+
+
+### Features
+
+* Add client debug logging support for server side streaming REST calls ([#2340](https://github.com/googleapis/gapic-generator-python/issues/2340)) ([8a705c5](https://github.com/googleapis/gapic-generator-python/commit/8a705c513fe63b025eca738feb64a1e414f9f4b6))
+
 ## [1.25.0](https://github.com/googleapis/gapic-generator-python/compare/v1.24.1...v1.25.0) (2025-05-06)
 
 
