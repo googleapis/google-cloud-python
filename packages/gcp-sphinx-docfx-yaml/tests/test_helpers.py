@@ -227,13 +227,26 @@ for i in range(10):
 
         self.assertEqual(yaml_pre, yaml_post)
 
-
-    def test_format_code(self):
+    test_code_params = [
+        [
+            # Test formatting regular Python code.
+            "batch_predict(*, gcs_source: Optional[Union[str, Sequence[str]]] = None, instances_format: str = \"jsonl\", gcs_destination_prefix: Optional[str] = None, predictions_format: str = \"jsonl\", model_parameters: Optional[Dict] = None, machine_type: Optional[str] = None, accelerator_type: Optional[str] = None, explanation_parameters: Optional[google.cloud.aiplatform_v1.types.explanation.ExplanationParameters] = None, labels: Optional[Dict[str, str]] = None, sync: bool = True,)",
+            "batch_predict(\n    *,\n    gcs_source: Optional[Union[str, Sequence[str]]] = None,\n    instances_format: str = \"jsonl\",\n    gcs_destination_prefix: Optional[str] = None,\n    predictions_format: str = \"jsonl\",\n    model_parameters: Optional[Dict] = None,\n    machine_type: Optional[str] = None,\n    accelerator_type: Optional[str] = None,\n    explanation_parameters: Optional[\n        google.cloud.aiplatform_v1.types.explanation.ExplanationParameters\n    ] = None,\n    labels: Optional[Dict[str, str]] = None,\n    sync: bool = True,\n)",
+        ],
+        [
+            # Test formatting code with <class ...> content.
+            "TableAsync(client: google.cloud.bigtable.data._async.client.BigtableDataClientAsync, instance_id: str, table_id: str, app_profile_id: typing.Optional[str] = None, *, default_read_rows_operation_timeout: float = 600, default_read_rows_attempt_timeout: float | None = 20, default_mutate_rows_operation_timeout: float = 600, default_mutate_rows_attempt_timeout: float | None = 60, default_operation_timeout: float = 60, default_attempt_timeout: float | None = 20, default_read_rows_retryable_errors: typing.Sequence[type[Exception]] = (<class 'google.api_core.exceptions.DeadlineExceeded'>, <class 'google.api_core.exceptions.ServiceUnavailable'>, <class 'google.api_core.exceptions.Aborted'>), default_mutate_rows_retryable_errors: typing.Sequence[type[Exception]] = (<class 'google.api_core.exceptions.DeadlineExceeded'>, <class 'google.api_core.exceptions.ServiceUnavailable'>), default_retryable_errors: typing.Sequence[type[Exception]] = (<class 'google.api_core.exceptions.DeadlineExceeded'>, <class 'google.api_core.exceptions.ServiceUnavailable'>))",
+            "TableAsync(\n    client: google.cloud.bigtable.data._async.client.BigtableDataClientAsync,\n    instance_id: str,\n    table_id: str,\n    app_profile_id: typing.Optional[str] = None,\n    *,\n    default_read_rows_operation_timeout: float = 600,\n    default_read_rows_attempt_timeout: float | None = 20,\n    default_mutate_rows_operation_timeout: float = 600,\n    default_mutate_rows_attempt_timeout: float | None = 60,\n    default_operation_timeout: float = 60,\n    default_attempt_timeout: float | None = 20,\n    default_read_rows_retryable_errors: typing.Sequence[type[Exception]] = (\n        google.api_core.exceptions.DeadlineExceeded,\n        google.api_core.exceptions.ServiceUnavailable,\n        google.api_core.exceptions.Aborted,\n    ),\n    default_mutate_rows_retryable_errors: typing.Sequence[type[Exception]] = (\n        google.api_core.exceptions.DeadlineExceeded,\n        google.api_core.exceptions.ServiceUnavailable,\n    ),\n    default_retryable_errors: typing.Sequence[type[Exception]] = (\n        google.api_core.exceptions.DeadlineExceeded,\n        google.api_core.exceptions.ServiceUnavailable,\n    )\n)",
+        ],
+        [
+            # Test formatting code with <... object> content.
+            "read_rows(start_key=None, end_key=None, limit=None, filter_=None, end_inclusive=False, row_set=None, retry=<google.api_core.retry.retry_unary.Retry object>)",
+            "read_rows(\n    start_key=None,\n    end_key=None,\n    limit=None,\n    filter_=None,\n    end_inclusive=False,\n    row_set=None,\n    retry=google.api_core.retry.retry_unary.Retry,\n)",
+        ],
+    ]
+    @parameterized.expand(test_code_params)
+    def test_format_code(self, code, code_want):
         # Test to ensure black formats strings properly.
-        code_want = 'batch_predict(\n    *,\n    gcs_source: Optional[Union[str, Sequence[str]]] = None,\n    instances_format: str = "jsonl",\n    gcs_destination_prefix: Optional[str] = None,\n    predictions_format: str = "jsonl",\n    model_parameters: Optional[Dict] = None,\n    machine_type: Optional[str] = None,\n    accelerator_type: Optional[str] = None,\n    explanation_parameters: Optional[\n        google.cloud.aiplatform_v1.types.explanation.ExplanationParameters\n    ] = None,\n    labels: Optional[Dict[str, str]] = None,\n    sync: bool = True,\n)'
-
-        code = 'batch_predict(*, gcs_source: Optional[Union[str, Sequence[str]]] = None, instances_format: str = "jsonl", gcs_destination_prefix: Optional[str] = None, predictions_format: str = "jsonl", model_parameters: Optional[Dict] = None, machine_type: Optional[str] = None, accelerator_type: Optional[str] = None, explanation_parameters: Optional[google.cloud.aiplatform_v1.types.explanation.ExplanationParameters] = None, labels: Optional[Dict[str, str]] = None, sync: bool = True,)'
-
         code_got = extension.format_code(code)
         self.assertEqual(code_want, code_got)
 

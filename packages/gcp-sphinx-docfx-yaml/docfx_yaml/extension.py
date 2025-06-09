@@ -1280,6 +1280,34 @@ def is_valid_python_code(syntax: str) -> bool:
         return False
     return True
 
+def _reformat_pattern(code: str, pattern: str) -> str:
+    """Reformats the code for patterns found to remove for code formatting."""
+    # Patterns like retry=<google.api_core.retry.retry_unary.Retry object>
+    # need to be handled separately.
+    if "object" in pattern:
+        end_tag = " object>"
+        pattern_to_find = "<"
+    else:
+        end_tag = "\'>"
+        pattern_to_find = pattern
+
+    while pattern in code:
+        pattern_begin = code.find(pattern_to_find)
+        end_tag_index = code.find(end_tag)
+        # Check that the format is valid.
+        if (pattern_begin == -1 or end_tag_index == -1):
+            print(f"Could not reformat pattern: {pattern} for code: {code}.")
+            return code
+
+        pattern_end = pattern_begin + len(pattern_to_find)
+        code = ''.join([
+            code[:pattern_begin],
+            code[pattern_end:end_tag_index],
+            code[end_tag_index+len(end_tag):],
+        ])
+    return code
+
+
 def format_code(code: str) -> str:
     """Reformats code using black.format_str().
 
@@ -1292,6 +1320,15 @@ def format_code(code: str) -> str:
         Formatted code with `black.format_str()`. May not format if there is
             an error.
     """
+    patterns_to_reformat = (
+        "<class \'",
+        " object>",
+    )
+    for pattern in patterns_to_reformat:
+        if pattern not in code:
+            continue
+        code = _reformat_pattern(code, pattern)
+
     # Signature code comes in raw text without formatting, to run black it
     # requires the code to look like actual function declaration in code.
     # Returns the original formatted code without the added bits.
