@@ -2895,7 +2895,7 @@ def join_with_single_row(
         combined_expr,
         index_columns=index_cols_post_join,
         column_labels=left.column_labels.append(single_row_block.column_labels),
-        index_labels=[left.index.name],
+        index_labels=left.index.names,
     )
     return (
         block,
