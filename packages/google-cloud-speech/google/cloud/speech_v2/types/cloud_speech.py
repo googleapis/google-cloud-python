@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
         "TranscriptNormalization",
         "TranslationConfig",
         "SpeechAdaptation",
+        "DenoiserConfig",
         "RecognitionConfig",
         "RecognizeRequest",
         "RecognitionResponseMetadata",
@@ -811,13 +812,14 @@ class ExplicitDecodingConfig(proto.Message):
         sample_rate_hertz (int):
             Optional. Sample rate in Hertz of the audio
             data sent for recognition. Valid values are:
-            8000-48000. 16000 is optimal. For best results,
-            set the sampling rate of the audio source to
-            16000 Hz. If that's not possible, use the native
-            sample rate of the audio source (instead of
-            re-sampling). Note that this field is marked as
-            OPTIONAL for backward compatibility reasons. It
-            is (and has always been) effectively REQUIRED.
+            8000-48000, and 16000 is optimal. For best
+            results, set the sampling rate of the audio
+            source to 16000 Hz. If that's not possible, use
+            the native sample rate of the audio source
+            (instead of resampling). Note that this field is
+            marked as OPTIONAL for backward compatibility
+            reasons. It is (and has always been) effectively
+            REQUIRED.
         audio_channel_count (int):
             Optional. Number of channels present in the
             audio data sent for recognition. Note that this
@@ -1167,6 +1169,34 @@ class SpeechAdaptation(proto.Message):
     )
 
 
+class DenoiserConfig(proto.Message):
+    r"""Denoiser config. May not be supported for all models and may
+    have no effect.
+
+    Attributes:
+        denoise_audio (bool):
+            Denoise audio before sending to the
+            transcription model.
+        snr_threshold (float):
+            Signal-to-Noise Ratio (SNR) threshold for the denoiser. Here
+            SNR means the loudness of the speech signal. Audio with an
+            SNR below this threshold, meaning the speech is too quiet,
+            will be prevented from being sent to the transcription
+            model.
+
+            If snr_threshold=0, no filtering will be applied.
+    """
+
+    denoise_audio: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    snr_threshold: float = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+
+
 class RecognitionConfig(proto.Message):
     r"""Provides information to the Recognizer that specifies how to
     process the recognition request.
@@ -1232,6 +1262,10 @@ class RecognitionConfig(proto.Message):
             Optional. Optional configuration used to
             automatically run translation on the given audio
             to the desired language for supported models.
+        denoiser_config (google.cloud.speech_v2.types.DenoiserConfig):
+            Optional. Optional denoiser config. May not
+            be supported for all models and may have no
+            effect.
     """
 
     auto_decoding_config: "AutoDetectDecodingConfig" = proto.Field(
@@ -1273,6 +1307,11 @@ class RecognitionConfig(proto.Message):
         proto.MESSAGE,
         number=15,
         message="TranslationConfig",
+    )
+    denoiser_config: "DenoiserConfig" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="DenoiserConfig",
     )
 
 

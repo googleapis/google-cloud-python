@@ -15223,6 +15223,10 @@ def test_create_recognizer_rest_call_success(request_type):
                 ]
             },
             "translation_config": {"target_language": "target_language_value"},
+            "denoiser_config": {
+                "denoise_audio": True,
+                "snr_threshold": 0.14070000000000002,
+            },
         },
         "annotations": {},
         "state": 2,
@@ -15781,6 +15785,10 @@ def test_update_recognizer_rest_call_success(request_type):
                 ]
             },
             "translation_config": {"target_language": "target_language_value"},
+            "denoiser_config": {
+                "denoise_audio": True,
+                "snr_threshold": 0.14070000000000002,
+            },
         },
         "annotations": {},
         "state": 2,
