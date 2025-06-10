@@ -3757,6 +3757,16 @@
             "component": "grpc-google-iam-v1",
             "extra-files": [],
             "release-type": "python"
+        },
+        "packages/google-shopping-merchant-issueresolution": {
+            "extra-files": [
+                "google/shopping/merchant_issueresolution_v1beta/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.issueresolution.v1beta.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
         }
     }
 }
