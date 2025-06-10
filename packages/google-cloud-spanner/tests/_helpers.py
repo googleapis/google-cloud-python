@@ -1,7 +1,10 @@
 import unittest
+from os import getenv
+
 import mock
 
 from google.cloud.spanner_v1 import gapic_version
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 
 LIB_VERSION = gapic_version.__version__
 
@@ -30,6 +33,24 @@ except ImportError:
 
 _TEST_OT_EXPORTER = None
 _TEST_OT_PROVIDER_INITIALIZED = False
+
+
+def is_multiplexed_enabled(transaction_type: TransactionType) -> bool:
+    """Returns whether multiplexed sessions are enabled for the given transaction type."""
+
+    env_var = "GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS"
+    env_var_partitioned = "GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_PARTITIONED_OPS"
+    env_var_read_write = "GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_FOR_RW"
+
+    def _getenv(val: str) -> bool:
+        return getenv(val, "false").lower() == "true"
+
+    if transaction_type is TransactionType.READ_ONLY:
+        return _getenv(env_var)
+    elif transaction_type is TransactionType.PARTITIONED:
+        return _getenv(env_var) and _getenv(env_var_partitioned)
+    else:
+        return _getenv(env_var) and _getenv(env_var_read_write)
 
 
 def get_test_ot_exporter():

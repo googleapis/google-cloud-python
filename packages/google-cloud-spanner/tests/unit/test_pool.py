@@ -26,6 +26,7 @@ from google.cloud.spanner_v1._helpers import (
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from tests._builders import build_database
 from tests._helpers import (
     OpenTelemetryBase,
     LIB_VERSION,
@@ -94,38 +95,35 @@ class TestAbstractSessionPool(unittest.TestCase):
 
     def test__new_session_wo_labels(self):
         pool = self._make_one()
-        database = pool._database = _make_database("name")
-        session = _make_session()
-        database.session.return_value = session
+        database = pool._database = build_database()
 
         new_session = pool._new_session()
 
-        self.assertIs(new_session, session)
-        database.session.assert_called_once_with(labels={}, database_role=None)
+        self.assertEqual(new_session._database, database)
+        self.assertEqual(new_session.labels, {})
+        self.assertIsNone(new_session.database_role)
 
     def test__new_session_w_labels(self):
         labels = {"foo": "bar"}
         pool = self._make_one(labels=labels)
-        database = pool._database = _make_database("name")
-        session = _make_session()
-        database.session.return_value = session
+        database = pool._database = build_database()
 
         new_session = pool._new_session()
 
-        self.assertIs(new_session, session)
-        database.session.assert_called_once_with(labels=labels, database_role=None)
+        self.assertEqual(new_session._database, database)
+        self.assertEqual(new_session.labels, labels)
+        self.assertIsNone(new_session.database_role)
 
     def test__new_session_w_database_role(self):
         database_role = "dummy-role"
         pool = self._make_one(database_role=database_role)
-        database = pool._database = _make_database("name")
-        session = _make_session()
-        database.session.return_value = session
+        database = pool._database = build_database()
 
         new_session = pool._new_session()
 
-        self.assertIs(new_session, session)
-        database.session.assert_called_once_with(labels={}, database_role=database_role)
+        self.assertEqual(new_session._database, database)
+        self.assertEqual(new_session.labels, {})
+        self.assertEqual(new_session.database_role, database_role)
 
     def test_session_wo_kwargs(self):
         from google.cloud.spanner_v1.pool import SessionCheckout
@@ -215,7 +213,7 @@ class TestFixedSizePool(OpenTelemetryBase):
         pool = self._make_one(size=4)
         database = _Database("name")
         SESSIONS = sorted([_Session(database) for i in range(0, 4)])
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
         pool.bind(database)
 
         # check if sessions returned in LIFO order
@@ -232,7 +230,7 @@ class TestFixedSizePool(OpenTelemetryBase):
         SESSIONS = sorted(
             [_Session(database, last_use_time=last_use_time) for i in range(0, 4)]
         )
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
         pool.bind(database)
 
         # check if sessions returned in LIFO order
@@ -339,8 +337,7 @@ class TestFixedSizePool(OpenTelemetryBase):
         # you have an empty pool.
         pool = self._make_one(size=1)
         database = _Database("name")
-        SESSIONS = []
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=Exception("test"))
         fauxSession = mock.Mock()
         setattr(fauxSession, "_database", database)
         try:
@@ -386,8 +383,8 @@ class TestFixedSizePool(OpenTelemetryBase):
             (
                 "exception",
                 {
-                    "exception.type": "IndexError",
-                    "exception.message": "pop from empty list",
+                    "exception.type": "Exception",
+                    "exception.message": "test",
                     "exception.stacktrace": "EPHEMERAL",
                     "exception.escaped": "False",
                 },
@@ -397,8 +394,8 @@ class TestFixedSizePool(OpenTelemetryBase):
             (
                 "exception",
                 {
-                    "exception.type": "IndexError",
-                    "exception.message": "pop from empty list",
+                    "exception.type": "Exception",
+                    "exception.message": "test",
                     "exception.stacktrace": "EPHEMERAL",
                     "exception.escaped": "False",
                 },
@@ -412,7 +409,7 @@ class TestFixedSizePool(OpenTelemetryBase):
         last_use_time = datetime.utcnow() - timedelta(minutes=65)
         SESSIONS = [_Session(database, last_use_time=last_use_time)] * 5
         SESSIONS[0]._exists = False
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
         pool.bind(database)
 
         session = pool.get()
@@ -475,7 +472,7 @@ class TestFixedSizePool(OpenTelemetryBase):
         pool = self._make_one()
         database = _Database("name")
         SESSIONS = [_Session(database)] * 10
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
         pool.bind(database)
         self.assertTrue(pool._sessions.full())
 
@@ -539,7 +536,7 @@ class TestBurstyPool(OpenTelemetryBase):
     def test_get_empty(self):
         pool = self._make_one()
         database = _Database("name")
-        database._sessions.append(_Session(database))
+        pool._new_session = mock.Mock(return_value=_Session(database))
         pool.bind(database)
 
         session = pool.get()
@@ -559,7 +556,7 @@ class TestBurstyPool(OpenTelemetryBase):
         pool = self._make_one()
         database = _Database("name")
         session1 = _Session(database)
-        database._sessions.append(session1)
+        pool._new_session = mock.Mock(return_value=session1)
         pool.bind(database)
 
         with trace_call("pool.Get", session1):
@@ -630,7 +627,7 @@ class TestBurstyPool(OpenTelemetryBase):
         database = _Database("name")
         previous = _Session(database, exists=False)
         newborn = _Session(database)
-        database._sessions.append(newborn)
+        pool._new_session = mock.Mock(return_value=newborn)
         pool.bind(database)
         pool.put(previous)
 
@@ -811,7 +808,7 @@ class TestPingingPool(OpenTelemetryBase):
         pool = self._make_one(size=4)
         database = _Database("name")
         SESSIONS = [_Session(database)] * 4
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
         pool.bind(database)
         self.reset()
 
@@ -830,7 +827,7 @@ class TestPingingPool(OpenTelemetryBase):
         pool = self._make_one(size=4)
         database = _Database("name")
         SESSIONS = [_Session(database)] * 4
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
 
         sessions_created = datetime.datetime.utcnow() - datetime.timedelta(seconds=4000)
 
@@ -855,7 +852,7 @@ class TestPingingPool(OpenTelemetryBase):
         database = _Database("name")
         SESSIONS = [_Session(database)] * 5
         SESSIONS[0]._exists = False
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
 
         sessions_created = datetime.datetime.utcnow() - datetime.timedelta(seconds=4000)
 
@@ -974,7 +971,7 @@ class TestPingingPool(OpenTelemetryBase):
         pool = self._make_one()
         database = _Database("name")
         SESSIONS = [_Session(database)] * 10
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
         pool.bind(database)
         self.reset()
         self.assertTrue(pool._sessions.full())
@@ -1016,7 +1013,7 @@ class TestPingingPool(OpenTelemetryBase):
         pool = self._make_one(size=1)
         database = _Database("name")
         SESSIONS = [_Session(database)] * 1
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
         pool.bind(database)
 
         later = datetime.datetime.utcnow() + datetime.timedelta(seconds=4000)
@@ -1034,7 +1031,7 @@ class TestPingingPool(OpenTelemetryBase):
         database = _Database("name")
         SESSIONS = [_Session(database)] * 2
         SESSIONS[0]._exists = False
-        database._sessions.extend(SESSIONS)
+        pool._new_session = mock.Mock(side_effect=SESSIONS)
         pool.bind(database)
         self.reset()
 
@@ -1055,7 +1052,7 @@ class TestPingingPool(OpenTelemetryBase):
         pool = self._make_one()
         database = _Database("name")
         session1 = _Session(database)
-        database._sessions.append(session1)
+        pool._new_session = mock.Mock(side_effect=[session1, Exception])
         try:
             pool.bind(database)
         except Exception:

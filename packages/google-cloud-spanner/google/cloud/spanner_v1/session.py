@@ -17,6 +17,7 @@
 from functools import total_ordering
 import time
 from datetime import datetime
+from typing import MutableMapping, Optional
 
 from google.api_core.exceptions import Aborted
 from google.api_core.exceptions import GoogleAPICallError
@@ -69,17 +70,20 @@ class Session(object):
     :param is_multiplexed: (Optional) whether this session is a multiplexed session.
     """
 
-    _session_id = None
-    _transaction = None
-
     def __init__(self, database, labels=None, database_role=None, is_multiplexed=False):
         self._database = database
+        self._session_id: Optional[str] = None
+
+        # TODO multiplexed - remove
+        self._transaction: Optional[Transaction] = None
+
         if labels is None:
             labels = {}
-        self._labels = labels
-        self._database_role = database_role
-        self._is_multiplexed = is_multiplexed
-        self._last_use_time = datetime.utcnow()
+
+        self._labels: MutableMapping[str, str] = labels
+        self._database_role: Optional[str] = database_role
+        self._is_multiplexed: bool = is_multiplexed
+        self._last_use_time: datetime = datetime.utcnow()
 
     def __lt__(self, other):
         return self._session_id < other._session_id
@@ -100,7 +104,7 @@ class Session(object):
 
     @property
     def last_use_time(self):
-        """ "Approximate last use time of this session
+        """Approximate last use time of this session
 
         :rtype: datetime
         :returns: the approximate last use time of this session"""
@@ -157,27 +161,28 @@ class Session(object):
 
         if self._session_id is not None:
             raise ValueError("Session ID already set by back-end")
-        api = self._database.spanner_api
-        metadata = _metadata_with_prefix(self._database.name)
-        if self._database._route_to_leader_enabled:
+
+        database = self._database
+        api = database.spanner_api
+
+        metadata = _metadata_with_prefix(database.name)
+        if database._route_to_leader_enabled:
             metadata.append(
-                _metadata_with_leader_aware_routing(
-                    self._database._route_to_leader_enabled
-                )
+                _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
 
-        request = CreateSessionRequest(database=self._database.name)
-        if self._database.database_role is not None:
-            request.session.creator_role = self._database.database_role
+        create_session_request = CreateSessionRequest(database=database.name)
+        if database.database_role is not None:
+            create_session_request.session.creator_role = database.database_role
 
         if self._labels:
-            request.session.labels = self._labels
+            create_session_request.session.labels = self._labels
 
         # Set the multiplexed field for multiplexed sessions
         if self._is_multiplexed:
-            request.session.multiplexed = True
+            create_session_request.session.multiplexed = True
 
-        observability_options = getattr(self._database, "observability_options", None)
+        observability_options = getattr(database, "observability_options", None)
         span_name = (
             "CloudSpanner.CreateMultiplexedSession"
             if self._is_multiplexed
@@ -191,9 +196,9 @@ class Session(object):
             metadata=metadata,
         ) as span, MetricsCapture():
             session_pb = api.create_session(
-                request=request,
-                metadata=self._database.metadata_with_request_id(
-                    self._database._next_nth_request,
+                request=create_session_request,
+                metadata=database.metadata_with_request_id(
+                    database._next_nth_request,
                     1,
                     metadata,
                     span,
@@ -472,9 +477,10 @@ class Session(object):
         if self._session_id is None:
             raise ValueError("Session has not been created.")
 
+        # TODO multiplexed - remove
         if self._transaction is not None:
             self._transaction.rolled_back = True
-            del self._transaction
+            self._transaction = None
 
         txn = self._transaction = Transaction(self)
         return txn
@@ -531,6 +537,7 @@ class Session(object):
             observability_options=observability_options,
         ) as span, MetricsCapture():
             while True:
+                # TODO multiplexed - remove
                 if self._transaction is None:
                     txn = self.transaction()
                     txn.transaction_tag = transaction_tag
@@ -552,8 +559,11 @@ class Session(object):
 
                     return_value = func(txn, *args, **kw)
 
+                # TODO multiplexed: store previous transaction ID.
                 except Aborted as exc:
-                    del self._transaction
+                    # TODO multiplexed - remove
+                    self._transaction = None
+
                     if span:
                         delay_seconds = _get_retry_delay(
                             exc.errors[0],
@@ -573,7 +583,9 @@ class Session(object):
                     )
                     continue
                 except GoogleAPICallError:
-                    del self._transaction
+                    # TODO multiplexed - remove
+                    self._transaction = None
+
                     add_span_event(
                         span,
                         "User operation failed due to GoogleAPICallError, not retrying",
@@ -596,7 +608,9 @@ class Session(object):
                         max_commit_delay=max_commit_delay,
                     )
                 except Aborted as exc:
-                    del self._transaction
+                    # TODO multiplexed - remove
+                    self._transaction = None
+
                     if span:
                         delay_seconds = _get_retry_delay(
                             exc.errors[0],
@@ -615,7 +629,9 @@ class Session(object):
                         exc, deadline, attempts, default_retry_delay=default_retry_delay
                     )
                 except GoogleAPICallError:
-                    del self._transaction
+                    # TODO multiplexed - remove
+                    self._transaction = None
+
                     add_span_event(
                         span,
                         "Transaction.commit failed due to GoogleAPICallError, not retrying",

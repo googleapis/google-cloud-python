@@ -31,7 +31,6 @@ class TestStreamedResultSet(unittest.TestCase):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         self.assertIs(streamed._response_iterator, iterator)
-        self.assertIsNone(streamed._source)
         self.assertEqual(list(streamed), [])
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)
@@ -41,7 +40,6 @@ class TestStreamedResultSet(unittest.TestCase):
         source = object()
         streamed = self._make_one(iterator, source=source)
         self.assertIs(streamed._response_iterator, iterator)
-        self.assertIs(streamed._source, source)
         self.assertEqual(list(streamed), [])
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)
@@ -807,7 +805,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
-        self.assertEqual(source._transaction_id, TXN_ID)
 
     def test_consume_next_first_set_partial_existing_txn_id(self):
         from google.cloud.spanner_v1 import TypeCode

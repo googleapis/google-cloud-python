@@ -34,7 +34,7 @@ class StreamedResultSet(object):
         instances.
 
     :type source: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`
-    :param source: Snapshot from which the result set was fetched.
+    :param source: Deprecated. Snapshot from which the result set was fetched.
     """
 
     def __init__(
@@ -50,7 +50,6 @@ class StreamedResultSet(object):
         self._stats = None  # Until set from last PRS
         self._current_row = []  # Accumulated values for incomplete row
         self._pending_chunk = None  # Incomplete value
-        self._source = source  # Source snapshot
         self._column_info = column_info  # Column information
         self._field_decoders = None
         self._lazy_decode = lazy_decode  # Return protobuf values
@@ -141,11 +140,7 @@ class StreamedResultSet(object):
         response_pb = PartialResultSet.pb(response)
 
         if self._metadata is None:  # first response
-            metadata = self._metadata = response_pb.metadata
-
-            source = self._source
-            if source is not None and source._transaction_id is None:
-                source._transaction_id = metadata.transaction.id
+            self._metadata = response_pb.metadata
 
         if response_pb.HasField("stats"):  # last response
             self._stats = response.stats

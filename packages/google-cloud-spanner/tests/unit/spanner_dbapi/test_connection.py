@@ -37,20 +37,13 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     ClientSideStatementType,
     AutocommitDmlMode,
 )
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
+from tests._builders import build_connection, build_session
 
 PROJECT = "test-project"
 INSTANCE = "test-instance"
 DATABASE = "test-database"
 USER_AGENT = "user-agent"
-
-
-def _make_credentials():
-    from google.auth import credentials
-
-    class _CredentialsWithScopes(credentials.Credentials, credentials.Scoped):
-        pass
-
-    return mock.Mock(spec=_CredentialsWithScopes)
 
 
 class TestConnection(unittest.TestCase):
@@ -151,25 +144,31 @@ class TestConnection(unittest.TestCase):
         connection.read_only = False
         self.assertFalse(connection.read_only)
 
-    @staticmethod
-    def _make_pool():
-        from google.cloud.spanner_v1.pool import AbstractSessionPool
+    def test__session_checkout_read_only(self):
+        connection = build_connection(read_only=True)
+        database = connection._database
+        sessions_manager = database._sessions_manager
 
-        return mock.create_autospec(AbstractSessionPool)
+        expected_session = build_session(database=database)
+        sessions_manager.get_session = mock.MagicMock(return_value=expected_session)
 
-    @mock.patch("google.cloud.spanner_v1.database.Database")
-    def test__session_checkout(self, mock_database):
-        pool = self._make_pool()
-        mock_database._pool = pool
-        connection = Connection(INSTANCE, mock_database)
+        actual_session = connection._session_checkout()
 
-        connection._session_checkout()
-        pool.get.assert_called_once_with()
-        self.assertEqual(connection._session, pool.get.return_value)
+        self.assertEqual(actual_session, expected_session)
+        sessions_manager.get_session.assert_called_once_with(TransactionType.READ_ONLY)
 
-        connection._session = "db_session"
-        connection._session_checkout()
-        self.assertEqual(connection._session, "db_session")
+    def test__session_checkout_read_write(self):
+        connection = build_connection(read_only=False)
+        database = connection._database
+        sessions_manager = database._sessions_manager
+
+        expected_session = build_session(database=database)
+        sessions_manager.get_session = mock.MagicMock(return_value=expected_session)
+
+        actual_session = connection._session_checkout()
+
+        self.assertEqual(actual_session, expected_session)
+        sessions_manager.get_session.assert_called_once_with(TransactionType.READ_WRITE)
 
     def test_session_checkout_database_error(self):
         connection = Connection(INSTANCE)
@@ -177,16 +176,16 @@ class TestConnection(unittest.TestCase):
         with pytest.raises(ValueError):
             connection._session_checkout()
 
-    @mock.patch("google.cloud.spanner_v1.database.Database")
-    def test__release_session(self, mock_database):
-        pool = self._make_pool()
-        mock_database._pool = pool
-        connection = Connection(INSTANCE, mock_database)
-        connection._session = "session"
+    def test__release_session(self):
+        connection = build_connection()
+        sessions_manager = connection._database._sessions_manager
+
+        session = connection._session = build_session(database=connection._database)
+        put_session = sessions_manager.put_session = mock.MagicMock()
 
         connection._release_session()
-        pool.put.assert_called_once_with("session")
-        self.assertIsNone(connection._session)
+
+        put_session.assert_called_once_with(session)
 
     def test_release_session_database_error(self):
         connection = Connection(INSTANCE)
@@ -213,12 +212,12 @@ class TestConnection(unittest.TestCase):
         self.assertIsNone(connection.transaction_checkout())
 
     def test_snapshot_checkout(self):
-        connection = Connection(INSTANCE, DATABASE, read_only=True)
+        connection = build_connection(read_only=True)
         connection.autocommit = False
 
-        session_checkout = mock.MagicMock(autospec=True)
+        session_checkout = mock.Mock(wraps=connection._session_checkout)
+        release_session = mock.Mock(wraps=connection._release_session)
         connection._session_checkout = session_checkout
-        release_session = mock.MagicMock()
         connection._release_session = release_session
 
         snapshot = connection.snapshot_checkout()

@@ -27,7 +27,7 @@ from google.cloud.spanner_v1.metrics.spanner_metrics_tracer_factory import (
 from opentelemetry import metrics
 
 pytest.importorskip("opentelemetry")
-# Skip if semconv attributes are not present, as tracing wont' be enabled either
+# Skip if semconv attributes are not present, as tracing won't be enabled either
 # pytest.importorskip("opentelemetry.semconv.attributes.otel_attributes")
 
 

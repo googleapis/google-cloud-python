@@ -152,7 +152,7 @@ class TestTransaction(OpenTelemetryBase):
         transaction.transaction_tag = self.TRANSACTION_TAG
         transaction.exclude_txn_from_change_streams = exclude_txn_from_change_streams
         transaction.isolation_level = isolation_level
-        transaction._execute_sql_count = count
+        transaction._execute_sql_request_count = count
 
         row_count = transaction.execute_update(
             DML_QUERY_WITH_PARAM,
@@ -246,7 +246,7 @@ class TestTransaction(OpenTelemetryBase):
             result_sets[i].values.extend(VALUE_PBS[i])
         iterator = _MockIterator(*result_sets)
         api.execute_streaming_sql.return_value = iterator
-        transaction._execute_sql_count = sql_count
+        transaction._execute_sql_request_count = sql_count
         transaction._read_request_count = count
 
         result_set = transaction.execute_sql(
@@ -267,7 +267,7 @@ class TestTransaction(OpenTelemetryBase):
         self.assertEqual(list(result_set), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
-        self.assertEqual(transaction._execute_sql_count, sql_count + 1)
+        self.assertEqual(transaction._execute_sql_request_count, sql_count + 1)
 
     def _execute_sql_expected_request(
         self,
@@ -381,8 +381,6 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertEqual(transaction._read_request_count, count + 1)
 
-        self.assertIs(result_set._source, transaction)
-
         self.assertEqual(list(result_set), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
@@ -464,7 +462,7 @@ class TestTransaction(OpenTelemetryBase):
 
         api.execute_batch_dml.return_value = response
         transaction.transaction_tag = self.TRANSACTION_TAG
-        transaction._execute_sql_count = count
+        transaction._execute_sql_request_count = count
 
         status, row_counts = transaction.batch_update(
             dml_statements, request_options=RequestOptions()
@@ -472,7 +470,7 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertEqual(status, expected_status)
         self.assertEqual(row_counts, expected_row_counts)
-        self.assertEqual(transaction._execute_sql_count, count + 1)
+        self.assertEqual(transaction._execute_sql_request_count, count + 1)
 
     def _batch_update_expected_request(self, begin=True, count=0):
         if begin is True:

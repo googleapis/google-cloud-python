@@ -15,6 +15,7 @@ import base64
 import collections
 import datetime
 import decimal
+
 import math
 import struct
 import threading
@@ -28,7 +29,10 @@ from google.api_core import exceptions
 from google.cloud import spanner_v1
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud._helpers import UTC
+
+from google.cloud.spanner_v1._helpers import AtomicCounter
 from google.cloud.spanner_v1.data_types import JsonObject
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 from .testdata import singer_pb2
 from tests import _helpers as ot_helpers
 from . import _helpers
@@ -36,8 +40,9 @@ from . import _sample_data
 from google.cloud.spanner_v1.request_id_header import (
     REQ_RAND_PROCESS_ID,
     parse_request_id,
+    build_request_id,
 )
-
+from .._helpers import is_multiplexed_enabled
 
 SOME_DATE = datetime.date(2011, 1, 17)
 SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
@@ -430,8 +435,6 @@ def test_session_crud(sessions_database):
 
 
 def test_batch_insert_then_read(sessions_database, ot_exporter):
-    import os
-
     db_name = sessions_database.name
     sd = _sample_data
 
@@ -453,21 +456,34 @@ def test_batch_insert_then_read(sessions_database, ot_exporter):
         nth_req0 = sampling_req_id[-2]
 
         db = sessions_database
+        multiplexed_enabled = is_multiplexed_enabled(TransactionType.READ_ONLY)
 
-        multiplexed_enabled = (
-            os.getenv("GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS", "").lower() == "true"
-        )
+        # [A] Verify batch checkout spans
+        # -------------------------------
 
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.GetSession",
-            attributes=_make_attributes(
-                db_name,
-                session_found=True,
-                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0 + 0}.1",
-            ),
-            span=span_list[0],
-        )
+        request_id_1 = f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0 + 0}.1"
+
+        if multiplexed_enabled:
+            assert_span_attributes(
+                ot_exporter,
+                "CloudSpanner.CreateMultiplexedSession",
+                attributes=_make_attributes(
+                    db_name, x_goog_spanner_request_id=request_id_1
+                ),
+                span=span_list[0],
+            )
+        else:
+            assert_span_attributes(
+                ot_exporter,
+                "CloudSpanner.GetSession",
+                attributes=_make_attributes(
+                    db_name,
+                    session_found=True,
+                    x_goog_spanner_request_id=request_id_1,
+                ),
+                span=span_list[0],
+            )
+
         assert_span_attributes(
             ot_exporter,
             "CloudSpanner.Batch.commit",
@@ -478,6 +494,9 @@ def test_batch_insert_then_read(sessions_database, ot_exporter):
             ),
             span=span_list[1],
         )
+
+        # [B] Verify snapshot checkout spans
+        # ----------------------------------
 
         if len(span_list) == 4:
             if multiplexed_enabled:
@@ -671,217 +690,148 @@ def test_transaction_read_and_insert_then_rollback(
     assert rows == []
 
     if ot_exporter is not None:
-        import os
-
-        multiplexed_enabled = (
-            os.getenv("GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS", "").lower() == "true"
-        )
+        multiplexed_enabled = is_multiplexed_enabled(TransactionType.READ_ONLY)
 
         span_list = ot_exporter.get_finished_spans()
-        got_span_names = [span.name for span in span_list]
 
-        if multiplexed_enabled:
-            # With multiplexed sessions enabled:
-            # - Batch operations still use regular sessions (GetSession)
-            # - run_in_transaction uses regular sessions (GetSession)
-            # - Snapshot (read-only) can use multiplexed sessions (CreateMultiplexedSession)
-            # Note: Session creation span may not appear if session is reused from pool
-            expected_span_names = [
-                "CloudSpanner.GetSession",  # Batch operation
-                "CloudSpanner.Batch.commit",  # Batch commit
-                "CloudSpanner.GetSession",  # Transaction session
-                "CloudSpanner.Transaction.read",  # First read
-                "CloudSpanner.Transaction.read",  # Second read
-                "CloudSpanner.Transaction.rollback",  # Rollback due to exception
-                "CloudSpanner.Session.run_in_transaction",  # Session transaction wrapper
-                "CloudSpanner.Database.run_in_transaction",  # Database transaction wrapper
-                "CloudSpanner.Snapshot.read",  # Snapshot read
-            ]
-            # Check if we have a multiplexed session creation span
-            if "CloudSpanner.CreateMultiplexedSession" in got_span_names:
-                expected_span_names.insert(-1, "CloudSpanner.CreateMultiplexedSession")
-        else:
-            # Without multiplexed sessions, all operations use regular sessions
-            expected_span_names = [
-                "CloudSpanner.GetSession",  # Batch operation
-                "CloudSpanner.Batch.commit",  # Batch commit
-                "CloudSpanner.GetSession",  # Transaction session
-                "CloudSpanner.Transaction.read",  # First read
-                "CloudSpanner.Transaction.read",  # Second read
-                "CloudSpanner.Transaction.rollback",  # Rollback due to exception
-                "CloudSpanner.Session.run_in_transaction",  # Session transaction wrapper
-                "CloudSpanner.Database.run_in_transaction",  # Database transaction wrapper
-                "CloudSpanner.Snapshot.read",  # Snapshot read
-            ]
-            # Check if we have a session creation span for snapshot
-            if len(got_span_names) > len(expected_span_names):
-                expected_span_names.insert(-1, "CloudSpanner.GetSession")
+        # Determine the first request ID from the spans,
+        # and use an atomic counter to track it.
+        first_request_id = span_list[0].attributes["x_goog_spanner_request_id"]
+        first_request_id = (parse_request_id(first_request_id))[-2]
+        request_id_counter = AtomicCounter(start_value=first_request_id - 1)
 
-        assert got_span_names == expected_span_names
+        def _build_request_id():
+            return build_request_id(
+                client_id=sessions_database._nth_client_id,
+                channel_id=sessions_database._channel_id,
+                nth_request=request_id_counter.increment(),
+                attempt=1,
+            )
 
-        sampling_req_id = parse_request_id(
-            span_list[0].attributes["x_goog_spanner_request_id"]
-        )
-        nth_req0 = sampling_req_id[-2]
+        expected_span_properties = []
 
-        db = sessions_database
+        # [A] Batch spans
+        if not multiplexed_enabled:
+            expected_span_properties.append(
+                {
+                    "name": "CloudSpanner.GetSession",
+                    "attributes": _make_attributes(
+                        db_name,
+                        session_found=True,
+                        x_goog_spanner_request_id=_build_request_id(),
+                    ),
+                }
+            )
 
-        # Span 0: batch operation (always uses GetSession from pool)
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.GetSession",
-            attributes=_make_attributes(
-                db_name,
-                session_found=True,
-                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0 + 0}.1",
-            ),
-            span=span_list[0],
-        )
-
-        # Span 1: batch commit
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.Batch.commit",
-            attributes=_make_attributes(
-                db_name,
-                num_mutations=1,
-                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0 + 1}.1",
-            ),
-            span=span_list[1],
-        )
-
-        # Span 2: GetSession for transaction
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.GetSession",
-            attributes=_make_attributes(
-                db_name,
-                session_found=True,
-                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0 + 2}.1",
-            ),
-            span=span_list[2],
-        )
-
-        # Span 3: First transaction read
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.Transaction.read",
-            attributes=_make_attributes(
-                db_name,
-                table_id=sd.TABLE,
-                columns=sd.COLUMNS,
-                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0 + 3}.1",
-            ),
-            span=span_list[3],
-        )
-
-        # Span 4: Second transaction read
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.Transaction.read",
-            attributes=_make_attributes(
-                db_name,
-                table_id=sd.TABLE,
-                columns=sd.COLUMNS,
-                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0 + 4}.1",
-            ),
-            span=span_list[4],
-        )
-
-        # Span 5: Transaction rollback
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.Transaction.rollback",
-            attributes=_make_attributes(
-                db_name,
-                x_goog_spanner_request_id=f"1.{REQ_RAND_PROCESS_ID}.{db._nth_client_id}.{db._channel_id}.{nth_req0 + 5}.1",
-            ),
-            span=span_list[5],
-        )
-
-        # Span 6: Session.run_in_transaction (ERROR status due to intentional exception)
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.Session.run_in_transaction",
-            status=ot_helpers.StatusCode.ERROR,
-            attributes=_make_attributes(db_name),
-            span=span_list[6],
-        )
-
-        # Span 7: Database.run_in_transaction (ERROR status due to intentional exception)
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.Database.run_in_transaction",
-            status=ot_helpers.StatusCode.ERROR,
-            attributes=_make_attributes(db_name),
-            span=span_list[7],
-        )
-
-        # Check if we have a snapshot session creation span
-        snapshot_read_span_index = -1
-        snapshot_session_span_index = -1
-
-        for i, span in enumerate(span_list):
-            if span.name == "CloudSpanner.Snapshot.read":
-                snapshot_read_span_index = i
-                break
-
-        # Look for session creation span before the snapshot read
-        if snapshot_read_span_index > 8:
-            snapshot_session_span_index = snapshot_read_span_index - 1
-
-            if (
-                multiplexed_enabled
-                and span_list[snapshot_session_span_index].name
-                == "CloudSpanner.CreateMultiplexedSession"
-            ):
-                expected_snapshot_span_name = "CloudSpanner.CreateMultiplexedSession"
-                snapshot_session_attributes = _make_attributes(
+        expected_span_properties.append(
+            {
+                "name": "CloudSpanner.Batch.commit",
+                "attributes": _make_attributes(
                     db_name,
-                    x_goog_spanner_request_id=span_list[
-                        snapshot_session_span_index
-                    ].attributes["x_goog_spanner_request_id"],
-                )
-                assert_span_attributes(
-                    ot_exporter,
-                    expected_snapshot_span_name,
-                    attributes=snapshot_session_attributes,
-                    span=span_list[snapshot_session_span_index],
-                )
-            elif (
-                not multiplexed_enabled
-                and span_list[snapshot_session_span_index].name
-                == "CloudSpanner.GetSession"
-            ):
-                expected_snapshot_span_name = "CloudSpanner.GetSession"
-                snapshot_session_attributes = _make_attributes(
+                    num_mutations=1,
+                    x_goog_spanner_request_id=_build_request_id(),
+                ),
+            }
+        )
+
+        # [B] Transaction spans
+        expected_span_properties.append(
+            {
+                "name": "CloudSpanner.GetSession",
+                "attributes": _make_attributes(
                     db_name,
                     session_found=True,
-                    x_goog_spanner_request_id=span_list[
-                        snapshot_session_span_index
-                    ].attributes["x_goog_spanner_request_id"],
-                )
-                assert_span_attributes(
-                    ot_exporter,
-                    expected_snapshot_span_name,
-                    attributes=snapshot_session_attributes,
-                    span=span_list[snapshot_session_span_index],
-                )
-
-        # Snapshot read span
-        assert_span_attributes(
-            ot_exporter,
-            "CloudSpanner.Snapshot.read",
-            attributes=_make_attributes(
-                db_name,
-                table_id=sd.TABLE,
-                columns=sd.COLUMNS,
-                x_goog_spanner_request_id=span_list[
-                    snapshot_read_span_index
-                ].attributes["x_goog_spanner_request_id"],
-            ),
-            span=span_list[snapshot_read_span_index],
+                    x_goog_spanner_request_id=_build_request_id(),
+                ),
+            }
         )
+
+        expected_span_properties.append(
+            {
+                "name": "CloudSpanner.Transaction.read",
+                "attributes": _make_attributes(
+                    db_name,
+                    table_id=sd.TABLE,
+                    columns=sd.COLUMNS,
+                    x_goog_spanner_request_id=_build_request_id(),
+                ),
+            }
+        )
+
+        expected_span_properties.append(
+            {
+                "name": "CloudSpanner.Transaction.read",
+                "attributes": _make_attributes(
+                    db_name,
+                    table_id=sd.TABLE,
+                    columns=sd.COLUMNS,
+                    x_goog_spanner_request_id=_build_request_id(),
+                ),
+            }
+        )
+
+        expected_span_properties.append(
+            {
+                "name": "CloudSpanner.Transaction.rollback",
+                "attributes": _make_attributes(
+                    db_name, x_goog_spanner_request_id=_build_request_id()
+                ),
+            }
+        )
+
+        expected_span_properties.append(
+            {
+                "name": "CloudSpanner.Session.run_in_transaction",
+                "status": ot_helpers.StatusCode.ERROR,
+                "attributes": _make_attributes(db_name),
+            }
+        )
+
+        expected_span_properties.append(
+            {
+                "name": "CloudSpanner.Database.run_in_transaction",
+                "status": ot_helpers.StatusCode.ERROR,
+                "attributes": _make_attributes(db_name),
+            }
+        )
+
+        # [C] Snapshot spans
+        if not multiplexed_enabled:
+            expected_span_properties.append(
+                {
+                    "name": "CloudSpanner.GetSession",
+                    "attributes": _make_attributes(
+                        db_name,
+                        session_found=True,
+                        x_goog_spanner_request_id=_build_request_id(),
+                    ),
+                }
+            )
+
+        expected_span_properties.append(
+            {
+                "name": "CloudSpanner.Snapshot.read",
+                "attributes": _make_attributes(
+                    db_name,
+                    table_id=sd.TABLE,
+                    columns=sd.COLUMNS,
+                    x_goog_spanner_request_id=_build_request_id(),
+                ),
+            }
+        )
+
+        # Verify spans.
+        assert len(span_list) == len(expected_span_properties)
+
+        for i, expected in enumerate(expected_span_properties):
+            expected = expected_span_properties[i]
+            assert_span_attributes(
+                span=span_list[i],
+                name=expected["name"],
+                status=expected.get("status", ot_helpers.StatusCode.OK),
+                attributes=expected["attributes"],
+                ot_exporter=ot_exporter,
+            )
 
 
 @_helpers.retry_maybe_conflict
@@ -3314,17 +3264,13 @@ def test_interval(sessions_database, database_dialect, not_emulator):
 
 
 def test_session_id_and_multiplexed_flag_behavior(sessions_database, ot_exporter):
-    import os
-
     sd = _sample_data
 
     with sessions_database.batch() as batch:
         batch.delete(sd.TABLE, sd.ALL)
         batch.insert(sd.TABLE, sd.COLUMNS, sd.ROW_DATA)
 
-    multiplexed_enabled = (
-        os.getenv("GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS", "").lower() == "true"
-    )
+    multiplexed_enabled = is_multiplexed_enabled(TransactionType.READ_ONLY)
 
     snapshot1_session_id = None
     snapshot2_session_id = None

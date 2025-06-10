@@ -17,22 +17,14 @@
 import unittest
 from unittest import mock
 
-import google
 from google.auth.credentials import AnonymousCredentials
+
+from tests._builders import build_scoped_credentials
 
 INSTANCE = "test-instance"
 DATABASE = "test-database"
 PROJECT = "test-project"
 USER_AGENT = "user-agent"
-
-
-def _make_credentials():
-    class _CredentialsWithScopes(
-        google.auth.credentials.Credentials, google.auth.credentials.Scoped
-    ):
-        pass
-
-    return mock.Mock(spec=_CredentialsWithScopes)
 
 
 @mock.patch("google.cloud.spanner_v1.Client")
@@ -69,7 +61,7 @@ class Test_connect(unittest.TestCase):
         instance.database.assert_called_once_with(
             DATABASE, pool=None, database_role=None
         )
-        # Datbase constructs its own pool
+        # Database constructs its own pool
         self.assertIsNotNone(connection.database._pool)
         self.assertTrue(connection.instance._client.route_to_leader_enabled)
 
@@ -79,7 +71,7 @@ class Test_connect(unittest.TestCase):
         from google.cloud.spanner_dbapi import Connection
         from google.cloud.spanner_dbapi.version import PY_VERSION
 
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         pool = mock.create_autospec(AbstractSessionPool)
         client = mock_client.return_value
         instance = client.instance.return_value

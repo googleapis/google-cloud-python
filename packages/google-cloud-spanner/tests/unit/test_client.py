@@ -19,17 +19,7 @@ import mock
 from google.auth.credentials import AnonymousCredentials
 
 from google.cloud.spanner_v1 import DirectedReadOptions, DefaultTransactionOptions
-
-
-def _make_credentials():
-    import google.auth.credentials
-
-    class _CredentialsWithScopes(
-        google.auth.credentials.Credentials, google.auth.credentials.Scoped
-    ):
-        pass
-
-    return mock.Mock(spec=_CredentialsWithScopes)
+from tests._builders import build_scoped_credentials
 
 
 class TestClient(unittest.TestCase):
@@ -148,7 +138,7 @@ class TestClient(unittest.TestCase):
         from google.auth.credentials import AnonymousCredentials
 
         expected_scopes = None
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         mock_em.return_value = "http://emulator.host.com"
         with mock.patch("google.cloud.spanner_v1.client.AnonymousCredentials") as patch:
             expected_creds = patch.return_value = AnonymousCredentials()
@@ -159,7 +149,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         self._constructor_test_helper(expected_scopes, creds)
 
     def test_constructor_custom_client_info(self):
@@ -167,7 +157,7 @@ class TestClient(unittest.TestCase):
 
         client_info = mock.Mock()
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         self._constructor_test_helper(expected_scopes, creds, client_info=client_info)
 
     # Disable metrics to avoid google.auth.default calls from Metric Exporter
@@ -175,7 +165,7 @@ class TestClient(unittest.TestCase):
     def test_constructor_implicit_credentials(self):
         from google.cloud.spanner_v1 import client as MUT
 
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
 
         patch = mock.patch("google.auth.default", return_value=(creds, None))
         with patch as default:
@@ -186,7 +176,7 @@ class TestClient(unittest.TestCase):
         default.assert_called_once_with(scopes=(MUT.SPANNER_ADMIN_SCOPE,))
 
     def test_constructor_credentials_wo_create_scoped(self):
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         expected_scopes = None
         self._constructor_test_helper(expected_scopes, creds)
 
@@ -195,7 +185,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         self._constructor_test_helper(
             expected_scopes,
             creds,
@@ -206,7 +196,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         self._constructor_test_helper(
             expected_scopes, creds, client_options={"api_endpoint": "endpoint"}
         )
@@ -216,7 +206,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         query_options = expected_query_options = ExecuteSqlRequest.QueryOptions(
             optimizer_version="1",
             optimizer_statistics_package="auto_20191128_14_47_22UTC",
@@ -237,7 +227,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         mock_ver.return_value = "2"
         mock_stats.return_value = "auto_20191128_14_47_22UTC"
         query_options = ExecuteSqlRequest.QueryOptions(
@@ -259,7 +249,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         self._constructor_test_helper(
             expected_scopes, creds, directed_read_options=self.DIRECTED_READ_OPTIONS
         )
@@ -268,7 +258,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         self._constructor_test_helper(
             expected_scopes, creds, route_to_leader_enabled=False
         )
@@ -277,7 +267,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
+        creds = build_scoped_credentials()
         self._constructor_test_helper(
             expected_scopes,
             creds,
@@ -291,7 +281,7 @@ class TestClient(unittest.TestCase):
 
         mock_em.return_value = None
 
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         client_info = mock.Mock()
         client_options = ClientOptions(quota_project_id="QUOTA-PROJECT")
         client = self._make_one(
@@ -325,7 +315,7 @@ class TestClient(unittest.TestCase):
         from google.api_core.client_options import ClientOptions
 
         mock_em.return_value = "emulator.host"
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         client_info = mock.Mock()
         client_options = ClientOptions(api_endpoint="endpoint")
         client = self._make_one(
@@ -391,7 +381,7 @@ class TestClient(unittest.TestCase):
         from google.api_core.client_options import ClientOptions
 
         mock_em.return_value = None
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         client_info = mock.Mock()
         client_options = ClientOptions(quota_project_id="QUOTA-PROJECT")
         client = self._make_one(
@@ -425,7 +415,7 @@ class TestClient(unittest.TestCase):
         from google.api_core.client_options import ClientOptions
 
         mock_em.return_value = "host:port"
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         client_info = mock.Mock()
         client_options = ClientOptions(api_endpoint="endpoint")
         client = self._make_one(
@@ -486,7 +476,7 @@ class TestClient(unittest.TestCase):
         self.assertNotIn("credentials", called_kw)
 
     def test_copy(self):
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         # Make sure it "already" is scoped.
         credentials.requires_scopes = False
 
@@ -497,12 +487,12 @@ class TestClient(unittest.TestCase):
         self.assertEqual(new_client.project, client.project)
 
     def test_credentials_property(self):
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         self.assertIs(client.credentials, credentials.with_scopes.return_value)
 
     def test_project_name_property(self):
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         project_name = "projects/" + self.PROJECT
         self.assertEqual(client.project_name, project_name)
@@ -516,7 +506,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
         api = InstanceAdminClient(credentials=AnonymousCredentials())
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
@@ -562,7 +552,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         api = InstanceAdminClient(credentials=credentials)
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
@@ -597,7 +587,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
         from google.cloud.spanner_v1.instance import Instance
 
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         instance = client.instance(self.INSTANCE_ID)
@@ -613,7 +603,7 @@ class TestClient(unittest.TestCase):
     def test_instance_factory_explicit(self):
         from google.cloud.spanner_v1.instance import Instance
 
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         instance = client.instance(
@@ -638,7 +628,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
 
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         api = InstanceAdminClient(credentials=credentials)
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
@@ -686,7 +676,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
         from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
 
-        credentials = _make_credentials()
+        credentials = build_scoped_credentials()
         api = InstanceAdminClient(credentials=credentials)
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api

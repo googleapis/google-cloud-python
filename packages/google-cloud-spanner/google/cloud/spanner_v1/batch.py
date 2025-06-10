@@ -14,8 +14,9 @@
 
 """Context manager for Cloud Spanner batched writes."""
 import functools
+from typing import List, Optional
 
-from google.cloud.spanner_v1 import CommitRequest
+from google.cloud.spanner_v1 import CommitRequest, CommitResponse
 from google.cloud.spanner_v1 import Mutation
 from google.cloud.spanner_v1 import TransactionOptions
 from google.cloud.spanner_v1 import BatchWriteRequest
@@ -47,22 +48,15 @@ class _BatchBase(_SessionWrapper):
     :param session: the session used to perform the commit
     """
 
-    transaction_tag = None
-    _read_only = False
-
     def __init__(self, session):
         super(_BatchBase, self).__init__(session)
-        self._mutations = []
 
-    def _check_state(self):
-        """Helper for :meth:`commit` et al.
+        self._mutations: List[Mutation] = []
+        self.transaction_tag: Optional[str] = None
 
-        Subclasses must override
-
-        :raises: :exc:`ValueError` if the object's state is invalid for making
-                 API requests.
-        """
-        raise NotImplementedError
+        self.committed = None
+        """Timestamp at which the batch was successfully committed."""
+        self.commit_stats: Optional[CommitResponse.CommitStats] = None
 
     def insert(self, table, columns, values):
         """Insert one or more new table rows.
@@ -148,21 +142,6 @@ class _BatchBase(_SessionWrapper):
 class Batch(_BatchBase):
     """Accumulate mutations for transmission during :meth:`commit`."""
 
-    committed = None
-    commit_stats = None
-    """Timestamp at which the batch was successfully committed."""
-
-    def _check_state(self):
-        """Helper for :meth:`commit` et al.
-
-        Subclasses must override
-
-        :raises: :exc:`ValueError` if the object's state is invalid for making
-                 API requests.
-        """
-        if self.committed is not None:
-            raise ValueError("Batch already committed")
-
     def commit(
         self,
         return_commit_stats=False,
@@ -170,7 +149,8 @@ class Batch(_BatchBase):
         max_commit_delay=None,
         exclude_txn_from_change_streams=False,
         isolation_level=TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED,
-        **kwargs,
+        timeout_secs=DEFAULT_RETRY_TIMEOUT_SECS,
+        default_retry_delay=None,
     ):
         """Commit mutations to the database.
 
@@ -202,12 +182,26 @@ class Batch(_BatchBase):
         :param isolation_level:
                 (Optional) Sets isolation level for the transaction.
 
+        :type timeout_secs: int
+        :param timeout_secs: (Optional) The maximum time in seconds to wait for the commit to complete.
+
+        :type default_retry_delay: int
+        :param timeout_secs: (Optional) The default time in seconds to wait before re-trying the commit..
+
         :rtype: datetime
         :returns: timestamp of the committed changes.
+
+        :raises: ValueError: if the transaction is not ready to commit.
         """
-        self._check_state()
-        database = self._session._database
+
+        if self.committed is not None:
+            raise ValueError("Transaction already committed.")
+
+        mutations = self._mutations
+        session = self._session
+        database = session._database
         api = database.spanner_api
+
         metadata = _metadata_with_prefix(database.name)
         if database._route_to_leader_enabled:
             metadata.append(
@@ -223,7 +217,6 @@ class Batch(_BatchBase):
             database.default_transaction_options.default_read_write_transaction_options,
             txn_options,
         )
-        trace_attributes = {"num_mutations": len(self._mutations)}
 
         if request_options is None:
             request_options = RequestOptions()
@@ -234,27 +227,26 @@ class Batch(_BatchBase):
         # Request tags are not supported for commit requests.
         request_options.request_tag = None
 
-        request = CommitRequest(
-            session=self._session.name,
-            mutations=self._mutations,
-            single_use_transaction=txn_options,
-            return_commit_stats=return_commit_stats,
-            max_commit_delay=max_commit_delay,
-            request_options=request_options,
-        )
-        observability_options = getattr(database, "observability_options", None)
         with trace_call(
-            f"CloudSpanner.{type(self).__name__}.commit",
-            self._session,
-            trace_attributes,
-            observability_options=observability_options,
+            name=f"CloudSpanner.{type(self).__name__}.commit",
+            session=session,
+            extra_attributes={"num_mutations": len(mutations)},
+            observability_options=getattr(database, "observability_options", None),
             metadata=metadata,
         ) as span, MetricsCapture():
 
-            def wrapped_method(*args, **kwargs):
-                method = functools.partial(
+            def wrapped_method():
+                commit_request = CommitRequest(
+                    session=session.name,
+                    mutations=mutations,
+                    single_use_transaction=txn_options,
+                    return_commit_stats=return_commit_stats,
+                    max_commit_delay=max_commit_delay,
+                    request_options=request_options,
+                )
+                commit_method = functools.partial(
                     api.commit,
-                    request=request,
+                    request=commit_request,
                     metadata=database.metadata_with_request_id(
                         # This code is retried due to ABORTED, hence nth_request
                         # should be increased. attempt can only be increased if
@@ -265,24 +257,23 @@ class Batch(_BatchBase):
                         span,
                     ),
                 )
-                return method(*args, **kwargs)
+                return commit_method()
 
-            deadline = time.time() + kwargs.get(
-                "timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS
-            )
-            default_retry_delay = kwargs.get("default_retry_delay", None)
             response = _retry_on_aborted_exception(
                 wrapped_method,
-                deadline=deadline,
+                deadline=time.time() + timeout_secs,
                 default_retry_delay=default_retry_delay,
             )
+
         self.committed = response.commit_timestamp
         self.commit_stats = response.commit_stats
+
         return self.committed
 
     def __enter__(self):
         """Begin ``with`` block."""
-        self._check_state()
+        if self.committed is not None:
+            raise ValueError("Transaction already committed")
 
         return self
 
@@ -317,20 +308,10 @@ class MutationGroups(_SessionWrapper):
     :param session: the session used to perform the commit
     """
 
-    committed = None
-
     def __init__(self, session):
         super(MutationGroups, self).__init__(session)
-        self._mutation_groups = []
-
-    def _check_state(self):
-        """Checks if the object's state is valid for making API requests.
-
-        :raises: :exc:`ValueError` if the object's state is invalid for making
-                 API requests.
-        """
-        if self.committed is not None:
-            raise ValueError("MutationGroups already committed")
+        self._mutation_groups: List[MutationGroup] = []
+        self.committed: bool = False
 
     def group(self):
         """Returns a new `MutationGroup` to which mutations can be added."""
@@ -358,42 +339,46 @@ class MutationGroups(_SessionWrapper):
         :rtype: :class:`Iterable[google.cloud.spanner_v1.types.BatchWriteResponse]`
         :returns: a sequence of responses for each batch.
         """
-        self._check_state()
 
-        database = self._session._database
+        if self.committed:
+            raise ValueError("MutationGroups already committed")
+
+        mutation_groups = self._mutation_groups
+        session = self._session
+        database = session._database
         api = database.spanner_api
+
         metadata = _metadata_with_prefix(database.name)
         if database._route_to_leader_enabled:
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-        trace_attributes = {"num_mutation_groups": len(self._mutation_groups)}
+
         if request_options is None:
             request_options = RequestOptions()
         elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
 
-        request = BatchWriteRequest(
-            session=self._session.name,
-            mutation_groups=self._mutation_groups,
-            request_options=request_options,
-            exclude_txn_from_change_streams=exclude_txn_from_change_streams,
-        )
-        observability_options = getattr(database, "observability_options", None)
         with trace_call(
-            "CloudSpanner.batch_write",
-            self._session,
-            trace_attributes,
-            observability_options=observability_options,
+            name="CloudSpanner.batch_write",
+            session=session,
+            extra_attributes={"num_mutation_groups": len(mutation_groups)},
+            observability_options=getattr(database, "observability_options", None),
             metadata=metadata,
         ) as span, MetricsCapture():
             attempt = AtomicCounter(0)
             nth_request = getattr(database, "_next_nth_request", 0)
 
-            def wrapped_method(*args, **kwargs):
-                method = functools.partial(
+            def wrapped_method():
+                batch_write_request = BatchWriteRequest(
+                    session=session.name,
+                    mutation_groups=mutation_groups,
+                    request_options=request_options,
+                    exclude_txn_from_change_streams=exclude_txn_from_change_streams,
+                )
+                batch_write_method = functools.partial(
                     api.batch_write,
-                    request=request,
+                    request=batch_write_request,
                     metadata=database.metadata_with_request_id(
                         nth_request,
                         attempt.increment(),
@@ -401,7 +386,7 @@ class MutationGroups(_SessionWrapper):
                         span,
                     ),
                 )
-                return method(*args, **kwargs)
+                return batch_write_method()
 
             response = _retry(
                 wrapped_method,
@@ -409,6 +394,7 @@ class MutationGroups(_SessionWrapper):
                     InternalServerError: _check_rst_stream_error,
                 },
             )
+
         self.committed = True
         return response
 

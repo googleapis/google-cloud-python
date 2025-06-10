@@ -14,11 +14,19 @@
 
 """Model a set of read-only queries to a database as a snapshot."""
 
-from datetime import datetime
 import functools
 import threading
+from typing import List, Union, Optional
+
 from google.protobuf.struct_pb2 import Struct
-from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_v1 import (
+    ExecuteSqlRequest,
+    PartialResultSet,
+    ResultSet,
+    Transaction,
+    Mutation,
+    BeginTransactionRequest,
+)
 from google.cloud.spanner_v1 import ReadRequest
 from google.cloud.spanner_v1 import TransactionOptions
 from google.cloud.spanner_v1 import TransactionSelector
@@ -26,7 +34,7 @@ from google.cloud.spanner_v1 import PartitionOptions
 from google.cloud.spanner_v1 import PartitionQueryRequest
 from google.cloud.spanner_v1 import PartitionReadRequest
 
-from google.api_core.exceptions import InternalServerError
+from google.api_core.exceptions import InternalServerError, Aborted
 from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import InvalidArgument
 from google.api_core import gapic_v1
@@ -40,11 +48,12 @@ from google.cloud.spanner_v1._helpers import (
     _SessionWrapper,
     AtomicCounter,
 )
-from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from google.cloud.spanner_v1._opentelemetry_tracing import trace_call, add_span_event
 from google.cloud.spanner_v1.streamed import StreamedResultSet
 from google.cloud.spanner_v1 import RequestOptions
 
 from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
+from google.cloud.spanner_v1.types import MultiplexedSessionPrecommitToken
 
 _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
     "RST_STREAM",
@@ -80,8 +89,8 @@ def _restart_on_unavailable(
     if both transaction_selector and transaction are passed, then transaction is given priority.
     """
 
-    resume_token = b""
-    item_buffer = []
+    resume_token: bytes = b""
+    item_buffer: List[PartialResultSet] = []
 
     if transaction is not None:
         transaction_selector = transaction._make_txn_selector()
@@ -97,6 +106,7 @@ def _restart_on_unavailable(
 
     while True:
         try:
+            # Get results iterator.
             if iterator is None:
                 with trace_call(
                     trace_name,
@@ -114,20 +124,20 @@ def _restart_on_unavailable(
                             span,
                         ),
                     )
+
+            # Add items from iterator to buffer.
+            item: PartialResultSet
             for item in iterator:
                 item_buffer.append(item)
-                # Setting the transaction id because the transaction begin was inlined for first rpc.
-                if (
-                    transaction is not None
-                    and transaction._transaction_id is None
-                    and item.metadata is not None
-                    and item.metadata.transaction is not None
-                    and item.metadata.transaction.id is not None
-                ):
-                    transaction._transaction_id = item.metadata.transaction.id
+
+                # Update the transaction from the response.
+                if transaction is not None:
+                    transaction._update_for_result_set_pb(item)
+
                 if item.resume_token:
                     resume_token = item.resume_token
                     break
+
         except ServiceUnavailable:
             del item_buffer[:]
             with trace_call(
@@ -152,6 +162,7 @@ def _restart_on_unavailable(
                     ),
                 )
             continue
+
         except InternalServerError as exc:
             resumable_error = any(
                 resumable_message in exc.message
@@ -198,15 +209,34 @@ class _SnapshotBase(_SessionWrapper):
     Allows reuse of API request methods with different transaction selector.
 
     :type session: :class:`~google.cloud.spanner_v1.session.Session`
-    :param session: the session used to perform the commit
+    :param session: the session used to perform transaction operations.
     """
 
-    _multi_use = False
     _read_only: bool = True
-    _transaction_id = None
-    _read_request_count = 0
-    _execute_sql_count = 0
-    _lock = threading.Lock()
+    _multi_use: bool = False
+
+    def __init__(self, session):
+        super().__init__(session)
+
+        # Counts for execute SQL requests and total read requests (including
+        # execute SQL requests). Used to provide sequence numbers for
+        # :class:`google.cloud.spanner_v1.types.ExecuteSqlRequest` and to
+        # verify that single-use transactions are not used more than once,
+        # respectively.
+        self._execute_sql_request_count: int = 0
+        self._read_request_count: int = 0
+
+        # Identifier for the transaction.
+        self._transaction_id: Optional[bytes] = None
+
+        # Precommit tokens are returned for transactions with
+        # multiplexed sessions. The precommit token with the
+        # highest sequence number is included in the  commit request.
+        self._precommit_token: Optional[MultiplexedSessionPrecommitToken] = None
+
+        # Operations within a transaction can be performed using multiple
+        # threads, so we need to use a lock when updating the transaction.
+        self._lock: threading.Lock = threading.Lock()
 
     def _make_txn_selector(self):
         """Helper for :meth:`read` / :meth:`execute_sql`.
@@ -218,6 +248,16 @@ class _SnapshotBase(_SessionWrapper):
         :raises: NotImplementedError, always
         """
         raise NotImplementedError
+
+    def begin(self) -> bytes:
+        """Begins a transaction on the database.
+
+        :rtype: bytes
+        :returns: identifier for the transaction.
+
+        :raises ValueError: if the transaction has already begun.
+        """
+        return self._begin_transaction()
 
     def read(
         self,
@@ -313,18 +353,20 @@ class _SnapshotBase(_SessionWrapper):
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
 
-        :raises ValueError:
-            for reuse of single-use snapshots, or if a transaction ID is
-            already pending for multiple-use snapshots.
+        :raises ValueError: if the Transaction already used to execute a
+            read request, but is not a multi-use transaction or has not begun.
         """
+
         if self._read_request_count > 0:
             if not self._multi_use:
                 raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None and self._read_only:
-                raise ValueError("Transaction ID pending.")
+            if self._transaction_id is None:
+                raise ValueError("Transaction has not begun.")
 
-        database = self._session._database
+        session = self._session
+        database = session._database
         api = database.spanner_api
+
         metadata = _metadata_with_prefix(database.name)
         if not self._read_only and database._route_to_leader_enabled:
             metadata.append(
@@ -347,8 +389,8 @@ class _SnapshotBase(_SessionWrapper):
         elif self.transaction_tag is not None:
             request_options.transaction_tag = self.transaction_tag
 
-        request = ReadRequest(
-            session=self._session.name,
+        read_request = ReadRequest(
+            session=session.name,
             table=table,
             columns=columns,
             key_set=keyset._to_pb(),
@@ -360,67 +402,22 @@ class _SnapshotBase(_SessionWrapper):
             directed_read_options=directed_read_options,
         )
 
-        restart = functools.partial(
+        streaming_read_method = functools.partial(
             api.streaming_read,
-            request=request,
+            request=read_request,
             metadata=metadata,
             retry=retry,
             timeout=timeout,
         )
 
-        trace_attributes = {"table_id": table, "columns": columns}
-        observability_options = getattr(database, "observability_options", None)
-
-        if self._transaction_id is None:
-            # lock is added to handle the inline begin for first rpc
-            with self._lock:
-                iterator = _restart_on_unavailable(
-                    restart,
-                    request,
-                    metadata,
-                    f"CloudSpanner.{type(self).__name__}.read",
-                    self._session,
-                    trace_attributes,
-                    transaction=self,
-                    observability_options=observability_options,
-                    request_id_manager=self._session._database,
-                )
-                self._read_request_count += 1
-                if self._multi_use:
-                    return StreamedResultSet(
-                        iterator,
-                        source=self,
-                        column_info=column_info,
-                        lazy_decode=lazy_decode,
-                    )
-                else:
-                    return StreamedResultSet(
-                        iterator, column_info=column_info, lazy_decode=lazy_decode
-                    )
-        else:
-            iterator = _restart_on_unavailable(
-                restart,
-                request,
-                metadata,
-                f"CloudSpanner.{type(self).__name__}.read",
-                self._session,
-                trace_attributes,
-                transaction=self,
-                observability_options=observability_options,
-                request_id_manager=self._session._database,
-            )
-
-        self._read_request_count += 1
-        self._session._last_use_time = datetime.now()
-
-        if self._multi_use:
-            return StreamedResultSet(
-                iterator, source=self, column_info=column_info, lazy_decode=lazy_decode
-            )
-        else:
-            return StreamedResultSet(
-                iterator, column_info=column_info, lazy_decode=lazy_decode
-            )
+        return self._get_streamed_result_set(
+            method=streaming_read_method,
+            request=read_request,
+            metadata=metadata,
+            trace_attributes={"table_id": table, "columns": columns},
+            column_info=column_info,
+            lazy_decode=lazy_decode,
+        )
 
     def execute_sql(
         self,
@@ -535,15 +532,15 @@ class _SnapshotBase(_SessionWrapper):
             objects. ``iterator.decode_column(row, column_index)`` decodes one
             specific column in the given row.
 
-        :raises ValueError:
-            for reuse of single-use snapshots, or if a transaction ID is
-            already pending for multiple-use snapshots.
+        :raises ValueError: if the Transaction already used to execute a
+            read request, but is not a multi-use transaction or has not begun.
         """
+
         if self._read_request_count > 0:
             if not self._multi_use:
                 raise ValueError("Cannot re-use single-use snapshot.")
-            if self._transaction_id is None and self._read_only:
-                raise ValueError("Transaction ID pending.")
+            if self._transaction_id is None:
+                raise ValueError("Transaction has not begun.")
 
         if params is not None:
             params_pb = Struct(
@@ -552,14 +549,15 @@ class _SnapshotBase(_SessionWrapper):
         else:
             params_pb = {}
 
-        database = self._session._database
+        session = self._session
+        database = session._database
+        api = database.spanner_api
+
         metadata = _metadata_with_prefix(database.name)
         if not self._read_only and database._route_to_leader_enabled:
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-
-        api = database.spanner_api
 
         # Query-level options have higher precedence than client-level and
         # environment-level options
@@ -581,14 +579,14 @@ class _SnapshotBase(_SessionWrapper):
         elif self.transaction_tag is not None:
             request_options.transaction_tag = self.transaction_tag
 
-        request = ExecuteSqlRequest(
-            session=self._session.name,
+        execute_sql_request = ExecuteSqlRequest(
+            session=session.name,
             sql=sql,
             params=params_pb,
             param_types=param_types,
             query_mode=query_mode,
             partition_token=partition,
-            seqno=self._execute_sql_count,
+            seqno=self._execute_sql_request_count,
             query_options=query_options,
             request_options=request_options,
             last_statement=last_statement,
@@ -596,74 +594,79 @@ class _SnapshotBase(_SessionWrapper):
             directed_read_options=directed_read_options,
         )
 
-        def wrapped_restart(*args, **kwargs):
-            restart = functools.partial(
-                api.execute_streaming_sql,
-                request=request,
-                metadata=kwargs.get("metadata", metadata),
-                retry=retry,
-                timeout=timeout,
-            )
-            return restart(*args, **kwargs)
+        execute_streaming_sql_method = functools.partial(
+            api.execute_streaming_sql,
+            request=execute_sql_request,
+            metadata=metadata,
+            retry=retry,
+            timeout=timeout,
+        )
 
-        trace_attributes = {"db.statement": sql}
-        observability_options = getattr(database, "observability_options", None)
-
-        if self._transaction_id is None:
-            # lock is added to handle the inline begin for first rpc
-            with self._lock:
-                return self._get_streamed_result_set(
-                    wrapped_restart,
-                    request,
-                    metadata,
-                    trace_attributes,
-                    column_info,
-                    observability_options,
-                    lazy_decode=lazy_decode,
-                )
-        else:
-            return self._get_streamed_result_set(
-                wrapped_restart,
-                request,
-                metadata,
-                trace_attributes,
-                column_info,
-                observability_options,
-                lazy_decode=lazy_decode,
-            )
+        return self._get_streamed_result_set(
+            method=execute_streaming_sql_method,
+            request=execute_sql_request,
+            metadata=metadata,
+            trace_attributes={"db.statement": sql},
+            column_info=column_info,
+            lazy_decode=lazy_decode,
+        )
 
     def _get_streamed_result_set(
         self,
-        restart,
+        method,
         request,
         metadata,
         trace_attributes,
         column_info,
-        observability_options=None,
-        lazy_decode=False,
+        lazy_decode,
     ):
+        """Returns the streamed result set for a read or execute SQL request with the given arguments."""
+
+        session = self._session
+        database = session._database
+
+        is_execute_sql_request = isinstance(request, ExecuteSqlRequest)
+
+        trace_method_name = "execute_sql" if is_execute_sql_request else "read"
+        trace_name = f"CloudSpanner.{type(self).__name__}.{trace_method_name}"
+
+        # If this request begins the transaction, we need to lock
+        # the transaction until the transaction ID is updated.
+        is_inline_begin = False
+
+        if self._transaction_id is None:
+            is_inline_begin = True
+            self._lock.acquire()
+
         iterator = _restart_on_unavailable(
-            restart,
-            request,
-            metadata,
-            f"CloudSpanner.{type(self).__name__}.execute_sql",
-            self._session,
-            trace_attributes,
+            method=method,
+            request=request,
+            session=session,
+            metadata=metadata,
+            trace_name=trace_name,
+            attributes=trace_attributes,
             transaction=self,
-            observability_options=observability_options,
-            request_id_manager=self._session._database,
+            observability_options=getattr(database, "observability_options", None),
+            request_id_manager=database,
         )
+
+        if is_inline_begin:
+            self._lock.release()
+
+        if is_execute_sql_request:
+            self._execute_sql_request_count += 1
         self._read_request_count += 1
-        self._execute_sql_count += 1
+
+        streamed_result_set_args = {
+            "response_iterator": iterator,
+            "column_info": column_info,
+            "lazy_decode": lazy_decode,
+        }
 
         if self._multi_use:
-            return StreamedResultSet(
-                iterator, source=self, column_info=column_info, lazy_decode=lazy_decode
-            )
-        else:
-            return StreamedResultSet(
-                iterator, column_info=column_info, lazy_decode=lazy_decode
-            )
+            streamed_result_set_args["source"] = self
+
+        return StreamedResultSet(**streamed_result_set_args)
 
     def partition_read(
         self,
@@ -712,18 +715,18 @@ class _SnapshotBase(_SessionWrapper):
         :rtype: iterable of bytes
         :returns: a sequence of partition tokens
 
-        :raises ValueError:
-            for single-use snapshots, or if a transaction ID is
-            already associated with the snapshot.
+        :raises ValueError: if the transaction has not begun or is single-use.
         """
-        if not self._multi_use:
-            raise ValueError("Cannot use single-use snapshot.")
 
         if self._transaction_id is None:
-            raise ValueError("Transaction not started.")
+            raise ValueError("Transaction has not begun.")
+        if not self._multi_use:
+            raise ValueError("Cannot partition a single-use transaction.")
 
-        database = self._session._database
+        session = self._session
+        database = session._database
         api = database.spanner_api
+
         metadata = _metadata_with_prefix(database.name)
         if database._route_to_leader_enabled:
             metadata.append(
@@ -733,8 +736,9 @@ class _SnapshotBase(_SessionWrapper):
         partition_options = PartitionOptions(
             partition_size_bytes=partition_size_bytes, max_partitions=max_partitions
         )
-        request = PartitionReadRequest(
-            session=self._session.name,
+
+        partition_read_request = PartitionReadRequest(
+            session=session.name,
             table=table,
             columns=columns,
             key_set=keyset._to_pb(),
@@ -750,7 +754,7 @@ class _SnapshotBase(_SessionWrapper):
 
         with trace_call(
             f"CloudSpanner.{type(self).__name__}.partition_read",
-            self._session,
+            session,
             extra_attributes=trace_attributes,
             observability_options=getattr(database, "observability_options", None),
             metadata=metadata,
@@ -765,14 +769,14 @@ class _SnapshotBase(_SessionWrapper):
                     metadata,
                     span,
                 )
-                method = functools.partial(
+                partition_read_method = functools.partial(
                     api.partition_read,
-                    request=request,
+                    request=partition_read_request,
                     metadata=all_metadata,
                     retry=retry,
                     timeout=timeout,
                 )
-                return method()
+                return partition_read_method()
 
             response = _retry(
                 attempt_tracking_method,
@@ -826,15 +830,13 @@ class _SnapshotBase(_SessionWrapper):
         :rtype: iterable of bytes
         :returns: a sequence of partition tokens
 
-        :raises ValueError:
-            for single-use snapshots, or if a transaction ID is
-            already associated with the snapshot.
+        :raises ValueError: if the transaction has not begun or is single-use.
         """
-        if not self._multi_use:
-            raise ValueError("Cannot use single-use snapshot.")
 
         if self._transaction_id is None:
-            raise ValueError("Transaction not started.")
+            raise ValueError("Transaction has not begun.")
+        if not self._multi_use:
+            raise ValueError("Cannot partition a single-use transaction.")
 
         if params is not None:
             params_pb = Struct(
@@ -843,8 +845,10 @@ class _SnapshotBase(_SessionWrapper):
         else:
             params_pb = Struct()
 
-        database = self._session._database
+        session = self._session
+        database = session._database
         api = database.spanner_api
+
         metadata = _metadata_with_prefix(database.name)
         if database._route_to_leader_enabled:
             metadata.append(
@@ -854,8 +858,9 @@ class _SnapshotBase(_SessionWrapper):
         partition_options = PartitionOptions(
             partition_size_bytes=partition_size_bytes, max_partitions=max_partitions
         )
-        request = PartitionQueryRequest(
-            session=self._session.name,
+
+        partition_query_request = PartitionQueryRequest(
+            session=session.name,
             sql=sql,
             transaction=transaction,
             params=params_pb,
@@ -866,7 +871,7 @@ class _SnapshotBase(_SessionWrapper):
         trace_attributes = {"db.statement": sql}
         with trace_call(
             f"CloudSpanner.{type(self).__name__}.partition_query",
-            self._session,
+            session,
             trace_attributes,
             observability_options=getattr(database, "observability_options", None),
             metadata=metadata,
@@ -881,14 +886,14 @@ class _SnapshotBase(_SessionWrapper):
                     metadata,
                     span,
                 )
-                method = functools.partial(
+                partition_query_method = functools.partial(
                     api.partition_query,
-                    request=request,
+                    request=partition_query_request,
                     metadata=all_metadata,
                     retry=retry,
                     timeout=timeout,
                 )
-                return method()
+                return partition_query_method()
 
             response = _retry(
                 attempt_tracking_method,
@@ -896,6 +901,136 @@ class _SnapshotBase(_SessionWrapper):
             )
 
         return [partition.partition_token for partition in response.partitions]
+
+    def _begin_transaction(self, mutation: Mutation = None) -> bytes:
+        """Begins a transaction on the database.
+
+        :type mutation: :class:`~google.cloud.spanner_v1.mutation.Mutation`
+        :param mutation: (Optional) Mutation to include in the begin transaction
+            request. Required for mutation-only transactions with multiplexed sessions.
+
+        :rtype: bytes
+        :returns: identifier for the transaction.
+
+        :raises ValueError: if the transaction has already begun or is single-use.
+        """
+
+        if self._transaction_id is not None:
+            raise ValueError("Transaction has already begun.")
+        if not self._multi_use:
+            raise ValueError("Cannot begin a single-use transaction.")
+        if self._read_request_count > 0:
+            raise ValueError("Read-only transaction already pending")
+
+        session = self._session
+        database = session._database
+        api = database.spanner_api
+
+        metadata = _metadata_with_prefix(database.name)
+        if not self._read_only and database._route_to_leader_enabled:
+            metadata.append(
+                (_metadata_with_leader_aware_routing(database._route_to_leader_enabled))
+            )
+
+        with trace_call(
+            name=f"CloudSpanner.{type(self).__name__}.begin",
+            session=session,
+            observability_options=getattr(database, "observability_options", None),
+            metadata=metadata,
+        ) as span, MetricsCapture():
+            nth_request = getattr(database, "_next_nth_request", 0)
+            attempt = AtomicCounter()
+
+            def wrapped_method():
+                begin_transaction_request = BeginTransactionRequest(
+                    session=session.name,
+                    options=self._make_txn_selector().begin,
+                    mutation_key=mutation,
+                )
+                begin_transaction_method = functools.partial(
+                    api.begin_transaction,
+                    request=begin_transaction_request,
+                    metadata=database.metadata_with_request_id(
+                        nth_request,
+                        attempt.increment(),
+                        metadata,
+                        span,
+                    ),
+                )
+                return begin_transaction_method()
+
+            def before_next_retry(nth_retry, delay_in_seconds):
+                add_span_event(
+                    span=span,
+                    event_name="Transaction Begin Attempt Failed. Retrying",
+                    event_attributes={
+                        "attempt": nth_retry,
+                        "sleep_seconds": delay_in_seconds,
+                    },
+                )
+
+            # An aborted transaction may be raised by a mutations-only
+            # transaction with a multiplexed session.
+            transaction_pb: Transaction = _retry(
+                wrapped_method,
+                before_next_retry=before_next_retry,
+                allowed_exceptions={
+                    InternalServerError: _check_rst_stream_error,
+                    Aborted: None,
+                },
+            )
+
+        self._update_for_transaction_pb(transaction_pb)
+        return self._transaction_id
+
+    def _update_for_result_set_pb(
+        self, result_set_pb: Union[ResultSet, PartialResultSet]
+    ) -> None:
+        """Updates the snapshot for the given result set.
+
+        :type result_set_pb: :class:`~google.cloud.spanner_v1.ResultSet` or
+            :class:`~google.cloud.spanner_v1.PartialResultSet`
+        :param result_set_pb: The result set to update the snapshot with.
+        """
+
+        if result_set_pb.metadata and result_set_pb.metadata.transaction:
+            self._update_for_transaction_pb(result_set_pb.metadata.transaction)
+
+        if result_set_pb.precommit_token:
+            self._update_for_precommit_token_pb(result_set_pb.precommit_token)
+
+    def _update_for_transaction_pb(self, transaction_pb: Transaction) -> None:
+        """Updates the snapshot for the given transaction.
+
+        :type transaction_pb: :class:`~google.cloud.spanner_v1.Transaction`
+        :param transaction_pb: The transaction to update the snapshot with.
+        """
+
+        # The transaction ID should only be updated when the transaction is
+        # begun: either explicitly with a begin transaction request, or implicitly
+        # with read, execute SQL, batch update, or execute update requests. The
+        # caller is responsible for locking until the transaction ID is updated.
+        if self._transaction_id is None and transaction_pb.id:
+            self._transaction_id = transaction_pb.id
+
+        if transaction_pb.precommit_token:
+            self._update_for_precommit_token_pb(transaction_pb.precommit_token)
+
+    def _update_for_precommit_token_pb(
+        self, precommit_token_pb: MultiplexedSessionPrecommitToken
+    ) -> None:
+        """Updates the snapshot for the given multiplexed session precommit token.
+        :type precommit_token_pb: :class:`~google.cloud.spanner_v1.MultiplexedSessionPrecommitToken`
+        :param precommit_token_pb: The multiplexed session precommit token to update the snapshot with.
+        """
+
+        # Because multiple threads can be used to perform operations within a
+        # transaction, we need to use a lock when updating the precommit token.
+        with self._lock:
+            if self._precommit_token is None or (
+                precommit_token_pb.seq_num > self._precommit_token.seq_num
+            ):
+                self._precommit_token = precommit_token_pb
 
 
 class Snapshot(_SnapshotBase):
@@ -966,6 +1101,7 @@ class Snapshot(_SnapshotBase):
         self._multi_use = multi_use
         self._transaction_id = transaction_id
 
+    # TODO multiplexed - refactor to base class
     def _make_txn_selector(self):
         """Helper for :meth:`read`."""
         if self._transaction_id is not None:
@@ -998,60 +1134,14 @@ class Snapshot(_SnapshotBase):
         else:
             return TransactionSelector(single_use=options)
 
-    def begin(self):
-        """Begin a read-only transaction on the database.
+    def _update_for_transaction_pb(self, transaction_pb: Transaction) -> None:
+        """Updates the snapshot for the given transaction.
 
-        :rtype: bytes
-        :returns: the ID for the newly-begun transaction.
-
-        :raises ValueError:
-            if the transaction is already begun, committed, or rolled back.
+        :type transaction_pb: :class:`~google.cloud.spanner_v1.Transaction`
+        :param transaction_pb: The transaction to update the snapshot with.
         """
-        if not self._multi_use:
-            raise ValueError("Cannot call 'begin' on single-use snapshots")
 
-        if self._transaction_id is not None:
-            raise ValueError("Read-only transaction already begun")
+        super(Snapshot, self)._update_for_transaction_pb(transaction_pb)
 
-        if self._read_request_count > 0:
-            raise ValueError("Read-only transaction already pending")
-
-        database = self._session._database
-        api = database.spanner_api
-        metadata = _metadata_with_prefix(database.name)
-        if not self._read_only and database._route_to_leader_enabled:
-            metadata.append(
-                (_metadata_with_leader_aware_routing(database._route_to_leader_enabled))
-            )
-        txn_selector = self._make_txn_selector()
-        with trace_call(
-            f"CloudSpanner.{type(self).__name__}.begin",
-            self._session,
-            observability_options=getattr(database, "observability_options", None),
-            metadata=metadata,
-        ) as span, MetricsCapture():
-            nth_request = getattr(database, "_next_nth_request", 0)
-            attempt = AtomicCounter()
-
-            def attempt_tracking_method():
-                all_metadata = database.metadata_with_request_id(
-                    nth_request,
-                    attempt.increment(),
-                    metadata,
-                    span,
-                )
-                method = functools.partial(
-                    api.begin_transaction,
-                    session=self._session.name,
-                    options=txn_selector.begin,
-                    metadata=all_metadata,
-                )
-                return method()
-
-            response = _retry(
-                attempt_tracking_method,
-                allowed_exceptions={InternalServerError: _check_rst_stream_error},
-            )
-        self._transaction_id = response.id
-        self._transaction_read_timestamp = response.read_timestamp
-        return self._transaction_id
+        if transaction_pb.read_timestamp is not None:
+            self._transaction_read_timestamp = transaction_pb.read_timestamp

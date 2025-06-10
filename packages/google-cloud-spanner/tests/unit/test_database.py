@@ -21,6 +21,7 @@ from google.cloud.spanner_admin_database_v1 import (
     Database as DatabasePB,
     DatabaseDialect,
 )
+
 from google.cloud.spanner_v1.param_types import INT64
 from google.api_core.retry import Retry
 from google.protobuf.field_mask_pb2 import FieldMask
@@ -35,6 +36,10 @@ from google.cloud.spanner_v1._helpers import (
     _metadata_with_request_id,
 )
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
+from google.cloud.spanner_v1.session import Session
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
+from tests._builders import build_spanner_api
+from tests._helpers import is_multiplexed_enabled
 
 DML_WO_PARAM = """
 DELETE FROM citizens
@@ -58,17 +63,6 @@ DIRECTED_READ_OPTIONS = {
         "auto_failover_disabled": True,
     },
 }
-
-
-def _make_credentials():  # pragma: NO COVER
-    import google.auth.credentials
-
-    class _CredentialsWithScopes(
-        google.auth.credentials.Credentials, google.auth.credentials.Scoped
-    ):
-        pass
-
-    return mock.Mock(spec=_CredentialsWithScopes)
 
 
 class _BaseTest(unittest.TestCase):
@@ -1456,8 +1450,6 @@ class TestDatabase(_BaseTest):
         # Verify that the correct session type was used based on environment
         if multiplexed_partitioned_enabled:
             # Verify that sessions_manager.get_session was called with PARTITIONED transaction type
-            from google.cloud.spanner_v1.session_options import TransactionType
-
             database._sessions_manager.get_session.assert_called_with(
                 TransactionType.PARTITIONED
             )
@@ -1508,8 +1500,6 @@ class TestDatabase(_BaseTest):
         )
 
     def test_session_factory_defaults(self):
-        from google.cloud.spanner_v1.session import Session
-
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
@@ -1523,8 +1513,6 @@ class TestDatabase(_BaseTest):
         self.assertEqual(session.labels, {})
 
     def test_session_factory_w_labels(self):
-        from google.cloud.spanner_v1.session import Session
-
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
@@ -1539,7 +1527,6 @@ class TestDatabase(_BaseTest):
         self.assertEqual(session.labels, labels)
 
     def test_snapshot_defaults(self):
-        import os
         from google.cloud.spanner_v1.database import SnapshotCheckout
         from google.cloud.spanner_v1.snapshot import Snapshot
 
@@ -1551,9 +1538,7 @@ class TestDatabase(_BaseTest):
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         # Check if multiplexed sessions are enabled for read operations
-        multiplexed_enabled = (
-            os.getenv("GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS") == "true"
-        )
+        multiplexed_enabled = is_multiplexed_enabled(TransactionType.READ_ONLY)
 
         if multiplexed_enabled:
             # When multiplexed sessions are enabled, configure the sessions manager
@@ -1587,7 +1572,6 @@ class TestDatabase(_BaseTest):
 
     def test_snapshot_w_read_timestamp_and_multi_use(self):
         import datetime
-        import os
         from google.cloud._helpers import UTC
         from google.cloud.spanner_v1.database import SnapshotCheckout
         from google.cloud.spanner_v1.snapshot import Snapshot
@@ -1601,9 +1585,7 @@ class TestDatabase(_BaseTest):
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
         # Check if multiplexed sessions are enabled for read operations
-        multiplexed_enabled = (
-            os.getenv("GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS") == "true"
-        )
+        multiplexed_enabled = is_multiplexed_enabled(TransactionType.READ_ONLY)
 
         if multiplexed_enabled:
             # When multiplexed sessions are enabled, configure the sessions manager
@@ -2474,8 +2456,6 @@ class TestBatchSnapshot(_BaseTest):
 
     @staticmethod
     def _make_session(**kwargs):
-        from google.cloud.spanner_v1.session import Session
-
         return mock.create_autospec(Session, instance=True, **kwargs)
 
     @staticmethod
@@ -2532,20 +2512,22 @@ class TestBatchSnapshot(_BaseTest):
     def test_from_dict(self):
         klass = self._get_target_class()
         database = self._make_database()
-        session = database.session.return_value = self._make_session()
-        snapshot = session.snapshot.return_value = self._make_snapshot()
-        api_repr = {
-            "session_id": self.SESSION_ID,
-            "transaction_id": self.TRANSACTION_ID,
-        }
+        api = database.spanner_api = build_spanner_api()
 
-        batch_txn = klass.from_dict(database, api_repr)
+        batch_txn = klass.from_dict(
+            database,
+            {
+                "session_id": self.SESSION_ID,
+                "transaction_id": self.TRANSACTION_ID,
+            },
+        )
+
         self.assertIs(batch_txn._database, database)
-        self.assertIs(batch_txn._session, session)
-        self.assertEqual(session._session_id, self.SESSION_ID)
-        self.assertEqual(snapshot._transaction_id, self.TRANSACTION_ID)
-        snapshot.begin.assert_not_called()
-        self.assertIs(batch_txn._snapshot, snapshot)
+        self.assertEqual(batch_txn._session._session_id, self.SESSION_ID)
+        self.assertEqual(batch_txn._snapshot._transaction_id, self.TRANSACTION_ID)
+
+        api.create_session.assert_not_called()
+        api.begin_transaction.assert_not_called()
 
     def test_to_dict(self):
         database = self._make_database()
@@ -2573,8 +2555,6 @@ class TestBatchSnapshot(_BaseTest):
         batch_txn = self._make_one(database)
         self.assertIs(batch_txn._get_session(), session)
         # Verify that sessions_manager.get_session was called with PARTITIONED transaction type
-        from google.cloud.spanner_v1.session_options import TransactionType
-
         database.sessions_manager.get_session.assert_called_once_with(
             TransactionType.PARTITIONED
         )

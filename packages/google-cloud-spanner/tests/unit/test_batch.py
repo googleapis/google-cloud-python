@@ -94,12 +94,6 @@ class Test_BatchBase(_BaseTest):
         self.assertIs(base._session, session)
         self.assertEqual(len(base._mutations), 0)
 
-    def test__check_state_virtual(self):
-        session = _Session()
-        base = self._make_one(session)
-        with self.assertRaises(NotImplementedError):
-            base._check_state()
-
     def test_insert(self):
         session = _Session()
         base = self._make_one(session)
