@@ -216,6 +216,67 @@ def read_gbq(
 read_gbq.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq)
 
 
+@overload
+def _read_gbq_colab(  # type: ignore[overload-overlap]
+    query_or_table: str,
+    *,
+    pyformat_args: Optional[Dict[str, Any]] = ...,
+    dry_run: Literal[False] = ...,
+) -> bigframes.dataframe.DataFrame:
+    ...
+
+
+@overload
+def _read_gbq_colab(
+    query_or_table: str,
+    *,
+    pyformat_args: Optional[Dict[str, Any]] = ...,
+    dry_run: Literal[True] = ...,
+) -> pandas.Series:
+    ...
+
+
+def _read_gbq_colab(
+    query_or_table: str,
+    *,
+    pyformat_args: Optional[Dict[str, Any]] = None,
+    dry_run: bool = False,
+) -> bigframes.dataframe.DataFrame | pandas.Series:
+    """A Colab-specific version of read_gbq.
+
+    Calls `_set_default_session_location_if_possible` and then delegates
+    to `bigframes.session.Session._read_gbq_colab`.
+
+    Args:
+        query_or_table (str):
+            SQL query or table ID (table ID not yet supported).
+        pyformat_args (Optional[Dict[str, Any]]):
+            Parameters to format into the query string.
+        dry_run (bool):
+            If True, estimates the query results size without returning data.
+            The return will be a pandas Series with query metadata.
+
+    Returns:
+        Union[bigframes.dataframe.DataFrame, pandas.Series]:
+            A BigQuery DataFrame if `dry_run` is False, otherwise a pandas Series.
+    """
+    if pyformat_args is None:
+        pyformat_args = {}
+
+    query = bigframes.core.pyformat.pyformat(
+        query_or_table,
+        pyformat_args=pyformat_args,
+    )
+    _set_default_session_location_if_possible(query)
+
+    return global_session.with_default_session(
+        bigframes.session.Session._read_gbq_colab,
+        query_or_table,
+        pyformat_args=pyformat_args,
+        dry_run=dry_run,
+    )
+
+
 def read_gbq_model(model_name: str):
     return global_session.with_default_session(
         bigframes.session.Session.read_gbq_model,
