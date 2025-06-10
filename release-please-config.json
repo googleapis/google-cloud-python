@@ -3690,6 +3690,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-shopping-merchant-productstudio": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-productstudio",
+            "extra-files": [
+                "google/shopping/merchant_productstudio/gapic_version.py",
+                "google/shopping/merchant_productstudio_v1alpha/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.productstudio.v1alpha.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-shopping-merchant-promotions": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

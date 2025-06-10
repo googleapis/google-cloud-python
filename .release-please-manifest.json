@@ -210,6 +210,7 @@
     "packages/google-shopping-merchant-notifications": "0.1.7",
     "packages/google-shopping-merchant-ordertracking": "0.1.0",
     "packages/google-shopping-merchant-products": "0.2.4",
+    "packages/google-shopping-merchant-productstudio": "0.0.0",
     "packages/google-shopping-merchant-promotions": "0.1.7",
     "packages/google-shopping-merchant-quota": "0.1.7",
     "packages/google-shopping-merchant-reports": "0.1.14",
