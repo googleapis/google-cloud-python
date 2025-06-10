@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.0.2](https://github.com/googleapis/python-spanner-django/compare/v4.0.1...v4.0.2) (2025-06-05)
+
+
+### Bug Fixes
+
+* Add option to disable client-side pk generation ([#930](https://github.com/googleapis/python-spanner-django/issues/930)) ([9f7592d](https://github.com/googleapis/python-spanner-django/commit/9f7592d66743b05a64a65ec642799054e44e6391))
+* Move version module to django_spanner.version ([#844](https://github.com/googleapis/python-spanner-django/issues/844)) ([b1a2948](https://github.com/googleapis/python-spanner-django/commit/b1a29484a52035fadced7f6727a0c23b898de0e8))
+* Update Django Official Link to drop 2.2 and support 4.2 ([#903](https://github.com/googleapis/python-spanner-django/issues/903)) ([0079e74](https://github.com/googleapis/python-spanner-django/commit/0079e744faad0406a0c7261fe062458a2b49614a))
+
+
+### Documentation
+
+* Document how to enable/disable random PK generation ([#933](https://github.com/googleapis/python-spanner-django/issues/933)) ([67d1c76](https://github.com/googleapis/python-spanner-django/commit/67d1c763c0ec5114e6773a4b5f7119b152df9d69))
+
 ## [4.0.1](https://github.com/googleapis/python-spanner-django/compare/v4.0.0...v4.0.1) (2024-05-07)
 
 
