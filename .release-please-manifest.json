@@ -204,6 +204,7 @@
     "packages/google-shopping-merchant-conversions": "0.1.8",
     "packages/google-shopping-merchant-datasources": "0.1.9",
     "packages/google-shopping-merchant-inventories": "0.1.14",
+    "packages/google-shopping-merchant-issueresolution": "0.0.0",
     "packages/google-shopping-merchant-lfp": "0.1.10",
     "packages/google-shopping-merchant-notifications": "0.1.7",
     "packages/google-shopping-merchant-ordertracking": "0.1.0",
