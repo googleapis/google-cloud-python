@@ -999,6 +999,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-configdelivery": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-configdelivery",
+            "extra-files": [
+                "google/cloud/configdelivery/gapic_version.py",
+                "google/cloud/configdelivery_v1alpha/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.configdelivery.v1alpha.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-contact-center-insights": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
