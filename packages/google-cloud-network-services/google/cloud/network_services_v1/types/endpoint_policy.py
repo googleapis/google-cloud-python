@@ -45,7 +45,7 @@ class EndpointPolicy(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the EndpointPolicy resource. It matches
+            Identifier. Name of the EndpointPolicy resource. It matches
             pattern
             ``projects/{project}/locations/global/endpointPolicies/{endpoint_policy}``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -181,6 +181,12 @@ class ListEndpointPoliciesRequest(proto.Message):
             ``ListEndpointPoliciesResponse`` Indicates that this is a
             continuation of a prior ``ListEndpointPolicies`` call, and
             that the system should return the next page of data.
+        return_partial_success (bool):
+            Optional. If true, allow partial responses
+            for multi-regional Aggregated List requests.
+            Otherwise if one of the locations is down or
+            unreachable, the Aggregated List request will
+            fail.
     """
 
     parent: str = proto.Field(
@@ -195,6 +201,10 @@ class ListEndpointPoliciesRequest(proto.Message):
         proto.STRING,
         number=3,
     )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListEndpointPoliciesResponse(proto.Message):
@@ -208,6 +218,11 @@ class ListEndpointPoliciesResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
+        unreachable (MutableSequence[str]):
+            Unreachable resources. Populated when the request opts into
+            [return_partial_success][google.cloud.networkservices.v1.ListEndpointPoliciesRequest.return_partial_success]
+            and reading across collections e.g. when attempting to list
+            all resources across all supported locations.
     """
 
     @property
@@ -222,6 +237,10 @@ class ListEndpointPoliciesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

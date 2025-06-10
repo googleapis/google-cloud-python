@@ -19,18 +19,17 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.networkservices.v1',
+    package="google.cloud.networkservices.v1",
     manifest={
-        'GatewayRouteView',
-        'MeshRouteView',
-        'GetGatewayRouteViewRequest',
-        'GetMeshRouteViewRequest',
-        'ListGatewayRouteViewsRequest',
-        'ListMeshRouteViewsRequest',
-        'ListGatewayRouteViewsResponse',
-        'ListMeshRouteViewsResponse',
+        "GatewayRouteView",
+        "MeshRouteView",
+        "GetGatewayRouteViewRequest",
+        "GetMeshRouteViewRequest",
+        "ListGatewayRouteViewsRequest",
+        "ListMeshRouteViewsRequest",
+        "ListGatewayRouteViewsResponse",
+        "ListMeshRouteViewsResponse",
     },
 )
 
@@ -237,10 +236,10 @@ class ListGatewayRouteViewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    gateway_route_views: MutableSequence['GatewayRouteView'] = proto.RepeatedField(
+    gateway_route_views: MutableSequence["GatewayRouteView"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='GatewayRouteView',
+        message="GatewayRouteView",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -273,10 +272,10 @@ class ListMeshRouteViewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mesh_route_views: MutableSequence['MeshRouteView'] = proto.RepeatedField(
+    mesh_route_views: MutableSequence["MeshRouteView"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='MeshRouteView',
+        message="MeshRouteView",
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -39,13 +39,9 @@ def sample_create_mesh():
     client = network_services_v1.NetworkServicesClient()
 
     # Initialize request argument(s)
-    mesh = network_services_v1.Mesh()
-    mesh.name = "name_value"
-
     request = network_services_v1.CreateMeshRequest(
         parent="parent_value",
         mesh_id="mesh_id_value",
-        mesh=mesh,
     )
 
     # Make the request

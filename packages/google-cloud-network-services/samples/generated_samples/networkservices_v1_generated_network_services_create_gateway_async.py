@@ -40,9 +40,7 @@ async def sample_create_gateway():
 
     # Initialize request argument(s)
     gateway = network_services_v1.Gateway()
-    gateway.name = "name_value"
     gateway.ports = [569, 570]
-    gateway.scope = "scope_value"
 
     request = network_services_v1.CreateGatewayRequest(
         parent="parent_value",

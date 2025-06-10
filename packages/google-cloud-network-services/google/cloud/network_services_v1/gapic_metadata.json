@@ -209,6 +209,11 @@
                 "create_service_binding"
               ]
             },
+            "CreateServiceLbPolicy": {
+              "methods": [
+                "create_service_lb_policy"
+              ]
+            },
             "CreateTcpRoute": {
               "methods": [
                 "create_tcp_route"
@@ -249,6 +254,11 @@
                 "delete_service_binding"
               ]
             },
+            "DeleteServiceLbPolicy": {
+              "methods": [
+                "delete_service_lb_policy"
+              ]
+            },
             "DeleteTcpRoute": {
               "methods": [
                 "delete_tcp_route"
@@ -269,6 +279,11 @@
                 "get_gateway"
               ]
             },
+            "GetGatewayRouteView": {
+              "methods": [
+                "get_gateway_route_view"
+              ]
+            },
             "GetGrpcRoute": {
               "methods": [
                 "get_grpc_route"
@@ -284,9 +299,19 @@
                 "get_mesh"
               ]
             },
+            "GetMeshRouteView": {
+              "methods": [
+                "get_mesh_route_view"
+              ]
+            },
             "GetServiceBinding": {
               "methods": [
                 "get_service_binding"
+              ]
+            },
+            "GetServiceLbPolicy": {
+              "methods": [
+                "get_service_lb_policy"
               ]
             },
             "GetTcpRoute": {
@@ -304,6 +329,11 @@
                 "list_endpoint_policies"
               ]
             },
+            "ListGatewayRouteViews": {
+              "methods": [
+                "list_gateway_route_views"
+              ]
+            },
             "ListGateways": {
               "methods": [
                 "list_gateways"
@@ -319,6 +349,11 @@
                 "list_http_routes"
               ]
             },
+            "ListMeshRouteViews": {
+              "methods": [
+                "list_mesh_route_views"
+              ]
+            },
             "ListMeshes": {
               "methods": [
                 "list_meshes"
@@ -327,6 +362,11 @@
             "ListServiceBindings": {
               "methods": [
                 "list_service_bindings"
+              ]
+            },
+            "ListServiceLbPolicies": {
+              "methods": [
+                "list_service_lb_policies"
               ]
             },
             "ListTcpRoutes": {
@@ -362,6 +402,16 @@
             "UpdateMesh": {
               "methods": [
                 "update_mesh"
+              ]
+            },
+            "UpdateServiceBinding": {
+              "methods": [
+                "update_service_binding"
+              ]
+            },
+            "UpdateServiceLbPolicy": {
+              "methods": [
+                "update_service_lb_policy"
               ]
             },
             "UpdateTcpRoute": {
@@ -409,6 +459,11 @@
                 "create_service_binding"
               ]
             },
+            "CreateServiceLbPolicy": {
+              "methods": [
+                "create_service_lb_policy"
+              ]
+            },
             "CreateTcpRoute": {
               "methods": [
                 "create_tcp_route"
@@ -449,6 +504,11 @@
                 "delete_service_binding"
               ]
             },
+            "DeleteServiceLbPolicy": {
+              "methods": [
+                "delete_service_lb_policy"
+              ]
+            },
             "DeleteTcpRoute": {
               "methods": [
                 "delete_tcp_route"
@@ -469,6 +529,11 @@
                 "get_gateway"
               ]
             },
+            "GetGatewayRouteView": {
+              "methods": [
+                "get_gateway_route_view"
+              ]
+            },
             "GetGrpcRoute": {
               "methods": [
                 "get_grpc_route"
@@ -484,9 +549,19 @@
                 "get_mesh"
               ]
             },
+            "GetMeshRouteView": {
+              "methods": [
+                "get_mesh_route_view"
+              ]
+            },
             "GetServiceBinding": {
               "methods": [
                 "get_service_binding"
+              ]
+            },
+            "GetServiceLbPolicy": {
+              "methods": [
+                "get_service_lb_policy"
               ]
             },
             "GetTcpRoute": {
@@ -504,6 +579,11 @@
                 "list_endpoint_policies"
               ]
             },
+            "ListGatewayRouteViews": {
+              "methods": [
+                "list_gateway_route_views"
+              ]
+            },
             "ListGateways": {
               "methods": [
                 "list_gateways"
@@ -519,6 +599,11 @@
                 "list_http_routes"
               ]
             },
+            "ListMeshRouteViews": {
+              "methods": [
+                "list_mesh_route_views"
+              ]
+            },
             "ListMeshes": {
               "methods": [
                 "list_meshes"
@@ -527,6 +612,11 @@
             "ListServiceBindings": {
               "methods": [
                 "list_service_bindings"
+              ]
+            },
+            "ListServiceLbPolicies": {
+              "methods": [
+                "list_service_lb_policies"
               ]
             },
             "ListTcpRoutes": {
@@ -562,6 +652,16 @@
             "UpdateMesh": {
               "methods": [
                 "update_mesh"
+              ]
+            },
+            "UpdateServiceBinding": {
+              "methods": [
+                "update_service_binding"
+              ]
+            },
+            "UpdateServiceLbPolicy": {
+              "methods": [
+                "update_service_lb_policy"
               ]
             },
             "UpdateTcpRoute": {
@@ -609,6 +709,11 @@
                 "create_service_binding"
               ]
             },
+            "CreateServiceLbPolicy": {
+              "methods": [
+                "create_service_lb_policy"
+              ]
+            },
             "CreateTcpRoute": {
               "methods": [
                 "create_tcp_route"
@@ -649,6 +754,11 @@
                 "delete_service_binding"
               ]
             },
+            "DeleteServiceLbPolicy": {
+              "methods": [
+                "delete_service_lb_policy"
+              ]
+            },
             "DeleteTcpRoute": {
               "methods": [
                 "delete_tcp_route"
@@ -669,6 +779,11 @@
                 "get_gateway"
               ]
             },
+            "GetGatewayRouteView": {
+              "methods": [
+                "get_gateway_route_view"
+              ]
+            },
             "GetGrpcRoute": {
               "methods": [
                 "get_grpc_route"
@@ -684,9 +799,19 @@
                 "get_mesh"
               ]
             },
+            "GetMeshRouteView": {
+              "methods": [
+                "get_mesh_route_view"
+              ]
+            },
             "GetServiceBinding": {
               "methods": [
                 "get_service_binding"
+              ]
+            },
+            "GetServiceLbPolicy": {
+              "methods": [
+                "get_service_lb_policy"
               ]
             },
             "GetTcpRoute": {
@@ -704,6 +829,11 @@
                 "list_endpoint_policies"
               ]
             },
+            "ListGatewayRouteViews": {
+              "methods": [
+                "list_gateway_route_views"
+              ]
+            },
             "ListGateways": {
               "methods": [
                 "list_gateways"
@@ -719,6 +849,11 @@
                 "list_http_routes"
               ]
             },
+            "ListMeshRouteViews": {
+              "methods": [
+                "list_mesh_route_views"
+              ]
+            },
             "ListMeshes": {
               "methods": [
                 "list_meshes"
@@ -727,6 +862,11 @@
             "ListServiceBindings": {
               "methods": [
                 "list_service_bindings"
+              ]
+            },
+            "ListServiceLbPolicies": {
+              "methods": [
+                "list_service_lb_policies"
               ]
             },
             "ListTcpRoutes": {
@@ -762,6 +902,16 @@
             "UpdateMesh": {
               "methods": [
                 "update_mesh"
+              ]
+            },
+            "UpdateServiceBinding": {
+              "methods": [
+                "update_service_binding"
+              ]
+            },
+            "UpdateServiceLbPolicy": {
+              "methods": [
+                "update_service_lb_policy"
               ]
             },
             "UpdateTcpRoute": {

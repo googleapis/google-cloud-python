@@ -32,6 +32,7 @@ from google.cloud.network_services_v1.services.network_services.client import (
 )
 from google.cloud.network_services_v1.types.common import (
     EndpointMatcher,
+    EnvoyHeaders,
     OperationMetadata,
     TrafficPortSelector,
 )
@@ -99,6 +100,16 @@ from google.cloud.network_services_v1.types.mesh import (
     Mesh,
     UpdateMeshRequest,
 )
+from google.cloud.network_services_v1.types.route_view import (
+    GatewayRouteView,
+    GetGatewayRouteViewRequest,
+    GetMeshRouteViewRequest,
+    ListGatewayRouteViewsRequest,
+    ListGatewayRouteViewsResponse,
+    ListMeshRouteViewsRequest,
+    ListMeshRouteViewsResponse,
+    MeshRouteView,
+)
 from google.cloud.network_services_v1.types.service_binding import (
     CreateServiceBindingRequest,
     DeleteServiceBindingRequest,
@@ -106,6 +117,16 @@ from google.cloud.network_services_v1.types.service_binding import (
     ListServiceBindingsRequest,
     ListServiceBindingsResponse,
     ServiceBinding,
+    UpdateServiceBindingRequest,
+)
+from google.cloud.network_services_v1.types.service_lb_policy import (
+    CreateServiceLbPolicyRequest,
+    DeleteServiceLbPolicyRequest,
+    GetServiceLbPolicyRequest,
+    ListServiceLbPoliciesRequest,
+    ListServiceLbPoliciesResponse,
+    ServiceLbPolicy,
+    UpdateServiceLbPolicyRequest,
 )
 from google.cloud.network_services_v1.types.tcp_route import (
     CreateTcpRouteRequest,
@@ -134,6 +155,7 @@ __all__ = (
     "EndpointMatcher",
     "OperationMetadata",
     "TrafficPortSelector",
+    "EnvoyHeaders",
     "CreateLbRouteExtensionRequest",
     "CreateLbTrafficExtensionRequest",
     "DeleteLbRouteExtensionRequest",
@@ -186,12 +208,28 @@ __all__ = (
     "ListMeshesResponse",
     "Mesh",
     "UpdateMeshRequest",
+    "GatewayRouteView",
+    "GetGatewayRouteViewRequest",
+    "GetMeshRouteViewRequest",
+    "ListGatewayRouteViewsRequest",
+    "ListGatewayRouteViewsResponse",
+    "ListMeshRouteViewsRequest",
+    "ListMeshRouteViewsResponse",
+    "MeshRouteView",
     "CreateServiceBindingRequest",
     "DeleteServiceBindingRequest",
     "GetServiceBindingRequest",
     "ListServiceBindingsRequest",
     "ListServiceBindingsResponse",
     "ServiceBinding",
+    "UpdateServiceBindingRequest",
+    "CreateServiceLbPolicyRequest",
+    "DeleteServiceLbPolicyRequest",
+    "GetServiceLbPolicyRequest",
+    "ListServiceLbPoliciesRequest",
+    "ListServiceLbPoliciesResponse",
+    "ServiceLbPolicy",
+    "UpdateServiceLbPolicyRequest",
     "CreateTcpRouteRequest",
     "DeleteTcpRouteRequest",
     "GetTcpRouteRequest",

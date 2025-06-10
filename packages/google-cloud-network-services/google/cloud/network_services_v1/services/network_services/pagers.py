@@ -44,7 +44,9 @@ from google.cloud.network_services_v1.types import (
     grpc_route,
     http_route,
     mesh,
+    route_view,
     service_binding,
+    service_lb_policy,
     tcp_route,
     tls_route,
 )
@@ -1292,6 +1294,478 @@ class ListMeshesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.meshes:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListServiceLbPoliciesPager:
+    """A pager for iterating through ``list_service_lb_policies`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListServiceLbPoliciesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``service_lb_policies`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListServiceLbPolicies`` requests and continue to iterate
+    through the ``service_lb_policies`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListServiceLbPoliciesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service_lb_policy.ListServiceLbPoliciesResponse],
+        request: service_lb_policy.ListServiceLbPoliciesRequest,
+        response: service_lb_policy.ListServiceLbPoliciesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListServiceLbPoliciesRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListServiceLbPoliciesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = service_lb_policy.ListServiceLbPoliciesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[service_lb_policy.ListServiceLbPoliciesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[service_lb_policy.ServiceLbPolicy]:
+        for page in self.pages:
+            yield from page.service_lb_policies
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListServiceLbPoliciesAsyncPager:
+    """A pager for iterating through ``list_service_lb_policies`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListServiceLbPoliciesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``service_lb_policies`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListServiceLbPolicies`` requests and continue to iterate
+    through the ``service_lb_policies`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListServiceLbPoliciesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[service_lb_policy.ListServiceLbPoliciesResponse]
+        ],
+        request: service_lb_policy.ListServiceLbPoliciesRequest,
+        response: service_lb_policy.ListServiceLbPoliciesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListServiceLbPoliciesRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListServiceLbPoliciesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = service_lb_policy.ListServiceLbPoliciesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[service_lb_policy.ListServiceLbPoliciesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[service_lb_policy.ServiceLbPolicy]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.service_lb_policies:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGatewayRouteViewsPager:
+    """A pager for iterating through ``list_gateway_route_views`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListGatewayRouteViewsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``gateway_route_views`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListGatewayRouteViews`` requests and continue to iterate
+    through the ``gateway_route_views`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListGatewayRouteViewsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., route_view.ListGatewayRouteViewsResponse],
+        request: route_view.ListGatewayRouteViewsRequest,
+        response: route_view.ListGatewayRouteViewsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListGatewayRouteViewsRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListGatewayRouteViewsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = route_view.ListGatewayRouteViewsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[route_view.ListGatewayRouteViewsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[route_view.GatewayRouteView]:
+        for page in self.pages:
+            yield from page.gateway_route_views
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListGatewayRouteViewsAsyncPager:
+    """A pager for iterating through ``list_gateway_route_views`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListGatewayRouteViewsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``gateway_route_views`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListGatewayRouteViews`` requests and continue to iterate
+    through the ``gateway_route_views`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListGatewayRouteViewsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[route_view.ListGatewayRouteViewsResponse]],
+        request: route_view.ListGatewayRouteViewsRequest,
+        response: route_view.ListGatewayRouteViewsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListGatewayRouteViewsRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListGatewayRouteViewsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = route_view.ListGatewayRouteViewsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[route_view.ListGatewayRouteViewsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[route_view.GatewayRouteView]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.gateway_route_views:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListMeshRouteViewsPager:
+    """A pager for iterating through ``list_mesh_route_views`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListMeshRouteViewsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``mesh_route_views`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListMeshRouteViews`` requests and continue to iterate
+    through the ``mesh_route_views`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListMeshRouteViewsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., route_view.ListMeshRouteViewsResponse],
+        request: route_view.ListMeshRouteViewsRequest,
+        response: route_view.ListMeshRouteViewsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListMeshRouteViewsRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListMeshRouteViewsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = route_view.ListMeshRouteViewsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[route_view.ListMeshRouteViewsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[route_view.MeshRouteView]:
+        for page in self.pages:
+            yield from page.mesh_route_views
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListMeshRouteViewsAsyncPager:
+    """A pager for iterating through ``list_mesh_route_views`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListMeshRouteViewsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``mesh_route_views`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListMeshRouteViews`` requests and continue to iterate
+    through the ``mesh_route_views`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListMeshRouteViewsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[route_view.ListMeshRouteViewsResponse]],
+        request: route_view.ListMeshRouteViewsRequest,
+        response: route_view.ListMeshRouteViewsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListMeshRouteViewsRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListMeshRouteViewsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = route_view.ListMeshRouteViewsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[route_view.ListMeshRouteViewsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[route_view.MeshRouteView]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.mesh_route_views:
                     yield response
 
         return async_generator()

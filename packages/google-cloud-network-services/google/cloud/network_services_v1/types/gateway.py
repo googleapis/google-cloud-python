@@ -21,6 +21,8 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.network_services_v1.types import common
+
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
     manifest={
@@ -42,9 +44,12 @@ class Gateway(proto.Message):
     Routes have reference to to Gateways to dictate how requests
     should be routed by this Gateway.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
-            Required. Name of the Gateway resource. It matches pattern
+            Identifier. Name of the Gateway resource. It matches pattern
             ``projects/*/locations/*/gateways/<gateway_name>``.
         self_link (str):
             Output only. Server-defined URL of this
@@ -65,18 +70,27 @@ class Gateway(proto.Message):
             Immutable. The type of the customer managed
             gateway. This field is required. If unspecified,
             an error is returned.
+        addresses (MutableSequence[str]):
+            Optional. Zero or one IPv4 or IPv6 address on which the
+            Gateway will receive the traffic. When no address is
+            provided, an IP from the subnetwork is allocated
+
+            This field only applies to gateways of type
+            'SECURE_WEB_GATEWAY'. Gateways of type 'OPEN_MESH' listen on
+            0.0.0.0 for IPv4 and :: for IPv6.
         ports (MutableSequence[int]):
-            Required. One or more ports that the Gateway
-            must receive traffic on. The proxy binds to the
-            ports specified. Gateway listen on 0.0.0.0 on
-            the ports specified below.
+            Required. One or more port numbers (1-65535), on which the
+            Gateway will receive traffic. The proxy binds to the
+            specified ports. Gateways of type 'SECURE_WEB_GATEWAY' are
+            limited to 1 port. Gateways of type 'OPEN_MESH' listen on
+            0.0.0.0 for IPv4 and :: for IPv6 and support multiple ports.
         scope (str):
-            Required. Immutable. Scope determines how
-            configuration across multiple Gateway instances
-            are merged. The configuration for multiple
-            Gateway instances with the same scope will be
-            merged as presented as a single coniguration to
-            the proxy/load balancer.
+            Optional. Scope determines how configuration
+            across multiple Gateway instances are merged.
+            The configuration for multiple Gateway instances
+            with the same scope will be merged as presented
+            as a single configuration to the proxy/load
+            balancer.
 
             Max length 64 characters.
             Scope should start with a letter and can only
@@ -86,6 +100,52 @@ class Gateway(proto.Message):
             URL reference. Specifies how TLS traffic is
             terminated. If empty, TLS termination is
             disabled.
+        certificate_urls (MutableSequence[str]):
+            Optional. A fully-qualified Certificates URL reference. The
+            proxy presents a Certificate (selected based on SNI) when
+            establishing a TLS connection. This feature only applies to
+            gateways of type 'SECURE_WEB_GATEWAY'.
+        gateway_security_policy (str):
+            Optional. A fully-qualified GatewaySecurityPolicy URL
+            reference. Defines how a server should apply security policy
+            to inbound (VM to Proxy) initiated connections.
+
+            For example:
+            ``projects/*/locations/*/gatewaySecurityPolicies/swg-policy``.
+
+            This policy is specific to gateways of type
+            'SECURE_WEB_GATEWAY'.
+        network (str):
+            Optional. The relative resource name identifying the VPC
+            network that is using this configuration. For example:
+            ``projects/*/global/networks/network-1``.
+
+            Currently, this field is specific to gateways of type
+            'SECURE_WEB_GATEWAY'.
+        subnetwork (str):
+            Optional. The relative resource name identifying the
+            subnetwork in which this SWG is allocated. For example:
+            ``projects/*/regions/us-central1/subnetworks/network-1``
+
+            Currently, this field is specific to gateways of type
+            'SECURE_WEB_GATEWAY".
+        ip_version (google.cloud.network_services_v1.types.Gateway.IpVersion):
+            Optional. The IP Version that will be used by
+            this gateway. Valid options are IPV4 or IPV6.
+            Default is IPV4.
+        envoy_headers (google.cloud.network_services_v1.types.EnvoyHeaders):
+            Optional. Determines if envoy will insert
+            internal debug headers into upstream requests.
+            Other Envoy headers may still be injected. By
+            default, envoy will not insert any debug
+            headers.
+
+            This field is a member of `oneof`_ ``_envoy_headers``.
+        routing_mode (google.cloud.network_services_v1.types.Gateway.RoutingMode):
+            Optional. The routing mode of the Gateway. This field is
+            configurable only for gateways of type SECURE_WEB_GATEWAY.
+            This field is required for gateways of type
+            SECURE_WEB_GATEWAY.
     """
 
     class Type(proto.Enum):
@@ -108,6 +168,49 @@ class Gateway(proto.Message):
         TYPE_UNSPECIFIED = 0
         OPEN_MESH = 1
         SECURE_WEB_GATEWAY = 2
+
+    class IpVersion(proto.Enum):
+        r"""The types of IP version for the gateway. Possible values are:
+
+        -  IPV4
+        -  IPV6
+
+        Values:
+            IP_VERSION_UNSPECIFIED (0):
+                The type when IP version is not specified.
+                Defaults to IPV4.
+            IPV4 (1):
+                The type for IP version 4.
+            IPV6 (2):
+                The type for IP version 6.
+        """
+        IP_VERSION_UNSPECIFIED = 0
+        IPV4 = 1
+        IPV6 = 2
+
+    class RoutingMode(proto.Enum):
+        r"""The routing mode of the Gateway, to determine how the Gateway routes
+        traffic. Today, this field only applies to Gateways of type
+        SECURE_WEB_GATEWAY. Possible values are:
+
+        -  EXPLICIT_ROUTING_MODE
+        -  NEXT_HOP_ROUTING_MODE
+
+        Values:
+            EXPLICIT_ROUTING_MODE (0):
+                The routing mode is explicit; clients are
+                configured to send traffic through the gateway.
+                This is the default routing mode.
+            NEXT_HOP_ROUTING_MODE (1):
+                The routing mode is next-hop. Clients are
+                unaware of the gateway, and a route (advanced
+                route or other route type) can be configured to
+                direct traffic from client to gateway. The
+                gateway then acts as a next-hop to the
+                destination.
+        """
+        EXPLICIT_ROUTING_MODE = 0
+        NEXT_HOP_ROUTING_MODE = 1
 
     name: str = proto.Field(
         proto.STRING,
@@ -141,6 +244,10 @@ class Gateway(proto.Message):
         number=6,
         enum=Type,
     )
+    addresses: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
     ports: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=11,
@@ -152,6 +259,38 @@ class Gateway(proto.Message):
     server_tls_policy: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    certificate_urls: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=14,
+    )
+    gateway_security_policy: str = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    network: str = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    subnetwork: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    ip_version: IpVersion = proto.Field(
+        proto.ENUM,
+        number=21,
+        enum=IpVersion,
+    )
+    envoy_headers: common.EnvoyHeaders = proto.Field(
+        proto.ENUM,
+        number=28,
+        optional=True,
+        enum=common.EnvoyHeaders,
+    )
+    routing_mode: RoutingMode = proto.Field(
+        proto.ENUM,
+        number=32,
+        enum=RoutingMode,
     )
 
 
@@ -198,6 +337,8 @@ class ListGatewaysResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
     """
 
     @property
@@ -212,6 +353,10 @@ class ListGatewaysResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

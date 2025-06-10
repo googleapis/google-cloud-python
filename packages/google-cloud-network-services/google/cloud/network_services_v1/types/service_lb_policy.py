@@ -17,22 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.networkservices.v1',
+    package="google.cloud.networkservices.v1",
     manifest={
-        'ServiceLbPolicy',
-        'ListServiceLbPoliciesRequest',
-        'ListServiceLbPoliciesResponse',
-        'GetServiceLbPolicyRequest',
-        'CreateServiceLbPolicyRequest',
-        'UpdateServiceLbPolicyRequest',
-        'DeleteServiceLbPolicyRequest',
+        "ServiceLbPolicy",
+        "ListServiceLbPoliciesRequest",
+        "ListServiceLbPoliciesResponse",
+        "GetServiceLbPolicyRequest",
+        "CreateServiceLbPolicyRequest",
+        "UpdateServiceLbPolicyRequest",
+        "DeleteServiceLbPolicyRequest",
     },
 )
 
@@ -70,6 +68,7 @@ class ServiceLbPolicy(proto.Message):
             Optional. Configuration related to health
             based failover.
     """
+
     class LoadBalancingAlgorithm(proto.Enum):
         r"""The global load balancing algorithm to be used.
 
@@ -240,10 +239,10 @@ class ListServiceLbPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_lb_policies: MutableSequence['ServiceLbPolicy'] = proto.RepeatedField(
+    service_lb_policies: MutableSequence["ServiceLbPolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='ServiceLbPolicy',
+        message="ServiceLbPolicy",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -297,10 +296,10 @@ class CreateServiceLbPolicyRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    service_lb_policy: 'ServiceLbPolicy' = proto.Field(
+    service_lb_policy: "ServiceLbPolicy" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='ServiceLbPolicy',
+        message="ServiceLbPolicy",
     )
 
 
@@ -324,10 +323,10 @@ class UpdateServiceLbPolicyRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    service_lb_policy: 'ServiceLbPolicy' = proto.Field(
+    service_lb_policy: "ServiceLbPolicy" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='ServiceLbPolicy',
+        message="ServiceLbPolicy",
     )
 
 

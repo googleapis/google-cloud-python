@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -41,7 +42,8 @@ class TcpRoute(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the TcpRoute resource. It matches pattern
+            Identifier. Name of the TcpRoute resource. It matches
+            pattern
             ``projects/*/locations/global/tcpRoutes/tcp_route_name>``.
         self_link (str):
             Output only. Server-defined URL of this
@@ -122,14 +124,12 @@ class TcpRoute(proto.Message):
                 and a prefix length to construct the subnet
                 mask. By default, the prefix length is 32 (i.e.
                 matches a single IP address). Only IPV4
-                addresses are supported.
-                Examples:
-
-                "10.0.0.1" - matches against this exact IP
-                address. "10.0.0.0/8" - matches against any IP
-                address within the 10.0.0.0 subnet and
-                255.255.255.0 mask.
-                "0.0.0.0/0" - matches against any IP address'.
+                addresses are supported. Examples: "10.0.0.1" -
+                matches against this exact IP address.
+                "10.0.0.0/8" - matches against any IP address
+                within the 10.0.0.0 subnet and 255.255.255.0
+                mask. "0.0.0.0/0"
+                - matches against any IP address'.
             port (str):
                 Required. Specifies the destination port to
                 match against.
@@ -161,6 +161,14 @@ class TcpRoute(proto.Message):
                 connection as the destination of the request.
                 Default is false. Only one of route destinations
                 or original destination can be set.
+            idle_timeout (google.protobuf.duration_pb2.Duration):
+                Optional. Specifies the idle timeout for the
+                selected route. The idle timeout is defined as
+                the period in which there are no bytes sent or
+                received on either the upstream or downstream
+                connection. If not set, the default idle timeout
+                is 30 seconds. If set to 0s, the timeout will be
+                disabled.
         """
 
         destinations: MutableSequence[
@@ -173,6 +181,11 @@ class TcpRoute(proto.Message):
         original_destination: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        idle_timeout: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message=duration_pb2.Duration,
         )
 
     class RouteDestination(proto.Message):
@@ -272,6 +285,12 @@ class ListTcpRoutesRequest(proto.Message):
             Indicates that this is a continuation of a prior
             ``ListTcpRoutes`` call, and that the system should return
             the next page of data.
+        return_partial_success (bool):
+            Optional. If true, allow partial responses
+            for multi-regional Aggregated List requests.
+            Otherwise if one of the locations is down or
+            unreachable, the Aggregated List request will
+            fail.
     """
 
     parent: str = proto.Field(
@@ -286,6 +305,10 @@ class ListTcpRoutesRequest(proto.Message):
         proto.STRING,
         number=3,
     )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListTcpRoutesResponse(proto.Message):
@@ -299,6 +322,11 @@ class ListTcpRoutesResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
+        unreachable (MutableSequence[str]):
+            Unreachable resources. Populated when the request opts into
+            [return_partial_success][google.cloud.networkservices.v1.ListTcpRoutesRequest.return_partial_success]
+            and reading across collections e.g. when attempting to list
+            all resources across all supported locations.
     """
 
     @property
@@ -313,6 +341,10 @@ class ListTcpRoutesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

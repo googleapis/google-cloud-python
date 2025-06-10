@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -28,20 +29,28 @@ __protobuf__ = proto.module(
         "ListServiceBindingsResponse",
         "GetServiceBindingRequest",
         "CreateServiceBindingRequest",
+        "UpdateServiceBindingRequest",
         "DeleteServiceBindingRequest",
     },
 )
 
 
 class ServiceBinding(proto.Message):
-    r"""ServiceBinding is the resource that defines a Service
-    Directory Service to be used in a BackendService resource.
+    r"""ServiceBinding can be used to:
+
+    - Bind a Service Directory Service to be used in a
+      BackendService resource.   This feature will be deprecated
+      soon.
+    - Bind a Private Service Connect producer service to be used in
+      consumer   Cloud Service Mesh or Application Load Balancers.
+    - Bind a Cloud Run service to be used in consumer Cloud Service
+      Mesh or   Application Load Balancers.
 
     Attributes:
         name (str):
-            Required. Name of the ServiceBinding resource. It matches
+            Identifier. Name of the ServiceBinding resource. It matches
             pattern
-            ``projects/*/locations/global/serviceBindings/service_binding_name``.
+            ``projects/*/locations/*/serviceBindings/<service_binding_name>``.
         description (str):
             Optional. A free-text description of the
             resource. Max length 1024 characters.
@@ -52,8 +61,19 @@ class ServiceBinding(proto.Message):
             Output only. The timestamp when the resource
             was updated.
         service (str):
-            Required. The full service directory service name of the
-            format /projects/*/locations/*/namespaces/*/services/*
+            Optional. The full Service Directory Service name of the
+            format ``projects/*/locations/*/namespaces/*/services/*``.
+            This field is for Service Directory integration which will
+            be deprecated soon.
+        service_id (str):
+            Output only. The unique identifier of the
+            Service Directory Service against which the
+            ServiceBinding resource is validated. This is
+            populated when the Service Binding resource is
+            used in another resource (like Backend Service).
+            This is of the UUID4 format. This field is for
+            Service Directory integration which will be
+            deprecated soon.
         labels (MutableMapping[str, str]):
             Optional. Set of label tags associated with
             the ServiceBinding resource.
@@ -81,6 +101,10 @@ class ServiceBinding(proto.Message):
         proto.STRING,
         number=5,
     )
+    service_id: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
@@ -95,7 +119,7 @@ class ListServiceBindingsRequest(proto.Message):
         parent (str):
             Required. The project and location from which the
             ServiceBindings should be listed, specified in the format
-            ``projects/*/locations/global``.
+            ``projects/*/locations/*``.
         page_size (int):
             Maximum number of ServiceBindings to return
             per call.
@@ -131,6 +155,11 @@ class ListServiceBindingsResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
+        unreachable (MutableSequence[str]):
+            Unreachable resources. Populated when the
+            request attempts to list all resources across
+            all supported locations, while some locations
+            are temporarily unavailable.
     """
 
     @property
@@ -146,6 +175,10 @@ class ListServiceBindingsResponse(proto.Message):
         proto.STRING,
         number=2,
     )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetServiceBindingRequest(proto.Message):
@@ -154,8 +187,7 @@ class GetServiceBindingRequest(proto.Message):
     Attributes:
         name (str):
             Required. A name of the ServiceBinding to get. Must be in
-            the format
-            ``projects/*/locations/global/serviceBindings/*``.
+            the format ``projects/*/locations/*/serviceBindings/*``.
     """
 
     name: str = proto.Field(
@@ -170,7 +202,7 @@ class CreateServiceBindingRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource of the ServiceBinding. Must be
-            in the format ``projects/*/locations/global``.
+            in the format ``projects/*/locations/*``.
         service_binding_id (str):
             Required. Short name of the ServiceBinding
             resource to be created.
@@ -194,14 +226,40 @@ class CreateServiceBindingRequest(proto.Message):
     )
 
 
+class UpdateServiceBindingRequest(proto.Message):
+    r"""Request used by the UpdateServiceBinding method.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the ServiceBinding resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
+        service_binding (google.cloud.network_services_v1.types.ServiceBinding):
+            Required. Updated ServiceBinding resource.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    service_binding: "ServiceBinding" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ServiceBinding",
+    )
+
+
 class DeleteServiceBindingRequest(proto.Message):
     r"""Request used by the DeleteServiceBinding method.
 
     Attributes:
         name (str):
             Required. A name of the ServiceBinding to delete. Must be in
-            the format
-            ``projects/*/locations/global/serviceBindings/*``.
+            the format ``projects/*/locations/*/serviceBindings/*``.
     """
 
     name: str = proto.Field(

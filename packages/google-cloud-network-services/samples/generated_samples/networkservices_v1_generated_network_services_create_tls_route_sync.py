@@ -40,7 +40,6 @@ def sample_create_tls_route():
 
     # Initialize request argument(s)
     tls_route = network_services_v1.TlsRoute()
-    tls_route.name = "name_value"
     tls_route.rules.action.destinations.service_name = "service_name_value"
 
     request = network_services_v1.CreateTlsRouteRequest(
