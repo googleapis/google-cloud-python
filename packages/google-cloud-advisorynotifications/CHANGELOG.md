@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.15...google-cloud-advisorynotifications-v0.3.16) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([1562bb7](https://github.com/googleapis/google-cloud-python/commit/1562bb740c7cd56179e52185dde3c32af861de5e))
+
 ## [0.3.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.14...google-cloud-advisorynotifications-v0.3.15) (2025-03-15)
 
 

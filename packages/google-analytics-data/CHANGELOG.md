@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.19](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.18...google-analytics-data-v0.18.19) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([1562bb7](https://github.com/googleapis/google-cloud-python/commit/1562bb740c7cd56179e52185dde3c32af861de5e))
+
 ## [0.18.18](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.17...google-analytics-data-v0.18.18) (2025-03-15)
 
 

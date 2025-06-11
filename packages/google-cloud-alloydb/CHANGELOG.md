@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.6...google-cloud-alloydb-v0.4.7) (2025-06-11)
+
+
+### Features
+
+* Add Backup.create_completion_time output field ([3d6ac66](https://github.com/googleapis/google-cloud-python/commit/3d6ac66d3fb77149616f6167c89ebc5ac9ed5d15))
+* Add Cluster.DenyMaintenancePeriod field ([3d6ac66](https://github.com/googleapis/google-cloud-python/commit/3d6ac66d3fb77149616f6167c89ebc5ac9ed5d15))
+* Add Instance.ActivationPolicy field ([3d6ac66](https://github.com/googleapis/google-cloud-python/commit/3d6ac66d3fb77149616f6167c89ebc5ac9ed5d15))
+* Add InstanceNetworkConfig.allocated_ip_range_override field ([3d6ac66](https://github.com/googleapis/google-cloud-python/commit/3d6ac66d3fb77149616f6167c89ebc5ac9ed5d15))
+* Add InstanceNetworkConfig.network output field ([3d6ac66](https://github.com/googleapis/google-cloud-python/commit/3d6ac66d3fb77149616f6167c89ebc5ac9ed5d15))
+
+
+### Documentation
+
+* A comment for field `earliest_restorable_time` ([3d6ac66](https://github.com/googleapis/google-cloud-python/commit/3d6ac66d3fb77149616f6167c89ebc5ac9ed5d15))
+* A comment for field `status` in message `PscAutoConnectionConfig` ([3d6ac66](https://github.com/googleapis/google-cloud-python/commit/3d6ac66d3fb77149616f6167c89ebc5ac9ed5d15))
+
 ## [0.4.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.4.5...google-cloud-alloydb-v0.4.6) (2025-05-15)
 
 
