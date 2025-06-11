@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.20...google-cloud-network-services-v0.5.21) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([868b006](https://github.com/googleapis/google-cloud-python/commit/868b0069baf1a4bf6705986e0b6885419b35cdcc))
+
 ## [0.5.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.19...google-cloud-network-services-v0.5.20) (2025-03-15)
 
 

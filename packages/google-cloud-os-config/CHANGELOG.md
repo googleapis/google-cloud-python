@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-config-v1.20.1...google-cloud-os-config-v1.20.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([dfc2cd6](https://github.com/googleapis/google-cloud-python/commit/dfc2cd6be6422baa45dcebc5ff6e7fc846bf5c7d))
+
 ## [1.20.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-config-v1.20.0...google-cloud-os-config-v1.20.1) (2025-03-15)
 
 
