@@ -159,6 +159,17 @@ class SQLGlotCompiler:
         return ir.SQLGlotIR.from_pyarrow(pa_table, node.schema, uid_gen=self.uid_gen)
 
     @_compile_node.register
+    def compile_readtable(self, node: nodes.ReadTableNode, *args):
+        table = node.source.table
+        return ir.SQLGlotIR.from_table(
+            table.project_id,
+            table.dataset_id,
+            table.table_id,
+            col_names=[col.source_id for col in node.scan_list.items],
+            alias_names=[col.id.sql for col in node.scan_list.items],
+        )
+
+    @_compile_node.register
     def compile_selection(
         self, node: nodes.SelectionNode, child: ir.SQLGlotIR
     ) -> ir.SQLGlotIR:

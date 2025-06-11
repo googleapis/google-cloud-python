@@ -79,6 +79,8 @@ def compile_op_expression(expr: expression.OpExpression):
 
 
 # TODO: add parenthesize for operators
-def compile_addop(op: ops.AddOp, left: sge.Expression, right: sge.Expression):
+def compile_addop(
+    op: ops.AddOp, left: sge.Expression, right: sge.Expression
+) -> sge.Expression:
     # TODO: support addop for string dtype.
     return sge.Add(this=left, expression=right)

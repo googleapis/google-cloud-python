@@ -19,7 +19,6 @@ import bigframes
 pytest.importorskip("pytest_snapshot")
 
 
-def test_compile_projection(compiler_session: bigframes.Session, snapshot):
+def test_compile_readtable(compiler_session: bigframes.Session, snapshot):
     bf_df = compiler_session.read_gbq_table("test-project.test_dataset.test_table")
-    bf_df["int64_col"] = bf_df["int64_col"] + 1
     snapshot.assert_match(bf_df.sql, "out.sql")

@@ -14,13 +14,10 @@
 
 import dataclasses
 import typing
-import weakref
 
 import bigframes.core
 import bigframes.core.compile.sqlglot as sqlglot
-import bigframes.dataframe
 import bigframes.session.executor
-import bigframes.session.metrics
 
 
 @dataclasses.dataclass
@@ -44,35 +41,3 @@ class SQLCompilerExecutor(bigframes.session.executor.Executor):
         return self.compiler.SQLGlotCompiler().compile(
             array_value.node, ordered=ordered
         )
-
-
-class SQLCompilerSession(bigframes.session.Session):
-    """Session for SQL compilation using sqlglot."""
-
-    def __init__(self):
-        # TODO: remove unused attributes.
-        self._location = None  # type: ignore
-        self._bq_kms_key_name = None  # type: ignore
-        self._clients_provider = None  # type: ignore
-        self.ibis_client = None  # type: ignore
-        self._bq_connection = None  # type: ignore
-        self._skip_bq_connection_check = True
-        self._objects: list[
-            weakref.ReferenceType[
-                typing.Union[
-                    bigframes.core.indexes.Index,
-                    bigframes.series.Series,
-                    bigframes.dataframe.DataFrame,
-                ]
-            ]
-        ] = []
-        self._strictly_ordered: bool = True
-        self._allow_ambiguity = False  # type: ignore
-        self._default_index_type = bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
-        self._metrics = bigframes.session.metrics.ExecutionMetrics()
-        self._remote_function_session = None  # type: ignore
-        self._temp_storage_manager = None  # type: ignore
-        self._loader = None  # type: ignore
-
-        self._session_id: str = "sqlglot_unit_tests_session"
-        self._executor = SQLCompilerExecutor()

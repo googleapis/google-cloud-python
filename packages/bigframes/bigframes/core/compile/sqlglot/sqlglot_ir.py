@@ -107,6 +107,30 @@ class SQLGlotIR:
         return cls(expr=sg.select(sge.Star()).from_(expr), uid_gen=uid_gen)
 
     @classmethod
+    def from_table(
+        cls,
+        project_id: str,
+        dataset_id: str,
+        table_id: str,
+        col_names: typing.Sequence[str],
+        alias_names: typing.Sequence[str],
+    ) -> SQLGlotIR:
+        selections = [
+            sge.Alias(
+                this=sge.to_identifier(col_name, quoted=cls.quoted),
+                alias=sge.to_identifier(alias_name, quoted=cls.quoted),
+            )
+            for col_name, alias_name in zip(col_names, alias_names)
+        ]
+        table_expr = sge.Table(
+            this=sg.to_identifier(table_id, quoted=cls.quoted),
+            db=sg.to_identifier(dataset_id, quoted=cls.quoted),
+            catalog=sg.to_identifier(project_id, quoted=cls.quoted),
+        )
+        select_expr = sge.Select().select(*selections).from_(table_expr)
+        return cls(expr=select_expr)
+
+    @classmethod
     def from_query_string(
         cls,
         query_string: str,
@@ -156,9 +180,8 @@ class SQLGlotIR:
             )
             for id, expr in projected_cols
         ]
-        # TODO: some columns are not able to be projected into the same select.
-        select_expr = self.expr.select(*projected_cols_expr, append=True)
-        return SQLGlotIR(expr=select_expr)
+        new_expr = self._encapsulate_as_cte().select(*projected_cols_expr, append=False)
+        return SQLGlotIR(expr=new_expr)
 
     def insert(
         self,

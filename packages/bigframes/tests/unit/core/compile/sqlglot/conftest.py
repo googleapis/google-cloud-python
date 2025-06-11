@@ -13,12 +13,15 @@
 # limitations under the License.
 
 import pathlib
+import typing
 
+from google.cloud import bigquery
 import pandas as pd
 import pyarrow as pa
 import pytest
 
 from bigframes import dtypes
+import bigframes.testing.mocks as mocks
 import bigframes.testing.utils
 
 CURRENT_DIR = pathlib.Path(__file__).parent
@@ -26,10 +29,24 @@ DATA_DIR = CURRENT_DIR.parent.parent.parent.parent / "data"
 
 
 @pytest.fixture(scope="session")
-def compiler_session():
+def compiler_session(basic_types_table_schema):
     from bigframes.testing import compiler_session
 
-    return compiler_session.SQLCompilerSession()
+    # TODO: Check if ordering mode is needed for the tests.
+    session = mocks.create_bigquery_session(table_schema=basic_types_table_schema)
+    session._executor = compiler_session.SQLCompilerExecutor()
+    return session
+
+
+@pytest.fixture(scope="session")
+def basic_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
+    return [
+        bigquery.SchemaField("rowindex", "INTEGER"),
+        bigquery.SchemaField("int64_col", "INTEGER"),
+        bigquery.SchemaField("string_col", "STRING"),
+        bigquery.SchemaField("float64_col", "FLOAT"),
+        bigquery.SchemaField("bool_col", "BOOLEAN"),
+    ]
 
 
 @pytest.fixture(scope="session")
