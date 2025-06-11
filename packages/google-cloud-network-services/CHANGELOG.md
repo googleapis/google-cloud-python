@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.5.22](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.21...google-cloud-network-services-v0.5.22) (2025-06-11)
+
+
+### Features
+
+* update NetworkServices protos ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+
+
+### Documentation
+
+* A comment for field `address` in message `.google.cloud.networkservices.v1.TcpRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `fault_injection_policy` in message `.google.cloud.networkservices.v1.GrpcRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `matches` in message `.google.cloud.networkservices.v1.TlsRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `metadata_label_match_criteria` in message `.google.cloud.networkservices.v1.EndpointMatcher` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.DeleteServiceBindingRequest` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.EndpointPolicy` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.Gateway` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.GetServiceBindingRequest` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.GrpcRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.HttpRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.Mesh` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.ServiceBinding` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.TcpRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `name` in message `.google.cloud.networkservices.v1.TlsRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `parent` in message `.google.cloud.networkservices.v1.CreateServiceBindingRequest` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `parent` in message `.google.cloud.networkservices.v1.ListServiceBindingsRequest` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `ports` in message `.google.cloud.networkservices.v1.Gateway` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `scope` in message `.google.cloud.networkservices.v1.Gateway` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `service` in message `.google.cloud.networkservices.v1.ServiceBinding` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `sni_host` in message `.google.cloud.networkservices.v1.TlsRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for field `weight` in message `.google.cloud.networkservices.v1.TlsRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for message `GrpcRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for message `HttpRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for message `ServiceBinding` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+* A comment for message `TlsRoute` is changed ([fdaca0f](https://github.com/googleapis/google-cloud-python/commit/fdaca0f23a614e607dc7a6eb93e2f86247423a94))
+
 ## [0.5.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.20...google-cloud-network-services-v0.5.21) (2025-06-11)
 
 
