@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.14...google-cloud-migrationcenter-v0.1.15) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([868b006](https://github.com/googleapis/google-cloud-python/commit/868b0069baf1a4bf6705986e0b6885419b35cdcc))
+
 ## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.13...google-cloud-migrationcenter-v0.1.14) (2025-03-15)
 
 

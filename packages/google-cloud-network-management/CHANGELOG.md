@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.26.0...google-cloud-network-management-v1.26.1) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([868b006](https://github.com/googleapis/google-cloud-python/commit/868b0069baf1a4bf6705986e0b6885419b35cdcc))
+
 ## [1.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.25.3...google-cloud-network-management-v1.26.0) (2025-04-12)
 
 

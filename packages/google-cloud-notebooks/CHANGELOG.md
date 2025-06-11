@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.13.2...google-cloud-notebooks-v1.13.3) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([868b006](https://github.com/googleapis/google-cloud-python/commit/868b0069baf1a4bf6705986e0b6885419b35cdcc))
+
 ## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.13.1...google-cloud-notebooks-v1.13.2) (2025-03-15)
 
 

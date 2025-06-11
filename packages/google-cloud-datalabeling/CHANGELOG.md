@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datalabeling-v1.13.1...google-cloud-datalabeling-v1.13.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([3d5bc37](https://github.com/googleapis/google-cloud-python/commit/3d5bc3782da6b37742ae83802de8a8b6db96fe29))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datalabeling-v1.13.0...google-cloud-datalabeling-v1.13.1) (2025-03-15)
 
 

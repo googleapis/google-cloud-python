@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.19](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.18...google-maps-addressvalidation-v0.3.19) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8066d24](https://github.com/googleapis/google-cloud-python/commit/8066d24068e6d036dcf77e7abb5401a5ba3f8a63))
+
 ## [0.3.18](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.17...google-maps-addressvalidation-v0.3.18) (2025-03-15)
 
 

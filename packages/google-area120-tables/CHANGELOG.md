@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.17](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.16...google-area120-tables-v0.11.17) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([1562bb7](https://github.com/googleapis/google-cloud-python/commit/1562bb740c7cd56179e52185dde3c32af861de5e))
+
 ## [0.11.16](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.15...google-area120-tables-v0.11.16) (2025-03-15)
 
 

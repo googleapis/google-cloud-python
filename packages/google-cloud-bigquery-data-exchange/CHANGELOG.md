@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.19...google-cloud-bigquery-data-exchange-v0.5.20) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([eea9e6f](https://github.com/googleapis/google-cloud-python/commit/eea9e6f798406fec17a17dfd71e40fbeea42cf6a))
+
 ## [0.5.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.18...google-cloud-bigquery-data-exchange-v0.5.19) (2025-03-15)
 
 

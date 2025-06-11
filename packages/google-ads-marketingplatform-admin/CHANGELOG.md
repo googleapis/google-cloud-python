@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.5...google-ads-marketingplatform-admin-v0.1.6) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([1562bb7](https://github.com/googleapis/google-cloud-python/commit/1562bb740c7cd56179e52185dde3c32af861de5e))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-ads-marketingplatform-admin-v0.1.4...google-ads-marketingplatform-admin-v0.1.5) (2025-03-15)
 
 

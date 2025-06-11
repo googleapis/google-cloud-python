@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.19.0...google-cloud-iam-v2.19.1) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([821bdb1](https://github.com/googleapis/google-cloud-python/commit/821bdb1d108c8e77a7a576557aa95d4b9c943e12))
+
 ## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.18.3...google-cloud-iam-v2.19.0) (2025-04-12)
 
 

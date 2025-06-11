@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.16.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.16.3...google-cloud-automl-v2.16.4) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([eea9e6f](https://github.com/googleapis/google-cloud-python/commit/eea9e6f798406fec17a17dfd71e40fbeea42cf6a))
+
 ## [2.16.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.16.2...google-cloud-automl-v2.16.3) (2025-03-15)
 
 

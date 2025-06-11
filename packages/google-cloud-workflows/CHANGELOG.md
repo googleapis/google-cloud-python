@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.18.1...google-cloud-workflows-v1.18.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8066d24](https://github.com/googleapis/google-cloud-python/commit/8066d24068e6d036dcf77e7abb5401a5ba3f8a63))
+
 ## [1.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.18.0...google-cloud-workflows-v1.18.1) (2025-04-12)
 
 

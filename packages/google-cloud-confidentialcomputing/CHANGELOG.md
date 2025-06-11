@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.17...google-cloud-confidentialcomputing-v0.4.18) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8697120](https://github.com/googleapis/google-cloud-python/commit/869712032803cb31d93f3b16abc2abdb14f733a4))
+
 ## [0.4.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.16...google-cloud-confidentialcomputing-v0.4.17) (2025-03-15)
 
 

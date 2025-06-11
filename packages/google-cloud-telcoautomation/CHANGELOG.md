@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.2.10...google-cloud-telcoautomation-v0.2.11) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([0131a33](https://github.com/googleapis/google-cloud-python/commit/0131a33582f84d9be5ecb1c0ef8b56aa3d9e9cf0))
+
 ## [0.2.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.2.9...google-cloud-telcoautomation-v0.2.10) (2025-03-15)
 
 

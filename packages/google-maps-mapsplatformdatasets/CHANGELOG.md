@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.8](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.4.7...google-maps-mapsplatformdatasets-v0.4.8) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8066d24](https://github.com/googleapis/google-cloud-python/commit/8066d24068e6d036dcf77e7abb5401a5ba3f8a63))
+
 ## [0.4.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-mapsplatformdatasets-v0.4.6...google-maps-mapsplatformdatasets-v0.4.7) (2025-03-15)
 
 

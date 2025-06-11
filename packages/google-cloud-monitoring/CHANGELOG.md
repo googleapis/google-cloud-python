@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.27.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.27.1...google-cloud-monitoring-v2.27.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([868b006](https://github.com/googleapis/google-cloud-python/commit/868b0069baf1a4bf6705986e0b6885419b35cdcc))
+
 ## [2.27.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.27.0...google-cloud-monitoring-v2.27.1) (2025-03-15)
 
 

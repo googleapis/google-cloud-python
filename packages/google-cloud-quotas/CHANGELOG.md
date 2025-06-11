@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.17...google-cloud-quotas-v0.1.18) (2025-06-11)
+
+
+### Features
+
+* Added support for hierarchical enrollment in Quota Adjuster consumer API ([78428ff](https://github.com/googleapis/google-cloud-python/commit/78428ff7406d808f7ac06a9726190b732d72b5a7))
+
+
+### Documentation
+
+* Added 2 new fields in `.google.api.cloudquotas.v1beta.QuotaAdjusterSettings` ([78428ff](https://github.com/googleapis/google-cloud-python/commit/78428ff7406d808f7ac06a9726190b732d72b5a7))
+* Added inherited and inherited_from in `.google.api.cloudquotas.v1beta.QuotaAdjusterSettings` ([78428ff](https://github.com/googleapis/google-cloud-python/commit/78428ff7406d808f7ac06a9726190b732d72b5a7))
+* Added support for folder and organization level enrollment ([78428ff](https://github.com/googleapis/google-cloud-python/commit/78428ff7406d808f7ac06a9726190b732d72b5a7))
+* Update import statement example in README ([dfc2cd6](https://github.com/googleapis/google-cloud-python/commit/dfc2cd6be6422baa45dcebc5ff6e7fc846bf5c7d))
+
 ## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.1.16...google-cloud-quotas-v0.1.17) (2025-03-15)
 
 

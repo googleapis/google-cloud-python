@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.17.2...google-cloud-gke-hub-v1.17.3) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([821bdb1](https://github.com/googleapis/google-cloud-python/commit/821bdb1d108c8e77a7a576557aa95d4b9c943e12))
+
 ## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.17.1...google-cloud-gke-hub-v1.17.2) (2025-03-15)
 
 

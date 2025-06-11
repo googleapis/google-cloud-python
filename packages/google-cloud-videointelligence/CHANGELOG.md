@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.16.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-videointelligence-v2.16.1...google-cloud-videointelligence-v2.16.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([0131a33](https://github.com/googleapis/google-cloud-python/commit/0131a33582f84d9be5ecb1c0ef8b56aa3d9e9cf0))
+
 ## [2.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-videointelligence-v2.16.0...google-cloud-videointelligence-v2.16.1) (2025-03-15)
 
 

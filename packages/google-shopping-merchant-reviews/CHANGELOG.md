@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reviews-v0.1.2...google-shopping-merchant-reviews-v0.1.3) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([4f0a027](https://github.com/googleapis/google-cloud-python/commit/4f0a0270b494d47e80373b87e7668283dbbceec7))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reviews-v0.1.1...google-shopping-merchant-reviews-v0.1.2) (2025-03-15)
 
 

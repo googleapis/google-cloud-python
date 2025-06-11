@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.16...google-cloud-data-qna-v0.10.17) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([3d5bc37](https://github.com/googleapis/google-cloud-python/commit/3d5bc3782da6b37742ae83802de8a8b6db96fe29))
+
 ## [0.10.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.15...google-cloud-data-qna-v0.10.16) (2025-03-15)
 
 

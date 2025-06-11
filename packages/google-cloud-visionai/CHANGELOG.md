@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.9...google-cloud-visionai-v0.1.10) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([0131a33](https://github.com/googleapis/google-cloud-python/commit/0131a33582f84d9be5ecb1c0ef8b56aa3d9e9cf0))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-visionai-v0.1.8...google-cloud-visionai-v0.1.9) (2025-03-15)
 
 

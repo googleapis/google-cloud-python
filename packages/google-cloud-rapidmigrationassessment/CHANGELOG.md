@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.15...google-cloud-rapidmigrationassessment-v0.1.16) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([dfc2cd6](https://github.com/googleapis/google-cloud-python/commit/dfc2cd6be6422baa45dcebc5ff6e7fc846bf5c7d))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.14...google-cloud-rapidmigrationassessment-v0.1.15) (2025-03-27)
 
 

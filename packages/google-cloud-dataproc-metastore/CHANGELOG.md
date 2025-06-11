@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.18.2...google-cloud-dataproc-metastore-v1.18.3) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([3d5bc37](https://github.com/googleapis/google-cloud-python/commit/3d5bc3782da6b37742ae83802de8a8b6db96fe29))
+
 ## [1.18.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.18.1...google-cloud-dataproc-metastore-v1.18.2) (2025-03-15)
 
 

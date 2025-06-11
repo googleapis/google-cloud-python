@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.17...google-cloud-video-stitcher-v0.7.18) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([0131a33](https://github.com/googleapis/google-cloud-python/commit/0131a33582f84d9be5ecb1c0ef8b56aa3d9e9cf0))
+
 ## [0.7.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.16...google-cloud-video-stitcher-v0.7.17) (2025-03-15)
 
 

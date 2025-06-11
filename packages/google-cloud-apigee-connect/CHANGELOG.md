@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.12.1...google-cloud-apigee-connect-v1.12.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([1562bb7](https://github.com/googleapis/google-cloud-python/commit/1562bb740c7cd56179e52185dde3c32af861de5e))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-connect-v1.12.0...google-cloud-apigee-connect-v1.12.1) (2025-03-15)
 
 

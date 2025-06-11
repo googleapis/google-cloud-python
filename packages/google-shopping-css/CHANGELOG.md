@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.16...google-shopping-css-v0.1.17) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8066d24](https://github.com/googleapis/google-cloud-python/commit/8066d24068e6d036dcf77e7abb5401a5ba3f8a63))
+
 ## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-shopping-css-v0.1.15...google-shopping-css-v0.1.16) (2025-04-12)
 
 

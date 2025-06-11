@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.19.0...google-cloud-dataproc-v5.20.0) (2025-06-11)
+
+
+### Features
+
+* Added support for DELTA, ICEBERG, PIG components ([#13982](https://github.com/googleapis/google-cloud-python/issues/13982)) ([5e57d1c](https://github.com/googleapis/google-cloud-python/commit/5e57d1c40d7edb932aa6192c2d41787856c6fe3b))
+
 ## [5.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.18.1...google-cloud-dataproc-v5.19.0) (2025-06-05)
 
 

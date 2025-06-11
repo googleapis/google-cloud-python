@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.7...google-apps-card-v0.1.8) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([1562bb7](https://github.com/googleapis/google-cloud-python/commit/1562bb740c7cd56179e52185dde3c32af861de5e))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.1.6...google-apps-card-v0.1.7) (2025-03-15)
 
 

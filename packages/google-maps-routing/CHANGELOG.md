@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.16](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.15...google-maps-routing-v0.6.16) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8066d24](https://github.com/googleapis/google-cloud-python/commit/8066d24068e6d036dcf77e7abb5401a5ba3f8a63))
+
 ## [0.6.15](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.14...google-maps-routing-v0.6.15) (2025-03-15)
 
 

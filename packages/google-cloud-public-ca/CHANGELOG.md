@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.17...google-cloud-public-ca-v0.3.18) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([dfc2cd6](https://github.com/googleapis/google-cloud-python/commit/dfc2cd6be6422baa45dcebc5ff6e7fc846bf5c7d))
+
 ## [0.3.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.16...google-cloud-public-ca-v0.3.17) (2025-03-15)
 
 

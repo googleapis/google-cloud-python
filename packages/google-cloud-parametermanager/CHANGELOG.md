@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.3...google-cloud-parametermanager-v0.1.4) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([dfc2cd6](https://github.com/googleapis/google-cloud-python/commit/dfc2cd6be6422baa45dcebc5ff6e7fc846bf5c7d))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.2...google-cloud-parametermanager-v0.1.3) (2025-03-21)
 
 

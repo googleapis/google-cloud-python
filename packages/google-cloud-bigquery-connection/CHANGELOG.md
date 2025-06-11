@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-connection-v1.18.2...google-cloud-bigquery-connection-v1.18.3) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([eea9e6f](https://github.com/googleapis/google-cloud-python/commit/eea9e6f798406fec17a17dfd71e40fbeea42cf6a))
+
 ## [1.18.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-connection-v1.18.1...google-cloud-bigquery-connection-v1.18.2) (2025-03-15)
 
 

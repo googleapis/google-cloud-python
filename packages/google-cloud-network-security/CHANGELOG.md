@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.17...google-cloud-network-security-v0.9.18) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([868b006](https://github.com/googleapis/google-cloud-python/commit/868b0069baf1a4bf6705986e0b6885419b35cdcc))
+
 ## [0.9.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.16...google-cloud-network-security-v0.9.17) (2025-03-15)
 
 
