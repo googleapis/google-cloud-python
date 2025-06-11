@@ -20,8 +20,7 @@ import pytest
 
 import bigframes.dtypes as dtypes
 import bigframes.pandas as bpd
-
-from ...utils import assert_series_equal
+from bigframes.testing.utils import assert_series_equal
 
 
 def test_find(scalars_dfs):

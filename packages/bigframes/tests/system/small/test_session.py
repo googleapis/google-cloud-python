@@ -36,7 +36,7 @@ import bigframes
 import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.ml.linear_model
-from tests.system import utils
+from bigframes.testing import utils
 
 all_write_engines = pytest.mark.parametrize(
     "write_engine",

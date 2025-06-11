@@ -16,7 +16,7 @@ import pandas as pd
 
 from bigframes.ml import decomposition
 import bigframes.pandas as bpd
-import tests.system.utils
+import bigframes.testing.utils
 
 
 def test_pca_predict(
@@ -33,7 +33,7 @@ def test_pca_predict(
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
 
-    tests.system.utils.assert_pandas_df_equal_pca(
+    bigframes.testing.utils.assert_pandas_df_equal_pca(
         predictions, expected, check_exact=False, rtol=0.1
     )
 
@@ -161,7 +161,7 @@ def test_pca_components_(penguins_pca_model: decomposition.PCA):
         .reset_index(drop=True)
     )
 
-    tests.system.utils.assert_pandas_df_equal_pca_components(
+    bigframes.testing.utils.assert_pandas_df_equal_pca_components(
         result,
         expected,
         check_exact=False,
@@ -180,7 +180,7 @@ def test_pca_explained_variance_(penguins_pca_model: decomposition.PCA):
             "explained_variance": [3.278657, 1.270829, 1.125354],
         },
     )
-    tests.system.utils.assert_pandas_df_equal(
+    bigframes.testing.utils.assert_pandas_df_equal(
         result,
         expected,
         check_exact=False,
@@ -200,7 +200,7 @@ def test_pca_explained_variance_ratio_(penguins_pca_model: decomposition.PCA):
             "explained_variance_ratio": [0.469357, 0.181926, 0.1611],
         },
     )
-    tests.system.utils.assert_pandas_df_equal(
+    bigframes.testing.utils.assert_pandas_df_equal(
         result,
         expected,
         check_exact=False,

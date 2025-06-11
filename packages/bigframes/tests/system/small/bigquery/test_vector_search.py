@@ -23,7 +23,7 @@ import pytest
 
 import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_pandas_df_equal
 
 # Need at least 5,000 rows to create a vector index.
 VECTOR_DF = pd.DataFrame(

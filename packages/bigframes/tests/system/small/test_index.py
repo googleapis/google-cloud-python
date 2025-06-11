@@ -19,7 +19,7 @@ import pandas as pd
 import pytest
 
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_index_equal_ignore_index_type
+from bigframes.testing.utils import assert_pandas_index_equal_ignore_index_type
 
 
 def test_index_construct_from_list():

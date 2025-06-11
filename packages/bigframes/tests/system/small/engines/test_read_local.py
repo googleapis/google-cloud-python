@@ -17,7 +17,7 @@ import pytest
 import bigframes
 from bigframes.core import identifiers, local_data, nodes
 from bigframes.session import polars_executor
-from tests.system.small.engines.engine_utils import assert_equivalence_execution
+from bigframes.testing.engine_utils import assert_equivalence_execution
 
 pytest.importorskip("polars")
 

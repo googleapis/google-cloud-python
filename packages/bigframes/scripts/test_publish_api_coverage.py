@@ -15,16 +15,15 @@
 import sys
 
 import pandas
+from publish_api_coverage import build_api_coverage_table
 import pytest
-
-from . import publish_api_coverage
 
 pytest.importorskip("sklearn")
 
 
 @pytest.fixture
 def api_coverage_df():
-    return publish_api_coverage.build_api_coverage_table("my_bf_ver", "my_release_ver")
+    return build_api_coverage_table("my_bf_ver", "my_release_ver")
 
 
 @pytest.mark.skipif(

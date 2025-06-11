@@ -15,7 +15,7 @@
 import pytest
 
 from bigframes.ml import linear_model, model_selection
-from tests.system import utils
+from bigframes.testing import utils
 
 
 @pytest.mark.parametrize(

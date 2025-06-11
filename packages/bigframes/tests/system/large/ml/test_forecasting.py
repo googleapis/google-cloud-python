@@ -15,7 +15,7 @@
 import pytest
 
 from bigframes.ml import forecasting
-from tests.system import utils
+from bigframes.testing import utils
 
 ARIMA_EVALUATE_OUTPUT_COL = [
     "non_seasonal_p",

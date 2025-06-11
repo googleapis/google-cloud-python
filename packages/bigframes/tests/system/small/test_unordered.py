@@ -19,7 +19,7 @@ import pytest
 
 import bigframes.exceptions
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal, assert_series_equal
+from bigframes.testing.utils import assert_pandas_df_equal, assert_series_equal
 
 
 def test_unordered_mode_sql_no_hash(unordered_session):

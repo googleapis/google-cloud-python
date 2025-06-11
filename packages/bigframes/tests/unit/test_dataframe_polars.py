@@ -30,7 +30,7 @@ import bigframes.core.indexes as bf_indexes
 import bigframes.dataframe as dataframe
 import bigframes.pandas as bpd
 import bigframes.series as series
-from tests.system.utils import (
+from bigframes.testing.utils import (
     assert_dfs_equivalent,
     assert_pandas_df_equal,
     assert_series_equal,

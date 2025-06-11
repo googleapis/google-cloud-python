@@ -19,7 +19,7 @@ import pyarrow as pa
 import pytest
 
 from bigframes import dtypes
-import tests.system.utils
+import bigframes.testing.utils
 
 CURRENT_DIR = pathlib.Path(__file__).parent
 DATA_DIR = CURRENT_DIR.parent.parent.parent.parent / "data"
@@ -27,7 +27,7 @@ DATA_DIR = CURRENT_DIR.parent.parent.parent.parent / "data"
 
 @pytest.fixture(scope="session")
 def compiler_session():
-    from . import compiler_session
+    from bigframes.testing import compiler_session
 
     return compiler_session.SQLCompilerSession()
 
@@ -41,7 +41,7 @@ def scalars_types_pandas_df() -> pd.DataFrame:
         DATA_DIR / "scalars.jsonl",
         lines=True,
     )
-    tests.system.utils.convert_pandas_dtypes(df, bytes_col=True)
+    bigframes.testing.utils.convert_pandas_dtypes(df, bytes_col=True)
 
     df = df.set_index("rowindex", drop=False)
     return df

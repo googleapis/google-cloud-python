@@ -32,7 +32,7 @@ import bigframes.dtypes as dtypes
 import bigframes.features
 import bigframes.pandas
 import bigframes.series as series
-from tests.system.utils import (
+from bigframes.testing.utils import (
     assert_pandas_df_equal,
     assert_series_equal,
     get_first_file_from_wildcard,

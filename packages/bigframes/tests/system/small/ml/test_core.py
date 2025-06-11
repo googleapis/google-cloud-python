@@ -23,7 +23,7 @@ import pytz
 import bigframes
 import bigframes.features
 from bigframes.ml import core
-from tests.system import utils
+from bigframes.testing import utils
 
 
 def test_model_eval(

@@ -21,7 +21,7 @@ import pytest
 
 import bigframes
 import bigframes.ml.linear_model
-from tests.system import utils
+from bigframes.testing import utils
 
 
 @pytest.fixture(scope="module")

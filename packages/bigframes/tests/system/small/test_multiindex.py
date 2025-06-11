@@ -17,7 +17,7 @@ import pandas
 import pytest
 
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_pandas_df_equal
 
 
 def test_multi_index_from_arrays():

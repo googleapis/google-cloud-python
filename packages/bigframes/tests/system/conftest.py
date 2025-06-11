@@ -41,7 +41,7 @@ import bigframes
 import bigframes.dataframe
 import bigframes.pandas as bpd
 import bigframes.series
-import tests.system.utils
+import bigframes.testing.utils
 
 # Use this to control the number of cloud functions being deleted in a single
 # test session. This should help soften the spike of the number of mutations per
@@ -615,7 +615,7 @@ def scalars_pandas_df_default_index() -> pd.DataFrame:
         DATA_DIR / "scalars.jsonl",
         lines=True,
     )
-    tests.system.utils.convert_pandas_dtypes(df, bytes_col=True)
+    bigframes.testing.utils.convert_pandas_dtypes(df, bytes_col=True)
 
     df = df.set_index("rowindex", drop=False)
     df.index.name = None
@@ -1422,12 +1422,12 @@ def use_fast_query_path():
 @pytest.fixture(scope="session", autouse=True)
 def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent):
     """Clean up stale cloud functions."""
-    permanent_endpoints = tests.system.utils.get_remote_function_endpoints(
+    permanent_endpoints = bigframes.testing.utils.get_remote_function_endpoints(
         session.bqclient, dataset_id_permanent
     )
     delete_count = 0
     try:
-        for cloud_function in tests.system.utils.get_cloud_functions(
+        for cloud_function in bigframes.testing.utils.get_cloud_functions(
             cloudfunctions_client,
             session.bqclient.project,
             session.bqclient.location,
@@ -1447,7 +1447,7 @@ def cleanup_cloud_functions(session, cloudfunctions_client, dataset_id_permanent
 
             # Go ahead and delete
             try:
-                tests.system.utils.delete_cloud_function(
+                bigframes.testing.utils.delete_cloud_function(
                     cloudfunctions_client, cloud_function.name
                 )
                 delete_count += 1

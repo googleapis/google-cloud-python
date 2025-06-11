@@ -17,7 +17,7 @@ import pandas as pd
 import pytest
 
 import bigframes
-from tests.system.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_pandas_df_equal
 
 large_dataframe = pd.DataFrame(np.random.rand(10000, 10), dtype="Float64")
 large_dataframe.index = large_dataframe.index.astype("Int64")

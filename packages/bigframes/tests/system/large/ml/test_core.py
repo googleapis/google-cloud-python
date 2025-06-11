@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from bigframes.ml import globals
-from tests.system import utils
+from bigframes.testing import utils
 
 
 def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_df):

@@ -16,7 +16,7 @@ import pandas as pd
 import pandas.testing
 
 from bigframes.ml import decomposition
-from tests.system import utils
+from bigframes.testing import utils
 
 
 def test_decomposition_configure_fit_score_predict(

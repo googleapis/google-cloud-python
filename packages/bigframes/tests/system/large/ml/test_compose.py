@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from bigframes.ml import compose, preprocessing
-from tests.system import utils
+from bigframes.testing import utils
 
 
 def test_columntransformer_standalone_fit_and_transform(

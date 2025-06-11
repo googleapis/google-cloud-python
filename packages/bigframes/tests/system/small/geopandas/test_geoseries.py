@@ -31,7 +31,7 @@ from shapely.geometry import (  # type: ignore
 import bigframes.geopandas
 import bigframes.pandas
 import bigframes.series
-from tests.system.utils import assert_series_equal
+from bigframes.testing.utils import assert_series_equal
 
 
 @pytest.fixture(scope="session")

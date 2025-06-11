@@ -36,7 +36,7 @@ import bigframes.exceptions
 import bigframes.functions._utils as bff_utils
 import bigframes.pandas as bpd
 import bigframes.series
-from tests.system.utils import (
+from bigframes.testing.utils import (
     assert_pandas_df_equal,
     cleanup_function_assets,
     delete_cloud_function,

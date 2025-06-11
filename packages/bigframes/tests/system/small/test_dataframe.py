@@ -33,7 +33,7 @@ import bigframes.dataframe as dataframe
 import bigframes.dtypes as dtypes
 import bigframes.pandas as bpd
 import bigframes.series as series
-from tests.system.utils import (
+from bigframes.testing.utils import (
     assert_dfs_equivalent,
     assert_pandas_df_equal,
     assert_series_equal,

@@ -16,7 +16,7 @@ import pandas as pd
 
 from bigframes.ml import cluster
 import bigframes.pandas as bpd
-from tests.system.utils import assert_pandas_df_equal
+from bigframes.testing.utils import assert_pandas_df_equal
 
 _PD_NEW_PENGUINS = pd.DataFrame.from_dict(
     {

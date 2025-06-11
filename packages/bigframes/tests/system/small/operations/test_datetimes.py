@@ -20,7 +20,7 @@ import pandas as pd
 import pytest
 
 import bigframes.series
-from tests.system.utils import assert_series_equal
+from bigframes.testing.utils import assert_series_equal
 
 DATETIME_COL_NAMES = [("datetime_col",), ("timestamp_col",)]
 DATE_COLUMNS = [

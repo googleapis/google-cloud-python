@@ -18,7 +18,7 @@ import pytest
 
 from bigframes.ml import llm
 import bigframes.pandas as bpd
-from tests.system import utils
+from bigframes.testing import utils
 
 
 @pytest.mark.flaky(retries=2)

@@ -22,7 +22,7 @@ import pytest
 from bigframes import exceptions
 from bigframes.ml import core, llm
 import bigframes.pandas as bpd
-from tests.system import utils
+from bigframes.testing import utils
 
 
 @pytest.mark.parametrize(

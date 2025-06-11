@@ -31,7 +31,7 @@ import bigframes.exceptions
 from bigframes.functions import _utils as bff_utils
 from bigframes.functions import function as bff
 import bigframes.session._io.bigquery
-from tests.system.utils import assert_pandas_df_equal, get_function_name
+from bigframes.testing.utils import assert_pandas_df_equal, get_function_name
 
 _prefixer = test_utils.prefixer.Prefixer("bigframes", "")
 

@@ -16,7 +16,7 @@ import pandas as pd
 import pytest
 
 from bigframes.ml import llm
-from tests.system import utils
+from bigframes.testing import utils
 
 
 @pytest.fixture(scope="session")

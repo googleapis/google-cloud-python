@@ -21,7 +21,7 @@ import test_utils.prefixer
 import bigframes
 import bigframes.exceptions as bfe
 import bigframes.pandas as bpd
-from tests.system.utils import cleanup_function_assets
+from bigframes.testing.utils import cleanup_function_assets
 
 prefixer = test_utils.prefixer.Prefixer("bigframes", "")
 

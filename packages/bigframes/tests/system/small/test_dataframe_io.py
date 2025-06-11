@@ -23,7 +23,7 @@ import pyarrow as pa
 import pytest
 
 import bigframes.dtypes as dtypes
-from tests.system import utils
+from bigframes.testing import utils
 
 try:
     import pandas_gbq  # type: ignore

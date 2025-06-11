@@ -19,7 +19,7 @@ import pyarrow as pa
 
 import bigframes.features
 from bigframes.ml import preprocessing
-from tests.system import utils
+from bigframes.testing import utils
 
 ONE_HOT_ENCODED_DTYPE = (
     pd.ArrowDtype(pa.list_(pa.struct([("index", pa.int64()), ("value", pa.float64())])))

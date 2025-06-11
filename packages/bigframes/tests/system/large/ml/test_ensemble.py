@@ -15,7 +15,7 @@
 import pytest
 
 import bigframes.ml.ensemble
-from tests.system import utils
+from bigframes.testing import utils
 
 
 @pytest.mark.flaky(retries=2)

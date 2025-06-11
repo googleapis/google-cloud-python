@@ -16,7 +16,7 @@ import pandas as pd
 
 from bigframes.ml import model_selection
 import bigframes.ml.linear_model
-from tests.system import utils
+from bigframes.testing import utils
 
 
 def test_linear_regression_configure_fit_score(penguins_df_default_index, dataset_id):

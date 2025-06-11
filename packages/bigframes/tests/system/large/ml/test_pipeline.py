@@ -25,7 +25,7 @@ from bigframes.ml import (
     pipeline,
     preprocessing,
 )
-from tests.system import utils
+from bigframes.testing import utils
 
 
 def test_pipeline_linear_regression_fit_score_predict(

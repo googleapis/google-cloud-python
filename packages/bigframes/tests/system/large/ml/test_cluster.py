@@ -15,7 +15,7 @@
 import pandas as pd
 
 from bigframes.ml import cluster
-from tests.system import utils
+from bigframes.testing import utils
 
 
 def test_cluster_configure_fit_score_predict(

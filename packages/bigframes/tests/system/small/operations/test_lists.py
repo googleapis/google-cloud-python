@@ -18,7 +18,7 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from ...utils import assert_series_equal
+from bigframes.testing.utils import assert_series_equal
 
 
 @pytest.mark.parametrize(
