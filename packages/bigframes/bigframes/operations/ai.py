@@ -117,7 +117,8 @@ class AIAccessor:
         attach_logprobs=False,
     ):
         """
-        Maps the DataFrame with the semantics of the user instruction.
+        Maps the DataFrame with the semantics of the user instruction. The name of the keys in the output_schema parameter carry
+        semantic meaning, and can be used for information extraction.
 
         **Examples:**
 
@@ -138,6 +139,22 @@ class AIAccessor:
             <BLANKLINE>
             <BLANKLINE>
             [2 rows x 3 columns]
+
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> bpd.options.experiments.ai_operators = True
+            >>> bpd.options.compute.ai_ops_confirmation_threshold = 25
+
+            >>> import bigframes.ml.llm as llm
+            >>> model = llm.GeminiTextGenerator(model_name="gemini-2.0-flash-001")
+
+            >>> df = bpd.DataFrame({"text": ["Elmo lives at 123 Sesame Street."]})
+            >>> df.ai.map("{text}", model=model, output_schema={"person": "string", "address": "string"})
+                                           text person            address
+            0  Elmo lives at 123 Sesame Street.   Elmo  123 Sesame Street
+            <BLANKLINE>
+            [1 rows x 3 columns]
 
         Args:
             instruction (str):
