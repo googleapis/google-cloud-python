@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.14...google-cloud-bigquery-datapolicies-v0.6.15) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([eea9e6f](https://github.com/googleapis/google-cloud-python/commit/eea9e6f798406fec17a17dfd71e40fbeea42cf6a))
+
 ## [0.6.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.13...google-cloud-bigquery-datapolicies-v0.6.14) (2025-03-15)
 
 

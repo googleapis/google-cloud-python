@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnections-v0.4.17...google-cloud-beyondcorp-appconnections-v0.4.18) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([eea9e6f](https://github.com/googleapis/google-cloud-python/commit/eea9e6f798406fec17a17dfd71e40fbeea42cf6a))
+
 ## [0.4.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnections-v0.4.16...google-cloud-beyondcorp-appconnections-v0.4.17) (2025-03-15)
 
 

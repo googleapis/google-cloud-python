@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.36](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.35...google-cloud-batch-v0.17.36) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([eea9e6f](https://github.com/googleapis/google-cloud-python/commit/eea9e6f798406fec17a17dfd71e40fbeea42cf6a))
+
 ## [0.17.35](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.34...google-cloud-batch-v0.17.35) (2025-03-15)
 
 

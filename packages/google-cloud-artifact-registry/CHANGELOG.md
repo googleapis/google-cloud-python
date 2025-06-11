@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.16.0...google-cloud-artifact-registry-v1.16.1) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([eea9e6f](https://github.com/googleapis/google-cloud-python/commit/eea9e6f798406fec17a17dfd71e40fbeea42cf6a))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.15.2...google-cloud-artifact-registry-v1.16.0) (2025-04-12)
 
 

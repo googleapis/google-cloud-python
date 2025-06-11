@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.2.3...google-cloud-backupdr-v0.2.4) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([eea9e6f](https://github.com/googleapis/google-cloud-python/commit/eea9e6f798406fec17a17dfd71e40fbeea42cf6a))
+
 ## [0.2.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.2.2...google-cloud-backupdr-v0.2.3) (2025-03-15)
 
 
