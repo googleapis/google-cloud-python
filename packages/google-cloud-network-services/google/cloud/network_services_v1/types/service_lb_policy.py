@@ -109,6 +109,7 @@ class ServiceLbPolicy(proto.Message):
             enable (bool):
                 Optional. If set to 'True', an unhealthy
                 IG/NEG will be set as drained.
+
                 - An IG/NEG is considered unhealthy if less than
                   25% of the instances/endpoints in the IG/NEG
                   are healthy.
