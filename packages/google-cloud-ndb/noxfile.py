@@ -29,7 +29,7 @@ import nox
 LOCAL_DEPS = ("google-api-core", "google-cloud-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_INTERPRETER = "3.8"
-ALL_INTERPRETERS = ("3.7", "3.8", "3.9", "3.10", "3.11", "3.12")
+ALL_INTERPRETERS = ("3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 BLACK_VERSION = "black==22.3.0"
@@ -78,7 +78,7 @@ def default(session):
     )
 
 
-@nox.session(python="3.12")
+@nox.session(python="3.13")
 @nox.parametrize(
     "protobuf_implementation",
     ["python", "upb", "cpp"],
@@ -86,7 +86,7 @@ def default(session):
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12"):
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
@@ -283,7 +283,6 @@ def docs(session):
         "sphinx==4.5.0",
         "alabaster",
         "recommonmark",
-        "sphinxcontrib.spelling",
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
@@ -315,7 +314,6 @@ def doctest(session):
         "sphinxcontrib-qthelp==1.0.3",
         "sphinxcontrib-serializinghtml==1.1.5",
         "sphinx==4.0.1",
-        "sphinxcontrib.spelling",
     )
     session.install(".")
     # Run the script for building docs and running doctests.

@@ -15,14 +15,6 @@ s.move(templated_files / '.kokoro')
 s.move(templated_files / '.trampolinerc')
 s.move(templated_files / "renovate.json")
 
-s.replace([".kokoro/publish-docs.sh", ".kokoro/build.sh"], "cd github/python-ndb", 
-"""cd github/python-ndb
-
-# Need enchant for spell check
-sudo apt-get update
-sudo apt-get -y install dictionaries-common aspell aspell-en \\
-                        hunspell-en-us libenchant1c2a enchant""")
-
 s.replace(".kokoro/build.sh", """(export PROJECT_ID=.*)""", """\g<1>
 
 if [[ -f "${KOKORO_GFILE_DIR}/service-account.json" ]]; then
@@ -47,27 +39,6 @@ export GOOGLE_APPLICATION_CREDENTIALS=\$\{KOKORO_GFILE_DIR\}/service-account.jso
   # Setup service account credentials.
   export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 fi"""
-)
-
-s.replace(
-    ".kokoro/docker/docs/Dockerfile",
-    "libsqlite3-dev.*\n",
-    "\g<0>    memcached \\\n"\
-)
-
-s.replace(
-    ".kokoro/docker/docs/Dockerfile",
-    "# Install dependencies.\n",
-    """\g<0># Spell check related
-RUN apt-get update && apt-get install -y dictionaries-common aspell aspell-en \\
-  hunspell-en-us libenchant-2-2 enchant-2
-"""
-)
-
-assert 1 == s.replace(
-    ".kokoro/docs/docs-presubmit.cfg",
-    'value: "docs docfx"',
-    'value: "docs"',
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
