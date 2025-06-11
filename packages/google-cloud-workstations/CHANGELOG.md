@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.14...google-cloud-workstations-v0.5.15) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8066d24](https://github.com/googleapis/google-cloud-python/commit/8066d24068e6d036dcf77e7abb5401a5ba3f8a63))
+
 ## [0.5.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.13...google-cloud-workstations-v0.5.14) (2025-03-15)
 
 

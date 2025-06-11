@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-webrisk-v1.18.0...google-cloud-webrisk-v1.18.1) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([0131a33](https://github.com/googleapis/google-cloud-python/commit/0131a33582f84d9be5ecb1c0ef8b56aa3d9e9cf0))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-webrisk-v1.17.1...google-cloud-webrisk-v1.18.0) (2025-04-12)
 
 
