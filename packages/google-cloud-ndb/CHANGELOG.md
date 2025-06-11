@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.3.4](https://github.com/googleapis/python-ndb/compare/v2.3.3...v2.3.4) (2025-06-11)
+
+
+### Bug Fixes
+
+* Allow protobuf 6.x, allow redis 6.x ([#1013](https://github.com/googleapis/python-ndb/issues/1013)) ([b3684fe](https://github.com/googleapis/python-ndb/commit/b3684fe46c13b5d39deccc456f544b0f6f473d91))
+
 ## [2.3.3](https://github.com/googleapis/python-ndb/compare/v2.3.2...v2.3.3) (2025-05-09)
 
 
