@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.15...google-cloud-contentwarehouse-v0.7.16) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8697120](https://github.com/googleapis/google-cloud-python/commit/869712032803cb31d93f3b16abc2abdb14f733a4))
+
 ## [0.7.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.14...google-cloud-contentwarehouse-v0.7.15) (2025-03-15)
 
 

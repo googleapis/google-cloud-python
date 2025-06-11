@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.31.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.31.1...google-cloud-build-v3.31.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8697120](https://github.com/googleapis/google-cloud-python/commit/869712032803cb31d93f3b16abc2abdb14f733a4))
+
 ## [3.31.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.31.0...google-cloud-build-v3.31.1) (2025-03-15)
 
 

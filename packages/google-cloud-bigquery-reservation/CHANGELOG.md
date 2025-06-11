@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.17.1...google-cloud-bigquery-reservation-v1.17.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([8697120](https://github.com/googleapis/google-cloud-python/commit/869712032803cb31d93f3b16abc2abdb14f733a4))
+
 ## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.17.0...google-cloud-bigquery-reservation-v1.17.1) (2025-03-15)
 
 
