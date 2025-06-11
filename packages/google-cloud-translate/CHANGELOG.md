@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
 
+## [3.20.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.20.2...google-cloud-translate-v3.20.3) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([0131a33](https://github.com/googleapis/google-cloud-python/commit/0131a33582f84d9be5ecb1c0ef8b56aa3d9e9cf0))
+
 ## [3.20.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.20.1...google-cloud-translate-v3.20.2) (2025-03-15)
 
 

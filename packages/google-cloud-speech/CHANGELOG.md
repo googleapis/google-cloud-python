@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.32.0...google-cloud-speech-v2.33.0) (2025-06-11)
+
+
+### Features
+
+* add denoiser related configuration ([c522070](https://github.com/googleapis/google-cloud-python/commit/c522070c02d2120de8772ddcd7de6e40ef64c548))
+
+
+### Documentation
+
+* updated description of sample_rate_hertz ([c522070](https://github.com/googleapis/google-cloud-python/commit/c522070c02d2120de8772ddcd7de6e40ef64c548))
+
 ## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.31.1...google-cloud-speech-v2.32.0) (2025-04-12)
 
 

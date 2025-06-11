@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.28.1...google-cloud-recaptcha-enterprise-v1.28.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([dfc2cd6](https://github.com/googleapis/google-cloud-python/commit/dfc2cd6be6422baa45dcebc5ff6e7fc846bf5c7d))
+
 ## [1.28.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.28.0...google-cloud-recaptcha-enterprise-v1.28.1) (2025-03-19)
 
 
