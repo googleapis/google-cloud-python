@@ -16,18 +16,25 @@
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-eq_op = base_ops.create_binary_op(name="eq", type_signature=op_typing.COMPARISON)
+EqOp = base_ops.create_binary_op(name="eq", type_signature=op_typing.COMPARISON)
+eq_op = EqOp()
 
-eq_null_match_op = base_ops.create_binary_op(
+EqNullsMatchOp = base_ops.create_binary_op(
     name="eq_nulls_match", type_signature=op_typing.COMPARISON
 )
+eq_null_match_op = EqNullsMatchOp()
 
-ne_op = base_ops.create_binary_op(name="ne", type_signature=op_typing.COMPARISON)
+NeOp = base_ops.create_binary_op(name="ne", type_signature=op_typing.COMPARISON)
+ne_op = NeOp()
 
-lt_op = base_ops.create_binary_op(name="lt", type_signature=op_typing.COMPARISON)
+LtOp = base_ops.create_binary_op(name="lt", type_signature=op_typing.COMPARISON)
+lt_op = LtOp()
 
-gt_op = base_ops.create_binary_op(name="gt", type_signature=op_typing.COMPARISON)
+GtOp = base_ops.create_binary_op(name="gt", type_signature=op_typing.COMPARISON)
+gt_op = GtOp()
 
-le_op = base_ops.create_binary_op(name="le", type_signature=op_typing.COMPARISON)
+LeOp = base_ops.create_binary_op(name="le", type_signature=op_typing.COMPARISON)
+le_op = LeOp()
 
-ge_op = base_ops.create_binary_op(name="ge", type_signature=op_typing.COMPARISON)
+GeOp = base_ops.create_binary_op(name="ge", type_signature=op_typing.COMPARISON)
+ge_op = GeOp()

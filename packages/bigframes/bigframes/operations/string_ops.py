@@ -22,60 +22,73 @@ from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-len_op = base_ops.create_unary_op(
+LenOp = base_ops.create_unary_op(
     name="len",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_iterable, dtypes.INT_DTYPE, description="iterable"
     ),
 )
+len_op = LenOp()
 
-reverse_op = base_ops.create_unary_op(
+ReverseOp = base_ops.create_unary_op(
     name="reverse", type_signature=op_typing.STRING_TRANSFORM
 )
+reverse_op = ReverseOp()
 
-lower_op = base_ops.create_unary_op(
+LowerOp = base_ops.create_unary_op(
     name="lower", type_signature=op_typing.STRING_TRANSFORM
 )
+lower_op = LowerOp()
 
-upper_op = base_ops.create_unary_op(
+UpperOp = base_ops.create_unary_op(
     name="upper", type_signature=op_typing.STRING_TRANSFORM
 )
+upper_op = UpperOp()
 
-isalnum_op = base_ops.create_unary_op(
+IsAlnumOp = base_ops.create_unary_op(
     name="isalnum", type_signature=op_typing.STRING_PREDICATE
 )
+isalnum_op = IsAlnumOp()
 
-isalpha_op = base_ops.create_unary_op(
+IsAlphaOp = base_ops.create_unary_op(
     name="isalpha", type_signature=op_typing.STRING_PREDICATE
 )
+isalpha_op = IsAlphaOp()
 
-isdecimal_op = base_ops.create_unary_op(
+IsDecimalOp = base_ops.create_unary_op(
     name="isdecimal", type_signature=op_typing.STRING_PREDICATE
 )
+isdecimal_op = IsDecimalOp()
 
-isdigit_op = base_ops.create_unary_op(
+IsDigitOp = base_ops.create_unary_op(
     name="isdigit", type_signature=op_typing.STRING_PREDICATE
 )
+isdigit_op = IsDigitOp()
 
-isnumeric_op = base_ops.create_unary_op(
+IsNumericOp = base_ops.create_unary_op(
     name="isnumeric", type_signature=op_typing.STRING_PREDICATE
 )
+isnumeric_op = IsNumericOp()
 
-isspace_op = base_ops.create_unary_op(
+IsSpaceOp = base_ops.create_unary_op(
     name="isspace", type_signature=op_typing.STRING_PREDICATE
 )
+isspace_op = IsSpaceOp()
 
-islower_op = base_ops.create_unary_op(
+IsLowerOp = base_ops.create_unary_op(
     name="islower", type_signature=op_typing.STRING_PREDICATE
 )
+islower_op = IsLowerOp()
 
-isupper_op = base_ops.create_unary_op(
+IsUpperOp = base_ops.create_unary_op(
     name="isupper", type_signature=op_typing.STRING_PREDICATE
 )
+isupper_op = IsUpperOp()
 
-capitalize_op = base_ops.create_unary_op(
+CapitalizeOp = base_ops.create_unary_op(
     name="capitalize", type_signature=op_typing.STRING_TRANSFORM
 )
+capitalize_op = CapitalizeOp()
 
 
 @dataclasses.dataclass(frozen=True)

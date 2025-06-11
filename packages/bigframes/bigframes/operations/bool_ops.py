@@ -16,8 +16,11 @@
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-and_op = base_ops.create_binary_op(name="and", type_signature=op_typing.LOGICAL)
+AndOp = base_ops.create_binary_op(name="and", type_signature=op_typing.LOGICAL)
+and_op = AndOp()
 
-or_op = base_ops.create_binary_op(name="or", type_signature=op_typing.LOGICAL)
+OrOp = base_ops.create_binary_op(name="or", type_signature=op_typing.LOGICAL)
+or_op = OrOp()
 
-xor_op = base_ops.create_binary_op(name="xor", type_signature=op_typing.LOGICAL)
+XorOp = base_ops.create_binary_op(name="xor", type_signature=op_typing.LOGICAL)
+xor_op = XorOp()

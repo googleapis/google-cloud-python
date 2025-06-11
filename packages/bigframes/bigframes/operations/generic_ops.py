@@ -20,34 +20,38 @@ from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-invert_op = base_ops.create_unary_op(
+InvertOp = base_ops.create_unary_op(
     name="invert",
     type_signature=op_typing.TypePreserving(
         dtypes.is_binary_like,
         description="binary-like",
     ),
 )
+invert_op = InvertOp()
 
-isnull_op = base_ops.create_unary_op(
+IsNullOp = base_ops.create_unary_op(
     name="isnull",
     type_signature=op_typing.FixedOutputType(
         lambda x: True, dtypes.BOOL_DTYPE, description="nullable"
     ),
 )
+isnull_op = IsNullOp()
 
-notnull_op = base_ops.create_unary_op(
+NotNullOp = base_ops.create_unary_op(
     name="notnull",
     type_signature=op_typing.FixedOutputType(
         lambda x: True, dtypes.BOOL_DTYPE, description="nullable"
     ),
 )
+notnull_op = NotNullOp()
 
-hash_op = base_ops.create_unary_op(
+HashOp = base_ops.create_unary_op(
     name="hash",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_string_like, dtypes.INT_DTYPE, description="string-like"
     ),
 )
+hash_op = HashOp()
 
 
 @dataclasses.dataclass(frozen=True)
@@ -80,15 +84,17 @@ class MapOp(base_ops.UnaryOp):
         return input_types[0]
 
 
-fillna_op = base_ops.create_binary_op(name="fillna", type_signature=op_typing.COERCE)
+FillNaOp = base_ops.create_binary_op(name="fillna", type_signature=op_typing.COERCE)
+fillna_op = FillNaOp()
 
-maximum_op = base_ops.create_binary_op(name="maximum", type_signature=op_typing.COERCE)
+MaximumOp = base_ops.create_binary_op(name="maximum", type_signature=op_typing.COERCE)
+maximum_op = MaximumOp()
 
-minimum_op = base_ops.create_binary_op(name="minimum", type_signature=op_typing.COERCE)
+MinimumOp = base_ops.create_binary_op(name="minimum", type_signature=op_typing.COERCE)
+minimum_op = MinimumOp()
 
-coalesce_op = base_ops.create_binary_op(
-    name="coalesce", type_signature=op_typing.COERCE
-)
+CoalesceOp = base_ops.create_binary_op(name="coalesce", type_signature=op_typing.COERCE)
+coalesce_op = CoalesceOp()
 
 
 @dataclasses.dataclass(frozen=True)

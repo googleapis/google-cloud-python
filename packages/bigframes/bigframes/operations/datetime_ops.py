@@ -22,19 +22,21 @@ from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-date_op = base_ops.create_unary_op(
+DateOp = base_ops.create_unary_op(
     name="date",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_date_like, dtypes.DATE_DTYPE, description="date-like"
     ),
 )
+date_op = DateOp()
 
-time_op = base_ops.create_unary_op(
+TimeOp = base_ops.create_unary_op(
     name="time",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_time_like, dtypes.TIME_DTYPE, description="time-like"
     ),
 )
+time_op = TimeOp()
 
 
 @dataclasses.dataclass(frozen=True)

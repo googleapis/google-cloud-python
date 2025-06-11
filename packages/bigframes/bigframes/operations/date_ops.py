@@ -19,49 +19,58 @@ from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-day_op = base_ops.create_unary_op(
+DayOp = base_ops.create_unary_op(
     name="day",
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
+day_op = DayOp()
 
-month_op = base_ops.create_unary_op(
+MonthOp = base_ops.create_unary_op(
     name="month",
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
+month_op = MonthOp()
 
-year_op = base_ops.create_unary_op(
+YearOp = base_ops.create_unary_op(
     name="year",
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
+year_op = YearOp()
 
-iso_day_op = base_ops.create_unary_op(
+IsoDayOp = base_ops.create_unary_op(
     name="iso_day", type_signature=op_typing.DATELIKE_ACCESSOR
 )
+iso_day_op = IsoDayOp()
 
-iso_week_op = base_ops.create_unary_op(
+IsoWeekOp = base_ops.create_unary_op(
     name="iso_weeek",
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
+iso_week_op = IsoWeekOp()
 
-iso_year_op = base_ops.create_unary_op(
+IsoYearOp = base_ops.create_unary_op(
     name="iso_year",
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
+iso_year_op = IsoYearOp()
 
-dayofweek_op = base_ops.create_unary_op(
+DayOfWeekOp = base_ops.create_unary_op(
     name="dayofweek",
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
+dayofweek_op = DayOfWeekOp()
 
-dayofyear_op = base_ops.create_unary_op(
+DayOfYearOp = base_ops.create_unary_op(
     name="dayofyear",
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
+dayofyear_op = DayOfYearOp()
 
-quarter_op = base_ops.create_unary_op(
+QuarterOp = base_ops.create_unary_op(
     name="quarter",
     type_signature=op_typing.DATELIKE_ACCESSOR,
 )
+quarter_op = QuarterOp()
 
 
 @dataclasses.dataclass(frozen=True)

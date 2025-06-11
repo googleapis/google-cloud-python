@@ -16,14 +16,17 @@
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-cosine_distance_op = base_ops.create_binary_op(
+CosineDistanceOp = base_ops.create_binary_op(
     name="ml_cosine_distance", type_signature=op_typing.VECTOR_METRIC
 )
+cosine_distance_op = CosineDistanceOp()
 
-manhattan_distance_op = base_ops.create_binary_op(
+ManhattanDistanceOp = base_ops.create_binary_op(
     name="ml_manhattan_distance", type_signature=op_typing.VECTOR_METRIC
 )
+manhattan_distance_op = ManhattanDistanceOp()
 
-euclidean_distance_op = base_ops.create_binary_op(
+EuclidDistanceOp = base_ops.create_binary_op(
     name="ml_euclidean_distance", type_signature=op_typing.VECTOR_METRIC
 )
+euclidean_distance_op = EuclidDistanceOp()

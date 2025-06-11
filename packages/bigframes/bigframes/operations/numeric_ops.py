@@ -19,97 +19,118 @@ from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-sin_op = base_ops.create_unary_op(
+SinOp = base_ops.create_unary_op(
     name="sin", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+sin_op = SinOp()
 
-cos_op = base_ops.create_unary_op(
+CosOp = base_ops.create_unary_op(
     name="cos", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+cos_op = CosOp()
 
-tan_op = base_ops.create_unary_op(
+TanOp = base_ops.create_unary_op(
     name="tan", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+tan_op = TanOp()
 
-arcsin_op = base_ops.create_unary_op(
+ArcsinOp = base_ops.create_unary_op(
     name="arcsin", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+arcsin_op = ArcsinOp()
 
-arccos_op = base_ops.create_unary_op(
+ArccosOp = base_ops.create_unary_op(
     name="arccos", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+arccos_op = ArccosOp()
 
-arctan_op = base_ops.create_unary_op(
+ArctanOp = base_ops.create_unary_op(
     name="arctan", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+arctan_op = ArctanOp()
 
-sinh_op = base_ops.create_unary_op(
+SinhOp = base_ops.create_unary_op(
     name="sinh", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+sinh_op = SinhOp()
 
-cosh_op = base_ops.create_unary_op(
+CoshOp = base_ops.create_unary_op(
     name="cosh", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+cosh_op = CoshOp()
 
-tanh_op = base_ops.create_unary_op(
+TanhOp = base_ops.create_unary_op(
     name="tanh", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+tanh_op = TanhOp()
 
-arcsinh_op = base_ops.create_unary_op(
+ArcsinhOp = base_ops.create_unary_op(
     name="arcsinh", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+arcsinh_op = ArcsinhOp()
 
-arccosh_op = base_ops.create_unary_op(
+ArccoshOp = base_ops.create_unary_op(
     name="arccosh", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+arccosh_op = ArccoshOp()
 
-arctanh_op = base_ops.create_unary_op(
+ArctanhOp = base_ops.create_unary_op(
     name="arctanh", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+arctanh_op = ArctanhOp()
 
-floor_op = base_ops.create_unary_op(
+FloorOp = base_ops.create_unary_op(
     name="floor", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+floor_op = FloorOp()
 
-ceil_op = base_ops.create_unary_op(
+CeilOp = base_ops.create_unary_op(
     name="ceil", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+ceil_op = CeilOp()
 
-abs_op = base_ops.create_unary_op(
+AbsOp = base_ops.create_unary_op(
     name="abs", type_signature=op_typing.UNARY_NUMERIC_AND_TIMEDELTA
 )
+abs_op = AbsOp()
 
-pos_op = base_ops.create_unary_op(
+PosOp = base_ops.create_unary_op(
     name="pos", type_signature=op_typing.UNARY_NUMERIC_AND_TIMEDELTA
 )
+pos_op = PosOp()
 
-neg_op = base_ops.create_unary_op(
+NegOp = base_ops.create_unary_op(
     name="neg", type_signature=op_typing.UNARY_NUMERIC_AND_TIMEDELTA
 )
+neg_op = NegOp()
 
-exp_op = base_ops.create_unary_op(
+ExpOp = base_ops.create_unary_op(
     name="exp", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+exp_op = ExpOp()
 
-expm1_op = base_ops.create_unary_op(
+Expm1Op = base_ops.create_unary_op(
     name="expm1", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+expm1_op = Expm1Op()
 
-ln_op = base_ops.create_unary_op(
-    name="log", type_signature=op_typing.UNARY_REAL_NUMERIC
-)
+LnOp = base_ops.create_unary_op(name="log", type_signature=op_typing.UNARY_REAL_NUMERIC)
+ln_op = LnOp()
 
-log10_op = base_ops.create_unary_op(
+Log10Op = base_ops.create_unary_op(
     name="log10", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+log10_op = Log10Op()
 
-log1p_op = base_ops.create_unary_op(
+Log1pOp = base_ops.create_unary_op(
     name="log1p", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+log1p_op = Log1pOp()
 
-sqrt_op = base_ops.create_unary_op(
+SqrtOp = base_ops.create_unary_op(
     name="sqrt", type_signature=op_typing.UNARY_REAL_NUMERIC
 )
+sqrt_op = SqrtOp()
 
 
 @dataclasses.dataclass(frozen=True)
@@ -282,16 +303,20 @@ class ModOp(base_ops.BinaryOp):
 
 mod_op = ModOp()
 
-pow_op = base_ops.create_binary_op(name="pow", type_signature=op_typing.BINARY_NUMERIC)
+PowOp = base_ops.create_binary_op(name="pow", type_signature=op_typing.BINARY_NUMERIC)
+pow_op = PowOp()
 
-arctan2_op = base_ops.create_binary_op(
+Arctan2Op = base_ops.create_binary_op(
     name="arctan2", type_signature=op_typing.BINARY_REAL_NUMERIC
 )
+arctan2_op = Arctan2Op()
 
-round_op = base_ops.create_binary_op(
+RoundOp = base_ops.create_binary_op(
     name="round", type_signature=op_typing.BINARY_NUMERIC
 )
+round_op = RoundOp()
 
-unsafe_pow_op = base_ops.create_binary_op(
+UnsafePowOp = base_ops.create_binary_op(
     name="unsafe_pow_op", type_signature=op_typing.BINARY_REAL_NUMERIC
 )
+unsafe_pow_op = UnsafePowOp()

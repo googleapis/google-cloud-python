@@ -29,6 +29,10 @@ import bigframes.core.rewrite
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+import bigframes.operations.bool_ops as bool_ops
+import bigframes.operations.comparison_ops as comp_ops
+import bigframes.operations.generic_ops as gen_ops
+import bigframes.operations.numeric_ops as num_ops
 
 polars_installed = True
 if TYPE_CHECKING:
@@ -123,84 +127,146 @@ if polars_installed:
             self,
             expression: ex.OpExpression,
         ) -> pl.Expr:
-            # TODO: Complete the implementation, convert to hash dispatch
+            # TODO: Complete the implementation
             op = expression.op
             args = tuple(map(self.compile_expression, expression.inputs))
-            if isinstance(op, ops.invert_op.__class__):
-                return ~args[0]
-            if isinstance(op, ops.and_op.__class__):
-                return args[0] & args[1]
-            if isinstance(op, ops.or_op.__class__):
-                return args[0] | args[1]
-            if isinstance(op, ops.add_op.__class__):
-                return args[0] + args[1]
-            if isinstance(op, ops.sub_op.__class__):
-                return args[0] - args[1]
-            if isinstance(op, ops.mul_op.__class__):
-                return args[0] * args[1]
-            if isinstance(op, ops.div_op.__class__):
-                return args[0] / args[1]
-            if isinstance(op, ops.floordiv_op.__class__):
-                # TODO: Handle int // 0
-                return args[0] // args[1]
-            if isinstance(op, (ops.pow_op.__class__, ops.unsafe_pow_op.__class__)):
-                return args[0] ** args[1]
-            if isinstance(op, ops.abs_op.__class__):
-                return args[0].abs()
-            if isinstance(op, ops.neg_op.__class__):
-                return args[0].neg()
-            if isinstance(op, ops.pos_op.__class__):
-                return args[0]
-            if isinstance(op, ops.ge_op.__class__):
-                return args[0] >= args[1]
-            if isinstance(op, ops.gt_op.__class__):
-                return args[0] > args[1]
-            if isinstance(op, ops.le_op.__class__):
-                return args[0] <= args[1]
-            if isinstance(op, ops.lt_op.__class__):
-                return args[0] < args[1]
-            if isinstance(op, ops.eq_op.__class__):
-                return args[0].eq(args[1])
-            if isinstance(op, ops.eq_null_match_op.__class__):
-                return args[0].eq_missing(args[1])
-            if isinstance(op, ops.ne_op.__class__):
-                return args[0].ne(args[1])
-            if isinstance(op, ops.IsInOp):
-                # TODO: Filter out types that can't be coerced to right type
-                if op.match_nulls or not any(map(pd.isna, op.values)):
-                    # newer polars version have nulls_equal arg
-                    return args[0].is_in(op.values)
-                else:
-                    return args[0].is_in(op.values) or args[0].is_null()
-            if isinstance(op, ops.mod_op.__class__):
-                return args[0] % args[1]
-            if isinstance(op, ops.coalesce_op.__class__):
-                return pl.coalesce(*args)
-            if isinstance(op, ops.fillna_op.__class__):
-                return pl.coalesce(*args)
-            if isinstance(op, ops.isnull_op.__class__):
-                return args[0].is_null()
-            if isinstance(op, ops.notnull_op.__class__):
-                return args[0].is_not_null()
-            if isinstance(op, ops.CaseWhenOp):
-                expr = pl.when(args[0]).then(args[1])
-                for pred, result in zip(args[2::2], args[3::2]):
-                    expr = expr.when(pred).then(result)  # type: ignore
-                return expr
-            if isinstance(op, ops.where_op.__class__):
-                original, condition, otherwise = args
-                return pl.when(condition).then(original).otherwise(otherwise)
-            if isinstance(op, ops.AsTypeOp):
-                return self.astype(args[0], op.to_type, safe=op.safe)
+            return self.compile_op(op, *args)
 
+        @functools.singledispatchmethod
+        def compile_op(self, op: ops.ScalarOp, *args: pl.Expr) -> pl.Expr:
             raise NotImplementedError(f"Polars compiler hasn't implemented {op}")
 
-        def astype(
-            self, col: pl.Expr, dtype: bigframes.dtypes.Dtype, safe: bool
+        @compile_op.register(gen_ops.InvertOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            return ~input
+
+        @compile_op.register(num_ops.AbsOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            return input.abs()
+
+        @compile_op.register(num_ops.PosOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            return input.__pos__()
+
+        @compile_op.register(num_ops.NegOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            return input.__neg__()
+
+        @compile_op.register(bool_ops.AndOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input & r_input
+
+        @compile_op.register(bool_ops.OrOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input | r_input
+
+        @compile_op.register(num_ops.AddOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input + r_input
+
+        @compile_op.register(num_ops.SubOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input - r_input
+
+        @compile_op.register(num_ops.MulOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input * r_input
+
+        @compile_op.register(num_ops.DivOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input / r_input
+
+        @compile_op.register(num_ops.FloorDivOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input // r_input
+
+        @compile_op.register(num_ops.FloorDivOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input // r_input
+
+        @compile_op.register(num_ops.ModOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input % r_input
+
+        @compile_op.register(num_ops.PowOp)
+        @compile_op.register(num_ops.UnsafePowOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input**r_input
+
+        @compile_op.register(comp_ops.EqOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input.eq(r_input)
+
+        @compile_op.register(comp_ops.EqNullsMatchOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input.eq_missing(r_input)
+
+        @compile_op.register(comp_ops.NeOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input.ne(r_input)
+
+        @compile_op.register(comp_ops.GtOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input > r_input
+
+        @compile_op.register(comp_ops.GeOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input >= r_input
+
+        @compile_op.register(comp_ops.LtOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input < r_input
+
+        @compile_op.register(comp_ops.LeOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return l_input <= r_input
+
+        @compile_op.register(gen_ops.IsInOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            # TODO: Filter out types that can't be coerced to right type
+            assert isinstance(op, gen_ops.IsInOp)
+            if op.match_nulls or not any(map(pd.isna, op.values)):
+                # newer polars version have nulls_equal arg
+                return input.is_in(op.values)
+            else:
+                return input.is_in(op.values) or input.is_null()
+
+        @compile_op.register(gen_ops.IsNullOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            return input.is_null()
+
+        @compile_op.register(gen_ops.NotNullOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            return input.is_not_null()
+
+        @compile_op.register(gen_ops.FillNaOp)
+        @compile_op.register(gen_ops.CoalesceOp)
+        def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
+            return pl.coalesce(l_input, r_input)
+
+        @compile_op.register(gen_ops.CaseWhenOp)
+        def _(self, op: ops.ScalarOp, *inputs: pl.Expr) -> pl.Expr:
+            expr = pl.when(inputs[0]).then(inputs[1])
+            for pred, result in zip(inputs[2::2], inputs[3::2]):
+                expr = expr.when(pred).then(result)  # type: ignore
+            return expr
+
+        @compile_op.register(gen_ops.WhereOp)
+        def _(
+            self,
+            op: ops.ScalarOp,
+            original: pl.Expr,
+            condition: pl.Expr,
+            otherwise: pl.Expr,
         ) -> pl.Expr:
+            return pl.when(condition).then(original).otherwise(otherwise)
+
+        @compile_op.register(gen_ops.AsTypeOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, gen_ops.AsTypeOp)
             # TODO: Polars casting works differently, need to lower instead to specific conversion ops.
-            # eg. We want "True" instead of "true" for bool to string.
-            return col.cast(_DTYPE_MAPPING[dtype], strict=not safe)
+            # eg. We want "True" instead of "true" for bool to strin
+            return input.cast(_DTYPE_MAPPING[op.to_type], strict=not op.safe)
 
     @dataclasses.dataclass(frozen=True)
     class PolarsAggregateCompiler:

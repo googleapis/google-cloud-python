@@ -180,7 +180,9 @@ def _convert_expr_input(
 
 
 # Operation Factories
-def create_unary_op(name: str, type_signature: op_typing.UnaryTypeSignature) -> UnaryOp:
+def create_unary_op(
+    name: str, type_signature: op_typing.UnaryTypeSignature
+) -> type[UnaryOp]:
     return dataclasses.make_dataclass(
         name,
         [
@@ -189,12 +191,12 @@ def create_unary_op(name: str, type_signature: op_typing.UnaryTypeSignature) -> 
         ],
         bases=(UnaryOp,),
         frozen=True,
-    )()
+    )
 
 
 def create_binary_op(
     name: str, type_signature: op_typing.BinaryTypeSignature
-) -> BinaryOp:
+) -> type[BinaryOp]:
     return dataclasses.make_dataclass(
         name,
         [
@@ -203,4 +205,4 @@ def create_binary_op(
         ],
         bases=(BinaryOp,),
         frozen=True,
-    )()
+    )

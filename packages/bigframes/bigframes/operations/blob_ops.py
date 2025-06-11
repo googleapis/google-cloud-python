@@ -19,9 +19,10 @@ from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-obj_fetch_metadata_op = base_ops.create_unary_op(
+ObjFetchMetadataOp = base_ops.create_unary_op(
     name="obj_fetch_metadata", type_signature=op_typing.BLOB_TRANSFORM
 )
+obj_fetch_metadata_op = ObjFetchMetadataOp()
 
 
 @dataclasses.dataclass(frozen=True)

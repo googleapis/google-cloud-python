@@ -16,25 +16,29 @@ from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-hour_op = base_ops.create_unary_op(
+HourOp = base_ops.create_unary_op(
     name="hour",
     type_signature=op_typing.TIMELIKE_ACCESSOR,
 )
+hour_op = HourOp()
 
-minute_op = base_ops.create_unary_op(
+MinuteOp = base_ops.create_unary_op(
     name="minute",
     type_signature=op_typing.TIMELIKE_ACCESSOR,
 )
+minute_op = MinuteOp()
 
-second_op = base_ops.create_unary_op(
+SecondOp = base_ops.create_unary_op(
     name="second",
     type_signature=op_typing.TIMELIKE_ACCESSOR,
 )
+second_op = SecondOp()
 
-normalize_op = base_ops.create_unary_op(
+NormalizeOp = base_ops.create_unary_op(
     name="normalize",
     type_signature=op_typing.TypePreserving(
         dtypes.is_time_like,
         description="time-like",
     ),
 )
+normalize_op = NormalizeOp()

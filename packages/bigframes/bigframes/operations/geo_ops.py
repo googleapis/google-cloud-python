@@ -18,66 +18,76 @@ from bigframes import dtypes
 from bigframes.operations import base_ops
 import bigframes.operations.type as op_typing
 
-geo_area_op = base_ops.create_unary_op(
+GeoAreaOp = base_ops.create_unary_op(
     name="geo_area",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_geo_like, dtypes.FLOAT_DTYPE, description="geo-like"
     ),
 )
+geo_area_op = GeoAreaOp()
 
-geo_st_astext_op = base_ops.create_unary_op(
+GeoStAstextOp = base_ops.create_unary_op(
     name="geo_st_astext",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_geo_like, dtypes.STRING_DTYPE, description="geo-like"
     ),
 )
+geo_st_astext_op = GeoStAstextOp()
 
-geo_st_boundary_op = base_ops.create_unary_op(
+GeoStBoundaryOp = base_ops.create_unary_op(
     name="geo_st_boundary",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_geo_like, dtypes.GEO_DTYPE, description="geo-like"
     ),
 )
+geo_st_boundary_op = GeoStBoundaryOp()
 
-geo_st_difference_op = base_ops.create_binary_op(
+GeoStDifferenceOp = base_ops.create_binary_op(
     name="geo_st_difference", type_signature=op_typing.BinaryGeo()
 )
+geo_st_difference_op = GeoStDifferenceOp()
 
-geo_st_geogfromtext_op = base_ops.create_unary_op(
+GeoStGeogfromtextOp = base_ops.create_unary_op(
     name="geo_st_geogfromtext",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_string_like, dtypes.GEO_DTYPE, description="string-like"
     ),
 )
+geo_st_geogfromtext_op = GeoStGeogfromtextOp()
 
-geo_st_geogpoint_op = base_ops.create_binary_op(
+GeoStGeogpointOp = base_ops.create_binary_op(
     name="geo_st_geogpoint", type_signature=op_typing.BinaryNumericGeo()
 )
+geo_st_geogpoint_op = GeoStGeogpointOp()
 
-geo_st_isclosed_op = base_ops.create_unary_op(
+GeoStIsclosedOp = base_ops.create_unary_op(
     name="geo_st_isclosed",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_geo_like, dtypes.BOOL_DTYPE, description="geo-like"
     ),
 )
+geo_st_isclosed_op = GeoStIsclosedOp()
 
-geo_x_op = base_ops.create_unary_op(
+GeoXOp = base_ops.create_unary_op(
     name="geo_x",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_geo_like, dtypes.FLOAT_DTYPE, description="geo-like"
     ),
 )
+geo_x_op = GeoXOp()
 
-geo_y_op = base_ops.create_unary_op(
+GeoYOp = base_ops.create_unary_op(
     name="geo_y",
     type_signature=op_typing.FixedOutputType(
         dtypes.is_geo_like, dtypes.FLOAT_DTYPE, description="geo-like"
     ),
 )
+geo_y_op = GeoYOp()
 
-geo_st_intersection_op = base_ops.create_binary_op(
+GeoStIntersectionOp = base_ops.create_binary_op(
     name="geo_st_intersection", type_signature=op_typing.BinaryGeo()
 )
+geo_st_intersection_op = GeoStIntersectionOp()
 
 
 @dataclasses.dataclass(frozen=True)
