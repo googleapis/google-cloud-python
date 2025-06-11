@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.17...google-cloud-edgenetwork-v0.1.18) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([821bdb1](https://github.com/googleapis/google-cloud-python/commit/821bdb1d108c8e77a7a576557aa95d4b9c943e12))
+
 ## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.16...google-cloud-edgenetwork-v0.1.17) (2025-04-12)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-domains-v1.10.1...google-cloud-domains-v1.10.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([3d5bc37](https://github.com/googleapis/google-cloud-python/commit/3d5bc3782da6b37742ae83802de8a8b6db96fe29))
+
 ## [1.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-domains-v1.10.0...google-cloud-domains-v1.10.1) (2025-03-15)
 
 

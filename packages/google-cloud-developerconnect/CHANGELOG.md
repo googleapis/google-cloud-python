@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.8...google-cloud-developerconnect-v0.1.9) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([3d5bc37](https://github.com/googleapis/google-cloud-python/commit/3d5bc3782da6b37742ae83802de8a8b6db96fe29))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.7...google-cloud-developerconnect-v0.1.8) (2025-03-15)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.18...google-cloud-eventarc-publishing-v0.6.19) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([821bdb1](https://github.com/googleapis/google-cloud-python/commit/821bdb1d108c8e77a7a576557aa95d4b9c943e12))
+
 ## [0.6.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.17...google-cloud-eventarc-publishing-v0.6.18) (2025-03-15)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.20.3...google-cloud-functions-v1.20.4) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([821bdb1](https://github.com/googleapis/google-cloud-python/commit/821bdb1d108c8e77a7a576557aa95d4b9c943e12))
+
 ## [1.20.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.20.2...google-cloud-functions-v1.20.3) (2025-04-12)
 
 
