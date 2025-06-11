@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.18.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.18.1...google-cloud-monitoring-dashboards-v2.18.2) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([868b006](https://github.com/googleapis/google-cloud-python/commit/868b0069baf1a4bf6705986e0b6885419b35cdcc))
+
 ## [2.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.18.0...google-cloud-monitoring-dashboards-v2.18.1) (2025-03-15)
 
 

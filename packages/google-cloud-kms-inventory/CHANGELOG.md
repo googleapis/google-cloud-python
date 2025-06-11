@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.14...google-cloud-kms-inventory-v0.2.15) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([821bdb1](https://github.com/googleapis/google-cloud-python/commit/821bdb1d108c8e77a7a576557aa95d4b9c943e12))
+
 ## [0.2.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.13...google-cloud-kms-inventory-v0.2.14) (2025-03-15)
 
 

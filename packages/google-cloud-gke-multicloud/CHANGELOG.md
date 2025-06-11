@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.20...google-cloud-gke-multicloud-v0.6.21) (2025-06-11)
+
+
+### Documentation
+
+* Update import statement example in README ([821bdb1](https://github.com/googleapis/google-cloud-python/commit/821bdb1d108c8e77a7a576557aa95d4b9c943e12))
+
 ## [0.6.20](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.19...google-cloud-gke-multicloud-v0.6.20) (2025-03-15)
 
 
