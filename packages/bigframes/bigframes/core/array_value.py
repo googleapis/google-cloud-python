@@ -403,8 +403,23 @@ class ArrayValue:
         never_skip_nulls: will disable null skipping for operators that would otherwise do so
         skip_reproject_unsafe: skips the reprojection step, can be used when performing many non-dependent window operations, user responsible for not nesting window expressions, or using outputs as join, filter or aggregation keys before a reprojection
         """
+
+        return self.project_window_expr(
+            ex.UnaryAggregation(op, ex.deref(column_name)),
+            window_spec,
+            never_skip_nulls,
+            skip_reproject_unsafe,
+        )
+
+    def project_window_expr(
+        self,
+        expression: ex.Aggregation,
+        window: WindowSpec,
+        never_skip_nulls=False,
+        skip_reproject_unsafe: bool = False,
+    ):
         # TODO: Support non-deterministic windowing
-        if window_spec.is_row_bounded or not op.order_independent:
+        if window.is_row_bounded or not expression.op.order_independent:
             if self.node.order_ambiguous and not self.session._strictly_ordered:
                 if not self.session._allows_ambiguity:
                     raise ValueError(
@@ -415,14 +430,13 @@ class ArrayValue:
                         "Window ordering may be ambiguous, this can cause unstable results."
                     )
                     warnings.warn(msg, category=bfe.AmbiguousWindowWarning)
-
         output_name = self._gen_namespaced_uid()
         return (
             ArrayValue(
                 nodes.WindowOpNode(
                     child=self.node,
-                    expression=ex.UnaryAggregation(op, ex.deref(column_name)),
-                    window_spec=window_spec,
+                    expression=expression,
+                    window_spec=window,
                     output_name=ids.ColumnId(output_name),
                     never_skip_nulls=never_skip_nulls,
                     skip_reproject_unsafe=skip_reproject_unsafe,

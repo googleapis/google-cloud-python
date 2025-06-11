@@ -718,7 +718,6 @@ class GroupBy:
     def cumcount(self, ascending: bool = True):
         """
         Number each item in each group from 0 to the length of that group - 1.
-        (DataFrameGroupBy functionality is not yet available.)
 
         **Examples:**
 

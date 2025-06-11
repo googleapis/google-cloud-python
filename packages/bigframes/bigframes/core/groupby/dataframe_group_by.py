@@ -276,6 +276,27 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return self._aggregate_all(agg_ops.nunique_op)
 
     @validations.requires_ordering()
+    def cumcount(self, ascending: bool = True) -> series.Series:
+        window_spec = (
+            window_specs.cumulative_rows(grouping_keys=tuple(self._by_col_ids))
+            if ascending
+            else window_specs.inverse_cumulative_rows(
+                grouping_keys=tuple(self._by_col_ids)
+            )
+        )
+        block, result_id = self._block.apply_analytic(
+            ex.NullaryAggregation(agg_ops.size_op),
+            window=window_spec,
+            result_label=None,
+        )
+        result = series.Series(block.select_column(result_id)) - 1
+        if self._dropna and (len(self._by_col_ids) == 1):
+            result = result.mask(
+                series.Series(block.select_column(self._by_col_ids[0])).isna()
+            )
+        return result
+
+    @validations.requires_ordering()
     def cumsum(self, *args, numeric_only: bool = False, **kwargs) -> df.DataFrame:
         if not numeric_only:
             self._raise_on_non_numeric("cumsum")
@@ -546,10 +567,12 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         )
         columns, _ = self._aggregated_columns(numeric_only=numeric_only)
         block, result_ids = self._block.multi_apply_window_op(
-            columns, op, window_spec=window_spec
+            columns,
+            op,
+            window_spec=window_spec,
         )
-        block = block.select_columns(result_ids)
-        return df.DataFrame(block)
+        result = df.DataFrame(block.select_columns(result_ids))
+        return result
 
     def _resolve_label(self, label: blocks.Label) -> str:
         """Resolve label to column id."""

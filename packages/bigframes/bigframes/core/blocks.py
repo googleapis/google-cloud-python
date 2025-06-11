@@ -1013,15 +1013,33 @@ class Block:
         skip_reproject_unsafe: bool = False,
         never_skip_nulls: bool = False,
     ) -> typing.Tuple[Block, str]:
+        agg_expr = ex.UnaryAggregation(op, ex.deref(column))
+        return self.apply_analytic(
+            agg_expr,
+            window_spec,
+            result_label,
+            skip_reproject_unsafe=skip_reproject_unsafe,
+            never_skip_nulls=never_skip_nulls,
+            skip_null_groups=skip_null_groups,
+        )
+
+    def apply_analytic(
+        self,
+        agg_expr: ex.Aggregation,
+        window: windows.WindowSpec,
+        result_label: Label,
+        *,
+        skip_reproject_unsafe: bool = False,
+        never_skip_nulls: bool = False,
+        skip_null_groups: bool = False,
+    ) -> typing.Tuple[Block, str]:
         block = self
         if skip_null_groups:
-            for key in window_spec.grouping_keys:
-                block, not_null_id = block.apply_unary_op(key.id.name, ops.notnull_op)
-                block = block.filter_by_id(not_null_id).drop_columns([not_null_id])
-        expr, result_id = block._expr.project_window_op(
-            column,
-            op,
-            window_spec,
+            for key in window.grouping_keys:
+                block = block.filter(ops.notnull_op.as_expr(key.id.name))
+        expr, result_id = block._expr.project_window_expr(
+            agg_expr,
+            window,
             skip_reproject_unsafe=skip_reproject_unsafe,
             never_skip_nulls=never_skip_nulls,
         )

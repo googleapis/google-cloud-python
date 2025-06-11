@@ -383,14 +383,14 @@ def test_dataframe_groupby_multi_sum(
 
 
 @pytest.mark.parametrize(
-    ("operator"),
+    ("operator", "dropna"),
     [
-        (lambda x: x.cumsum(numeric_only=True)),
-        (lambda x: x.cummax(numeric_only=True)),
-        (lambda x: x.cummin(numeric_only=True)),
+        (lambda x: x.cumsum(numeric_only=True), True),
+        (lambda x: x.cummax(numeric_only=True), True),
+        (lambda x: x.cummin(numeric_only=True), False),
         # Pre-pandas 2.2 doesn't always proeduce float.
-        (lambda x: x.cumprod().astype("Float64")),
-        (lambda x: x.shift(periods=2)),
+        (lambda x: x.cumprod().astype("Float64"), False),
+        (lambda x: x.shift(periods=2), True),
     ],
     ids=[
         "cumsum",
@@ -401,14 +401,42 @@ def test_dataframe_groupby_multi_sum(
     ],
 )
 def test_dataframe_groupby_analytic(
-    scalars_df_index, scalars_pandas_df_index, operator
+    scalars_df_index,
+    scalars_pandas_df_index,
+    operator,
+    dropna,
 ):
     col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
-    bf_result = operator(scalars_df_index[col_names].groupby("string_col"))
-    pd_result = operator(scalars_pandas_df_index[col_names].groupby("string_col"))
+    bf_result = operator(
+        scalars_df_index[col_names].groupby("string_col", dropna=dropna)
+    )
+    pd_result = operator(
+        scalars_pandas_df_index[col_names].groupby("string_col", dropna=dropna)
+    )
     bf_result_computed = bf_result.to_pandas()
 
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("ascending", "dropna"),
+    [
+        (True, True),
+        (False, False),
+    ],
+)
+def test_dataframe_groupby_cumcount(
+    scalars_df_index, scalars_pandas_df_index, ascending, dropna
+):
+    bf_result = scalars_df_index.groupby("string_col", dropna=dropna).cumcount(
+        ascending
+    )
+    pd_result = scalars_pandas_df_index.groupby("string_col", dropna=dropna).cumcount(
+        ascending
+    )
+    bf_result_computed = bf_result.to_pandas()
+
+    pd.testing.assert_series_equal(pd_result, bf_result_computed, check_dtype=False)
 
 
 def test_dataframe_groupby_size_as_index_false(
