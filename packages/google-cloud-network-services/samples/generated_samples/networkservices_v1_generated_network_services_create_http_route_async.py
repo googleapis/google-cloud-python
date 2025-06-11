@@ -40,7 +40,6 @@ async def sample_create_http_route():
 
     # Initialize request argument(s)
     http_route = network_services_v1.HttpRoute()
-    http_route.name = "name_value"
     http_route.hostnames = ['hostnames_value1', 'hostnames_value2']
 
     request = network_services_v1.CreateHttpRouteRequest(

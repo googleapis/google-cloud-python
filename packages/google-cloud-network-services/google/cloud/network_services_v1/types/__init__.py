@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import EndpointMatcher, OperationMetadata, TrafficPortSelector
+from .common import (
+    EndpointMatcher,
+    EnvoyHeaders,
+    OperationMetadata,
+    TrafficPortSelector,
+)
 from .dep import (
     CreateLbRouteExtensionRequest,
     CreateLbTrafficExtensionRequest,
@@ -78,6 +83,16 @@ from .mesh import (
     Mesh,
     UpdateMeshRequest,
 )
+from .route_view import (
+    GatewayRouteView,
+    GetGatewayRouteViewRequest,
+    GetMeshRouteViewRequest,
+    ListGatewayRouteViewsRequest,
+    ListGatewayRouteViewsResponse,
+    ListMeshRouteViewsRequest,
+    ListMeshRouteViewsResponse,
+    MeshRouteView,
+)
 from .service_binding import (
     CreateServiceBindingRequest,
     DeleteServiceBindingRequest,
@@ -85,6 +100,16 @@ from .service_binding import (
     ListServiceBindingsRequest,
     ListServiceBindingsResponse,
     ServiceBinding,
+    UpdateServiceBindingRequest,
+)
+from .service_lb_policy import (
+    CreateServiceLbPolicyRequest,
+    DeleteServiceLbPolicyRequest,
+    GetServiceLbPolicyRequest,
+    ListServiceLbPoliciesRequest,
+    ListServiceLbPoliciesResponse,
+    ServiceLbPolicy,
+    UpdateServiceLbPolicyRequest,
 )
 from .tcp_route import (
     CreateTcpRouteRequest,
@@ -109,6 +134,7 @@ __all__ = (
     "EndpointMatcher",
     "OperationMetadata",
     "TrafficPortSelector",
+    "EnvoyHeaders",
     "CreateLbRouteExtensionRequest",
     "CreateLbTrafficExtensionRequest",
     "DeleteLbRouteExtensionRequest",
@@ -161,12 +187,28 @@ __all__ = (
     "ListMeshesResponse",
     "Mesh",
     "UpdateMeshRequest",
+    "GatewayRouteView",
+    "GetGatewayRouteViewRequest",
+    "GetMeshRouteViewRequest",
+    "ListGatewayRouteViewsRequest",
+    "ListGatewayRouteViewsResponse",
+    "ListMeshRouteViewsRequest",
+    "ListMeshRouteViewsResponse",
+    "MeshRouteView",
     "CreateServiceBindingRequest",
     "DeleteServiceBindingRequest",
     "GetServiceBindingRequest",
     "ListServiceBindingsRequest",
     "ListServiceBindingsResponse",
     "ServiceBinding",
+    "UpdateServiceBindingRequest",
+    "CreateServiceLbPolicyRequest",
+    "DeleteServiceLbPolicyRequest",
+    "GetServiceLbPolicyRequest",
+    "ListServiceLbPoliciesRequest",
+    "ListServiceLbPoliciesResponse",
+    "ServiceLbPolicy",
+    "UpdateServiceLbPolicyRequest",
     "CreateTcpRouteRequest",
     "DeleteTcpRouteRequest",
     "GetTcpRouteRequest",

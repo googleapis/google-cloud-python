@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
@@ -41,7 +42,8 @@ class TlsRoute(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the TlsRoute resource. It matches pattern
+            Identifier. Name of the TlsRoute resource. It matches
+            pattern
             ``projects/*/locations/global/tlsRoutes/tls_route_name>``.
         self_link (str):
             Output only. Server-defined URL of this
@@ -77,6 +79,9 @@ class TlsRoute(proto.Message):
 
             Each gateway reference should match the pattern:
             ``projects/*/locations/global/gateways/<gateway_name>``
+        labels (MutableMapping[str, str]):
+            Optional. Set of label tags associated with
+            the TlsRoute resource.
     """
 
     class RouteRule(proto.Message):
@@ -88,6 +93,7 @@ class TlsRoute(proto.Message):
                 Required. RouteMatch defines the predicate
                 used to match requests to a given action.
                 Multiple match types are "OR"ed for evaluation.
+                Atleast one RouteMatch must be supplied.
             action (google.cloud.network_services_v1.types.TlsRoute.RouteAction):
                 Required. The detailed rule defining how to
                 route matched traffic.
@@ -107,8 +113,6 @@ class TlsRoute(proto.Message):
     class RouteMatch(proto.Message):
         r"""RouteMatch defines the predicate used to match requests to a
         given action. Multiple match types are "AND"ed for evaluation.
-        If no routeMatch field is specified, this rule will
-        unconditionally match traffic.
 
         Attributes:
             sni_host (MutableSequence[str]):
@@ -118,7 +122,7 @@ class TlsRoute(proto.Message):
                 ``www.example.com``, then ``*.example.com``, then ``*.com.``
                 Partial wildcards are not supported, and values like
                 \*w.example.com are invalid. At least one of sni_host and
-                alpn is required. Up to 5 sni hosts across all matches can
+                alpn is required. Up to 100 sni hosts across all matches can
                 be set.
             alpn (MutableSequence[str]):
                 Optional. ALPN (Application-Layer Protocol Negotiation) to
@@ -145,6 +149,14 @@ class TlsRoute(proto.Message):
                 Required. The destination services to which
                 traffic should be forwarded. At least one
                 destination service is required.
+            idle_timeout (google.protobuf.duration_pb2.Duration):
+                Optional. Specifies the idle timeout for the
+                selected route. The idle timeout is defined as
+                the period in which there are no bytes sent or
+                received on either the upstream or downstream
+                connection. If not set, the default idle timeout
+                is 1 hour. If set to 0s, the timeout will be
+                disabled.
         """
 
         destinations: MutableSequence[
@@ -153,6 +165,11 @@ class TlsRoute(proto.Message):
             proto.MESSAGE,
             number=1,
             message="TlsRoute.RouteDestination",
+        )
+        idle_timeout: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=duration_pb2.Duration,
         )
 
     class RouteDestination(proto.Message):
@@ -163,7 +180,7 @@ class TlsRoute(proto.Message):
                 Required. The URL of a BackendService to
                 route traffic to.
             weight (int):
-                Optional. Specifies the proportion of requests forwareded to
+                Optional. Specifies the proportion of requests forwarded to
                 the backend referenced by the service_name field. This is
                 computed as:
 
@@ -215,6 +232,11 @@ class TlsRoute(proto.Message):
         proto.STRING,
         number=7,
     )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=11,
+    )
 
 
 class ListTlsRoutesRequest(proto.Message):
@@ -233,6 +255,12 @@ class ListTlsRoutesRequest(proto.Message):
             Indicates that this is a continuation of a prior
             ``ListTlsRoutes`` call, and that the system should return
             the next page of data.
+        return_partial_success (bool):
+            Optional. If true, allow partial responses
+            for multi-regional Aggregated List requests.
+            Otherwise if one of the locations is down or
+            unreachable, the Aggregated List request will
+            fail.
     """
 
     parent: str = proto.Field(
@@ -247,6 +275,10 @@ class ListTlsRoutesRequest(proto.Message):
         proto.STRING,
         number=3,
     )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListTlsRoutesResponse(proto.Message):
@@ -260,6 +292,11 @@ class ListTlsRoutesResponse(proto.Message):
             response, then ``next_page_token`` is included. To get the
             next set of results, call this method again using the value
             of ``next_page_token`` as ``page_token``.
+        unreachable (MutableSequence[str]):
+            Unreachable resources. Populated when the request opts into
+            [return_partial_success][google.cloud.networkservices.v1.ListTlsRoutesRequest.return_partial_success]
+            and reading across collections e.g. when attempting to list
+            all resources across all supported locations.
     """
 
     @property
@@ -274,6 +311,10 @@ class ListTlsRoutesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

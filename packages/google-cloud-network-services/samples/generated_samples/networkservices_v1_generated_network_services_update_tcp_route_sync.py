@@ -39,11 +39,7 @@ def sample_update_tcp_route():
     client = network_services_v1.NetworkServicesClient()
 
     # Initialize request argument(s)
-    tcp_route = network_services_v1.TcpRoute()
-    tcp_route.name = "name_value"
-
     request = network_services_v1.UpdateTcpRouteRequest(
-        tcp_route=tcp_route,
     )
 
     # Make the request

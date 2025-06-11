@@ -40,7 +40,6 @@ async def sample_update_endpoint_policy():
 
     # Initialize request argument(s)
     endpoint_policy = network_services_v1.EndpointPolicy()
-    endpoint_policy.name = "name_value"
     endpoint_policy.type_ = "GRPC_SERVER"
 
     request = network_services_v1.UpdateEndpointPolicyRequest(

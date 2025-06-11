@@ -39,11 +39,7 @@ def sample_update_mesh():
     client = network_services_v1.NetworkServicesClient()
 
     # Initialize request argument(s)
-    mesh = network_services_v1.Mesh()
-    mesh.name = "name_value"
-
     request = network_services_v1.UpdateMeshRequest(
-        mesh=mesh,
     )
 
     # Make the request

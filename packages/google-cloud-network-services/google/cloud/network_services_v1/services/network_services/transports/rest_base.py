@@ -30,6 +30,9 @@ from google.cloud.network_services_v1.types import (
 from google.cloud.network_services_v1.types import (
     service_binding as gcn_service_binding,
 )
+from google.cloud.network_services_v1.types import (
+    service_lb_policy as gcn_service_lb_policy,
+)
 from google.cloud.network_services_v1.types import endpoint_policy
 from google.cloud.network_services_v1.types import gateway
 from google.cloud.network_services_v1.types import gateway as gcn_gateway
@@ -39,7 +42,9 @@ from google.cloud.network_services_v1.types import http_route
 from google.cloud.network_services_v1.types import http_route as gcn_http_route
 from google.cloud.network_services_v1.types import mesh
 from google.cloud.network_services_v1.types import mesh as gcn_mesh
+from google.cloud.network_services_v1.types import route_view
 from google.cloud.network_services_v1.types import service_binding
+from google.cloud.network_services_v1.types import service_lb_policy
 from google.cloud.network_services_v1.types import tcp_route
 from google.cloud.network_services_v1.types import tcp_route as gcn_tcp_route
 from google.cloud.network_services_v1.types import tls_route
@@ -464,6 +469,65 @@ class _BaseNetworkServicesRestTransport(NetworkServicesTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseCreateServiceLbPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "serviceLbPolicyId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/serviceLbPolicies",
+                    "body": "service_lb_policy",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = gcn_service_lb_policy.CreateServiceLbPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseCreateServiceLbPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseCreateTcpRoute:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -864,6 +928,53 @@ class _BaseNetworkServicesRestTransport(NetworkServicesTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseDeleteServiceLbPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/serviceLbPolicies/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = service_lb_policy.DeleteServiceLbPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseDeleteServiceLbPolicy._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseDeleteTcpRoute:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -1052,6 +1163,53 @@ class _BaseNetworkServicesRestTransport(NetworkServicesTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseGetGatewayRouteView:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/gateways/*/routeViews/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = route_view.GetGatewayRouteViewRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseGetGatewayRouteView._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseGetGrpcRoute:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -1193,6 +1351,53 @@ class _BaseNetworkServicesRestTransport(NetworkServicesTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseGetMeshRouteView:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/meshes/*/routeViews/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = route_view.GetMeshRouteViewRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseGetMeshRouteView._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseGetServiceBinding:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -1233,6 +1438,53 @@ class _BaseNetworkServicesRestTransport(NetworkServicesTransport):
             )
             query_params.update(
                 _BaseNetworkServicesRestTransport._BaseGetServiceBinding._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseGetServiceLbPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/serviceLbPolicies/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = service_lb_policy.GetServiceLbPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseGetServiceLbPolicy._get_unset_required_fields(
                     query_params
                 )
             )
@@ -1374,6 +1626,53 @@ class _BaseNetworkServicesRestTransport(NetworkServicesTransport):
             )
             query_params.update(
                 _BaseNetworkServicesRestTransport._BaseListEndpointPolicies._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseListGatewayRouteViews:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/gateways/*}/routeViews",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = route_view.ListGatewayRouteViewsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseListGatewayRouteViews._get_unset_required_fields(
                     query_params
                 )
             )
@@ -1569,6 +1868,53 @@ class _BaseNetworkServicesRestTransport(NetworkServicesTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseListMeshRouteViews:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/meshes/*}/routeViews",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = route_view.ListMeshRouteViewsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseListMeshRouteViews._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseListServiceBindings:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -1609,6 +1955,53 @@ class _BaseNetworkServicesRestTransport(NetworkServicesTransport):
             )
             query_params.update(
                 _BaseNetworkServicesRestTransport._BaseListServiceBindings._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseListServiceLbPolicies:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/serviceLbPolicies",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = service_lb_policy.ListServiceLbPoliciesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseListServiceLbPolicies._get_unset_required_fields(
                     query_params
                 )
             )
@@ -1988,6 +2381,120 @@ class _BaseNetworkServicesRestTransport(NetworkServicesTransport):
             )
             query_params.update(
                 _BaseNetworkServicesRestTransport._BaseUpdateMesh._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseUpdateServiceBinding:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{service_binding.name=projects/*/locations/*/serviceBindings/*}",
+                    "body": "service_binding",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = gcn_service_binding.UpdateServiceBindingRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseUpdateServiceBinding._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseUpdateServiceLbPolicy:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{service_lb_policy.name=projects/*/locations/*/serviceLbPolicies/*}",
+                    "body": "service_lb_policy",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = gcn_service_lb_policy.UpdateServiceLbPolicyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseNetworkServicesRestTransport._BaseUpdateServiceLbPolicy._get_unset_required_fields(
                     query_params
                 )
             )

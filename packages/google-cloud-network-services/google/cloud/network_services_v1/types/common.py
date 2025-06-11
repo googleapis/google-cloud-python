@@ -23,11 +23,33 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.networkservices.v1",
     manifest={
+        "EnvoyHeaders",
         "OperationMetadata",
         "TrafficPortSelector",
         "EndpointMatcher",
     },
 )
+
+
+class EnvoyHeaders(proto.Enum):
+    r"""EnvoyHeader configuration for Mesh and Gateway
+
+    Values:
+        ENVOY_HEADERS_UNSPECIFIED (0):
+            Defaults to NONE.
+        NONE (1):
+            Suppress envoy debug headers.
+        DEBUG_HEADERS (2):
+            Envoy will insert default internal debug
+            headers into upstream requests:
+            x-envoy-attempt-count x-envoy-is-timeout-retry
+            x-envoy-expected-rq-timeout-ms
+            x-envoy-original-path
+            x-envoy-upstream-stream-duration-ms
+    """
+    ENVOY_HEADERS_UNSPECIFIED = 0
+    NONE = 1
+    DEBUG_HEADERS = 2
 
 
 class OperationMetadata(proto.Message):
@@ -154,7 +176,8 @@ class EndpointMatcher(proto.Message):
 
                 If there is more than one best match, (for example, if a
                 config P4 with selector <A:1,D:1> exists and if a client
-                with label <A:1,B:1,D:1> connects), an error will be thrown.
+                with label <A:1,B:1,D:1> connects), pick up the one with
+                older creation time.
             metadata_labels (MutableSequence[google.cloud.network_services_v1.types.EndpointMatcher.MetadataLabelMatcher.MetadataLabels]):
                 The list of label value pairs that must match labels in the
                 provided metadata based on filterMatchCriteria This list can
