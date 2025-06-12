@@ -56,7 +56,15 @@ class TestDtype(base.BaseDtypeTests):
 
 
 class TestGetitem(base.BaseGetitemTests):
-    pass
+    def test_take_pandas_style_negative_raises(self, data, na_value):
+        # This test was failing compliance checks because it attempted to match
+        # a pytest regex match using an empty string (""), which pytest version
+        # 8.4.0 stopped allowing.
+        # The test has been updated in pandas main so that it will
+        # no longer fail, but the fix is not expected to be released until
+        # at least pandas version 3.0 (current version is 2.3).
+        with pytest.raises(ValueError):
+            data.take([0, -2], fill_value=na_value, allow_fill=True)
 
 
 class TestGroupby(base.BaseGroupbyTests):
@@ -68,7 +76,26 @@ class TestIndex(base.BaseIndexTests):
 
 
 class TestInterface(base.BaseInterfaceTests):
-    pass
+    def test_array_interface_copy(self, data):
+        # This test was failing compliance checks due to changes in how
+        # numpy handles processing when np.array(obj, copy=False).
+        # Until pandas changes the existing tests, this compliance test
+        # will continue to fail.
+        import numpy as np
+        from pandas.compat.numpy import np_version_gt2
+
+        result_copy1 = np.array(data, copy=True)
+        result_copy2 = np.array(data, copy=True)
+        assert not np.may_share_memory(result_copy1, result_copy2)
+
+        if not np_version_gt2:
+            # copy=False semantics are only supported in NumPy>=2.
+            return
+
+        with pytest.raises(ValueError):
+            result_nocopy1 = np.array(data, copy=False)
+            result_nocopy2 = np.array(data, copy=False)
+            assert np.may_share_memory(result_nocopy1, result_nocopy2)
 
 
 class TestMissing(base.BaseMissingTests):
@@ -95,6 +122,21 @@ class TestMethods(base.BaseMethodsTests):
 
         tm.assert_series_equal(result, expected)
 
+    def test_argmax_argmin_no_skipna_notimplemented(self, data_missing_for_sorting):
+        # This test was failing compliance checks because it attempted to match
+        # a pytest regex match using an empty string (""), which pytest version
+        # 8.4.0 stopped allowing.
+        # The test has been updated in pandas main so that it will
+        # no longer fail, but the fix is not expected to be released until
+        # at least pandas version 3.0 (current version is 2.3)
+        data = data_missing_for_sorting
+
+        with pytest.raises(NotImplementedError):
+            data.argmin(skipna=False)
+
+        with pytest.raises(NotImplementedError):
+            data.argmax(skipna=False)
+
 
 class TestParsing(base.BaseParsingTests):
     pass
@@ -109,4 +151,15 @@ class TestReshaping(base.BaseReshapingTests):
 
 
 class TestSetitem(base.BaseSetitemTests):
-    pass
+    def test_setitem_invalid(self, data, invalid_scalar):
+        # This test was failing compliance checks because it attempted to match
+        # a pytest regex match using an empty string (""), which pytest version
+        # 8.4.0 stopped allowing.
+        # The test has been updated in pandas main so that it will
+        # no longer fail, but the fix is not expected to be released until
+        # at least pandas version 3.0 (current version is 2.3)
+        with pytest.raises((ValueError, TypeError)):
+            data[0] = invalid_scalar
+
+        with pytest.raises((ValueError, TypeError)):
+            data[:] = invalid_scalar
