@@ -138,9 +138,15 @@
             "extra-files": [
                 "google/apps/events_subscriptions/gapic_version.py",
                 "google/apps/events_subscriptions_v1/gapic_version.py",
+                "google/apps/events_subscriptions_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.apps.events.subscriptions.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.apps.events.subscriptions.v1beta.json",
                     "type": "json"
                 }
             ],
