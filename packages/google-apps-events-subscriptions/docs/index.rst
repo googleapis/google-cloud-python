@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Google Workspace Events API.
+By default, you will get version ``events_subscriptions_v1``.
+
 
 API Reference
 -------------
@@ -10,6 +13,14 @@ API Reference
 
     events_subscriptions_v1/services_
     events_subscriptions_v1/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    events_subscriptions_v1beta/services_
+    events_subscriptions_v1beta/types_
 
 
 Changelog
