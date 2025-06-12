@@ -1342,7 +1342,7 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
     # For upfront convenience, the following set up has been statically created
     # in the project bigfrmames-dev-perf via cloud console:
     #
-    # 1. Create a service account as per
+    # 1. Create a service account bigframes-dev-perf-1@bigframes-dev-perf.iam.gserviceaccount.com as per
     #    https://cloud.google.com/iam/docs/service-accounts-create#iam-service-accounts-create-console
     # 2. Give necessary roles as per
     #    https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration
@@ -1375,6 +1375,80 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
             name=square_num.bigframes_cloud_function
         )
         assert gcf.service_config.service_account_email == gcf_service_account
+
+        # assert that the function works as expected on data
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_col"]
+        bf_result_col = bf_int64_col.apply(square_num)
+        bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
+
+        pd_int64_col = scalars_pandas_df["int64_col"]
+        pd_result_col = pd_int64_col.apply(lambda x: x if x is None else x * x)
+        pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
+
+        assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_function_assets(
+            square_num, rf_session.bqclient, rf_session.cloudfunctionsclient
+        )
+
+
+@pytest.mark.parametrize(
+    ("set_build_service_account"),
+    [
+        pytest.param(
+            "projects/bigframes-dev-perf/serviceAccounts/bigframes-dev-perf-1@bigframes-dev-perf.iam.gserviceaccount.com",
+            id="fully-qualified-sa",
+        ),
+        pytest.param(
+            "bigframes-dev-perf-1@bigframes-dev-perf.iam.gserviceaccount.com",
+            id="just-sa-email",
+        ),
+    ],
+)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_via_session_custom_build_sa(
+    scalars_dfs, set_build_service_account
+):
+    # TODO(shobs): Automate the following set-up during testing in the test project.
+    #
+    # For upfront convenience, the following set up has been statically created
+    # in the project bigfrmames-dev-perf via cloud console:
+    #
+    # 1. Create a service account bigframes-dev-perf-1@bigframes-dev-perf.iam.gserviceaccount.com as per
+    #    https://cloud.google.com/iam/docs/service-accounts-create#iam-service-accounts-create-console
+    # 2. Give "Cloud Build Service Account (roles/cloudbuild.builds.builder)" role as per
+    #    https://cloud.google.com/build/docs/cloud-build-service-account#default_permissions_of_the_legacy_service_account
+    #
+    project = "bigframes-dev-perf"
+    expected_build_service_account = "projects/bigframes-dev-perf/serviceAccounts/bigframes-dev-perf-1@bigframes-dev-perf.iam.gserviceaccount.com"
+
+    rf_session = bigframes.Session(context=bigframes.BigQueryOptions(project=project))
+
+    try:
+
+        # TODO(shobs): Figure out why the default ingress setting
+        # (internal-only) does not work here
+        @rf_session.remote_function(
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+            cloud_build_service_account=set_build_service_account,
+            cloud_function_ingress_settings="all",
+        )
+        def square_num(x):
+            if x is None:
+                return x
+            return x * x
+
+        # assert that the GCF is created with the intended SA
+        gcf = rf_session.cloudfunctionsclient.get_function(
+            name=square_num.bigframes_cloud_function
+        )
+        assert gcf.build_config.service_account == expected_build_service_account
 
         # assert that the function works as expected on data
         scalars_df, scalars_pandas_df = scalars_dfs

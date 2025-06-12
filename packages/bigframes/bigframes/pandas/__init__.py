@@ -89,6 +89,7 @@ def remote_function(
     cloud_function_ingress_settings: Literal[
         "all", "internal-only", "internal-and-gclb"
     ] = "internal-only",
+    cloud_build_service_account: Optional[str] = None,
 ):
     return global_session.with_default_session(
         bigframes.session.Session.remote_function,
@@ -108,6 +109,7 @@ def remote_function(
         cloud_function_vpc_connector=cloud_function_vpc_connector,
         cloud_function_memory_mib=cloud_function_memory_mib,
         cloud_function_ingress_settings=cloud_function_ingress_settings,
+        cloud_build_service_account=cloud_build_service_account,
     )
 
 

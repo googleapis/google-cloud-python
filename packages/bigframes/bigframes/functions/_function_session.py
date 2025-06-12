@@ -263,6 +263,7 @@ class FunctionSession:
         cloud_function_ingress_settings: Literal[
             "all", "internal-only", "internal-and-gclb"
         ] = "internal-only",
+        cloud_build_service_account: Optional[str] = None,
     ):
         """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -453,6 +454,16 @@ class FunctionSession:
                 If no setting is provided, `internal-only` will be used by default.
                 See for more details
                 https://cloud.google.com/functions/docs/networking/network-settings#ingress_settings.
+            cloud_build_service_account (str, Optional):
+                Service account in the fully qualified format
+                `projects/PROJECT_ID/serviceAccounts/SERVICE_ACCOUNT_EMAIL`, or
+                just the SERVICE_ACCOUNT_EMAIL. The latter would be interpreted
+                as belonging to the BigQuery DataFrames session project. This is
+                to be used by Cloud Build to build the function source code into
+                a deployable artifact. If not provided, the default Cloud Build
+                service account is used. See
+                https://cloud.google.com/build/docs/cloud-build-service-account
+                for more details.
         """
         # Some defaults may be used from the session if not provided otherwise.
         session = self._resolve_session(session)
@@ -599,6 +610,7 @@ class FunctionSession:
                 else cloud_function_service_account,
                 cloud_function_kms_key_name,
                 cloud_function_docker_repository,
+                cloud_build_service_account=cloud_build_service_account,
                 session=session,  # type: ignore
             )
 
