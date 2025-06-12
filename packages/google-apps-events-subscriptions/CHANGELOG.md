@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.2.1...google-apps-events-subscriptions-v0.2.2) (2025-06-12)
+
+
+### Features
+
+* add google.apps.events_subscriptions_v1beta ([f4c0d3d](https://github.com/googleapis/google-cloud-python/commit/f4c0d3d60194735d7d07b67673099ef0431f8728))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.2.0...google-apps-events-subscriptions-v0.2.1) (2025-06-03)
 
 
