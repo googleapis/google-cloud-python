@@ -1,4 +1,3 @@
-
 import time
 
 import test_proxy_pb2
@@ -59,7 +58,6 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
 
         return wrapper
 
-
     @delegate_to_client_handler
     def CreateClient(self, request, context, client_response=None):
         return test_proxy_pb2.CreateClientResponse()
@@ -80,7 +78,7 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
             status = Status(code=5, message=client_response["error"])
         else:
             rows = [data_pb2.Row(**d) for d in client_response]
-        result = test_proxy_pb2.RowsResult(row=rows, status=status)
+        result = test_proxy_pb2.RowsResult(rows=rows, status=status)
         return result
 
     @delegate_to_client_handler
@@ -88,7 +86,10 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
         status = Status()
         row = None
         if isinstance(client_response, dict) and "error" in client_response:
-            status=Status(code=client_response.get("code", 5), message=client_response.get("error"))
+            status = Status(
+                code=client_response.get("code", 5),
+                message=client_response.get("error"),
+            )
         elif client_response != "None":
             row = data_pb2.Row(**client_response)
         result = test_proxy_pb2.RowResult(row=row, status=status)
@@ -98,7 +99,9 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
     def MutateRow(self, request, context, client_response=None):
         status = Status()
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(code=client_response.get("code", 5), message=client_response["error"])
+            status = Status(
+                code=client_response.get("code", 5), message=client_response["error"]
+            )
         return test_proxy_pb2.MutateRowResult(status=status)
 
     @delegate_to_client_handler
@@ -106,22 +109,36 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
         status = Status()
         entries = []
         if isinstance(client_response, dict) and "error" in client_response:
-            entries = [bigtable_pb2.MutateRowsResponse.Entry(index=exc_dict.get("index",1), status=Status(code=exc_dict.get("code", 5))) for exc_dict in client_response.get("subexceptions", [])]
+            entries = [
+                bigtable_pb2.MutateRowsResponse.Entry(
+                    index=exc_dict.get("index", 1),
+                    status=Status(code=exc_dict.get("code", 5)),
+                )
+                for exc_dict in client_response.get("subexceptions", [])
+            ]
             if not entries:
                 # only return failure on the overall request if there are failed entries
-                status = Status(code=client_response.get("code", 5), message=client_response["error"])
-        # TODO: protos were updated. entry is now entries: https://github.com/googleapis/cndb-client-testing-protos/commit/e6205a2bba04acc10d12421a1402870b4a525fb3
-        response = test_proxy_pb2.MutateRowsResult(status=status, entry=entries)
+                status = Status(
+                    code=client_response.get("code", 5),
+                    message=client_response["error"],
+                )
+        response = test_proxy_pb2.MutateRowsResult(status=status, entries=entries)
         return response
 
     @delegate_to_client_handler
     def CheckAndMutateRow(self, request, context, client_response=None):
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(code=client_response.get("code", 5), message=client_response["error"])
+            status = Status(
+                code=client_response.get("code", 5), message=client_response["error"]
+            )
             response = test_proxy_pb2.CheckAndMutateRowResult(status=status)
         else:
-            result = bigtable_pb2.CheckAndMutateRowResponse(predicate_matched=client_response)
-            response = test_proxy_pb2.CheckAndMutateRowResult(result=result, status=Status())
+            result = bigtable_pb2.CheckAndMutateRowResponse(
+                predicate_matched=client_response
+            )
+            response = test_proxy_pb2.CheckAndMutateRowResult(
+                result=result, status=Status()
+            )
         return response
 
     @delegate_to_client_handler
@@ -129,7 +146,10 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
         status = Status()
         row = None
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(code=client_response.get("code", 5), message=client_response.get("error"))
+            status = Status(
+                code=client_response.get("code", 5),
+                message=client_response.get("error"),
+            )
         elif client_response != "None":
             row = data_pb2.Row(**client_response)
         result = test_proxy_pb2.RowResult(row=row, status=status)
@@ -140,9 +160,26 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
         status = Status()
         sample_list = []
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(code=client_response.get("code", 5), message=client_response.get("error"))
+            status = Status(
+                code=client_response.get("code", 5),
+                message=client_response.get("error"),
+            )
         else:
             for sample in client_response:
-                sample_list.append(bigtable_pb2.SampleRowKeysResponse(offset_bytes=sample[1], row_key=sample[0]))
-        # TODO: protos were updated. sample is now samples: https://github.com/googleapis/cndb-client-testing-protos/commit/e6205a2bba04acc10d12421a1402870b4a525fb3
-        return test_proxy_pb2.SampleRowKeysResult(status=status, sample=sample_list)
+                sample_list.append(
+                    bigtable_pb2.SampleRowKeysResponse(
+                        offset_bytes=sample[1], row_key=sample[0]
+                    )
+                )
+        return test_proxy_pb2.SampleRowKeysResult(status=status, samples=sample_list)
+
+    @delegate_to_client_handler
+    def ExecuteQuery(self, request, context, client_response=None):
+        if isinstance(client_response, dict) and "error" in client_response:
+            return test_proxy_pb2.ExecuteQueryResult(
+                status=Status(code=13, message=client_response["error"])
+            )
+        else:
+            return test_proxy_pb2.ExecuteQueryResult(
+                metadata=client_response["metadata"], rows=client_response["rows"]
+            )
