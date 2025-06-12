@@ -19,6 +19,7 @@ import os
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.cloud.bigtable.data import BigtableDataClientAsync
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from helpers import sql_encoding_helpers
 
 if not CrossSync.is_async:
     from client_handler_data_async import error_safe
@@ -32,6 +33,7 @@ def error_safe(func):
     Catch and pass errors back to the grpc_server_process
     Also check if client is closed before processing requests
     """
+
     async def wrapper(self, *args, **kwargs):
         try:
             if self.closed:
@@ -50,6 +52,7 @@ def encode_exception(exc):
     Encode an exception or chain of exceptions to pass back to grpc_handler
     """
     from google.api_core.exceptions import GoogleAPICallError
+
     error_msg = f"{type(exc).__name__}: {exc}"
     result = {"error": error_msg}
     if exc.__cause__:
@@ -113,7 +116,9 @@ class TestProxyClientHandlerAsync:
         table_id = request.pop("table_name").split("/")[-1]
         app_profile_id = self.app_profile_id or request.get("app_profile_id", None)
         table = self.client.get_table(self.instance_id, table_id, app_profile_id)
-        kwargs["operation_timeout"] = kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        kwargs["operation_timeout"] = (
+            kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        )
         result_list = CrossSync.rm_aio(await table.read_rows(request, **kwargs))
         # pack results back into protobuf-parsable format
         serialized_response = [row._to_dict() for row in result_list]
@@ -124,7 +129,9 @@ class TestProxyClientHandlerAsync:
         table_id = kwargs.pop("table_name").split("/")[-1]
         app_profile_id = self.app_profile_id or kwargs.get("app_profile_id", None)
         table = self.client.get_table(self.instance_id, table_id, app_profile_id)
-        kwargs["operation_timeout"] = kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        kwargs["operation_timeout"] = (
+            kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        )
         result_row = CrossSync.rm_aio(await table.read_row(row_key, **kwargs))
         # pack results back into protobuf-parsable format
         if result_row:
@@ -135,10 +142,13 @@ class TestProxyClientHandlerAsync:
     @error_safe
     async def MutateRow(self, request, **kwargs):
         from google.cloud.bigtable.data.mutations import Mutation
+
         table_id = request["table_name"].split("/")[-1]
         app_profile_id = self.app_profile_id or request.get("app_profile_id", None)
         table = self.client.get_table(self.instance_id, table_id, app_profile_id)
-        kwargs["operation_timeout"] = kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        kwargs["operation_timeout"] = (
+            kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        )
         row_key = request["row_key"]
         mutations = [Mutation._from_dict(d) for d in request["mutations"]]
         CrossSync.rm_aio(await table.mutate_row(row_key, mutations, **kwargs))
@@ -147,21 +157,29 @@ class TestProxyClientHandlerAsync:
     @error_safe
     async def BulkMutateRows(self, request, **kwargs):
         from google.cloud.bigtable.data.mutations import RowMutationEntry
+
         table_id = request["table_name"].split("/")[-1]
         app_profile_id = self.app_profile_id or request.get("app_profile_id", None)
         table = self.client.get_table(self.instance_id, table_id, app_profile_id)
-        kwargs["operation_timeout"] = kwargs.get("operation_timeout", self.per_operation_timeout) or 20
-        entry_list = [RowMutationEntry._from_dict(entry) for entry in request["entries"]]
+        kwargs["operation_timeout"] = (
+            kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        )
+        entry_list = [
+            RowMutationEntry._from_dict(entry) for entry in request["entries"]
+        ]
         CrossSync.rm_aio(await table.bulk_mutate_rows(entry_list, **kwargs))
         return "OK"
 
     @error_safe
     async def CheckAndMutateRow(self, request, **kwargs):
         from google.cloud.bigtable.data.mutations import Mutation, SetCell
+
         table_id = request["table_name"].split("/")[-1]
         app_profile_id = self.app_profile_id or request.get("app_profile_id", None)
         table = self.client.get_table(self.instance_id, table_id, app_profile_id)
-        kwargs["operation_timeout"] = kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        kwargs["operation_timeout"] = (
+            kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        )
         row_key = request["row_key"]
         # add default values for incomplete dicts, so they can still be parsed to objects
         true_mutations = []
@@ -180,33 +198,44 @@ class TestProxyClientHandlerAsync:
                 # invalid mutation type. Conformance test may be sending generic empty request
                 false_mutations.append(SetCell("", "", "", 0))
         predicate_filter = request.get("predicate_filter", None)
-        result = CrossSync.rm_aio(await table.check_and_mutate_row(
-            row_key,
-            predicate_filter,
-            true_case_mutations=true_mutations,
-            false_case_mutations=false_mutations,
-            **kwargs,
-        ))
+        result = CrossSync.rm_aio(
+            await table.check_and_mutate_row(
+                row_key,
+                predicate_filter,
+                true_case_mutations=true_mutations,
+                false_case_mutations=false_mutations,
+                **kwargs,
+            )
+        )
         return result
 
     @error_safe
     async def ReadModifyWriteRow(self, request, **kwargs):
         from google.cloud.bigtable.data.read_modify_write_rules import IncrementRule
         from google.cloud.bigtable.data.read_modify_write_rules import AppendValueRule
+
         table_id = request["table_name"].split("/")[-1]
         app_profile_id = self.app_profile_id or request.get("app_profile_id", None)
         table = self.client.get_table(self.instance_id, table_id, app_profile_id)
-        kwargs["operation_timeout"] = kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        kwargs["operation_timeout"] = (
+            kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        )
         row_key = request["row_key"]
         rules = []
         for rule_dict in request.get("rules", []):
             qualifier = rule_dict["column_qualifier"]
             if "append_value" in rule_dict:
-                new_rule = AppendValueRule(rule_dict["family_name"], qualifier, rule_dict["append_value"])
+                new_rule = AppendValueRule(
+                    rule_dict["family_name"], qualifier, rule_dict["append_value"]
+                )
             else:
-                new_rule = IncrementRule(rule_dict["family_name"], qualifier, rule_dict["increment_amount"])
+                new_rule = IncrementRule(
+                    rule_dict["family_name"], qualifier, rule_dict["increment_amount"]
+                )
             rules.append(new_rule)
-        result = CrossSync.rm_aio(await table.read_modify_write_row(row_key, rules, **kwargs))
+        result = CrossSync.rm_aio(
+            await table.read_modify_write_row(row_key, rules, **kwargs)
+        )
         # pack results back into protobuf-parsable format
         if result:
             return result._to_dict()
@@ -218,6 +247,55 @@ class TestProxyClientHandlerAsync:
         table_id = request["table_name"].split("/")[-1]
         app_profile_id = self.app_profile_id or request.get("app_profile_id", None)
         table = self.client.get_table(self.instance_id, table_id, app_profile_id)
-        kwargs["operation_timeout"] = kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        kwargs["operation_timeout"] = (
+            kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        )
         result = CrossSync.rm_aio(await table.sample_row_keys(**kwargs))
         return result
+
+    @error_safe
+    async def ExecuteQuery(self, request, **kwargs):
+        app_profile_id = self.app_profile_id or request.get("app_profile_id", None)
+        query = request.get("query")
+        params = request.get("params") or {}
+        # Note that the request has been coverted to json, and the code for this converts
+        # query param names to snake case. convert_params reverses this conversion. For this
+        # reason, snake case params will have issues if they're used in the conformance tests.
+        formatted_params, parameter_types = sql_encoding_helpers.convert_params(params)
+        operation_timeout = (
+            kwargs.get("operation_timeout", self.per_operation_timeout) or 20
+        )
+        result = CrossSync.rm_aio(
+            await self.client.execute_query(
+                query,
+                self.instance_id,
+                parameters=formatted_params,
+                parameter_types=parameter_types,
+                app_profile_id=app_profile_id,
+                operation_timeout=operation_timeout,
+                prepare_operation_timeout=operation_timeout,
+            )
+        )
+        rows = [r async for r in result]
+        md = result.metadata
+        proto_rows = []
+        for r in rows:
+            vals = []
+            for c in md.columns:
+                vals.append(sql_encoding_helpers.convert_value(c.column_type, r[c.column_name]))
+
+            proto_rows.append({"values": vals})
+
+        proto_columns = []
+        for c in md.columns:
+            proto_columns.append(
+                {
+                    "name": c.column_name,
+                    "type": sql_encoding_helpers.convert_type(c.column_type),
+                }
+            )
+
+        return {
+            "metadata": {"columns": proto_columns},
+            "rows": proto_rows,
+        }
