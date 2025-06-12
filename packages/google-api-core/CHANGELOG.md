@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.25.1](https://github.com/googleapis/python-api-core/compare/v2.25.0...v2.25.1) (2025-06-02)
+
+
+### Bug Fixes
+
+* Allow BackgroundConsumer To Inform Caller of Fatal Exceptions with Optional Callback ([3206c01](https://github.com/googleapis/python-api-core/commit/3206c0170dda80a613bf257ebcf3b78c1a20465f))
+
 ## [2.25.0](https://github.com/googleapis/python-api-core/compare/v2.24.2...v2.25.0) (2025-05-06)
 
 
