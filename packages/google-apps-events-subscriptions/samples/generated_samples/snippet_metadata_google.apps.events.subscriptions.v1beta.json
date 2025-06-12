@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.apps.events.subscriptions.v1",
-        "version": "v1"
+        "id": "google.apps.events.subscriptions.v1beta",
+        "version": "v1beta"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient",
           "shortName": "SubscriptionsServiceAsyncClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient.create_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient.create_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.CreateSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.CreateSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "CreateSubscription"
@@ -31,11 +31,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.CreateSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.CreateSubscriptionRequest"
           },
           {
             "name": "subscription",
-            "type": "google.apps.events_subscriptions_v1.types.Subscription"
+            "type": "google.apps.events_subscriptions_v1beta.types.Subscription"
           },
           {
             "name": "retry",
@@ -54,10 +54,10 @@
         "shortName": "create_subscription"
       },
       "description": "Sample for CreateSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_create_subscription_async.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_create_subscription_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_CreateSubscription_async",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_CreateSubscription_async",
       "segments": [
         {
           "end": 60,
@@ -90,20 +90,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_create_subscription_async.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_create_subscription_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient",
           "shortName": "SubscriptionsServiceClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient.create_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient.create_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.CreateSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.CreateSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "CreateSubscription"
@@ -111,11 +111,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.CreateSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.CreateSubscriptionRequest"
           },
           {
             "name": "subscription",
-            "type": "google.apps.events_subscriptions_v1.types.Subscription"
+            "type": "google.apps.events_subscriptions_v1beta.types.Subscription"
           },
           {
             "name": "retry",
@@ -134,10 +134,10 @@
         "shortName": "create_subscription"
       },
       "description": "Sample for CreateSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_create_subscription_sync.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_create_subscription_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_CreateSubscription_sync",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_CreateSubscription_sync",
       "segments": [
         {
           "end": 60,
@@ -170,21 +170,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_create_subscription_sync.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_create_subscription_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient",
           "shortName": "SubscriptionsServiceAsyncClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient.delete_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient.delete_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.DeleteSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.DeleteSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "DeleteSubscription"
@@ -192,7 +192,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.DeleteSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.DeleteSubscriptionRequest"
           },
           {
             "name": "name",
@@ -215,10 +215,10 @@
         "shortName": "delete_subscription"
       },
       "description": "Sample for DeleteSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_delete_subscription_async.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_delete_subscription_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_DeleteSubscription_async",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_DeleteSubscription_async",
       "segments": [
         {
           "end": 55,
@@ -251,20 +251,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_delete_subscription_async.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_delete_subscription_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient",
           "shortName": "SubscriptionsServiceClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient.delete_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient.delete_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.DeleteSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.DeleteSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "DeleteSubscription"
@@ -272,7 +272,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.DeleteSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.DeleteSubscriptionRequest"
           },
           {
             "name": "name",
@@ -295,10 +295,10 @@
         "shortName": "delete_subscription"
       },
       "description": "Sample for DeleteSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_delete_subscription_sync.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_delete_subscription_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_DeleteSubscription_sync",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_DeleteSubscription_sync",
       "segments": [
         {
           "end": 55,
@@ -331,21 +331,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_delete_subscription_sync.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_delete_subscription_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient",
           "shortName": "SubscriptionsServiceAsyncClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient.get_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient.get_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.GetSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.GetSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "GetSubscription"
@@ -353,7 +353,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.GetSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.GetSubscriptionRequest"
           },
           {
             "name": "name",
@@ -372,14 +372,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.apps.events_subscriptions_v1.types.Subscription",
+        "resultType": "google.apps.events_subscriptions_v1beta.types.Subscription",
         "shortName": "get_subscription"
       },
       "description": "Sample for GetSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_get_subscription_async.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_get_subscription_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_GetSubscription_async",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_GetSubscription_async",
       "segments": [
         {
           "end": 51,
@@ -412,20 +412,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_get_subscription_async.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_get_subscription_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient",
           "shortName": "SubscriptionsServiceClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient.get_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient.get_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.GetSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.GetSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "GetSubscription"
@@ -433,7 +433,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.GetSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.GetSubscriptionRequest"
           },
           {
             "name": "name",
@@ -452,14 +452,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.apps.events_subscriptions_v1.types.Subscription",
+        "resultType": "google.apps.events_subscriptions_v1beta.types.Subscription",
         "shortName": "get_subscription"
       },
       "description": "Sample for GetSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_get_subscription_sync.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_get_subscription_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_GetSubscription_sync",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_GetSubscription_sync",
       "segments": [
         {
           "end": 51,
@@ -492,21 +492,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_get_subscription_sync.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_get_subscription_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient",
           "shortName": "SubscriptionsServiceAsyncClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient.list_subscriptions",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient.list_subscriptions",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.ListSubscriptions",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.ListSubscriptions",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "ListSubscriptions"
@@ -514,7 +514,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.ListSubscriptionsRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.ListSubscriptionsRequest"
           },
           {
             "name": "filter",
@@ -533,14 +533,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.apps.events_subscriptions_v1.services.subscriptions_service.pagers.ListSubscriptionsAsyncPager",
+        "resultType": "google.apps.events_subscriptions_v1beta.services.subscriptions_service.pagers.ListSubscriptionsAsyncPager",
         "shortName": "list_subscriptions"
       },
       "description": "Sample for ListSubscriptions",
-      "file": "workspaceevents_v1_generated_subscriptions_service_list_subscriptions_async.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_list_subscriptions_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_ListSubscriptions_async",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_ListSubscriptions_async",
       "segments": [
         {
           "end": 52,
@@ -573,20 +573,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_list_subscriptions_async.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_list_subscriptions_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient",
           "shortName": "SubscriptionsServiceClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient.list_subscriptions",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient.list_subscriptions",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.ListSubscriptions",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.ListSubscriptions",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "ListSubscriptions"
@@ -594,7 +594,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.ListSubscriptionsRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.ListSubscriptionsRequest"
           },
           {
             "name": "filter",
@@ -613,14 +613,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.apps.events_subscriptions_v1.services.subscriptions_service.pagers.ListSubscriptionsPager",
+        "resultType": "google.apps.events_subscriptions_v1beta.services.subscriptions_service.pagers.ListSubscriptionsPager",
         "shortName": "list_subscriptions"
       },
       "description": "Sample for ListSubscriptions",
-      "file": "workspaceevents_v1_generated_subscriptions_service_list_subscriptions_sync.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_list_subscriptions_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_ListSubscriptions_sync",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_ListSubscriptions_sync",
       "segments": [
         {
           "end": 52,
@@ -653,21 +653,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_list_subscriptions_sync.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_list_subscriptions_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient",
           "shortName": "SubscriptionsServiceAsyncClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient.reactivate_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient.reactivate_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.ReactivateSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.ReactivateSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "ReactivateSubscription"
@@ -675,7 +675,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.ReactivateSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.ReactivateSubscriptionRequest"
           },
           {
             "name": "name",
@@ -698,10 +698,10 @@
         "shortName": "reactivate_subscription"
       },
       "description": "Sample for ReactivateSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_reactivate_subscription_async.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_reactivate_subscription_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_ReactivateSubscription_async",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_ReactivateSubscription_async",
       "segments": [
         {
           "end": 55,
@@ -734,20 +734,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_reactivate_subscription_async.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_reactivate_subscription_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient",
           "shortName": "SubscriptionsServiceClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient.reactivate_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient.reactivate_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.ReactivateSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.ReactivateSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "ReactivateSubscription"
@@ -755,7 +755,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.ReactivateSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.ReactivateSubscriptionRequest"
           },
           {
             "name": "name",
@@ -778,10 +778,10 @@
         "shortName": "reactivate_subscription"
       },
       "description": "Sample for ReactivateSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_reactivate_subscription_sync.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_reactivate_subscription_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_ReactivateSubscription_sync",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_ReactivateSubscription_sync",
       "segments": [
         {
           "end": 55,
@@ -814,21 +814,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_reactivate_subscription_sync.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_reactivate_subscription_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient",
           "shortName": "SubscriptionsServiceAsyncClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceAsyncClient.update_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceAsyncClient.update_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.UpdateSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.UpdateSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "UpdateSubscription"
@@ -836,11 +836,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.UpdateSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.UpdateSubscriptionRequest"
           },
           {
             "name": "subscription",
-            "type": "google.apps.events_subscriptions_v1.types.Subscription"
+            "type": "google.apps.events_subscriptions_v1beta.types.Subscription"
           },
           {
             "name": "update_mask",
@@ -863,10 +863,10 @@
         "shortName": "update_subscription"
       },
       "description": "Sample for UpdateSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_update_subscription_async.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_update_subscription_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_UpdateSubscription_async",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_UpdateSubscription_async",
       "segments": [
         {
           "end": 60,
@@ -899,20 +899,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_update_subscription_async.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_update_subscription_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient",
+          "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient",
           "shortName": "SubscriptionsServiceClient"
         },
-        "fullName": "google.apps.events_subscriptions_v1.SubscriptionsServiceClient.update_subscription",
+        "fullName": "google.apps.events_subscriptions_v1beta.SubscriptionsServiceClient.update_subscription",
         "method": {
-          "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService.UpdateSubscription",
+          "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService.UpdateSubscription",
           "service": {
-            "fullName": "google.apps.events.subscriptions.v1.SubscriptionsService",
+            "fullName": "google.apps.events.subscriptions.v1beta.SubscriptionsService",
             "shortName": "SubscriptionsService"
           },
           "shortName": "UpdateSubscription"
@@ -920,11 +920,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.apps.events_subscriptions_v1.types.UpdateSubscriptionRequest"
+            "type": "google.apps.events_subscriptions_v1beta.types.UpdateSubscriptionRequest"
           },
           {
             "name": "subscription",
-            "type": "google.apps.events_subscriptions_v1.types.Subscription"
+            "type": "google.apps.events_subscriptions_v1beta.types.Subscription"
           },
           {
             "name": "update_mask",
@@ -947,10 +947,10 @@
         "shortName": "update_subscription"
       },
       "description": "Sample for UpdateSubscription",
-      "file": "workspaceevents_v1_generated_subscriptions_service_update_subscription_sync.py",
+      "file": "workspaceevents_v1beta_generated_subscriptions_service_update_subscription_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "workspaceevents_v1_generated_SubscriptionsService_UpdateSubscription_sync",
+      "regionTag": "workspaceevents_v1beta_generated_SubscriptionsService_UpdateSubscription_sync",
       "segments": [
         {
           "end": 60,
@@ -983,7 +983,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "workspaceevents_v1_generated_subscriptions_service_update_subscription_sync.py"
+      "title": "workspaceevents_v1beta_generated_subscriptions_service_update_subscription_sync.py"
     }
   ]
 }
