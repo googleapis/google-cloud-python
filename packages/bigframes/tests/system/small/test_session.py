@@ -146,9 +146,7 @@ def test_read_gbq_w_unknown_column(
 ):
     with pytest.raises(
         ValueError,
-        match=re.escape(
-            "Column 'int63_col' of `columns` not found in this table. Did you mean 'int64_col'?"
-        ),
+        match=re.escape("Column 'int63_col' is not found. Did you mean 'int64_col'?"),
     ):
         session.read_gbq(
             scalars_table_id,
@@ -1363,6 +1361,132 @@ def test_read_csv_for_names_and_index_col(
     pd.testing.assert_frame_equal(
         bf_df.to_pandas(), pd_df.to_pandas(), check_index_type=False
     )
+
+
+@pytest.mark.parametrize(
+    "usecols",
+    [
+        pytest.param(["a", "b", "c"], id="same"),
+        pytest.param(["a", "c"], id="less_than_names"),
+    ],
+)
+def test_read_csv_for_names_and_usecols(
+    session, usecols, df_and_gcs_csv_for_two_columns
+):
+    _, path = df_and_gcs_csv_for_two_columns
+
+    names = ["a", "b", "c"]
+    bf_df = session.read_csv(path, engine="bigquery", names=names, usecols=usecols)
+
+    # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+    pd_df = session.read_csv(
+        path, names=names, usecols=usecols, dtype=bf_df.dtypes.to_dict()
+    )
+
+    assert bf_df.shape == pd_df.shape
+    assert bf_df.columns.tolist() == pd_df.columns.tolist()
+
+    # BigFrames requires `sort_index()` because BigQuery doesn't preserve row IDs
+    # (b/280889935) or guarantee row ordering.
+    bf_df = bf_df.set_index(names[0]).sort_index()
+    pd_df = pd_df.set_index(names[0])
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+
+
+def test_read_csv_for_names_and_invalid_usecols(
+    session, df_and_gcs_csv_for_two_columns
+):
+    _, path = df_and_gcs_csv_for_two_columns
+
+    names = ["a", "b", "c"]
+    usecols = ["a", "X"]
+    with pytest.raises(
+        ValueError,
+        match=re.escape("Column 'X' is not found. "),
+    ):
+        session.read_csv(path, engine="bigquery", names=names, usecols=usecols)
+
+
+@pytest.mark.parametrize(
+    ("usecols", "index_col"),
+    [
+        pytest.param(["a", "b", "c"], "a", id="same"),
+        pytest.param(["a", "b", "c"], ["a", "b"], id="same_two_index"),
+        pytest.param(["a", "c"], 0, id="less_than_names"),
+    ],
+)
+def test_read_csv_for_names_and_usecols_and_indexcol(
+    session, usecols, index_col, df_and_gcs_csv_for_two_columns
+):
+    _, path = df_and_gcs_csv_for_two_columns
+
+    names = ["a", "b", "c"]
+    bf_df = session.read_csv(
+        path, engine="bigquery", names=names, usecols=usecols, index_col=index_col
+    )
+
+    # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+    pd_df = session.read_csv(
+        path,
+        names=names,
+        usecols=usecols,
+        index_col=index_col,
+        dtype=bf_df.reset_index().dtypes.to_dict(),
+    )
+
+    assert bf_df.shape == pd_df.shape
+    assert bf_df.columns.tolist() == pd_df.columns.tolist()
+
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+
+
+def test_read_csv_for_names_less_than_columns_and_same_usecols(
+    session, df_and_gcs_csv_for_two_columns
+):
+    _, path = df_and_gcs_csv_for_two_columns
+    names = ["a", "c"]
+    usecols = ["a", "c"]
+    bf_df = session.read_csv(path, engine="bigquery", names=names, usecols=usecols)
+
+    # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+    pd_df = session.read_csv(
+        path, names=names, usecols=usecols, dtype=bf_df.dtypes.to_dict()
+    )
+
+    assert bf_df.shape == pd_df.shape
+    assert bf_df.columns.tolist() == pd_df.columns.tolist()
+
+    # BigFrames requires `sort_index()` because BigQuery doesn't preserve row IDs
+    # (b/280889935) or guarantee row ordering.
+    bf_df = bf_df.set_index(names[0]).sort_index()
+    pd_df = pd_df.set_index(names[0])
+    pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df.to_pandas())
+
+
+def test_read_csv_for_names_less_than_columns_and_mismatched_usecols(
+    session, df_and_gcs_csv_for_two_columns
+):
+    _, path = df_and_gcs_csv_for_two_columns
+    names = ["a", "b"]
+    usecols = ["a"]
+    with pytest.raises(
+        ValueError,
+        match=re.escape("Number of passed names did not match number"),
+    ):
+        session.read_csv(path, engine="bigquery", names=names, usecols=usecols)
+
+
+def test_read_csv_for_names_less_than_columns_and_different_usecols(
+    session, df_and_gcs_csv_for_two_columns
+):
+    _, path = df_and_gcs_csv_for_two_columns
+    names = ["a", "b"]
+    usecols = ["a", "c"]
+    with pytest.raises(
+        ValueError,
+        match=re.escape("Usecols do not match columns"),
+    ):
+        session.read_csv(path, engine="bigquery", names=names, usecols=usecols)
 
 
 def test_read_csv_for_dtype(session, df_and_gcs_csv_for_two_columns):
