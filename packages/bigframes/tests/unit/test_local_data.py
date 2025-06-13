@@ -46,6 +46,72 @@ def test_local_data_well_formed_round_trip():
     pandas.testing.assert_frame_equal(pd_data_normalized, result, check_dtype=False)
 
 
+def test_local_data_small_sizes_round_trip():
+    pyarrow_version = int(pa.__version__.split(".")[0])
+
+    int8s = [126, 127, -127, -128, 0, 1, -1]
+    uint8s = [254, 255, 1, 0, 128, 129, 127]
+    int16s = [32766, 32767, -32766, -32767, 0, 1, -1]
+    uint16s = [65534, 65535, 1, 0, 32768, 32769, 32767]
+    int32s = [2**31 - 2, 2**31 - 1, -(2**31) + 1, -(2**31), 0, 1, -1]
+    uint32s = [2**32 - 2, 2**32 - 1, 1, 0, 2**31, 2**31 + 1, 2**31 - 1]
+    float16s = [
+        # Test some edge cases from:
+        # https://en.wikipedia.org/wiki/Half-precision_floating-point_format#Precision_limitations
+        float.fromhex("0x1.0p-24"),  # (2 ** -24).hex()
+        float.fromhex("-0x1.0p-24"),
+        float.fromhex("0x1.ffcp-13"),  # ((2 ** -12) - (2 ** -23)).hex()
+        float.fromhex("-0x1.ffcp-13"),
+        0,
+        float.fromhex("0x1.ffcp+14"),  # (32768.0 - 16).hex()
+        float.fromhex("-0x1.ffcp+14"),
+    ]
+    float32s = [
+        # Test some edge cases from:
+        # https://en.wikipedia.org/wiki/Single-precision_floating-point_format#Notable_single-precision_cases
+        # and
+        # https://en.wikipedia.org/wiki/Single-precision_floating-point_format#Precision_limitations_on_decimal_values_(between_1_and_16777216)
+        float.fromhex("0x1.0p-149"),  # (2 ** -149).hex()
+        float.fromhex("-0x1.0p-149"),  # (2 ** -149).hex()
+        float.fromhex("0x1.fffffep-1"),  # (1.0 - (2 ** -24)).hex()
+        float.fromhex("-0x1.fffffep-1"),
+        0,
+        float.fromhex("0x1.fffffcp-127"),  # ((2 ** -126) * (1 - 2 ** -23)).hex()
+        float.fromhex("-0x1.fffffcp-127"),  # ((2 ** -126) * (1 - 2 ** -23)).hex()
+    ]
+    small_data = {
+        "int8": pd.Series(int8s, dtype=pd.Int8Dtype()),
+        "int16": pd.Series(int16s, dtype=pd.Int16Dtype()),
+        "int32": pd.Series(int32s, dtype=pd.Int32Dtype()),
+        "uint8": pd.Series(uint8s, dtype=pd.UInt8Dtype()),
+        "uint16": pd.Series(uint16s, dtype=pd.UInt16Dtype()),
+        "uint32": pd.Series(uint32s, dtype=pd.UInt32Dtype()),
+        "float32": pd.Series(float32s, dtype="float32"),
+    }
+    expected_data = {
+        "int8": pd.Series(int8s, dtype=pd.Int64Dtype()),
+        "int16": pd.Series(int16s, dtype=pd.Int64Dtype()),
+        "int32": pd.Series(int32s, dtype=pd.Int64Dtype()),
+        "uint8": pd.Series(uint8s, dtype=pd.Int64Dtype()),
+        "uint16": pd.Series(uint16s, dtype=pd.Int64Dtype()),
+        "uint32": pd.Series(uint32s, dtype=pd.Int64Dtype()),
+        "float32": pd.Series(float32s, dtype=pd.Float64Dtype()),
+    }
+
+    # Casting from float16 added in version 16.
+    # https://arrow.apache.org/blog/2024/04/20/16.0.0-release/#:~:text=Enhancements,New%20Features
+    if pyarrow_version >= 16:
+        small_data["float16"] = pd.Series(float16s, dtype="float16")
+        expected_data["float16"] = pd.Series(float16s, dtype=pd.Float64Dtype())
+
+    small_pd = pd.DataFrame(small_data)
+    local_entry = local_data.ManagedArrowTable.from_pandas(small_pd)
+    result = pd.DataFrame(local_entry.itertuples(), columns=small_pd.columns)
+
+    expected = pd.DataFrame(expected_data)
+    pandas.testing.assert_frame_equal(expected, result, check_dtype=False)
+
+
 def test_local_data_well_formed_round_trip_chunked():
     pa_table = pa.Table.from_pandas(pd_data, preserve_index=False)
     as_rechunked_pyarrow = pa.Table.from_batches(pa_table.to_batches(max_chunksize=2))

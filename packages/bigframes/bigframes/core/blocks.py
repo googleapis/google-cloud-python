@@ -154,6 +154,7 @@ class Block:
         self._stats_cache[" ".join(self.index_columns)] = {}
         self._transpose_cache: Optional[Block] = transpose_cache
         self._view_ref: Optional[bigquery.TableReference] = None
+        self._view_ref_dry_run: Optional[bigquery.TableReference] = None
 
     @classmethod
     def from_local(
@@ -2459,19 +2460,19 @@ class Block:
     ) -> bool:
         return self._is_monotonic(column_id, increasing=False)
 
-    def to_sql_query(
-        self, include_index: bool, enable_cache: bool = True
-    ) -> typing.Tuple[str, list[str], list[Label]]:
+    def _array_value_for_output(
+        self, *, include_index: bool
+    ) -> Tuple[bigframes.core.ArrayValue, list[str], list[Label]]:
         """
-        Compiles this DataFrame's expression tree to SQL, optionally
-        including index columns.
+        Creates the expression tree with user-visible column names, such as for
+        SQL output.
 
         Args:
             include_index (bool):
                 whether to include index columns.
 
         Returns:
-            a tuple of (sql_string, index_column_id_list, index_column_label_list).
+            a tuple of (ArrayValue, index_column_id_list, index_column_label_list).
                 If include_index is set to False, index_column_id_list and index_column_label_list
                 return empty lists.
         """
@@ -2494,25 +2495,72 @@ class Block:
             # the BigQuery unicode column name feature?
             substitutions[old_id] = new_id
 
-        # Note: this uses the sql from the executor, so is coupled tightly to execution
-        # implementaton. It will reference cached tables instead of original data sources.
-        # Maybe should just compile raw BFET? Depends on user intent.
-        sql = self.session._executor.to_sql(
-            array_value.rename_columns(substitutions), enable_cache=enable_cache
-        )
         return (
-            sql,
+            array_value.rename_columns(substitutions),
             new_ids[: len(idx_labels)],
             idx_labels,
         )
 
-    def to_view(self, include_index: bool) -> bigquery.TableReference:
+    def to_sql_query(
+        self, include_index: bool, enable_cache: bool = True
+    ) -> Tuple[str, list[str], list[Label]]:
         """
-        Creates a temporary BigQuery VIEW with the SQL corresponding to this block.
+        Compiles this DataFrame's expression tree to SQL, optionally
+        including index columns.
+
+        Args:
+            include_index (bool):
+                whether to include index columns.
+
+        Returns:
+            a tuple of (sql_string, index_column_id_list, index_column_label_list).
+                If include_index is set to False, index_column_id_list and index_column_label_list
+                return empty lists.
+        """
+        array_value, idx_ids, idx_labels = self._array_value_for_output(
+            include_index=include_index
+        )
+
+        # Note: this uses the sql from the executor, so is coupled tightly to execution
+        # implementaton. It will reference cached tables instead of original data sources.
+        # Maybe should just compile raw BFET? Depends on user intent.
+        sql = self.session._executor.to_sql(array_value, enable_cache=enable_cache)
+        return (
+            sql,
+            idx_ids,
+            idx_labels,
+        )
+
+    def to_placeholder_table(
+        self, include_index: bool, *, dry_run: bool = False
+    ) -> bigquery.TableReference:
+        """
+        Creates a temporary BigQuery VIEW (or empty table if dry_run) with the
+        SQL corresponding to this block.
         """
         if self._view_ref is not None:
             return self._view_ref
 
+        # Prefer the real view if it exists, but since dry_run might be called
+        # many times before the real query, we cache that empty table reference
+        # with the correct schema too.
+        if dry_run:
+            if self._view_ref_dry_run is not None:
+                return self._view_ref_dry_run
+
+            # Create empty temp table with the right schema.
+            array_value, _, _ = self._array_value_for_output(
+                include_index=include_index
+            )
+            temp_table_schema = array_value.schema.to_bigquery()
+            self._view_ref_dry_run = self.session._create_temp_table(
+                schema=temp_table_schema
+            )
+            return self._view_ref_dry_run
+
+        # We shouldn't run `to_sql_query` if we have a `dry_run`, because it
+        # could cause us to make unnecessary API calls to upload local node
+        # data.
         sql, _, _ = self.to_sql_query(include_index=include_index)
         self._view_ref = self.session._create_temp_view(sql)
         return self._view_ref

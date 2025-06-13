@@ -518,6 +518,8 @@ class Session(
         query = bigframes.core.pyformat.pyformat(
             query,
             pyformat_args=pyformat_args,
+            session=self,
+            dry_run=dry_run,
         )
 
         return self._loader.read_gbq_query(
@@ -1965,8 +1967,16 @@ class Session(
         return table
 
     def _create_temp_view(self, sql: str) -> bigquery.TableReference:
-        """Create a random id Object Table from the input path and connection."""
+        """Create a random id view from the sql string."""
         return self._anon_dataset_manager.create_temp_view(sql)
+
+    def _create_temp_table(
+        self, schema: Sequence[bigquery.SchemaField], cluster_cols: Sequence[str] = []
+    ) -> bigquery.TableReference:
+        """Allocate a random temporary table with the desired schema."""
+        return self._temp_storage_manager.create_temp_table(
+            schema=schema, cluster_cols=cluster_cols
+        )
 
     def from_glob_path(
         self, path: str, *, connection: Optional[str] = None, name: Optional[str] = None

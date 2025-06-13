@@ -336,7 +336,9 @@ def _adapt_arrow_array(array: pa.Array) -> tuple[pa.Array, bigframes.dtypes.Dtyp
     if target_type != array.type:
         # TODO: Maybe warn if lossy conversion?
         array = array.cast(target_type)
-    bf_type = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(target_type)
+    bf_type = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
+        target_type, allow_lossless_cast=True
+    )
 
     storage_type = _get_managed_storage_type(bf_type)
     if storage_type != array.type:

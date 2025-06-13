@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import functools
 import inspect
 import threading
 import typing
@@ -51,6 +52,7 @@ import bigframes.dataframe
 import bigframes.enums
 import bigframes.series
 import bigframes.session
+from bigframes.session import dry_runs
 import bigframes.session._io.bigquery
 import bigframes.session.clients
 
@@ -216,6 +218,27 @@ def read_gbq(
 read_gbq.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq)
 
 
+def _try_read_gbq_colab_sessionless_dry_run(
+    create_query: Callable[[], str],
+) -> Optional[pandas.Series]:
+    """Run a dry_run without a session, only if the session hasn't yet started."""
+
+    global _default_location_lock
+
+    # Avoid creating a session just for dry run. We don't want to bind to a
+    # location too early. This is especially important if the query only refers
+    # to local data and not any BigQuery tables.
+    with _default_location_lock:
+        if not config.options.bigquery._session_started:
+            bqclient = _get_bqclient()
+            query = create_query()
+            job = _dry_run(query, bqclient)
+            return dry_runs.get_query_stats_with_inferred_dtypes(job, (), ())
+
+    # Explicitly return None to indicate that we didn't run the dry run query.
+    return None
+
+
 @overload
 def _read_gbq_colab(  # type: ignore[overload-overlap]
     query_or_table: str,
@@ -263,11 +286,30 @@ def _read_gbq_colab(
     if pyformat_args is None:
         pyformat_args = {}
 
-    query = bigframes.core.pyformat.pyformat(
+    # Delay formatting the query with the special "session-less" logic. This
+    # avoids doing unnecessary work if the session already has a location or has
+    # already started.
+    create_query = functools.partial(
+        bigframes.core.pyformat.pyformat,
         query_or_table,
         pyformat_args=pyformat_args,
+        dry_run=True,
     )
-    _set_default_session_location_if_possible(query)
+
+    # Only try to set the global location if it's not a dry run. We don't want
+    # to bind to a location too early. This is especially important if the query
+    # only refers to local data and not any BigQuery tables.
+    if dry_run:
+        result = _try_read_gbq_colab_sessionless_dry_run(create_query)
+
+        if result is not None:
+            return result
+
+        # If we made it this far, we must have a session that has already
+        # started. That means we can safely call the "real" _read_gbq_colab,
+        # which generates slightly nicer SQL.
+    else:
+        _set_default_session_location_if_possible_deferred_query(create_query)
 
     return global_session.with_default_session(
         bigframes.session.Session._read_gbq_colab,
@@ -530,7 +572,30 @@ from_glob_path.__doc__ = inspect.getdoc(bigframes.session.Session.from_glob_path
 _default_location_lock = threading.Lock()
 
 
+def _get_bqclient() -> bigquery.Client:
+    clients_provider = bigframes.session.clients.ClientsProvider(
+        project=config.options.bigquery.project,
+        location=config.options.bigquery.location,
+        use_regional_endpoints=config.options.bigquery.use_regional_endpoints,
+        credentials=config.options.bigquery.credentials,
+        application_name=config.options.bigquery.application_name,
+        bq_kms_key_name=config.options.bigquery.kms_key_name,
+        client_endpoints_override=config.options.bigquery.client_endpoints_override,
+        requests_transport_adapters=config.options.bigquery.requests_transport_adapters,
+    )
+    return clients_provider.bqclient
+
+
+def _dry_run(query, bqclient) -> bigquery.QueryJob:
+    job = bqclient.query(query, bigquery.QueryJobConfig(dry_run=True))
+    return job
+
+
 def _set_default_session_location_if_possible(query):
+    _set_default_session_location_if_possible_deferred_query(lambda: query)
+
+
+def _set_default_session_location_if_possible_deferred_query(create_query):
     # Set the location as per the query if this is the first query the user is
     # running and:
     # (1) Default session has not started yet, and
@@ -549,24 +614,14 @@ def _set_default_session_location_if_possible(query):
         ):
             return
 
-        clients_provider = bigframes.session.clients.ClientsProvider(
-            project=config.options.bigquery.project,
-            location=config.options.bigquery.location,
-            use_regional_endpoints=config.options.bigquery.use_regional_endpoints,
-            credentials=config.options.bigquery.credentials,
-            application_name=config.options.bigquery.application_name,
-            bq_kms_key_name=config.options.bigquery.kms_key_name,
-            client_endpoints_override=config.options.bigquery.client_endpoints_override,
-            requests_transport_adapters=config.options.bigquery.requests_transport_adapters,
-        )
-
-        bqclient = clients_provider.bqclient
+        query = create_query()
+        bqclient = _get_bqclient()
 
         if bigframes.session._io.bigquery.is_query(query):
             # Intentionally run outside of the session so that we can detect the
             # location before creating the session. Since it's a dry_run, labels
             # aren't necessary.
-            job = bqclient.query(query, bigquery.QueryJobConfig(dry_run=True))
+            job = _dry_run(query, bqclient)
             config.options.bigquery.location = job.location
         else:
             table = bqclient.get_table(query)

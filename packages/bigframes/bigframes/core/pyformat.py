@@ -21,10 +21,15 @@ from __future__ import annotations
 
 import string
 import typing
-from typing import Any, Union
+from typing import Any, Optional, Union
 
 import google.cloud.bigquery
-import google.cloud.bigquery.table
+import pandas
+
+from bigframes.core import utils
+import bigframes.core.local_data
+from bigframes.core.tools import bigquery_schema
+import bigframes.session
 
 _BQ_TABLE_TYPES = Union[
     google.cloud.bigquery.Table,
@@ -37,9 +42,51 @@ def _table_to_sql(table: _BQ_TABLE_TYPES) -> str:
     return f"`{table.project}`.`{table.dataset_id}`.`{table.table_id}`"
 
 
+def _pandas_df_to_sql_dry_run(pd_df: pandas.DataFrame) -> str:
+    # Ensure there are no duplicate column labels.
+    #
+    # Please make sure this stays in sync with the logic used to_gbq(). See
+    # bigframes.dataframe.DataFrame._prepare_export().
+    new_col_labels, new_idx_labels = utils.get_standardized_ids(
+        pd_df.columns, pd_df.index.names
+    )
+    pd_copy = pd_df.copy()
+    pd_copy.columns = pandas.Index(new_col_labels)
+    pd_copy.index.names = new_idx_labels
+
+    managed_table = bigframes.core.local_data.ManagedArrowTable.from_pandas(pd_copy)
+    bqschema = managed_table.schema.to_bigquery()
+    return bigquery_schema.to_sql_dry_run(bqschema)
+
+
+def _pandas_df_to_sql(
+    df_pd: pandas.DataFrame,
+    *,
+    name: str,
+    session: Optional[bigframes.session.Session] = None,
+    dry_run: bool = False,
+) -> str:
+    if session is None:
+        if not dry_run:
+            message = (
+                f"Can't embed pandas DataFrame {name} in a SQL "
+                "string without a bigframes session except if for a dry run."
+            )
+            raise ValueError(message)
+
+        return _pandas_df_to_sql_dry_run(df_pd)
+
+    # Use the _deferred engine to avoid loading data too often during dry run.
+    df = session.read_pandas(df_pd, write_engine="_deferred")
+    return _table_to_sql(df._to_placeholder_table(dry_run=dry_run))
+
+
 def _field_to_template_value(
     name: str,
     value: Any,
+    *,
+    session: Optional[bigframes.session.Session] = None,
+    dry_run: bool = False,
 ) -> str:
     """Convert value to something embeddable in a SQL string."""
     import bigframes.core.sql  # Avoid circular imports
@@ -51,9 +98,11 @@ def _field_to_template_value(
     if isinstance(value, table_types):
         return _table_to_sql(value)
 
-    # TODO(tswast): convert pandas DataFrame objects to gbq tables or a literals subquery.
+    if isinstance(value, pandas.DataFrame):
+        return _pandas_df_to_sql(value, session=session, dry_run=dry_run, name=name)
+
     if isinstance(value, bigframes.dataframe.DataFrame):
-        return _table_to_sql(value._to_view())
+        return _table_to_sql(value._to_placeholder_table(dry_run=dry_run))
 
     return bigframes.core.sql.simple_literal(value)
 
@@ -70,6 +119,7 @@ def _validate_type(name: str, value: Any):
         typing.get_args(_BQ_TABLE_TYPES)
         + typing.get_args(bigframes.core.sql.SIMPLE_LITERAL_TYPES)
         + (bigframes.dataframe.DataFrame,)
+        + (pandas.DataFrame,)
     )
 
     if not isinstance(value, supported_types):
@@ -91,6 +141,8 @@ def pyformat(
     sql_template: str,
     *,
     pyformat_args: dict,
+    session: Optional[bigframes.session.Session] = None,
+    dry_run: bool = False,
 ) -> str:
     """Unsafe Python-style string formatting of SQL string.
 
@@ -115,6 +167,8 @@ def pyformat(
     format_kwargs = {}
     for name in fields:
         value = pyformat_args[name]
-        format_kwargs[name] = _field_to_template_value(name, value)
+        format_kwargs[name] = _field_to_template_value(
+            name, value, session=session, dry_run=dry_run
+        )
 
     return sql_template.format(**format_kwargs)
