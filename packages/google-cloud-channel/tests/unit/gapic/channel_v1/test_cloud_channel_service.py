@@ -1622,6 +1622,7 @@ def test_get_customer(request_type, transport: str = "grpc"):
             language_code="language_code_value",
             channel_partner_id="channel_partner_id_value",
             correlation_id="correlation_id_value",
+            customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
         )
         response = client.get_customer(request)
 
@@ -1641,6 +1642,10 @@ def test_get_customer(request_type, transport: str = "grpc"):
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
+    assert (
+        response.customer_attestation_state
+        == customers.Customer.CustomerAttestationState.EXEMPT
+    )
 
 
 def test_get_customer_non_empty_request_with_auto_populated_field():
@@ -1774,6 +1779,7 @@ async def test_get_customer_async(
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
                 correlation_id="correlation_id_value",
+                customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
             )
         )
         response = await client.get_customer(request)
@@ -1794,6 +1800,10 @@ async def test_get_customer_async(
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
+    assert (
+        response.customer_attestation_state
+        == customers.Customer.CustomerAttestationState.EXEMPT
+    )
 
 
 @pytest.mark.asyncio
@@ -2224,6 +2234,7 @@ def test_create_customer(request_type, transport: str = "grpc"):
             language_code="language_code_value",
             channel_partner_id="channel_partner_id_value",
             correlation_id="correlation_id_value",
+            customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
         )
         response = client.create_customer(request)
 
@@ -2243,6 +2254,10 @@ def test_create_customer(request_type, transport: str = "grpc"):
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
+    assert (
+        response.customer_attestation_state
+        == customers.Customer.CustomerAttestationState.EXEMPT
+    )
 
 
 def test_create_customer_non_empty_request_with_auto_populated_field():
@@ -2376,6 +2391,7 @@ async def test_create_customer_async(
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
                 correlation_id="correlation_id_value",
+                customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
             )
         )
         response = await client.create_customer(request)
@@ -2396,6 +2412,10 @@ async def test_create_customer_async(
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
+    assert (
+        response.customer_attestation_state
+        == customers.Customer.CustomerAttestationState.EXEMPT
+    )
 
 
 @pytest.mark.asyncio
@@ -2491,6 +2511,7 @@ def test_update_customer(request_type, transport: str = "grpc"):
             language_code="language_code_value",
             channel_partner_id="channel_partner_id_value",
             correlation_id="correlation_id_value",
+            customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
         )
         response = client.update_customer(request)
 
@@ -2510,6 +2531,10 @@ def test_update_customer(request_type, transport: str = "grpc"):
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
+    assert (
+        response.customer_attestation_state
+        == customers.Customer.CustomerAttestationState.EXEMPT
+    )
 
 
 def test_update_customer_non_empty_request_with_auto_populated_field():
@@ -2639,6 +2664,7 @@ async def test_update_customer_async(
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
                 correlation_id="correlation_id_value",
+                customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
             )
         )
         response = await client.update_customer(request)
@@ -2659,6 +2685,10 @@ async def test_update_customer_async(
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
+    assert (
+        response.customer_attestation_state
+        == customers.Customer.CustomerAttestationState.EXEMPT
+    )
 
 
 @pytest.mark.asyncio
@@ -3065,6 +3095,7 @@ def test_import_customer(request_type, transport: str = "grpc"):
             language_code="language_code_value",
             channel_partner_id="channel_partner_id_value",
             correlation_id="correlation_id_value",
+            customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
         )
         response = client.import_customer(request)
 
@@ -3084,6 +3115,10 @@ def test_import_customer(request_type, transport: str = "grpc"):
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
+    assert (
+        response.customer_attestation_state
+        == customers.Customer.CustomerAttestationState.EXEMPT
+    )
 
 
 def test_import_customer_non_empty_request_with_auto_populated_field():
@@ -3229,6 +3264,7 @@ async def test_import_customer_async(
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
                 correlation_id="correlation_id_value",
+                customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
             )
         )
         response = await client.import_customer(request)
@@ -3249,6 +3285,10 @@ async def test_import_customer_async(
     assert response.language_code == "language_code_value"
     assert response.channel_partner_id == "channel_partner_id_value"
     assert response.correlation_id == "correlation_id_value"
+    assert (
+        response.customer_attestation_state
+        == customers.Customer.CustomerAttestationState.EXEMPT
+    )
 
 
 @pytest.mark.asyncio
@@ -19531,6 +19571,7 @@ async def test_get_customer_empty_call_grpc_asyncio():
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
                 correlation_id="correlation_id_value",
+                customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
             )
         )
         await client.get_customer(request=None)
@@ -19592,6 +19633,7 @@ async def test_create_customer_empty_call_grpc_asyncio():
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
                 correlation_id="correlation_id_value",
+                customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
             )
         )
         await client.create_customer(request=None)
@@ -19626,6 +19668,7 @@ async def test_update_customer_empty_call_grpc_asyncio():
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
                 correlation_id="correlation_id_value",
+                customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
             )
         )
         await client.update_customer(request=None)
@@ -19683,6 +19726,7 @@ async def test_import_customer_empty_call_grpc_asyncio():
                 language_code="language_code_value",
                 channel_partner_id="channel_partner_id_value",
                 correlation_id="correlation_id_value",
+                customer_attestation_state=customers.Customer.CustomerAttestationState.EXEMPT,
             )
         )
         await client.import_customer(request=None)
