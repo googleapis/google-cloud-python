@@ -41,7 +41,6 @@ class AIAccessor:
         instruction: str,
         model,
         ground_with_google_search: bool = False,
-        attach_logprobs: bool = False,
     ):
         """
         Filters the DataFrame with the semantics of the user instruction.
@@ -82,10 +81,6 @@ class AIAccessor:
                 page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
                 The default is `False`.
 
-            attach_logprobs (bool, default False):
-                Controls whether to attach an additional "logprob" column for each result. Logprobs are float-point values reflecting the confidence level
-                of the LLM for their responses. Higher values indicate more confidence. The value is in the range between negative infinite and 0.
-
         Returns:
             bigframes.pandas.DataFrame: DataFrame filtered by the instruction.
 
@@ -103,7 +98,6 @@ class AIAccessor:
             model,
             output_schema,
             ground_with_google_search,
-            attach_logprobs,
         )
 
         return result[result[answer_col]].drop(answer_col, axis=1)
@@ -114,7 +108,6 @@ class AIAccessor:
         model,
         output_schema: Dict[str, str] | None = None,
         ground_with_google_search: bool = False,
-        attach_logprobs=False,
     ):
         """
         Maps the DataFrame with the semantics of the user instruction. The name of the keys in the output_schema parameter carry
@@ -179,11 +172,6 @@ class AIAccessor:
                 Note: Using this feature may impact billing costs. Refer to the pricing
                 page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
                 The default is `False`.
-
-            attach_logprobs (bool, default False):
-                Controls whether to attach an additional "logprob" column for each result. Logprobs are float-point values reflecting the confidence level
-                of the LLM for their responses. Higher values indicate more confidence. The value is in the range between negative infinite and 0.
-
 
         Returns:
             bigframes.pandas.DataFrame: DataFrame with attached mapping results.
@@ -258,19 +246,6 @@ class AIAccessor:
 
         attach_columns = [results[col] for col, _ in output_schema.items()]
 
-        def extract_logprob(s: bigframes.series.Series) -> bigframes.series.Series:
-            from bigframes import bigquery as bbq
-
-            logprob_jsons = bbq.json_extract_array(s, "$.candidates").list[0]
-            logprobs = bbq.json_extract(logprob_jsons, "$.avg_logprobs").astype(
-                "Float64"
-            )
-            logprobs.name = "logprob"
-            return logprobs
-
-        if attach_logprobs:
-            attach_columns.append(extract_logprob(results["full_response"]))
-
         from bigframes.core.reshape.api import concat
 
         return concat([self._df, *attach_columns], axis=1)
@@ -282,7 +257,6 @@ class AIAccessor:
         labels: Sequence[str],
         output_column: str = "result",
         ground_with_google_search: bool = False,
-        attach_logprobs=False,
     ):
         """
         Classifies the rows of dataframes based on user instruction into the provided labels.
@@ -337,11 +311,6 @@ class AIAccessor:
                 page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
                 The default is `False`.
 
-            attach_logprobs (bool, default False):
-                Controls whether to attach an additional "logprob" column for each result. Logprobs are float-point values reflecting the confidence level
-                of the LLM for their responses. Higher values indicate more confidence. The value is in the range between negative infinite and 0.
-
-
         Returns:
             bigframes.pandas.DataFrame: DataFrame with classification result.
 
@@ -367,7 +336,6 @@ class AIAccessor:
             model,
             output_schema={output_column: "string"},
             ground_with_google_search=ground_with_google_search,
-            attach_logprobs=attach_logprobs,
         )
 
     def join(
@@ -376,7 +344,6 @@ class AIAccessor:
         instruction: str,
         model,
         ground_with_google_search: bool = False,
-        attach_logprobs=False,
     ):
         """
         Joines two dataframes by applying the instruction over each pair of rows from
@@ -427,10 +394,6 @@ class AIAccessor:
                 Note: Using this feature may impact billing costs. Refer to the pricing
                 page for details: https://cloud.google.com/vertex-ai/generative-ai/pricing#google_models
                 The default is `False`.
-
-            attach_logprobs (bool, default False):
-                Controls whether to attach an additional "logprob" column for each result. Logprobs are float-point values reflecting the confidence level
-                of the LLM for their responses. Higher values indicate more confidence. The value is in the range between negative infinite and 0.
 
         Returns:
             bigframes.pandas.DataFrame: The joined dataframe.
@@ -510,7 +473,6 @@ class AIAccessor:
             instruction,
             model,
             ground_with_google_search=ground_with_google_search,
-            attach_logprobs=attach_logprobs,
         ).reset_index(drop=True)
 
     def search(

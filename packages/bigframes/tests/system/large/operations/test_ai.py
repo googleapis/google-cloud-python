@@ -66,31 +66,6 @@ def test_filter(session, gemini_flash_model):
     )
 
 
-def test_filter_attach_logprob(session, gemini_flash_model):
-    df = dataframe.DataFrame(
-        data={
-            "number_1": [1, 2],
-            "number_2": [2, 1],
-            "col": [0, 0],
-        },
-        session=session,
-    )
-
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ):
-        actual_df = df.ai.filter(
-            "{number_1} is greater than {number_2}",
-            gemini_flash_model,
-            attach_logprobs=True,
-        ).to_pandas()
-
-    assert "logprob" in actual_df.columns
-
-
 def test_filter_multi_model(session, gemini_flash_model):
     with bigframes.option_context(
         AI_OP_EXP_OPTION,
@@ -257,31 +232,6 @@ def test_map(session, gemini_flash_model, output_schema, output_col):
         check_index_type=False,
         check_column_type=False,
     )
-
-
-def test_map_attach_logprob(session, gemini_flash_model):
-    df = dataframe.DataFrame(
-        data={
-            "ingredient_1": ["Burger Bun", "Soy Bean"],
-            "ingredient_2": ["Beef Patty", "Bittern"],
-            "gluten-free": [True, True],
-        },
-        session=session,
-    )
-
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ):
-        actual_df = df.ai.map(
-            "What is the {gluten-free} food made from {ingredient_1} and {ingredient_2}? One word only.",
-            gemini_flash_model,
-            attach_logprobs=True,
-        ).to_pandas()
-
-    assert "logprob" in actual_df.columns
 
 
 def test_map_multimodel(session, gemini_flash_model):
@@ -476,34 +426,6 @@ def test_join(instruction, session, gemini_flash_model):
         check_index_type=False,
         check_column_type=False,
     )
-
-
-def test_join_attach_logprob(session, gemini_flash_model):
-    cities = dataframe.DataFrame(
-        data={
-            "city": ["Seattle", "Berlin"],
-        },
-        session=session,
-    )
-    countries = dataframe.DataFrame(
-        data={"country": ["USA", "UK", "Germany"]},
-        session=session,
-    )
-
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ):
-        actual_df = cities.ai.join(
-            countries,
-            "{city} is in {country}",
-            gemini_flash_model,
-            attach_logprobs=True,
-        ).to_pandas()
-
-    assert "logprob" in actual_df.columns
 
 
 @pytest.mark.parametrize(
