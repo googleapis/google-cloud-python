@@ -477,7 +477,7 @@ class SlidingBuffer(object):
         self._buffer.seek(0, io.SEEK_END)
         pos = self._buffer.write(b)
         self._buffer.seek(bookmark)
-        return self._cursor + pos
+        return pos
 
     def read(self, size=-1):
         """Read and move the cursor."""

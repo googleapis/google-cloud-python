@@ -387,7 +387,6 @@ class RawDownload(_request_helpers.RawRequestsMixin, _download.Download):
                     msg += content_length_msg
                     raise DataCorruption(response, msg)
 
-
     def consume(
         self,
         transport,

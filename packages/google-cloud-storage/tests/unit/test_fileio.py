@@ -367,12 +367,14 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
 
         # Write under chunk_size. This should be buffered and the upload not
         # initiated.
-        writer.write(TEST_BINARY_DATA[0:4])
+        w1 = writer.write(TEST_BINARY_DATA[0:4])
+        self.assertEqual(w1, 4)
         blob._initiate_resumable_upload.assert_not_called()
 
         # Write over chunk_size. This should result in upload initialization
         # and multiple chunks uploaded.
-        writer.write(TEST_BINARY_DATA[4:32])
+        w2 = writer.write(TEST_BINARY_DATA[4:32])
+        self.assertEqual(w2, 28)
         blob._initiate_resumable_upload.assert_called_once_with(
             blob.bucket.client,
             writer._buffer,
