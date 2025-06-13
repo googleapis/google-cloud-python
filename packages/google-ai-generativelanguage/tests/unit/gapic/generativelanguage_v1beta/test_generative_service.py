@@ -7038,3 +7038,13 @@ def test_api_key_credentials(client_class, transport_class):
                 always_use_jwt_access=True,
                 api_audience=None,
             )
+
+def test_api_key_with_invalid_characters():
+    # It is an error to provide a key with a new line (x0a) suffix
+    # this is because the underlying grpc will fail with an Illegal header value error
+    options = client_options.ClientOptions()
+    options.api_key = "api_key\x0a"
+    with pytest.raises(ValueError):
+        client = GenerativeServiceClient(
+            client_options=options,
+        )
