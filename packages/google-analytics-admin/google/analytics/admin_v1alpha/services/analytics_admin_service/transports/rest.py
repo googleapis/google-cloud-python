@@ -731,6 +731,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_subproperty_sync_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_subproperty_sync_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_access_bindings(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -952,6 +960,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_list_subproperty_event_filters(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_subproperty_sync_configs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_subproperty_sync_configs(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1220,6 +1236,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_subproperty_event_filter(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_subproperty_sync_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_subproperty_sync_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -4967,6 +4991,57 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_subproperty_sync_config(
+        self,
+        request: analytics_admin.GetSubpropertySyncConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetSubpropertySyncConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_subproperty_sync_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_subproperty_sync_config(
+        self, response: resources.SubpropertySyncConfig
+    ) -> resources.SubpropertySyncConfig:
+        """Post-rpc interceptor for get_subproperty_sync_config
+
+        DEPRECATED. Please use the `post_get_subproperty_sync_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code. This `post_get_subproperty_sync_config` interceptor runs
+        before the `post_get_subproperty_sync_config_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_subproperty_sync_config_with_metadata(
+        self,
+        response: resources.SubpropertySyncConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resources.SubpropertySyncConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_subproperty_sync_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnalyticsAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_get_subproperty_sync_config_with_metadata`
+        interceptor in new development instead of the `post_get_subproperty_sync_config` interceptor.
+        When both interceptors are used, this `post_get_subproperty_sync_config_with_metadata` interceptor runs after the
+        `post_get_subproperty_sync_config` interceptor. The (possibly modified) response returned by
+        `post_get_subproperty_sync_config` will be passed to
+        `post_get_subproperty_sync_config_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_access_bindings(
         self,
         request: analytics_admin.ListAccessBindingsRequest,
@@ -6410,6 +6485,58 @@ class AnalyticsAdminServiceRestInterceptor:
         `post_list_subproperty_event_filters` interceptor. The (possibly modified) response returned by
         `post_list_subproperty_event_filters` will be passed to
         `post_list_subproperty_event_filters_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_subproperty_sync_configs(
+        self,
+        request: analytics_admin.ListSubpropertySyncConfigsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListSubpropertySyncConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_subproperty_sync_configs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_subproperty_sync_configs(
+        self, response: analytics_admin.ListSubpropertySyncConfigsResponse
+    ) -> analytics_admin.ListSubpropertySyncConfigsResponse:
+        """Post-rpc interceptor for list_subproperty_sync_configs
+
+        DEPRECATED. Please use the `post_list_subproperty_sync_configs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code. This `post_list_subproperty_sync_configs` interceptor runs
+        before the `post_list_subproperty_sync_configs_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_subproperty_sync_configs_with_metadata(
+        self,
+        response: analytics_admin.ListSubpropertySyncConfigsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListSubpropertySyncConfigsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_subproperty_sync_configs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnalyticsAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_list_subproperty_sync_configs_with_metadata`
+        interceptor in new development instead of the `post_list_subproperty_sync_configs` interceptor.
+        When both interceptors are used, this `post_list_subproperty_sync_configs_with_metadata` interceptor runs after the
+        `post_list_subproperty_sync_configs` interceptor. The (possibly modified) response returned by
+        `post_list_subproperty_sync_configs` will be passed to
+        `post_list_subproperty_sync_configs_with_metadata`.
         """
         return response, metadata
 
@@ -8073,6 +8200,57 @@ class AnalyticsAdminServiceRestInterceptor:
         `post_update_subproperty_event_filter` interceptor. The (possibly modified) response returned by
         `post_update_subproperty_event_filter` will be passed to
         `post_update_subproperty_event_filter_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_subproperty_sync_config(
+        self,
+        request: analytics_admin.UpdateSubpropertySyncConfigRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateSubpropertySyncConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_subproperty_sync_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_subproperty_sync_config(
+        self, response: resources.SubpropertySyncConfig
+    ) -> resources.SubpropertySyncConfig:
+        """Post-rpc interceptor for update_subproperty_sync_config
+
+        DEPRECATED. Please use the `post_update_subproperty_sync_config_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code. This `post_update_subproperty_sync_config` interceptor runs
+        before the `post_update_subproperty_sync_config_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_subproperty_sync_config_with_metadata(
+        self,
+        response: resources.SubpropertySyncConfig,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resources.SubpropertySyncConfig, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for update_subproperty_sync_config
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the AnalyticsAdminService server but before it is returned to user code.
+
+        We recommend only using this `post_update_subproperty_sync_config_with_metadata`
+        interceptor in new development instead of the `post_update_subproperty_sync_config` interceptor.
+        When both interceptors are used, this `post_update_subproperty_sync_config_with_metadata` interceptor runs after the
+        `post_update_subproperty_sync_config` interceptor. The (possibly modified) response returned by
+        `post_update_subproperty_sync_config` will be passed to
+        `post_update_subproperty_sync_config_with_metadata`.
         """
         return response, metadata
 
@@ -21839,6 +22017,161 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 )
             return resp
 
+    class _GetSubpropertySyncConfig(
+        _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertySyncConfig,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("AnalyticsAdminServiceRestTransport.GetSubpropertySyncConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.GetSubpropertySyncConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> resources.SubpropertySyncConfig:
+            r"""Call the get subproperty sync
+            config method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.GetSubpropertySyncConfigRequest):
+                        The request object. Request message for
+                    GetSubpropertySyncConfig RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.resources.SubpropertySyncConfig:
+                        Subproperty synchronization
+                    configuration controls how ordinary
+                    property configurations are synchronized
+                    to subproperties. This resource is
+                    provisioned automatically for each
+                    subproperty.
+
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertySyncConfig._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_subproperty_sync_config(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertySyncConfig._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertySyncConfig._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetSubpropertySyncConfig",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetSubpropertySyncConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AnalyticsAdminServiceRestTransport._GetSubpropertySyncConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.SubpropertySyncConfig()
+            pb_resp = resources.SubpropertySyncConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_subproperty_sync_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_subproperty_sync_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SubpropertySyncConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_subproperty_sync_config",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetSubpropertySyncConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListAccessBindings(
         _BaseAnalyticsAdminServiceRestTransport._BaseListAccessBindings,
         AnalyticsAdminServiceRestStub,
@@ -26194,6 +26527,164 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     extra={
                         "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "rpcName": "ListSubpropertyEventFilters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListSubpropertySyncConfigs(
+        _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertySyncConfigs,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("AnalyticsAdminServiceRestTransport.ListSubpropertySyncConfigs")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.ListSubpropertySyncConfigsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> analytics_admin.ListSubpropertySyncConfigsResponse:
+            r"""Call the list subproperty sync
+            configs method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.ListSubpropertySyncConfigsRequest):
+                        The request object. Request message for
+                    ListSubpropertySyncConfigs RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.analytics_admin.ListSubpropertySyncConfigsResponse:
+                        Response message for
+                    ListSubpropertySyncConfigs RPC.
+
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertySyncConfigs._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_subproperty_sync_configs(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertySyncConfigs._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertySyncConfigs._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListSubpropertySyncConfigs",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListSubpropertySyncConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AnalyticsAdminServiceRestTransport._ListSubpropertySyncConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListSubpropertySyncConfigsResponse()
+            pb_resp = analytics_admin.ListSubpropertySyncConfigsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_subproperty_sync_configs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_subproperty_sync_configs_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListSubpropertySyncConfigsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_subproperty_sync_configs",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListSubpropertySyncConfigs",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -31629,6 +32120,172 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 )
             return resp
 
+    class _UpdateSubpropertySyncConfig(
+        _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertySyncConfig,
+        AnalyticsAdminServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "AnalyticsAdminServiceRestTransport.UpdateSubpropertySyncConfig"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateSubpropertySyncConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> resources.SubpropertySyncConfig:
+            r"""Call the update subproperty sync
+            config method over HTTP.
+
+                Args:
+                    request (~.analytics_admin.UpdateSubpropertySyncConfigRequest):
+                        The request object. Request message for
+                    UpdateSubpropertySyncConfig RPC.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.resources.SubpropertySyncConfig:
+                        Subproperty synchronization
+                    configuration controls how ordinary
+                    property configurations are synchronized
+                    to subproperties. This resource is
+                    provisioned automatically for each
+                    subproperty.
+
+            """
+
+            http_options = (
+                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertySyncConfig._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_subproperty_sync_config(
+                request, metadata
+            )
+            transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertySyncConfig._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertySyncConfig._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertySyncConfig._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateSubpropertySyncConfig",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateSubpropertySyncConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = AnalyticsAdminServiceRestTransport._UpdateSubpropertySyncConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.SubpropertySyncConfig()
+            pb_resp = resources.SubpropertySyncConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_subproperty_sync_config(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_subproperty_sync_config_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SubpropertySyncConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_subproperty_sync_config",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateSubpropertySyncConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def acknowledge_user_data_collection(
         self,
@@ -32523,6 +33180,17 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         return self._GetSubpropertyEventFilter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_subproperty_sync_config(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetSubpropertySyncConfigRequest],
+        resources.SubpropertySyncConfig,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSubpropertySyncConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_access_bindings(
         self,
     ) -> Callable[
@@ -32825,6 +33493,17 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSubpropertyEventFilters(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_subproperty_sync_configs(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListSubpropertySyncConfigsRequest],
+        analytics_admin.ListSubpropertySyncConfigsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListSubpropertySyncConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def provision_account_ticket(
@@ -33168,6 +33847,17 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSubpropertyEventFilter(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_subproperty_sync_config(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateSubpropertySyncConfigRequest],
+        resources.SubpropertySyncConfig,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateSubpropertySyncConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:

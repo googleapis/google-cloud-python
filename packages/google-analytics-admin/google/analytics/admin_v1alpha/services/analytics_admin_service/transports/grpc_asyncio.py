@@ -5088,6 +5088,99 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
             )
         return self._stubs["submit_user_deletion"]
 
+    @property
+    def list_subproperty_sync_configs(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListSubpropertySyncConfigsRequest],
+        Awaitable[analytics_admin.ListSubpropertySyncConfigsResponse],
+    ]:
+        r"""Return a callable for the list subproperty sync configs method over gRPC.
+
+        List all Subproperty Sync Configs on a property.
+
+        Returns:
+            Callable[[~.ListSubpropertySyncConfigsRequest],
+                    Awaitable[~.ListSubpropertySyncConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_subproperty_sync_configs" not in self._stubs:
+            self._stubs[
+                "list_subproperty_sync_configs"
+            ] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListSubpropertySyncConfigs",
+                request_serializer=analytics_admin.ListSubpropertySyncConfigsRequest.serialize,
+                response_deserializer=analytics_admin.ListSubpropertySyncConfigsResponse.deserialize,
+            )
+        return self._stubs["list_subproperty_sync_configs"]
+
+    @property
+    def update_subproperty_sync_config(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateSubpropertySyncConfigRequest],
+        Awaitable[resources.SubpropertySyncConfig],
+    ]:
+        r"""Return a callable for the update subproperty sync config method over gRPC.
+
+        Updates a Subproperty Sync Config.
+
+        Returns:
+            Callable[[~.UpdateSubpropertySyncConfigRequest],
+                    Awaitable[~.SubpropertySyncConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_subproperty_sync_config" not in self._stubs:
+            self._stubs[
+                "update_subproperty_sync_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateSubpropertySyncConfig",
+                request_serializer=analytics_admin.UpdateSubpropertySyncConfigRequest.serialize,
+                response_deserializer=resources.SubpropertySyncConfig.deserialize,
+            )
+        return self._stubs["update_subproperty_sync_config"]
+
+    @property
+    def get_subproperty_sync_config(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetSubpropertySyncConfigRequest],
+        Awaitable[resources.SubpropertySyncConfig],
+    ]:
+        r"""Return a callable for the get subproperty sync config method over gRPC.
+
+        Lookup for a single Subproperty Sync Config.
+
+        Returns:
+            Callable[[~.GetSubpropertySyncConfigRequest],
+                    Awaitable[~.SubpropertySyncConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_subproperty_sync_config" not in self._stubs:
+            self._stubs[
+                "get_subproperty_sync_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetSubpropertySyncConfig",
+                request_serializer=analytics_admin.GetSubpropertySyncConfigRequest.serialize,
+                response_deserializer=resources.SubpropertySyncConfig.deserialize,
+            )
+        return self._stubs["get_subproperty_sync_config"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -5868,6 +5961,21 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
             ),
             self.submit_user_deletion: self._wrap_method(
                 self.submit_user_deletion,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_subproperty_sync_configs: self._wrap_method(
+                self.list_subproperty_sync_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_subproperty_sync_config: self._wrap_method(
+                self.update_subproperty_sync_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_subproperty_sync_config: self._wrap_method(
+                self.get_subproperty_sync_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
