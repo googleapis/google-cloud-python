@@ -1,4 +1,4 @@
-WITH `bfcte_2` AS (
+WITH `bfcte_0` AS (
   SELECT
     `rowindex` AS `bfcol_0`,
     `int64_col` AS `bfcol_1`,
@@ -13,4 +13,4 @@ SELECT
   `bfcol_2` AS `string_col`,
   `bfcol_3` AS `float64_col`,
   `bfcol_4` AS `bool_col`
-FROM `bfcte_2`
+FROM `bfcte_0`

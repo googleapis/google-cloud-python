@@ -114,6 +114,7 @@ class SQLGlotIR:
         table_id: str,
         col_names: typing.Sequence[str],
         alias_names: typing.Sequence[str],
+        uid_gen: guid.SequentialUIDGenerator,
     ) -> SQLGlotIR:
         selections = [
             sge.Alias(
@@ -128,7 +129,7 @@ class SQLGlotIR:
             catalog=sg.to_identifier(project_id, quoted=cls.quoted),
         )
         select_expr = sge.Select().select(*selections).from_(table_expr)
-        return cls(expr=select_expr)
+        return cls(expr=select_expr, uid_gen=uid_gen)
 
     @classmethod
     def from_query_string(
@@ -164,10 +165,10 @@ class SQLGlotIR:
         squashed_selections = _squash_selections(self.expr.expressions, selections)
         if squashed_selections != []:
             new_expr = self.expr.select(*squashed_selections, append=False)
-            return SQLGlotIR(expr=new_expr)
+            return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
         else:
             new_expr = self._encapsulate_as_cte().select(*selections, append=False)
-            return SQLGlotIR(expr=new_expr)
+            return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
     def project(
         self,
@@ -181,7 +182,7 @@ class SQLGlotIR:
             for id, expr in projected_cols
         ]
         new_expr = self._encapsulate_as_cte().select(*projected_cols_expr, append=False)
-        return SQLGlotIR(expr=new_expr)
+        return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
     def insert(
         self,

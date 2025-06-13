@@ -167,6 +167,7 @@ class SQLGlotCompiler:
             table.table_id,
             col_names=[col.source_id for col in node.scan_list.items],
             alias_names=[col.id.sql for col in node.scan_list.items],
+            uid_gen=self.uid_gen,
         )
 
     @_compile_node.register
