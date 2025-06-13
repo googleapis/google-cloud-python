@@ -147,6 +147,7 @@ from .types.analytics_admin import (
     GetSearchAds360LinkRequest,
     GetSKAdNetworkConversionValueSchemaRequest,
     GetSubpropertyEventFilterRequest,
+    GetSubpropertySyncConfigRequest,
     ListAccessBindingsRequest,
     ListAccessBindingsResponse,
     ListAccountsRequest,
@@ -203,6 +204,8 @@ from .types.analytics_admin import (
     ListSKAdNetworkConversionValueSchemasResponse,
     ListSubpropertyEventFiltersRequest,
     ListSubpropertyEventFiltersResponse,
+    ListSubpropertySyncConfigsRequest,
+    ListSubpropertySyncConfigsResponse,
     ProvisionAccountTicketRequest,
     ProvisionAccountTicketResponse,
     ProvisionSubpropertyRequest,
@@ -243,6 +246,7 @@ from .types.analytics_admin import (
     UpdateSearchAds360LinkRequest,
     UpdateSKAdNetworkConversionValueSchemaRequest,
     UpdateSubpropertyEventFilterRequest,
+    UpdateSubpropertySyncConfigRequest,
 )
 from .types.audience import (
     Audience,
@@ -323,6 +327,7 @@ from .types.resources import (
     SearchAds360Link,
     ServiceLevel,
     SKAdNetworkConversionValueSchema,
+    SubpropertySyncConfig,
 )
 from .types.subproperty_event_filter import (
     SubpropertyEventFilter,
@@ -503,6 +508,7 @@ __all__ = (
     "GetSKAdNetworkConversionValueSchemaRequest",
     "GetSearchAds360LinkRequest",
     "GetSubpropertyEventFilterRequest",
+    "GetSubpropertySyncConfigRequest",
     "GlobalSiteTag",
     "GoogleAdsLink",
     "GoogleSignalsConsent",
@@ -570,6 +576,8 @@ __all__ = (
     "ListSearchAds360LinksResponse",
     "ListSubpropertyEventFiltersRequest",
     "ListSubpropertyEventFiltersResponse",
+    "ListSubpropertySyncConfigsRequest",
+    "ListSubpropertySyncConfigsResponse",
     "MatchingCondition",
     "MeasurementProtocolSecret",
     "NumericValue",
@@ -601,6 +609,7 @@ __all__ = (
     "SubpropertyEventFilterCondition",
     "SubpropertyEventFilterExpression",
     "SubpropertyEventFilterExpressionList",
+    "SubpropertySyncConfig",
     "UpdateAccessBindingRequest",
     "UpdateAccountRequest",
     "UpdateAttributionSettingsRequest",
@@ -628,4 +637,5 @@ __all__ = (
     "UpdateSKAdNetworkConversionValueSchemaRequest",
     "UpdateSearchAds360LinkRequest",
     "UpdateSubpropertyEventFilterRequest",
+    "UpdateSubpropertySyncConfigRequest",
 )

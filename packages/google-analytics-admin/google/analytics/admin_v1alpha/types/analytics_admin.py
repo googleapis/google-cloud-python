@@ -235,6 +235,10 @@ __protobuf__ = proto.module(
         "DeleteReportingDataAnnotationRequest",
         "SubmitUserDeletionRequest",
         "SubmitUserDeletionResponse",
+        "GetSubpropertySyncConfigRequest",
+        "ListSubpropertySyncConfigsRequest",
+        "ListSubpropertySyncConfigsResponse",
+        "UpdateSubpropertySyncConfigRequest",
     },
 )
 
@@ -4809,6 +4813,10 @@ class ProvisionSubpropertyRequest(proto.Message):
         subproperty_event_filter (google.analytics.admin_v1alpha.types.SubpropertyEventFilter):
             Optional. The subproperty event filter to
             create on an ordinary property.
+        custom_dimension_and_metric_synchronization_mode (google.analytics.admin_v1alpha.types.SubpropertySyncConfig.SynchronizationMode):
+            Optional. The subproperty feature
+            synchronization mode for Custom Dimensions and
+            Metrics
     """
 
     subproperty: resources.Property = proto.Field(
@@ -4822,6 +4830,11 @@ class ProvisionSubpropertyRequest(proto.Message):
             number=3,
             message=gaa_subproperty_event_filter.SubpropertyEventFilter,
         )
+    )
+    custom_dimension_and_metric_synchronization_mode: resources.SubpropertySyncConfig.SynchronizationMode = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=resources.SubpropertySyncConfig.SynchronizationMode,
     )
 
 
@@ -5283,6 +5296,114 @@ class SubmitUserDeletionResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class GetSubpropertySyncConfigRequest(proto.Message):
+    r"""Request message for GetSubpropertySyncConfig RPC.
+
+    Attributes:
+        name (str):
+            Required. Resource name of the SubpropertySyncConfig to
+            lookup. Format:
+            properties/{ordinary_property_id}/subpropertySyncConfigs/{subproperty_id}
+            Example: properties/1234/subpropertySyncConfigs/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListSubpropertySyncConfigsRequest(proto.Message):
+    r"""Request message for ListSubpropertySyncConfigs RPC.
+
+    Attributes:
+        parent (str):
+            Required. Resource name of the property. Format:
+            properties/property_id Example: properties/123
+        page_size (int):
+            Optional. The maximum number of resources to
+            return. The service may return fewer than this
+            value, even if there are additional pages. If
+            unspecified, at most 50 resources will be
+            returned. The maximum value is 200; (higher
+            values will be coerced to the maximum)
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListSubpropertySyncConfig`` call. Provide this to retrieve
+            the subsequent page. When paginating, all other parameters
+            provided to ``ListSubpropertySyncConfig`` must match the
+            call that provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSubpropertySyncConfigsResponse(proto.Message):
+    r"""Response message for ListSubpropertySyncConfigs RPC.
+
+    Attributes:
+        subproperty_sync_configs (MutableSequence[google.analytics.admin_v1alpha.types.SubpropertySyncConfig]):
+            List of Subproperty Sync Configs.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    subproperty_sync_configs: MutableSequence[
+        resources.SubpropertySyncConfig
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.SubpropertySyncConfig,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateSubpropertySyncConfigRequest(proto.Message):
+    r"""Request message for UpdateSubpropertySyncConfig RPC.
+
+    Attributes:
+        subproperty_sync_config (google.analytics.admin_v1alpha.types.SubpropertySyncConfig):
+            Required. The SubpropertySyncConfig to
+            update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to update. Field names must be
+            in snake case (for example, "field_to_update"). Omitted
+            fields will not be updated. To replace the entire entity,
+            use one path with the string "*" to match all fields.
+    """
+
+    subproperty_sync_config: resources.SubpropertySyncConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.SubpropertySyncConfig,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
