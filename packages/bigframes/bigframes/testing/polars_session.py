@@ -89,7 +89,6 @@ class TestSession(bigframes.session.Session):
         self._location = None  # type: ignore
         self._bq_kms_key_name = None  # type: ignore
         self._clients_provider = None  # type: ignore
-        self.ibis_client = None  # type: ignore
         self._bq_connection = None  # type: ignore
         self._skip_bq_connection_check = True
         self._session_id: str = "test_session"

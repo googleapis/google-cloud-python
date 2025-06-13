@@ -109,6 +109,7 @@ class _UDF(abc.ABC):
         database: str | None = None,
         catalog: str | None = None,
         signature: tuple[tuple, Any] | None = None,
+        param_name_overrides: tuple[str, ...] | None = None,
         **kwargs,
     ) -> type[S]:
         """Construct a scalar user-defined function that is built-in to the backend."""
@@ -133,7 +134,7 @@ class _UDF(abc.ABC):
 
         else:
             arg_types, return_annotation = signature
-            arg_names = list(inspect.signature(fn).parameters)
+            arg_names = param_name_overrides or list(inspect.signature(fn).parameters)
             fields = {
                 arg_name: Argument(pattern=rlz.ValueOf(typ), typehint=typ)
                 for arg_name, typ in zip(arg_names, arg_types)

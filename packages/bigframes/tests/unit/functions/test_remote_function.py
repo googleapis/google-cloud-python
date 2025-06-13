@@ -14,12 +14,9 @@
 
 import re
 
-import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
-from bigframes_vendored.ibis.expr import datatypes as ibis_types
 import pandas
 import pytest
 
-import bigframes.dtypes
 import bigframes.functions.function as bff
 import bigframes.series
 from bigframes.testing import mocks
@@ -56,26 +53,6 @@ def test_series_input_types_to_str(series_type):
 
     # Still works as a normal function.
     assert axis_1_function(pandas.Series({"str_col": "World"})) == "Hello, World!"
-    assert axis_1_function.ibis_node is not None
-
-
-def test_supported_types_correspond():
-    # The same types should be representable by the supported Python and BigQuery types.
-    ibis_types_from_python = {
-        ibis_types.dtype(t) for t in bigframes.dtypes.RF_SUPPORTED_IO_PYTHON_TYPES
-    }
-    ibis_types_from_bigquery = {
-        third_party_ibis_bqtypes.BigQueryType.to_ibis(tk)
-        for tk in bigframes.dtypes.RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS
-        # TODO(b/284515241): ARRAY is the only exception because it is supported
-        # as an output type of the BQ routine in the read_gbq_function path but
-        # not in the remote function path. Remove this handline once BQ remote
-        # functions supports ARRAY output and the bigframes remote functions
-        # utilizes that to support array output.
-        if tk != "ARRAY"
-    }
-
-    assert ibis_types_from_python == ibis_types_from_bigquery
 
 
 def test_missing_input_types():

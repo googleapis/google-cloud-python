@@ -74,6 +74,7 @@ import bigframes.core.window_spec as windows
 import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as formatter
+import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.ai
@@ -4470,7 +4471,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return array_value, id_overrides
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
-        if not callable(func):
+        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
             raise TypeError("the first argument must be callable")
 
         if na_action not in {None, "ignore"}:
@@ -4478,7 +4479,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         # TODO(shobs): Support **kwargs
         return self._apply_unary_op(
-            ops.RemoteFunctionOp(func=func, apply_on_null=(na_action is None))
+            ops.RemoteFunctionOp(
+                function_def=func.udf_def, apply_on_null=(na_action is None)
+            )
         )
 
     def apply(self, func, *, axis=0, args: typing.Tuple = (), **kwargs):
@@ -4492,13 +4495,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )
             warnings.warn(msg, category=bfe.FunctionAxisOnePreviewWarning)
 
-            if not hasattr(func, "bigframes_bigquery_function"):
+            if not isinstance(
+                func,
+                (
+                    bigframes.functions.BigqueryCallableRoutine,
+                    bigframes.functions.BigqueryCallableRowRoutine,
+                ),
+            ):
                 raise ValueError(
                     "For axis=1 a BigFrames BigQuery function must be used."
                 )
 
-            is_row_processor = getattr(func, "is_row_processor")
-            if is_row_processor:
+            if func.is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported
                 # in the bigquery function
                 # NOTE: Keep in sync with the value converters used in the gcf code
@@ -4552,7 +4560,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
                 # Apply the function
                 result_series = rows_as_json_series._apply_unary_op(
-                    ops.RemoteFunctionOp(func=func, apply_on_null=True)
+                    ops.RemoteFunctionOp(function_def=func.udf_def, apply_on_null=True)
                 )
             else:
                 # This is a special case where we are providing not-pandas-like
@@ -4567,7 +4575,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 #      compatible with the data types of the input params
                 #   3. The order of the columns in the dataframe must correspond
                 #      to the order of the input params in the function
-                udf_input_dtypes = getattr(func, "input_dtypes")
+                udf_input_dtypes = func.udf_def.signature.bf_input_types
                 if len(udf_input_dtypes) != len(self.columns):
                     raise ValueError(
                         f"BigFrames BigQuery function takes {len(udf_input_dtypes)}"
@@ -4581,25 +4589,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
                 series_list = [self[col] for col in self.columns]
                 result_series = series_list[0]._apply_nary_op(
-                    ops.NaryRemoteFunctionOp(func=func), series_list[1:]
+                    ops.NaryRemoteFunctionOp(function_def=func.udf_def), series_list[1:]
                 )
             result_series.name = None
 
-            # If the result type is string but the function output is intended
-            # to be an array, reconstruct the array from the string assuming it
-            # is a json serialized form of the array.
-            if bigframes.dtypes.is_string_like(
-                result_series.dtype
-            ) and bigframes.dtypes.is_array_like(func.output_dtype):
-                import bigframes.bigquery as bbq
-
-                result_dtype = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
-                    func.output_dtype.pyarrow_dtype.value_type
-                )
-                result_series = bbq.json_extract_string_array(
-                    result_series, value_dtype=result_dtype
-                )
-
+            result_series = func._post_process_series(result_series)
             return result_series
 
         # At this point column-wise or element-wise bigquery function operation will

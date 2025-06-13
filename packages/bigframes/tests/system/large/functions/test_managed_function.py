@@ -19,110 +19,13 @@ import pytest
 import test_utils.prefixer
 
 import bigframes
+import bigframes.dataframe
+import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.pandas as bpd
 from bigframes.testing.utils import cleanup_function_assets
 
 prefixer = test_utils.prefixer.Prefixer("bigframes", "")
-
-
-def test_managed_function_multiply_with_ibis(
-    session,
-    scalars_table_id,
-    bigquery_client,
-    ibis_client,
-    dataset_id,
-):
-
-    try:
-
-        @session.udf(
-            input_types=[int, int],
-            output_type=int,
-            dataset=dataset_id,
-            name=prefixer.create_prefix(),
-        )
-        def multiply(x, y):
-            return x * y
-
-        _, dataset_name, table_name = scalars_table_id.split(".")
-        if not ibis_client.dataset:
-            ibis_client.dataset = dataset_name
-
-        col_name = "int64_col"
-        table = ibis_client.tables[table_name]
-        table = table.filter(table[col_name].notnull()).order_by("rowindex").head(10)
-        sql = table.compile()
-        pandas_df_orig = bigquery_client.query(sql).to_dataframe()
-
-        col = table[col_name]
-        col_2x = multiply(col, 2).name("int64_col_2x")
-        col_square = multiply(col, col).name("int64_col_square")
-        table = table.mutate([col_2x, col_square])
-        sql = table.compile()
-        pandas_df_new = bigquery_client.query(sql).to_dataframe()
-
-        pandas.testing.assert_series_equal(
-            pandas_df_orig[col_name] * 2,
-            pandas_df_new["int64_col_2x"],
-            check_names=False,
-        )
-
-        pandas.testing.assert_series_equal(
-            pandas_df_orig[col_name] * pandas_df_orig[col_name],
-            pandas_df_new["int64_col_square"],
-            check_names=False,
-        )
-    finally:
-        # clean up the gcp assets created for the managed function.
-        cleanup_function_assets(multiply, bigquery_client, ignore_failures=False)
-
-
-def test_managed_function_stringify_with_ibis(
-    session,
-    scalars_table_id,
-    bigquery_client,
-    ibis_client,
-    dataset_id,
-):
-    try:
-
-        @session.udf(
-            input_types=[int],
-            output_type=str,
-            dataset=dataset_id,
-            name=prefixer.create_prefix(),
-        )
-        def stringify(x):
-            return f"I got {x}"
-
-        # Function should work locally.
-        assert stringify(8912) == "I got 8912"
-
-        _, dataset_name, table_name = scalars_table_id.split(".")
-        if not ibis_client.dataset:
-            ibis_client.dataset = dataset_name
-
-        col_name = "int64_col"
-        table = ibis_client.tables[table_name]
-        table = table.filter(table[col_name].notnull()).order_by("rowindex").head(10)
-        sql = table.compile()
-        pandas_df_orig = bigquery_client.query(sql).to_dataframe()
-
-        col = table[col_name]
-        col_2x = stringify.ibis_node(col).name("int64_str_col")
-        table = table.mutate([col_2x])
-        sql = table.compile()
-        pandas_df_new = bigquery_client.query(sql).to_dataframe()
-
-        pandas.testing.assert_series_equal(
-            pandas_df_orig[col_name].apply(lambda x: f"I got {x}"),
-            pandas_df_new["int64_str_col"],
-            check_names=False,
-        )
-    finally:
-        # clean up the gcp assets created for the managed function.
-        cleanup_function_assets(stringify, bigquery_client, ignore_failures=False)
 
 
 def test_managed_function_array_output(session, scalars_dfs, dataset_id):
@@ -150,7 +53,7 @@ def test_managed_function_array_output(session, scalars_dfs, dataset_id):
         featurize_ref = session.read_gbq_function(featurize.bigframes_bigquery_function)
 
         assert hasattr(featurize_ref, "bigframes_bigquery_function")
-        assert not hasattr(featurize_ref, "bigframes_remote_function")
+        assert featurize_ref.bigframes_remote_function is None
         assert (
             featurize_ref.bigframes_bigquery_function
             == featurize.bigframes_bigquery_function
@@ -184,7 +87,6 @@ def test_managed_function_series_apply(session, dataset_id, scalars_dfs):
         assert foo(-2) == bytes(2)
 
         assert hasattr(foo, "bigframes_bigquery_function")
-        assert hasattr(foo, "ibis_node")
         assert hasattr(foo, "input_dtypes")
         assert hasattr(foo, "output_dtype")
         assert hasattr(foo, "bigframes_bigquery_function_output_dtype")
@@ -208,7 +110,7 @@ def test_managed_function_series_apply(session, dataset_id, scalars_dfs):
             function_name=foo.bigframes_bigquery_function,  # type: ignore
         )
         assert hasattr(foo_ref, "bigframes_bigquery_function")
-        assert not hasattr(foo_ref, "bigframes_remote_function")
+        assert foo_ref.bigframes_remote_function is None
         assert foo.bigframes_bigquery_function == foo_ref.bigframes_bigquery_function  # type: ignore
 
         bf_result_col_gbq = scalars_df["int64_too"].apply(foo_ref)
@@ -358,7 +260,7 @@ def test_managed_function_series_combine_array_output(session, dataset_id, scala
         )
 
         assert hasattr(add_list_managed_func_ref, "bigframes_bigquery_function")
-        assert not hasattr(add_list_managed_func_ref, "bigframes_remote_function")
+        assert add_list_managed_func_ref.bigframes_remote_function is None
         assert (
             add_list_managed_func_ref.bigframes_bigquery_function
             == add_list_managed_func.bigframes_bigquery_function
@@ -515,16 +417,16 @@ def test_managed_function_dataframe_apply_axis_1_array_output(session, dataset_i
     # Assert the dataframe dtypes.
     assert tuple(bf_df.dtypes) == expected_dtypes
 
-    try:
+    @session.udf(
+        input_types=[int, float, str],
+        output_type=list[str],
+        dataset=dataset_id,
+        name=prefixer.create_prefix(),
+    )
+    def foo(x, y, z):
+        return [str(x), str(y), z]
 
-        @session.udf(
-            input_types=[int, float, str],
-            output_type=list[str],
-            dataset=dataset_id,
-            name=prefixer.create_prefix(),
-        )
-        def foo(x, y, z):
-            return [str(x), str(y), z]
+    try:
 
         assert getattr(foo, "is_row_processor") is False
         assert getattr(foo, "input_dtypes") == expected_dtypes
@@ -585,7 +487,7 @@ def test_managed_function_dataframe_apply_axis_1_array_output(session, dataset_i
         foo_ref = session.read_gbq_function(foo.bigframes_bigquery_function)
 
         assert hasattr(foo_ref, "bigframes_bigquery_function")
-        assert not hasattr(foo_ref, "bigframes_remote_function")
+        assert foo_ref.bigframes_remote_function is None
         assert foo_ref.bigframes_bigquery_function == foo.bigframes_bigquery_function
 
         # Test on the function from read_gbq_function.

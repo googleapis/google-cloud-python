@@ -870,32 +870,4 @@ def lcd_type_or_throw(dtype1: Dtype, dtype2: Dtype) -> Dtype:
     return result
 
 
-### Remote functions use only
-# TODO: Refactor into remote function module
-
-# Input and output types supported by BigQuery DataFrames remote functions.
-# TODO(shobs): Extend the support to all types supported by BQ remote functions
-# https://cloud.google.com/bigquery/docs/remote-functions#limitations
-RF_SUPPORTED_IO_PYTHON_TYPES = {bool, bytes, float, int, str}
-
-# Support array output types in BigQuery DataFrames remote functions even though
-# it is not currently (2024-10-06) supported in BigQuery remote functions.
-# https://cloud.google.com/bigquery/docs/remote-functions#limitations
-# TODO(b/284515241): remove this special handling when BigQuery remote functions
-# support array.
-RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES = {bool, float, int, str}
-
-RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS = {
-    "BOOLEAN",
-    "BOOL",
-    "BYTES",
-    "FLOAT",
-    "FLOAT64",
-    "INT64",
-    "INTEGER",
-    "STRING",
-    "ARRAY",
-}
-
-
 TIMEDELTA_DESCRIPTION_TAG = "#microseconds"

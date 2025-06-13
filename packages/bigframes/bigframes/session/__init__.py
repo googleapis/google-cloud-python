@@ -181,18 +181,6 @@ class Session(
         # the ibis client has been created
         original_default_query_job_config = self.bqclient.default_query_job_config
 
-        # Only used to fetch remote function metadata.
-        # TODO: Remove in favor of raw bq client
-
-        self.ibis_client = typing.cast(
-            ibis_bigquery.Backend,
-            ibis_bigquery.Backend().connect(
-                project_id=context.project,
-                client=self.bqclient,
-                storage_client=self.bqstoragereadclient,
-            ),
-        )
-
         self.bqclient.default_query_job_config = original_default_query_job_config
 
         # Resolve the BQ connection for remote function and Vertex AI integration

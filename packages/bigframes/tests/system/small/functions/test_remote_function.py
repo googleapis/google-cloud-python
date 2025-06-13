@@ -99,7 +99,7 @@ def get_bq_connection_id_path_format(connection_id_dot_format):
     return f"projects/{fields[0]}/locations/{fields[1]}/connections/{fields[2]}"
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+# @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_direct_no_session_param(
     bigquery_client,
     bigqueryconnection_client,
@@ -134,7 +134,6 @@ def test_remote_function_direct_no_session_param(
     assert hasattr(square, "bigframes_remote_function")
     assert hasattr(square, "bigframes_bigquery_function")
     assert hasattr(square, "bigframes_cloud_function")
-    assert hasattr(square, "ibis_node")
 
     scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -718,7 +717,7 @@ def test_read_gbq_function_like_original(
 
     assert square2.bigframes_remote_function
     assert square2.bigframes_bigquery_function
-    assert not hasattr(square2, "bigframes_cloud_function")
+    assert square2.bigframes_cloud_function is None
 
     # They should point to the same function.
     assert square1.bigframes_remote_function == square2.bigframes_remote_function  # type: ignore

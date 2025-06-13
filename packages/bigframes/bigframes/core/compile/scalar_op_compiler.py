@@ -17,7 +17,6 @@ from __future__ import annotations
 import functools
 import typing
 
-import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis.expr.api as ibis_api
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 import bigframes_vendored.ibis.expr.operations.generic as ibis_generic
@@ -30,6 +29,7 @@ from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 import bigframes.core.compile.default_ordering
 import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
+import bigframes.dtypes
 import bigframes.operations as ops
 
 _ZERO = typing.cast(ibis_types.NumericValue, ibis_types.literal(0))
@@ -1284,15 +1284,56 @@ def timedelta_floor_op_impl(x: ibis_types.NumericValue):
 
 @scalar_op_compiler.register_unary_op(ops.RemoteFunctionOp, pass_op=True)
 def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
-    ibis_node = getattr(op.func, "ibis_node", None)
-    if ibis_node is None:
-        raise TypeError(
-            f"only a bigframes remote function is supported as a callable. {constants.FEEDBACK_LINK}"
-        )
-    x_transformed = ibis_node(x)
+    udf_sig = op.function_def.signature
+    ibis_py_sig = (udf_sig.py_input_types, udf_sig.py_output_type)
+
+    @ibis_udf.scalar.builtin(
+        name=str(op.function_def.routine_ref), signature=ibis_py_sig
+    )
+    def udf(input):
+        ...
+
+    x_transformed = udf(x)
     if not op.apply_on_null:
-        x_transformed = ibis_api.case().when(x.isnull(), x).else_(x_transformed).end()
+        return ibis_api.case().when(x.isnull(), x).else_(x_transformed).end()
     return x_transformed
+
+
+@scalar_op_compiler.register_binary_op(ops.BinaryRemoteFunctionOp, pass_op=True)
+def binary_remote_function_op_impl(
+    x: ibis_types.Value, y: ibis_types.Value, op: ops.BinaryRemoteFunctionOp
+):
+    udf_sig = op.function_def.signature
+    ibis_py_sig = (udf_sig.py_input_types, udf_sig.py_output_type)
+
+    @ibis_udf.scalar.builtin(
+        name=str(op.function_def.routine_ref), signature=ibis_py_sig
+    )
+    def udf(input1, input2):
+        ...
+
+    x_transformed = udf(x, y)
+    return x_transformed
+
+
+@scalar_op_compiler.register_nary_op(ops.NaryRemoteFunctionOp, pass_op=True)
+def nary_remote_function_op_impl(
+    *operands: ibis_types.Value, op: ops.NaryRemoteFunctionOp
+):
+    udf_sig = op.function_def.signature
+    ibis_py_sig = (udf_sig.py_input_types, udf_sig.py_output_type)
+    arg_names = tuple(arg.name for arg in udf_sig.input_types)
+
+    @ibis_udf.scalar.builtin(
+        name=str(op.function_def.routine_ref),
+        signature=ibis_py_sig,
+        param_name_overrides=arg_names,
+    )
+    def udf(*inputs):
+        ...
+
+    result = udf(*operands)
+    return result
 
 
 @scalar_op_compiler.register_unary_op(ops.MapOp, pass_op=True)
@@ -1931,19 +1972,6 @@ def manhattan_distance_impl(
     return vector_distance(vector1, vector2, "MANHATTAN")
 
 
-@scalar_op_compiler.register_binary_op(ops.BinaryRemoteFunctionOp, pass_op=True)
-def binary_remote_function_op_impl(
-    x: ibis_types.Value, y: ibis_types.Value, op: ops.BinaryRemoteFunctionOp
-):
-    ibis_node = getattr(op.func, "ibis_node", None)
-    if ibis_node is None:
-        raise TypeError(
-            f"only a bigframes remote function is supported as a callable. {constants.FEEDBACK_LINK}"
-        )
-    x_transformed = ibis_node(x, y)
-    return x_transformed
-
-
 # Blob Ops
 @scalar_op_compiler.register_binary_op(ops.obj_make_ref_op)
 def obj_make_ref_op(x: ibis_types.Value, y: ibis_types.Value):
@@ -2003,19 +2031,6 @@ def case_when_op(*cases_and_outputs: ibis_types.Value) -> ibis_types.Value:
     for predicate, output in zip(cases_and_outputs[::2], result_values):
         case_val = case_val.when(predicate, output)
     return case_val.end()  # type: ignore
-
-
-@scalar_op_compiler.register_nary_op(ops.NaryRemoteFunctionOp, pass_op=True)
-def nary_remote_function_op_impl(
-    *operands: ibis_types.Value, op: ops.NaryRemoteFunctionOp
-):
-    ibis_node = getattr(op.func, "ibis_node", None)
-    if ibis_node is None:
-        raise TypeError(
-            f"only a bigframes remote function is supported as a callable. {constants.FEEDBACK_LINK}"
-        )
-    result = ibis_node(*operands)
-    return result
 
 
 @scalar_op_compiler.register_nary_op(ops.SqlScalarOp, pass_op=True)

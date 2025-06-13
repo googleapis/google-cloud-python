@@ -272,15 +272,3 @@ def test_literal_to_ibis_scalar_throws_on_incompatible_literal():
         ValueError,
     ):
         bigframes.core.compile.ibis_types.literal_to_ibis_scalar({"mykey": "myval"})
-
-
-def test_remote_function_io_types_are_supported_bigframes_types():
-    from bigframes_vendored.ibis.expr.datatypes.core import (
-        dtype as python_type_to_ibis_type,
-    )
-
-    from bigframes.dtypes import RF_SUPPORTED_IO_PYTHON_TYPES as rf_supported_io_types
-
-    for python_type in rf_supported_io_types:
-        ibis_type = python_type_to_ibis_type(python_type)
-        assert ibis_type in bigframes.core.compile.ibis_types.IBIS_TO_BIGFRAMES

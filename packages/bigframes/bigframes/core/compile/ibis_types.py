@@ -13,20 +13,14 @@
 # limitations under the License.
 from __future__ import annotations
 
-import typing
 from typing import cast, Dict, Iterable, Optional, Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.ibis
-import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
-from bigframes_vendored.ibis.expr.datatypes.core import (
-    dtype as python_type_to_ibis_type,
-)
 import bigframes_vendored.ibis.expr.types as ibis_types
 import db_dtypes  # type: ignore
 import geopandas as gpd  # type: ignore
-import google.cloud.bigquery as bigquery
 import pandas as pd
 import pyarrow as pa
 
@@ -439,45 +433,3 @@ def literal_to_ibis_scalar(
         )
 
     return scalar_expr
-
-
-class UnsupportedTypeError(ValueError):
-    def __init__(self, type_, supported_types):
-        self.type = type_
-        self.supported_types = supported_types
-        super().__init__(
-            f"'{type_}' is not one of the supported types {supported_types}"
-        )
-
-
-def ibis_type_from_python_type(t: type) -> ibis_dtypes.DataType:
-    if t not in bigframes.dtypes.RF_SUPPORTED_IO_PYTHON_TYPES:
-        raise UnsupportedTypeError(t, bigframes.dtypes.RF_SUPPORTED_IO_PYTHON_TYPES)
-    return python_type_to_ibis_type(t)
-
-
-def ibis_array_output_type_from_python_type(t: type) -> ibis_dtypes.DataType:
-    array_of = typing.get_args(t)[0]
-    if array_of not in bigframes.dtypes.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES:
-        raise UnsupportedTypeError(
-            array_of, bigframes.dtypes.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES
-        )
-    return python_type_to_ibis_type(t)
-
-
-def ibis_type_from_bigquery_type(
-    type_: bigquery.StandardSqlDataType,
-) -> ibis_dtypes.DataType:
-    """Convert bq type to ibis. Only to be used for remote functions, does not handle all types."""
-    if type_.type_kind not in bigframes.dtypes.RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS:
-        raise UnsupportedTypeError(
-            type_.type_kind, bigframes.dtypes.RF_SUPPORTED_IO_BIGQUERY_TYPEKINDS
-        )
-    elif type_.type_kind == "ARRAY":
-        return ibis_dtypes.Array(
-            value_type=ibis_type_from_bigquery_type(
-                typing.cast(bigquery.StandardSqlDataType, type_.array_element_type)
-            )
-        )
-    else:
-        return third_party_ibis_bqtypes.BigQueryType.to_ibis(type_.type_kind)

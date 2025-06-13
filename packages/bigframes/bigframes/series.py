@@ -66,6 +66,7 @@ import bigframes.dataframe
 import bigframes.dtypes
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as formatter
+import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.base
@@ -1841,7 +1842,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 " are supported."
             )
 
-        if not hasattr(func, "bigframes_bigquery_function"):
+        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
             # It is neither a remote function nor a managed function.
             # Then it must be a vectorized function that applies to the Series
             # as a whole.
@@ -1873,24 +1874,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
         # We are working with bigquery function at this point
         result_series = self._apply_unary_op(
-            ops.RemoteFunctionOp(func=func, apply_on_null=True)
+            ops.RemoteFunctionOp(function_def=func.udf_def, apply_on_null=True)
         )
-
-        # If the result type is string but the function output is intended to
-        # be an array, reconstruct the array from the string assuming it is a
-        # json serialized form of the array.
-        if bigframes.dtypes.is_string_like(
-            result_series.dtype
-        ) and bigframes.dtypes.is_array_like(func.output_dtype):
-            import bigframes.bigquery as bbq
-
-            result_dtype = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
-                func.output_dtype.pyarrow_dtype.value_type
-            )
-            result_series = bbq.json_extract_string_array(
-                result_series, value_dtype=result_dtype
-            )
-
+        result_series = func._post_process_series(result_series)
         return result_series
 
     def combine(
@@ -1905,7 +1891,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 " are supported."
             )
 
-        if not hasattr(func, "bigframes_bigquery_function"):
+        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
             # Keep this in sync with .apply
             try:
                 return func(self, other)
@@ -1918,24 +1904,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 raise
 
         result_series = self._apply_binary_op(
-            other, ops.BinaryRemoteFunctionOp(func=func)
+            other, ops.BinaryRemoteFunctionOp(function_def=func.udf_def)
         )
-
-        # If the result type is string but the function output is intended to
-        # be an array, reconstruct the array from the string assuming it is a
-        # json serialized form of the array.
-        if bigframes.dtypes.is_string_like(
-            result_series.dtype
-        ) and bigframes.dtypes.is_array_like(func.output_dtype):
-            import bigframes.bigquery as bbq
-
-            result_dtype = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(
-                func.output_dtype.pyarrow_dtype.value_type
-            )
-            result_series = bbq.json_extract_string_array(
-                result_series, value_dtype=result_dtype
-            )
-
+        result_series = func._post_process_series(result_series)
         return result_series
 
     @validations.requires_index

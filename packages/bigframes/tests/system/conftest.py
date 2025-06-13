@@ -22,7 +22,6 @@ import traceback
 import typing
 from typing import Dict, Generator, Optional
 
-import bigframes_vendored.ibis.backends as ibis_backends
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1 as bigquery_connection_v1
@@ -107,11 +106,6 @@ def bigquery_client(session: bigframes.Session) -> bigquery.Client:
 @pytest.fixture(scope="session")
 def bigquery_client_tokyo(session_tokyo: bigframes.Session) -> bigquery.Client:
     return session_tokyo.bqclient
-
-
-@pytest.fixture(scope="session")
-def ibis_client(session: bigframes.Session) -> ibis_backends.BaseBackend:
-    return session.ibis_client
 
 
 @pytest.fixture(scope="session")

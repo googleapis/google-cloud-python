@@ -15,8 +15,7 @@
 import bigframes_vendored.constants as constants
 import pytest
 
-import bigframes.dtypes
-from bigframes.functions import _utils
+from bigframes.functions import _utils, function_typing
 
 
 @pytest.mark.parametrize(
@@ -133,7 +132,7 @@ def test_get_python_output_type_from_bigframes_metadata(
 
 
 def test_metadata_roundtrip_supported_array_types():
-    for array_of in bigframes.dtypes.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES:
+    for array_of in function_typing.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES:
         ser = _utils.get_bigframes_metadata(python_output_type=list[array_of])  # type: ignore
         deser = _utils.get_python_output_type_from_bigframes_metadata(ser)
         assert deser == list[array_of]  # type: ignore

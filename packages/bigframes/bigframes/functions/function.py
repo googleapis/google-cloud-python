@@ -14,28 +14,19 @@
 
 from __future__ import annotations
 
-import inspect
 import logging
-import typing
-from typing import cast, Optional, TYPE_CHECKING
-import warnings
-
-import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
-import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
+from typing import Callable, cast, get_origin, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from bigframes.session import Session
+    import bigframes.series
 
 import google.api_core.exceptions
 from google.cloud import bigquery
 
-import bigframes.core.compile.ibis_types
-import bigframes.dtypes
-import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
-
-from . import _function_session as bff_session
-from . import _utils
+from bigframes.functions import _function_session as bff_session
+from bigframes.functions import _utils, function_typing, udf_def
 
 logger = logging.getLogger(__name__)
 
@@ -44,55 +35,6 @@ class UnsupportedTypeError(ValueError):
     def __init__(self, type_, supported_types):
         self.type = type_
         self.supported_types = supported_types
-
-
-class ReturnTypeMissingError(ValueError):
-    pass
-
-
-# TODO: Move this to compile folder
-def ibis_signature_from_routine(routine: bigquery.Routine) -> _utils.IbisSignature:
-    if routine.return_type:
-        ibis_output_type = (
-            bigframes.core.compile.ibis_types.ibis_type_from_bigquery_type(
-                routine.return_type
-            )
-        )
-    else:
-        raise ReturnTypeMissingError
-
-    ibis_output_type_override: Optional[ibis_dtypes.DataType] = None
-    if python_output_type := _utils.get_python_output_type_from_bigframes_metadata(
-        routine.description
-    ):
-        if not isinstance(ibis_output_type, ibis_dtypes.String):
-            raise bf_formatting.create_exception_with_feedback_link(
-                TypeError,
-                "An explicit output_type should be provided only for a BigQuery function with STRING output.",
-            )
-        if typing.get_origin(python_output_type) is list:
-            ibis_output_type_override = bigframes.core.compile.ibis_types.ibis_array_output_type_from_python_type(
-                cast(type, python_output_type)
-            )
-        else:
-            raise bf_formatting.create_exception_with_feedback_link(
-                TypeError,
-                "Currently only list of a type is supported as python output type.",
-            )
-
-    return _utils.IbisSignature(
-        parameter_names=[arg.name for arg in routine.arguments],
-        input_types=[
-            bigframes.core.compile.ibis_types.ibis_type_from_bigquery_type(
-                arg.data_type
-            )
-            if arg.data_type
-            else None
-            for arg in routine.arguments
-        ],
-        output_type=ibis_output_type,
-        output_type_override=ibis_output_type_override,
-    )
 
 
 class DatasetMissingError(ValueError):
@@ -136,6 +78,78 @@ def udf(*args, **kwargs):
 udf.__doc__ = bff_session.FunctionSession.udf.__doc__
 
 
+def _try_import_routine(
+    routine: bigquery.Routine, session: bigframes.Session
+) -> BigqueryCallableRoutine:
+    udf_def = _routine_as_udf_def(routine)
+    override_type = _get_output_type_override(routine)
+    is_remote = (
+        hasattr(routine, "remote_function_options") and routine.remote_function_options
+    )
+    if override_type is not None:
+        return BigqueryCallableRoutine(
+            udf_def,
+            session,
+            post_routine=_utils._build_unnest_post_routine(override_type),
+        )
+    return BigqueryCallableRoutine(udf_def, session, is_managed=not is_remote)
+
+
+def _try_import_row_routine(
+    routine: bigquery.Routine, session: bigframes.Session
+) -> BigqueryCallableRowRoutine:
+    udf_def = _routine_as_udf_def(routine)
+    override_type = _get_output_type_override(routine)
+    is_remote = (
+        hasattr(routine, "remote_function_options") and routine.remote_function_options
+    )
+    if override_type is not None:
+        return BigqueryCallableRowRoutine(
+            udf_def,
+            session,
+            post_routine=_utils._build_unnest_post_routine(override_type),
+        )
+    return BigqueryCallableRowRoutine(udf_def, session, is_managed=not is_remote)
+
+
+def _routine_as_udf_def(routine: bigquery.Routine) -> udf_def.BigqueryUdf:
+    try:
+        return udf_def.BigqueryUdf.from_routine(routine)
+    except udf_def.ReturnTypeMissingError:
+        raise bf_formatting.create_exception_with_feedback_link(
+            ValueError, "Function return type must be specified."
+        )
+    except function_typing.UnsupportedTypeError as e:
+        raise bf_formatting.create_exception_with_feedback_link(
+            ValueError,
+            f"Type {e.type} not supported, supported types are {e.supported_types}.",
+        )
+
+
+def _get_output_type_override(routine: bigquery.Routine) -> Optional[type[list]]:
+    if routine.description is not None and isinstance(routine.description, str):
+        if python_output_type := _utils.get_python_output_type_from_bigframes_metadata(
+            routine.description
+        ):
+            bq_return_type = cast(bigquery.StandardSqlDataType, routine.return_type)
+
+            if bq_return_type is None or bq_return_type.type_kind != "STRING":
+                raise bf_formatting.create_exception_with_feedback_link(
+                    TypeError,
+                    "An explicit output_type should be provided only for a BigQuery function with STRING output.",
+                )
+            if get_origin(python_output_type) is list:
+                return python_output_type
+            else:
+                raise bf_formatting.create_exception_with_feedback_link(
+                    TypeError,
+                    "Currently only list of "
+                    "a type is supported as python output type.",
+                )
+
+    return None
+
+
 # TODO(b/399894805): Support managed function.
 def read_gbq_function(
     function_name: str,
@@ -147,7 +161,6 @@ def read_gbq_function(
     Read an existing BigQuery function and prepare it for use in future queries.
     """
     bigquery_client = session.bqclient
-    ibis_client = session.ibis_client
 
     try:
         routine_ref = get_routine_reference(function_name, bigquery_client, session)
@@ -172,86 +185,163 @@ def read_gbq_function(
             "takes in a single input representing the row.",
         )
 
-    try:
-        ibis_signature = ibis_signature_from_routine(routine)
-    except ReturnTypeMissingError:
-        raise bf_formatting.create_exception_with_feedback_link(
-            ValueError, "Function return type must be specified."
-        )
-    except bigframes.core.compile.ibis_types.UnsupportedTypeError as e:
-        raise bf_formatting.create_exception_with_feedback_link(
-            ValueError,
-            f"Type {e.type} not supported, supported types are {e.supported_types}.",
-        )
+    if is_row_processor:
+        return _try_import_row_routine(routine, session)
+    else:
+        return _try_import_routine(routine, session)
 
-    # The name "args" conflicts with the Ibis operator, so we use
-    # non-standard names for the arguments here.
-    def func(*bigframes_args, **bigframes_kwargs):
-        f"""Bigframes function {str(routine_ref)}."""
-        nonlocal node  # type: ignore
 
-        expr = node(*bigframes_args, **bigframes_kwargs)  # type: ignore
-        return ibis_client.execute(expr)
+class BigqueryCallableRoutine:
+    """
+    A reference to a routine in the context of a session.
 
-    func.__signature__ = inspect.signature(func).replace(  # type: ignore
-        parameters=[
-            # TODO(shobs): Find a better way to support functions with param
-            # named "name". This causes an issue in the ibis compilation.
-            inspect.Parameter(
-                f"bigframes_{name}",
-                inspect.Parameter.POSITIONAL_OR_KEYWORD,
-            )
-            for name in ibis_signature.parameter_names
-        ]
-    )
+    Can be used both directly as a callable, or as an input to dataframe ops that take a callable.
+    """
 
-    # TODO: Move ibis logic to compiler step
+    def __init__(
+        self,
+        udf_def: udf_def.BigqueryUdf,
+        session: bigframes.Session,
+        *,
+        local_func: Optional[Callable] = None,
+        cloud_function_ref: Optional[str] = None,
+        post_routine: Optional[
+            Callable[[bigframes.series.Series], bigframes.series.Series]
+        ] = None,
+        is_managed: bool = False,
+    ):
+        self._udf_def = udf_def
+        self._session = session
+        self._post_routine = post_routine
+        self._local_fun = local_func
+        self._cloud_function = cloud_function_ref
+        self._is_managed = is_managed
 
-    func.__name__ = routine_ref.routine_id
+    def __call__(self, *args, **kwargs):
+        if self._local_fun:
+            return self._local_fun(*args, **kwargs)
+        # avoid circular imports
+        import bigframes.core.sql as bf_sql
+        import bigframes.session._io.bigquery as bf_io_bigquery
 
-    node = ibis_udf.scalar.builtin(
-        func,
-        name=routine_ref.routine_id,
-        catalog=routine_ref.project,
-        database=routine_ref.dataset_id,
-        signature=(ibis_signature.input_types, ibis_signature.output_type),
-    )  # type: ignore
-    func.bigframes_bigquery_function = str(routine_ref)  # type: ignore
+        args_string = ", ".join(map(bf_sql.simple_literal, args))
+        sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"
+        iter, job = bf_io_bigquery.start_query_with_client(self._session.bqclient, sql=sql, query_with_job=True, job_config=bigquery.QueryJobConfig())  # type: ignore
+        return list(iter.to_arrow().to_pydict().values())[0][0]
 
-    # We will keep the "bigframes_remote_function" attr for remote function.
-    if hasattr(routine, "remote_function_options") and routine.remote_function_options:
-        func.bigframes_remote_function = func.bigframes_bigquery_function  # type: ignore
+    @property
+    def bigframes_bigquery_function(self) -> str:
+        return str(self._udf_def.routine_ref)
 
-    # set input bigframes data types
-    has_unknown_dtypes = False
-    function_input_dtypes = []
-    for ibis_type in ibis_signature.input_types:
-        input_dtype = cast(bigframes.dtypes.Dtype, bigframes.dtypes.DEFAULT_DTYPE)
-        if ibis_type is None:
-            has_unknown_dtypes = True
-        else:
-            input_dtype = (
-                bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
-                    ibis_type
-                )
-            )
-        function_input_dtypes.append(input_dtype)
-    if has_unknown_dtypes:
-        msg = bfe.format_message(
-            "The function has one or more missing input data types. BigQuery DataFrames "
-            f"will assume default data type {bigframes.dtypes.DEFAULT_DTYPE} for them."
-        )
-        warnings.warn(msg, category=bfe.UnknownDataTypeWarning)
-    func.input_dtypes = tuple(function_input_dtypes)  # type: ignore
+    @property
+    def bigframes_remote_function(self):
+        return None if self._is_managed else str(self._udf_def.routine_ref)
 
-    func.output_dtype = bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(  # type: ignore
-        ibis_signature.output_type_override
-        if ibis_signature.output_type_override
-        else ibis_signature.output_type
-    )
+    @property
+    def is_row_processor(self) -> bool:
+        return False
 
-    func.bigframes_bigquery_function_output_dtype = bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(ibis_signature.output_type)  # type: ignore
+    @property
+    def udf_def(self) -> udf_def.BigqueryUdf:
+        return self._udf_def
 
-    func.is_row_processor = is_row_processor  # type: ignore
-    func.ibis_node = node  # type: ignore
-    return func
+    @property
+    def bigframes_cloud_function(self) -> Optional[str]:
+        return self._cloud_function
+
+    @property
+    def input_dtypes(self):
+        return self.udf_def.signature.bf_input_types
+
+    @property
+    def output_dtype(self):
+        return self.udf_def.signature.bf_output_type
+
+    @property
+    def bigframes_bigquery_function_output_dtype(self):
+        return self.output_dtype
+
+    def _post_process_series(
+        self, series: bigframes.series.Series
+    ) -> bigframes.series.Series:
+        if self._post_routine is not None:
+            return self._post_routine(series)
+        return series
+
+
+class BigqueryCallableRowRoutine:
+    """
+    A reference to a routine in the context of a session.
+
+    Can be used both directly as a callable, or as an input to dataframe ops that take a callable.
+    """
+
+    def __init__(
+        self,
+        udf_def: udf_def.BigqueryUdf,
+        session: bigframes.Session,
+        *,
+        local_func: Optional[Callable] = None,
+        cloud_function_ref: Optional[str] = None,
+        post_routine: Optional[
+            Callable[[bigframes.series.Series], bigframes.series.Series]
+        ] = None,
+        is_managed: bool = False,
+    ):
+        self._udf_def = udf_def
+        self._session = session
+        self._post_routine = post_routine
+        self._local_fun = local_func
+        self._cloud_function = cloud_function_ref
+        self._is_managed = is_managed
+
+    def __call__(self, *args, **kwargs):
+        if self._local_fun:
+            return self._local_fun(*args, **kwargs)
+        # avoid circular imports
+        import bigframes.core.sql as bf_sql
+        import bigframes.session._io.bigquery as bf_io_bigquery
+
+        args_string = ", ".join(map(bf_sql.simple_literal, args))
+        sql = f"SELECT `{str(self._udf_def.routine_ref)}`({args_string})"
+        iter, job = bf_io_bigquery.start_query_with_client(self._session.bqclient, sql=sql, query_with_job=True, job_config=bigquery.QueryJobConfig())  # type: ignore
+        return list(iter.to_arrow().to_pydict().values())[0][0]
+
+    @property
+    def bigframes_bigquery_function(self) -> str:
+        return str(self._udf_def.routine_ref)
+
+    @property
+    def bigframes_remote_function(self):
+        return None if self._is_managed else str(self._udf_def.routine_ref)
+
+    @property
+    def is_row_processor(self) -> bool:
+        return True
+
+    @property
+    def udf_def(self) -> udf_def.BigqueryUdf:
+        return self._udf_def
+
+    @property
+    def bigframes_cloud_function(self) -> Optional[str]:
+        return self._cloud_function
+
+    @property
+    def input_dtypes(self):
+        return self.udf_def.signature.bf_input_types
+
+    @property
+    def output_dtype(self):
+        return self.udf_def.signature.bf_output_type
+
+    @property
+    def bigframes_bigquery_function_output_dtype(self):
+        return self.output_dtype
+
+    def _post_process_series(
+        self, series: bigframes.series.Series
+    ) -> bigframes.series.Series:
+        if self._post_routine is not None:
+            return self._post_routine(series)
+        return series

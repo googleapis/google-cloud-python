@@ -14,13 +14,11 @@
 
 
 import hashlib
-import inspect
 import json
 import sys
 import typing
-from typing import cast, List, NamedTuple, Optional, Sequence, Set
+from typing import cast, Optional, Set
 
-import bigframes_vendored.ibis.expr.datatypes.core as ibis_dtypes
 import cloudpickle
 import google.api_core.exceptions
 from google.cloud import bigquery, functions_v2
@@ -28,9 +26,8 @@ import numpy
 import pandas
 import pyarrow
 
-import bigframes.core.compile.ibis_types
-import bigframes.dtypes
 import bigframes.formatting_helpers as bf_formatting
+from bigframes.functions import function_typing
 
 # Naming convention for the function artifacts
 _BIGFRAMES_FUNCTION_PREFIX = "bigframes"
@@ -198,42 +195,6 @@ def get_bigframes_function_name(function_hash, session_id, uniq_suffix=None):
     return _BQ_FUNCTION_NAME_SEPERATOR.join(parts)
 
 
-class IbisSignature(NamedTuple):
-    parameter_names: List[str]
-    input_types: List[Optional[ibis_dtypes.DataType]]
-    output_type: ibis_dtypes.DataType
-    output_type_override: Optional[ibis_dtypes.DataType] = None
-
-
-def ibis_signature_from_python_signature(
-    signature: inspect.Signature,
-    input_types: Sequence[type],
-    output_type: type,
-) -> IbisSignature:
-
-    ibis_input_types: List[Optional[ibis_dtypes.DataType]] = [
-        bigframes.core.compile.ibis_types.ibis_type_from_python_type(t)
-        for t in input_types
-    ]
-
-    if typing.get_origin(output_type) is list:
-        ibis_output_type = (
-            bigframes.core.compile.ibis_types.ibis_array_output_type_from_python_type(
-                output_type
-            )
-        )
-    else:
-        ibis_output_type = bigframes.core.compile.ibis_types.ibis_type_from_python_type(
-            output_type
-        )
-
-    return IbisSignature(
-        parameter_names=list(signature.parameters.keys()),
-        input_types=ibis_input_types,
-        output_type=ibis_output_type,
-    )
-
-
 def get_python_output_type_from_bigframes_metadata(
     metadata_text: str,
 ) -> Optional[type]:
@@ -249,7 +210,7 @@ def get_python_output_type_from_bigframes_metadata(
 
     for (
         python_output_array_type
-    ) in bigframes.dtypes.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES:
+    ) in function_typing.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES:
         if python_output_array_type.__name__ == output_type:
             return list[python_output_array_type]  # type: ignore
 
@@ -266,7 +227,7 @@ def get_bigframes_metadata(*, python_output_type: Optional[type] = None) -> str:
         python_output_array_type = typing.get_args(python_output_type)[0]
         if (
             python_output_array_type
-            in bigframes.dtypes.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES
+            in function_typing.RF_SUPPORTED_ARRAY_OUTPUT_PYTHON_TYPES
         ):
             inner_metadata[
                 "python_array_output_type"
@@ -294,3 +255,17 @@ def get_python_version(is_compat: bool = False) -> str:
     major = sys.version_info.major
     minor = sys.version_info.minor
     return f"python{major}{minor}" if is_compat else f"python-{major}.{minor}"
+
+
+def _build_unnest_post_routine(py_list_type: type[list]):
+    sdk_type = function_typing.sdk_array_output_type_from_python_type(py_list_type)
+    assert sdk_type.array_element_type is not None
+    inner_sdk_type = sdk_type.array_element_type
+    result_dtype = function_typing.sdk_type_to_bf_type(inner_sdk_type)
+
+    def post_process(input):
+        import bigframes.bigquery as bbq
+
+        return bbq.json_extract_string_array(input, value_dtype=result_dtype)
+
+    return post_process

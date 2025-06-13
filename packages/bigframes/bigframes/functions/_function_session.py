@@ -16,14 +16,15 @@
 from __future__ import annotations
 
 import collections.abc
+import functools
 import inspect
 import sys
 import threading
 from typing import (
     Any,
-    Callable,
     cast,
     Dict,
+    get_origin,
     Literal,
     Mapping,
     Optional,
@@ -33,10 +34,6 @@ from typing import (
 )
 import warnings
 
-import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
-import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
-import bigframes_vendored.ibis.expr.operations.udf as ibis_udf
-import cloudpickle
 import google.api_core.exceptions
 from google.cloud import (
     bigquery,
@@ -46,17 +43,17 @@ from google.cloud import (
 )
 
 from bigframes import clients
-import bigframes.core.compile.ibis_types
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
-import bigframes.series as bf_series
+from bigframes.functions import function as bq_functions
+from bigframes.functions import udf_def
 
 if TYPE_CHECKING:
     from bigframes.session import Session
 
 import pandas
 
-from . import _function_client, _utils
+from bigframes.functions import _function_client, _utils
 
 
 class FunctionSession:
@@ -219,17 +216,6 @@ class FunctionSession:
                         pass
 
             self._temp_artifacts.clear()
-
-    def _try_delattr(self, func: Callable, attr: str) -> None:
-        """Attempts to delete an attribute from a bigframes function."""
-        # In the unlikely case where the user is trying to re-deploy the same
-        # function, cleanup the attributes we add in bigframes functions, first.
-        # This prevents the pickle from having dependencies that might not
-        # otherwise be present such as ibis or pandas.
-        try:
-            delattr(func, attr)
-        except AttributeError:
-            pass
 
     # Inspired by @udf decorator implemented in ibis-bigquery package
     # https://github.com/ibis-project/ibis-bigquery/blob/main/ibis_bigquery/udf/__init__.py
@@ -543,58 +529,32 @@ class FunctionSession:
             else:
                 signature_kwargs = {}  # type: ignore
 
-            signature = inspect.signature(
+            py_sig = inspect.signature(
                 func,
                 **signature_kwargs,
             )
+            if input_types is not None:
+                if not isinstance(input_types, collections.abc.Sequence):
+                    input_types = [input_types]
+                py_sig = py_sig.replace(
+                    parameters=[
+                        par.replace(annotation=itype)
+                        for par, itype in zip(py_sig.parameters.values(), input_types)
+                    ]
+                )
+            if output_type:
+                py_sig = py_sig.replace(return_annotation=output_type)
 
             # Try to get input types via type annotations.
-            if input_types is None:
-                input_types = []
-                for parameter in signature.parameters.values():
-                    if (param_type := parameter.annotation) is inspect.Signature.empty:
-                        raise bf_formatting.create_exception_with_feedback_link(
-                            ValueError,
-                            "'input_types' was not set and parameter "
-                            f"'{parameter.name}' is missing a type annotation. "
-                            "Types are required to use @remote_function.",
-                        )
-                    input_types.append(param_type)
-            elif not isinstance(input_types, collections.abc.Sequence):
-                input_types = [input_types]
-
-            if output_type is None:
-                if (
-                    output_type := signature.return_annotation
-                ) is inspect.Signature.empty:
-                    raise bf_formatting.create_exception_with_feedback_link(
-                        ValueError,
-                        "'output_type' was not set and function is missing a "
-                        "return type annotation. Types are required to use "
-                        "@remote_function.",
-                    )
 
             # The function will actually be receiving a pandas Series, but allow both
             # BigQuery DataFrames and pandas object types for compatibility.
+            # The function will actually be receiving a pandas Series, but allow
+            # both BigQuery DataFrames and pandas object types for compatibility.
             is_row_processor = False
-            if len(input_types) == 1 and (
-                (input_type := input_types[0]) == bf_series.Series
-                or input_type == pandas.Series
-            ):
-                msg = bfe.format_message("input_types=Series is in preview.")
-                warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
-
-                # we will model the row as a json serialized string containing the data
-                # and the metadata representing the row.
-                input_types = [str]
+            if new_sig := _convert_row_processor_sig(py_sig):
+                py_sig = new_sig
                 is_row_processor = True
-            elif isinstance(input_types, type):
-                input_types = [input_types]
-
-            # TODO(b/340898611): fix type error.
-            ibis_signature = _utils.ibis_signature_from_python_signature(
-                signature, input_types, output_type  # type: ignore
-            )
 
             remote_function_client = _function_client.FunctionClient(
                 dataset_ref.project,
@@ -614,37 +574,25 @@ class FunctionSession:
                 session=session,  # type: ignore
             )
 
-            # To respect the user code/environment let's use a copy of the
-            # original udf, especially since we would be setting some properties
-            # on it.
-            func = cloudpickle.loads(cloudpickle.dumps(func))
-
-            self._try_delattr(func, "bigframes_cloud_function")
-            self._try_delattr(func, "bigframes_remote_function")
-            self._try_delattr(func, "bigframes_bigquery_function")
-            self._try_delattr(func, "bigframes_bigquery_function_output_dtype")
-            self._try_delattr(func, "input_dtypes")
-            self._try_delattr(func, "output_dtype")
-            self._try_delattr(func, "is_row_processor")
-            self._try_delattr(func, "ibis_node")
-
             # resolve the output type that can be supported in the bigframes,
             # ibis, BQ remote functions and cloud functions integration.
-            ibis_output_type_for_bqrf = ibis_signature.output_type
             bqrf_metadata = None
-            if isinstance(ibis_signature.output_type, ibis_dtypes.Array):
+            post_process_routine = None
+            if get_origin(py_sig.return_annotation) is list:
                 # TODO(b/284515241): remove this special handling to support
                 # array output types once BQ remote functions support ARRAY.
                 # Until then, use json serialized strings at the cloud function
                 # and BQ level, and parse that to the intended output type at
                 # the bigframes level.
-                ibis_output_type_for_bqrf = ibis_dtypes.String()
                 bqrf_metadata = _utils.get_bigframes_metadata(
-                    python_output_type=output_type
+                    python_output_type=py_sig.return_annotation
                 )
-            bqrf_output_type = third_party_ibis_bqtypes.BigQueryType.from_ibis(
-                ibis_output_type_for_bqrf
-            )
+                post_process_routine = _utils._build_unnest_post_routine(
+                    py_sig.return_annotation
+                )
+                py_sig = py_sig.replace(return_annotation=str)
+
+            udf_sig = udf_def.UdfSignature.from_py_signature(py_sig)
 
             (
                 rf_name,
@@ -652,12 +600,8 @@ class FunctionSession:
                 created_new,
             ) = remote_function_client.provision_bq_remote_function(
                 func,
-                input_types=tuple(
-                    third_party_ibis_bqtypes.BigQueryType.from_ibis(type_)
-                    for type_ in ibis_signature.input_types
-                    if type_ is not None
-                ),
-                output_type=bqrf_output_type,
+                input_types=udf_sig.sql_input_types,
+                output_type=udf_sig.sql_output_type,
                 reuse=reuse,
                 name=name,
                 package_requirements=packages,
@@ -671,56 +615,14 @@ class FunctionSession:
                 bq_metadata=bqrf_metadata,
             )
 
-            # TODO(shobs): Find a better way to support udfs with param named "name".
-            # This causes an issue in the ibis compilation.
-            func.__signature__ = inspect.signature(func).replace(  # type: ignore
-                parameters=[
-                    inspect.Parameter(
-                        f"bigframes_{param.name}",
-                        param.kind,
-                    )
-                    for param in inspect.signature(func).parameters.values()
-                ]
-            )
-
-            # TODO: Move ibis logic to compiler step.
-            node = ibis_udf.scalar.builtin(
-                func,
-                name=rf_name,
-                catalog=dataset_ref.project,
-                database=dataset_ref.dataset_id,
-                signature=(ibis_signature.input_types, ibis_output_type_for_bqrf),
-            )  # type: ignore
-            func.bigframes_cloud_function = (
+            bigframes_cloud_function = (
                 remote_function_client.get_cloud_function_fully_qualified_name(cf_name)
             )
-            func.bigframes_bigquery_function = (
+            bigframes_bigquery_function = (
                 remote_function_client.get_remote_function_fully_qualilfied_name(
                     rf_name
                 )
             )
-            func.bigframes_remote_function = func.bigframes_bigquery_function
-            func.input_dtypes = tuple(
-                [
-                    bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
-                        input_type
-                    )
-                    for input_type in ibis_signature.input_types
-                    if input_type is not None
-                ]
-            )
-            func.output_dtype = (
-                bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
-                    ibis_signature.output_type
-                )
-            )
-            func.bigframes_bigquery_function_output_dtype = (
-                bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
-                    ibis_output_type_for_bqrf
-                )
-            )
-            func.is_row_processor = is_row_processor
-            func.ibis_node = node
 
             # If a new remote function was created, update the cloud artifacts
             # created in the session. This would be used to clean up any
@@ -731,9 +633,38 @@ class FunctionSession:
             # with that name and would directly manage their lifecycle.
             if created_new and (not name):
                 self._update_temp_artifacts(
-                    func.bigframes_bigquery_function, func.bigframes_cloud_function
+                    bigframes_bigquery_function, bigframes_cloud_function
                 )
-            return func
+
+            udf_definition = udf_def.BigqueryUdf(
+                routine_ref=bigquery.RoutineReference.from_string(
+                    bigframes_bigquery_function
+                ),
+                signature=udf_sig,
+            )
+            decorator = functools.wraps(func)
+            if is_row_processor:
+                return decorator(
+                    bq_functions.BigqueryCallableRowRoutine(
+                        udf_definition,
+                        session,
+                        post_routine=post_process_routine,
+                        cloud_function_ref=bigframes_cloud_function,
+                        local_func=func,
+                        is_managed=False,
+                    )
+                )
+            else:
+                return decorator(
+                    bq_functions.BigqueryCallableRoutine(
+                        udf_definition,
+                        session,
+                        post_routine=post_process_routine,
+                        cloud_function_ref=bigframes_cloud_function,
+                        local_func=func,
+                        is_managed=False,
+                    )
+                )
 
         return wrapper
 
@@ -858,57 +789,30 @@ class FunctionSession:
             else:
                 signature_kwargs = {}  # type: ignore
 
-            signature = inspect.signature(
+            py_sig = inspect.signature(
                 func,
                 **signature_kwargs,
             )
+            if input_types is not None:
+                if not isinstance(input_types, collections.abc.Sequence):
+                    input_types = [input_types]
+                py_sig = py_sig.replace(
+                    parameters=[
+                        par.replace(annotation=itype)
+                        for par, itype in zip(py_sig.parameters.values(), input_types)
+                    ]
+                )
+            if output_type:
+                py_sig = py_sig.replace(return_annotation=output_type)
 
-            # Try to get input types via type annotations.
-            if input_types is None:
-                input_types = []
-                for parameter in signature.parameters.values():
-                    if (param_type := parameter.annotation) is inspect.Signature.empty:
-                        raise bf_formatting.create_exception_with_feedback_link(
-                            ValueError,
-                            "'input_types' was not set and parameter "
-                            f"'{parameter.name}' is missing a type annotation. "
-                            "Types are required to use udf.",
-                        )
-                    input_types.append(param_type)
-            elif not isinstance(input_types, collections.abc.Sequence):
-                input_types = [input_types]
-
-            if output_type is None:
-                if (
-                    output_type := signature.return_annotation
-                ) is inspect.Signature.empty:
-                    raise bf_formatting.create_exception_with_feedback_link(
-                        ValueError,
-                        "'output_type' was not set and function is missing a "
-                        "return type annotation. Types are required to use udf",
-                    )
+            udf_sig = udf_def.UdfSignature.from_py_signature(py_sig)
 
             # The function will actually be receiving a pandas Series, but allow
             # both BigQuery DataFrames and pandas object types for compatibility.
             is_row_processor = False
-            if len(input_types) == 1 and (
-                (input_type := input_types[0]) == bf_series.Series
-                or input_type == pandas.Series
-            ):
-                msg = bfe.format_message("input_types=Series is in preview.")
-                warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
-
-                # we will model the row as a json serialized string containing
-                # the data and the metadata representing the row.
-                input_types = [str]
+            if new_sig := _convert_row_processor_sig(py_sig):
+                py_sig = new_sig
                 is_row_processor = True
-            elif isinstance(input_types, type):
-                input_types = [input_types]
-
-            # TODO(b/340898611): fix type error.
-            ibis_signature = _utils.ibis_signature_from_python_signature(
-                signature, input_types, output_type  # type: ignore
-            )
 
             managed_function_client = _function_client.FunctionClient(
                 dataset_ref.project,
@@ -920,80 +824,59 @@ class FunctionSession:
                 session=session,  # type: ignore
             )
 
-            func = cloudpickle.loads(cloudpickle.dumps(func))
-
-            self._try_delattr(func, "bigframes_bigquery_function")
-            self._try_delattr(func, "bigframes_bigquery_function_output_dtype")
-            self._try_delattr(func, "input_dtypes")
-            self._try_delattr(func, "output_dtype")
-            self._try_delattr(func, "is_row_processor")
-            self._try_delattr(func, "ibis_node")
-
             bq_function_name = managed_function_client.provision_bq_managed_function(
                 func=func,
-                input_types=tuple(
-                    third_party_ibis_bqtypes.BigQueryType.from_ibis(type_)
-                    for type_ in ibis_signature.input_types
-                    if type_ is not None
-                ),
-                output_type=third_party_ibis_bqtypes.BigQueryType.from_ibis(
-                    ibis_signature.output_type
-                ),
+                input_types=udf_sig.sql_input_types,
+                output_type=udf_sig.sql_output_type,
                 name=name,
                 packages=packages,
                 is_row_processor=is_row_processor,
                 bq_connection_id=bq_connection_id,
             )
-
-            # TODO(shobs): Find a better way to support udfs with param named
-            # "name". This causes an issue in the ibis compilation.
-            func.__signature__ = inspect.signature(func).replace(  # type: ignore
-                parameters=[
-                    inspect.Parameter(
-                        f"bigframes_{param.name}",
-                        param.kind,
-                    )
-                    for param in inspect.signature(func).parameters.values()
-                ]
-            )
-
-            # TODO: Move ibis logic to compiler step.
-            node = ibis_udf.scalar.builtin(
-                func,
-                name=bq_function_name,
-                catalog=dataset_ref.project,
-                database=dataset_ref.dataset_id,
-                signature=(ibis_signature.input_types, ibis_signature.output_type),
-            )  # type: ignore
-            func.bigframes_bigquery_function = (
+            full_rf_name = (
                 managed_function_client.get_remote_function_fully_qualilfied_name(
                     bq_function_name
                 )
             )
-            func.input_dtypes = tuple(
-                [
-                    bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
-                        input_type
-                    )
-                    for input_type in ibis_signature.input_types
-                    if input_type is not None
-                ]
+
+            udf_definition = udf_def.BigqueryUdf(
+                routine_ref=bigquery.RoutineReference.from_string(full_rf_name),
+                signature=udf_sig,
             )
-            func.output_dtype = (
-                bigframes.core.compile.ibis_types.ibis_dtype_to_bigframes_dtype(
-                    ibis_signature.output_type
-                )
-            )
-            # Managed function directly supports certain output types which are
-            # not supported in remote function (e.g. list output). Thus no more
-            # processing for 'bigframes_bigquery_function_output_dtype'.
-            func.bigframes_bigquery_function_output_dtype = func.output_dtype
-            func.is_row_processor = is_row_processor
-            func.ibis_node = node
 
             if not name:
-                self._update_temp_artifacts(func.bigframes_bigquery_function, "")
+                self._update_temp_artifacts(full_rf_name, "")
 
-            return func
+            decorator = functools.wraps(func)
+            if is_row_processor:
+                return decorator(
+                    bq_functions.BigqueryCallableRowRoutine(
+                        udf_definition, session, local_func=func, is_managed=True
+                    )
+                )
+            else:
+                return decorator(
+                    bq_functions.BigqueryCallableRoutine(
+                        udf_definition,
+                        session,
+                        local_func=func,
+                        is_managed=True,
+                    )
+                )
 
         return wrapper
+
+
+def _convert_row_processor_sig(
+    signature: inspect.Signature,
+) -> Optional[inspect.Signature]:
+    import bigframes.series as bf_series
+
+    if len(signature.parameters) == 1:
+        only_param = next(iter(signature.parameters.values()))
+        param_type = only_param.annotation
+        if (param_type == bf_series.Series) or (param_type == pandas.Series):
+            msg = bfe.format_message("input_types=Series is in preview.")
+            warnings.warn(msg, stacklevel=1, category=bfe.PreviewWarning)
+            return signature.replace(parameters=[only_param.replace(annotation=str)])
+    return None

@@ -25,7 +25,7 @@ import string
 import tempfile
 import textwrap
 import types
-from typing import cast, Tuple, TYPE_CHECKING
+from typing import Any, cast, Optional, Sequence, Tuple, TYPE_CHECKING
 
 import requests
 
@@ -38,8 +38,6 @@ if TYPE_CHECKING:
 import google.api_core.exceptions
 import google.api_core.retry
 from google.cloud import bigquery, functions_v2
-
-import bigframes.session._io.bigquery
 
 from . import _utils
 
@@ -126,6 +124,8 @@ class FunctionClient:
 
     def _create_bq_function(self, create_function_ddl: str) -> None:
         # TODO(swast): plumb through the original, user-facing api_name.
+        import bigframes.session._io.bigquery
+
         _, query_job = bigframes.session._io.bigquery.start_query_with_client(
             cast(bigquery.Client, self._session.bqclient),
             create_function_ddl,
@@ -149,13 +149,13 @@ class FunctionClient:
 
     def create_bq_remote_function(
         self,
-        input_args,
-        input_types,
-        output_type,
-        endpoint,
-        bq_function_name,
-        max_batching_rows,
-        metadata,
+        input_args: Sequence[str],
+        input_types: Sequence[str],
+        output_type: str,
+        endpoint: str,
+        bq_function_name: str,
+        max_batching_rows: int,
+        metadata: str,
     ):
         """Create a BigQuery remote function given the artifacts of a user defined
         function and the http endpoint of a corresponding cloud function."""
@@ -198,14 +198,14 @@ class FunctionClient:
     def provision_bq_managed_function(
         self,
         func,
-        input_types,
-        output_type,
-        name,
-        packages,
-        is_row_processor,
+        input_types: Sequence[str],
+        output_type: str,
+        name: Optional[str],
+        packages: Optional[Sequence[str]],
+        is_row_processor: bool,
         bq_connection_id,
         *,
-        capture_references=False,
+        capture_references: bool = False,
     ):
         """Create a BigQuery managed function."""
 
@@ -230,7 +230,7 @@ class FunctionClient:
         for name_, type_ in zip(input_args, input_types):
             bq_function_args.append(f"{name_} {type_}")
 
-        managed_function_options = {
+        managed_function_options: dict[str, Any] = {
             "runtime_version": _MANAGED_FUNC_PYTHON_VERSION,
             "entry_point": "bigframes_handler",
         }
