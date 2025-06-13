@@ -1379,6 +1379,19 @@ def json_query_op_impl(x: ibis_types.Value, op: ops.JSONQuery):
     return json_query_op(json_or_json_string=x, json_path=op.json_path)
 
 
+@scalar_op_compiler.register_unary_op(ops.JSONQueryArray, pass_op=True)
+def json_query_array_op_impl(x: ibis_types.Value, op: ops.JSONQueryArray):
+    # Define a user-defined function whose returned type is dynamically matching the input.
+    def json_query_array(json_or_json_string, json_path: ibis_dtypes.str):  # type: ignore
+        """Extracts a JSON value and converts it to a SQL JSON-formatted STRING or JSON value."""
+        ...
+
+    return_type = x.type()
+    json_query_array.__annotations__["return"] = ibis_dtypes.Array[return_type]  # type: ignore
+    json_query_op = ibis_udf.scalar.builtin(json_query_array)
+    return json_query_op(json_or_json_string=x, json_path=op.json_path)
+
+
 @scalar_op_compiler.register_unary_op(ops.ParseJSON, pass_op=True)
 def parse_json_op_impl(x: ibis_types.Value, op: ops.ParseJSON):
     return parse_json(json_str=x)
