@@ -79,6 +79,7 @@ __protobuf__ = proto.module(
         "AdSenseLink",
         "RollupPropertySourceLink",
         "ReportingDataAnnotation",
+        "SubpropertySyncConfig",
     },
 )
 
@@ -291,6 +292,8 @@ class ChangeHistoryResourceType(proto.Enum):
             CalculatedMetric resource
         REPORTING_DATA_ANNOTATION (32):
             ReportingDataAnnotation resource
+        SUBPROPERTY_SYNC_CONFIG (33):
+            SubpropertySyncConfig resource
     """
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
@@ -320,6 +323,7 @@ class ChangeHistoryResourceType(proto.Enum):
     KEY_EVENT = 30
     CALCULATED_METRIC = 31
     REPORTING_DATA_ANNOTATION = 32
+    SUBPROPERTY_SYNC_CONFIG = 33
 
 
 class GoogleSignalsState(proto.Enum):
@@ -1636,6 +1640,11 @@ class ChangeHistoryChange(proto.Message):
                 resource in change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            subproperty_sync_config (google.analytics.admin_v1alpha.types.SubpropertySyncConfig):
+                A snapshot of a SubpropertySyncConfig
+                resource in change history.
+
+                This field is a member of `oneof`_ ``resource``.
         """
 
         account: "Account" = proto.Field(
@@ -1803,6 +1812,12 @@ class ChangeHistoryChange(proto.Message):
             number=32,
             oneof="resource",
             message="ReportingDataAnnotation",
+        )
+        subproperty_sync_config: "SubpropertySyncConfig" = proto.Field(
+            proto.MESSAGE,
+            number=33,
+            oneof="resource",
+            message="SubpropertySyncConfig",
         )
 
     resource: str = proto.Field(
@@ -3464,6 +3479,71 @@ class ReportingDataAnnotation(proto.Message):
     system_generated: bool = proto.Field(
         proto.BOOL,
         number=7,
+    )
+
+
+class SubpropertySyncConfig(proto.Message):
+    r"""Subproperty synchronization configuration controls how
+    ordinary property configurations are synchronized to
+    subproperties. This resource is provisioned automatically for
+    each subproperty.
+
+    Attributes:
+        name (str):
+            Output only. Identifier. Format:
+            properties/{ordinary_property_id}/subpropertySyncConfigs/{subproperty_id}
+            Example: properties/1234/subpropertySyncConfigs/5678
+        apply_to_property (str):
+            Output only. Immutable. Resource name of the
+            Subproperty that these settings apply to.
+        custom_dimension_and_metric_sync_mode (google.analytics.admin_v1alpha.types.SubpropertySyncConfig.SynchronizationMode):
+            Required. Specifies the Custom Dimension /
+            Metric synchronization mode for the Subproperty.
+
+            If set to ALL, Custom Dimension / Metric
+            synchronization will be immediately enabled.
+            Local configuration of Custom Dimensions /
+            Metrics will not be allowed on the Subproperty
+            so long as the synchronization mode is set to
+            ALL.
+
+            If set to NONE, Custom Dimensions / Metric
+            synchronization is disabled. Custom Dimensions /
+            Metrics must be configured explicitly on the
+            Subproperty.
+    """
+
+    class SynchronizationMode(proto.Enum):
+        r"""Synchronization modes for a Subproperty
+
+        Values:
+            SYNCHRONIZATION_MODE_UNSPECIFIED (0):
+                Synchronization mode unknown or not
+                specified.
+            NONE (1):
+                Entities are not synchronized.
+                Local edits are allowed on the Subproperty.
+            ALL (2):
+                Entities are synchronized from Parent
+                Property. Local mutations are not allowed on the
+                Subproperty (Create / Update / Delete)
+        """
+        SYNCHRONIZATION_MODE_UNSPECIFIED = 0
+        NONE = 1
+        ALL = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    apply_to_property: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    custom_dimension_and_metric_sync_mode: SynchronizationMode = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=SynchronizationMode,
     )
 
 

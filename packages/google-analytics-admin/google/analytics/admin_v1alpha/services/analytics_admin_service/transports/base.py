@@ -932,6 +932,21 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_subproperty_sync_configs: gapic_v1.method.wrap_method(
+                self.list_subproperty_sync_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_subproperty_sync_config: gapic_v1.method.wrap_method(
+                self.update_subproperty_sync_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_subproperty_sync_config: gapic_v1.method.wrap_method(
+                self.get_subproperty_sync_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -2585,6 +2600,40 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             analytics_admin.SubmitUserDeletionResponse,
             Awaitable[analytics_admin.SubmitUserDeletionResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_subproperty_sync_configs(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListSubpropertySyncConfigsRequest],
+        Union[
+            analytics_admin.ListSubpropertySyncConfigsResponse,
+            Awaitable[analytics_admin.ListSubpropertySyncConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_subproperty_sync_config(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateSubpropertySyncConfigRequest],
+        Union[
+            resources.SubpropertySyncConfig, Awaitable[resources.SubpropertySyncConfig]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_subproperty_sync_config(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetSubpropertySyncConfigRequest],
+        Union[
+            resources.SubpropertySyncConfig, Awaitable[resources.SubpropertySyncConfig]
         ],
     ]:
         raise NotImplementedError()

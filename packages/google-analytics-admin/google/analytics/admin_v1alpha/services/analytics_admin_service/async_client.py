@@ -273,6 +273,12 @@ class AnalyticsAdminServiceAsyncClient:
     parse_subproperty_event_filter_path = staticmethod(
         AnalyticsAdminServiceClient.parse_subproperty_event_filter_path
     )
+    subproperty_sync_config_path = staticmethod(
+        AnalyticsAdminServiceClient.subproperty_sync_config_path
+    )
+    parse_subproperty_sync_config_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_subproperty_sync_config_path
+    )
     common_billing_account_path = staticmethod(
         AnalyticsAdminServiceClient.common_billing_account_path
     )
@@ -14664,6 +14670,311 @@ class AnalyticsAdminServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.submit_user_deletion
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_subproperty_sync_configs(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListSubpropertySyncConfigsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListSubpropertySyncConfigsAsyncPager:
+        r"""List all Subproperty Sync Configs on a property.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.ListSubpropertySyncConfigsRequest, dict]]):
+                The request object. Request message for
+                ListSubpropertySyncConfigs RPC.
+            parent (:class:`str`):
+                Required. Resource name of the property. Format:
+                properties/property_id Example: properties/123
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListSubpropertySyncConfigsAsyncPager:
+                Response message for
+                ListSubpropertySyncConfigs RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.ListSubpropertySyncConfigsRequest):
+            request = analytics_admin.ListSubpropertySyncConfigsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_subproperty_sync_configs
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSubpropertySyncConfigsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_subproperty_sync_config(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateSubpropertySyncConfigRequest, dict]
+        ] = None,
+        *,
+        subproperty_sync_config: Optional[resources.SubpropertySyncConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.SubpropertySyncConfig:
+        r"""Updates a Subproperty Sync Config.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.UpdateSubpropertySyncConfigRequest, dict]]):
+                The request object. Request message for
+                UpdateSubpropertySyncConfig RPC.
+            subproperty_sync_config (:class:`google.analytics.admin_v1alpha.types.SubpropertySyncConfig`):
+                Required. The SubpropertySyncConfig
+                to update.
+
+                This corresponds to the ``subproperty_sync_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. The list of fields to update. Field names must
+                be in snake case (for example, "field_to_update").
+                Omitted fields will not be updated. To replace the
+                entire entity, use one path with the string "*" to match
+                all fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.SubpropertySyncConfig:
+                Subproperty synchronization
+                configuration controls how ordinary
+                property configurations are synchronized
+                to subproperties. This resource is
+                provisioned automatically for each
+                subproperty.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [subproperty_sync_config, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.UpdateSubpropertySyncConfigRequest):
+            request = analytics_admin.UpdateSubpropertySyncConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if subproperty_sync_config is not None:
+            request.subproperty_sync_config = subproperty_sync_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_subproperty_sync_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "subproperty_sync_config.name",
+                        request.subproperty_sync_config.name,
+                    ),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_subproperty_sync_config(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetSubpropertySyncConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.SubpropertySyncConfig:
+        r"""Lookup for a single Subproperty Sync Config.
+
+        Args:
+            request (Optional[Union[google.analytics.admin_v1alpha.types.GetSubpropertySyncConfigRequest, dict]]):
+                The request object. Request message for
+                GetSubpropertySyncConfig RPC.
+            name (:class:`str`):
+                Required. Resource name of the SubpropertySyncConfig to
+                lookup. Format:
+                properties/{ordinary_property_id}/subpropertySyncConfigs/{subproperty_id}
+                Example: properties/1234/subpropertySyncConfigs/5678
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.SubpropertySyncConfig:
+                Subproperty synchronization
+                configuration controls how ordinary
+                property configurations are synchronized
+                to subproperties. This resource is
+                provisioned automatically for each
+                subproperty.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, analytics_admin.GetSubpropertySyncConfigRequest):
+            request = analytics_admin.GetSubpropertySyncConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_subproperty_sync_config
         ]
 
         # Certain fields should be provided within the metadata header;
