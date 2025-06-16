@@ -45,7 +45,7 @@ class GBQIOMixin:
         * (Recommended) Set the ``index_col`` argument to one or more columns.
           Unique values for the row labels are recommended. Duplicate labels
           are possible, but note that joins on a non-unique index can duplicate
-          rows via pandas-like outer join behavior.
+          rows via pandas-compatible outer join behavior.
 
         .. note::
             By default, even SQL query inputs with an ORDER BY clause create a

@@ -6,7 +6,8 @@ BigQuery DataFrames (BigFrames)
 BigQuery DataFrames (also known as BigFrames) provides a Pythonic DataFrame
 and machine learning (ML) API powered by the BigQuery engine.
 
-* ``bigframes.pandas`` provides a pandas-compatible API for analytics.
+* `bigframes.pandas` provides a pandas API for analytics. Many workloads can be
+  migrated from pandas to bigframes by just changing a few imports.
 * ``bigframes.ml`` provides a scikit-learn-like API for ML.
 
 BigQuery DataFrames is an open-source package.
