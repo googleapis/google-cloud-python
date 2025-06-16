@@ -1623,6 +1623,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-geminidataanalytics": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-geminidataanalytics",
+            "extra-files": [
+                "google/cloud/geminidataanalytics/gapic_version.py",
+                "google/cloud/geminidataanalytics_v1alpha/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.geminidataanalytics.v1alpha.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-gke-backup": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
