@@ -190,6 +190,17 @@ class SQLGlotCompiler:
         )
         return child.project(projected_cols)
 
+    @_compile_node.register
+    def compile_concat(
+        self, node: nodes.ConcatNode, *children: ir.SQLGlotIR
+    ) -> ir.SQLGlotIR:
+        output_ids = [id.sql for id in node.output_ids]
+        return ir.SQLGlotIR.from_union(
+            [child.expr for child in children],
+            output_ids=output_ids,
+            uid_gen=self.uid_gen,
+        )
+
 
 def _replace_unsupported_ops(node: nodes.BigFrameNode):
     node = nodes.bottom_up(node, rewrite.rewrite_slice)

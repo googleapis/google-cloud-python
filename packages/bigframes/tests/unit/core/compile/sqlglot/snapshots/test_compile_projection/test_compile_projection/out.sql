@@ -8,6 +8,7 @@ WITH `bfcte_0` AS (
   FROM `test-project`.`test_dataset`.`test_table`
 ), `bfcte_1` AS (
   SELECT
+    *,
     `bfcol_0` AS `bfcol_5`,
     `bfcol_2` AS `bfcol_6`,
     `bfcol_3` AS `bfcol_7`,
