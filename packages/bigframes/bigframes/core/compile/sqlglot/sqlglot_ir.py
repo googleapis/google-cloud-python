@@ -28,7 +28,7 @@ from bigframes import dtypes
 from bigframes.core import guid
 import bigframes.core.compile.sqlglot.sqlglot_types as sgt
 import bigframes.core.local_data as local_data
-import bigframes.core.schema as schemata
+import bigframes.core.schema as bf_schema
 
 # shapely.wkt.dumps was moved to shapely.io.to_wkt in 2.0.
 try:
@@ -67,7 +67,7 @@ class SQLGlotIR:
     def from_pyarrow(
         cls,
         pa_table: pa.Table,
-        schema: schemata.ArraySchema,
+        schema: bf_schema.ArraySchema,
         uid_gen: guid.SequentialUIDGenerator,
     ) -> SQLGlotIR:
         """Builds SQLGlot expression from pyarrow table."""
@@ -203,6 +203,7 @@ class SQLGlotIR:
     def select(
         self,
         selected_cols: tuple[tuple[str, sge.Expression], ...],
+        squash_selections: bool = True,
     ) -> SQLGlotIR:
         selections = [
             sge.Alias(
@@ -211,15 +212,39 @@ class SQLGlotIR:
             )
             for id, expr in selected_cols
         ]
-        # Attempts to simplify selected columns when the original and new column
-        # names are simply aliases of each other.
-        squashed_selections = _squash_selections(self.expr.expressions, selections)
-        if squashed_selections != []:
-            new_expr = self.expr.select(*squashed_selections, append=False)
-            return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
+
+        # If squashing is enabled, we try to simplify the selections
+        # by checking if the new selections are simply aliases of the
+        # original columns.
+        if squash_selections:
+            new_selections = _squash_selections(self.expr.expressions, selections)
+            if new_selections != []:
+                new_expr = self.expr.select(*new_selections, append=False)
+                return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
+
+        new_expr = self._encapsulate_as_cte().select(*selections, append=False)
+        return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
+
+    def order_by(
+        self,
+        ordering: tuple[sge.Ordered, ...],
+    ) -> SQLGlotIR:
+        """Adds ORDER BY clause to the query."""
+        if len(ordering) == 0:
+            return SQLGlotIR(expr=self.expr.copy(), uid_gen=self.uid_gen)
+        new_expr = self.expr.order_by(*ordering)
+        return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
+
+    def limit(
+        self,
+        limit: int | None,
+    ) -> SQLGlotIR:
+        """Adds LIMIT clause to the query."""
+        if limit is not None:
+            new_expr = self.expr.limit(limit)
         else:
-            new_expr = self._encapsulate_as_cte().select(*selections, append=False)
-            return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
+            new_expr = self.expr.copy()
+        return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
     def project(
         self,
@@ -342,6 +367,7 @@ def _squash_selections(
     old_expr: list[sge.Expression], new_expr: list[sge.Alias]
 ) -> list[sge.Alias]:
     """
+    TODO: Reanble this function to optimize the SQL.
     Simplifies the select column expressions if existing (old_expr) and
     new (new_expr) selected columns are both simple aliases of column definitions.
 

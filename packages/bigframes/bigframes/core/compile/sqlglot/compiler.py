@@ -125,9 +125,25 @@ class SQLGlotCompiler:
             (name, scalar_compiler.compile_scalar_expression(ref))
             for ref, name in root.output_cols
         )
-        sqlglot_ir = sqlglot_ir.select(selected_cols)
+        # Skip squashing selections to ensure the right ordering and limit keys
+        sqlglot_ir = sqlglot_ir.select(selected_cols, squash_selections=False)
 
-        # TODO: add order_by, limit to sqlglot_expr
+        if root.order_by is not None:
+            ordering_cols = tuple(
+                sge.Ordered(
+                    this=scalar_compiler.compile_scalar_expression(
+                        ordering.scalar_expression
+                    ),
+                    desc=ordering.direction.is_ascending is False,
+                    nulls_first=ordering.na_last is False,
+                )
+                for ordering in root.order_by.all_ordering_columns
+            )
+            sqlglot_ir = sqlglot_ir.order_by(ordering_cols)
+
+        if root.limit is not None:
+            sqlglot_ir = sqlglot_ir.limit(root.limit)
+
         return sqlglot_ir.sql
 
     @functools.lru_cache(maxsize=5000)

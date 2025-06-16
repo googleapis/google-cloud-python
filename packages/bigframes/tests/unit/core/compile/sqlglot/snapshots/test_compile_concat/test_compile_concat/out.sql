@@ -105,3 +105,6 @@ SELECT
   `bfcol_48` AS `int64_col`,
   `bfcol_49` AS `string_col`
 FROM `bfcte_12`
+ORDER BY
+  `bfcol_50` ASC NULLS LAST,
+  `bfcol_51` ASC NULLS LAST

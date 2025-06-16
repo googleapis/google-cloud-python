@@ -32,14 +32,28 @@ WITH `bfcte_0` AS (
     ['', 'a'],
     2
   )])
+), `bfcte_1` AS (
+  SELECT
+    `bfcol_0` AS `bfcol_9`,
+    `bfcol_1` AS `bfcol_10`,
+    `bfcol_2` AS `bfcol_11`,
+    `bfcol_3` AS `bfcol_12`,
+    `bfcol_4` AS `bfcol_13`,
+    `bfcol_5` AS `bfcol_14`,
+    `bfcol_6` AS `bfcol_15`,
+    `bfcol_7` AS `bfcol_16`,
+    `bfcol_8` AS `bfcol_17`
+  FROM `bfcte_0`
 )
 SELECT
-  `bfcol_0` AS `rowindex`,
-  `bfcol_1` AS `int_list_col`,
-  `bfcol_2` AS `bool_list_col`,
-  `bfcol_3` AS `float_list_col`,
-  `bfcol_4` AS `date_list_col`,
-  `bfcol_5` AS `date_time_list_col`,
-  `bfcol_6` AS `numeric_list_col`,
-  `bfcol_7` AS `string_list_col`
-FROM `bfcte_0`
+  `bfcol_9` AS `rowindex`,
+  `bfcol_10` AS `int_list_col`,
+  `bfcol_11` AS `bool_list_col`,
+  `bfcol_12` AS `float_list_col`,
+  `bfcol_13` AS `date_list_col`,
+  `bfcol_14` AS `date_time_list_col`,
+  `bfcol_15` AS `numeric_list_col`,
+  `bfcol_16` AS `string_list_col`
+FROM `bfcte_1`
+ORDER BY
+  `bfcol_17` ASC NULLS LAST

@@ -22,3 +22,15 @@ pytest.importorskip("pytest_snapshot")
 def test_compile_readtable(compiler_session: bigframes.Session, snapshot):
     bf_df = compiler_session.read_gbq_table("test-project.test_dataset.test_table")
     snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_compile_readtable_w_ordering(compiler_session: bigframes.Session, snapshot):
+    bf_df = compiler_session.read_gbq_table("test-project.test_dataset.test_table")
+    bf_df = bf_df.set_index("rowindex").sort_index()
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_compile_readtable_w_limit(compiler_session: bigframes.Session, snapshot):
+    bf_df = compiler_session.read_gbq_table("test-project.test_dataset.test_table")
+    bf_df = bf_df.sort_values("int64_col").head(10)
+    snapshot.assert_match(bf_df.sql, "out.sql")
