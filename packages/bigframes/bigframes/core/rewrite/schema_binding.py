@@ -19,7 +19,13 @@ from bigframes.core import expression as ex
 from bigframes.core import nodes
 
 
-def bind_schema_to_expressions(
+def bind_schema_to_tree(
+    node: bigframe_node.BigFrameNode,
+) -> bigframe_node.BigFrameNode:
+    return nodes.bottom_up(node, bind_schema_to_node)
+
+
+def bind_schema_to_node(
     node: bigframe_node.BigFrameNode,
 ) -> bigframe_node.BigFrameNode:
     if isinstance(node, nodes.ProjectionNode):

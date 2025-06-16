@@ -13,13 +13,23 @@
 # limitations under the License.
 from __future__ import annotations
 
+import dataclasses
 import functools
 
 import sqlglot.expressions as sge
 
+from bigframes import dtypes
 from bigframes.core import expression
 import bigframes.core.compile.sqlglot.sqlglot_ir as ir
 import bigframes.operations as ops
+
+
+@dataclasses.dataclass(frozen=True)
+class TypedExpr:
+    """SQLGlot expression with type."""
+
+    expr: sge.Expression
+    dtype: dtypes.ExpressionType
 
 
 @functools.singledispatch
@@ -50,9 +60,12 @@ def compile_constant_expression(
 
 
 @compile_scalar_expression.register
-def compile_op_expression(expr: expression.OpExpression):
+def compile_op_expression(expr: expression.OpExpression) -> sge.Expression:
     # Non-recursively compiles the children scalar expressions.
-    args = tuple(map(compile_scalar_expression, expr.inputs))
+    args = tuple(
+        TypedExpr(compile_scalar_expression(input), input.output_type)
+        for input in expr.inputs
+    )
 
     op = expr.op
     op_name = expr.op.__class__.__name__
@@ -79,8 +92,10 @@ def compile_op_expression(expr: expression.OpExpression):
 
 
 # TODO: add parenthesize for operators
-def compile_addop(
-    op: ops.AddOp, left: sge.Expression, right: sge.Expression
-) -> sge.Expression:
-    # TODO: support addop for string dtype.
-    return sge.Add(this=left, expression=right)
+def compile_addop(op: ops.AddOp, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.dtype == dtypes.STRING_DTYPE and right.dtype == dtypes.STRING_DTYPE:
+        # String addition
+        return sge.Concat(expressions=[left.expr, right.expr])
+
+    # Numerical addition
+    return sge.Add(this=left.expr, expression=right.expr)
