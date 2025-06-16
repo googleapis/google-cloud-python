@@ -43,6 +43,7 @@ from bigframes.bigquery._operations.json import (
     json_query_array,
     json_set,
     json_value,
+    json_value_array,
     parse_json,
 )
 from bigframes.bigquery._operations.search import create_vector_index, vector_search
@@ -71,6 +72,7 @@ __all__ = [
     "json_query_array",
     "json_set",
     "json_value",
+    "json_value_array",
     "parse_json",
     # search ops
     "create_vector_index",

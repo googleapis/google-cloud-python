@@ -1448,6 +1448,11 @@ def json_value_op_impl(x: ibis_types.Value, op: ops.JSONValue):
     return json_value(json_obj=x, json_path=op.json_path)
 
 
+@scalar_op_compiler.register_unary_op(ops.JSONValueArray, pass_op=True)
+def json_value_array_op_impl(x: ibis_types.Value, op: ops.JSONValueArray):
+    return json_value_array(json_obj=x, json_path=op.json_path)
+
+
 # Blob Ops
 @scalar_op_compiler.register_unary_op(ops.obj_fetch_metadata_op)
 def obj_fetch_metadata_op_impl(obj_ref: ibis_types.Value):
@@ -2155,6 +2160,13 @@ def json_value(  # type: ignore[empty-body]
     json_obj: ibis_dtypes.JSON, json_path: ibis_dtypes.String
 ) -> ibis_dtypes.String:
     """Retrieve value of a JSON field as plain STRING."""
+
+
+@ibis_udf.scalar.builtin(name="json_value_array")
+def json_value_array(  # type: ignore[empty-body]
+    json_obj: ibis_dtypes.JSON, json_path: ibis_dtypes.String
+) -> ibis_dtypes.Array[ibis_dtypes.String]:
+    """Extracts a JSON array and converts it to a SQL ARRAY of STRINGs."""
 
 
 @ibis_udf.scalar.builtin(name="INT64")
