@@ -35,10 +35,16 @@ import google.cloud.spanner_v1.types.transaction as transaction
 class MockSpanner:
     def __init__(self):
         self.results = {}
+        self.execute_streaming_sql_results = {}
         self.errors = {}
 
     def add_result(self, sql: str, result: result_set.ResultSet):
         self.results[sql.lower().strip()] = result
+
+    def add_execute_streaming_sql_results(
+        self, sql: str, partial_result_sets: list[result_set.PartialResultSet]
+    ):
+        self.execute_streaming_sql_results[sql.lower().strip()] = partial_result_sets
 
     def get_result(self, sql: str) -> result_set.ResultSet:
         result = self.results.get(sql.lower().strip())
@@ -55,9 +61,20 @@ class MockSpanner:
         if error:
             context.abort_with_status(error)
 
-    def get_result_as_partial_result_sets(
+    def get_execute_streaming_sql_results(
         self, sql: str, started_transaction: transaction.Transaction
-    ) -> [result_set.PartialResultSet]:
+    ) -> list[result_set.PartialResultSet]:
+        if self.execute_streaming_sql_results.get(sql.lower().strip()):
+            partials = self.execute_streaming_sql_results[sql.lower().strip()]
+        else:
+            partials = self.get_result_as_partial_result_sets(sql)
+        if started_transaction:
+            partials[0].metadata.transaction = started_transaction
+        return partials
+
+    def get_result_as_partial_result_sets(
+        self, sql: str
+    ) -> list[result_set.PartialResultSet]:
         result: result_set.ResultSet = self.get_result(sql)
         partials = []
         first = True
@@ -70,11 +87,10 @@ class MockSpanner:
                 partial = result_set.PartialResultSet()
                 if first:
                     partial.metadata = ResultSetMetadata(result.metadata)
+                first = False
                 partial.values.extend(row)
                 partials.append(partial)
         partials[len(partials) - 1].stats = result.stats
-        if started_transaction:
-            partials[0].metadata.transaction = started_transaction
         return partials
 
 
@@ -149,7 +165,7 @@ class SpannerServicer(spanner_grpc.SpannerServicer):
         self._requests.append(request)
         self.mock_spanner.pop_error(context)
         started_transaction = self.__maybe_create_transaction(request)
-        partials = self.mock_spanner.get_result_as_partial_result_sets(
+        partials = self.mock_spanner.get_execute_streaming_sql_results(
             request.sql, started_transaction
         )
         for result in partials:

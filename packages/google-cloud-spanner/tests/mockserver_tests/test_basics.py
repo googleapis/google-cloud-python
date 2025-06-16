@@ -17,22 +17,24 @@ from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from google.cloud.spanner_v1 import (
     BatchCreateSessionsRequest,
-    ExecuteSqlRequest,
     BeginTransactionRequest,
-    TransactionOptions,
     ExecuteBatchDmlRequest,
+    ExecuteSqlRequest,
+    TransactionOptions,
     TypeCode,
 )
-from google.cloud.spanner_v1.transaction import Transaction
 from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
+from google.cloud.spanner_v1.transaction import Transaction
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    _make_partial_result_sets,
     add_select1_result,
+    add_single_result,
     add_update_count,
     add_error,
     unavailable_status,
-    add_single_result,
+    add_execute_streaming_sql_results,
 )
 
 
@@ -175,6 +177,31 @@ class TestBasics(MockServerTestBase):
         )
         self.assertEqual(1, len(requests), msg=requests)
         self.assertTrue(requests[0].last_statement, requests[0])
+
+    def test_execute_streaming_sql_last_field(self):
+        partial_result_sets = _make_partial_result_sets(
+            [("ID", TypeCode.INT64), ("NAME", TypeCode.STRING)],
+            [
+                {"values": ["1", "ABC", "2", "DEF"]},
+                {"values": ["3", "GHI"], "last": True},
+            ],
+        )
+
+        sql = "select * from my_table"
+        add_execute_streaming_sql_results(sql, partial_result_sets)
+        count = 1
+        with self.database.snapshot() as snapshot:
+            results = snapshot.execute_sql(sql)
+            result_list = []
+            for row in results:
+                result_list.append(row)
+                self.assertEqual(count, row[0])
+                count += 1
+            self.assertEqual(3, len(result_list))
+        requests = self.spanner_service.requests
+        self.assertEqual(2, len(requests), msg=requests)
+        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
+        self.assertTrue(isinstance(requests[1], ExecuteSqlRequest))
 
 
 def _execute_query(transaction: Transaction, sql: str):

@@ -53,6 +53,7 @@ class StreamedResultSet(object):
         self._column_info = column_info  # Column information
         self._field_decoders = None
         self._lazy_decode = lazy_decode  # Return protobuf values
+        self._done = False
 
     @property
     def fields(self):
@@ -154,11 +155,16 @@ class StreamedResultSet(object):
 
         self._merge_values(values)
 
+        if response_pb.last:
+            self._done = True
+
     def __iter__(self):
         while True:
             iter_rows, self._rows[:] = self._rows[:], ()
             while iter_rows:
                 yield iter_rows.pop(0)
+            if self._done:
+                return
             try:
                 self._consume_next()
             except StopIteration:

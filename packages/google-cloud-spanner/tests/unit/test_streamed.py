@@ -122,12 +122,12 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_partial_result_set(
-        values, metadata=None, stats=None, chunked_value=False
+        values, metadata=None, stats=None, chunked_value=False, last=False
     ):
         from google.cloud.spanner_v1 import PartialResultSet
 
         results = PartialResultSet(
-            metadata=metadata, stats=stats, chunked_value=chunked_value
+            metadata=metadata, stats=stats, chunked_value=chunked_value, last=last
         )
         for v in values:
             results.values.append(v)
@@ -161,6 +161,40 @@ class TestStreamedResultSet(unittest.TestCase):
 
         with self.assertRaises(Unmergeable):
             streamed._merge_chunk(chunk)
+
+    def test__PartialResultSetWithLastFlag(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        fields = [
+            self._make_scalar_field("ID", TypeCode.INT64),
+            self._make_scalar_field("NAME", TypeCode.STRING),
+        ]
+        for length in range(4, 6):
+            metadata = self._make_result_set_metadata(fields)
+            result_sets = [
+                self._make_partial_result_set(
+                    [self._make_value(0), "google_0"], metadata=metadata
+                )
+            ]
+            for i in range(1, 5):
+                bares = [i]
+                values = [
+                    [self._make_value(bare), "google_" + str(bare)] for bare in bares
+                ]
+                result_sets.append(
+                    self._make_partial_result_set(
+                        *values, metadata=metadata, last=(i == length - 1)
+                    )
+                )
+
+            iterator = _MockCancellableIterator(*result_sets)
+            streamed = self._make_one(iterator)
+            count = 0
+            for row in streamed:
+                self.assertEqual(row[0], count)
+                self.assertEqual(row[1], "google_" + str(count))
+                count += 1
+            self.assertEqual(count, length)
 
     def test__merge_chunk_numeric(self):
         from google.cloud.spanner_v1 import TypeCode
