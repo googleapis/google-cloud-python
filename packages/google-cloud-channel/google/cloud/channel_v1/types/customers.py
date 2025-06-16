@@ -88,7 +88,34 @@ class Customer(proto.Message):
             Optional. External CRM ID for the customer.
             Populated only if a CRM ID exists for this
             customer.
+        customer_attestation_state (google.cloud.channel_v1.types.Customer.CustomerAttestationState):
+            Optional. Indicate whether a customer is
+            attesting about the correctness of provided
+            information. Only required if creating a GCP
+            Entitlement.
     """
+
+    class CustomerAttestationState(proto.Enum):
+        r"""The enum represents whether a customer belongs to public
+        sector
+
+        Values:
+            CUSTOMER_ATTESTATION_STATE_UNSPECIFIED (0):
+                Default value if not set yet
+            EXEMPT (1):
+                Customer is exempt from attesting based on
+                exemption list at
+                https://cloud.google.com/terms/direct-tos-exemptions.
+                Contact information of customer will be
+                mandatory.
+            NON_EXEMPT_AND_INFO_VERIFIED (2):
+                Customer is not exempt and has verified the
+                information provided is correct. Contact
+                information of customer will be mandatory.
+        """
+        CUSTOMER_ATTESTATION_STATE_UNSPECIFIED = 0
+        EXEMPT = 1
+        NON_EXEMPT_AND_INFO_VERIFIED = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -146,6 +173,11 @@ class Customer(proto.Message):
     correlation_id: str = proto.Field(
         proto.STRING,
         number=14,
+    )
+    customer_attestation_state: CustomerAttestationState = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum=CustomerAttestationState,
     )
 
 
