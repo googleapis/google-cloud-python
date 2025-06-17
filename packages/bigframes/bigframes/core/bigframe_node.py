@@ -20,9 +20,19 @@ import dataclasses
 import functools
 import itertools
 import typing
-from typing import Callable, Dict, Generator, Iterable, Mapping, Sequence, Set, Tuple
+from typing import (
+    Callable,
+    Dict,
+    Generator,
+    Iterable,
+    Mapping,
+    Sequence,
+    Set,
+    Tuple,
+    Union,
+)
 
-from bigframes.core import field, identifiers
+from bigframes.core import expression, field, identifiers
 import bigframes.core.schema as schemata
 import bigframes.dtypes
 
@@ -277,6 +287,13 @@ class BigFrameNode:
     @functools.cached_property
     def field_by_id(self) -> Mapping[identifiers.ColumnId, field.Field]:
         return {field.id: field for field in self.fields}
+
+    @property
+    def _node_expressions(
+        self,
+    ) -> Sequence[Union[expression.Expression, expression.Aggregation]]:
+        """List of scalar expressions. Intended for checking engine compatibility with used ops."""
+        return ()
 
     # Plan algorithms
     def unique_nodes(

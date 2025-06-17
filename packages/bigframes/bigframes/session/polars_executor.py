@@ -13,25 +13,45 @@
 # limitations under the License.
 from __future__ import annotations
 
+import itertools
 from typing import Optional, TYPE_CHECKING
 
 import pyarrow as pa
 
-from bigframes.core import array_value, bigframe_node, local_data, nodes
+from bigframes.core import array_value, bigframe_node, expression, local_data, nodes
+import bigframes.operations
 from bigframes.session import executor, semi_executor
 
 if TYPE_CHECKING:
     import polars as pl
 
-
+# Polars executor can execute more node types, but these are the validated ones
 _COMPATIBLE_NODES = (
     nodes.ReadLocalNode,
     nodes.OrderByNode,
     nodes.ReversedNode,
     nodes.SelectionNode,
-    nodes.FilterNode,  # partial support
-    nodes.ProjectionNode,  # partial support
 )
+
+_COMPATIBLE_SCALAR_OPS = ()
+
+
+def _get_expr_ops(expr: expression.Expression) -> set[bigframes.operations.ScalarOp]:
+    if isinstance(expr, expression.OpExpression):
+        return set(itertools.chain.from_iterable(map(_get_expr_ops, expr.children)))
+    return set()
+
+
+def _is_node_polars_executable(node: nodes.BigFrameNode):
+    if not isinstance(node, _COMPATIBLE_NODES):
+        return False
+    for expr in node._node_expressions:
+        if isinstance(expr, expression.Aggregation):
+            return False
+        if isinstance(expr, expression.Expression):
+            if not _get_expr_ops(expr).issubset(_COMPATIBLE_SCALAR_OPS):
+                return False
+    return True
 
 
 class PolarsExecutor(semi_executor.SemiExecutor):
@@ -67,7 +87,7 @@ class PolarsExecutor(semi_executor.SemiExecutor):
         )
 
     def _can_execute(self, plan: bigframe_node.BigFrameNode):
-        return all(isinstance(node, _COMPATIBLE_NODES) for node in plan.unique_nodes())
+        return all(_is_node_polars_executable(node) for node in plan.unique_nodes())
 
     def _adapt_array(self, array: pa.Array) -> pa.Array:
         target_type = local_data.logical_type_replacements(array.type)
