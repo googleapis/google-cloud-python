@@ -16,25 +16,24 @@ from __future__ import annotations
 
 import re
 import typing
-from typing import Dict, List, Optional, Sequence
+from typing import Dict, Iterable, List, Optional, Sequence, Union
 import warnings
 
 import numpy as np
 
-from bigframes import dtypes, exceptions
+from bigframes import dtypes, exceptions, options
 from bigframes.core import guid, log_adapter
 
 
 @log_adapter.class_logger
 class AIAccessor:
-    def __init__(self, df) -> None:
+    def __init__(self, df, base_bqml=None) -> None:
         import bigframes  # Import in the function body to avoid circular imports.
         import bigframes.dataframe
-
-        if not bigframes.options.experiments.ai_operators:
-            raise NotImplementedError()
+        from bigframes.ml import core as ml_core
 
         self._df: bigframes.dataframe.DataFrame = df
+        self._base_bqml: ml_core.BaseBqml = base_bqml or ml_core.BaseBqml(df._session)
 
     def filter(
         self,
@@ -89,6 +88,8 @@ class AIAccessor:
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
+        if not options.experiments.ai_operators:
+            raise NotImplementedError()
 
         answer_col = "answer"
 
@@ -181,6 +182,9 @@ class AIAccessor:
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
+        if not options.experiments.ai_operators:
+            raise NotImplementedError()
+
         import bigframes.dataframe
         import bigframes.series
 
@@ -320,6 +324,8 @@ class AIAccessor:
                 columns are referred to, or when the count of labels does not meet the
                 requirement.
         """
+        if not options.experiments.ai_operators:
+            raise NotImplementedError()
 
         if len(labels) < 2 or len(labels) > 20:
             raise ValueError(
@@ -401,6 +407,9 @@ class AIAccessor:
         Raises:
             ValueError if the amount of data that will be sent for LLM processing is larger than max_rows.
         """
+        if not options.experiments.ai_operators:
+            raise NotImplementedError()
+
         self._validate_model(model)
         columns = self._parse_columns(instruction)
 
@@ -525,6 +534,8 @@ class AIAccessor:
             ValueError: when the search_column is not found from the the data frame.
             TypeError: when the provided model is not TextEmbeddingGenerator.
         """
+        if not options.experiments.ai_operators:
+            raise NotImplementedError()
 
         if search_column not in self._df.columns:
             raise ValueError(f"Column `{search_column}` not found")
@@ -640,6 +651,9 @@ class AIAccessor:
             ValueError: when the instruction refers to a non-existing column, or when no
                 columns are referred to.
         """
+        if not options.experiments.ai_operators:
+            raise NotImplementedError()
+
         import bigframes.dataframe
         import bigframes.series
 
@@ -834,6 +848,8 @@ class AIAccessor:
         Raises:
             ValueError: when the amount of data to be processed exceeds the specified max_rows.
         """
+        if not options.experiments.ai_operators:
+            raise NotImplementedError()
 
         if left_on not in self._df.columns:
             raise ValueError(f"Left column {left_on} not found")
@@ -882,6 +898,73 @@ class AIAccessor:
             del join_result["distance"]
 
         return join_result
+
+    def forecast(
+        self,
+        timestamp_column: str,
+        data_column: str,
+        *,
+        model: str = "TimesFM 2.0",
+        id_columns: Optional[Iterable[str]] = None,
+        horizon: int = 10,
+        confidence_level: float = 0.95,
+    ):
+        """
+        Forecast time series at future horizon. Using Google Research's open source TimesFM(https://github.com/google-research/timesfm) model.
+
+        .. note::
+
+            This product or feature is subject to the "Pre-GA Offerings Terms" in the General Service Terms section of the
+            Service Specific Terms(https://cloud.google.com/terms/service-terms#1). Pre-GA products and features are available "as is"
+            and might have limited support. For more information, see the launch stage descriptions
+            (https://cloud.google.com/products#product-launch-stages).
+
+        Args:
+            timestamp_column (str):
+                A str value that specified the name of the time points column.
+                The time points column provides the time points used to generate the forecast.
+                The time points column must use one of the following data types: TIMESTAMP, DATE and DATETIME
+            data_column (str):
+                A str value that specifies the name of the data column. The data column contains the data to forecast.
+                The data column must use one of the following data types: INT64, NUMERIC and FLOAT64
+            model (str, default "TimesFM 2.0"):
+                A str value that specifies the name of the model. TimesFM 2.0 is the only supported value, and is the default value.
+            id_columns (Iterable[str] or None, default None):
+                An iterable of str value that specifies the names of one or more ID columns. Each ID identifies a unique time series to forecast.
+                Specify one or more values for this argument in order to forecast multiple time series using a single query.
+                The columns that you specify must use one of the following data types: STRING, INT64, ARRAY<STRING> and ARRAY<INT64>
+            horizon (int, default 10):
+                An int value that specifies the number of time points to forecast. The default value is 10. The valid input range is [1, 10,000].
+            confidence_level (float, default 0.95):
+                A FLOAT64 value that specifies the percentage of the future values that fall in the prediction interval.
+                The default value is 0.95. The valid input range is [0, 1).
+
+        Returns:
+            DataFrame:
+                The forecast dataframe matches that of the BigQuery AI.FORECAST function.
+                See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-forecast
+
+        Raises:
+            ValueError: when referring to a non-existing column.
+        """
+        columns = [timestamp_column, data_column]
+        if id_columns:
+            columns += id_columns
+        for column in columns:
+            if column not in self._df.columns:
+                raise ValueError(f"Column `{column}` not found")
+
+        options: dict[str, Union[int, float, str, Iterable[str]]] = {
+            "data_col": data_column,
+            "timestamp_col": timestamp_column,
+            "model": model,
+            "horizon": horizon,
+            "confidence_level": confidence_level,
+        }
+        if id_columns:
+            options["id_cols"] = id_columns
+
+        return self._base_bqml.ai_forecast(input_data=self._df, options=options)
 
     @staticmethod
     def _attach_embedding(dataframe, source_column: str, embedding_column: str, model):

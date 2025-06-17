@@ -35,7 +35,17 @@ class BaseBqml:
 
     def __init__(self, session: bigframes.session.Session):
         self._session = session
-        self._base_sql_generator = ml_sql.BaseSqlGenerator()
+        self._sql_generator = ml_sql.BaseSqlGenerator()
+
+    def ai_forecast(
+        self,
+        input_data: bpd.DataFrame,
+        options: Mapping[str, Union[str, int, float, Iterable[str]]],
+    ) -> bpd.DataFrame:
+        result_sql = self._sql_generator.ai_forecast(
+            source_sql=input_data.sql, options=options
+        )
+        return self._session.read_gbq(result_sql)
 
 
 class BqmlModel(BaseBqml):
@@ -55,8 +65,8 @@ class BqmlModel(BaseBqml):
         self._model = model
         model_ref = self._model.reference
         assert model_ref is not None
-        self._model_manipulation_sql_generator = ml_sql.ModelManipulationSqlGenerator(
-            model_ref
+        self._sql_generator: ml_sql.ModelManipulationSqlGenerator = (
+            ml_sql.ModelManipulationSqlGenerator(model_ref)
         )
 
     def _apply_ml_tvf(
@@ -126,13 +136,13 @@ class BqmlModel(BaseBqml):
     def recommend(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
         return self._apply_ml_tvf(
             input_data,
-            self._model_manipulation_sql_generator.ml_recommend,
+            self._sql_generator.ml_recommend,
         )
 
     def predict(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
         return self._apply_ml_tvf(
             input_data,
-            self._model_manipulation_sql_generator.ml_predict,
+            self._sql_generator.ml_predict,
         )
 
     def explain_predict(
@@ -140,16 +150,14 @@ class BqmlModel(BaseBqml):
     ) -> bpd.DataFrame:
         return self._apply_ml_tvf(
             input_data,
-            lambda source_sql: self._model_manipulation_sql_generator.ml_explain_predict(
+            lambda source_sql: self._sql_generator.ml_explain_predict(
                 source_sql=source_sql,
                 struct_options=options,
             ),
         )
 
     def global_explain(self, options: Mapping[str, bool]) -> bpd.DataFrame:
-        sql = self._model_manipulation_sql_generator.ml_global_explain(
-            struct_options=options
-        )
+        sql = self._sql_generator.ml_global_explain(struct_options=options)
         return (
             self._session.read_gbq(sql)
             .sort_values(by="attribution", ascending=False)
@@ -159,7 +167,7 @@ class BqmlModel(BaseBqml):
     def transform(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
         return self._apply_ml_tvf(
             input_data,
-            self._model_manipulation_sql_generator.ml_transform,
+            self._sql_generator.ml_transform,
         )
 
     def generate_text(
@@ -170,7 +178,7 @@ class BqmlModel(BaseBqml):
         options["flatten_json_output"] = True
         return self._apply_ml_tvf(
             input_data,
-            lambda source_sql: self._model_manipulation_sql_generator.ml_generate_text(
+            lambda source_sql: self._sql_generator.ml_generate_text(
                 source_sql=source_sql,
                 struct_options=options,
             ),
@@ -186,7 +194,7 @@ class BqmlModel(BaseBqml):
         options["flatten_json_output"] = True
         return self._apply_ml_tvf(
             input_data,
-            lambda source_sql: self._model_manipulation_sql_generator.ml_generate_embedding(
+            lambda source_sql: self._sql_generator.ml_generate_embedding(
                 source_sql=source_sql,
                 struct_options=options,
             ),
@@ -201,7 +209,7 @@ class BqmlModel(BaseBqml):
     ) -> bpd.DataFrame:
         return self._apply_ml_tvf(
             input_data,
-            lambda source_sql: self._model_manipulation_sql_generator.ai_generate_table(
+            lambda source_sql: self._sql_generator.ai_generate_table(
                 source_sql=source_sql,
                 struct_options=options,
             ),
@@ -216,14 +224,14 @@ class BqmlModel(BaseBqml):
 
         return self._apply_ml_tvf(
             input_data,
-            lambda source_sql: self._model_manipulation_sql_generator.ml_detect_anomalies(
+            lambda source_sql: self._sql_generator.ml_detect_anomalies(
                 source_sql=source_sql,
                 struct_options=options,
             ),
         )
 
     def forecast(self, options: Mapping[str, int | float]) -> bpd.DataFrame:
-        sql = self._model_manipulation_sql_generator.ml_forecast(struct_options=options)
+        sql = self._sql_generator.ml_forecast(struct_options=options)
         timestamp_col_name = "forecast_timestamp"
         index_cols = [timestamp_col_name]
         first_col_name = self._session.read_gbq(sql).columns.values[0]
@@ -232,9 +240,7 @@ class BqmlModel(BaseBqml):
         return self._session.read_gbq(sql, index_col=index_cols).reset_index()
 
     def explain_forecast(self, options: Mapping[str, int | float]) -> bpd.DataFrame:
-        sql = self._model_manipulation_sql_generator.ml_explain_forecast(
-            struct_options=options
-        )
+        sql = self._sql_generator.ml_explain_forecast(struct_options=options)
         timestamp_col_name = "time_series_timestamp"
         index_cols = [timestamp_col_name]
         first_col_name = self._session.read_gbq(sql).columns.values[0]
@@ -243,7 +249,7 @@ class BqmlModel(BaseBqml):
         return self._session.read_gbq(sql, index_col=index_cols).reset_index()
 
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):
-        sql = self._model_manipulation_sql_generator.ml_evaluate(
+        sql = self._sql_generator.ml_evaluate(
             input_data.sql if (input_data is not None) else None
         )
 
@@ -254,28 +260,24 @@ class BqmlModel(BaseBqml):
         input_data: bpd.DataFrame,
         task_type: Optional[str] = None,
     ):
-        sql = self._model_manipulation_sql_generator.ml_llm_evaluate(
-            input_data.sql, task_type
-        )
+        sql = self._sql_generator.ml_llm_evaluate(input_data.sql, task_type)
 
         return self._session.read_gbq(sql)
 
     def arima_evaluate(self, show_all_candidate_models: bool = False):
-        sql = self._model_manipulation_sql_generator.ml_arima_evaluate(
-            show_all_candidate_models
-        )
+        sql = self._sql_generator.ml_arima_evaluate(show_all_candidate_models)
 
         return self._session.read_gbq(sql)
 
     def arima_coefficients(self) -> bpd.DataFrame:
-        sql = self._model_manipulation_sql_generator.ml_arima_coefficients()
+        sql = self._sql_generator.ml_arima_coefficients()
 
         return self._session.read_gbq(sql)
 
     def centroids(self) -> bpd.DataFrame:
         assert self._model.model_type == "KMEANS"
 
-        sql = self._model_manipulation_sql_generator.ml_centroids()
+        sql = self._sql_generator.ml_centroids()
 
         return self._session.read_gbq(
             sql, index_col=["centroid_id", "feature"]
@@ -284,7 +286,7 @@ class BqmlModel(BaseBqml):
     def principal_components(self) -> bpd.DataFrame:
         assert self._model.model_type == "PCA"
 
-        sql = self._model_manipulation_sql_generator.ml_principal_components()
+        sql = self._sql_generator.ml_principal_components()
 
         return self._session.read_gbq(
             sql, index_col=["principal_component_id", "feature"]
@@ -293,7 +295,7 @@ class BqmlModel(BaseBqml):
     def principal_component_info(self) -> bpd.DataFrame:
         assert self._model.model_type == "PCA"
 
-        sql = self._model_manipulation_sql_generator.ml_principal_component_info()
+        sql = self._sql_generator.ml_principal_component_info()
 
         return self._session.read_gbq(sql)
 
@@ -319,7 +321,7 @@ class BqmlModel(BaseBqml):
         # truncate as Vertex ID only accepts 63 characters, easily exceeding the limit for temp models.
         # The possibility of conflicts should be low.
         vertex_ai_model_id = vertex_ai_model_id[:63]
-        sql = self._model_manipulation_sql_generator.alter_model(
+        sql = self._sql_generator.alter_model(
             options={"vertex_ai_model_id": vertex_ai_model_id}
         )
         # Register the model and wait it to finish

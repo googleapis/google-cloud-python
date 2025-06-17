@@ -49,6 +49,12 @@ class BaseSqlGenerator:
         param_strs = [f"{k}={self.encode_value(v)}" for k, v in kwargs.items()]
         return "\n" + INDENT_STR + f",\n{INDENT_STR}".join(param_strs)
 
+    def build_named_parameters(
+        self, **kwargs: Union[str, int, float, Iterable[str]]
+    ) -> str:
+        param_strs = [f"{k} => {self.encode_value(v)}" for k, v in kwargs.items()]
+        return "\n" + INDENT_STR + f",\n{INDENT_STR}".join(param_strs)
+
     def build_structs(self, **kwargs: Union[int, float, str, Mapping]) -> str:
         """Encode a dict of values into a formatted STRUCT items for SQL"""
         param_strs = []
@@ -186,6 +192,17 @@ class BaseSqlGenerator:
         """Encode ML.DISTANCE for BQML.
         https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-distance"""
         return f"""SELECT *, ML.DISTANCE({sql_utils.identifier(col_x)}, {sql_utils.identifier(col_y)}, '{type}') AS {sql_utils.identifier(name)} FROM ({source_sql})"""
+
+    def ai_forecast(
+        self,
+        source_sql: str,
+        options: Mapping[str, Union[int, float, bool, Iterable[str]]],
+    ):
+        """Encode AI.FORECAST.
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-forecast"""
+        named_parameters_sql = self.build_named_parameters(**options)
+
+        return f"""SELECT * FROM AI.FORECAST(({source_sql}),{named_parameters_sql})"""
 
 
 class ModelCreationSqlGenerator(BaseSqlGenerator):

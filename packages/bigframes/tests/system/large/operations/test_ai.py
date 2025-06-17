@@ -27,17 +27,6 @@ BLOB_EXP_OPTION = "experiments.blob"
 THRESHOLD_OPTION = "compute.ai_ops_confirmation_threshold"
 
 
-def test_ai_experiment_off_raise_error():
-    df = dataframe.DataFrame(
-        {"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]}
-    )
-
-    with bigframes.option_context(AI_OP_EXP_OPTION, False), pytest.raises(
-        NotImplementedError
-    ):
-        df.ai
-
-
 def test_filter(session, gemini_flash_model):
     df = dataframe.DataFrame(
         data={

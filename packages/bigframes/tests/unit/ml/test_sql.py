@@ -155,6 +155,33 @@ def test_polynomial_expand(
     assert sql == "ML.POLYNOMIAL_EXPAND(STRUCT(`col_a`, `col_b`), 2) AS `poly_exp`"
 
 
+def test_ai_forecast_correct(
+    base_sql_generator: ml_sql.BaseSqlGenerator,
+    mock_df: bpd.DataFrame,
+):
+    sql = base_sql_generator.ai_forecast(
+        source_sql=mock_df.sql,
+        options={
+            "model": "TimesFM 2.0",
+            "data_col": "data1",
+            "timestamp_col": "time1",
+            "id_cols": ("id1", "id2"),
+            "horizon": 10,
+            "confidence_level": 0.95,
+        },
+    )
+    assert (
+        sql
+        == """SELECT * FROM AI.FORECAST((input_X_y_sql),
+  model => 'TimesFM 2.0',
+  data_col => 'data1',
+  timestamp_col => 'time1',
+  id_cols => ['id1', 'id2'],
+  horizon => 10,
+  confidence_level => 0.95)"""
+    )
+
+
 def test_create_model_correct(
     model_creation_sql_generator: ml_sql.ModelCreationSqlGenerator,
     mock_df: bpd.DataFrame,

@@ -23,9 +23,19 @@ import pytest
 import bigframes
 from bigframes import dataframe, dtypes
 from bigframes.ml import llm
+import bigframes.operations.ai
+from bigframes.testing import utils
 
 AI_OP_EXP_OPTION = "experiments.ai_operators"
 THRESHOLD_OPTION = "compute.ai_ops_confirmation_threshold"
+AI_FORECAST_COLUMNS = [
+    "forecast_timestamp",
+    "forecast_value",
+    "confidence_level",
+    "prediction_interval_lower_bound",
+    "prediction_interval_upper_bound",
+    "ai_forecast_status",
+]
 
 
 class FakeGeminiTextGenerator(llm.GeminiTextGenerator):
@@ -36,7 +46,47 @@ class FakeGeminiTextGenerator(llm.GeminiTextGenerator):
         return self.prediction
 
 
-def test_experiment_off_raise_error(session):
+@pytest.mark.parametrize(
+    ("func", "kwargs"),
+    [
+        pytest.param(
+            bigframes.operations.ai.AIAccessor.filter,
+            {"instruction": None, "model": None},
+            id="filter",
+        ),
+        pytest.param(
+            bigframes.operations.ai.AIAccessor.map,
+            {"instruction": None, "model": None},
+            id="map",
+        ),
+        pytest.param(
+            bigframes.operations.ai.AIAccessor.classify,
+            {"instruction": None, "model": None, "labels": None},
+            id="classify",
+        ),
+        pytest.param(
+            bigframes.operations.ai.AIAccessor.join,
+            {"other": None, "instruction": None, "model": None},
+            id="join",
+        ),
+        pytest.param(
+            bigframes.operations.ai.AIAccessor.search,
+            {"search_column": None, "query": None, "top_k": None, "model": None},
+            id="search",
+        ),
+        pytest.param(
+            bigframes.operations.ai.AIAccessor.top_k,
+            {"instruction": None, "model": None},
+            id="top_k",
+        ),
+        pytest.param(
+            bigframes.operations.ai.AIAccessor.sim_join,
+            {"other": None, "left_on": None, "right_on": None, "model": None},
+            id="sim_join",
+        ),
+    ],
+)
+def test_experiment_off_raise_error(session, func, kwargs):
     df = dataframe.DataFrame(
         {"country": ["USA", "Germany"], "city": ["Seattle", "Berlin"]}, session=session
     )
@@ -44,7 +94,7 @@ def test_experiment_off_raise_error(session):
     with bigframes.option_context(AI_OP_EXP_OPTION, False), pytest.raises(
         NotImplementedError
     ):
-        df.ai
+        func(df.ai, **kwargs)
 
 
 def test_filter(session):
@@ -214,6 +264,34 @@ def test_top_k(session):
         result = df.ai.top_k("top k of {col}", model, k=1).to_pandas()
 
     assert len(result) == 1
+
+
+def test_forecast_default(time_series_df_default_index: dataframe.DataFrame):
+    df = time_series_df_default_index[time_series_df_default_index["id"] == "1"]
+
+    result = df.ai.forecast(timestamp_column="parsed_date", data_column="total_visits")
+
+    utils.check_pandas_df_schema_and_index(
+        result,
+        columns=AI_FORECAST_COLUMNS,
+        index=10,
+    )
+
+
+def test_forecast_w_params(time_series_df_default_index: dataframe.DataFrame):
+    result = time_series_df_default_index.ai.forecast(
+        timestamp_column="parsed_date",
+        data_column="total_visits",
+        id_columns=["id"],
+        horizon=20,
+        confidence_level=0.98,
+    )
+
+    utils.check_pandas_df_schema_and_index(
+        result,
+        columns=["id"] + AI_FORECAST_COLUMNS,
+        index=20 * 2,  # 20 for each id
+    )
 
 
 def _create_dummy_full_response(row_count: int) -> pd.Series:
