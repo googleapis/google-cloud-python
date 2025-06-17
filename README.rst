@@ -997,6 +997,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1166820>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1166820>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Config Delivery API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-configdelivery>`_
+     - preview
+     - |PyPI-google-cloud-configdelivery|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Controls Partner API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-cloudcontrolspartner>`_
      - preview
      - |PyPI-google-cloud-cloudcontrolspartner|
@@ -1009,6 +1015,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/savedsearches/559772>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=187241>`_
      - `Client Library Issues <https://github.com/googleapis/python-dns/issues>`_
+   * - `Data Analytics API with Gemini <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-geminidataanalytics>`_
+     - preview
+     - |PyPI-google-cloud-geminidataanalytics|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Data Labeling <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datalabeling>`_
      - preview
      - |PyPI-google-cloud-datalabeling|
@@ -1225,6 +1237,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-issueresolution>`_
+     - preview
+     - |PyPI-google-shopping-merchant-issueresolution|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:171084>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=171084&template=555201>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Merchant API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-lfp>`_
      - preview
      - |PyPI-google-shopping-merchant-lfp|
@@ -1260,6 +1278,12 @@ Libraries
      - |PyPI-google-shopping-merchant-inventories|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:171084>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=171084&template=555201>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Merchant ProductStudio API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-productstudio>`_
+     - preview
+     - |PyPI-google-shopping-merchant-productstudio|
+     -
+     -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Merchant Reports API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-reports>`_
      - preview
@@ -1816,10 +1840,14 @@ Libraries
      :target: https://pypi.org/project/google-cloud-commerce-consumer-procurement
 .. |PyPI-google-cloud-confidentialcomputing| image:: https://img.shields.io/pypi/v/google-cloud-confidentialcomputing.svg
      :target: https://pypi.org/project/google-cloud-confidentialcomputing
+.. |PyPI-google-cloud-configdelivery| image:: https://img.shields.io/pypi/v/google-cloud-configdelivery.svg
+     :target: https://pypi.org/project/google-cloud-configdelivery
 .. |PyPI-google-cloud-cloudcontrolspartner| image:: https://img.shields.io/pypi/v/google-cloud-cloudcontrolspartner.svg
      :target: https://pypi.org/project/google-cloud-cloudcontrolspartner
 .. |PyPI-google-cloud-dns| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
      :target: https://pypi.org/project/google-cloud-dns
+.. |PyPI-google-cloud-geminidataanalytics| image:: https://img.shields.io/pypi/v/google-cloud-geminidataanalytics.svg
+     :target: https://pypi.org/project/google-cloud-geminidataanalytics
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
      :target: https://pypi.org/project/google-cloud-datalabeling
 .. |PyPI-google-cloud-datacatalog-lineage| image:: https://img.shields.io/pypi/v/google-cloud-datacatalog-lineage.svg
@@ -1892,6 +1920,8 @@ Libraries
      :target: https://pypi.org/project/google-shopping-merchant-conversions
 .. |PyPI-google-shopping-merchant-datasources| image:: https://img.shields.io/pypi/v/google-shopping-merchant-datasources.svg
      :target: https://pypi.org/project/google-shopping-merchant-datasources
+.. |PyPI-google-shopping-merchant-issueresolution| image:: https://img.shields.io/pypi/v/google-shopping-merchant-issueresolution.svg
+     :target: https://pypi.org/project/google-shopping-merchant-issueresolution
 .. |PyPI-google-shopping-merchant-lfp| image:: https://img.shields.io/pypi/v/google-shopping-merchant-lfp.svg
      :target: https://pypi.org/project/google-shopping-merchant-lfp
 .. |PyPI-google-shopping-merchant-notifications| image:: https://img.shields.io/pypi/v/google-shopping-merchant-notifications.svg
@@ -1904,6 +1934,8 @@ Libraries
      :target: https://pypi.org/project/google-shopping-merchant-promotions
 .. |PyPI-google-shopping-merchant-inventories| image:: https://img.shields.io/pypi/v/google-shopping-merchant-inventories.svg
      :target: https://pypi.org/project/google-shopping-merchant-inventories
+.. |PyPI-google-shopping-merchant-productstudio| image:: https://img.shields.io/pypi/v/google-shopping-merchant-productstudio.svg
+     :target: https://pypi.org/project/google-shopping-merchant-productstudio
 .. |PyPI-google-shopping-merchant-reports| image:: https://img.shields.io/pypi/v/google-shopping-merchant-reports.svg
      :target: https://pypi.org/project/google-shopping-merchant-reports
 .. |PyPI-google-shopping-merchant-reviews| image:: https://img.shields.io/pypi/v/google-shopping-merchant-reviews.svg
