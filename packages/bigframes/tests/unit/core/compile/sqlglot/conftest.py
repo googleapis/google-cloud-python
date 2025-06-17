@@ -21,6 +21,7 @@ import pyarrow as pa
 import pytest
 
 from bigframes import dtypes
+import bigframes.pandas as bpd
 import bigframes.testing.mocks as mocks
 import bigframes.testing.utils
 
@@ -29,24 +30,50 @@ DATA_DIR = CURRENT_DIR.parent.parent.parent.parent / "data"
 
 
 @pytest.fixture(scope="session")
-def compiler_session(basic_types_table_schema):
+def compiler_session(scalars_types_table_schema):
     from bigframes.testing import compiler_session
 
     # TODO: Check if ordering mode is needed for the tests.
-    session = mocks.create_bigquery_session(table_schema=basic_types_table_schema)
+    table_name = "scalar_types"
+    anonymous_dataset = bigquery.DatasetReference.from_string(
+        "bigframes-dev.sqlglot_test"
+    )
+    session = mocks.create_bigquery_session(
+        table_name=table_name,
+        table_schema=scalars_types_table_schema,
+        anonymous_dataset=anonymous_dataset,
+    )
     session._executor = compiler_session.SQLCompilerExecutor()
     return session
 
 
 @pytest.fixture(scope="session")
-def basic_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
+def scalars_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
     return [
-        bigquery.SchemaField("rowindex", "INTEGER"),
-        bigquery.SchemaField("int64_col", "INTEGER"),
-        bigquery.SchemaField("string_col", "STRING"),
-        bigquery.SchemaField("float64_col", "FLOAT"),
         bigquery.SchemaField("bool_col", "BOOLEAN"),
+        bigquery.SchemaField("bytes_col", "BYTES"),
+        bigquery.SchemaField("date_col", "DATE"),
+        bigquery.SchemaField("datetime_col", "DATETIME"),
+        bigquery.SchemaField("geography_col", "GEOGRAPHY"),
+        bigquery.SchemaField("int64_col", "INTEGER"),
+        bigquery.SchemaField("int64_too", "INTEGER"),
+        bigquery.SchemaField("numeric_col", "NUMERIC"),
+        bigquery.SchemaField("float64_col", "FLOAT"),
+        bigquery.SchemaField("rowindex", "INTEGER"),
+        bigquery.SchemaField("rowindex_2", "INTEGER"),
+        bigquery.SchemaField("string_col", "STRING"),
+        bigquery.SchemaField("time_col", "TIME"),
+        bigquery.SchemaField("timestamp_col", "TIMESTAMP"),
     ]
+
+
+@pytest.fixture(scope="session")
+def scalars_types_df(compiler_session) -> bpd.DataFrame:
+    """Returns a BigFrames DataFrame containing all scalar types and using the `rowindex`
+    column as the index."""
+    bf_df = compiler_session.read_gbq_table("bigframes-dev.sqlglot_test.scalar_types")
+    bf_df = bf_df.set_index("rowindex", drop=False)
+    return bf_df
 
 
 @pytest.fixture(scope="session")

@@ -14,18 +14,24 @@
 
 import pytest
 
-import bigframes
+import bigframes.pandas as bpd
 
 pytest.importorskip("pytest_snapshot")
 
 
-def test_compile_numerical_add(compiler_session: bigframes.Session, snapshot):
-    bf_df = compiler_session.read_gbq_table("test-project.test_dataset.test_table")
+def test_compile_numerical_add(scalars_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalars_types_df[["int64_col"]]
     bf_df["int64_col"] = bf_df["int64_col"] + bf_df["int64_col"]
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
-def test_compile_string_add(compiler_session: bigframes.Session, snapshot):
-    bf_df = compiler_session.read_gbq_table("test-project.test_dataset.test_table")
+def test_compile_numerical_add_w_scalar(scalars_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalars_types_df[["int64_col"]]
+    bf_df["int64_col"] = bf_df["int64_col"] + 1
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_compile_string_add(scalars_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalars_types_df[["string_col"]]
     bf_df["string_col"] = bf_df["string_col"] + "a"
     snapshot.assert_match(bf_df.sql, "out.sql")

@@ -41,6 +41,7 @@ def create_bigquery_session(
     bqclient: Optional[mock.Mock] = None,
     session_id: str = "abcxyz",
     table_schema: Sequence[google.cloud.bigquery.SchemaField] = TEST_SCHEMA,
+    table_name: str = "test_table",
     anonymous_dataset: Optional[google.cloud.bigquery.DatasetReference] = None,
     location: str = "test-region",
     ordering_mode: Literal["strict", "partial"] = "partial",
@@ -76,7 +77,7 @@ def create_bigquery_session(
         type(table).schema = mock.PropertyMock(return_value=table_schema)
         type(table).project = anonymous_dataset.project
         type(table).dataset_id = anonymous_dataset.dataset_id
-        type(table).table_id = "test_table"
+        type(table).table_id = table_name
         type(table).num_rows = mock.PropertyMock(return_value=1000000000)
         bqclient.get_table.return_value = table
 
@@ -94,7 +95,7 @@ def create_bigquery_session(
         query_job = mock.create_autospec(google.cloud.bigquery.QueryJob, instance=True)
         query_job._properties = {}
         type(query_job).destination = mock.PropertyMock(
-            return_value=anonymous_dataset.table("test_table"),
+            return_value=anonymous_dataset.table(table_name),
         )
         type(query_job).statement_type = mock.PropertyMock(return_value="SELECT")
 

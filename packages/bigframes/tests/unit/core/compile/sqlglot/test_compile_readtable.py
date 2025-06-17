@@ -14,23 +14,22 @@
 
 import pytest
 
-import bigframes
+import bigframes.pandas as bpd
 
 pytest.importorskip("pytest_snapshot")
 
 
-def test_compile_readtable(compiler_session: bigframes.Session, snapshot):
-    bf_df = compiler_session.read_gbq_table("test-project.test_dataset.test_table")
+def test_compile_readtable(scalars_types_df: bpd.DataFrame, snapshot):
+    snapshot.assert_match(scalars_types_df.sql, "out.sql")
+
+
+def test_compile_readtable_w_ordering(scalars_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalars_types_df[["int64_col"]]
+    bf_df = bf_df.sort_values("int64_col")
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
-def test_compile_readtable_w_ordering(compiler_session: bigframes.Session, snapshot):
-    bf_df = compiler_session.read_gbq_table("test-project.test_dataset.test_table")
-    bf_df = bf_df.set_index("rowindex").sort_index()
-    snapshot.assert_match(bf_df.sql, "out.sql")
-
-
-def test_compile_readtable_w_limit(compiler_session: bigframes.Session, snapshot):
-    bf_df = compiler_session.read_gbq_table("test-project.test_dataset.test_table")
-    bf_df = bf_df.sort_values("int64_col").head(10)
+def test_compile_readtable_w_limit(scalars_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalars_types_df[["int64_col"]]
+    bf_df = bf_df.sort_index().head(10)
     snapshot.assert_match(bf_df.sql, "out.sql")
