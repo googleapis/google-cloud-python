@@ -104,6 +104,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Operating System :: OS Independent",
         "Topic :: Database :: Front-Ends",
     ],
@@ -119,7 +120,7 @@ setup(
         "sqlalchemy>=1.4.16,<3.0.0",
     ],
     extras_require=extras,
-    python_requires=">=3.8, <3.13",
+    python_requires=">=3.8, <3.14",
     tests_require=["packaging", "pytz"],
     entry_points={
         "sqlalchemy.dialects": ["bigquery = sqlalchemy_bigquery:BigQueryDialect"]
