@@ -1293,6 +1293,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     aggregate = agg
     aggregate.__doc__ = inspect.getdoc(vendored_pandas_series.Series.agg)
 
+    def describe(self) -> Series:
+        from bigframes.pandas.core.methods import describe
+
+        return cast(Series, describe.describe(self, include="all"))
+
     def skew(self):
         count = self.count()
         if count < 3:
