@@ -884,7 +884,7 @@ class UpgradeClusterResponse(proto.Message):
         )
 
     class InstanceUpgradeDetails(proto.Message):
-        r"""Details regarding the upgrade of instaces associated with a
+        r"""Details regarding the upgrade of instances associated with a
         cluster.
 
         Attributes:
@@ -1162,8 +1162,8 @@ class PromoteClusterRequest(proto.Message):
 
 
 class RestoreClusterRequest(proto.Message):
-    r"""Message for restoring a Cluster from a backup or another
-    cluster at a given point in time.
+    r"""Message for restoring a Cluster from a backup or another cluster at
+    a given point in time. NEXT_ID: 11
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
