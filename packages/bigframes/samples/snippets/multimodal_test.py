@@ -56,21 +56,22 @@ def test_multimodal_dataframe(gcs_dst_bucket: str) -> None:
 
     # [START bigquery_dataframes_multimodal_dataframe_image_transform]
     df_image["blurred"] = df_image["image"].blob.image_blur(
-        (20, 20), dst=f"{dst_bucket}/image_blur_transformed/"
+        (20, 20), dst=f"{dst_bucket}/image_blur_transformed/", engine="opencv"
     )
     df_image["resized"] = df_image["image"].blob.image_resize(
-        (300, 200), dst=f"{dst_bucket}/image_resize_transformed/"
+        (300, 200), dst=f"{dst_bucket}/image_resize_transformed/", engine="opencv"
     )
     df_image["normalized"] = df_image["image"].blob.image_normalize(
         alpha=50.0,
         beta=150.0,
         norm_type="minmax",
         dst=f"{dst_bucket}/image_normalize_transformed/",
+        engine="opencv",
     )
 
     # You can also chain functions together
     df_image["blur_resized"] = df_image["blurred"].blob.image_resize(
-        (300, 200), dst=f"{dst_bucket}/image_blur_resize_transformed/"
+        (300, 200), dst=f"{dst_bucket}/image_blur_resize_transformed/", engine="opencv"
     )
     df_image
     # [END bigquery_dataframes_multimodal_dataframe_image_transform]
@@ -113,7 +114,7 @@ def test_multimodal_dataframe(gcs_dst_bucket: str) -> None:
     df_pdf = bpd.from_glob_path(
         "gs://cloud-samples-data/bigquery/tutorials/cymbal-pets/documents/*", name="pdf"
     )
-    df_pdf["chunked"] = df_pdf["pdf"].blob.pdf_chunk()
+    df_pdf["chunked"] = df_pdf["pdf"].blob.pdf_chunk(engine="pypdf")
     chunked = df_pdf["chunked"].explode()
     chunked
     # [END bigquery_dataframes_multimodal_dataframe_pdf_chunk]

@@ -61,7 +61,9 @@ def test_blob_exif(
         connection=bq_connection,
     )
 
-    actual = exif_image_df["blob_col"].blob.exif(connection=bq_connection)
+    actual = exif_image_df["blob_col"].blob.exif(
+        engine="pillow", connection=bq_connection
+    )
     expected = bpd.Series(
         ['{"ExifOffset": 47, "Make": "MyCamera"}'],
         session=session,
@@ -86,7 +88,7 @@ def test_blob_image_blur_to_series(
     )
 
     actual = images_mm_df["blob_col"].blob.image_blur(
-        (8, 8), dst=series, connection=bq_connection
+        (8, 8), dst=series, connection=bq_connection, engine="opencv"
     )
     expected_df = pd.DataFrame(
         {
@@ -114,7 +116,7 @@ def test_blob_image_blur_to_folder(
     images_output_uris: list[str],
 ):
     actual = images_mm_df["blob_col"].blob.image_blur(
-        (8, 8), dst=images_output_folder, connection=bq_connection
+        (8, 8), dst=images_output_folder, connection=bq_connection, engine="opencv"
     )
     expected_df = pd.DataFrame(
         {
@@ -136,7 +138,9 @@ def test_blob_image_blur_to_folder(
 
 
 def test_blob_image_blur_to_bq(images_mm_df: bpd.DataFrame, bq_connection: str):
-    actual = images_mm_df["blob_col"].blob.image_blur((8, 8), connection=bq_connection)
+    actual = images_mm_df["blob_col"].blob.image_blur(
+        (8, 8), connection=bq_connection, engine="opencv"
+    )
 
     assert isinstance(actual, bpd.Series)
     assert len(actual) == 2
@@ -154,7 +158,7 @@ def test_blob_image_resize_to_series(
     )
 
     actual = images_mm_df["blob_col"].blob.image_resize(
-        (200, 300), dst=series, connection=bq_connection
+        (200, 300), dst=series, connection=bq_connection, engine="opencv"
     )
     expected_df = pd.DataFrame(
         {
@@ -182,7 +186,7 @@ def test_blob_image_resize_to_folder(
     images_output_uris: list[str],
 ):
     actual = images_mm_df["blob_col"].blob.image_resize(
-        (200, 300), dst=images_output_folder, connection=bq_connection
+        (200, 300), dst=images_output_folder, connection=bq_connection, engine="opencv"
     )
     expected_df = pd.DataFrame(
         {
@@ -205,7 +209,7 @@ def test_blob_image_resize_to_folder(
 
 def test_blob_image_resize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: str):
     actual = images_mm_df["blob_col"].blob.image_resize(
-        (200, 300), connection=bq_connection
+        (200, 300), connection=bq_connection, engine="opencv"
     )
 
     assert isinstance(actual, bpd.Series)
@@ -224,7 +228,12 @@ def test_blob_image_normalize_to_series(
     )
 
     actual = images_mm_df["blob_col"].blob.image_normalize(
-        alpha=50.0, beta=150.0, norm_type="minmax", dst=series, connection=bq_connection
+        alpha=50.0,
+        beta=150.0,
+        norm_type="minmax",
+        dst=series,
+        connection=bq_connection,
+        engine="opencv",
     )
     expected_df = pd.DataFrame(
         {
@@ -257,6 +266,7 @@ def test_blob_image_normalize_to_folder(
         norm_type="minmax",
         dst=images_output_folder,
         connection=bq_connection,
+        engine="opencv",
     )
     expected_df = pd.DataFrame(
         {
@@ -279,7 +289,11 @@ def test_blob_image_normalize_to_folder(
 
 def test_blob_image_normalize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: str):
     actual = images_mm_df["blob_col"].blob.image_normalize(
-        alpha=50.0, beta=150.0, norm_type="minmax", connection=bq_connection
+        alpha=50.0,
+        beta=150.0,
+        norm_type="minmax",
+        connection=bq_connection,
+        engine="opencv",
     )
 
     assert isinstance(actual, bpd.Series)
@@ -322,7 +336,7 @@ def test_blob_pdf_extract(
 ):
     actual = (
         pdf_mm_df["pdf"]
-        .blob.pdf_extract(connection=bq_connection, verbose=verbose)
+        .blob.pdf_extract(connection=bq_connection, verbose=verbose, engine="pypdf")
         .explode()
         .to_pandas()
     )
@@ -373,7 +387,11 @@ def test_blob_pdf_chunk(
     actual = (
         pdf_mm_df["pdf"]
         .blob.pdf_chunk(
-            connection=bq_connection, chunk_size=50, overlap_size=10, verbose=verbose
+            connection=bq_connection,
+            chunk_size=50,
+            overlap_size=10,
+            verbose=verbose,
+            engine="pypdf",
         )
         .explode()
         .to_pandas()
