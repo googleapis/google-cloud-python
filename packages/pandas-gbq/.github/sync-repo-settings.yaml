@@ -16,6 +16,7 @@ branchProtectionRules:
     - 'unit (3.10)'
     - 'unit (3.11)'
     - 'unit (3.12)'
+    - 'unit (3.13)'
     - 'cover'
     - 'Kokoro'
     - 'Samples - Lint'
@@ -24,6 +25,7 @@ branchProtectionRules:
     - 'Samples - Python 3.10'
     - 'Samples - Python 3.11'
     - 'Samples - Python 3.12'
+    - 'Samples - Python 3.13'
 permissionRules:
   - team: actools-python
     permission: admin
