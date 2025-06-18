@@ -430,8 +430,12 @@ def test_aggregation_query_prep_stream_with_read_time():
     assert kwargs == {"retry": None}
 
 
-@pytest.mark.parametrize("timezone", [None, timezone.utc, timezone(timedelta(hours=5))])
-def test_aggregation_query_get_stream_iterator_read_time_different_timezones(timezone):
+@pytest.mark.parametrize(
+    "custom_timezone", [None, timezone.utc, timezone(timedelta(hours=5))]
+)
+def test_aggregation_query_get_stream_iterator_read_time_different_timezones(
+    custom_timezone,
+):
     client = make_client()
     parent = client.collection("dee")
     query = make_query(parent)
@@ -441,10 +445,8 @@ def test_aggregation_query_get_stream_iterator_read_time_different_timezones(tim
     aggregation_query.sum("someref", alias="sumall")
     aggregation_query.avg("anotherref", alias="avgall")
 
-    # 1800 seconds after epoch
-    read_time = datetime(1970, 1, 1, 0, 30)
-    if timezone is not None:
-        read_time = read_time.astimezone(timezone)
+    # 1800 seconds after epoch in user-specified timezone
+    read_time = datetime.fromtimestamp(1800, tz=custom_timezone)
 
     # The internal firestore API needs to be initialized before it gets mocked.
     client._firestore_api
