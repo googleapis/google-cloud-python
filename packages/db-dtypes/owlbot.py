@@ -43,6 +43,10 @@ s.move(
         ".github/workflows/docs.yml", # to avoid overwriting python version
         ".github/workflows/lint.yml", # to avoid overwriting python version
         "noxfile.py",
+        "renovate.json", # to avoid overwriting the ignorePaths list additions:
+                         # ".github/workflows/docs.yml AND lint.yml" specifically
+                         # the version of python referenced in each of those files.
+                         # Currently renovate bot wants to change 3.10 to 3.13.
     ]
 )
 
