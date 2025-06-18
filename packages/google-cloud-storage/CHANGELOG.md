@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.1.1](https://github.com/googleapis/python-storage/compare/v3.1.0...v3.1.1) (2025-06-13)
+
+
+### Bug Fixes
+
+* Add a check for partial response data ([#1487](https://github.com/googleapis/python-storage/issues/1487)) ([7e0412a](https://github.com/googleapis/python-storage/commit/7e0412a4fdfedcaa4683d5ef7d9155d5d58efa11))
+* Add trove classifier for Python 3.13 ([0100916](https://github.com/googleapis/python-storage/commit/01009164beaab8931a1e1684966e3060edcf77b7))
+* **deps:** Require google-crc32c &gt;= 1.1.3 ([0100916](https://github.com/googleapis/python-storage/commit/01009164beaab8931a1e1684966e3060edcf77b7))
+* **deps:** Require protobuf &gt;= 3.20.2, &lt; 7.0.0 ([0100916](https://github.com/googleapis/python-storage/commit/01009164beaab8931a1e1684966e3060edcf77b7))
+* **deps:** Require requests &gt;= 2.22.0 ([0100916](https://github.com/googleapis/python-storage/commit/01009164beaab8931a1e1684966e3060edcf77b7))
+* Remove setup.cfg configuration for creating universal wheels ([#1448](https://github.com/googleapis/python-storage/issues/1448)) ([d3b6b3f](https://github.com/googleapis/python-storage/commit/d3b6b3f96a6f94aa7c371902f48d1363ae6bfb5c))
+* Resolve issue where pre-release versions of dependencies are installed ([0100916](https://github.com/googleapis/python-storage/commit/01009164beaab8931a1e1684966e3060edcf77b7))
+* Segmentation fault in tink while writing data ([#1490](https://github.com/googleapis/python-storage/issues/1490)) ([2a46c0b](https://github.com/googleapis/python-storage/commit/2a46c0b9e6ec561ae3151d2a9a80c7452634487e))
+
+
+### Documentation
+
+* Move quickstart to top of readme ([#1451](https://github.com/googleapis/python-storage/issues/1451)) ([53257cf](https://github.com/googleapis/python-storage/commit/53257cf20a4de3810156ae9576a7092f5527df98))
+* Update README to break infinite redirect loop ([#1450](https://github.com/googleapis/python-storage/issues/1450)) ([03f1594](https://github.com/googleapis/python-storage/commit/03f1594eb90ea1298a3a23927537c86ac35d33d5))
+
 ## [3.1.0](https://github.com/googleapis/python-storage/compare/v3.0.0...v3.1.0) (2025-02-27)
 
 
