@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from datetime import timedelta, datetime
+from threading import Lock
 from typing import Mapping
 
 from google.api_core import gapic_v1
@@ -22,6 +24,7 @@ from google.cloud.spanner_v1 import (
     RequestOptions,
     DirectedReadOptions,
     BeginTransactionRequest,
+    TransactionOptions,
     TransactionSelector,
 )
 from google.cloud.spanner_v1.snapshot import _SnapshotBase
@@ -30,6 +33,7 @@ from tests._builders import (
     build_spanner_api,
     build_session,
     build_transaction_pb,
+    build_snapshot,
 )
 from tests._helpers import (
     OpenTelemetryBase,
@@ -64,6 +68,9 @@ RESUME_TOKEN = b"DEADBEEF"
 TXN_ID = b"DEAFBEAD"
 SECONDS = 3
 MICROS = 123456
+DURATION = timedelta(seconds=SECONDS, microseconds=MICROS)
+TIMESTAMP = datetime.now()
+
 BASE_ATTRIBUTES = {
     "db.type": "spanner",
     "db.url": "spanner.googleapis.com",
@@ -105,41 +112,18 @@ INTERNAL_SERVER_ERROR_UNEXPECTED_EOS = InternalServerError(
 )
 
 
-def _makeTimestamp():
-    import datetime
-    from google.cloud._helpers import UTC
+class _Derived(_SnapshotBase):
+    """A minimally-implemented _SnapshotBase-derived class for testing"""
 
-    return datetime.datetime.utcnow().replace(tzinfo=UTC)
+    # Use a simplified implementation of _build_transaction_options_pb
+    # that always returns the same transaction options.
+    TRANSACTION_OPTIONS = TransactionOptions()
+
+    def _build_transaction_options_pb(self) -> TransactionOptions:
+        return self.TRANSACTION_OPTIONS
 
 
 class Test_restart_on_unavailable(OpenTelemetryBase):
-    def _getTargetClass(self):
-        from google.cloud.spanner_v1.snapshot import _SnapshotBase
-
-        return _SnapshotBase
-
-    def _makeDerived(self, session):
-        class _Derived(self._getTargetClass()):
-            _transaction_id = None
-            _multi_use = False
-
-            def _make_txn_selector(self):
-                from google.cloud.spanner_v1 import (
-                    TransactionOptions,
-                    TransactionSelector,
-                )
-
-                if self._transaction_id:
-                    return TransactionSelector(id=self._transaction_id)
-                options = TransactionOptions(
-                    read_only=TransactionOptions.ReadOnly(strong=True)
-                )
-                if self._multi_use:
-                    return TransactionSelector(begin=options)
-                return TransactionSelector(single_use=options)
-
-        return _Derived(session)
-
     def build_spanner_api(self):
         from google.cloud.spanner_v1 import SpannerClient
 
@@ -184,7 +168,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), [])
         restart.assert_called_once_with(
@@ -206,7 +190,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(ITEMS))
         restart.assert_called_once_with(
@@ -220,7 +204,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         )
         self.assertNoSpans()
 
-    def test_iteration_w_raw_w_resume_tken(self):
+    def test_iteration_w_raw_w_resume_token(self):
         ITEMS = (
             self._make_item(0),
             self._make_item(1, resume_token=RESUME_TOKEN),
@@ -233,7 +217,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(ITEMS))
         restart.assert_called_once_with(
@@ -262,7 +246,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(ITEMS))
         self.assertEqual(len(restart.mock_calls), 2)
@@ -285,7 +269,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(ITEMS))
         self.assertEqual(len(restart.mock_calls), 2)
@@ -307,7 +291,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         with self.assertRaises(InternalServerError):
             list(resumable)
@@ -337,7 +321,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST + LAST))
         self.assertEqual(len(restart.mock_calls), 2)
@@ -359,7 +343,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST + LAST))
         self.assertEqual(len(restart.mock_calls), 2)
@@ -381,7 +365,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         with self.assertRaises(InternalServerError):
             list(resumable)
@@ -410,7 +394,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST + SECOND))
         self.assertEqual(len(restart.mock_calls), 2)
@@ -432,7 +416,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         derived._multi_use = True
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST))
@@ -463,7 +447,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         derived._multi_use = True
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(SECOND))
@@ -501,7 +485,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         derived._multi_use = True
 
         resumable = self._call_fut(derived, restart, request, session=session)
@@ -535,7 +519,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         self.assertEqual(list(resumable), list(FIRST + SECOND))
         self.assertEqual(len(restart.mock_calls), 2)
@@ -556,7 +540,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
         with self.assertRaises(InternalServerError):
             list(resumable)
@@ -580,7 +564,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         database = _Database()
         database.spanner_api = build_spanner_api()
         session = _Session(database)
-        derived = self._makeDerived(session)
+        derived = _build_snapshot_derived(session)
         resumable = self._call_fut(
             derived, restart, request, name, _Session(_Database()), extra_atts
         )
@@ -610,7 +594,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             database = _Database()
             database.spanner_api = build_spanner_api()
             session = _Session(database)
-            derived = self._makeDerived(session)
+            derived = _build_snapshot_derived(session)
             resumable = self._call_fut(
                 derived, restart, request, name, _Session(_Database())
             )
@@ -633,56 +617,60 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
 
 
 class Test_SnapshotBase(OpenTelemetryBase):
-    class _Derived(_SnapshotBase):
-        """A minimally-implemented _SnapshotBase-derived class for testing"""
-
-        # Use a simplified implementation of _make_txn_selector
-        # that always returns the same transaction selector.
-        TRANSACTION_SELECTOR = TransactionSelector()
-
-        def _make_txn_selector(self) -> TransactionSelector:
-            return self.TRANSACTION_SELECTOR
-
-    @staticmethod
-    def _build_derived(session=None, multi_use=False, read_only=True):
-        """Builds and returns an instance of a minimally-implemented
-        _SnapshotBase-derived class for testing."""
-
-        session = session or build_session()
-        if session.session_id is None:
-            session.create()
-
-        derived = Test_SnapshotBase._Derived(session=session)
-        derived._multi_use = multi_use
-        derived._read_only = read_only
-
-        return derived
-
     def test_ctor(self):
-        session = _Session()
-        base = _SnapshotBase(session)
-        self.assertIs(base._session, session)
-        self.assertEqual(base._execute_sql_request_count, 0)
+        session = build_session()
+        derived = _build_snapshot_derived(session=session)
+
+        # Attributes from _SessionWrapper.
+        self.assertIs(derived._session, session)
+
+        # Attributes from _SnapshotBase.
+        self.assertTrue(derived._read_only)
+        self.assertFalse(derived._multi_use)
+        self.assertEqual(derived._execute_sql_request_count, 0)
+        self.assertEqual(derived._read_request_count, 0)
+        self.assertIsNone(derived._transaction_id)
+        self.assertIsNone(derived._precommit_token)
+        self.assertIsInstance(derived._lock, type(Lock()))
 
         self.assertNoSpans()
 
-    def test__make_txn_selector_virtual(self):
-        session = _Session()
-        base = _SnapshotBase(session)
-        with self.assertRaises(NotImplementedError):
-            base._make_txn_selector()
+    def test__build_transaction_selector_pb_single_use(self):
+        derived = _build_snapshot_derived(multi_use=False)
+
+        actual_selector = derived._build_transaction_selector_pb()
+
+        expected_selector = TransactionSelector(single_use=_Derived.TRANSACTION_OPTIONS)
+        self.assertEqual(actual_selector, expected_selector)
+
+    def test__build_transaction_selector_pb_multi_use(self):
+        derived = _build_snapshot_derived(multi_use=True)
+
+        # Select new transaction.
+        expected_options = _Derived.TRANSACTION_OPTIONS
+        expected_selector = TransactionSelector(begin=expected_options)
+        self.assertEqual(expected_selector, derived._build_transaction_selector_pb())
+
+        # Select existing transaction.
+        transaction_id = b"transaction-id"
+        begin_transaction = derived._session._database.spanner_api.begin_transaction
+        begin_transaction.return_value = build_transaction_pb(id=transaction_id)
+
+        derived.begin()
+
+        expected_selector = TransactionSelector(id=transaction_id)
+        self.assertEqual(expected_selector, derived._build_transaction_selector_pb())
 
     def test_begin_error_not_multi_use(self):
-        derived = self._build_derived(multi_use=False)
+        derived = _build_snapshot_derived(multi_use=False)
 
-        self.reset()
         with self.assertRaises(ValueError):
             derived.begin()
 
         self.assertNoSpans()
 
     def test_begin_error_already_begun(self):
-        derived = self._build_derived(multi_use=True)
+        derived = _build_snapshot_derived(multi_use=True)
         derived.begin()
 
         self.reset()
@@ -692,13 +680,12 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertNoSpans()
 
     def test_begin_error_other(self):
-        derived = self._build_derived(multi_use=True)
+        derived = _build_snapshot_derived(multi_use=True)
 
         database = derived._session._database
         begin_transaction = database.spanner_api.begin_transaction
         begin_transaction.side_effect = RuntimeError()
 
-        self.reset()
         with self.assertRaises(RuntimeError):
             derived.begin()
 
@@ -712,7 +699,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
 
     def test_begin_read_write(self):
-        derived = self._build_derived(multi_use=True, read_only=False)
+        derived = _build_snapshot_derived(multi_use=True, read_only=False)
 
         begin_transaction = derived._session._database.spanner_api.begin_transaction
         begin_transaction.return_value = build_transaction_pb()
@@ -720,7 +707,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self._execute_begin(derived)
 
     def test_begin_read_only(self):
-        derived = self._build_derived(multi_use=True, read_only=True)
+        derived = _build_snapshot_derived(multi_use=True, read_only=True)
 
         begin_transaction = derived._session._database.spanner_api.begin_transaction
         begin_transaction.return_value = build_transaction_pb()
@@ -728,7 +715,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self._execute_begin(derived)
 
     def test_begin_precommit_token(self):
-        derived = self._build_derived(multi_use=True)
+        derived = _build_snapshot_derived(multi_use=True)
 
         begin_transaction = derived._session._database.spanner_api.begin_transaction
         begin_transaction.return_value = build_transaction_pb(
@@ -738,7 +725,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self._execute_begin(derived)
 
     def test_begin_retry_for_internal_server_error(self):
-        derived = self._build_derived(multi_use=True)
+        derived = _build_snapshot_derived(multi_use=True)
 
         begin_transaction = derived._session._database.spanner_api.begin_transaction
         begin_transaction.side_effect = [
@@ -758,7 +745,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self.assertEqual(expected_statuses, actual_statuses)
 
     def test_begin_retry_for_aborted(self):
-        derived = self._build_derived(multi_use=True)
+        derived = _build_snapshot_derived(multi_use=True)
 
         begin_transaction = derived._session._database.spanner_api.begin_transaction
         begin_transaction.side_effect = [
@@ -785,9 +772,6 @@ class Test_SnapshotBase(OpenTelemetryBase):
         session = derived._session
         database = session._database
 
-        # Clear spans.
-        self.reset()
-
         transaction_id = derived.begin()
 
         # Verify transaction state.
@@ -813,7 +797,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
 
         database.spanner_api.begin_transaction.assert_called_with(
             request=BeginTransactionRequest(
-                session=session.name, options=self._Derived.TRANSACTION_SELECTOR.begin
+                session=session.name, options=_Derived.TRANSACTION_OPTIONS
             ),
             metadata=expected_metadata,
         )
@@ -836,7 +820,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         database.spanner_api = build_spanner_api()
         database.spanner_api.streaming_read.side_effect = RuntimeError()
         session = _Session(database)
-        derived = self._build_derived(session)
+        derived = _build_snapshot_derived(session)
 
         with self.assertRaises(RuntimeError):
             list(derived.read(TABLE_NAME, COLUMNS, keyset))
@@ -930,9 +914,10 @@ class Test_SnapshotBase(OpenTelemetryBase):
         api = database.spanner_api = build_spanner_api()
         api.streaming_read.return_value = _MockIterator(*result_sets)
         session = _Session(database)
-        derived = self._build_derived(session)
+        derived = _build_snapshot_derived(session)
         derived._multi_use = multi_use
         derived._read_request_count = count
+
         if not first:
             derived._transaction_id = TXN_ID
 
@@ -940,6 +925,8 @@ class Test_SnapshotBase(OpenTelemetryBase):
             request_options = RequestOptions()
         elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
+
+        transaction_selector_pb = derived._build_transaction_selector_pb()
 
         if partition is not None:  # 'limit' and 'partition' incompatible
             result_set = derived.read(
@@ -992,7 +979,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             table=TABLE_NAME,
             columns=COLUMNS,
             key_set=keyset._to_pb(),
-            transaction=self._Derived.TRANSACTION_SELECTOR,
+            transaction=transaction_selector_pb,
             index=INDEX,
             limit=expected_limit,
             partition_token=partition,
@@ -1116,7 +1103,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         database.spanner_api = build_spanner_api()
         database.spanner_api.execute_streaming_sql.side_effect = RuntimeError()
         session = _Session(database)
-        derived = self._build_derived(session)
+        derived = _build_snapshot_derived(session)
 
         with self.assertRaises(RuntimeError):
             list(derived.execute_sql(SQL_QUERY))
@@ -1213,7 +1200,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         api = database.spanner_api = build_spanner_api()
         api.execute_streaming_sql.return_value = iterator
         session = _Session(database)
-        derived = self._build_derived(session, multi_use=multi_use)
+        derived = _build_snapshot_derived(session, multi_use=multi_use)
         derived._read_request_count = count
         derived._execute_sql_request_count = sql_count
         if not first:
@@ -1223,6 +1210,8 @@ class Test_SnapshotBase(OpenTelemetryBase):
             request_options = RequestOptions()
         elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
+
+        transaction_selector_pb = derived._build_transaction_selector_pb()
 
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM,
@@ -1267,7 +1256,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         expected_request = ExecuteSqlRequest(
             session=session.name,
             sql=SQL_QUERY_WITH_PARAM,
-            transaction=self._Derived.TRANSACTION_SELECTOR,
+            transaction=transaction_selector_pb,
             params=expected_params,
             param_types=PARAM_TYPES,
             query_mode=MODE,
@@ -1434,10 +1423,14 @@ class Test_SnapshotBase(OpenTelemetryBase):
         api = database.spanner_api = build_spanner_api()
         api.partition_read.return_value = response
         session = _Session(database)
-        derived = self._build_derived(session)
+        derived = _build_snapshot_derived(session)
         derived._multi_use = multi_use
+
         if w_txn:
             derived._transaction_id = TXN_ID
+
+        transaction_selector_pb = derived._build_transaction_selector_pb()
+
         tokens = list(
             derived.partition_read(
                 TABLE_NAME,
@@ -1462,7 +1455,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             table=TABLE_NAME,
             columns=COLUMNS,
             key_set=keyset._to_pb(),
-            transaction=self._Derived.TRANSACTION_SELECTOR,
+            transaction=transaction_selector_pb,
             index=index,
             partition_options=expected_partition_options,
         )
@@ -1511,7 +1504,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         database.spanner_api = build_spanner_api()
         database.spanner_api.partition_read.side_effect = RuntimeError()
         session = _Session(database)
-        derived = self._build_derived(session, multi_use=True)
+        derived = _build_snapshot_derived(session, multi_use=True)
         derived._transaction_id = TXN_ID
 
         with self.assertRaises(RuntimeError):
@@ -1554,7 +1547,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         ]
 
         session = _Session(database)
-        derived = self._build_derived(session)
+        derived = _build_snapshot_derived(session)
         derived._multi_use = True
         derived._transaction_id = TXN_ID
 
@@ -1619,9 +1612,11 @@ class Test_SnapshotBase(OpenTelemetryBase):
         api = database.spanner_api = build_spanner_api()
         api.partition_query.return_value = response
         session = _Session(database)
-        derived = self._build_derived(session, multi_use=multi_use)
+        derived = _build_snapshot_derived(session, multi_use=multi_use)
         if w_txn:
             derived._transaction_id = TXN_ID
+
+        transaction_selector_pb = derived._build_transaction_selector_pb()
 
         tokens = list(
             derived.partition_query(
@@ -1648,7 +1643,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         expected_request = PartitionQueryRequest(
             session=session.name,
             sql=SQL_QUERY_WITH_PARAM,
-            transaction=self._Derived.TRANSACTION_SELECTOR,
+            transaction=transaction_selector_pb,
             params=expected_params,
             param_types=PARAM_TYPES,
             partition_options=expected_partition_options,
@@ -1685,7 +1680,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         database.spanner_api = build_spanner_api()
         database.spanner_api.partition_query.side_effect = RuntimeError()
         session = _Session(database)
-        derived = self._build_derived(session, multi_use=True)
+        derived = _build_snapshot_derived(session, multi_use=True)
         derived._transaction_id = TXN_ID
 
         with self.assertRaises(RuntimeError):
@@ -1755,218 +1750,133 @@ class TestSnapshot(OpenTelemetryBase):
         return datetime.timedelta(seconds=seconds, microseconds=microseconds)
 
     def test_ctor_defaults(self):
-        session = _Session()
-        snapshot = self._make_one(session)
+        session = build_session()
+        snapshot = build_snapshot(session=session)
+
+        # Attributes from _SessionWrapper.
         self.assertIs(snapshot._session, session)
+
+        # Attributes from _SnapshotBase.
+        self.assertTrue(snapshot._read_only)
+        self.assertFalse(snapshot._multi_use)
+        self.assertEqual(snapshot._execute_sql_request_count, 0)
+        self.assertEqual(snapshot._read_request_count, 0)
+        self.assertIsNone(snapshot._transaction_id)
+        self.assertIsNone(snapshot._precommit_token)
+        self.assertIsInstance(snapshot._lock, type(Lock()))
+
+        # Attributes from Snapshot.
         self.assertTrue(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
         self.assertIsNone(snapshot._min_read_timestamp)
         self.assertIsNone(snapshot._max_staleness)
         self.assertIsNone(snapshot._exact_staleness)
-        self.assertFalse(snapshot._multi_use)
 
     def test_ctor_w_multiple_options(self):
-        timestamp = _makeTimestamp()
-        duration = self._makeDuration()
-        session = _Session()
-
         with self.assertRaises(ValueError):
-            self._make_one(session, read_timestamp=timestamp, max_staleness=duration)
+            build_snapshot(read_timestamp=datetime.min, max_staleness=timedelta())
 
     def test_ctor_w_read_timestamp(self):
-        timestamp = _makeTimestamp()
-        session = _Session()
-        snapshot = self._make_one(session, read_timestamp=timestamp)
-        self.assertIs(snapshot._session, session)
-        self.assertFalse(snapshot._strong)
-        self.assertEqual(snapshot._read_timestamp, timestamp)
-        self.assertIsNone(snapshot._min_read_timestamp)
-        self.assertIsNone(snapshot._max_staleness)
-        self.assertIsNone(snapshot._exact_staleness)
-        self.assertFalse(snapshot._multi_use)
+        snapshot = build_snapshot(read_timestamp=TIMESTAMP)
+        self.assertEqual(snapshot._read_timestamp, TIMESTAMP)
 
     def test_ctor_w_min_read_timestamp(self):
-        timestamp = _makeTimestamp()
-        session = _Session()
-        snapshot = self._make_one(session, min_read_timestamp=timestamp)
-        self.assertIs(snapshot._session, session)
-        self.assertFalse(snapshot._strong)
-        self.assertIsNone(snapshot._read_timestamp)
-        self.assertEqual(snapshot._min_read_timestamp, timestamp)
-        self.assertIsNone(snapshot._max_staleness)
-        self.assertIsNone(snapshot._exact_staleness)
-        self.assertFalse(snapshot._multi_use)
+        snapshot = build_snapshot(min_read_timestamp=TIMESTAMP)
+        self.assertEqual(snapshot._min_read_timestamp, TIMESTAMP)
 
     def test_ctor_w_max_staleness(self):
-        duration = self._makeDuration()
-        session = _Session()
-        snapshot = self._make_one(session, max_staleness=duration)
-        self.assertIs(snapshot._session, session)
-        self.assertFalse(snapshot._strong)
-        self.assertIsNone(snapshot._read_timestamp)
-        self.assertIsNone(snapshot._min_read_timestamp)
-        self.assertEqual(snapshot._max_staleness, duration)
-        self.assertIsNone(snapshot._exact_staleness)
-        self.assertFalse(snapshot._multi_use)
+        snapshot = build_snapshot(max_staleness=DURATION)
+        self.assertEqual(snapshot._max_staleness, DURATION)
 
     def test_ctor_w_exact_staleness(self):
-        duration = self._makeDuration()
-        session = _Session()
-        snapshot = self._make_one(session, exact_staleness=duration)
-        self.assertIs(snapshot._session, session)
-        self.assertFalse(snapshot._strong)
-        self.assertIsNone(snapshot._read_timestamp)
-        self.assertIsNone(snapshot._min_read_timestamp)
-        self.assertIsNone(snapshot._max_staleness)
-        self.assertEqual(snapshot._exact_staleness, duration)
-        self.assertFalse(snapshot._multi_use)
+        snapshot = build_snapshot(exact_staleness=DURATION)
+        self.assertEqual(snapshot._exact_staleness, DURATION)
 
     def test_ctor_w_multi_use(self):
-        session = _Session()
-        snapshot = self._make_one(session, multi_use=True)
-        self.assertTrue(snapshot._session is session)
-        self.assertTrue(snapshot._strong)
-        self.assertIsNone(snapshot._read_timestamp)
-        self.assertIsNone(snapshot._min_read_timestamp)
-        self.assertIsNone(snapshot._max_staleness)
-        self.assertIsNone(snapshot._exact_staleness)
+        snapshot = build_snapshot(multi_use=True)
         self.assertTrue(snapshot._multi_use)
 
     def test_ctor_w_multi_use_and_read_timestamp(self):
-        timestamp = _makeTimestamp()
-        session = _Session()
-        snapshot = self._make_one(session, read_timestamp=timestamp, multi_use=True)
-        self.assertTrue(snapshot._session is session)
-        self.assertFalse(snapshot._strong)
-        self.assertEqual(snapshot._read_timestamp, timestamp)
-        self.assertIsNone(snapshot._min_read_timestamp)
-        self.assertIsNone(snapshot._max_staleness)
-        self.assertIsNone(snapshot._exact_staleness)
+        snapshot = build_snapshot(multi_use=True, read_timestamp=TIMESTAMP)
         self.assertTrue(snapshot._multi_use)
+        self.assertEqual(snapshot._read_timestamp, TIMESTAMP)
 
     def test_ctor_w_multi_use_and_min_read_timestamp(self):
-        timestamp = _makeTimestamp()
-        session = _Session()
-
         with self.assertRaises(ValueError):
-            self._make_one(session, min_read_timestamp=timestamp, multi_use=True)
+            build_snapshot(multi_use=True, min_read_timestamp=TIMESTAMP)
 
     def test_ctor_w_multi_use_and_max_staleness(self):
-        duration = self._makeDuration()
-        session = _Session()
-
         with self.assertRaises(ValueError):
-            self._make_one(session, max_staleness=duration, multi_use=True)
+            build_snapshot(multi_use=True, max_staleness=DURATION)
 
     def test_ctor_w_multi_use_and_exact_staleness(self):
-        duration = self._makeDuration()
-        session = _Session()
-        snapshot = self._make_one(session, exact_staleness=duration, multi_use=True)
-        self.assertTrue(snapshot._session is session)
-        self.assertFalse(snapshot._strong)
-        self.assertIsNone(snapshot._read_timestamp)
-        self.assertIsNone(snapshot._min_read_timestamp)
-        self.assertIsNone(snapshot._max_staleness)
-        self.assertEqual(snapshot._exact_staleness, duration)
+        snapshot = build_snapshot(multi_use=True, exact_staleness=DURATION)
         self.assertTrue(snapshot._multi_use)
+        self.assertEqual(snapshot._exact_staleness, DURATION)
 
-    def test__make_txn_selector_w_transaction_id(self):
-        session = _Session()
-        snapshot = self._make_one(session)
-        snapshot._transaction_id = TXN_ID
-        selector = snapshot._make_txn_selector()
-        self.assertEqual(selector.id, TXN_ID)
+    def test__build_transaction_options_strong(self):
+        snapshot = build_snapshot()
+        options = snapshot._build_transaction_options_pb()
 
-    def test__make_txn_selector_strong(self):
-        session = _Session()
-        snapshot = self._make_one(session)
-        selector = snapshot._make_txn_selector()
-        options = selector.single_use
-        self.assertTrue(options.read_only.strong)
-
-    def test__make_txn_selector_w_read_timestamp(self):
-        from google.cloud._helpers import _pb_timestamp_to_datetime
-
-        timestamp = _makeTimestamp()
-        session = _Session()
-        snapshot = self._make_one(session, read_timestamp=timestamp)
-        selector = snapshot._make_txn_selector()
-        options = selector.single_use
         self.assertEqual(
-            _pb_timestamp_to_datetime(
-                type(options).pb(options).read_only.read_timestamp
+            options,
+            TransactionOptions(
+                read_only=TransactionOptions.ReadOnly(
+                    strong=True, return_read_timestamp=True
+                )
             ),
-            timestamp,
         )
 
-    def test__make_txn_selector_w_min_read_timestamp(self):
-        from google.cloud._helpers import _pb_timestamp_to_datetime
+    def test__build_transaction_options_w_read_timestamp(self):
+        snapshot = build_snapshot(read_timestamp=TIMESTAMP)
+        options = snapshot._build_transaction_options_pb()
 
-        timestamp = _makeTimestamp()
-        session = _Session()
-        snapshot = self._make_one(session, min_read_timestamp=timestamp)
-        selector = snapshot._make_txn_selector()
-        options = selector.single_use
         self.assertEqual(
-            _pb_timestamp_to_datetime(
-                type(options).pb(options).read_only.min_read_timestamp
+            options,
+            TransactionOptions(
+                read_only=TransactionOptions.ReadOnly(
+                    read_timestamp=TIMESTAMP, return_read_timestamp=True
+                )
             ),
-            timestamp,
         )
 
-    def test__make_txn_selector_w_max_staleness(self):
-        duration = self._makeDuration(seconds=3, microseconds=123456)
-        session = _Session()
-        snapshot = self._make_one(session, max_staleness=duration)
-        selector = snapshot._make_txn_selector()
-        options = selector.single_use
-        self.assertEqual(type(options).pb(options).read_only.max_staleness.seconds, 3)
+    def test__build_transaction_options_w_min_read_timestamp(self):
+        snapshot = build_snapshot(min_read_timestamp=TIMESTAMP)
+        options = snapshot._build_transaction_options_pb()
+
         self.assertEqual(
-            type(options).pb(options).read_only.max_staleness.nanos, 123456000
-        )
-
-    def test__make_txn_selector_w_exact_staleness(self):
-        duration = self._makeDuration(seconds=3, microseconds=123456)
-        session = _Session()
-        snapshot = self._make_one(session, exact_staleness=duration)
-        selector = snapshot._make_txn_selector()
-        options = selector.single_use
-        self.assertEqual(type(options).pb(options).read_only.exact_staleness.seconds, 3)
-        self.assertEqual(
-            type(options).pb(options).read_only.exact_staleness.nanos, 123456000
-        )
-
-    def test__make_txn_selector_strong_w_multi_use(self):
-        session = _Session()
-        snapshot = self._make_one(session, multi_use=True)
-        selector = snapshot._make_txn_selector()
-        options = selector.begin
-        self.assertTrue(options.read_only.strong)
-
-    def test__make_txn_selector_w_read_timestamp_w_multi_use(self):
-        from google.cloud._helpers import _pb_timestamp_to_datetime
-
-        timestamp = _makeTimestamp()
-        session = _Session()
-        snapshot = self._make_one(session, read_timestamp=timestamp, multi_use=True)
-        selector = snapshot._make_txn_selector()
-        options = selector.begin
-        self.assertEqual(
-            _pb_timestamp_to_datetime(
-                type(options).pb(options).read_only.read_timestamp
+            options,
+            TransactionOptions(
+                read_only=TransactionOptions.ReadOnly(
+                    min_read_timestamp=TIMESTAMP, return_read_timestamp=True
+                )
             ),
-            timestamp,
         )
 
-    def test__make_txn_selector_w_exact_staleness_w_multi_use(self):
-        duration = self._makeDuration(seconds=3, microseconds=123456)
-        session = _Session()
-        snapshot = self._make_one(session, exact_staleness=duration, multi_use=True)
-        selector = snapshot._make_txn_selector()
-        options = selector.begin
-        self.assertEqual(type(options).pb(options).read_only.exact_staleness.seconds, 3)
+    def test__build_transaction_options_w_max_staleness(self):
+        snapshot = build_snapshot(max_staleness=DURATION)
+        options = snapshot._build_transaction_options_pb()
+
         self.assertEqual(
-            type(options).pb(options).read_only.exact_staleness.nanos, 123456000
+            options,
+            TransactionOptions(
+                read_only=TransactionOptions.ReadOnly(
+                    max_staleness=DURATION, return_read_timestamp=True
+                )
+            ),
+        )
+
+    def test__build_transaction_options_w_exact_staleness(self):
+        snapshot = build_snapshot(exact_staleness=DURATION)
+        options = snapshot._build_transaction_options_pb()
+
+        self.assertEqual(
+            options,
+            TransactionOptions(
+                read_only=TransactionOptions.ReadOnly(
+                    exact_staleness=DURATION, return_read_timestamp=True
+                )
+            ),
         )
 
 
@@ -2056,6 +1966,21 @@ class _MockIterator(object):
             raise
 
     next = __next__
+
+
+def _build_snapshot_derived(session=None, multi_use=False, read_only=True) -> _Derived:
+    """Builds and returns an instance of a minimally-
+    implemented _Derived class for testing."""
+
+    session = session or build_session()
+    if session.session_id is None:
+        session._session_id = "session-id"
+
+    derived = _Derived(session=session)
+    derived._multi_use = multi_use
+    derived._read_only = read_only
+
+    return derived
 
 
 def _build_span_attributes(database: Database, attempt: int = 1) -> Mapping[str, str]:

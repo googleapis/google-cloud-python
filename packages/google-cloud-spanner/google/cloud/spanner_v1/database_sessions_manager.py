@@ -86,16 +86,10 @@ class DatabaseSessionsManager(object):
         :returns: a session for the given transaction type.
         """
 
-        use_multiplexed = self._use_multiplexed(transaction_type)
-
-        # TODO multiplexed: enable for read/write transactions
-        if use_multiplexed and transaction_type == TransactionType.READ_WRITE:
-            raise NotImplementedError(
-                f"Multiplexed sessions are not yet supported for {transaction_type} transactions."
-            )
-
         session = (
-            self._get_multiplexed_session() if use_multiplexed else self._pool.get()
+            self._get_multiplexed_session()
+            if self._use_multiplexed(transaction_type)
+            else self._pool.get()
         )
 
         add_span_event(

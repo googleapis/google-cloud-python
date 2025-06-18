@@ -156,12 +156,29 @@ class TestDatabaseSessionManager(TestCase):
         manager.put_session(session)
         pool.put.assert_called_once_with(session)
 
-    # TODO multiplexed: implement support for read/write transactions.
     def test_read_write_multiplexed(self):
+        manager = self._manager
+        pool = manager._pool
+
         self._enable_multiplexed_sessions()
 
-        with self.assertRaises(NotImplementedError):
-            self._manager.get_session(TransactionType.READ_WRITE)
+        # Session is created.
+        session_1 = manager.get_session(TransactionType.READ_WRITE)
+        self.assertTrue(session_1.is_multiplexed)
+        manager.put_session(session_1)
+
+        # Session is re-used.
+        session_2 = manager.get_session(TransactionType.READ_WRITE)
+        self.assertEqual(session_1, session_2)
+        manager.put_session(session_2)
+
+        # Verify that pool was not used.
+        pool.get.assert_not_called()
+        pool.put.assert_not_called()
+
+        # Verify logger calls.
+        info = manager._database.logger.info
+        info.assert_called_once_with("Created multiplexed session.")
 
     def test_multiplexed_maintenance(self):
         manager = self._manager

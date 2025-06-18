@@ -93,7 +93,7 @@ def _restart_on_unavailable(
     item_buffer: List[PartialResultSet] = []
 
     if transaction is not None:
-        transaction_selector = transaction._make_txn_selector()
+        transaction_selector = transaction._build_transaction_selector_pb()
     elif transaction_selector is None:
         raise InvalidArgument(
             "Either transaction or transaction_selector should be set"
@@ -149,7 +149,7 @@ def _restart_on_unavailable(
             ) as span, MetricsCapture():
                 request.resume_token = resume_token
                 if transaction is not None:
-                    transaction_selector = transaction._make_txn_selector()
+                    transaction_selector = transaction._build_transaction_selector_pb()
                 request.transaction = transaction_selector
                 attempt += 1
                 iterator = method(
@@ -180,7 +180,7 @@ def _restart_on_unavailable(
             ) as span, MetricsCapture():
                 request.resume_token = resume_token
                 if transaction is not None:
-                    transaction_selector = transaction._make_txn_selector()
+                    transaction_selector = transaction._build_transaction_selector_pb()
                 attempt += 1
                 request.transaction = transaction_selector
                 iterator = method(
@@ -237,17 +237,6 @@ class _SnapshotBase(_SessionWrapper):
         # Operations within a transaction can be performed using multiple
         # threads, so we need to use a lock when updating the transaction.
         self._lock: threading.Lock = threading.Lock()
-
-    def _make_txn_selector(self):
-        """Helper for :meth:`read` / :meth:`execute_sql`.
-
-        Subclasses must override, returning an instance of
-        :class:`transaction_pb2.TransactionSelector`
-        appropriate for making ``read`` / ``execute_sql`` requests
-
-        :raises: NotImplementedError, always
-        """
-        raise NotImplementedError
 
     def begin(self) -> bytes:
         """Begins a transaction on the database.
@@ -732,7 +721,7 @@ class _SnapshotBase(_SessionWrapper):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-        transaction = self._make_txn_selector()
+        transaction = self._build_transaction_selector_pb()
         partition_options = PartitionOptions(
             partition_size_bytes=partition_size_bytes, max_partitions=max_partitions
         )
@@ -854,7 +843,7 @@ class _SnapshotBase(_SessionWrapper):
             metadata.append(
                 _metadata_with_leader_aware_routing(database._route_to_leader_enabled)
             )
-        transaction = self._make_txn_selector()
+        transaction = self._build_transaction_selector_pb()
         partition_options = PartitionOptions(
             partition_size_bytes=partition_size_bytes, max_partitions=max_partitions
         )
@@ -944,7 +933,7 @@ class _SnapshotBase(_SessionWrapper):
             def wrapped_method():
                 begin_transaction_request = BeginTransactionRequest(
                     session=session.name,
-                    options=self._make_txn_selector().begin,
+                    options=self._build_transaction_selector_pb().begin,
                     mutation_key=mutation,
                 )
                 begin_transaction_method = functools.partial(
@@ -982,6 +971,34 @@ class _SnapshotBase(_SessionWrapper):
 
         self._update_for_transaction_pb(transaction_pb)
         return self._transaction_id
+
+    def _build_transaction_options_pb(self) -> TransactionOptions:
+        """Builds and returns the transaction options for this snapshot.
+
+        :rtype: :class:`transaction_pb2.TransactionOptions`
+        :returns: the transaction options for this snapshot.
+        """
+        raise NotImplementedError
+
+    def _build_transaction_selector_pb(self) -> TransactionSelector:
+        """Builds and returns a transaction selector for this snapshot.
+
+        :rtype: :class:`transaction_pb2.TransactionSelector`
+        :returns: a transaction selector for this snapshot.
+        """
+
+        # Select a previously begun transaction.
+        if self._transaction_id is not None:
+            return TransactionSelector(id=self._transaction_id)
+
+        options = self._build_transaction_options_pb()
+
+        # Select a single-use transaction.
+        if not self._multi_use:
+            return TransactionSelector(single_use=options)
+
+        # Select a new, multi-use transaction.
+        return TransactionSelector(begin=options)
 
     def _update_for_result_set_pb(
         self, result_set_pb: Union[ResultSet, PartialResultSet]
@@ -1101,38 +1118,28 @@ class Snapshot(_SnapshotBase):
         self._multi_use = multi_use
         self._transaction_id = transaction_id
 
-    # TODO multiplexed - refactor to base class
-    def _make_txn_selector(self):
-        """Helper for :meth:`read`."""
-        if self._transaction_id is not None:
-            return TransactionSelector(id=self._transaction_id)
+    def _build_transaction_options_pb(self) -> TransactionOptions:
+        """Builds and returns transaction options for this snapshot.
+
+        :rtype: :class:`transaction_pb2.TransactionOptions`
+        :returns: transaction options for this snapshot.
+        """
+
+        read_only_pb_args = dict(return_read_timestamp=True)
 
         if self._read_timestamp:
-            key = "read_timestamp"
-            value = self._read_timestamp
+            read_only_pb_args["read_timestamp"] = self._read_timestamp
         elif self._min_read_timestamp:
-            key = "min_read_timestamp"
-            value = self._min_read_timestamp
+            read_only_pb_args["min_read_timestamp"] = self._min_read_timestamp
         elif self._max_staleness:
-            key = "max_staleness"
-            value = self._max_staleness
+            read_only_pb_args["max_staleness"] = self._max_staleness
         elif self._exact_staleness:
-            key = "exact_staleness"
-            value = self._exact_staleness
+            read_only_pb_args["exact_staleness"] = self._exact_staleness
         else:
-            key = "strong"
-            value = True
+            read_only_pb_args["strong"] = True
 
-        options = TransactionOptions(
-            read_only=TransactionOptions.ReadOnly(
-                **{key: value, "return_read_timestamp": True}
-            )
-        )
-
-        if self._multi_use:
-            return TransactionSelector(begin=options)
-        else:
-            return TransactionSelector(single_use=options)
+        read_only_pb = TransactionOptions.ReadOnly(**read_only_pb_args)
+        return TransactionOptions(read_only=read_only_pb)
 
     def _update_for_transaction_pb(self, transaction_pb: Transaction) -> None:
         """Updates the snapshot for the given transaction.

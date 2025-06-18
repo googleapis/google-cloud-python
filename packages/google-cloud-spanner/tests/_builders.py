@@ -172,6 +172,19 @@ def build_session(**kwargs: Mapping) -> Session:
     return Session(**kwargs)
 
 
+def build_snapshot(**kwargs):
+    """Builds and returns a snapshot for testing using the given arguments.
+    If a required argument is not provided, a default value will be used."""
+
+    session = kwargs.pop("session", build_session())
+
+    # Ensure session exists.
+    if session.session_id is None:
+        session._session_id = _SESSION_ID
+
+    return session.snapshot(**kwargs)
+
+
 def build_transaction(session=None) -> Transaction:
     """Builds and returns a transaction for testing using the given arguments.
     If a required argument is not provided, a default value will be used."""

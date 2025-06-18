@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from threading import Lock
 from typing import Mapping
 from datetime import timedelta
 
@@ -36,6 +37,7 @@ from google.cloud.spanner_v1._helpers import (
 )
 from google.cloud.spanner_v1.batch import _make_write_pb
 from google.cloud.spanner_v1.database import Database
+from google.cloud.spanner_v1.transaction import Transaction
 from google.cloud.spanner_v1.request_id_header import (
     REQ_RAND_PROCESS_ID,
     build_request_id,
@@ -113,28 +115,29 @@ class TestTransaction(OpenTelemetryBase):
 
         return mock.create_autospec(SpannerClient, instance=True)
 
-    def test_ctor_session_w_existing_txn(self):
-        session = _Session()
-        session._transaction = object()
-        with self.assertRaises(ValueError):
-            self._make_one(session)
-
     def test_ctor_defaults(self):
-        session = _Session()
-        transaction = self._make_one(session)
-        self.assertIs(transaction._session, session)
-        self.assertIsNone(transaction._transaction_id)
-        self.assertIsNone(transaction.committed)
-        self.assertFalse(transaction.rolled_back)
+        session = build_session()
+        transaction = Transaction(session=session)
+
+        # Attributes from _SessionWrapper
+        self.assertEqual(transaction._session, session)
+
+        # Attributes from _SnapshotBase
+        self.assertFalse(transaction._read_only)
         self.assertTrue(transaction._multi_use)
         self.assertEqual(transaction._execute_sql_request_count, 0)
+        self.assertEqual(transaction._read_request_count, 0)
+        self.assertIsNone(transaction._transaction_id)
+        self.assertIsNone(transaction._precommit_token)
+        self.assertIsInstance(transaction._lock, type(Lock()))
 
-    def test__make_txn_selector(self):
-        session = _Session()
-        transaction = self._make_one(session)
-        transaction._transaction_id = TRANSACTION_ID
-        selector = transaction._make_txn_selector()
-        self.assertEqual(selector.id, TRANSACTION_ID)
+        # Attributes from _BatchBase
+        self.assertEqual(transaction._mutations, [])
+        self.assertIsNone(transaction._precommit_token)
+        self.assertIsNone(transaction.committed)
+        self.assertIsNone(transaction.commit_stats)
+
+        self.assertFalse(transaction.rolled_back)
 
     def test_begin_already_rolled_back(self):
         session = _Session()
@@ -225,7 +228,6 @@ class TestTransaction(OpenTelemetryBase):
         transaction.rollback()
 
         self.assertTrue(transaction.rolled_back)
-        self.assertIsNone(session._transaction)
 
         session_id, txn_id, metadata = api._rolled_back
         self.assertEqual(session_id, session.name)
@@ -434,7 +436,6 @@ class TestTransaction(OpenTelemetryBase):
 
         # Verify transaction state.
         self.assertEqual(transaction.committed, commit_timestamp)
-        self.assertIsNone(session._transaction)
 
         if return_commit_stats:
             self.assertEqual(transaction.commit_stats.mutation_count, 4)

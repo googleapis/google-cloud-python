@@ -35,7 +35,6 @@ from google.cloud.spanner_v1 import (
 )
 from google.cloud.spanner_v1 import ExecuteBatchDmlRequest
 from google.cloud.spanner_v1 import ExecuteSqlRequest
-from google.cloud.spanner_v1 import TransactionSelector
 from google.cloud.spanner_v1 import TransactionOptions
 from google.cloud.spanner_v1._helpers import AtomicCounter
 from google.cloud.spanner_v1.snapshot import _SnapshotBase
@@ -68,34 +67,38 @@ class Transaction(_SnapshotBase, _BatchBase):
     _read_only: bool = False
 
     def __init__(self, session):
-        # TODO multiplexed - remove
-        if session._transaction is not None:
-            raise ValueError("Session has existing transaction.")
-
         super(Transaction, self).__init__(session)
         self.rolled_back: bool = False
 
-    def _make_txn_selector(self):
-        """Helper for :meth:`read`.
+        # If this transaction is used to retry a previous aborted transaction with a
+        # multiplexed session, the identifier for that transaction is used to increase
+        # the lock order of the new transaction (see :meth:`_build_transaction_options_pb`).
+        # This attribute should only be set by :meth:`~google.cloud.spanner_v1.session.Session.run_in_transaction`.
+        self._multiplexed_session_previous_transaction_id: Optional[bytes] = None
 
-        :rtype: :class:`~.transaction_pb2.TransactionSelector`
-        :returns: a selector configured for read-write transaction semantics.
+    def _build_transaction_options_pb(self) -> TransactionOptions:
+        """Builds and returns transaction options for this transaction.
+
+        :rtype: :class:`~.transaction_pb2.TransactionOptions`
+        :returns: transaction options for this transaction.
         """
 
-        if self._transaction_id is None:
-            txn_options = TransactionOptions(
-                read_write=TransactionOptions.ReadWrite(),
-                exclude_txn_from_change_streams=self.exclude_txn_from_change_streams,
-                isolation_level=self.isolation_level,
-            )
+        default_transaction_options = (
+            self._session._database.default_transaction_options.default_read_write_transaction_options
+        )
 
-            txn_options = _merge_Transaction_Options(
-                self._session._database.default_transaction_options.default_read_write_transaction_options,
-                txn_options,
-            )
-            return TransactionSelector(begin=txn_options)
-        else:
-            return TransactionSelector(id=self._transaction_id)
+        merge_transaction_options = TransactionOptions(
+            read_write=TransactionOptions.ReadWrite(
+                multiplexed_session_previous_transaction_id=self._multiplexed_session_previous_transaction_id
+            ),
+            exclude_txn_from_change_streams=self.exclude_txn_from_change_streams,
+            isolation_level=self.isolation_level,
+        )
+
+        return _merge_Transaction_Options(
+            defaultTransactionOptions=default_transaction_options,
+            mergeTransactionOptions=merge_transaction_options,
+        )
 
     def _execute_request(
         self,
@@ -122,7 +125,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             raise ValueError("Transaction already rolled back.")
 
         session = self._session
-        transaction = self._make_txn_selector()
+        transaction = self._build_transaction_selector_pb()
         request.transaction = transaction
 
         with trace_call(
@@ -197,9 +200,6 @@ class Transaction(_SnapshotBase, _BatchBase):
                 )
 
         self.rolled_back = True
-
-        # TODO multiplexed - remove
-        self._session._transaction = None
 
     def commit(
         self, return_commit_stats=False, request_options=None, max_commit_delay=None
@@ -339,9 +339,6 @@ class Transaction(_SnapshotBase, _BatchBase):
         if return_commit_stats:
             self.commit_stats = commit_response_pb.commit_stats
 
-        # TODO multiplexed - remove
-        self._session._transaction = None
-
         return self.committed
 
     @staticmethod
@@ -479,7 +476,7 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         execute_sql_request = ExecuteSqlRequest(
             session=session.name,
-            transaction=self._make_txn_selector(),
+            transaction=self._build_transaction_selector_pb(),
             sql=dml,
             params=params_pb,
             param_types=param_types,
@@ -627,7 +624,7 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         execute_batch_dml_request = ExecuteBatchDmlRequest(
             session=session.name,
-            transaction=self._make_txn_selector(),
+            transaction=self._build_transaction_selector_pb(),
             statements=parsed,
             seqno=seqno,
             request_options=request_options,
