@@ -17,6 +17,7 @@ import tempfile
 
 import numpy as np
 import pandas as pd
+import pytest
 
 import bigframes as bf
 import bigframes.formatting_helpers as formatting_helpers
@@ -164,3 +165,18 @@ def test_query_job_dry_run_series(penguins_df_default_index: bf.dataframe.DataFr
     with bf.option_context("display.repr_mode", "deferred"):
         series_result = repr(penguins_df_default_index["body_mass_g"])
         assert EXPECTED_DRY_RUN_MESSAGE in series_result
+
+
+def test_repr_anywidget_dataframe(penguins_df_default_index: bf.dataframe.DataFrame):
+    pytest.importorskip("anywidget")
+    with bf.option_context("display.repr_mode", "anywidget"):
+        actual_repr = repr(penguins_df_default_index)
+        assert EXPECTED_DRY_RUN_MESSAGE in actual_repr
+
+
+def test_repr_anywidget_idex(penguins_df_default_index: bf.dataframe.DataFrame):
+    pytest.importorskip("anywidget")
+    with bf.option_context("display.repr_mode", "anywidget"):
+        index = penguins_df_default_index.index
+        actual_repr = repr(index)
+        assert EXPECTED_DRY_RUN_MESSAGE in actual_repr

@@ -725,7 +725,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         opts = bigframes.options.display
         max_results = opts.max_rows
-        if opts.repr_mode == "deferred":
+        # anywdiget mode uses the same display logic as the "deferred" mode
+        # for faster execution
+        if opts.repr_mode in ("deferred", "anywidget"):
             return formatter.repr_query_job(self._compute_dry_run())
 
         # TODO(swast): pass max_columns and get the true column count back. Maybe
@@ -774,6 +776,23 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if opts.repr_mode == "deferred":
             return formatter.repr_query_job(self._compute_dry_run())
 
+        if opts.repr_mode == "anywidget":
+            import anywidget  # type: ignore
+
+            # create an iterator for the data batches
+            batches = self.to_pandas_batches()
+
+            # get the first page result
+            try:
+                first_page = next(iter(batches))
+            except StopIteration:
+                first_page = pandas.DataFrame(columns=self.columns)
+
+            # Instantiate and return the widget. The widget's frontend will
+            # handle the display of the table and pagination
+            return anywidget.AnyWidget(dataframe=first_page)
+
+        self._cached()
         df = self.copy()
         if bigframes.options.display.blob_display:
             blob_cols = [

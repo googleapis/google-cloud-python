@@ -810,7 +810,7 @@ def test_repr_html_w_all_rows(scalars_dfs, session):
         + f"[{len(pandas_df.index)} rows x {len(pandas_df.columns)} columns in total]"
     )
     assert actual == expected
-    assert (executions_post - executions_pre) <= 2
+    assert (executions_post - executions_pre) <= 3
 
 
 def test_df_column_name_with_space(scalars_dfs):

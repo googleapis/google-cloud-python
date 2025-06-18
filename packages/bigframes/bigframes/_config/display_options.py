@@ -29,7 +29,7 @@ class DisplayOptions:
     max_columns: int = 20
     max_rows: int = 25
     progress_bar: Optional[str] = "auto"
-    repr_mode: Literal["head", "deferred"] = "head"
+    repr_mode: Literal["head", "deferred", "anywidget"] = "head"
 
     max_info_columns: int = 100
     max_info_rows: Optional[int] = 200000
