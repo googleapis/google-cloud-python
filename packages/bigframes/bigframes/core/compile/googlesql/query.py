@@ -83,7 +83,13 @@ class Select(abc.SQLSyntax):
             return SelectExpression(expression=expr.ColumnExpression(name=field))
 
         else:
-            alias = field[1] if (field[0] != field[1]) else None
+            alias = (
+                expr.AliasExpression(field[1])
+                if isinstance(field[1], str)
+                else field[1]
+                if (field[0] != field[1])
+                else None
+            )
             return SelectExpression(
                 expression=expr.ColumnExpression(name=field[0]), alias=alias
             )

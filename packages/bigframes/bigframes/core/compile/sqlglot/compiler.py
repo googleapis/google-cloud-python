@@ -125,10 +125,7 @@ class SQLGlotCompiler:
             (name, scalar_compiler.compile_scalar_expression(ref))
             for ref, name in root.output_cols
         )
-        # Skip squashing selections to ensure the right ordering and limit keys
-        sqlglot_ir = self.compile_node(root.child).select(
-            selected_cols, squash_selections=False
-        )
+        sqlglot_ir = self.compile_node(root.child).select(selected_cols)
 
         if root.order_by is not None:
             ordering_cols = tuple(

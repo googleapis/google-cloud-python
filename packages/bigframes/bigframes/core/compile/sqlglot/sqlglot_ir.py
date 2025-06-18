@@ -203,7 +203,6 @@ class SQLGlotIR:
     def select(
         self,
         selected_cols: tuple[tuple[str, sge.Expression], ...],
-        squash_selections: bool = True,
     ) -> SQLGlotIR:
         selections = [
             sge.Alias(
@@ -212,15 +211,6 @@ class SQLGlotIR:
             )
             for id, expr in selected_cols
         ]
-
-        # If squashing is enabled, we try to simplify the selections
-        # by checking if the new selections are simply aliases of the
-        # original columns.
-        if squash_selections:
-            new_selections = _squash_selections(self.expr.expressions, selections)
-            if new_selections != []:
-                new_expr = self.expr.select(*new_selections, append=False)
-                return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
         new_expr = self._encapsulate_as_cte().select(*selections, append=False)
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
@@ -361,63 +351,3 @@ def _table(table: bigquery.TableReference) -> sge.Table:
         db=sg.to_identifier(table.dataset_id, quoted=True),
         catalog=sg.to_identifier(table.project, quoted=True),
     )
-
-
-def _squash_selections(
-    old_expr: list[sge.Expression], new_expr: list[sge.Alias]
-) -> list[sge.Alias]:
-    """
-    TODO: Reanble this function to optimize the SQL.
-    Simplifies the select column expressions if existing (old_expr) and
-    new (new_expr) selected columns are both simple aliases of column definitions.
-
-    Example:
-    old_expr: [A AS X, B AS Y]
-    new_expr: [X AS P, Y AS Q]
-    Result:   [A AS P, B AS Q]
-    """
-    old_alias_map: typing.Dict[str, str] = {}
-    for selected in old_expr:
-        column_alias_pair = _get_column_alias_pair(selected)
-        if column_alias_pair is None:
-            return []
-        else:
-            old_alias_map[column_alias_pair[1]] = column_alias_pair[0]
-
-    new_selected_cols: typing.List[sge.Alias] = []
-    for selected in new_expr:
-        column_alias_pair = _get_column_alias_pair(selected)
-        if column_alias_pair is None or column_alias_pair[0] not in old_alias_map:
-            return []
-        else:
-            new_alias_expr = sge.Alias(
-                this=sge.ColumnDef(
-                    this=sge.to_identifier(
-                        old_alias_map[column_alias_pair[0]], quoted=True
-                    )
-                ),
-                alias=sg.to_identifier(column_alias_pair[1], quoted=True),
-            )
-            new_selected_cols.append(new_alias_expr)
-    return new_selected_cols
-
-
-def _get_column_alias_pair(
-    expr: sge.Expression,
-) -> typing.Optional[typing.Tuple[str, str]]:
-    """Checks if an expression is a simple alias of a column definition
-    (e.g., "column_name AS alias_name").
-    If it is, returns a tuple containing the alias name and original column name.
-    Returns `None` otherwise.
-    """
-    if not isinstance(expr, sge.Alias):
-        return None
-    if not isinstance(expr.this, sge.ColumnDef):
-        return None
-
-    column_def_expr: sge.ColumnDef = expr.this
-    if not isinstance(column_def_expr.this, sge.Identifier):
-        return None
-
-    original_identifier: sge.Identifier = column_def_expr.this
-    return (original_identifier.this, expr.alias)
