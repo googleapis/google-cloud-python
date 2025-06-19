@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.24.1](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.24.0...google-analytics-admin-v0.24.1) (2025-06-19)
+
+
+### Features
+
+* add the `GetSubpropertySyncConfigRequest` method ([223c62b](https://github.com/googleapis/google-cloud-python/commit/223c62bb9548d21de59e8bf5b950d30e8264afd6))
+* add the `ListSubpropertySyncConfigsRequest` method ([223c62b](https://github.com/googleapis/google-cloud-python/commit/223c62bb9548d21de59e8bf5b950d30e8264afd6))
+* add the `UpdateSubpropertySyncConfigRequest` method ([223c62b](https://github.com/googleapis/google-cloud-python/commit/223c62bb9548d21de59e8bf5b950d30e8264afd6))
+
 ## [0.24.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.23.6...google-analytics-admin-v0.24.0) (2025-04-17)
 
 

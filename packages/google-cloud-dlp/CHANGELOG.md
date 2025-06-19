@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.30.0...google-cloud-dlp-v3.31.0) (2025-06-19)
+
+
+### Features
+
+* add SaveToGcsFindingsOutput ([b568ff5](https://github.com/googleapis/google-cloud-python/commit/b568ff5d1b0ac5b8a2fd65cac97e495cd80f5981))
+
+
+### Documentation
+
+* minor doc revision ([b568ff5](https://github.com/googleapis/google-cloud-python/commit/b568ff5d1b0ac5b8a2fd65cac97e495cd80f5981))
+
 ## [3.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.29.0...google-cloud-dlp-v3.30.0) (2025-05-29)
 
 
