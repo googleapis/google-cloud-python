@@ -20,6 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
 import proto  # type: ignore
@@ -569,11 +570,20 @@ class ContinuousBackupInfo(proto.Message):
             ContinuousBackup is not enabled.
         schedule (MutableSequence[google.type.dayofweek_pb2.DayOfWeek]):
             Output only. Days of the week on which a
-            continuous backup is taken. Output only field.
-            Ignored if passed into the request.
+            continuous backup is taken.
         earliest_restorable_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The earliest restorable time
-            that can be restored to. Output only field.
+            Output only. The earliest restorable time that can be
+            restored to. If continuous backups and recovery was recently
+            enabled, the earliest restorable time is the creation time
+            of the earliest eligible backup within this cluster's
+            continuous backup recovery window. After a cluster has had
+            continuous backups enabled for the duration of its recovery
+            window, the earliest restorable time becomes "now minus the
+            recovery window". For example, assuming a point in time
+            recovery is attempted at 04/16/2025 3:23:00PM with a 14d
+            recovery window, the earliest restorable time would be
+            04/02/2025 3:23:00PM. This field is only visible if the
+            CLUSTER_VIEW_CONTINUOUS_BACKUP cluster view is provided.
     """
 
     encryption_info: "EncryptionInfo" = proto.Field(
@@ -656,6 +666,9 @@ class MaintenanceUpdatePolicy(proto.Message):
         maintenance_windows (MutableSequence[google.cloud.alloydb_v1beta.types.MaintenanceUpdatePolicy.MaintenanceWindow]):
             Preferred windows to perform maintenance.
             Currently limited to 1.
+        deny_maintenance_periods (MutableSequence[google.cloud.alloydb_v1beta.types.MaintenanceUpdatePolicy.DenyMaintenancePeriod]):
+            Periods to deny maintenance. Currently
+            limited to 1.
     """
 
     class MaintenanceWindow(proto.Message):
@@ -683,10 +696,57 @@ class MaintenanceUpdatePolicy(proto.Message):
             message=timeofday_pb2.TimeOfDay,
         )
 
+    class DenyMaintenancePeriod(proto.Message):
+        r"""DenyMaintenancePeriod definition. Excepting emergencies, maintenance
+        will not be scheduled to start within this deny period. The
+        start_date must be less than the end_date.
+
+        Attributes:
+            start_date (google.type.date_pb2.Date):
+                Deny period start date. This can be:
+
+                -  A full date, with non-zero year, month and day values OR
+                -  A month and day value, with a zero year for recurring
+            end_date (google.type.date_pb2.Date):
+                Deny period end date. This can be:
+
+                -  A full date, with non-zero year, month and day values OR
+                -  A month and day value, with a zero year for recurring
+            time (google.type.timeofday_pb2.TimeOfDay):
+                Time in UTC when the deny period starts on start_date and
+                ends on end_date. This can be:
+
+                -  Full time OR
+                -  All zeros for 00:00:00 UTC
+        """
+
+        start_date: date_pb2.Date = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=date_pb2.Date,
+        )
+        end_date: date_pb2.Date = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=date_pb2.Date,
+        )
+        time: timeofday_pb2.TimeOfDay = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=timeofday_pb2.TimeOfDay,
+        )
+
     maintenance_windows: MutableSequence[MaintenanceWindow] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=MaintenanceWindow,
+    )
+    deny_maintenance_periods: MutableSequence[
+        DenyMaintenancePeriod
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=DenyMaintenancePeriod,
     )
 
 
@@ -857,8 +917,8 @@ class Cluster(proto.Message):
             cluster, generated for a specific rollout if a
             maintenance window is set.
         gemini_config (google.cloud.alloydb_v1beta.types.GeminiClusterConfig):
-            Optional. Configuration parameters related to
-            the Gemini in Databases add-on.
+            Optional. Deprecated and unused. This field
+            will be removed in the near future.
         subscription_type (google.cloud.alloydb_v1beta.types.SubscriptionType):
             Optional. Subscription type of the cluster.
         trial_metadata (google.cloud.alloydb_v1beta.types.Cluster.TrialMetadata):
@@ -871,6 +931,13 @@ class Cluster(proto.Message):
 
                "123/environment": "production",
                "123/costCenter": "marketing".
+        service_account_email (str):
+            Output only. AlloyDB per-cluster service
+            agent email. This service account is created
+            per-cluster per-project, and is different from
+            that of the primary service agent which is
+            created per-project. The service account naming
+            format is subject to change.
     """
 
     class State(proto.Enum):
@@ -1235,6 +1302,10 @@ class Cluster(proto.Message):
         proto.STRING,
         number=41,
     )
+    service_account_email: str = proto.Field(
+        proto.STRING,
+        number=46,
+    )
 
 
 class Instance(proto.Message):
@@ -1371,11 +1442,23 @@ class Instance(proto.Message):
             Optional. Instance-level network
             configuration.
         gemini_config (google.cloud.alloydb_v1beta.types.GeminiInstanceConfig):
-            Optional. Configuration parameters related to
-            the Gemini in Databases add-on.
+            Optional. Deprecated and unused. This field
+            will be removed in the near future.
         outbound_public_ip_addresses (MutableSequence[str]):
             Output only. All outbound public IP addresses
             configured for the instance.
+        activation_policy (google.cloud.alloydb_v1beta.types.Instance.ActivationPolicy):
+            Optional. Specifies whether an instance needs to spin up.
+            Once the instance is active, the activation policy can be
+            updated to the ``NEVER`` to stop the instance. Likewise, the
+            activation policy can be updated to ``ALWAYS`` to start the
+            instance. There are restrictions around when an instance
+            can/cannot be activated (for example, a read pool instance
+            should be stopped before stopping primary etc.). Please
+            refer to the API documentation for more details.
+        connection_pool_config (google.cloud.alloydb_v1beta.types.Instance.ConnectionPoolConfig):
+            Optional. The configuration for Managed
+            Connection Pool (MCP).
         gca_config (google.cloud.alloydb_v1beta.types.GCAInstanceConfig):
             Output only. Configuration parameters related
             to Gemini Cloud Assist.
@@ -1469,6 +1552,21 @@ class Instance(proto.Message):
         AVAILABILITY_TYPE_UNSPECIFIED = 0
         ZONAL = 1
         REGIONAL = 2
+
+    class ActivationPolicy(proto.Enum):
+        r"""Specifies whether an instance needs to spin up.
+
+        Values:
+            ACTIVATION_POLICY_UNSPECIFIED (0):
+                The policy is not specified.
+            ALWAYS (1):
+                The instance is running.
+            NEVER (2):
+                The instance is not running.
+        """
+        ACTIVATION_POLICY_UNSPECIFIED = 0
+        ALWAYS = 1
+        NEVER = 2
 
     class MachineConfig(proto.Message):
         r"""MachineConfig describes the configuration of a machine.
@@ -1642,6 +1740,11 @@ class Instance(proto.Message):
                 If not set, default value is "off".
 
                 This field is a member of `oneof`_ ``_track_client_address``.
+            assistive_experiences_enabled (bool):
+                Whether assistive experiences are enabled for
+                this AlloyDB instance.
+
+                This field is a member of `oneof`_ ``_assistive_experiences_enabled``.
         """
 
         enabled: bool = proto.Field(
@@ -1687,6 +1790,11 @@ class Instance(proto.Message):
         track_client_address: bool = proto.Field(
             proto.BOOL,
             number=9,
+            optional=True,
+        )
+        assistive_experiences_enabled: bool = proto.Field(
+            proto.BOOL,
+            number=10,
             optional=True,
         )
 
@@ -1795,11 +1903,31 @@ class Instance(proto.Message):
                 Output only. The IP address of the PSC
                 service automation endpoint.
             status (str):
-                Output only. The status of the PSC service
-                automation connection.
+                Output only. The status of the PSC service automation
+                connection. Possible values: "STATE_UNSPECIFIED" - An
+                invalid state as the default case. "ACTIVE" - The connection
+                has been created successfully. "FAILED" - The connection is
+                not functional since some resources on the connection fail
+                to be created. "CREATING" - The connection is being created.
+                "DELETING" - The connection is being deleted.
+                "CREATE_REPAIRING" - The connection is being repaired to
+                complete creation. "DELETE_REPAIRING" - The connection is
+                being repaired to complete deletion.
             consumer_network_status (str):
-                Output only. The status of the service
-                connection policy.
+                Output only. The status of the service connection policy.
+                Possible values: "STATE_UNSPECIFIED" - Default state, when
+                Connection Map is created initially. "VALID" - Set when
+                policy and map configuration is valid, and their matching
+                can lead to allowing creation of PSC Connections subject to
+                other constraints like connections limit.
+                "CONNECTION_POLICY_MISSING" - No Service Connection Policy
+                found for this network and Service Class
+                "POLICY_LIMIT_REACHED" - Service Connection Policy limit
+                reached for this network and Service Class
+                "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" - The consumer
+                instance project is not in
+                AllowedGoogleProducersResourceHierarchyLevels of the
+                matching ServiceConnectionPolicy.
         """
 
         consumer_project: str = proto.Field(
@@ -1893,6 +2021,23 @@ class Instance(proto.Message):
                 Optional. Enabling an outbound public IP
                 address to support a database server sending
                 requests out into the internet.
+            network (str):
+                Output only. The resource link for the VPC network in which
+                instance resources are created and from which they are
+                accessible via Private IP. This will be the same value as
+                the parent cluster's network. It is specified in the form:
+                //
+                ``projects/{project_number}/global/networks/{network_id}``.
+            allocated_ip_range_override (str):
+                Optional. Name of the allocated IP range for the private IP
+                AlloyDB instance, for example:
+                "google-managed-services-default". If set, the instance IPs
+                will be created from this allocated range and will override
+                the IP range used by the parent cluster. The range name must
+                comply with `RFC
+                1035 <http://datatracker.ietf.org/doc/html/rfc1035>`__.
+                Specifically, the name must be 1-63 characters long and
+                match the regular expression `a-z <[-a-z0-9]*[a-z0-9]>`__?.
         """
 
         class AuthorizedNetwork(proto.Message):
@@ -1924,6 +2069,54 @@ class Instance(proto.Message):
         enable_outbound_public_ip: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        network: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        allocated_ip_range_override: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
+    class ConnectionPoolConfig(proto.Message):
+        r"""Configuration for Managed Connection Pool (MCP).
+
+        Attributes:
+            enabled (bool):
+                Optional. Whether to enable Managed
+                Connection Pool (MCP).
+            flags (MutableMapping[str, str]):
+                Optional. Connection Pool flags, as a list of
+                "key": "value" pairs.
+        """
+
+        class PoolMode(proto.Enum):
+            r"""The pool mode. Defaults to ``POOL_MODE_TRANSACTION``.
+
+            Values:
+                POOL_MODE_UNSPECIFIED (0):
+                    The pool mode is not specified. Defaults to
+                    ``POOL_MODE_TRANSACTION``.
+                POOL_MODE_SESSION (1):
+                    Server is released back to pool after a
+                    client disconnects.
+                POOL_MODE_TRANSACTION (2):
+                    Server is released back to pool after a
+                    transaction finishes.
+            """
+            POOL_MODE_UNSPECIFIED = 0
+            POOL_MODE_SESSION = 1
+            POOL_MODE_TRANSACTION = 2
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=12,
+        )
+        flags: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=13,
         )
 
     name: str = proto.Field(
@@ -2066,6 +2259,16 @@ class Instance(proto.Message):
         proto.STRING,
         number=34,
     )
+    activation_policy: ActivationPolicy = proto.Field(
+        proto.ENUM,
+        number=35,
+        enum=ActivationPolicy,
+    )
+    connection_pool_config: ConnectionPoolConfig = proto.Field(
+        proto.MESSAGE,
+        number=37,
+        message=ConnectionPoolConfig,
+    )
     gca_config: gemini.GCAInstanceConfig = proto.Field(
         proto.MESSAGE,
         number=38,
@@ -2158,8 +2361,15 @@ class Backup(proto.Message):
             Output only. Create time stamp
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Update time stamp
+
+            Users should not infer any meaning from this
+            field. Its value is generally unrelated to the
+            timing of the backup creation operation.
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Delete time stamp
+        create_completion_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Timestamp when the resource
+            finished being created.
         labels (MutableMapping[str, str]):
             Labels as key value pairs
         state (google.cloud.alloydb_v1beta.types.Backup.State):
@@ -2334,6 +2544,11 @@ class Backup(proto.Message):
     delete_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=15,
+        message=timestamp_pb2.Timestamp,
+    )
+    create_completion_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=26,
         message=timestamp_pb2.Timestamp,
     )
     labels: MutableMapping[str, str] = proto.MapField(

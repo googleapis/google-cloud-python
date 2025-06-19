@@ -69,6 +69,7 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
 
@@ -1672,6 +1673,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             reconciling=True,
             satisfies_pzs=True,
             subscription_type=resources.SubscriptionType.STANDARD,
+            service_account_email="service_account_email_value",
         )
         response = client.get_cluster(request)
 
@@ -1694,6 +1696,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.reconciling is True
     assert response.satisfies_pzs is True
     assert response.subscription_type == resources.SubscriptionType.STANDARD
+    assert response.service_account_email == "service_account_email_value"
 
 
 def test_get_cluster_non_empty_request_with_auto_populated_field():
@@ -1830,6 +1833,7 @@ async def test_get_cluster_async(
                 reconciling=True,
                 satisfies_pzs=True,
                 subscription_type=resources.SubscriptionType.STANDARD,
+                service_account_email="service_account_email_value",
             )
         )
         response = await client.get_cluster(request)
@@ -1853,6 +1857,7 @@ async def test_get_cluster_async(
     assert response.reconciling is True
     assert response.satisfies_pzs is True
     assert response.subscription_type == resources.SubscriptionType.STANDARD
+    assert response.service_account_email == "service_account_email_value"
 
 
 @pytest.mark.asyncio
@@ -5993,6 +5998,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             etag="etag_value",
             satisfies_pzs=True,
             outbound_public_ip_addresses=["outbound_public_ip_addresses_value"],
+            activation_policy=resources.Instance.ActivationPolicy.ALWAYS,
         )
         response = client.get_instance(request)
 
@@ -6019,6 +6025,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.outbound_public_ip_addresses == [
         "outbound_public_ip_addresses_value"
     ]
+    assert response.activation_policy == resources.Instance.ActivationPolicy.ALWAYS
 
 
 def test_get_instance_non_empty_request_with_auto_populated_field():
@@ -6157,6 +6164,7 @@ async def test_get_instance_async(
                 etag="etag_value",
                 satisfies_pzs=True,
                 outbound_public_ip_addresses=["outbound_public_ip_addresses_value"],
+                activation_policy=resources.Instance.ActivationPolicy.ALWAYS,
             )
         )
         response = await client.get_instance(request)
@@ -6184,6 +6192,7 @@ async def test_get_instance_async(
     assert response.outbound_public_ip_addresses == [
         "outbound_public_ip_addresses_value"
     ]
+    assert response.activation_policy == resources.Instance.ActivationPolicy.ALWAYS
 
 
 @pytest.mark.asyncio
@@ -23394,6 +23403,7 @@ async def test_get_cluster_empty_call_grpc_asyncio():
                 reconciling=True,
                 satisfies_pzs=True,
                 subscription_type=resources.SubscriptionType.STANDARD,
+                service_account_email="service_account_email_value",
             )
         )
         await client.get_cluster(request=None)
@@ -23715,6 +23725,7 @@ async def test_get_instance_empty_call_grpc_asyncio():
                 etag="etag_value",
                 satisfies_pzs=True,
                 outbound_public_ip_addresses=["outbound_public_ip_addresses_value"],
+                activation_policy=resources.Instance.ActivationPolicy.ALWAYS,
             )
         )
         await client.get_instance(request=None)
@@ -24553,6 +24564,7 @@ def test_get_cluster_rest_call_success(request_type):
             reconciling=True,
             satisfies_pzs=True,
             subscription_type=resources.SubscriptionType.STANDARD,
+            service_account_email="service_account_email_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -24580,6 +24592,7 @@ def test_get_cluster_rest_call_success(request_type):
     assert response.reconciling is True
     assert response.satisfies_pzs is True
     assert response.subscription_type == resources.SubscriptionType.STANDARD
+    assert response.service_account_email == "service_account_email_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -24757,7 +24770,14 @@ def test_create_cluster_rest_call_success(request_type):
         "satisfies_pzs": True,
         "psc_config": {"psc_enabled": True, "service_owned_project_number": 2987},
         "maintenance_update_policy": {
-            "maintenance_windows": [{"day": 1, "start_time": {}}]
+            "maintenance_windows": [{"day": 1, "start_time": {}}],
+            "deny_maintenance_periods": [
+                {
+                    "start_date": {"year": 433, "month": 550, "day": 318},
+                    "end_date": {},
+                    "time": {},
+                }
+            ],
         },
         "maintenance_schedule": {"start_time": {}},
         "gemini_config": {"entitled": True},
@@ -24769,6 +24789,7 @@ def test_create_cluster_rest_call_success(request_type):
             "grace_end_time": {},
         },
         "tags": {},
+        "service_account_email": "service_account_email_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25038,7 +25059,14 @@ def test_update_cluster_rest_call_success(request_type):
         "satisfies_pzs": True,
         "psc_config": {"psc_enabled": True, "service_owned_project_number": 2987},
         "maintenance_update_policy": {
-            "maintenance_windows": [{"day": 1, "start_time": {}}]
+            "maintenance_windows": [{"day": 1, "start_time": {}}],
+            "deny_maintenance_periods": [
+                {
+                    "start_date": {"year": 433, "month": 550, "day": 318},
+                    "end_date": {},
+                    "time": {},
+                }
+            ],
         },
         "maintenance_schedule": {"start_time": {}},
         "gemini_config": {"entitled": True},
@@ -25050,6 +25078,7 @@ def test_update_cluster_rest_call_success(request_type):
             "grace_end_time": {},
         },
         "tags": {},
+        "service_account_email": "service_account_email_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26154,7 +26183,14 @@ def test_create_secondary_cluster_rest_call_success(request_type):
         "satisfies_pzs": True,
         "psc_config": {"psc_enabled": True, "service_owned_project_number": 2987},
         "maintenance_update_policy": {
-            "maintenance_windows": [{"day": 1, "start_time": {}}]
+            "maintenance_windows": [{"day": 1, "start_time": {}}],
+            "deny_maintenance_periods": [
+                {
+                    "start_date": {"year": 433, "month": 550, "day": 318},
+                    "end_date": {},
+                    "time": {},
+                }
+            ],
         },
         "maintenance_schedule": {"start_time": {}},
         "gemini_config": {"entitled": True},
@@ -26166,6 +26202,7 @@ def test_create_secondary_cluster_rest_call_success(request_type):
             "grace_end_time": {},
         },
         "tags": {},
+        "service_account_email": "service_account_email_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26506,6 +26543,7 @@ def test_get_instance_rest_call_success(request_type):
             etag="etag_value",
             satisfies_pzs=True,
             outbound_public_ip_addresses=["outbound_public_ip_addresses_value"],
+            activation_policy=resources.Instance.ActivationPolicy.ALWAYS,
         )
 
         # Wrap the value into a proper Response obj
@@ -26537,6 +26575,7 @@ def test_get_instance_rest_call_success(request_type):
     assert response.outbound_public_ip_addresses == [
         "outbound_public_ip_addresses_value"
     ]
+    assert response.activation_policy == resources.Instance.ActivationPolicy.ALWAYS
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -26673,6 +26712,7 @@ def test_create_instance_rest_call_success(request_type):
             "query_plans_per_minute": 2378,
             "track_active_queries": True,
             "track_client_address": True,
+            "assistive_experiences_enabled": True,
         },
         "read_pool_config": {"node_count": 1070},
         "ip_address": "ip_address_value",
@@ -26710,12 +26750,16 @@ def test_create_instance_rest_call_success(request_type):
             "authorized_external_networks": [{"cidr_range": "cidr_range_value"}],
             "enable_public_ip": True,
             "enable_outbound_public_ip": True,
+            "network": "network_value",
+            "allocated_ip_range_override": "allocated_ip_range_override_value",
         },
         "gemini_config": {"entitled": True},
         "outbound_public_ip_addresses": [
             "outbound_public_ip_addresses_value1",
             "outbound_public_ip_addresses_value2",
         ],
+        "activation_policy": 1,
+        "connection_pool_config": {"enabled": True, "flags": {}},
         "gca_config": {"gca_entitlement": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -26943,6 +26987,7 @@ def test_create_secondary_instance_rest_call_success(request_type):
             "query_plans_per_minute": 2378,
             "track_active_queries": True,
             "track_client_address": True,
+            "assistive_experiences_enabled": True,
         },
         "read_pool_config": {"node_count": 1070},
         "ip_address": "ip_address_value",
@@ -26980,12 +27025,16 @@ def test_create_secondary_instance_rest_call_success(request_type):
             "authorized_external_networks": [{"cidr_range": "cidr_range_value"}],
             "enable_public_ip": True,
             "enable_outbound_public_ip": True,
+            "network": "network_value",
+            "allocated_ip_range_override": "allocated_ip_range_override_value",
         },
         "gemini_config": {"entitled": True},
         "outbound_public_ip_addresses": [
             "outbound_public_ip_addresses_value1",
             "outbound_public_ip_addresses_value2",
         ],
+        "activation_policy": 1,
+        "connection_pool_config": {"enabled": True, "flags": {}},
         "gca_config": {"gca_entitlement": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -27224,6 +27273,7 @@ def test_batch_create_instances_rest_call_success(request_type):
                         "query_plans_per_minute": 2378,
                         "track_active_queries": True,
                         "track_client_address": True,
+                        "assistive_experiences_enabled": True,
                     },
                     "read_pool_config": {"node_count": 1070},
                     "ip_address": "ip_address_value",
@@ -27265,12 +27315,16 @@ def test_batch_create_instances_rest_call_success(request_type):
                         ],
                         "enable_public_ip": True,
                         "enable_outbound_public_ip": True,
+                        "network": "network_value",
+                        "allocated_ip_range_override": "allocated_ip_range_override_value",
                     },
                     "gemini_config": {"entitled": True},
                     "outbound_public_ip_addresses": [
                         "outbound_public_ip_addresses_value1",
                         "outbound_public_ip_addresses_value2",
                     ],
+                    "activation_policy": 1,
+                    "connection_pool_config": {"enabled": True, "flags": {}},
                     "gca_config": {"gca_entitlement": 1},
                 },
                 "request_id": "request_id_value",
@@ -27512,6 +27566,7 @@ def test_update_instance_rest_call_success(request_type):
             "query_plans_per_minute": 2378,
             "track_active_queries": True,
             "track_client_address": True,
+            "assistive_experiences_enabled": True,
         },
         "read_pool_config": {"node_count": 1070},
         "ip_address": "ip_address_value",
@@ -27549,12 +27604,16 @@ def test_update_instance_rest_call_success(request_type):
             "authorized_external_networks": [{"cidr_range": "cidr_range_value"}],
             "enable_public_ip": True,
             "enable_outbound_public_ip": True,
+            "network": "network_value",
+            "allocated_ip_range_override": "allocated_ip_range_override_value",
         },
         "gemini_config": {"entitled": True},
         "outbound_public_ip_addresses": [
             "outbound_public_ip_addresses_value1",
             "outbound_public_ip_addresses_value2",
         ],
+        "activation_policy": 1,
+        "connection_pool_config": {"enabled": True, "flags": {}},
         "gca_config": {"gca_entitlement": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -28644,6 +28703,7 @@ def test_create_backup_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "delete_time": {},
+        "create_completion_time": {},
         "labels": {},
         "state": 1,
         "type_": 1,
@@ -28862,6 +28922,7 @@ def test_update_backup_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "delete_time": {},
+        "create_completion_time": {},
         "labels": {},
         "state": 1,
         "type_": 1,
