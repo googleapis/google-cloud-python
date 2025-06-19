@@ -308,6 +308,7 @@ __protobuf__ = proto.module(
         "DataSourceType",
         "FileClusterType",
         "ProcessingLocation",
+        "SaveToGcsFindingsOutput",
     },
 )
 
@@ -9729,7 +9730,7 @@ class DiscoveryCloudStorageFilter(proto.Message):
 
 
 class FileStoreCollection(proto.Message):
-    r"""Match file stores (e.g. buckets) using regex filters.
+    r"""Match file stores (e.g. buckets) using filters.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -14363,6 +14364,23 @@ class ProcessingLocation(proto.Message):
         proto.MESSAGE,
         number=1,
         message=ImageFallbackLocation,
+    )
+
+
+class SaveToGcsFindingsOutput(proto.Message):
+    r"""Collection of findings saved to a Cloud Storage bucket. This
+    is used as the proto schema for textproto files created when
+    specifying a cloud storage path to save inspection findings.
+
+    Attributes:
+        findings (MutableSequence[google.cloud.dlp_v2.types.Finding]):
+            List of findings.
+    """
+
+    findings: MutableSequence["Finding"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Finding",
     )
 
 
