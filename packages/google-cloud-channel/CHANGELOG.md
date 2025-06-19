@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.22.2...google-cloud-channel-v1.23.0) (2025-06-19)
+
+
+### Features
+
+* A new enum `CustomerAttestationState` is added ([92713ab](https://github.com/googleapis/google-cloud-python/commit/92713ab86a4dbbd7112176f7985b5fd3e82d1ca9))
+* A new field `customer_attestation_state` is added to message `.google.cloud.channel.v1.Customer` ([92713ab](https://github.com/googleapis/google-cloud-python/commit/92713ab86a4dbbd7112176f7985b5fd3e82d1ca9))
+
 ## [1.22.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.22.1...google-cloud-channel-v1.22.2) (2025-06-11)
 
 
