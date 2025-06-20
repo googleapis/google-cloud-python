@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.13.0...v1.13.1) (2025-06-20)
+
+
+### Bug Fixes
+
+* Support retrieval of cross-schema foreign keys ([ef07a1f](https://github.com/googleapis/python-spanner-sqlalchemy/commit/ef07a1f55736eae9751f85fef66599fdfa21bcd4)), closes [#638](https://github.com/googleapis/python-spanner-sqlalchemy/issues/638)
+
 ## [1.13.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.12.0...v1.13.0) (2025-06-05)
 
 
