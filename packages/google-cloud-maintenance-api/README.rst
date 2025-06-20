@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Maintenance API
+=================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Maintenance API`_: The Maintenance API provides a centralized view of planned disruptive maintenance events across supported Google Cloud products. It offers users visibility into upcoming, ongoing, and completed maintenance, along with controls to manage certain maintenance activities, such as mainteance windows, rescheduling, and on-demand updates.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-maintenance-api/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-maintenance-api.svg
    :target: https://pypi.org/project/google-cloud-maintenance-api/
-.. _: 
+.. _Maintenance API: https://cloud.google.com/unified-maintenance/docs/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-maintenance-api/latest/summary_overview
-.. _Product Documentation:  
+.. _Product Documentation:  https://cloud.google.com/unified-maintenance/docs/overview
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Maintenance API.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Maintenance API.:  https://cloud.google.com/unified-maintenance/docs/overview
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,14 +97,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Maintenance API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Maintenance API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Maintenance API Product documentation:  https://cloud.google.com/unified-maintenance/docs/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
