@@ -18,12 +18,14 @@ from sqlalchemy import (
     Table,
     Column,
     Integer,
+    ForeignKey,
     PrimaryKeyConstraint,
     String,
     Index,
     MetaData,
     Boolean,
     BIGINT,
+    inspect,
     select,
     update,
     delete,
@@ -59,6 +61,16 @@ class TestBasics(fixtures.TablesTest):
             Column("ID", Integer, primary_key=True),
             Column("name", String(20)),
         )
+        # Add a foreign key example.
+        Table(
+            "number_colors",
+            metadata,
+            Column("ID", Integer, primary_key=True),
+            Column(
+                "number_id", Integer, ForeignKey("numbers.number", name="number_fk")
+            ),
+            Column("color", String(20)),
+        )
 
         with cls.bind.begin() as conn:
             conn.execute(text("CREATE SCHEMA IF NOT EXISTS schema"))
@@ -67,6 +79,19 @@ class TestBasics(fixtures.TablesTest):
             metadata,
             Column("ID", Integer, primary_key=True),
             Column("name", String(20)),
+            schema="schema",
+        )
+        # Add a foreign key example which crosses schema.
+        Table(
+            "number_colors",
+            metadata,
+            Column("ID", Integer, primary_key=True),
+            Column(
+                "number_id",
+                Integer,
+                ForeignKey("numbers.number", name="cross_schema_number_fk"),
+            ),
+            Column("color", String(20)),
             schema="schema",
         )
 
@@ -88,7 +113,7 @@ class TestBasics(fixtures.TablesTest):
         engine = connection.engine
         meta: MetaData = MetaData()
         meta.reflect(bind=engine)
-        eq_(2, len(meta.tables))
+        eq_(3, len(meta.tables))
         table = meta.tables["numbers"]
         eq_(5, len(table.columns))
         eq_("number", table.columns[0].name)
@@ -238,3 +263,40 @@ class TestBasics(fixtures.TablesTest):
 
         eq_(len(inserted_rows), len(selected_rows))
         eq_(set(inserted_rows), set(selected_rows))
+
+    def test_cross_schema_fk_lookups(self, connection):
+        """Ensures we introspect FKs within & across schema."""
+
+        engine = connection.engine
+
+        insp = inspect(engine)
+        eq_(
+            {
+                (None, "number_colors"): [
+                    {
+                        "name": "number_fk",
+                        "referred_table": "numbers",
+                        "referred_schema": None,
+                        "referred_columns": ["number"],
+                        "constrained_columns": ["number_id"],
+                    }
+                ]
+            },
+            insp.get_multi_foreign_keys(filter_names=["number_colors"]),
+        )
+        eq_(
+            {
+                ("schema", "number_colors"): [
+                    {
+                        "name": "cross_schema_number_fk",
+                        "referred_table": "numbers",
+                        "referred_schema": None,
+                        "referred_columns": ["number"],
+                        "constrained_columns": ["number_id"],
+                    }
+                ]
+            },
+            insp.get_multi_foreign_keys(
+                filter_names=["number_colors"], schema="schema"
+            ),
+        )

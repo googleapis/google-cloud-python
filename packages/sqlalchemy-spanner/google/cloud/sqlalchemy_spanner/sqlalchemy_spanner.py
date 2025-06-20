@@ -607,8 +607,17 @@ class SpannerDDLCompiler(DDLCompiler):
         constrs = ""
         for cons in drop_table.element.constraints:
             if isinstance(cons, ForeignKeyConstraint) and cons.name:
+                effective_schema = self.preparer.schema_for_object(drop_table.element)
+                if effective_schema:
+                    table = (
+                        f"{self.preparer.quote_schema(effective_schema)}"
+                        "."
+                        f"{self.preparer.quote(drop_table.element.name)}"
+                    )
+                else:
+                    table = self.preparer.quote(drop_table.element.name)
                 constrs += "ALTER TABLE {table} DROP CONSTRAINT {constr};".format(
-                    table=drop_table.element.name,
+                    table=table,
                     constr=self.preparer.quote(cons.name),
                 )
 
@@ -1472,10 +1481,12 @@ class SpannerDialect(DefaultDialect):
             )
             FROM information_schema.table_constraints AS tc
             JOIN information_schema.constraint_column_usage AS ccu
-                USING (table_catalog, table_schema, constraint_name)
+                ON ccu.table_catalog = tc.table_catalog
+                and ccu.constraint_schema = tc.table_schema
+                and ccu.constraint_name = tc.constraint_name
             JOIN information_schema.constraint_table_usage AS ctu
                 ON ctu.table_catalog = tc.table_catalog
-                and ctu.table_schema = tc.table_schema
+                and ctu.constraint_schema = tc.table_schema
                 and ctu.constraint_name = tc.constraint_name
             JOIN information_schema.key_column_usage AS kcu
                 ON kcu.table_catalog = tc.table_catalog
