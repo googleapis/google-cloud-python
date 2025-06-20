@@ -202,6 +202,30 @@ class ParameterManagerClient(metaclass=ParameterManagerClientMeta):
         return self._transport
 
     @staticmethod
+    def crypto_key_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+    ) -> str:
+        """Returns a fully-qualified crypto_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+        )
+
+    @staticmethod
+    def parse_crypto_key_path(path: str) -> Dict[str, str]:
+        """Parses a crypto_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def parameter_path(
         project: str,
         location: str,

@@ -78,6 +78,8 @@ class ParameterManagerAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ParameterManagerClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ParameterManagerClient._DEFAULT_UNIVERSE
 
+    crypto_key_path = staticmethod(ParameterManagerClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(ParameterManagerClient.parse_crypto_key_path)
     parameter_path = staticmethod(ParameterManagerClient.parameter_path)
     parse_parameter_path = staticmethod(ParameterManagerClient.parse_parameter_path)
     parameter_version_path = staticmethod(ParameterManagerClient.parameter_version_path)
