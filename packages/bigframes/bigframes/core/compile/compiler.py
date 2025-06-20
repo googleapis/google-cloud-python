@@ -65,6 +65,7 @@ def compile_sql(request: configs.CompileRequest) -> configs.CompileResult:
     ordering: Optional[bf_ordering.RowOrdering] = result_node.order_by
     result_node = dataclasses.replace(result_node, order_by=None)
     result_node = cast(nodes.ResultNode, rewrites.column_pruning(result_node))
+    result_node = cast(nodes.ResultNode, rewrites.defer_selection(result_node))
     sql = compile_result_node(result_node)
     # Return the ordering iff no extra columns are needed to define the row order
     if ordering is not None:

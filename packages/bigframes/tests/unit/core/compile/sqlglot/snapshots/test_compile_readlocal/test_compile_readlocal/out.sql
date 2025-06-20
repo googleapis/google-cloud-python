@@ -155,42 +155,23 @@ WITH `bfcte_0` AS (
     CAST(NULL AS TIMESTAMP),
     8
   )])
-), `bfcte_1` AS (
-  SELECT
-    `bfcol_0` AS `bfcol_16`,
-    `bfcol_1` AS `bfcol_17`,
-    `bfcol_2` AS `bfcol_18`,
-    `bfcol_3` AS `bfcol_19`,
-    `bfcol_4` AS `bfcol_20`,
-    `bfcol_5` AS `bfcol_21`,
-    `bfcol_6` AS `bfcol_22`,
-    `bfcol_7` AS `bfcol_23`,
-    `bfcol_8` AS `bfcol_24`,
-    `bfcol_9` AS `bfcol_25`,
-    `bfcol_10` AS `bfcol_26`,
-    `bfcol_11` AS `bfcol_27`,
-    `bfcol_12` AS `bfcol_28`,
-    `bfcol_13` AS `bfcol_29`,
-    `bfcol_14` AS `bfcol_30`,
-    `bfcol_15` AS `bfcol_31`
-  FROM `bfcte_0`
 )
 SELECT
-  `bfcol_16` AS `rowindex`,
-  `bfcol_17` AS `bool_col`,
-  `bfcol_18` AS `bytes_col`,
-  `bfcol_19` AS `date_col`,
-  `bfcol_20` AS `datetime_col`,
-  `bfcol_21` AS `geography_col`,
-  `bfcol_22` AS `int64_col`,
-  `bfcol_23` AS `int64_too`,
-  `bfcol_24` AS `numeric_col`,
-  `bfcol_25` AS `float64_col`,
-  `bfcol_26` AS `rowindex_1`,
-  `bfcol_27` AS `rowindex_2`,
-  `bfcol_28` AS `string_col`,
-  `bfcol_29` AS `time_col`,
-  `bfcol_30` AS `timestamp_col`
-FROM `bfcte_1`
+  `bfcol_0` AS `rowindex`,
+  `bfcol_1` AS `bool_col`,
+  `bfcol_2` AS `bytes_col`,
+  `bfcol_3` AS `date_col`,
+  `bfcol_4` AS `datetime_col`,
+  `bfcol_5` AS `geography_col`,
+  `bfcol_6` AS `int64_col`,
+  `bfcol_7` AS `int64_too`,
+  `bfcol_8` AS `numeric_col`,
+  `bfcol_9` AS `float64_col`,
+  `bfcol_10` AS `rowindex_1`,
+  `bfcol_11` AS `rowindex_2`,
+  `bfcol_12` AS `string_col`,
+  `bfcol_13` AS `time_col`,
+  `bfcol_14` AS `timestamp_col`
+FROM `bfcte_0`
 ORDER BY
-  `bfcol_31` ASC NULLS LAST
+  `bfcol_15` ASC NULLS LAST

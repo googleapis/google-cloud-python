@@ -18,16 +18,10 @@ WITH `bfcte_0` AS (
     ),
     1
   )])
-), `bfcte_1` AS (
-  SELECT
-    `bfcol_0` AS `bfcol_3`,
-    `bfcol_1` AS `bfcol_4`,
-    `bfcol_2` AS `bfcol_5`
-  FROM `bfcte_0`
 )
 SELECT
-  `bfcol_3` AS `id`,
-  `bfcol_4` AS `person`
-FROM `bfcte_1`
+  `bfcol_0` AS `id`,
+  `bfcol_1` AS `person`
+FROM `bfcte_0`
 ORDER BY
-  `bfcol_5` ASC NULLS LAST
+  `bfcol_2` ASC NULLS LAST

@@ -75,7 +75,7 @@ class AdditiveNode:
         ...
 
     @abc.abstractmethod
-    def replace_additive_base(self, BigFrameNode):
+    def replace_additive_base(self, BigFrameNode) -> BigFrameNode:
         ...
 
 
@@ -1568,6 +1568,10 @@ class ExplodeNode(UnaryNode):
     # Offsets are generated only if this is non-null
     offsets_col: Optional[identifiers.ColumnId] = None
 
+    def _validate(self):
+        for col in self.column_ids:
+            assert col.id in self.child.ids
+
     @property
     def row_preserving(self) -> bool:
         return False
@@ -1645,6 +1649,10 @@ class ResultNode(UnaryNode):
     order_by: Optional[RowOrdering] = None
     limit: Optional[int] = None
     # TODO: CTE definitions
+
+    def _validate(self):
+        for ref, name in self.output_cols:
+            assert ref.id in self.child.ids
 
     @property
     def node_defined_ids(self) -> Tuple[identifiers.ColumnId, ...]:

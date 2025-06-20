@@ -148,6 +148,12 @@ def label_to_identifier(label: typing.Hashable, strict: bool = False) -> str:
             # first character must be letter or underscore
             identifier = "_" + identifier
 
+    else:
+        # Even with flexible column names, there are constraints
+        # Convert illegal characters
+        # See: https://cloud.google.com/bigquery/docs/schemas#flexible-column-names
+        identifier = re.sub(r"[!\"$\(\)\*\,\./;\?@[\]^`{}~]", "_", identifier)
+
     # Except in special circumstances (true anonymous query results tables),
     # field names are not allowed to start with these (case-insensitive)
     # prefixes.

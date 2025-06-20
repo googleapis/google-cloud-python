@@ -125,7 +125,7 @@ class Select(abc.SQLSyntax):
         return "\n".join(text)
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class SelectExpression(abc.SQLSyntax):
     """This class represents `select_expression`."""
 
