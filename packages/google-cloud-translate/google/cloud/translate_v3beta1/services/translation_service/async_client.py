@@ -1009,10 +1009,11 @@ class TranslationServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target_language_codes (:class:`MutableSequence[str]`):
-                Required. The BCP-47 language code to
-                use for translation of the input
-                document. Specify up to 10 language
-                codes here.
+                Required. The BCP-47 language code to use for
+                translation of the input document. Specify up to 10
+                language codes here. Supported language codes are listed
+                in `Language
+                Support <https://cloud.google.com/translate/docs/languages>`__.
 
                 This corresponds to the ``target_language_codes`` field
                 on the ``request`` instance; if ``request`` is provided, this
