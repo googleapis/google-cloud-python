@@ -2030,6 +2030,15 @@ Libraries
 
 .. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#alpha-support
+===========================
+API Issue Tracker Directory
+===========================
+API                                | Issue Tracker
+----------------------------------|-------------------------------------------------
+BigQuery                          | https://issuetracker.google.com/issues/new?component=187143
+Cloud Storage                     | https://issuetracker.google.com/issues/new?component=187146
+Pub/Sub                           | https://issuetracker.google.com/issues/new?component=187203
+Translation API                   | https://issuetracker.google.com/issues/new?component=165319
 
 
 Example Applications
