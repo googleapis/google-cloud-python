@@ -24,6 +24,9 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf
 from google.protobuf import json_format
@@ -661,6 +664,177 @@ class TranslationServiceRestInterceptor:
         `post_translate_text_with_metadata`.
         """
         return response, metadata
+
+    def pre_get_location(
+        self,
+        request: locations_pb2.GetLocationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_get_location(
+        self, response: locations_pb2.Location
+    ) -> locations_pb2.Location:
+        """Post-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_locations(
+        self,
+        request: locations_pb2.ListLocationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_locations(
+        self, response: locations_pb2.ListLocationsResponse
+    ) -> locations_pb2.ListLocationsResponse:
+        """Post-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_cancel_operation(
+        self,
+        request: operations_pb2.CancelOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_cancel_operation(self, response: None) -> None:
+        """Post-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_operation(
+        self,
+        request: operations_pb2.DeleteOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_delete_operation(self, response: None) -> None:
+        """Post-rpc interceptor for delete_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_operation(
+        self,
+        request: operations_pb2.GetOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_get_operation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_operations(
+        self,
+        request: operations_pb2.ListOperationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_operations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_list_operations(
+        self, response: operations_pb2.ListOperationsResponse
+    ) -> operations_pb2.ListOperationsResponse:
+        """Post-rpc interceptor for list_operations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_wait_operation(
+        self,
+        request: operations_pb2.WaitOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for wait_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the TranslationService server.
+        """
+        return request, metadata
+
+    def post_wait_operation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for wait_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the TranslationService server but before
+        it is returned to user code.
+        """
+        return response
 
 
 @dataclasses.dataclass
@@ -2439,6 +2613,953 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TranslateText(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_location(self):
+        return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetLocation(
+        _BaseTranslationServiceRestTransport._BaseGetLocation,
+        TranslationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("TranslationServiceRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: locations_pb2.GetLocationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> locations_pb2.Location:
+            r"""Call the get location method over HTTP.
+
+            Args:
+                request (locations_pb2.GetLocationRequest):
+                    The request object for GetLocation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                locations_pb2.Location: Response from GetLocation method.
+            """
+
+            http_options = (
+                _BaseTranslationServiceRestTransport._BaseGetLocation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_location(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseTranslationServiceRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3beta1.TranslationServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TranslationServiceRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = locations_pb2.Location()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3beta1.TranslationServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def list_locations(self):
+        return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _ListLocations(
+        _BaseTranslationServiceRestTransport._BaseListLocations,
+        TranslationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("TranslationServiceRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: locations_pb2.ListLocationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> locations_pb2.ListLocationsResponse:
+            r"""Call the list locations method over HTTP.
+
+            Args:
+                request (locations_pb2.ListLocationsRequest):
+                    The request object for ListLocations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                locations_pb2.ListLocationsResponse: Response from ListLocations method.
+            """
+
+            http_options = (
+                _BaseTranslationServiceRestTransport._BaseListLocations._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_locations(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseTranslationServiceRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3beta1.TranslationServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TranslationServiceRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = locations_pb2.ListLocationsResponse()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3beta1.TranslationServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def cancel_operation(self):
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _CancelOperation(
+        _BaseTranslationServiceRestTransport._BaseCancelOperation,
+        TranslationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("TranslationServiceRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.CancelOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
+            r"""Call the cancel operation method over HTTP.
+
+            Args:
+                request (operations_pb2.CancelOperationRequest):
+                    The request object for CancelOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseTranslationServiceRestTransport._BaseCancelOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_cancel_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3beta1.TranslationServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TranslationServiceRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_cancel_operation(None)
+
+    @property
+    def delete_operation(self):
+        return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _DeleteOperation(
+        _BaseTranslationServiceRestTransport._BaseDeleteOperation,
+        TranslationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("TranslationServiceRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.DeleteOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
+            r"""Call the delete operation method over HTTP.
+
+            Args:
+                request (operations_pb2.DeleteOperationRequest):
+                    The request object for DeleteOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3beta1.TranslationServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TranslationServiceRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_delete_operation(None)
+
+    @property
+    def get_operation(self):
+        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetOperation(
+        _BaseTranslationServiceRestTransport._BaseGetOperation,
+        TranslationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("TranslationServiceRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.GetOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the get operation method over HTTP.
+
+            Args:
+                request (operations_pb2.GetOperationRequest):
+                    The request object for GetOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                operations_pb2.Operation: Response from GetOperation method.
+            """
+
+            http_options = (
+                _BaseTranslationServiceRestTransport._BaseGetOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_operation(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseTranslationServiceRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3beta1.TranslationServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TranslationServiceRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = operations_pb2.Operation()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3beta1.TranslationServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def list_operations(self):
+        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _ListOperations(
+        _BaseTranslationServiceRestTransport._BaseListOperations,
+        TranslationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("TranslationServiceRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.ListOperationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.ListOperationsResponse:
+            r"""Call the list operations method over HTTP.
+
+            Args:
+                request (operations_pb2.ListOperationsRequest):
+                    The request object for ListOperations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                operations_pb2.ListOperationsResponse: Response from ListOperations method.
+            """
+
+            http_options = (
+                _BaseTranslationServiceRestTransport._BaseListOperations._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_operations(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseTranslationServiceRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3beta1.TranslationServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TranslationServiceRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = operations_pb2.ListOperationsResponse()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3beta1.TranslationServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def wait_operation(self):
+        return self._WaitOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _WaitOperation(
+        _BaseTranslationServiceRestTransport._BaseWaitOperation,
+        TranslationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("TranslationServiceRestTransport.WaitOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.WaitOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the wait operation method over HTTP.
+
+            Args:
+                request (operations_pb2.WaitOperationRequest):
+                    The request object for WaitOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                operations_pb2.Operation: Response from WaitOperation method.
+            """
+
+            http_options = (
+                _BaseTranslationServiceRestTransport._BaseWaitOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_wait_operation(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3beta1.TranslationServiceClient.WaitOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "WaitOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = TranslationServiceRestTransport._WaitOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = operations_pb2.Operation()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_wait_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3beta1.TranslationServiceAsyncClient.WaitOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3beta1.TranslationService",
+                        "rpcName": "WaitOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
 
     @property
     def kind(self) -> str:

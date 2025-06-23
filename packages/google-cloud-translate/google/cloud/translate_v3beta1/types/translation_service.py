@@ -65,9 +65,8 @@ __protobuf__ = proto.module(
 
 
 class TranslateTextGlossaryConfig(proto.Message):
-    r"""-----------------------------------------------------------------------------
-    Configures which glossary should be used for a specific target
-    language, and defines options for applying that glossary.
+    r"""Configures which glossary should be used for a specific
+    target language, and defines options for applying that glossary.
 
     Attributes:
         glossary (str):
