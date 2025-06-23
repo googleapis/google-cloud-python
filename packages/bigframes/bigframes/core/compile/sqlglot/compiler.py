@@ -212,6 +212,13 @@ class SQLGlotCompiler:
         return child.project(projected_cols)
 
     @_compile_node.register
+    def compile_filter(
+        self, node: nodes.FilterNode, child: ir.SQLGlotIR
+    ) -> ir.SQLGlotIR:
+        condition = scalar_compiler.compile_scalar_expression(node.predicate)
+        return child.filter(condition)
+
+    @_compile_node.register
     def compile_concat(
         self, node: nodes.ConcatNode, *children: ir.SQLGlotIR
     ) -> ir.SQLGlotIR:

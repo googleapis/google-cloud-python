@@ -250,6 +250,16 @@ class SQLGlotIR:
         new_expr = self._encapsulate_as_cte().select(*projected_cols_expr, append=True)
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
+    def filter(
+        self,
+        condition: sge.Expression,
+    ) -> SQLGlotIR:
+        """Filters the query with the given condition."""
+        new_expr = self._encapsulate_as_cte()
+        return SQLGlotIR(
+            expr=new_expr.where(condition, append=False), uid_gen=self.uid_gen
+        )
+
     def insert(
         self,
         destination: bigquery.TableReference,

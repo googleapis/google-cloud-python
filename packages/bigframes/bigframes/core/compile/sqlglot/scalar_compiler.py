@@ -99,3 +99,10 @@ def compile_addop(op: ops.AddOp, left: TypedExpr, right: TypedExpr) -> sge.Expre
 
     # Numerical addition
     return sge.Add(this=left.expr, expression=right.expr)
+
+
+def compile_ge(
+    op: ops.ge_op, left: TypedExpr, right: TypedExpr  # type: ignore[valid-type]
+) -> sge.Expression:
+
+    return sge.GTE(this=left.expr, expression=right.expr)
