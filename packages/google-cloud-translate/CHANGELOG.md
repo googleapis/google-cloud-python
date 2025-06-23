@@ -5,6 +5,21 @@
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
 
+## [3.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.20.3...google-cloud-translate-v3.21.0) (2025-06-23)
+
+
+### Features
+
+* add google.cloud.location.Locations API ([b1831f5](https://github.com/googleapis/google-cloud-python/commit/b1831f5b40061c3939bcee7274cf70a7348a7fea))
+* add google.iam.v1.IAMPolicy API ([b1831f5](https://github.com/googleapis/google-cloud-python/commit/b1831f5b40061c3939bcee7274cf70a7348a7fea))
+* add google.longrunning.Operations API ([b1831f5](https://github.com/googleapis/google-cloud-python/commit/b1831f5b40061c3939bcee7274cf70a7348a7fea))
+
+
+### Documentation
+
+* minor formatting ([b1831f5](https://github.com/googleapis/google-cloud-python/commit/b1831f5b40061c3939bcee7274cf70a7348a7fea))
+* Update hyperlink to the supported languages documentation page ([b1831f5](https://github.com/googleapis/google-cloud-python/commit/b1831f5b40061c3939bcee7274cf70a7348a7fea))
+
 ## [3.20.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.20.2...google-cloud-translate-v3.20.3) (2025-06-11)
 
 

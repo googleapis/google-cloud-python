@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.17...google-cloud-support-v0.1.18) (2025-06-23)
+
+
+### Features
+
+* KMS key resource_definition `[cloudkms.googleapis.com/CryptoKey](https://www.google.com/url?sa=D&q=http%3A%2F%2Fcloudkms.googleapis.com%2FCryptoKey) is added ([8494eab](https://github.com/googleapis/google-cloud-python/commit/8494eab9d5243e3adaa6a15bd09867473c28c56c))
+
 ## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.16...google-cloud-support-v0.1.17) (2025-05-21)
 
 
