@@ -1901,6 +1901,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-maintenance-api": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-maintenance-api",
+            "extra-files": [
+                "google/cloud/maintenance_api/gapic_version.py",
+                "google/cloud/maintenance_api_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.maintenance.api.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-managed-identities": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
