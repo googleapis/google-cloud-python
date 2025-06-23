@@ -408,10 +408,10 @@ def prerelease_deps(session):
     )
 
     # PyArrow prerelease packages are published to an alternative PyPI host.
-    # https://arrow.apache.org/docs/python/install.html#installing-nightly-packages
+    # https://arrow.apache.org/docs/developers/python.html#installing-nightly-packages
     session.install(
         "--extra-index-url",
-        "https://pypi.fury.io/arrow-nightlies/",
+        "https://pypi.anaconda.org/scientific-python-nightly-wheels/simple",
         "--prefer-binary",
         "--pre",
         "--upgrade",
