@@ -27,23 +27,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -f /var/cache/apt/archives/*.deb
 
-# Download/install protoc
-RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
-RUN unzip protoc-25.3-linux-x86_64.zip -d protoc
-RUN mv protoc/bin/* /usr/local/bin/
-RUN mv protoc/include/* /usr/local/include/
-RUN chmod +x /usr/local/bin/protoc
-ENV PATH="/usr/bin:${PATH}"
-
 # Configure user to avoid running as root
 env USER myuser
 
 WORKDIR /
 
 # TODO: move to requirements.txt file
-RUN pip3 install click black==23.7.0 isort==5.11.0
-# TODO: This is only temporary. We should use the artifact from PyPI via a requirements.txt file
-RUN pip3 install git+https://github.com/googleapis/gapic-generator-python.git@1pp-prototype-v1.25.0
+RUN pip3 install click black==23.7.0 isort==5.11.0 gapic-generator==1.25.0
 
 # Copy Python Generator CLI
 COPY tools/python_generator_cli /python_generator_cli
