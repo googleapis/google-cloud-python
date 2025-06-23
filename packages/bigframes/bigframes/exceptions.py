@@ -71,6 +71,10 @@ class OperationAbortedError(RuntimeError):
     """Operation is aborted."""
 
 
+class MaximumResultRowsExceeded(RuntimeError):
+    """Maximum number of rows in the result was exceeded."""
+
+
 class TimeTravelDisabledWarning(Warning):
     """A query was reattempted without time travel."""
 

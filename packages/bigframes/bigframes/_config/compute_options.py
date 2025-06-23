@@ -55,29 +55,7 @@ class ComputeOptions:
         {'test2': 'abc', 'test3': False}
 
     Attributes:
-        maximum_bytes_billed (int, Options):
-            Limits the bytes billed for query jobs. Queries that will have
-            bytes billed beyond this limit will fail (without incurring a
-            charge). If unspecified, this will be set to your project default.
-            See `maximum_bytes_billed`: https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJobConfig#google_cloud_bigquery_job_QueryJobConfig_maximum_bytes_billed.
-
-        enable_multi_query_execution (bool, Options):
-            If enabled, large queries may be factored into multiple smaller queries
-            in order to avoid generating queries that are too complex for the query
-            engine to handle. However this comes at the cost of increase cost and latency.
-
-        extra_query_labels (Dict[str, Any], Options):
-            Stores additional custom labels for query configuration.
-
-        semantic_ops_confirmation_threshold (int, optional):
-            .. deprecated:: 1.42.0
-                Semantic operators are deprecated. Please use AI operators instead
-
-        semantic_ops_threshold_autofail (bool):
-            .. deprecated:: 1.42.0
-                Semantic operators are deprecated. Please use AI operators instead
-
-        ai_ops_confirmation_threshold (int, optional):
+        ai_ops_confirmation_threshold (int | None):
             Guards against unexpected processing of large amount of rows by semantic operators.
             If the number of rows exceeds the threshold, the user will be asked to confirm
             their operations to resume. The default value is 0. Set the value to None
@@ -87,25 +65,56 @@ class ComputeOptions:
             Guards against unexpected processing of large amount of rows by semantic operators.
             When set to True, the operation automatically fails without asking for user inputs.
 
-        allow_large_results (bool):
+        allow_large_results (bool | None):
             Specifies whether query results can exceed 10 GB. Defaults to False. Setting this
             to False (the default) restricts results to 10 GB for potentially faster execution;
             BigQuery will raise an error if this limit is exceeded. Setting to True removes
             this result size limit.
+
+        enable_multi_query_execution (bool | None):
+            If enabled, large queries may be factored into multiple smaller queries
+            in order to avoid generating queries that are too complex for the query
+            engine to handle. However this comes at the cost of increase cost and latency.
+
+        extra_query_labels (Dict[str, Any] | None):
+            Stores additional custom labels for query configuration.
+
+        maximum_bytes_billed (int | None):
+            Limits the bytes billed for query jobs. Queries that will have
+            bytes billed beyond this limit will fail (without incurring a
+            charge). If unspecified, this will be set to your project default.
+            See `maximum_bytes_billed`: https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJobConfig#google_cloud_bigquery_job_QueryJobConfig_maximum_bytes_billed.
+
+        maximum_result_rows (int | None):
+            Limits the number of rows in an execution result. When converting
+            a BigQuery DataFrames object to a pandas DataFrame or Series (e.g.,
+            using ``.to_pandas()``, ``.peek()``, ``.__repr__()``, direct
+            iteration), the data is downloaded from BigQuery to the client
+            machine. This option restricts the number of rows that can be
+            downloaded.  If the number of rows to be downloaded exceeds this
+            limit, a ``bigframes.exceptions.MaximumResultRowsExceeded``
+            exception is raised.
+
+        semantic_ops_confirmation_threshold (int | None):
+            .. deprecated:: 1.42.0
+                Semantic operators are deprecated. Please use AI operators instead
+
+        semantic_ops_threshold_autofail (bool):
+            .. deprecated:: 1.42.0
+                Semantic operators are deprecated. Please use AI operators instead
     """
 
-    maximum_bytes_billed: Optional[int] = None
+    ai_ops_confirmation_threshold: Optional[int] = 0
+    ai_ops_threshold_autofail: bool = False
+    allow_large_results: Optional[bool] = None
     enable_multi_query_execution: bool = False
     extra_query_labels: Dict[str, Any] = dataclasses.field(
         default_factory=dict, init=False
     )
+    maximum_bytes_billed: Optional[int] = None
+    maximum_result_rows: Optional[int] = None
     semantic_ops_confirmation_threshold: Optional[int] = 0
     semantic_ops_threshold_autofail = False
-
-    ai_ops_confirmation_threshold: Optional[int] = 0
-    ai_ops_threshold_autofail: bool = False
-
-    allow_large_results: Optional[bool] = None
 
     def assign_extra_query_labels(self, **kwargs: Any) -> None:
         """

@@ -18,11 +18,10 @@ from unittest import mock
 import warnings
 
 import google.api_core.exceptions
-import google.auth
-import google.auth.exceptions
+import pandas.testing
 import pytest
 
-import bigframes.core.global_session
+import bigframes.exceptions
 import bigframes.pandas as bpd
 
 
@@ -327,3 +326,45 @@ def test_credentials_need_reauthentication(
     # Now verify that use is able to start over
     df = bpd.read_gbq(test_query)
     assert df is not None
+
+
+def test_max_rows_normal_execution_within_limit(
+    scalars_df_index, scalars_pandas_df_index
+):
+    """Test queries execute normally when the number of rows is within the limit."""
+    with bpd.option_context("compute.maximum_result_rows", 10):
+        df = scalars_df_index.head(10)
+        result = df.to_pandas()
+
+    expected = scalars_pandas_df_index.head(10)
+    pandas.testing.assert_frame_equal(result, expected)
+
+    with bpd.option_context("compute.maximum_result_rows", 10), bpd.option_context(
+        "display.repr_mode", "head"
+    ):
+        df = scalars_df_index.head(10)
+        assert repr(df) is not None
+
+    # We should be able to get away with only a single row for shape.
+    with bpd.option_context("compute.maximum_result_rows", 1):
+        shape = scalars_df_index.shape
+        assert shape == scalars_pandas_df_index.shape
+
+    # 0 is not recommended, as it would stop aggregations and many other
+    # necessary operations, but we shouldn't need even 1 row for to_gbq().
+    with bpd.option_context("compute.maximum_result_rows", 0):
+        destination = scalars_df_index.to_gbq()
+        assert destination is not None
+
+
+def test_max_rows_exceeds_limit(scalars_df_index):
+    """Test to_pandas() raises MaximumRowsDownloadedExceeded when the limit is exceeded."""
+    with bpd.option_context("compute.maximum_result_rows", 5), pytest.raises(
+        bigframes.exceptions.MaximumResultRowsExceeded, match="5"
+    ):
+        scalars_df_index.to_pandas()
+
+    with bpd.option_context("compute.maximum_result_rows", 5), pytest.raises(
+        bigframes.exceptions.MaximumResultRowsExceeded, match="5"
+    ):
+        next(iter(scalars_df_index.to_pandas_batches()))

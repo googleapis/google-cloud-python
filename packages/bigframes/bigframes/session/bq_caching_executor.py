@@ -28,6 +28,8 @@ import google.cloud.bigquery.job as bq_job
 import google.cloud.bigquery.table as bq_table
 import google.cloud.bigquery_storage_v1
 
+import bigframes
+from bigframes import exceptions as bfe
 import bigframes.constants
 import bigframes.core
 from bigframes.core import compile, local_data, rewrite
@@ -38,7 +40,6 @@ import bigframes.core.ordering as order
 import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
-import bigframes.exceptions as bfe
 import bigframes.features
 from bigframes.session import executor, loader, local_scan_executor, read_api_execution
 import bigframes.session._io.bigquery as bq_io
@@ -415,7 +416,7 @@ class BigQueryCachingExecutor(executor.Executor):
             # Unfortunately, this error type does not have a separate error code or exception type
             if "Resources exceeded during query execution" in e.message:
                 new_message = "Computation is too complex to execute as a single query. Try using DataFrame.cache() on intermediate results, or setting bigframes.options.compute.enable_multi_query_execution."
-                raise bigframes.exceptions.QueryComplexityError(new_message) from e
+                raise bfe.QueryComplexityError(new_message) from e
             else:
                 raise
 
@@ -688,7 +689,7 @@ class BigQueryCachingExecutor(executor.Executor):
             )
 
         return executor.ExecuteResult(
-            arrow_batches=iterator.to_arrow_iterable(
+            _arrow_batches=iterator.to_arrow_iterable(
                 bqstorage_client=self.bqstoragereadclient
             ),
             schema=plan.schema,

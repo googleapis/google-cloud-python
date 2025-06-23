@@ -80,7 +80,7 @@ class PolarsExecutor(semi_executor.SemiExecutor):
             lazy_frame = lazy_frame.limit(peek)
         pa_table = lazy_frame.collect().to_arrow()
         return executor.ExecuteResult(
-            arrow_batches=iter(map(self._adapt_batch, pa_table.to_batches())),
+            _arrow_batches=iter(map(self._adapt_batch, pa_table.to_batches())),
             schema=plan.schema,
             total_bytes=pa_table.nbytes,
             total_rows=pa_table.num_rows,

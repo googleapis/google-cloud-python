@@ -111,7 +111,7 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
             rows = min(peek, rows)
 
         return executor.ExecuteResult(
-            arrow_batches=batches,
+            _arrow_batches=batches,
             schema=plan.schema,
             query_job=None,
             total_bytes=None,

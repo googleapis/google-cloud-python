@@ -24,19 +24,45 @@ from google.cloud import bigquery
 import pandas as pd
 import pyarrow
 
+import bigframes
 import bigframes.core
 from bigframes.core import pyarrow_utils
 import bigframes.core.schema
 import bigframes.session._io.pandas as io_pandas
 
+_ROW_LIMIT_EXCEEDED_TEMPLATE = (
+    "Execution has downloaded {result_rows} rows so far, which exceeds the "
+    "limit of {maximum_result_rows}. You can adjust this limit by setting "
+    "`bpd.options.compute.maximum_result_rows`."
+)
+
 
 @dataclasses.dataclass(frozen=True)
 class ExecuteResult:
-    arrow_batches: Iterator[pyarrow.RecordBatch]
+    _arrow_batches: Iterator[pyarrow.RecordBatch]
     schema: bigframes.core.schema.ArraySchema
     query_job: Optional[bigquery.QueryJob] = None
     total_bytes: Optional[int] = None
     total_rows: Optional[int] = None
+
+    @property
+    def arrow_batches(self) -> Iterator[pyarrow.RecordBatch]:
+        result_rows = 0
+
+        for batch in self._arrow_batches:
+            result_rows += batch.num_rows
+
+            maximum_result_rows = bigframes.options.compute.maximum_result_rows
+            if maximum_result_rows is not None and result_rows > maximum_result_rows:
+                message = bigframes.exceptions.format_message(
+                    _ROW_LIMIT_EXCEEDED_TEMPLATE.format(
+                        result_rows=result_rows,
+                        maximum_result_rows=maximum_result_rows,
+                    )
+                )
+                raise bigframes.exceptions.MaximumResultRowsExceeded(message)
+
+            yield batch
 
     def to_arrow_table(self) -> pyarrow.Table:
         # Need to provide schema if no result rows, as arrow can't infer

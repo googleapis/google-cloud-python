@@ -58,7 +58,7 @@ class LocalScanExecutor(semi_executor.SemiExecutor):
             total_rows = min(peek, total_rows)
 
         return executor.ExecuteResult(
-            arrow_batches=arrow_table.to_batches(),
+            _arrow_batches=arrow_table.to_batches(),
             schema=plan.schema,
             query_job=None,
             total_bytes=None,

@@ -50,7 +50,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         )
 
         return executor.ExecuteResult(
-            arrow_batches=iterator.to_arrow_iterable(),
+            _arrow_batches=iterator.to_arrow_iterable(),
             schema=plan.schema,
             query_job=query_job,
             total_rows=iterator.total_rows,
