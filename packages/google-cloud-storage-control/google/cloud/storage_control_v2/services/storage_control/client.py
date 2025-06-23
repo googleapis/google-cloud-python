@@ -75,6 +75,7 @@ from google.cloud.storage_control_v2.types import storage_control
 from .transports.base import DEFAULT_CLIENT_INFO, StorageControlTransport
 from .transports.grpc import StorageControlGrpcTransport
 from .transports.grpc_asyncio import StorageControlGrpcAsyncIOTransport
+from .transports.rest import StorageControlRestTransport
 
 
 class StorageControlClientMeta(type):
@@ -90,6 +91,7 @@ class StorageControlClientMeta(type):
     )  # type: Dict[str, Type[StorageControlTransport]]
     _transport_registry["grpc"] = StorageControlGrpcTransport
     _transport_registry["grpc_asyncio"] = StorageControlGrpcAsyncIOTransport
+    _transport_registry["rest"] = StorageControlRestTransport
 
     def get_transport_class(
         cls,
