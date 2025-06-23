@@ -15,5 +15,12 @@
 docker:
   image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
+deep-remove-regex:
+  - /owl-bot-staging
+
+deep-copy-regex:
+  - source: /google/storage/v2/storage-v2-py/(.*)
+    dest: /owl-bot-staging/$1/$2
+
 begin-after-commit-hash: 6acf4a0a797f1082027985c55c4b14b60f673dd7
 
