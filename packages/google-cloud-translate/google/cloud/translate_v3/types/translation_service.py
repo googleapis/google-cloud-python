@@ -109,17 +109,18 @@ class TranslateTextRequest(proto.Message):
             example, "text/html",  "text/plain". If left
             blank, the MIME type defaults to "text/html".
         source_language_code (str):
-            Optional. The ISO-639 language code of the
-            input text if known, for example, "en-US" or
-            "sr-Latn". Supported language codes are listed
-            in Language Support. If the source language
-            isn't specified, the API attempts to identify
-            the source language automatically and returns
-            the source language within the response.
+            Optional. The ISO-639 language code of the input text if
+            known, for example, "en-US" or "sr-Latn". Supported language
+            codes are listed in `Language
+            Support <https://cloud.google.com/translate/docs/languages>`__.
+            If the source language isn't specified, the API attempts to
+            identify the source language automatically and returns the
+            source language within the response.
         target_language_code (str):
-            Required. The ISO-639 language code to use
-            for translation of the input text, set to one of
-            the language codes listed in Language Support.
+            Required. The ISO-639 language code to use for translation
+            of the input text, set to one of the language codes listed
+            in `Language
+            Support <https://cloud.google.com/translate/docs/languages>`__.
         parent (str):
             Required. Project or location to make a call. Must refer to
             a caller's project.
@@ -313,12 +314,13 @@ class RomanizeTextRequest(proto.Message):
             Required. The content of the input in string
             format.
         source_language_code (str):
-            Optional. The ISO-639 language code of the
-            input text if known, for example, "hi" or "zh".
-            If the source language isn't specified, the API
-            attempts to identify the source language
-            automatically and returns the source language
-            for each content in the response.
+            Optional. The ISO-639 language code of the input text if
+            known, for example, "hi" or "zh". Supported language codes
+            are listed in `Language
+            Support <https://cloud.google.com/translate/docs/languages#roman>`__.
+            If the source language isn't specified, the API attempts to
+            identify the source language automatically and returns the
+            source language for each content in the response.
     """
 
     parent: str = proto.Field(
@@ -939,20 +941,20 @@ class TranslateDocumentRequest(proto.Message):
             the same location-id), otherwise an INVALID_ARGUMENT (400)
             error is returned.
         source_language_code (str):
-            Optional. The ISO-639 language code of the
-            input document if known, for example, "en-US" or
-            "sr-Latn". Supported language codes are listed
-            in Language Support. If the source language
-            isn't specified, the API attempts to identify
-            the source language automatically and returns
-            the source language within the response. Source
-            language must be specified if the request
-            contains a glossary or a custom model.
+            Optional. The ISO-639 language code of the input document if
+            known, for example, "en-US" or "sr-Latn". Supported language
+            codes are listed in [Language Support]
+            (https://cloud.google.com/translate/docs/languages). If the
+            source language isn't specified, the API attempts to
+            identify the source language automatically and returns the
+            source language within the response. Source language must be
+            specified if the request contains a glossary or a custom
+            model.
         target_language_code (str):
-            Required. The ISO-639 language code to use
-            for translation of the input document, set to
-            one of the language codes listed in Language
-            Support.
+            Required. The ISO-639 language code to use for translation
+            of the input document, set to one of the language codes
+            listed in [Language Support]
+            (https://cloud.google.com/translate/docs/languages).
         document_input_config (google.cloud.translate_v3.types.DocumentInputConfig):
             Required. Input configurations.
         document_output_config (google.cloud.translate_v3.types.DocumentOutputConfig):
@@ -1168,10 +1170,13 @@ class BatchTranslateTextRequest(proto.Message):
             region (have the same location-id) can be used, otherwise an
             INVALID_ARGUMENT (400) error is returned.
         source_language_code (str):
-            Required. Source language code.
+            Required. Source language code. Supported language codes are
+            listed in `Language
+            Support <https://cloud.google.com/translate/docs/languages>`__.
         target_language_codes (MutableSequence[str]):
-            Required. Specify up to 10 language codes
-            here.
+            Required. Specify up to 10 language codes here. Supported
+            language codes are listed in `Language
+            Support <https://cloud.google.com/translate/docs/languages>`__.
         models (MutableMapping[str, str]):
             Optional. The models to use for translation. Map's key is
             target language code. Map's value is model name. Value can
@@ -2077,9 +2082,10 @@ class BatchTranslateDocumentRequest(proto.Message):
             codes are listed in `Language
             Support <https://cloud.google.com/translate/docs/languages>`__.
         target_language_codes (MutableSequence[str]):
-            Required. The ISO-639 language code to use
-            for translation of the input document. Specify
-            up to 10 language codes here.
+            Required. The ISO-639 language code to use for translation
+            of the input document. Specify up to 10 language codes here.
+            Supported language codes are listed in `Language
+            Support <https://cloud.google.com/translate/docs/languages>`__.
         input_configs (MutableSequence[google.cloud.translate_v3.types.BatchDocumentInputConfig]):
             Required. Input configurations.
             The total number of files matched should be <=
