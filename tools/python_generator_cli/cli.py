@@ -137,88 +137,67 @@ def build_library(repo_root: str, library_id: str):
 def generate_library(api_root: str, generator_input: str, output: str, library_id: str):
     """Generates a python client library using the given arguments."""
 
+    subprocess.run(
+        f"rm -rf {output}/owl-bot-staging", cwd=output, shell=True
+    )
     with open(
         f"{generator_input}/pipeline-state.json", "r"
     ) as pipeline_state_json_file:
         pipeline_state = json.load(pipeline_state_json_file)
         with open(f"{generator_input}/apis.json", "r") as apis_json_file:
-            all_apis_config = json.load(apis_json_file)
             library_specific_config = next(
                 item for item in pipeline_state["libraries"] if item["id"] == library_id
             )
             for api_path in library_specific_config["apiPaths"]:
-                api_specific_config = next(
-                    item
-                    for item in all_apis_config["apis"]
-                    if item["apiPath"] == api_path
-                )
-
-                config_keys = [
-                    "api-description",
-                    "autogen-snippets",
-                    "default-proto-package",
-                    "documentation-name",
-                    "documentation-uri",
-                    "gapic-version",
-                    "python-gapic-namespace",
-                    "python-gapic-name",
-                    "reference-doc-includes",
-                    "release-level",
-                    "rest-numeric-enums",
-                    "retry-config",
-                    "service-yaml",
-                    "title",
-                    "transport",
-                    "warehouse-package-name",
-                ]
-                generator_options = []
-                for key in config_keys:
-                    config_value = api_specific_config.get(key, None)
-                    if config_value is not None:
-                        # There is logic in the generator that treats all values of
-                        # `rest-numeric-enums` as True, so just omit it if we want it to be False
-                        if key == 'rest-numeric-enums' and config_value == "False":
-                            continue
-                        elif key == "api-description" or key == "title":
-                            formatted_config_value = shlex.quote(config_value.replace(",", "|"))
-                            generator_options.append(f"{key}={formatted_config_value},")
-                        elif key == "service-yaml" or key == "retry-config":
-                            generator_options.append(
-                                f"{key}={api_path}/{config_value},"
-                            )
-                        else:
-                            generator_options.append(f"{key}={config_value},")
-
+                api_version = api_path.split("/")[-1]
                 with tempfile.TemporaryDirectory() as tmp_dir:
-                    generator_command = (
-                        f"protoc {api_path}/*.proto --python_gapic_out={tmp_dir}"
-                    )
-                    if len(generator_options):
-                        generator_command += (
-                            f" --python_gapic_opt=metadata,"
-                        )
-                        for generator_option in generator_options:
-                            generator_command += generator_option
-                    print(generator_command)
-                    subprocess.run([generator_command], cwd=api_root, shell=True)
+                    bazel_command = f"gbazelisk query 'filter(\"-py$\", kind(\"rule\", //{api_path}/...:*))'"                    
+                    
+                    bazel_rule = subprocess.check_output(bazel_command, cwd=api_root, shell=True).decode("utf-8").strip()
+                    bazel_command = f"gbazelisk build --nofetch  {bazel_rule}"
+                    
+                    subprocess.run([bazel_command], cwd=api_root, shell=True)
+                    bazel_command = "gbazelisk info bazel-bin"
+                    bazel_bin = subprocess.check_output(bazel_command, cwd=api_root, shell=True).decode("utf-8").strip()
+                    # subprocess.run(
+                    #     f"cp -r {bazel_bin}/. {tmp_dir}", cwd=tmp_dir, shell=True
+                    # )
+                    bazel_rule_split = bazel_rule.split(":")
+                    parent_dir = bazel_rule_split[0].replace("//", "")
+                    print(parent_dir)
                     subprocess.run(
-                        f"isort -q --fss docs google tests noxfile.py setup.py",
-                        cwd=tmp_dir,
-                        shell=True,
+                        f"ls {parent_dir}", cwd=bazel_bin, shell=True
                     )
+                    tar_gz_file = bazel_rule_split[1] + ".tar.gz"
+                    print(tar_gz_file)
+
+                    # For some APIs like `google-cloud-workflows`, we will be adding to the same directory, so don't fail if the directory exists
+                    os.makedirs(f"{output}/owl-bot-staging/{library_id}/{api_version}", exist_ok=True)
+                    
                     subprocess.run(
-                        f"black -q docs google tests noxfile.py setup.py",
-                        cwd=tmp_dir,
-                        shell=True,
+                        f"tar -xvf {bazel_bin}/{parent_dir}/{tar_gz_file} --strip-components=1", cwd=f"{output}/owl-bot-staging/{library_id}/{api_version}", shell=True
                     )
-                    subprocess.run(f"mkdir -p packages/{library_id}", cwd=output, shell=True)
+
                     subprocess.run(
-                        f"cp -r {tmp_dir}/. packages/{library_id}", cwd=output, shell=True
+                        f"rm -rf *.tar.gz", cwd=tmp_dir, shell=True
                     )
+
+    os.chdir(f"{generator_input}/client-post-processing")
+    # Add post-processing files
+    for post_processing_file in glob.glob(f"*.yaml"):
+        with open(post_processing_file, "r") as post_processing_path_file:
+            if f"packages/{library_id}/" in post_processing_path_file.read():
+                os.makedirs(f"{output}/packages/{library_id}/scripts/client-post-processing", exist_ok=True)       
+                create_symlink_in_dir(f"{generator_input}/client-post-processing", f"{output}/packages/{library_id}/scripts/client-post-processing", post_processing_file, 4)
+
     os.chdir(output)
-    apply_client_specific_post_processing(
-        f"/generator-input/client-post-processing", library_id
-    )
+    subprocess.run("python3 -m synthtool.languages.python_mono_repo", cwd=output, shell=True)
+    # apply_client_specific_post_processing(
+    #     f"/generator-input/client-post-processing", library_id
+    # )
+    # os.chdir(f"{output}/packages/{library_id}")
+    # create_symlink_in_dir(".", f"{output}/packages/{library_id}/docs", "README.rst", 1)
+
 
 @main.command()
 @click.option(
@@ -265,187 +244,34 @@ def clean(repo_root: str, library_id: str):
         for file in files_to_preserve:
             if Path(f"{tmp_dir}/{file}").exists():
                 shutil.copy(f"{tmp_dir}/{file}", f"{repo_root}/packages/{library_id}/{file}")
-        create_symlink_in_docs_dir(f"{repo_root}/packages/{library_id}", "CHANGELOG.md")
+        os.chdir(f"{repo_root}/packages/{library_id}")
 
-# Copied from synthtool
-# https://github.com/googleapis/synthtool/blob/6318601ed44bb99ec965bae0d46b54eba42aeb24/synthtool/languages/python_mono_repo.py#L147-L210
-def apply_client_specific_post_processing(
-    post_processing_dir: str, package_name: str
-) -> None:
-    """Applies client-specific post processing which exists in the Path `post_processing_dir`.
-    This function is only called from `owlbot_main` when there is an `owl-bot-staging` folder
-    which contains generated client library code. Re-running the script more than once is
-    expected to be idempotent. The client-specific post processing YAML is in the following format:
-    ```
-        description: Verbose description about the need for the workaround.
-        url: URL of the issue in gapic-generator-python tracking eventual removal of the workaround
-        replacements:
-          - replacement:
-            paths: [<List of files where the replacement should occur relative to the monorepo root directory>]
-            before: "The string to search for in the specified paths"
-            after:  "The string to replace in the the specified paths",
-            count: <integer indicating number of replacements that should have occurred across all files after the script is run>
-    ```
 
-    Note: The `paths` key above must only include paths for the same package so that the number of replacements
-    made in a given package can be verified.
+def create_symlink_in_dir(src_path: str, dest_path: str, filename: str, relative_level=0):
+    """Creates a symlink in the given directory for <filename> pointing to <relative_level>/<filename>.
 
     Args:
-        post_processing_dir (str): Path to the directory which contains YAML files which will
-            be used to apply client-specific post processing, e.g. 'packages/<package_name>/scripts/client-post-processing'
-            relative to the monorepo root directory.
-        package_name (str): The name of the package where client specific post processing will be applied.
-    """
-
-    if Path(post_processing_dir).exists():
-        for post_processing_path in Path(post_processing_dir).iterdir():
-            with open(post_processing_path, "r") as post_processing_path_file:
-                post_processing_json = yaml.safe_load(post_processing_path_file)
-                all_replacements = post_processing_json["replacements"]
-                # For each workaround related to the specified issue
-                for replacement in all_replacements:
-                    replacement_count = 0
-                    number_of_paths_with_replacements = 0
-                    # For each file that needs the workaround applied
-                    for client_library_path in replacement["paths"]:
-                        if f"{package_name}/" in client_library_path:
-                            number_of_paths_with_replacements += 1
-                            replacement_count += replace(
-                                client_library_path,
-                                replacement["before"],
-                                replacement["after"],
-                            )
-                            # Ensure idempotency by checking that subsequent calls won't
-                            # trigger additional replacements within the same path
-                            assert (
-                                replace(
-                                    client_library_path,
-                                    replacement["before"],
-                                    replacement["after"],
-                                )
-                                == 0
-                            )
-                    if number_of_paths_with_replacements:
-                        # Ensure that the numner of paths where a replacement occurred matches the number of paths.
-                        assert number_of_paths_with_replacements == len(
-                            replacement["paths"]
-                        )
-                        # Ensure that the total number of replacements matches the value specified in `count`
-                        # for all paths in `replacement["paths"]`
-                        assert replacement_count == replacement["count"]
-
-
-# Copied from synthtool
-# https://github.com/googleapis/synthtool/blob/master/synthtool/transforms.py#L70-L73
-def _filter_files(paths: Iterable[Path]) -> Iterable[Path]:
-    """Returns only the paths that are files (no directories)."""
-
-    return (path for path in paths if path.is_file() and os.access(path, os.W_OK))
-
-# Copied from synthtool
-# https://github.com/googleapis/synthtool/blob/6318601ed44bb99ec965bae0d46b54eba42aeb24/synthtool/transforms.py#L268-L294
-def replace(
-    sources: ListOfPathsOrStrs, before: str, after: str, flags: int = re.MULTILINE
-) -> int:
-    """Replaces occurrences of before with after in all the given sources.
-
-    Returns:
-      The number of times the text was found and replaced across all files.
-    """
-    expr = re.compile(before, flags=flags or 0)
-    paths = _filter_files(_expand_paths(sources, "."))
-    count_replaced = 0
-    for path in paths:
-        replaced = replace_in_file(path, expr, after)
-        count_replaced += replaced
-    return count_replaced
-
-# Copied from synthtool
-# https://github.com/googleapis/synthtool/blob/6318601ed44bb99ec965bae0d46b54eba42aeb24/synthtool/transforms.py#L34C1-L67C14
-def _expand_paths(
-    paths: ListOfPathsOrStrs, root: Optional[PathOrStr] = None
-) -> Iterable[Path]:
-    """Given a list of globs/paths, expands them into a flat sequence,
-    expanding globs as necessary."""
-    if paths is None:
-        return []
-
-    if isinstance(paths, (str, Path)):
-        paths = [paths]
-
-    if root is None:
-        root = Path(".")
-
-    # ensure root is a path
-    root = Path(root)
-
-    # record name of synth script so we don't try to do transforms on it
-    synth_script_name = sys.argv[0]
-
-    for path in paths:
-        if isinstance(path, Path):
-            if path.is_absolute():
-                anchor = Path(path.anchor)
-                remainder = str(path.relative_to(path.anchor))
-                yield from anchor.glob(remainder)
-            else:
-                yield from root.glob(str(path))
-        else:
-            yield from (
-                p
-                for p in root.glob(path)
-                if p.absolute() != Path(synth_script_name).absolute()
-            )
-
-# Copied from synthtool
-# https://github.com/googleapis/synthtool/blob/6318601ed44bb99ec965bae0d46b54eba42aeb24/synthtool/transforms.py#L243-L265
-def replace_in_file(path, expr, replacement):
-    try:
-        with path.open("r+") as fh:
-            return _replace_in_file_handle(fh, expr, replacement)
-    except UnicodeDecodeError:
-        pass  # It's a binary file.  Try again with a binary regular expression.
-    flags = expr.flags & ~re.UNICODE
-    expr = re.compile(expr.pattern.encode(), flags)
-    with path.open("rb+") as fh:
-        return _replace_in_file_handle(fh, expr, replacement.encode())
-
-
-def _replace_in_file_handle(fh, expr, replacement):
-    content = fh.read()
-    content, count = expr.subn(replacement, content)
-
-    # Don't bother writing the file if we didn't change
-    # anything.
-    if count:
-        fh.seek(0)
-        fh.write(content)
-        fh.truncate()
-    return count
-
-# Copied from synthtool
-# https://github.com/googleapis/synthtool/blob/906b162627b29cf10621074a5055bec0e30b5307/synthtool/languages/python_mono_repo.py#L69C1-L92C1
-def create_symlink_in_docs_dir(package_dir: str, filename: str):
-    """Creates a symlink in the docs directory for <filename> pointing to ../<filename>
-        using the package_dir specified as the base directory.
-
-    Args:
-        package_dir (str): path to the directory for a specific package. For example
-            'packages/google-cloud-video-transcoder'
-        working_dir (str): the absolute path to the directory where the link should be created
+        src_path (str): 
+        dest_path (str): 
         filename (str): the name of the file to link
+        relative_level (str): the level of the directory structure where the link should point to
     """
-
     current_dir = os.getcwd()
 
-    os.chdir(f"{package_dir}/docs")
+    os.chdir(dest_path)
 
-    relative_path_to_docs_file = Path(filename)
-    relative_path_to_file = Path(f"../{filename}")
+    prefix = ""
+    for i in range(relative_level):
+        prefix += "../"
 
-    if relative_path_to_file.exists():
-        if not relative_path_to_docs_file.exists():
-            Path(relative_path_to_docs_file).symlink_to(relative_path_to_file)
+    relative_path_to_src_file = Path(f"{prefix}{src_path}/{filename}")
+
+    print(dest_path)
+    print(relative_path_to_src_file)
+    print(Path(dest_path / relative_path_to_src_file).exists())
+    if relative_path_to_src_file.exists():
+        if not Path(filename).exists():
+            Path(filename).symlink_to(relative_path_to_src_file)
 
     os.chdir(current_dir)
 
