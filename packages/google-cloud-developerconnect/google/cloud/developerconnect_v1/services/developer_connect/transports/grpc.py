@@ -761,6 +761,286 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
             )
         return self._stubs["fetch_git_refs"]
 
+    @property
+    def list_account_connectors(
+        self,
+    ) -> Callable[
+        [developer_connect.ListAccountConnectorsRequest],
+        developer_connect.ListAccountConnectorsResponse,
+    ]:
+        r"""Return a callable for the list account connectors method over gRPC.
+
+        Lists AccountConnectors in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListAccountConnectorsRequest],
+                    ~.ListAccountConnectorsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_account_connectors" not in self._stubs:
+            self._stubs["list_account_connectors"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/ListAccountConnectors",
+                request_serializer=developer_connect.ListAccountConnectorsRequest.serialize,
+                response_deserializer=developer_connect.ListAccountConnectorsResponse.deserialize,
+            )
+        return self._stubs["list_account_connectors"]
+
+    @property
+    def get_account_connector(
+        self,
+    ) -> Callable[
+        [developer_connect.GetAccountConnectorRequest],
+        developer_connect.AccountConnector,
+    ]:
+        r"""Return a callable for the get account connector method over gRPC.
+
+        Gets details of a single AccountConnector.
+
+        Returns:
+            Callable[[~.GetAccountConnectorRequest],
+                    ~.AccountConnector]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_account_connector" not in self._stubs:
+            self._stubs["get_account_connector"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/GetAccountConnector",
+                request_serializer=developer_connect.GetAccountConnectorRequest.serialize,
+                response_deserializer=developer_connect.AccountConnector.deserialize,
+            )
+        return self._stubs["get_account_connector"]
+
+    @property
+    def create_account_connector(
+        self,
+    ) -> Callable[
+        [developer_connect.CreateAccountConnectorRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create account connector method over gRPC.
+
+        Creates a new AccountConnector in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateAccountConnectorRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_account_connector" not in self._stubs:
+            self._stubs["create_account_connector"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/CreateAccountConnector",
+                request_serializer=developer_connect.CreateAccountConnectorRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_account_connector"]
+
+    @property
+    def update_account_connector(
+        self,
+    ) -> Callable[
+        [developer_connect.UpdateAccountConnectorRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update account connector method over gRPC.
+
+        Updates the parameters of a single AccountConnector.
+
+        Returns:
+            Callable[[~.UpdateAccountConnectorRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_account_connector" not in self._stubs:
+            self._stubs["update_account_connector"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/UpdateAccountConnector",
+                request_serializer=developer_connect.UpdateAccountConnectorRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_account_connector"]
+
+    @property
+    def delete_account_connector(
+        self,
+    ) -> Callable[
+        [developer_connect.DeleteAccountConnectorRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete account connector method over gRPC.
+
+        Deletes a single AccountConnector.
+
+        Returns:
+            Callable[[~.DeleteAccountConnectorRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_account_connector" not in self._stubs:
+            self._stubs["delete_account_connector"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/DeleteAccountConnector",
+                request_serializer=developer_connect.DeleteAccountConnectorRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_account_connector"]
+
+    @property
+    def fetch_access_token(
+        self,
+    ) -> Callable[
+        [developer_connect.FetchAccessTokenRequest],
+        developer_connect.FetchAccessTokenResponse,
+    ]:
+        r"""Return a callable for the fetch access token method over gRPC.
+
+        Fetches OAuth access token based on end user
+        credentials.
+
+        Returns:
+            Callable[[~.FetchAccessTokenRequest],
+                    ~.FetchAccessTokenResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_access_token" not in self._stubs:
+            self._stubs["fetch_access_token"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/FetchAccessToken",
+                request_serializer=developer_connect.FetchAccessTokenRequest.serialize,
+                response_deserializer=developer_connect.FetchAccessTokenResponse.deserialize,
+            )
+        return self._stubs["fetch_access_token"]
+
+    @property
+    def list_users(
+        self,
+    ) -> Callable[
+        [developer_connect.ListUsersRequest], developer_connect.ListUsersResponse
+    ]:
+        r"""Return a callable for the list users method over gRPC.
+
+        Lists Users in a given project, location, and account_connector.
+
+        Returns:
+            Callable[[~.ListUsersRequest],
+                    ~.ListUsersResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_users" not in self._stubs:
+            self._stubs["list_users"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/ListUsers",
+                request_serializer=developer_connect.ListUsersRequest.serialize,
+                response_deserializer=developer_connect.ListUsersResponse.deserialize,
+            )
+        return self._stubs["list_users"]
+
+    @property
+    def delete_user(
+        self,
+    ) -> Callable[[developer_connect.DeleteUserRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete user method over gRPC.
+
+        Deletes a single User.
+
+        Returns:
+            Callable[[~.DeleteUserRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_user" not in self._stubs:
+            self._stubs["delete_user"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/DeleteUser",
+                request_serializer=developer_connect.DeleteUserRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_user"]
+
+    @property
+    def fetch_self(
+        self,
+    ) -> Callable[[developer_connect.FetchSelfRequest], developer_connect.User]:
+        r"""Return a callable for the fetch self method over gRPC.
+
+        Fetch the User based on the user credentials.
+
+        Returns:
+            Callable[[~.FetchSelfRequest],
+                    ~.User]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_self" not in self._stubs:
+            self._stubs["fetch_self"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/FetchSelf",
+                request_serializer=developer_connect.FetchSelfRequest.serialize,
+                response_deserializer=developer_connect.User.deserialize,
+            )
+        return self._stubs["fetch_self"]
+
+    @property
+    def delete_self(
+        self,
+    ) -> Callable[[developer_connect.DeleteSelfRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete self method over gRPC.
+
+        Delete the User based on the user credentials.
+
+        Returns:
+            Callable[[~.DeleteSelfRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_self" not in self._stubs:
+            self._stubs["delete_self"] = self._logged_channel.unary_unary(
+                "/google.cloud.developerconnect.v1.DeveloperConnect/DeleteSelf",
+                request_serializer=developer_connect.DeleteSelfRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_self"]
+
     def close(self):
         self._logged_channel.close()
 

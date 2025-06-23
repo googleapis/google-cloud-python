@@ -24,8 +24,12 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.developerconnect.v1",
     manifest={
+        "SystemProvider",
+        "ListUsersRequest",
+        "ListUsersResponse",
         "Connection",
         "CryptoKeyConfig",
+        "GitProxyConfig",
         "InstallationState",
         "GitHubConfig",
         "GitHubEnterpriseConfig",
@@ -34,13 +38,27 @@ __protobuf__ = proto.module(
         "GitLabConfig",
         "UserCredential",
         "GitLabEnterpriseConfig",
+        "BitbucketDataCenterConfig",
+        "BitbucketCloudConfig",
         "ListConnectionsRequest",
         "ListConnectionsResponse",
         "GetConnectionRequest",
         "CreateConnectionRequest",
         "UpdateConnectionRequest",
         "DeleteConnectionRequest",
+        "ListAccountConnectorsRequest",
+        "ListAccountConnectorsResponse",
+        "GetAccountConnectorRequest",
+        "CreateAccountConnectorRequest",
+        "UpdateAccountConnectorRequest",
+        "DeleteAccountConnectorRequest",
+        "DeleteUserRequest",
         "OperationMetadata",
+        "FetchSelfRequest",
+        "DeleteSelfRequest",
+        "FetchAccessTokenRequest",
+        "FetchAccessTokenResponse",
+        "ExchangeError",
         "GitRepositoryLink",
         "CreateGitRepositoryLinkRequest",
         "DeleteGitRepositoryLinkRequest",
@@ -58,8 +76,132 @@ __protobuf__ = proto.module(
         "FetchGitHubInstallationsResponse",
         "FetchGitRefsRequest",
         "FetchGitRefsResponse",
+        "AccountConnector",
+        "User",
+        "ProviderOAuthConfig",
     },
 )
+
+
+class SystemProvider(proto.Enum):
+    r"""SystemProvider is a list of providers that are owned by
+    Developer Connect.
+
+    Values:
+        SYSTEM_PROVIDER_UNSPECIFIED (0):
+            No system provider specified.
+        GITHUB (1):
+            GitHub provider.
+            Scopes can be found at
+            https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes
+        GITLAB (2):
+            GitLab provider. Scopes can be found at
+            https://docs.gitlab.com/user/profile/personal_access_tokens/#personal-access-token-scopes
+        GOOGLE (3):
+            Google provider.
+            Recommended scopes:
+
+            "https://www.googleapis.com/auth/drive.readonly",
+            "https://www.googleapis.com/auth/documents.readonly".
+        SENTRY (4):
+            Sentry provider.
+            Scopes can be found at
+            https://docs.sentry.io/api/permissions/
+        ROVO (5):
+            Rovo provider.
+            Must select the "rovo" scope.
+        NEW_RELIC (6):
+            New Relic provider.
+            No scopes are allowed.
+        DATASTAX (7):
+            Datastax provider.
+            No scopes are allowed.
+        DYNATRACE (8):
+            Dynatrace provider.
+    """
+    SYSTEM_PROVIDER_UNSPECIFIED = 0
+    GITHUB = 1
+    GITLAB = 2
+    GOOGLE = 3
+    SENTRY = 4
+    ROVO = 5
+    NEW_RELIC = 6
+    DATASTAX = 7
+    DYNATRACE = 8
+
+
+class ListUsersRequest(proto.Message):
+    r"""Message for requesting a list of Users
+
+    Attributes:
+        parent (str):
+            Required. Parent value for ListUsersRequest
+        page_size (int):
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+        filter (str):
+            Optional. Filtering results
+        order_by (str):
+            Optional. Hint for how to order the results
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListUsersResponse(proto.Message):
+    r"""Message for response to listing Users
+
+    Attributes:
+        users (MutableSequence[google.cloud.developerconnect_v1.types.User]):
+            The list of Users
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    users: MutableSequence["User"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="User",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Connection(proto.Message):
@@ -89,6 +231,16 @@ class Connection(proto.Message):
         gitlab_enterprise_config (google.cloud.developerconnect_v1.types.GitLabEnterpriseConfig):
             Configuration for connections to an instance
             of GitLab Enterprise.
+
+            This field is a member of `oneof`_ ``connection_config``.
+        bitbucket_data_center_config (google.cloud.developerconnect_v1.types.BitbucketDataCenterConfig):
+            Configuration for connections to an instance
+            of Bitbucket Data Center.
+
+            This field is a member of `oneof`_ ``connection_config``.
+        bitbucket_cloud_config (google.cloud.developerconnect_v1.types.BitbucketCloudConfig):
+            Configuration for connections to an instance
+            of Bitbucket Clouds.
 
             This field is a member of `oneof`_ ``connection_config``.
         name (str):
@@ -126,11 +278,16 @@ class Connection(proto.Message):
             proceeding.
         uid (str):
             Output only. A system-assigned unique
-            identifier for a the GitRepositoryLink.
+            identifier for the Connection.
         crypto_key_config (google.cloud.developerconnect_v1.types.CryptoKeyConfig):
             Optional. The crypto key configuration. This
             field is used by the Customer-Managed Encryption
             Keys (CMEK) feature.
+        git_proxy_config (google.cloud.developerconnect_v1.types.GitProxyConfig):
+            Optional. Configuration for the git proxy
+            feature. Enabling the git proxy allows clients
+            to perform git operations on the repositories
+            linked in the connection.
     """
 
     github_config: "GitHubConfig" = proto.Field(
@@ -156,6 +313,18 @@ class Connection(proto.Message):
         number=16,
         oneof="connection_config",
         message="GitLabEnterpriseConfig",
+    )
+    bitbucket_data_center_config: "BitbucketDataCenterConfig" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        oneof="connection_config",
+        message="BitbucketDataCenterConfig",
+    )
+    bitbucket_cloud_config: "BitbucketCloudConfig" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        oneof="connection_config",
+        message="BitbucketCloudConfig",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -212,6 +381,11 @@ class Connection(proto.Message):
         number=15,
         message="CryptoKeyConfig",
     )
+    git_proxy_config: "GitProxyConfig" = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message="GitProxyConfig",
+    )
 
 
 class CryptoKeyConfig(proto.Message):
@@ -228,6 +402,22 @@ class CryptoKeyConfig(proto.Message):
 
     key_reference: str = proto.Field(
         proto.STRING,
+        number=1,
+    )
+
+
+class GitProxyConfig(proto.Message):
+    r"""The git proxy configuration.
+
+    Attributes:
+        enabled (bool):
+            Optional. Setting this to true allows the git
+            proxy to be used for performing git operations
+            on the repositories linked in the connection.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
         number=1,
     )
 
@@ -618,6 +808,123 @@ class GitLabEnterpriseConfig(proto.Message):
     )
 
 
+class BitbucketDataCenterConfig(proto.Message):
+    r"""Configuration for connections to an instance of Bitbucket
+    Data Center.
+
+    Attributes:
+        host_uri (str):
+            Required. The URI of the Bitbucket Data
+            Center host this connection is for.
+        webhook_secret_secret_version (str):
+            Required. Immutable. SecretManager resource containing the
+            webhook secret used to verify webhook events, formatted as
+            ``projects/*/secrets/*/versions/*``. This is used to
+            validate webhooks.
+        read_authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
+            Required. An http access token with the minimum
+            ``Repository read`` access. It's recommended to use a system
+            account to generate the credentials.
+        authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
+            Required. An http access token with the minimum
+            ``Repository admin`` scope access. This is needed to create
+            webhooks. It's recommended to use a system account to
+            generate these credentials.
+        service_directory_config (google.cloud.developerconnect_v1.types.ServiceDirectoryConfig):
+            Optional. Configuration for using Service
+            Directory to privately connect to a Bitbucket
+            Data Center instance. This should only be set if
+            the Bitbucket Data Center is hosted on-premises
+            and not reachable by public internet. If this
+            field is left empty, calls to the Bitbucket Data
+            Center will be made over the public internet.
+        ssl_ca_certificate (str):
+            Optional. SSL certificate authority to trust
+            when making requests to Bitbucket Data Center.
+        server_version (str):
+            Output only. Version of the Bitbucket Data Center server
+            running on the ``host_uri``.
+    """
+
+    host_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    webhook_secret_secret_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    read_authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="UserCredential",
+    )
+    authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="UserCredential",
+    )
+    service_directory_config: "ServiceDirectoryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ServiceDirectoryConfig",
+    )
+    ssl_ca_certificate: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    server_version: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+
+
+class BitbucketCloudConfig(proto.Message):
+    r"""Configuration for connections to an instance of Bitbucket
+    Cloud.
+
+    Attributes:
+        workspace (str):
+            Required. The Bitbucket Cloud Workspace ID to
+            be connected to Google Cloud Platform.
+        webhook_secret_secret_version (str):
+            Required. Immutable. SecretManager resource containing the
+            webhook secret used to verify webhook events, formatted as
+            ``projects/*/secrets/*/versions/*``. This is used to
+            validate and create webhooks.
+        read_authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
+            Required. An access token with the minimum ``repository``
+            access. It can either be a workspace, project or repository
+            access token. It's recommended to use a system account to
+            generate the credentials.
+        authorizer_credential (google.cloud.developerconnect_v1.types.UserCredential):
+            Required. An access token with the minimum ``repository``,
+            ``pullrequest`` and ``webhook`` scope access. It can either
+            be a workspace, project or repository access token. This is
+            needed to create webhooks. It's recommended to use a system
+            account to generate these credentials.
+    """
+
+    workspace: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    webhook_secret_secret_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    read_authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="UserCredential",
+    )
+    authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="UserCredential",
+    )
+
+
 class ListConnectionsRequest(proto.Message):
     r"""Message for requesting list of Connections
 
@@ -890,6 +1197,341 @@ class DeleteConnectionRequest(proto.Message):
     )
 
 
+class ListAccountConnectorsRequest(proto.Message):
+    r"""Message for requesting list of AccountConnectors
+
+    Attributes:
+        parent (str):
+            Required. Parent value for
+            ListAccountConnectorsRequest
+        page_size (int):
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+        filter (str):
+            Optional. Filtering results
+        order_by (str):
+            Optional. Hint for how to order the results
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListAccountConnectorsResponse(proto.Message):
+    r"""Message for response to listing AccountConnectors
+
+    Attributes:
+        account_connectors (MutableSequence[google.cloud.developerconnect_v1.types.AccountConnector]):
+            The list of AccountConnectors
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    account_connectors: MutableSequence["AccountConnector"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AccountConnector",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetAccountConnectorRequest(proto.Message):
+    r"""Message for getting a AccountConnector
+
+    Attributes:
+        name (str):
+            Required. Name of the resource
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateAccountConnectorRequest(proto.Message):
+    r"""
+
+    Attributes:
+        parent (str):
+            Required. Location resource name as the account_connector’s
+            parent.
+        account_connector_id (str):
+            Required. The ID to use for the
+            AccountConnector, which will become the final
+            component of the AccountConnector's resource
+            name. Its format should adhere to
+            https://google.aip.dev/122#resource-id-segments
+            Names must be unique per-project per-location.
+        account_connector (google.cloud.developerconnect_v1.types.AccountConnector):
+            Required. The AccountConnector to create.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set, validate the request, but
+            do not actually post it.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    account_connector_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    account_connector: "AccountConnector" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AccountConnector",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class UpdateAccountConnectorRequest(proto.Message):
+    r"""Message for updating a AccountConnector
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to be updated.
+        account_connector (google.cloud.developerconnect_v1.types.AccountConnector):
+            Required. The AccountConnector to update.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        allow_missing (bool):
+            Optional. If set to true, and the accountConnector is not
+            found a new accountConnector will be created. In this
+            situation ``update_mask`` is ignored. The creation will
+            succeed only if the input accountConnector has all the
+            necessary
+        validate_only (bool):
+            Optional. If set, validate the request, but
+            do not actually post it.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    account_connector: "AccountConnector" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AccountConnector",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    allow_missing: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class DeleteAccountConnectorRequest(proto.Message):
+    r"""Message for deleting a AccountConnector
+
+    Attributes:
+        name (str):
+            Required. Name of the resource
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set, validate the request, but
+            do not actually post it.
+        etag (str):
+            Optional. The current etag of the
+            AccountConnectorn. If an etag is provided and
+            does not match the current etag of the
+            AccountConnector, deletion will be blocked and
+            an ABORTED error will be returned.
+        force (bool):
+            Optional. If set to true, any Users from this
+            AccountConnector will also be deleted.
+            (Otherwise, the request will only work if the
+            AccountConnector has no Users.)
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class DeleteUserRequest(proto.Message):
+    r"""Message for deleting a User
+
+    Attributes:
+        name (str):
+            Required. Name of the resource
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        validate_only (bool):
+            Optional. If set, validate the request, but
+            do not actually post it.
+        etag (str):
+            Optional. This checksum is computed by the
+            server based on the value of other fields, and
+            may be sent on update and delete requests to
+            ensure the client has an up-to-date value before
+            proceeding.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
 
@@ -954,6 +1596,110 @@ class OperationMetadata(proto.Message):
     )
 
 
+class FetchSelfRequest(proto.Message):
+    r"""Message for fetching a User of the user themselves.
+
+    Attributes:
+        name (str):
+            Required. Name of the AccountConnector
+            resource
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteSelfRequest(proto.Message):
+    r"""Message for deleting a User of the user themselves.
+
+    Attributes:
+        name (str):
+            Required. Name of the AccountConnector
+            resource
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FetchAccessTokenRequest(proto.Message):
+    r"""Message for fetching an OAuth access token.
+
+    Attributes:
+        account_connector (str):
+            Required. The resource name of the AccountConnector in the
+            format ``projects/*/locations/*/accountConnectors/*``.
+    """
+
+    account_connector: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FetchAccessTokenResponse(proto.Message):
+    r"""Message for responding to getting an OAuth access token.
+
+    Attributes:
+        token (str):
+            The token content.
+        expiration_time (google.protobuf.timestamp_pb2.Timestamp):
+            Expiration timestamp. Can be empty if unknown
+            or non-expiring.
+        scopes (MutableSequence[str]):
+            The scopes of the access token.
+        exchange_error (google.cloud.developerconnect_v1.types.ExchangeError):
+            The error resulted from exchanging OAuth
+            tokens from the service provider.
+    """
+
+    token: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expiration_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    scopes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    exchange_error: "ExchangeError" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ExchangeError",
+    )
+
+
+class ExchangeError(proto.Message):
+    r"""Message for representing an error from exchanging OAuth
+    tokens.
+
+    Attributes:
+        code (str):
+            https://datatracker.ietf.org/doc/html/rfc6749#section-5.2
+            - error
+        description (str):
+            https://datatracker.ietf.org/doc/html/rfc6749#section-5.2 -
+            error_description
+    """
+
+    code: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class GitRepositoryLink(proto.Message):
     r"""Message describing the GitRepositoryLink object
 
@@ -985,10 +1731,15 @@ class GitRepositoryLink(proto.Message):
             amounts of arbitrary data.
         uid (str):
             Output only. A system-assigned unique
-            identifier for a the GitRepositoryLink.
+            identifier for the GitRepositoryLink.
         webhook_id (str):
             Output only. External ID of the webhook
             created for the repository.
+        git_proxy_uri (str):
+            Output only. URI to access the linked
+            repository through the Git Proxy. This field is
+            only populated if the git proxy is enabled for
+            the connection.
     """
 
     name: str = proto.Field(
@@ -1039,6 +1790,10 @@ class GitRepositoryLink(proto.Message):
     webhook_id: str = proto.Field(
         proto.STRING,
         number=11,
+    )
+    git_proxy_uri: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
 
 
@@ -1540,6 +2295,155 @@ class FetchGitRefsResponse(proto.Message):
         number=1,
     )
     next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class AccountConnector(proto.Message):
+    r"""AccountConnector encapsulates what a platform administrator
+    needs to configure for users to connect to the service
+    providers, which includes, among other fields, the OAuth client
+    ID, client secret, and authorization and token endpoints.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        provider_oauth_config (google.cloud.developerconnect_v1.types.ProviderOAuthConfig):
+            Provider OAuth config.
+
+            This field is a member of `oneof`_ ``account_connector_config``.
+        name (str):
+            Identifier. The resource name of the accountConnector, in
+            the format
+            ``projects/{project}/locations/{location}/accountConnectors/{account_connector_id}``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the
+            accountConnector was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the
+            accountConnector was updated.
+        annotations (MutableMapping[str, str]):
+            Optional. Allows users to store small amounts
+            of arbitrary data.
+        etag (str):
+            Optional. This checksum is computed by the
+            server based on the value of other fields, and
+            may be sent on update and delete requests to
+            ensure the client has an up-to-date value before
+            proceeding.
+        labels (MutableMapping[str, str]):
+            Optional. Labels as key value pairs
+        oauth_start_uri (str):
+            Output only. Start OAuth flow by clicking on
+            this URL.
+    """
+
+    provider_oauth_config: "ProviderOAuthConfig" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="account_connector_config",
+        message="ProviderOAuthConfig",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    annotations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    oauth_start_uri: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+
+
+class User(proto.Message):
+    r"""User represents a user connected to the service providers
+    through a AccountConnector.
+
+    Attributes:
+        name (str):
+            Identifier. Resource name of the user, in the format
+            ``projects/*/locations/*/accountConnectors/*/users/*``.
+        display_name (str):
+            Output only. Developer Connect automatically
+            converts user identity to some human readable
+            description, e.g., email address.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the user was
+            created.
+        last_token_request_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the token was
+            last requested.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    last_token_request_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ProviderOAuthConfig(proto.Message):
+    r"""ProviderOAuthConfig is the OAuth config for a provider.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        system_provider_id (google.cloud.developerconnect_v1.types.SystemProvider):
+            Immutable. Developer Connect provided OAuth.
+
+            This field is a member of `oneof`_ ``oauth_provider_id``.
+        scopes (MutableSequence[str]):
+            Required. User selected scopes to apply to
+            the Oauth config In the event of changing
+            scopes, user records under AccountConnector will
+            be deleted and users will re-auth again.
+    """
+
+    system_provider_id: "SystemProvider" = proto.Field(
+        proto.ENUM,
+        number=1,
+        oneof="oauth_provider_id",
+        enum="SystemProvider",
+    )
+    scopes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )

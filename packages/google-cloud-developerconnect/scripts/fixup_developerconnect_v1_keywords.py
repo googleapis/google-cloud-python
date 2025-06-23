@@ -39,20 +39,35 @@ def partition(
 class developerconnectCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_account_connector': ('parent', 'account_connector_id', 'account_connector', 'request_id', 'validate_only', ),
         'create_connection': ('parent', 'connection_id', 'connection', 'request_id', 'validate_only', ),
         'create_git_repository_link': ('parent', 'git_repository_link', 'git_repository_link_id', 'request_id', 'validate_only', ),
+        'create_insights_config': ('parent', 'insights_config_id', 'insights_config', 'validate_only', ),
+        'delete_account_connector': ('name', 'request_id', 'validate_only', 'etag', 'force', ),
         'delete_connection': ('name', 'request_id', 'validate_only', 'etag', ),
         'delete_git_repository_link': ('name', 'request_id', 'validate_only', 'etag', ),
+        'delete_insights_config': ('name', 'request_id', 'validate_only', 'etag', ),
+        'delete_self': ('name', ),
+        'delete_user': ('name', 'request_id', 'validate_only', 'etag', ),
+        'fetch_access_token': ('account_connector', ),
         'fetch_git_hub_installations': ('connection', ),
         'fetch_git_refs': ('git_repository_link', 'ref_type', 'page_size', 'page_token', ),
         'fetch_linkable_git_repositories': ('connection', 'page_size', 'page_token', ),
         'fetch_read_token': ('git_repository_link', ),
         'fetch_read_write_token': ('git_repository_link', ),
+        'fetch_self': ('name', ),
+        'get_account_connector': ('name', ),
         'get_connection': ('name', ),
         'get_git_repository_link': ('name', ),
+        'get_insights_config': ('name', ),
+        'list_account_connectors': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_connections': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_git_repository_links': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_insights_configs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_users': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'update_account_connector': ('account_connector', 'update_mask', 'request_id', 'allow_missing', 'validate_only', ),
         'update_connection': ('update_mask', 'connection', 'request_id', 'allow_missing', 'validate_only', ),
+        'update_insights_config': ('insights_config', 'request_id', 'allow_missing', 'validate_only', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -671,3 +671,319 @@ class FetchGitRefsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAccountConnectorsPager:
+    """A pager for iterating through ``list_account_connectors`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.developerconnect_v1.types.ListAccountConnectorsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``account_connectors`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAccountConnectors`` requests and continue to iterate
+    through the ``account_connectors`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.developerconnect_v1.types.ListAccountConnectorsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., developer_connect.ListAccountConnectorsResponse],
+        request: developer_connect.ListAccountConnectorsRequest,
+        response: developer_connect.ListAccountConnectorsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.developerconnect_v1.types.ListAccountConnectorsRequest):
+                The initial request object.
+            response (google.cloud.developerconnect_v1.types.ListAccountConnectorsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = developer_connect.ListAccountConnectorsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[developer_connect.ListAccountConnectorsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[developer_connect.AccountConnector]:
+        for page in self.pages:
+            yield from page.account_connectors
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAccountConnectorsAsyncPager:
+    """A pager for iterating through ``list_account_connectors`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.developerconnect_v1.types.ListAccountConnectorsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``account_connectors`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAccountConnectors`` requests and continue to iterate
+    through the ``account_connectors`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.developerconnect_v1.types.ListAccountConnectorsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[developer_connect.ListAccountConnectorsResponse]
+        ],
+        request: developer_connect.ListAccountConnectorsRequest,
+        response: developer_connect.ListAccountConnectorsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.developerconnect_v1.types.ListAccountConnectorsRequest):
+                The initial request object.
+            response (google.cloud.developerconnect_v1.types.ListAccountConnectorsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = developer_connect.ListAccountConnectorsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[developer_connect.ListAccountConnectorsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[developer_connect.AccountConnector]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.account_connectors:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListUsersPager:
+    """A pager for iterating through ``list_users`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.developerconnect_v1.types.ListUsersResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``users`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListUsers`` requests and continue to iterate
+    through the ``users`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.developerconnect_v1.types.ListUsersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., developer_connect.ListUsersResponse],
+        request: developer_connect.ListUsersRequest,
+        response: developer_connect.ListUsersResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.developerconnect_v1.types.ListUsersRequest):
+                The initial request object.
+            response (google.cloud.developerconnect_v1.types.ListUsersResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = developer_connect.ListUsersRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[developer_connect.ListUsersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[developer_connect.User]:
+        for page in self.pages:
+            yield from page.users
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListUsersAsyncPager:
+    """A pager for iterating through ``list_users`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.developerconnect_v1.types.ListUsersResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``users`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListUsers`` requests and continue to iterate
+    through the ``users`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.developerconnect_v1.types.ListUsersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[developer_connect.ListUsersResponse]],
+        request: developer_connect.ListUsersRequest,
+        response: developer_connect.ListUsersResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.developerconnect_v1.types.ListUsersRequest):
+                The initial request object.
+            response (google.cloud.developerconnect_v1.types.ListUsersResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = developer_connect.ListUsersRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[developer_connect.ListUsersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[developer_connect.User]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.users:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

@@ -4,3 +4,4 @@ Services for Google Cloud Developerconnect v1 API
     :maxdepth: 2
 
     developer_connect
+    insights_config_service
