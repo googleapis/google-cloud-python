@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.8.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.7.0...v2.8.0) (2025-06-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* add required param 'engine' to multimodal functions ([#1834](https://github.com/googleapis/python-bigquery-dataframes/issues/1834))
+
+### Features
+
+* Add `bpd.options.compute.maximum_result_rows` option to limit client data download ([#1829](https://github.com/googleapis/python-bigquery-dataframes/issues/1829)) ([e22a3f6](https://github.com/googleapis/python-bigquery-dataframes/commit/e22a3f61a02cc1b7a5155556e5a07a1a2fea1d82))
+* Add `bpd.options.display.repr_mode = "anywidget"` to create an interactive display of the results ([#1820](https://github.com/googleapis/python-bigquery-dataframes/issues/1820)) ([be0a3cf](https://github.com/googleapis/python-bigquery-dataframes/commit/be0a3cf7711dadc68d8366ea90b99855773e2a2e))
+* Add DataFrame.ai.forecast() support ([#1828](https://github.com/googleapis/python-bigquery-dataframes/issues/1828)) ([7bc7f36](https://github.com/googleapis/python-bigquery-dataframes/commit/7bc7f36fc20d233f4cf5ed688cc5dcaf100ce4fb))
+* Add describe() method to Series ([#1827](https://github.com/googleapis/python-bigquery-dataframes/issues/1827)) ([a4205f8](https://github.com/googleapis/python-bigquery-dataframes/commit/a4205f882012820c034cb15d73b2768ec4ad3ac8))
+* Add required param 'engine' to multimodal functions ([#1834](https://github.com/googleapis/python-bigquery-dataframes/issues/1834)) ([37666e4](https://github.com/googleapis/python-bigquery-dataframes/commit/37666e4c137d52c28ab13477dfbcc6e92b913334))
+
+
+### Performance Improvements
+
+* Produce simpler sql ([#1836](https://github.com/googleapis/python-bigquery-dataframes/issues/1836)) ([cf9c22a](https://github.com/googleapis/python-bigquery-dataframes/commit/cf9c22a09c4e668a598fa1dad0f6a07b59bc6524))
+
+
+### Documentation
+
+* Add ai.forecast notebook ([#1840](https://github.com/googleapis/python-bigquery-dataframes/issues/1840)) ([2430497](https://github.com/googleapis/python-bigquery-dataframes/commit/24304972fdbdfd12c25c7f4ef5a7b280f334801a))
+
 ## [2.7.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.6.0...v2.7.0) (2025-06-16)
 
 
