@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.12.0](https://github.com/googleapis/python-error-reporting/compare/v1.11.1...v1.12.0) (2025-05-21)
+
+
+### Features
+
+* Add REST Interceptors which support reading metadata ([1d120c7](https://github.com/googleapis/python-error-reporting/commit/1d120c77c73b566796b32cab017a0d4cdfa28713))
+* Add support for opt-in debug logging ([1d120c7](https://github.com/googleapis/python-error-reporting/commit/1d120c77c73b566796b32cab017a0d4cdfa28713))
+
+
+### Bug Fixes
+
+* Allow Protobuf 6.x ([#557](https://github.com/googleapis/python-error-reporting/issues/557)) ([9f8faeb](https://github.com/googleapis/python-error-reporting/commit/9f8faeba223a0e1834c0750d21b5cafdee74d327))
+* Fix typing issue with gRPC metadata when key ends in -bin ([1d120c7](https://github.com/googleapis/python-error-reporting/commit/1d120c77c73b566796b32cab017a0d4cdfa28713))
+* Remove setup.cfg configuration for creating universal wheels ([#562](https://github.com/googleapis/python-error-reporting/issues/562)) ([0738c03](https://github.com/googleapis/python-error-reporting/commit/0738c03fa4321fd29c0915da2336bf77947367ae))
+* Require proto-plus &gt;= 1.25.0 for Python 3.13 ([#567](https://github.com/googleapis/python-error-reporting/issues/567)) ([d5cd225](https://github.com/googleapis/python-error-reporting/commit/d5cd225fd71d8b54197c4f02c30d32eb8cd24dfa))
+
 ## [1.11.1](https://github.com/googleapis/python-error-reporting/compare/v1.11.0...v1.11.1) (2024-09-17)
 
 
