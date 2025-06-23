@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.4...google-cloud-parametermanager-v0.1.5) (2025-06-23)
+
+
+### Features
+
+* KMS key resource_definition `[cloudkms.googleapis.com/CryptoKey](https://www.google.com/url?sa=D&q=http%3A%2F%2Fcloudkms.googleapis.com%2FCryptoKey) is added ([d113d5b](https://github.com/googleapis/google-cloud-python/commit/d113d5b2d5e5a13143a55104cc0178df43ba0d5a))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.3...google-cloud-parametermanager-v0.1.4) (2025-06-11)
 
 
