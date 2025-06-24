@@ -1,0 +1,1 @@
+The snippets have been migrated to GoogleCloudPlatform/python-docs-samples in PR: https://github.com/GoogleCloudPlatform/python-docs-samples/pull/8493

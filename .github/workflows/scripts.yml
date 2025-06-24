@@ -1,0 +1,30 @@
+on:
+  pull_request:
+    branches:
+      - main
+name: scripts
+
+permissions:
+  contents: read
+
+jobs:
+  test_release_please_scripts:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      # Use a fetch-depth of 2
+      # See https://github.com/googleapis/google-cloud-python/issues/12013
+      # and https://github.com/actions/checkout#checkout-head.
+      with:
+        fetch-depth: 2
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+    - name: Install pytest
+      run: |
+        python -m pip install pytest
+    - name: Run configure_release_please_scripts tests
+      run: |
+        pytest scripts/configure_release_please

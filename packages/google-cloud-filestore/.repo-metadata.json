@@ -1,0 +1,17 @@
+{
+    "name": "file",
+    "name_pretty": "Filestore",
+    "product_documentation": "https://cloud.google.com/filestore/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/file/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-cloud-filestore",
+    "api_id": "file.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "file",
+    "api_description": "Filestore instances are fully managed NFS file servers on Google Cloud for use with applications running on Compute Engine virtual machines (VMs) instances or Google Kubernetes Engine clusters."
+}

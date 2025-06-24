@@ -1,0 +1,17 @@
+{
+  "name": "google-shopping-merchant-ordertracking",
+  "name_pretty": "Merchant API",
+  "api_description": "Programmatically manage your Merchant Center Accounts. ",
+  "product_documentation": "https://developers.google.com/merchant/api",
+  "client_documentation": "https://googleapis.dev/python/google-shopping-merchant-ordertracking/latest",
+  "issue_tracker": "https://issuetracker.google.com/issues/new?component=171084&template=555201",
+  "release_level": "preview",
+  "language": "python",
+  "library_type": "GAPIC_AUTO",
+  "repo": "googleapis/google-cloud-python",
+  "distribution_name": "google-shopping-merchant-ordertracking",
+  "api_id": "ordertracking.googleapis.com",
+  "default_version": "v1beta",
+  "codeowner_team": "",
+  "api_shortname": "ordertracking"
+}

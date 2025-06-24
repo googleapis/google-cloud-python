@@ -1,0 +1,53 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "grpc-google-iam-v1"
+version = "0.14.2"
+authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
+license = { text = "Apache 2.0" }
+requires-python = ">=3.7"
+description = "IAM API client library"
+readme = "README.rst"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Operating System :: OS Independent",
+  "Topic :: Internet",
+]
+dependencies = [
+  "grpcio >= 1.44.0, < 2.0.0",
+  "googleapis-common-protos[grpc] >= 1.56.0, < 2.0.0",
+  "protobuf >= 3.20.2, < 7.0.0, != 4.21.1, != 4.21.2, != 4.21.3, != 4.21.4, != 4.21.5",
+]
+
+[project.urls]
+Repository = "https://github.com/googleapis/google-cloud-python"
+
+[tool.setuptools.packages.find]
+include = ["google*"]

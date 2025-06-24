@@ -1,0 +1,1 @@
+The samples have migrated, please see the samples on https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/dialogflow.

@@ -1,0 +1,17 @@
+{
+    "name": "discoveryengine",
+    "name_pretty": "Discovery Engine API",
+    "api_description": "",
+    "product_documentation": "https://cloud.google.com/discovery-engine/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/discoveryengine/latest",
+    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-cloud-discoveryengine",
+    "api_id": "discoveryengine.googleapis.com",
+    "default_version": "v1beta",
+    "codeowner_team": "",
+    "api_shortname": "discoveryengine"
+}

@@ -1,0 +1,17 @@
+{
+    "name": "google-cloud-gdchardwaremanagement",
+    "name_pretty": "GDC Hardware Management API",
+    "api_description": "Google Distributed Cloud connected allows you to run Kubernetes clusters on dedicated hardware provided and maintained by Google that is separate from the Google Cloud data center.",
+    "product_documentation": "https://cloud.google.com/distributed-cloud/edge/latest/docs",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-gdchardwaremanagement/latest",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=1563150",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-cloud-gdchardwaremanagement",
+    "api_id": "gdchardwaremanagement.googleapis.com",
+    "default_version": "v1alpha",
+    "codeowner_team": "",
+    "api_shortname": "gdchardwaremanagement"
+}

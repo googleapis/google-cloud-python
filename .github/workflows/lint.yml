@@ -1,0 +1,48 @@
+on:
+  pull_request:
+    branches:
+      - main
+  # Trigger workflow on GitHub merge queue events
+  # See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#merge_group
+  merge_group:
+    types: [checks_requested]
+name: lint
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
+      # See https://github.com/googleapis/google-cloud-python/issues/12013
+      # and https://github.com/actions/checkout#checkout-head.
+      with:
+        fetch-depth: 2
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+    - name: Install nox
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install nox
+    - name: Run lint
+      env:
+        BUILD_TYPE: presubmit
+        TEST_TYPE: lint
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
+        PY_VERSION: "unused"
+      run: |
+        ci/run_conditional_tests.sh
+    - name: Run lint_setup_py
+      env:
+        BUILD_TYPE: presubmit
+        TEST_TYPE: lint_setup_py
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
+        PY_VERSION: "unused"
+      run: |
+        ci/run_conditional_tests.sh
