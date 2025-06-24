@@ -848,65 +848,6 @@ def test_sim_join_data_too_large_raises_error(session, text_embedding_generator)
         )
 
 
-@pytest.mark.parametrize(
-    "instruction",
-    [
-        pytest.param(
-            "No column reference",
-            id="zero_column",
-            marks=pytest.mark.xfail(raises=ValueError),
-        ),
-        pytest.param(
-            "{Animals}",
-            id="non_existing_column",
-            marks=pytest.mark.xfail(raises=ValueError),
-        ),
-        pytest.param(
-            "{Animals} and {Animals}",
-            id="two_columns",
-            marks=pytest.mark.xfail(raises=NotImplementedError),
-        ),
-        pytest.param(
-            "{index}",
-            id="preserved",
-            marks=pytest.mark.xfail(raises=ValueError),
-        ),
-    ],
-)
-def test_top_k_invalid_instruction_raise_error(instruction, gemini_flash_model):
-    df = dataframe.DataFrame(
-        {
-            "Animals": ["Dog", "Cat", "Bird", "Horse"],
-            "ID": [1, 2, 3, 4],
-            "index": ["a", "b", "c", "d"],
-        }
-    )
-
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ):
-        df.ai.top_k(instruction, model=gemini_flash_model, k=2)
-
-
-def test_top_k_invalid_k_raise_error(gemini_flash_model):
-    df = dataframe.DataFrame({"Animals": ["Dog", "Cat", "Bird", "Horse"]})
-
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        10,
-    ), pytest.raises(ValueError):
-        df.ai.top_k(
-            "{Animals} are more popular as pets",
-            gemini_flash_model,
-            k=0,
-        )
-
-
 @patch("builtins.input", return_value="")
 def test_confirm_operation__below_threshold_do_not_confirm(mock_input):
     df = dataframe.DataFrame({})

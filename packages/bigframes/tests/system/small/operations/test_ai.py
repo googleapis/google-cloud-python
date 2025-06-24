@@ -75,11 +75,6 @@ class FakeGeminiTextGenerator(llm.GeminiTextGenerator):
             id="search",
         ),
         pytest.param(
-            bigframes.operations.ai.AIAccessor.top_k,
-            {"instruction": None, "model": None},
-            id="top_k",
-        ),
-        pytest.param(
             bigframes.operations.ai.AIAccessor.sim_join,
             {"other": None, "left_on": None, "right_on": None, "model": None},
             id="sim_join",
@@ -245,25 +240,6 @@ def test_join(session):
         pd.DataFrame({"col_A": ["A"], "col_B": ["B"]}, dtype=dtypes.STRING_DTYPE),
         check_index_type=False,
     )
-
-
-def test_top_k(session):
-    df = dataframe.DataFrame({"col": ["A", "B"]}, session=session)
-    model = FakeGeminiTextGenerator(
-        dataframe.DataFrame(
-            {"ml_generate_text_llm_result": ["Document 1"]}, session=session
-        ),
-    )
-
-    with bigframes.option_context(
-        AI_OP_EXP_OPTION,
-        True,
-        THRESHOLD_OPTION,
-        50,
-    ):
-        result = df.ai.top_k("top k of {col}", model, k=1).to_pandas()
-
-    assert len(result) == 1
 
 
 def test_forecast_default(time_series_df_default_index: dataframe.DataFrame):
