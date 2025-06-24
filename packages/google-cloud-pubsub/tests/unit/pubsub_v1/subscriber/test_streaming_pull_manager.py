@@ -1333,7 +1333,13 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
     leaser.return_value.start.assert_called_once()
     assert manager.leaser == leaser.return_value
 
-    background_consumer.assert_called_once_with(manager._rpc, manager._on_response)
+    if streaming_pull_manager._SHOULD_USE_ON_FATAL_ERROR_CALLBACK:
+        background_consumer.assert_called_once_with(
+            manager._rpc, manager._on_response, manager._on_fatal_exception
+        )
+    else:
+        background_consumer.assert_called_once_with(manager._rpc, manager._on_response)
+
     background_consumer.return_value.start.assert_called_once()
     assert manager._consumer == background_consumer.return_value
 
@@ -1430,6 +1436,31 @@ def test_close():
     scheduler.shutdown.assert_called_once()
 
     assert manager.is_active is False
+
+
+def test_closes_on_fatal_consumer_error():
+    (
+        manager,
+        consumer,
+        dispatcher,
+        leaser,
+        heartbeater,
+        scheduler,
+    ) = make_running_manager()
+
+    if streaming_pull_manager._SHOULD_USE_ON_FATAL_ERROR_CALLBACK:
+        error = ValueError("some fatal exception")
+        manager._on_fatal_exception(error)
+
+        await_manager_shutdown(manager, timeout=3)
+
+        consumer.stop.assert_called_once()
+        leaser.stop.assert_called_once()
+        dispatcher.stop.assert_called_once()
+        heartbeater.stop.assert_called_once()
+        scheduler.shutdown.assert_called_once()
+
+        assert manager.is_active is False
 
 
 def test_close_inactive_consumer():
@@ -2270,18 +2301,24 @@ def test__should_recover_false():
 def test__should_terminate_true():
     manager = make_manager()
 
-    details = "Cancelled. Go away, before I taunt you a second time."
-    exc = exceptions.Cancelled(details)
-
-    assert manager._should_terminate(exc) is True
+    for exc in [
+        exceptions.Cancelled(""),
+        exceptions.PermissionDenied(""),
+        TypeError(),
+        ValueError(),
+    ]:
+        assert manager._should_terminate(exc)
 
 
 def test__should_terminate_false():
     manager = make_manager()
 
-    exc = TypeError("wahhhhhh")
-
-    assert manager._should_terminate(exc) is False
+    for exc in [
+        exceptions.ResourceExhausted(""),
+        exceptions.ServiceUnavailable(""),
+        exceptions.DeadlineExceeded(""),
+    ]:
+        assert not manager._should_terminate(exc)
 
 
 @mock.patch("threading.Thread", autospec=True)

@@ -16,6 +16,7 @@ from __future__ import division
 
 import collections
 import functools
+import inspect
 import itertools
 import logging
 import threading
@@ -62,14 +63,22 @@ _LOGGER = logging.getLogger(__name__)
 _REGULAR_SHUTDOWN_THREAD_NAME = "Thread-RegularStreamShutdown"
 _RPC_ERROR_THREAD_NAME = "Thread-OnRpcTerminated"
 _RETRYABLE_STREAM_ERRORS = (
-    exceptions.DeadlineExceeded,
-    exceptions.ServiceUnavailable,
-    exceptions.InternalServerError,
-    exceptions.Unknown,
-    exceptions.GatewayTimeout,
     exceptions.Aborted,
+    exceptions.DeadlineExceeded,
+    exceptions.GatewayTimeout,
+    exceptions.InternalServerError,
+    exceptions.ResourceExhausted,
+    exceptions.ServiceUnavailable,
+    exceptions.Unknown,
 )
-_TERMINATING_STREAM_ERRORS = (exceptions.Cancelled,)
+_TERMINATING_STREAM_ERRORS = (
+    exceptions.Cancelled,
+    exceptions.InvalidArgument,
+    exceptions.NotFound,
+    exceptions.PermissionDenied,
+    exceptions.Unauthenticated,
+    exceptions.Unauthorized,
+)
 _MAX_LOAD = 1.0
 """The load threshold above which to pause the incoming message stream."""
 
@@ -97,6 +106,13 @@ _EXACTLY_ONCE_DELIVERY_TEMPORARY_RETRY_ERRORS = {
     code_pb2.INTERNAL,
     code_pb2.UNAVAILABLE,
 }
+
+# `on_fatal_exception` was added in `google-api-core v2.25.1``, which allows us to inform
+# callers on unrecoverable errors. We can only pass this arg if it's available in the
+# `BackgroundConsumer` spec.
+_SHOULD_USE_ON_FATAL_ERROR_CALLBACK = "on_fatal_exception" in inspect.getfullargspec(
+    bidi.BackgroundConsumer
+)
 
 
 def _wrap_as_exception(maybe_exception: Any) -> BaseException:
@@ -876,7 +892,18 @@ class StreamingPullManager(object):
         assert self._scheduler is not None
         scheduler_queue = self._scheduler.queue
         self._dispatcher = dispatcher.Dispatcher(self, scheduler_queue)
-        self._consumer = bidi.BackgroundConsumer(self._rpc, self._on_response)
+
+        # `on_fatal_exception` is only available in more recent library versions.
+        # For backwards compatibility reasons, we only pass it when `google-api-core` supports it.
+        if _SHOULD_USE_ON_FATAL_ERROR_CALLBACK:
+            self._consumer = bidi.BackgroundConsumer(
+                self._rpc,
+                self._on_response,
+                on_fatal_exception=self._on_fatal_exception,
+            )
+        else:
+            self._consumer = bidi.BackgroundConsumer(self._rpc, self._on_response)
+
         self._leaser = leaser.Leaser(self)
         self._heartbeater = heartbeater.Heartbeater(self)
 
@@ -1247,6 +1274,17 @@ class StreamingPullManager(object):
 
         self.maybe_pause_consumer()
 
+    def _on_fatal_exception(self, exception: BaseException) -> None:
+        """
+        Called whenever `self.consumer` receives a non-retryable exception.
+        We close the manager on such non-retryable cases.
+        """
+        _LOGGER.exception(
+            "Streaming pull terminating after receiving non-recoverable error: %s",
+            exception,
+        )
+        self.close(exception)
+
     def _should_recover(self, exception: BaseException) -> bool:
         """Determine if an error on the RPC stream should be recovered.
 
@@ -1283,8 +1321,10 @@ class StreamingPullManager(object):
             in a list of terminating exceptions.
         """
         exception = _wrap_as_exception(exception)
-        if isinstance(exception, _TERMINATING_STREAM_ERRORS):
-            _LOGGER.debug("Observed terminating stream error %s", exception)
+        is_api_error = isinstance(exception, exceptions.GoogleAPICallError)
+        # Terminate any non-API errors, or non-retryable errors (permission denied, unauthorized, etc.)
+        if not is_api_error or isinstance(exception, _TERMINATING_STREAM_ERRORS):
+            _LOGGER.error("Observed terminating stream error %s", exception)
             return True
         _LOGGER.debug("Observed non-terminating stream error %s", exception)
         return False
