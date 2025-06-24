@@ -67,6 +67,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
@@ -204,6 +205,28 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def authz_extension_path(
+        project: str,
+        location: str,
+        authz_extension: str,
+    ) -> str:
+        """Returns a fully-qualified authz_extension string."""
+        return "projects/{project}/locations/{location}/authzExtensions/{authz_extension}".format(
+            project=project,
+            location=location,
+            authz_extension=authz_extension,
+        )
+
+    @staticmethod
+    def parse_authz_extension_path(path: str) -> Dict[str, str]:
+        """Parses a authz_extension path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/authzExtensions/(?P<authz_extension>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def lb_route_extension_path(
@@ -783,8 +806,8 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
                 resources.
             parent (str):
                 Required. The project and location from which the
-                ``LbTrafficExtension`` resources are listed, specified
-                in the following format:
+                ``LbTrafficExtension`` resources are listed. These
+                values are specified in the following format:
                 ``projects/{project}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
@@ -1009,7 +1032,6 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
                 # Initialize request argument(s)
                 lb_traffic_extension = network_services_v1.LbTrafficExtension()
                 lb_traffic_extension.name = "name_value"
-                lb_traffic_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_traffic_extension.extension_chains.name = "name_value"
                 lb_traffic_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
                 lb_traffic_extension.extension_chains.extensions.name = "name_value"
@@ -1165,7 +1187,6 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
                 # Initialize request argument(s)
                 lb_traffic_extension = network_services_v1.LbTrafficExtension()
                 lb_traffic_extension.name = "name_value"
-                lb_traffic_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
                 lb_traffic_extension.extension_chains.name = "name_value"
                 lb_traffic_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
                 lb_traffic_extension.extension_chains.extensions.name = "name_value"
@@ -1197,8 +1218,8 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Optional. Used to specify the fields to be overwritten
                 in the ``LbTrafficExtension`` resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field is
+                The fields specified in the ``update_mask`` are relative
+                to the resource, not the full request. A field is
                 overwritten if it is in the mask. If the user does not
                 specify a mask, then all fields are overwritten.
 
@@ -1461,8 +1482,8 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
                 resources.
             parent (str):
                 Required. The project and location from which the
-                ``LbRouteExtension`` resources are listed, specified in
-                the following format:
+                ``LbRouteExtension`` resources are listed. These values
+                are specified in the following format:
                 ``projects/{project}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
@@ -1867,10 +1888,10 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Optional. Used to specify the fields to be overwritten
                 in the ``LbRouteExtension`` resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field is overwritten
-                if it is in the mask. If the user does not specify a
-                mask, then all fields are overwritten.
+                fields specified in the ``update_mask`` are relative to
+                the resource, not the full request. A field is
+                overwritten if it is in the mask. If the user does not
+                specify a mask, then all fields are overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2054,6 +2075,664 @@ class DepServiceClient(metaclass=DepServiceClientMeta):
         rpc = self._transport._wrapped_methods[
             self._transport.delete_lb_route_extension
         ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_authz_extensions(
+        self,
+        request: Optional[Union[dep.ListAuthzExtensionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListAuthzExtensionsPager:
+        r"""Lists ``AuthzExtension`` resources in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_list_authz_extensions():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.ListAuthzExtensionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_authz_extensions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.ListAuthzExtensionsRequest, dict]):
+                The request object. Message for requesting list of ``AuthzExtension``
+                resources.
+            parent (str):
+                Required. The project and location from which the
+                ``AuthzExtension`` resources are listed. These values
+                are specified in the following format:
+                ``projects/{project}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.services.dep_service.pagers.ListAuthzExtensionsPager:
+                Message for response to listing AuthzExtension
+                resources.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.ListAuthzExtensionsRequest):
+            request = dep.ListAuthzExtensionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_authz_extensions]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListAuthzExtensionsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_authz_extension(
+        self,
+        request: Optional[Union[dep.GetAuthzExtensionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> dep.AuthzExtension:
+        r"""Gets details of the specified ``AuthzExtension`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_get_authz_extension():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.GetAuthzExtensionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_authz_extension(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.GetAuthzExtensionRequest, dict]):
+                The request object. Message for getting a ``AuthzExtension`` resource.
+            name (str):
+                Required. A name of the ``AuthzExtension`` resource to
+                get. Must be in the format
+                ``projects/{project}/locations/{location}/authzExtensions/{authz_extension}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.types.AuthzExtension:
+                AuthzExtension is a resource that allows traffic forwarding
+                   to a callout backend service to make an authorization
+                   decision.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.GetAuthzExtensionRequest):
+            request = dep.GetAuthzExtensionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_authz_extension]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_authz_extension(
+        self,
+        request: Optional[Union[dep.CreateAuthzExtensionRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        authz_extension: Optional[dep.AuthzExtension] = None,
+        authz_extension_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new ``AuthzExtension`` resource in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_create_authz_extension():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                authz_extension = network_services_v1.AuthzExtension()
+                authz_extension.name = "name_value"
+                authz_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
+                authz_extension.authority = "authority_value"
+                authz_extension.service = "service_value"
+
+                request = network_services_v1.CreateAuthzExtensionRequest(
+                    parent="parent_value",
+                    authz_extension_id="authz_extension_id_value",
+                    authz_extension=authz_extension,
+                )
+
+                # Make the request
+                operation = client.create_authz_extension(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.CreateAuthzExtensionRequest, dict]):
+                The request object. Message for creating a ``AuthzExtension`` resource.
+            parent (str):
+                Required. The parent resource of the ``AuthzExtension``
+                resource. Must be in the format
+                ``projects/{project}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            authz_extension (google.cloud.network_services_v1.types.AuthzExtension):
+                Required. ``AuthzExtension`` resource to be created.
+                This corresponds to the ``authz_extension`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            authz_extension_id (str):
+                Required. User-provided ID of the ``AuthzExtension``
+                resource to be created.
+
+                This corresponds to the ``authz_extension_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.network_services_v1.types.AuthzExtension` AuthzExtension is a resource that allows traffic forwarding
+                   to a callout backend service to make an authorization
+                   decision.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, authz_extension, authz_extension_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.CreateAuthzExtensionRequest):
+            request = dep.CreateAuthzExtensionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if authz_extension is not None:
+                request.authz_extension = authz_extension
+            if authz_extension_id is not None:
+                request.authz_extension_id = authz_extension_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_authz_extension]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            dep.AuthzExtension,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_authz_extension(
+        self,
+        request: Optional[Union[dep.UpdateAuthzExtensionRequest, dict]] = None,
+        *,
+        authz_extension: Optional[dep.AuthzExtension] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates the parameters of the specified ``AuthzExtension``
+        resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_update_authz_extension():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                authz_extension = network_services_v1.AuthzExtension()
+                authz_extension.name = "name_value"
+                authz_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
+                authz_extension.authority = "authority_value"
+                authz_extension.service = "service_value"
+
+                request = network_services_v1.UpdateAuthzExtensionRequest(
+                    authz_extension=authz_extension,
+                )
+
+                # Make the request
+                operation = client.update_authz_extension(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.UpdateAuthzExtensionRequest, dict]):
+                The request object. Message for updating a ``AuthzExtension`` resource.
+            authz_extension (google.cloud.network_services_v1.types.AuthzExtension):
+                Required. ``AuthzExtension`` resource being updated.
+                This corresponds to the ``authz_extension`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. Used to specify the fields to be overwritten
+                in the ``AuthzExtension`` resource by the update. The
+                fields specified in the ``update_mask`` are relative to
+                the resource, not the full request. A field is
+                overwritten if it is in the mask. If the user does not
+                specify a mask, then all fields are overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.network_services_v1.types.AuthzExtension` AuthzExtension is a resource that allows traffic forwarding
+                   to a callout backend service to make an authorization
+                   decision.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [authz_extension, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.UpdateAuthzExtensionRequest):
+            request = dep.UpdateAuthzExtensionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if authz_extension is not None:
+                request.authz_extension = authz_extension
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_authz_extension]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("authz_extension.name", request.authz_extension.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            dep.AuthzExtension,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_authz_extension(
+        self,
+        request: Optional[Union[dep.DeleteAuthzExtensionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Deletes the specified ``AuthzExtension`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            def sample_delete_authz_extension():
+                # Create a client
+                client = network_services_v1.DepServiceClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.DeleteAuthzExtensionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_authz_extension(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.network_services_v1.types.DeleteAuthzExtensionRequest, dict]):
+                The request object. Message for deleting a ``AuthzExtension`` resource.
+            name (str):
+                Required. The name of the ``AuthzExtension`` resource to
+                delete. Must be in the format
+                ``projects/{project}/locations/{location}/authzExtensions/{authz_extension}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dep.DeleteAuthzExtensionRequest):
+            request = dep.DeleteAuthzExtensionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_authz_extension]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

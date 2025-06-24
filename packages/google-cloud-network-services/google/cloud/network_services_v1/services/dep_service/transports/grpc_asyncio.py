@@ -641,6 +641,147 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
             )
         return self._stubs["delete_lb_route_extension"]
 
+    @property
+    def list_authz_extensions(
+        self,
+    ) -> Callable[
+        [dep.ListAuthzExtensionsRequest], Awaitable[dep.ListAuthzExtensionsResponse]
+    ]:
+        r"""Return a callable for the list authz extensions method over gRPC.
+
+        Lists ``AuthzExtension`` resources in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListAuthzExtensionsRequest],
+                    Awaitable[~.ListAuthzExtensionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_authz_extensions" not in self._stubs:
+            self._stubs["list_authz_extensions"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/ListAuthzExtensions",
+                request_serializer=dep.ListAuthzExtensionsRequest.serialize,
+                response_deserializer=dep.ListAuthzExtensionsResponse.deserialize,
+            )
+        return self._stubs["list_authz_extensions"]
+
+    @property
+    def get_authz_extension(
+        self,
+    ) -> Callable[[dep.GetAuthzExtensionRequest], Awaitable[dep.AuthzExtension]]:
+        r"""Return a callable for the get authz extension method over gRPC.
+
+        Gets details of the specified ``AuthzExtension`` resource.
+
+        Returns:
+            Callable[[~.GetAuthzExtensionRequest],
+                    Awaitable[~.AuthzExtension]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_authz_extension" not in self._stubs:
+            self._stubs["get_authz_extension"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/GetAuthzExtension",
+                request_serializer=dep.GetAuthzExtensionRequest.serialize,
+                response_deserializer=dep.AuthzExtension.deserialize,
+            )
+        return self._stubs["get_authz_extension"]
+
+    @property
+    def create_authz_extension(
+        self,
+    ) -> Callable[
+        [dep.CreateAuthzExtensionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create authz extension method over gRPC.
+
+        Creates a new ``AuthzExtension`` resource in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateAuthzExtensionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_authz_extension" not in self._stubs:
+            self._stubs["create_authz_extension"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/CreateAuthzExtension",
+                request_serializer=dep.CreateAuthzExtensionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_authz_extension"]
+
+    @property
+    def update_authz_extension(
+        self,
+    ) -> Callable[
+        [dep.UpdateAuthzExtensionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update authz extension method over gRPC.
+
+        Updates the parameters of the specified ``AuthzExtension``
+        resource.
+
+        Returns:
+            Callable[[~.UpdateAuthzExtensionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_authz_extension" not in self._stubs:
+            self._stubs["update_authz_extension"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/UpdateAuthzExtension",
+                request_serializer=dep.UpdateAuthzExtensionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_authz_extension"]
+
+    @property
+    def delete_authz_extension(
+        self,
+    ) -> Callable[
+        [dep.DeleteAuthzExtensionRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete authz extension method over gRPC.
+
+        Deletes the specified ``AuthzExtension`` resource.
+
+        Returns:
+            Callable[[~.DeleteAuthzExtensionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_authz_extension" not in self._stubs:
+            self._stubs["delete_authz_extension"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.DepService/DeleteAuthzExtension",
+                request_serializer=dep.DeleteAuthzExtensionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_authz_extension"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -691,6 +832,31 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
             ),
             self.delete_lb_route_extension: self._wrap_method(
                 self.delete_lb_route_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_authz_extensions: self._wrap_method(
+                self.list_authz_extensions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_authz_extension: self._wrap_method(
+                self.get_authz_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_authz_extension: self._wrap_method(
+                self.create_authz_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_authz_extension: self._wrap_method(
+                self.update_authz_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_authz_extension: self._wrap_method(
+                self.delete_authz_extension,
                 default_timeout=None,
                 client_info=client_info,
             ),

@@ -41,7 +41,6 @@ def sample_update_lb_traffic_extension():
     # Initialize request argument(s)
     lb_traffic_extension = network_services_v1.LbTrafficExtension()
     lb_traffic_extension.name = "name_value"
-    lb_traffic_extension.forwarding_rules = ['forwarding_rules_value1', 'forwarding_rules_value2']
     lb_traffic_extension.extension_chains.name = "name_value"
     lb_traffic_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
     lb_traffic_extension.extension_chains.extensions.name = "name_value"

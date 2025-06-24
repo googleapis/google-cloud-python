@@ -17,29 +17,27 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.networkservices.v1',
+    package="google.cloud.networkservices.v1",
     manifest={
-        'WasmPluginView',
-        'WasmPlugin',
-        'WasmPluginVersion',
-        'ListWasmPluginsRequest',
-        'ListWasmPluginsResponse',
-        'GetWasmPluginRequest',
-        'CreateWasmPluginRequest',
-        'UpdateWasmPluginRequest',
-        'DeleteWasmPluginRequest',
-        'ListWasmPluginVersionsRequest',
-        'ListWasmPluginVersionsResponse',
-        'GetWasmPluginVersionRequest',
-        'CreateWasmPluginVersionRequest',
-        'DeleteWasmPluginVersionRequest',
+        "WasmPluginView",
+        "WasmPlugin",
+        "WasmPluginVersion",
+        "ListWasmPluginsRequest",
+        "ListWasmPluginsResponse",
+        "GetWasmPluginRequest",
+        "CreateWasmPluginRequest",
+        "UpdateWasmPluginRequest",
+        "DeleteWasmPluginRequest",
+        "ListWasmPluginVersionsRequest",
+        "ListWasmPluginVersionsResponse",
+        "GetWasmPluginVersionRequest",
+        "CreateWasmPluginVersionRequest",
+        "DeleteWasmPluginVersionRequest",
     },
 )
 
@@ -192,12 +190,12 @@ class WasmPlugin(proto.Message):
         plugin_config_data: bytes = proto.Field(
             proto.BYTES,
             number=9,
-            oneof='plugin_config_source',
+            oneof="plugin_config_source",
         )
         plugin_config_uri: str = proto.Field(
             proto.STRING,
             number=10,
-            oneof='plugin_config_source',
+            oneof="plugin_config_source",
         )
         create_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
@@ -267,6 +265,7 @@ class WasmPlugin(proto.Message):
                 If the field is not provided when logging is enabled, it is
                 set to ``INFO`` by default.
         """
+
         class LogLevel(proto.Enum):
             r"""Possible values to specify the lowest level of logs to be
             exported to Cloud Logging.
@@ -303,10 +302,10 @@ class WasmPlugin(proto.Message):
             proto.FLOAT,
             number=2,
         )
-        min_log_level: 'WasmPlugin.LogConfig.LogLevel' = proto.Field(
+        min_log_level: "WasmPlugin.LogConfig.LogLevel" = proto.Field(
             proto.ENUM,
             number=3,
-            enum='WasmPlugin.LogConfig.LogLevel',
+            enum="WasmPlugin.LogConfig.LogLevel",
         )
 
     class UsedBy(proto.Message):
@@ -438,12 +437,12 @@ class WasmPluginVersion(proto.Message):
     plugin_config_data: bytes = proto.Field(
         proto.BYTES,
         number=12,
-        oneof='plugin_config_source',
+        oneof="plugin_config_source",
     )
     plugin_config_uri: str = proto.Field(
         proto.STRING,
         number=13,
-        oneof='plugin_config_source',
+        oneof="plugin_config_source",
     )
     name: str = proto.Field(
         proto.STRING,
@@ -538,10 +537,10 @@ class ListWasmPluginsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    wasm_plugins: MutableSequence['WasmPlugin'] = proto.RepeatedField(
+    wasm_plugins: MutableSequence["WasmPlugin"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='WasmPlugin',
+        message="WasmPlugin",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -570,10 +569,10 @@ class GetWasmPluginRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    view: 'WasmPluginView' = proto.Field(
+    view: "WasmPluginView" = proto.Field(
         proto.ENUM,
         number=2,
-        enum='WasmPluginView',
+        enum="WasmPluginView",
     )
 
 
@@ -600,10 +599,10 @@ class CreateWasmPluginRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    wasm_plugin: 'WasmPlugin' = proto.Field(
+    wasm_plugin: "WasmPlugin" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='WasmPlugin',
+        message="WasmPlugin",
     )
 
 
@@ -631,10 +630,10 @@ class UpdateWasmPluginRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    wasm_plugin: 'WasmPlugin' = proto.Field(
+    wasm_plugin: "WasmPlugin" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='WasmPlugin',
+        message="WasmPlugin",
     )
 
 
@@ -711,10 +710,10 @@ class ListWasmPluginVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    wasm_plugin_versions: MutableSequence['WasmPluginVersion'] = proto.RepeatedField(
+    wasm_plugin_versions: MutableSequence["WasmPluginVersion"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='WasmPluginVersion',
+        message="WasmPluginVersion",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -765,10 +764,10 @@ class CreateWasmPluginVersionRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    wasm_plugin_version: 'WasmPluginVersion' = proto.Field(
+    wasm_plugin_version: "WasmPluginVersion" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='WasmPluginVersion',
+        message="WasmPluginVersion",
     )
 
 

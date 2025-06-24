@@ -76,6 +76,14 @@ class DepServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomDepServiceInterceptor(DepServiceRestInterceptor):
+            def pre_create_authz_extension(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_authz_extension(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_lb_route_extension(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -89,6 +97,14 @@ class DepServiceRestInterceptor:
                 return request, metadata
 
             def post_create_lb_traffic_extension(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_authz_extension(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_authz_extension(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -108,6 +124,14 @@ class DepServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_authz_extension(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_authz_extension(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_lb_route_extension(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -124,6 +148,14 @@ class DepServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_authz_extensions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_authz_extensions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_lb_route_extensions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -137,6 +169,14 @@ class DepServiceRestInterceptor:
                 return request, metadata
 
             def post_list_lb_traffic_extensions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_authz_extension(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_authz_extension(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -161,6 +201,54 @@ class DepServiceRestInterceptor:
 
 
     """
+
+    def pre_create_authz_extension(
+        self,
+        request: dep.CreateAuthzExtensionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dep.CreateAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_authz_extension
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DepService server.
+        """
+        return request, metadata
+
+    def post_create_authz_extension(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_authz_extension
+
+        DEPRECATED. Please use the `post_create_authz_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DepService server but before
+        it is returned to user code. This `post_create_authz_extension` interceptor runs
+        before the `post_create_authz_extension_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_authz_extension_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_authz_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_create_authz_extension_with_metadata`
+        interceptor in new development instead of the `post_create_authz_extension` interceptor.
+        When both interceptors are used, this `post_create_authz_extension_with_metadata` interceptor runs after the
+        `post_create_authz_extension` interceptor. The (possibly modified) response returned by
+        `post_create_authz_extension` will be passed to
+        `post_create_authz_extension_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_lb_route_extension(
         self,
@@ -255,6 +343,54 @@ class DepServiceRestInterceptor:
         `post_create_lb_traffic_extension` interceptor. The (possibly modified) response returned by
         `post_create_lb_traffic_extension` will be passed to
         `post_create_lb_traffic_extension_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_authz_extension(
+        self,
+        request: dep.DeleteAuthzExtensionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dep.DeleteAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_authz_extension
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DepService server.
+        """
+        return request, metadata
+
+    def post_delete_authz_extension(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_authz_extension
+
+        DEPRECATED. Please use the `post_delete_authz_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DepService server but before
+        it is returned to user code. This `post_delete_authz_extension` interceptor runs
+        before the `post_delete_authz_extension_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_authz_extension_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_authz_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_delete_authz_extension_with_metadata`
+        interceptor in new development instead of the `post_delete_authz_extension` interceptor.
+        When both interceptors are used, this `post_delete_authz_extension_with_metadata` interceptor runs after the
+        `post_delete_authz_extension` interceptor. The (possibly modified) response returned by
+        `post_delete_authz_extension` will be passed to
+        `post_delete_authz_extension_with_metadata`.
         """
         return response, metadata
 
@@ -354,6 +490,52 @@ class DepServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_authz_extension(
+        self,
+        request: dep.GetAuthzExtensionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dep.GetAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_authz_extension
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DepService server.
+        """
+        return request, metadata
+
+    def post_get_authz_extension(
+        self, response: dep.AuthzExtension
+    ) -> dep.AuthzExtension:
+        """Post-rpc interceptor for get_authz_extension
+
+        DEPRECATED. Please use the `post_get_authz_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DepService server but before
+        it is returned to user code. This `post_get_authz_extension` interceptor runs
+        before the `post_get_authz_extension_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_authz_extension_with_metadata(
+        self,
+        response: dep.AuthzExtension,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dep.AuthzExtension, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_authz_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_get_authz_extension_with_metadata`
+        interceptor in new development instead of the `post_get_authz_extension` interceptor.
+        When both interceptors are used, this `post_get_authz_extension_with_metadata` interceptor runs after the
+        `post_get_authz_extension` interceptor. The (possibly modified) response returned by
+        `post_get_authz_extension` will be passed to
+        `post_get_authz_extension_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_lb_route_extension(
         self,
         request: dep.GetLbRouteExtensionRequest,
@@ -445,6 +627,54 @@ class DepServiceRestInterceptor:
         `post_get_lb_traffic_extension` interceptor. The (possibly modified) response returned by
         `post_get_lb_traffic_extension` will be passed to
         `post_get_lb_traffic_extension_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_authz_extensions(
+        self,
+        request: dep.ListAuthzExtensionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dep.ListAuthzExtensionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for list_authz_extensions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DepService server.
+        """
+        return request, metadata
+
+    def post_list_authz_extensions(
+        self, response: dep.ListAuthzExtensionsResponse
+    ) -> dep.ListAuthzExtensionsResponse:
+        """Post-rpc interceptor for list_authz_extensions
+
+        DEPRECATED. Please use the `post_list_authz_extensions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DepService server but before
+        it is returned to user code. This `post_list_authz_extensions` interceptor runs
+        before the `post_list_authz_extensions_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_authz_extensions_with_metadata(
+        self,
+        response: dep.ListAuthzExtensionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dep.ListAuthzExtensionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_authz_extensions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_list_authz_extensions_with_metadata`
+        interceptor in new development instead of the `post_list_authz_extensions` interceptor.
+        When both interceptors are used, this `post_list_authz_extensions_with_metadata` interceptor runs after the
+        `post_list_authz_extensions` interceptor. The (possibly modified) response returned by
+        `post_list_authz_extensions` will be passed to
+        `post_list_authz_extensions_with_metadata`.
         """
         return response, metadata
 
@@ -545,6 +775,54 @@ class DepServiceRestInterceptor:
         `post_list_lb_traffic_extensions` interceptor. The (possibly modified) response returned by
         `post_list_lb_traffic_extensions` will be passed to
         `post_list_lb_traffic_extensions_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_authz_extension(
+        self,
+        request: dep.UpdateAuthzExtensionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dep.UpdateAuthzExtensionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_authz_extension
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DepService server.
+        """
+        return request, metadata
+
+    def post_update_authz_extension(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_authz_extension
+
+        DEPRECATED. Please use the `post_update_authz_extension_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DepService server but before
+        it is returned to user code. This `post_update_authz_extension` interceptor runs
+        before the `post_update_authz_extension_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_authz_extension_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_authz_extension
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DepService server but before it is returned to user code.
+
+        We recommend only using this `post_update_authz_extension_with_metadata`
+        interceptor in new development instead of the `post_update_authz_extension` interceptor.
+        When both interceptors are used, this `post_update_authz_extension_with_metadata` interceptor runs after the
+        `post_update_authz_extension` interceptor. The (possibly modified) response returned by
+        `post_update_authz_extension` will be passed to
+        `post_update_authz_extension_with_metadata`.
         """
         return response, metadata
 
@@ -1003,6 +1281,159 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _CreateAuthzExtension(
+        _BaseDepServiceRestTransport._BaseCreateAuthzExtension, DepServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DepServiceRestTransport.CreateAuthzExtension")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dep.CreateAuthzExtensionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create authz extension method over HTTP.
+
+            Args:
+                request (~.dep.CreateAuthzExtensionRequest):
+                    The request object. Message for creating a ``AuthzExtension`` resource.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_authz_extension(
+                request, metadata
+            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDepServiceRestTransport._BaseCreateAuthzExtension._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.DepServiceClient.CreateAuthzExtension",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "CreateAuthzExtension",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DepServiceRestTransport._CreateAuthzExtension._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_authz_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_authz_extension_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.DepServiceClient.create_authz_extension",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "CreateAuthzExtension",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateLbRouteExtension(
         _BaseDepServiceRestTransport._BaseCreateLbRouteExtension, DepServiceRestStub
     ):
@@ -1310,6 +1741,153 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
+    class _DeleteAuthzExtension(
+        _BaseDepServiceRestTransport._BaseDeleteAuthzExtension, DepServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DepServiceRestTransport.DeleteAuthzExtension")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dep.DeleteAuthzExtensionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete authz extension method over HTTP.
+
+            Args:
+                request (~.dep.DeleteAuthzExtensionRequest):
+                    The request object. Message for deleting a ``AuthzExtension`` resource.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_authz_extension(
+                request, metadata
+            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDepServiceRestTransport._BaseDeleteAuthzExtension._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.DepServiceClient.DeleteAuthzExtension",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "DeleteAuthzExtension",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DepServiceRestTransport._DeleteAuthzExtension._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_authz_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_authz_extension_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.DepServiceClient.delete_authz_extension",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "DeleteAuthzExtension",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteLbRouteExtension(
         _BaseDepServiceRestTransport._BaseDeleteLbRouteExtension, DepServiceRestStub
     ):
@@ -1599,6 +2177,155 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.networkservices.v1.DepService",
                         "rpcName": "DeleteLbTrafficExtension",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetAuthzExtension(
+        _BaseDepServiceRestTransport._BaseGetAuthzExtension, DepServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DepServiceRestTransport.GetAuthzExtension")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dep.GetAuthzExtensionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dep.AuthzExtension:
+            r"""Call the get authz extension method over HTTP.
+
+            Args:
+                request (~.dep.GetAuthzExtensionRequest):
+                    The request object. Message for getting a ``AuthzExtension`` resource.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dep.AuthzExtension:
+                    ``AuthzExtension`` is a resource that allows traffic
+                forwarding to a callout backend service to make an
+                authorization decision.
+
+            """
+
+            http_options = (
+                _BaseDepServiceRestTransport._BaseGetAuthzExtension._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_authz_extension(
+                request, metadata
+            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseGetAuthzExtension._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDepServiceRestTransport._BaseGetAuthzExtension._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.DepServiceClient.GetAuthzExtension",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "GetAuthzExtension",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DepServiceRestTransport._GetAuthzExtension._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dep.AuthzExtension()
+            pb_resp = dep.AuthzExtension.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_authz_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_authz_extension_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dep.AuthzExtension.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.DepServiceClient.get_authz_extension",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "GetAuthzExtension",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -1904,6 +2631,155 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                 )
             return resp
 
+    class _ListAuthzExtensions(
+        _BaseDepServiceRestTransport._BaseListAuthzExtensions, DepServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DepServiceRestTransport.ListAuthzExtensions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dep.ListAuthzExtensionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dep.ListAuthzExtensionsResponse:
+            r"""Call the list authz extensions method over HTTP.
+
+            Args:
+                request (~.dep.ListAuthzExtensionsRequest):
+                    The request object. Message for requesting list of ``AuthzExtension``
+                resources.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dep.ListAuthzExtensionsResponse:
+                    Message for response to listing ``AuthzExtension``
+                resources.
+
+            """
+
+            http_options = (
+                _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_authz_extensions(
+                request, metadata
+            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDepServiceRestTransport._BaseListAuthzExtensions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.DepServiceClient.ListAuthzExtensions",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "ListAuthzExtensions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DepServiceRestTransport._ListAuthzExtensions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dep.ListAuthzExtensionsResponse()
+            pb_resp = dep.ListAuthzExtensionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_authz_extensions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_authz_extensions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dep.ListAuthzExtensionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.DepServiceClient.list_authz_extensions",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "ListAuthzExtensions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListLbRouteExtensions(
         _BaseDepServiceRestTransport._BaseListLbRouteExtensions, DepServiceRestStub
     ):
@@ -2201,6 +3077,159 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
                     extra={
                         "serviceName": "google.cloud.networkservices.v1.DepService",
                         "rpcName": "ListLbTrafficExtensions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateAuthzExtension(
+        _BaseDepServiceRestTransport._BaseUpdateAuthzExtension, DepServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DepServiceRestTransport.UpdateAuthzExtension")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dep.UpdateAuthzExtensionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update authz extension method over HTTP.
+
+            Args:
+                request (~.dep.UpdateAuthzExtensionRequest):
+                    The request object. Message for updating a ``AuthzExtension`` resource.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_authz_extension(
+                request, metadata
+            )
+            transcoded_request = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDepServiceRestTransport._BaseUpdateAuthzExtension._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.DepServiceClient.UpdateAuthzExtension",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "UpdateAuthzExtension",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DepServiceRestTransport._UpdateAuthzExtension._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_authz_extension(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_authz_extension_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.DepServiceClient.update_authz_extension",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.DepService",
+                        "rpcName": "UpdateAuthzExtension",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2515,6 +3544,14 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
             return resp
 
     @property
+    def create_authz_extension(
+        self,
+    ) -> Callable[[dep.CreateAuthzExtensionRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAuthzExtension(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_lb_route_extension(
         self,
     ) -> Callable[[dep.CreateLbRouteExtensionRequest], operations_pb2.Operation]:
@@ -2529,6 +3566,14 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_authz_extension(
+        self,
+    ) -> Callable[[dep.DeleteAuthzExtensionRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAuthzExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_lb_route_extension(
@@ -2547,6 +3592,14 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
         return self._DeleteLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_authz_extension(
+        self,
+    ) -> Callable[[dep.GetAuthzExtensionRequest], dep.AuthzExtension]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAuthzExtension(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_lb_route_extension(
         self,
     ) -> Callable[[dep.GetLbRouteExtensionRequest], dep.LbRouteExtension]:
@@ -2561,6 +3614,14 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLbTrafficExtension(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_authz_extensions(
+        self,
+    ) -> Callable[[dep.ListAuthzExtensionsRequest], dep.ListAuthzExtensionsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAuthzExtensions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_lb_route_extensions(
@@ -2581,6 +3642,14 @@ class DepServiceRestTransport(_BaseDepServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLbTrafficExtensions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_authz_extension(
+        self,
+    ) -> Callable[[dep.UpdateAuthzExtensionRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAuthzExtension(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_lb_route_extension(

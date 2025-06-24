@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
     manifest={
         "EventType",
         "LoadBalancingScheme",
+        "WireFormat",
         "ExtensionChain",
         "LbTrafficExtension",
         "ListLbTrafficExtensionsRequest",
@@ -43,6 +44,13 @@ __protobuf__ = proto.module(
         "CreateLbRouteExtensionRequest",
         "UpdateLbRouteExtensionRequest",
         "DeleteLbRouteExtensionRequest",
+        "AuthzExtension",
+        "ListAuthzExtensionsRequest",
+        "ListAuthzExtensionsResponse",
+        "GetAuthzExtensionRequest",
+        "CreateAuthzExtensionRequest",
+        "UpdateAuthzExtensionRequest",
+        "DeleteAuthzExtensionRequest",
     },
 )
 
@@ -83,10 +91,10 @@ class EventType(proto.Enum):
 
 
 class LoadBalancingScheme(proto.Enum):
-    r"""Load balancing schemes supported by the ``LbTrafficExtension``
-    resource and ``LbRouteExtension`` resource. For more information,
-    refer to `Choosing a load
-    balancer <https://cloud.google.com/load-balancing/docs/backend-service>`__.
+    r"""Load balancing schemes supported by the ``LbTrafficExtension``,
+    ``LbRouteExtension``, and ``LbEdgeExtension`` resources. For more
+    information, refer to `Backend services
+    overview <https://cloud.google.com/load-balancing/docs/backend-service>`__.
 
     Values:
         LOAD_BALANCING_SCHEME_UNSPECIFIED (0):
@@ -101,6 +109,23 @@ class LoadBalancingScheme(proto.Enum):
     LOAD_BALANCING_SCHEME_UNSPECIFIED = 0
     INTERNAL_MANAGED = 1
     EXTERNAL_MANAGED = 2
+
+
+class WireFormat(proto.Enum):
+    r"""The format of communication supported by the extension.
+
+    Values:
+        WIRE_FORMAT_UNSPECIFIED (0):
+            Not specified.
+        EXT_PROC_GRPC (1):
+            The extension service uses ext_proc gRPC API over a gRPC
+            stream. This is the default value if the wire format is not
+            specified. The backend service for the extension must use
+            HTTP2 or H2C as the protocol. All ``supported_events`` for a
+            client request are sent as part of the same gRPC stream.
+    """
+    WIRE_FORMAT_UNSPECIFIED = 0
+    EXT_PROC_GRPC = 1
 
 
 class ExtensionChain(proto.Message):
@@ -124,8 +149,9 @@ class ExtensionChain(proto.Message):
             Required. A set of extensions to execute for the matching
             request. At least one extension is required. Up to 3
             extensions can be defined for each extension chain for
-            ``LbTrafficExtension`` resource. ``LbRouteExtension`` chains
-            are limited to 1 extension per extension chain.
+            ``LbTrafficExtension`` resource. ``LbRouteExtension`` and
+            ``LbEdgeExtension`` chains are limited to 1 extension per
+            extension chain.
     """
 
     class MatchCondition(proto.Message):
@@ -164,11 +190,12 @@ class ExtensionChain(proto.Message):
                 Optional. The ``:authority`` header in the gRPC request sent
                 from Envoy to the extension service. Required for Callout
                 extensions.
+
+                This field is not supported for plugin extensions. Setting
+                it results in a validation error.
             service (str):
                 Required. The reference to the service that runs the
                 extension.
-
-                Currently only callout extensions are supported here.
 
                 To configure a callout extension, ``service`` must be a
                 fully-qualified reference to a `backend
@@ -177,16 +204,38 @@ class ExtensionChain(proto.Message):
                 ``https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/backendServices/{backendService}``
                 or
                 ``https://www.googleapis.com/compute/v1/projects/{project}/global/backendServices/{backendService}``.
+
+                To configure a plugin extension, ``service`` must be a
+                reference to a ```WasmPlugin``
+                resource <https://cloud.google.com/service-extensions/docs/reference/rest/v1beta1/projects.locations.wasmPlugins>`__
+                in the format:
+                ``projects/{project}/locations/{location}/wasmPlugins/{plugin}``
+                or
+                ``//networkservices.googleapis.com/projects/{project}/locations/{location}/wasmPlugins/{wasmPlugin}``.
+
+                Plugin extensions are currently supported for the
+                ``LbTrafficExtension``, the ``LbRouteExtension``, and the
+                ``LbEdgeExtension`` resources.
             supported_events (MutableSequence[google.cloud.network_services_v1.types.EventType]):
                 Optional. A set of events during request or response
-                processing for which this extension is called. This field is
-                required for the ``LbTrafficExtension`` resource. It must
-                not be set for the ``LbRouteExtension`` resource.
+                processing for which this extension is called.
+
+                For the ``LbTrafficExtension`` resource, this field is
+                required.
+
+                For the ``LbRouteExtension`` resource, this field is
+                optional. If unspecified, ``REQUEST_HEADERS`` event is
+                assumed as supported.
+
+                For the ``LbEdgeExtension`` resource, this field is required
+                and must only contain ``REQUEST_HEADERS`` event.
             timeout (google.protobuf.duration_pb2.Duration):
-                Optional. Specifies the timeout for each
-                individual message on the stream. The timeout
-                must be between 10-1000 milliseconds. Required
-                for Callout extensions.
+                Optional. Specifies the timeout for each individual message
+                on the stream. The timeout must be between ``10``-``10000``
+                milliseconds. Required for callout extensions.
+
+                This field is not supported for plugin extensions. Setting
+                it results in a validation error.
             fail_open (bool):
                 Optional. Determines how the proxy behaves if the call to
                 the extension fails or times out.
@@ -209,6 +258,39 @@ class ExtensionChain(proto.Message):
                 to the extension (from the client or backend).
                 If omitted, all headers are sent. Each element
                 is a string indicating the header name.
+            metadata (google.protobuf.struct_pb2.Struct):
+                Optional. The metadata provided here is included as part of
+                the ``metadata_context`` (of type
+                ``google.protobuf.Struct``) in the ``ProcessingRequest``
+                message sent to the extension server.
+
+                The metadata is available under the namespace
+                ``com.google.<extension_type>.<resource_name>.<extension_chain_name>.<extension_name>``.
+                For example:
+                ``com.google.lb_traffic_extension.lbtrafficextension1.chain1.ext1``.
+
+                The following variables are supported in the metadata:
+
+                ``{forwarding_rule_id}`` - substituted with the forwarding
+                rule's fully qualified resource name.
+
+                This field must not be set for plugin extensions. Setting it
+                results in a validation error.
+
+                You can set metadata at either the resource level or the
+                extension level. The extension level metadata is recommended
+                because you can pass a different set of metadata through
+                each extension to the backend.
+
+                This field is subject to following limitations:
+
+                -  The total size of the metadata must be less than 1KiB.
+                -  The total number of keys in the metadata must be less
+                   than 16.
+                -  The length of each key must be less than 64 characters.
+                -  The length of each value must be less than 1024
+                   characters.
+                -  All values must be strings.
         """
 
         name: str = proto.Field(
@@ -240,6 +322,11 @@ class ExtensionChain(proto.Message):
         forward_headers: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=7,
+        )
+        metadata: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            message=struct_pb2.Struct,
         )
 
     name: str = proto.Field(
@@ -286,10 +373,10 @@ class LbTrafficExtension(proto.Message):
             labels <https://cloud.google.com/compute/docs/labeling-resources#requirements>`__
             for Google Cloud resources.
         forwarding_rules (MutableSequence[str]):
-            Required. A list of references to the forwarding rules to
-            which this service extension is attached to. At least one
-            forwarding rule is required. There can be only one
-            ``LBTrafficExtension`` resource per forwarding rule.
+            Optional. A list of references to the forwarding rules to
+            which this service extension is attached. At least one
+            forwarding rule is required. Only one ``LbTrafficExtension``
+            resource can be associated with a forwarding rule.
         extension_chains (MutableSequence[google.cloud.network_services_v1.types.ExtensionChain]):
             Required. A set of ordered extension chains
             that contain the match conditions and extensions
@@ -302,19 +389,35 @@ class LbTrafficExtension(proto.Message):
         load_balancing_scheme (google.cloud.network_services_v1.types.LoadBalancingScheme):
             Required. All backend services and forwarding rules
             referenced by this extension must share the same load
-            balancing scheme. Supported values: ``INTERNAL_MANAGED``,
+            balancing scheme. Supported values: ``INTERNAL_MANAGED`` and
             ``EXTERNAL_MANAGED``. For more information, refer to
-            `Choosing a load
-            balancer <https://cloud.google.com/load-balancing/docs/backend-service>`__.
+            `Backend services
+            overview <https://cloud.google.com/load-balancing/docs/backend-service>`__.
         metadata (google.protobuf.struct_pb2.Struct):
-            Optional. The metadata provided here is included in the
-            ``ProcessingRequest.metadata_context.filter_metadata`` map
-            field. The metadata is available under the key
-            ``com.google.lb_traffic_extension.<resource_name>``. The
-            following variables are supported in the metadata:
+            Optional. The metadata provided here is included as part of
+            the ``metadata_context`` (of type
+            ``google.protobuf.Struct``) in the ``ProcessingRequest``
+            message sent to the extension server.
+
+            The metadata applies to all extensions in all extensions
+            chains in this resource.
+
+            The metadata is available under the key
+            ``com.google.lb_traffic_extension.<resource_name>``.
+
+            The following variables are supported in the metadata:
 
             ``{forwarding_rule_id}`` - substituted with the forwarding
             rule's fully qualified resource name.
+
+            This field must not be set if at least one of the extension
+            chains contains plugin extensions. Setting it results in a
+            validation error.
+
+            You can set metadata at either the resource level or the
+            extension level. The extension level metadata is recommended
+            because you can pass a different set of metadata through
+            each extension to the backend.
     """
 
     name: str = proto.Field(
@@ -367,8 +470,8 @@ class ListLbTrafficExtensionsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The project and location from which the
-            ``LbTrafficExtension`` resources are listed, specified in
-            the following format:
+            ``LbTrafficExtension`` resources are listed. These values
+            are specified in the following format:
             ``projects/{project}/locations/{location}``.
         page_size (int):
             Optional. Requested page size. The server
@@ -381,7 +484,8 @@ class ListLbTrafficExtensionsRequest(proto.Message):
         filter (str):
             Optional. Filtering results.
         order_by (str):
-            Optional. Hint for how to order the results.
+            Optional. Hint about how to order the
+            results.
     """
 
     parent: str = proto.Field(
@@ -472,17 +576,15 @@ class CreateLbTrafficExtensionRequest(proto.Message):
             requests. Specify a unique request ID so that if
             you must retry your request, the server can
             ignore the request if it has already been
-            completed. The server guarantees that for at
-            least 60 minutes since the first request.
+            completed. The server guarantees that for 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, ignores the second request. This prevents
-            clients from accidentally creating duplicate
-            commitments.
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
@@ -515,7 +617,7 @@ class UpdateLbTrafficExtensionRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Used to specify the fields to be overwritten in
             the ``LbTrafficExtension`` resource by the update. The
-            fields specified in the update_mask are relative to the
+            fields specified in the ``update_mask`` are relative to the
             resource, not the full request. A field is overwritten if it
             is in the mask. If the user does not specify a mask, then
             all fields are overwritten.
@@ -526,17 +628,15 @@ class UpdateLbTrafficExtensionRequest(proto.Message):
             requests. Specify a unique request ID so that if
             you must retry your request, the server can
             ignore the request if it has already been
-            completed. The server guarantees that for at
-            least 60 minutes since the first request.
+            completed. The server guarantees that for 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, ignores the second request. This prevents
-            clients from accidentally creating duplicate
-            commitments.
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
@@ -572,17 +672,15 @@ class DeleteLbTrafficExtensionRequest(proto.Message):
             requests. Specify a unique request ID so that if
             you must retry your request, the server can
             ignore the request if it has already been
-            completed. The server guarantees that for at
-            least 60 minutes after the first request.
+            completed. The server guarantees that for 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, ignores the second request. This prevents
-            clients from accidentally creating duplicate
-            commitments.
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
@@ -626,9 +724,9 @@ class LbRouteExtension(proto.Message):
             for Google Cloud resources.
         forwarding_rules (MutableSequence[str]):
             Required. A list of references to the forwarding rules to
-            which this service extension is attached to. At least one
-            forwarding rule is required. There can be only one
-            ``LbRouteExtension`` resource per forwarding rule.
+            which this service extension is attached. At least one
+            forwarding rule is required. Only one ``LbRouteExtension``
+            resource can be associated with a forwarding rule.
         extension_chains (MutableSequence[google.cloud.network_services_v1.types.ExtensionChain]):
             Required. A set of ordered extension chains
             that contain the match conditions and extensions
@@ -643,19 +741,33 @@ class LbRouteExtension(proto.Message):
             referenced by this extension must share the same load
             balancing scheme. Supported values: ``INTERNAL_MANAGED``,
             ``EXTERNAL_MANAGED``. For more information, refer to
-            `Choosing a load
-            balancer <https://cloud.google.com/load-balancing/docs/backend-service>`__.
+            `Backend services
+            overview <https://cloud.google.com/load-balancing/docs/backend-service>`__.
         metadata (google.protobuf.struct_pb2.Struct):
             Optional. The metadata provided here is included as part of
             the ``metadata_context`` (of type
             ``google.protobuf.Struct``) in the ``ProcessingRequest``
-            message sent to the extension server. The metadata is
-            available under the namespace
-            ``com.google.lb_route_extension.<resource_name>``. The
-            following variables are supported in the metadata Struct:
+            message sent to the extension server.
+
+            The metadata applies to all extensions in all extensions
+            chains in this resource.
+
+            The metadata is available under the key
+            ``com.google.lb_route_extension.<resource_name>``.
+
+            The following variables are supported in the metadata:
 
             ``{forwarding_rule_id}`` - substituted with the forwarding
             rule's fully qualified resource name.
+
+            This field must not be set if at least one of the extension
+            chains contains plugin extensions. Setting it results in a
+            validation error.
+
+            You can set metadata at either the resource level or the
+            extension level. The extension level metadata is recommended
+            because you can pass a different set of metadata through
+            each extension to the backend.
     """
 
     name: str = proto.Field(
@@ -708,8 +820,8 @@ class ListLbRouteExtensionsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The project and location from which the
-            ``LbRouteExtension`` resources are listed, specified in the
-            following format:
+            ``LbRouteExtension`` resources are listed. These values are
+            specified in the following format:
             ``projects/{project}/locations/{location}``.
         page_size (int):
             Optional. Requested page size. The server
@@ -722,7 +834,8 @@ class ListLbRouteExtensionsRequest(proto.Message):
         filter (str):
             Optional. Filtering results.
         order_by (str):
-            Optional. Hint for how to order the results.
+            Optional. Hint about how to order the
+            results.
     """
 
     parent: str = proto.Field(
@@ -813,17 +926,15 @@ class CreateLbRouteExtensionRequest(proto.Message):
             requests. Specify a unique request ID so that if
             you must retry your request, the server can
             ignore the request if it has already been
-            completed. The server guarantees that for at
-            least 60 minutes since the first request.
+            completed. The server guarantees that for 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, ignores the second request. This prevents
-            clients from accidentally creating duplicate
-            commitments.
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
@@ -856,10 +967,10 @@ class UpdateLbRouteExtensionRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Used to specify the fields to be overwritten in
             the ``LbRouteExtension`` resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field is overwritten if it is in the
-            mask. If the user does not specify a mask, then all fields
-            are overwritten.
+            specified in the ``update_mask`` are relative to the
+            resource, not the full request. A field is overwritten if it
+            is in the mask. If the user does not specify a mask, then
+            all fields are overwritten.
         lb_route_extension (google.cloud.network_services_v1.types.LbRouteExtension):
             Required. ``LbRouteExtension`` resource being updated.
         request_id (str):
@@ -867,17 +978,15 @@ class UpdateLbRouteExtensionRequest(proto.Message):
             requests. Specify a unique request ID so that if
             you must retry your request, the server can
             ignore the request if it has already been
-            completed. The server guarantees that for at
-            least 60 minutes since the first request.
+            completed. The server guarantees that for 60
+            minutes since the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, ignores the second request. This prevents
-            clients from accidentally creating duplicate
-            commitments.
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
@@ -913,17 +1022,398 @@ class DeleteLbRouteExtensionRequest(proto.Message):
             requests. Specify a unique request ID so that if
             you must retry your request, the server can
             ignore the request if it has already been
-            completed. The server guarantees that for at
-            least 60 minutes after the first request.
+            completed. The server guarantees that for 60
+            minutes after the first request.
 
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
-            ID, the server can check if original operation
-            with the same request ID was received, and if
-            so, ignores the second request. This prevents
-            clients from accidentally creating duplicate
-            commitments.
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class AuthzExtension(proto.Message):
+    r"""``AuthzExtension`` is a resource that allows traffic forwarding to a
+    callout backend service to make an authorization decision.
+
+    Attributes:
+        name (str):
+            Required. Identifier. Name of the ``AuthzExtension``
+            resource in the following format:
+            ``projects/{project}/locations/{location}/authzExtensions/{authz_extension}``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the resource
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the resource
+            was updated.
+        description (str):
+            Optional. A human-readable description of the
+            resource.
+        labels (MutableMapping[str, str]):
+            Optional. Set of labels associated with the
+            ``AuthzExtension`` resource.
+
+            The format must comply with `the requirements for
+            labels </compute/docs/labeling-resources#requirements>`__
+            for Google Cloud resources.
+        load_balancing_scheme (google.cloud.network_services_v1.types.LoadBalancingScheme):
+            Required. All backend services and forwarding rules
+            referenced by this extension must share the same load
+            balancing scheme. Supported values: ``INTERNAL_MANAGED``,
+            ``EXTERNAL_MANAGED``. For more information, refer to
+            `Backend services
+            overview <https://cloud.google.com/load-balancing/docs/backend-service>`__.
+        authority (str):
+            Required. The ``:authority`` header in the gRPC request sent
+            from Envoy to the extension service.
+        service (str):
+            Required. The reference to the service that runs the
+            extension.
+
+            To configure a callout extension, ``service`` must be a
+            fully-qualified reference to a `backend
+            service <https://cloud.google.com/compute/docs/reference/rest/v1/backendServices>`__
+            in the format:
+            ``https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/backendServices/{backendService}``
+            or
+            ``https://www.googleapis.com/compute/v1/projects/{project}/global/backendServices/{backendService}``.
+        timeout (google.protobuf.duration_pb2.Duration):
+            Required. Specifies the timeout for each
+            individual message on the stream. The timeout
+            must be between 10-10000 milliseconds.
+        fail_open (bool):
+            Optional. Determines how the proxy behaves if the call to
+            the extension fails or times out.
+
+            When set to ``TRUE``, request or response processing
+            continues without error. Any subsequent extensions in the
+            extension chain are also executed. When set to ``FALSE`` or
+            the default setting of ``FALSE`` is used, one of the
+            following happens:
+
+            -  If response headers have not been delivered to the
+               downstream client, a generic 500 error is returned to the
+               client. The error response can be tailored by configuring
+               a custom error response in the load balancer.
+
+            -  If response headers have been delivered, then the HTTP
+               stream to the downstream client is reset.
+        metadata (google.protobuf.struct_pb2.Struct):
+            Optional. The metadata provided here is included as part of
+            the ``metadata_context`` (of type
+            ``google.protobuf.Struct``) in the ``ProcessingRequest``
+            message sent to the extension server. The metadata is
+            available under the namespace
+            ``com.google.authz_extension.<resource_name>``. The
+            following variables are supported in the metadata Struct:
+
+            ``{forwarding_rule_id}`` - substituted with the forwarding
+            rule's fully qualified resource name.
+        forward_headers (MutableSequence[str]):
+            Optional. List of the HTTP headers to forward
+            to the extension (from the client). If omitted,
+            all headers are sent. Each element is a string
+            indicating the header name.
+        wire_format (google.cloud.network_services_v1.types.WireFormat):
+            Optional. The format of communication supported by the
+            callout extension. If not specified, the default value
+            ``EXT_PROC_GRPC`` is used.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    load_balancing_scheme: "LoadBalancingScheme" = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="LoadBalancingScheme",
+    )
+    authority: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    service: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    timeout: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=duration_pb2.Duration,
+    )
+    fail_open: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    metadata: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=struct_pb2.Struct,
+    )
+    forward_headers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
+    )
+    wire_format: "WireFormat" = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum="WireFormat",
+    )
+
+
+class ListAuthzExtensionsRequest(proto.Message):
+    r"""Message for requesting list of ``AuthzExtension`` resources.
+
+    Attributes:
+        parent (str):
+            Required. The project and location from which the
+            ``AuthzExtension`` resources are listed. These values are
+            specified in the following format:
+            ``projects/{project}/locations/{location}``.
+        page_size (int):
+            Optional. Requested page size. The server
+            might return fewer items than requested. If
+            unspecified, the server picks an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results that the server returns.
+        filter (str):
+            Optional. Filtering results.
+        order_by (str):
+            Optional. Hint about how to order the
+            results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListAuthzExtensionsResponse(proto.Message):
+    r"""Message for response to listing ``AuthzExtension`` resources.
+
+    Attributes:
+        authz_extensions (MutableSequence[google.cloud.network_services_v1.types.AuthzExtension]):
+            The list of ``AuthzExtension`` resources.
+        next_page_token (str):
+            A token identifying a page of results that
+            the server returns.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    authz_extensions: MutableSequence["AuthzExtension"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AuthzExtension",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetAuthzExtensionRequest(proto.Message):
+    r"""Message for getting a ``AuthzExtension`` resource.
+
+    Attributes:
+        name (str):
+            Required. A name of the ``AuthzExtension`` resource to get.
+            Must be in the format
+            ``projects/{project}/locations/{location}/authzExtensions/{authz_extension}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateAuthzExtensionRequest(proto.Message):
+    r"""Message for creating a ``AuthzExtension`` resource.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource of the ``AuthzExtension``
+            resource. Must be in the format
+            ``projects/{project}/locations/{location}``.
+        authz_extension_id (str):
+            Required. User-provided ID of the ``AuthzExtension``
+            resource to be created.
+        authz_extension (google.cloud.network_services_v1.types.AuthzExtension):
+            Required. ``AuthzExtension`` resource to be created.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server can
+            ignore the request if it has already been
+            completed. The server guarantees that for 60
+            minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    authz_extension_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    authz_extension: "AuthzExtension" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AuthzExtension",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class UpdateAuthzExtensionRequest(proto.Message):
+    r"""Message for updating a ``AuthzExtension`` resource.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Used to specify the fields to be overwritten in
+            the ``AuthzExtension`` resource by the update. The fields
+            specified in the ``update_mask`` are relative to the
+            resource, not the full request. A field is overwritten if it
+            is in the mask. If the user does not specify a mask, then
+            all fields are overwritten.
+        authz_extension (google.cloud.network_services_v1.types.AuthzExtension):
+            Required. ``AuthzExtension`` resource being updated.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server can
+            ignore the request if it has already been
+            completed. The server guarantees that for 60
+            minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    authz_extension: "AuthzExtension" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AuthzExtension",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteAuthzExtensionRequest(proto.Message):
+    r"""Message for deleting a ``AuthzExtension`` resource.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``AuthzExtension`` resource to
+            delete. Must be in the format
+            ``projects/{project}/locations/{location}/authzExtensions/{authz_extension}``.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server can
+            ignore the request if it has already been
+            completed. The server guarantees that for 60
+            minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server ignores the second request This
+            prevents clients from accidentally creating
+            duplicate commitments.
 
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported

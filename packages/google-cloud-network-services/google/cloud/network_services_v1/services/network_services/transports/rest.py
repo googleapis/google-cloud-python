@@ -42,6 +42,7 @@ from google.cloud.network_services_v1.types import (
     service_lb_policy as gcn_service_lb_policy,
 )
 from google.cloud.network_services_v1.types import endpoint_policy
+from google.cloud.network_services_v1.types import extensibility
 from google.cloud.network_services_v1.types import gateway
 from google.cloud.network_services_v1.types import gateway as gcn_gateway
 from google.cloud.network_services_v1.types import grpc_route
@@ -172,6 +173,22 @@ class NetworkServicesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_wasm_plugin(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_wasm_plugin(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_wasm_plugin_version(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_wasm_plugin_version(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_endpoint_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -241,6 +258,22 @@ class NetworkServicesRestInterceptor:
                 return request, metadata
 
             def post_delete_tls_route(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_wasm_plugin(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_wasm_plugin(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_wasm_plugin_version(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_wasm_plugin_version(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -332,6 +365,22 @@ class NetworkServicesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_wasm_plugin(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_wasm_plugin(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_wasm_plugin_version(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_wasm_plugin_version(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_endpoint_policies(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -420,6 +469,22 @@ class NetworkServicesRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_wasm_plugins(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_wasm_plugins(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_wasm_plugin_versions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_wasm_plugin_versions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_endpoint_policy(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -489,6 +554,14 @@ class NetworkServicesRestInterceptor:
                 return request, metadata
 
             def post_update_tls_route(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_wasm_plugin(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_wasm_plugin(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -931,6 +1004,103 @@ class NetworkServicesRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_wasm_plugin(
+        self,
+        request: extensibility.CreateWasmPluginRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.CreateWasmPluginRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_wasm_plugin
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_create_wasm_plugin(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_wasm_plugin
+
+        DEPRECATED. Please use the `post_create_wasm_plugin_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_create_wasm_plugin` interceptor runs
+        before the `post_create_wasm_plugin_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_wasm_plugin_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_wasm_plugin
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_wasm_plugin_with_metadata`
+        interceptor in new development instead of the `post_create_wasm_plugin` interceptor.
+        When both interceptors are used, this `post_create_wasm_plugin_with_metadata` interceptor runs after the
+        `post_create_wasm_plugin` interceptor. The (possibly modified) response returned by
+        `post_create_wasm_plugin` will be passed to
+        `post_create_wasm_plugin_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_wasm_plugin_version(
+        self,
+        request: extensibility.CreateWasmPluginVersionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.CreateWasmPluginVersionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_wasm_plugin_version
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_create_wasm_plugin_version(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_wasm_plugin_version
+
+        DEPRECATED. Please use the `post_create_wasm_plugin_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_create_wasm_plugin_version` interceptor runs
+        before the `post_create_wasm_plugin_version_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_wasm_plugin_version_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_wasm_plugin_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_create_wasm_plugin_version_with_metadata`
+        interceptor in new development instead of the `post_create_wasm_plugin_version` interceptor.
+        When both interceptors are used, this `post_create_wasm_plugin_version_with_metadata` interceptor runs after the
+        `post_create_wasm_plugin_version` interceptor. The (possibly modified) response returned by
+        `post_create_wasm_plugin_version` will be passed to
+        `post_create_wasm_plugin_version_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_endpoint_policy(
         self,
         request: endpoint_policy.DeleteEndpointPolicyRequest,
@@ -1359,6 +1529,103 @@ class NetworkServicesRestInterceptor:
         `post_delete_tls_route` interceptor. The (possibly modified) response returned by
         `post_delete_tls_route` will be passed to
         `post_delete_tls_route_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_wasm_plugin(
+        self,
+        request: extensibility.DeleteWasmPluginRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.DeleteWasmPluginRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_wasm_plugin
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_delete_wasm_plugin(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_wasm_plugin
+
+        DEPRECATED. Please use the `post_delete_wasm_plugin_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_delete_wasm_plugin` interceptor runs
+        before the `post_delete_wasm_plugin_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_wasm_plugin_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_wasm_plugin
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_wasm_plugin_with_metadata`
+        interceptor in new development instead of the `post_delete_wasm_plugin` interceptor.
+        When both interceptors are used, this `post_delete_wasm_plugin_with_metadata` interceptor runs after the
+        `post_delete_wasm_plugin` interceptor. The (possibly modified) response returned by
+        `post_delete_wasm_plugin` will be passed to
+        `post_delete_wasm_plugin_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_wasm_plugin_version(
+        self,
+        request: extensibility.DeleteWasmPluginVersionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.DeleteWasmPluginVersionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_wasm_plugin_version
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_delete_wasm_plugin_version(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_wasm_plugin_version
+
+        DEPRECATED. Please use the `post_delete_wasm_plugin_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_delete_wasm_plugin_version` interceptor runs
+        before the `post_delete_wasm_plugin_version_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_wasm_plugin_version_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_wasm_plugin_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_delete_wasm_plugin_version_with_metadata`
+        interceptor in new development instead of the `post_delete_wasm_plugin_version` interceptor.
+        When both interceptors are used, this `post_delete_wasm_plugin_version_with_metadata` interceptor runs after the
+        `post_delete_wasm_plugin_version` interceptor. The (possibly modified) response returned by
+        `post_delete_wasm_plugin_version` will be passed to
+        `post_delete_wasm_plugin_version_with_metadata`.
         """
         return response, metadata
 
@@ -1870,6 +2137,105 @@ class NetworkServicesRestInterceptor:
         `post_get_tls_route` interceptor. The (possibly modified) response returned by
         `post_get_tls_route` will be passed to
         `post_get_tls_route_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_wasm_plugin(
+        self,
+        request: extensibility.GetWasmPluginRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.GetWasmPluginRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_wasm_plugin
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_get_wasm_plugin(
+        self, response: extensibility.WasmPlugin
+    ) -> extensibility.WasmPlugin:
+        """Post-rpc interceptor for get_wasm_plugin
+
+        DEPRECATED. Please use the `post_get_wasm_plugin_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_get_wasm_plugin` interceptor runs
+        before the `post_get_wasm_plugin_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_wasm_plugin_with_metadata(
+        self,
+        response: extensibility.WasmPlugin,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[extensibility.WasmPlugin, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_wasm_plugin
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_wasm_plugin_with_metadata`
+        interceptor in new development instead of the `post_get_wasm_plugin` interceptor.
+        When both interceptors are used, this `post_get_wasm_plugin_with_metadata` interceptor runs after the
+        `post_get_wasm_plugin` interceptor. The (possibly modified) response returned by
+        `post_get_wasm_plugin` will be passed to
+        `post_get_wasm_plugin_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_wasm_plugin_version(
+        self,
+        request: extensibility.GetWasmPluginVersionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.GetWasmPluginVersionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_wasm_plugin_version
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_get_wasm_plugin_version(
+        self, response: extensibility.WasmPluginVersion
+    ) -> extensibility.WasmPluginVersion:
+        """Post-rpc interceptor for get_wasm_plugin_version
+
+        DEPRECATED. Please use the `post_get_wasm_plugin_version_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_get_wasm_plugin_version` interceptor runs
+        before the `post_get_wasm_plugin_version_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_wasm_plugin_version_with_metadata(
+        self,
+        response: extensibility.WasmPluginVersion,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.WasmPluginVersion, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_wasm_plugin_version
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_get_wasm_plugin_version_with_metadata`
+        interceptor in new development instead of the `post_get_wasm_plugin_version` interceptor.
+        When both interceptors are used, this `post_get_wasm_plugin_version_with_metadata` interceptor runs after the
+        `post_get_wasm_plugin_version` interceptor. The (possibly modified) response returned by
+        `post_get_wasm_plugin_version` will be passed to
+        `post_get_wasm_plugin_version_with_metadata`.
         """
         return response, metadata
 
@@ -2418,6 +2784,108 @@ class NetworkServicesRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_wasm_plugins(
+        self,
+        request: extensibility.ListWasmPluginsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.ListWasmPluginsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_wasm_plugins
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_list_wasm_plugins(
+        self, response: extensibility.ListWasmPluginsResponse
+    ) -> extensibility.ListWasmPluginsResponse:
+        """Post-rpc interceptor for list_wasm_plugins
+
+        DEPRECATED. Please use the `post_list_wasm_plugins_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_list_wasm_plugins` interceptor runs
+        before the `post_list_wasm_plugins_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_wasm_plugins_with_metadata(
+        self,
+        response: extensibility.ListWasmPluginsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.ListWasmPluginsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_wasm_plugins
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_wasm_plugins_with_metadata`
+        interceptor in new development instead of the `post_list_wasm_plugins` interceptor.
+        When both interceptors are used, this `post_list_wasm_plugins_with_metadata` interceptor runs after the
+        `post_list_wasm_plugins` interceptor. The (possibly modified) response returned by
+        `post_list_wasm_plugins` will be passed to
+        `post_list_wasm_plugins_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_wasm_plugin_versions(
+        self,
+        request: extensibility.ListWasmPluginVersionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.ListWasmPluginVersionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_wasm_plugin_versions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_list_wasm_plugin_versions(
+        self, response: extensibility.ListWasmPluginVersionsResponse
+    ) -> extensibility.ListWasmPluginVersionsResponse:
+        """Post-rpc interceptor for list_wasm_plugin_versions
+
+        DEPRECATED. Please use the `post_list_wasm_plugin_versions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_list_wasm_plugin_versions` interceptor runs
+        before the `post_list_wasm_plugin_versions_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_wasm_plugin_versions_with_metadata(
+        self,
+        response: extensibility.ListWasmPluginVersionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.ListWasmPluginVersionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_wasm_plugin_versions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_list_wasm_plugin_versions_with_metadata`
+        interceptor in new development instead of the `post_list_wasm_plugin_versions` interceptor.
+        When both interceptors are used, this `post_list_wasm_plugin_versions_with_metadata` interceptor runs after the
+        `post_list_wasm_plugin_versions` interceptor. The (possibly modified) response returned by
+        `post_list_wasm_plugin_versions` will be passed to
+        `post_list_wasm_plugin_versions_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_endpoint_policy(
         self,
         request: gcn_endpoint_policy.UpdateEndpointPolicyRequest,
@@ -2848,6 +3316,54 @@ class NetworkServicesRestInterceptor:
         `post_update_tls_route` interceptor. The (possibly modified) response returned by
         `post_update_tls_route` will be passed to
         `post_update_tls_route_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_wasm_plugin(
+        self,
+        request: extensibility.UpdateWasmPluginRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        extensibility.UpdateWasmPluginRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_wasm_plugin
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetworkServices server.
+        """
+        return request, metadata
+
+    def post_update_wasm_plugin(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_wasm_plugin
+
+        DEPRECATED. Please use the `post_update_wasm_plugin_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetworkServices server but before
+        it is returned to user code. This `post_update_wasm_plugin` interceptor runs
+        before the `post_update_wasm_plugin_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_wasm_plugin_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_wasm_plugin
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetworkServices server but before it is returned to user code.
+
+        We recommend only using this `post_update_wasm_plugin_with_metadata`
+        interceptor in new development instead of the `post_update_wasm_plugin` interceptor.
+        When both interceptors are used, this `post_update_wasm_plugin_with_metadata` interceptor runs after the
+        `post_update_wasm_plugin` interceptor. The (possibly modified) response returned by
+        `post_update_wasm_plugin` will be passed to
+        `post_update_wasm_plugin_with_metadata`.
         """
         return response, metadata
 
@@ -4594,6 +5110,316 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _CreateWasmPlugin(
+        _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin, NetworkServicesRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.CreateWasmPlugin")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: extensibility.CreateWasmPluginRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create wasm plugin method over HTTP.
+
+            Args:
+                request (~.extensibility.CreateWasmPluginRequest):
+                    The request object. Request used by the ``CreateWasmPlugin`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_wasm_plugin(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseCreateWasmPlugin._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateWasmPlugin",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateWasmPlugin",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._CreateWasmPlugin._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_wasm_plugin(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_wasm_plugin_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_wasm_plugin",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateWasmPlugin",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateWasmPluginVersion(
+        _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.CreateWasmPluginVersion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: extensibility.CreateWasmPluginVersionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create wasm plugin
+            version method over HTTP.
+
+                Args:
+                    request (~.extensibility.CreateWasmPluginVersionRequest):
+                        The request object. Request used by the ``CreateWasmPluginVersion`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_wasm_plugin_version(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseCreateWasmPluginVersion._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateWasmPluginVersion",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateWasmPluginVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                NetworkServicesRestTransport._CreateWasmPluginVersion._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_wasm_plugin_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_wasm_plugin_version_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_wasm_plugin_version",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateWasmPluginVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteEndpointPolicy(
         _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy,
         NetworkServicesRestStub,
@@ -5921,6 +6747,304 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     extra={
                         "serviceName": "google.cloud.networkservices.v1.NetworkServices",
                         "rpcName": "DeleteTlsRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteWasmPlugin(
+        _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin, NetworkServicesRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.DeleteWasmPlugin")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: extensibility.DeleteWasmPluginRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete wasm plugin method over HTTP.
+
+            Args:
+                request (~.extensibility.DeleteWasmPluginRequest):
+                    The request object. Request used by the ``DeleteWasmPlugin`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_wasm_plugin(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseDeleteWasmPlugin._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteWasmPlugin",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteWasmPlugin",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._DeleteWasmPlugin._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_wasm_plugin(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_wasm_plugin_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_wasm_plugin",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteWasmPlugin",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteWasmPluginVersion(
+        _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.DeleteWasmPluginVersion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: extensibility.DeleteWasmPluginVersionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete wasm plugin
+            version method over HTTP.
+
+                Args:
+                    request (~.extensibility.DeleteWasmPluginVersionRequest):
+                        The request object. Request used by the ``DeleteWasmPluginVersion`` method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_wasm_plugin_version(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseDeleteWasmPluginVersion._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteWasmPluginVersion",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteWasmPluginVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                NetworkServicesRestTransport._DeleteWasmPluginVersion._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_wasm_plugin_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_wasm_plugin_version_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_wasm_plugin_version",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteWasmPluginVersion",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -7593,6 +8717,302 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _GetWasmPlugin(
+        _BaseNetworkServicesRestTransport._BaseGetWasmPlugin, NetworkServicesRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.GetWasmPlugin")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: extensibility.GetWasmPluginRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> extensibility.WasmPlugin:
+            r"""Call the get wasm plugin method over HTTP.
+
+            Args:
+                request (~.extensibility.GetWasmPluginRequest):
+                    The request object. Request used by the ``GetWasmPlugin`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.extensibility.WasmPlugin:
+                    ``WasmPlugin`` is a resource representing a service
+                executing a customer-provided Wasm module.
+
+            """
+
+            http_options = (
+                _BaseNetworkServicesRestTransport._BaseGetWasmPlugin._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_wasm_plugin(request, metadata)
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetWasmPlugin._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseGetWasmPlugin._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetWasmPlugin",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetWasmPlugin",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._GetWasmPlugin._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = extensibility.WasmPlugin()
+            pb_resp = extensibility.WasmPlugin.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_wasm_plugin(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_wasm_plugin_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = extensibility.WasmPlugin.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_wasm_plugin",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetWasmPlugin",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetWasmPluginVersion(
+        _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.GetWasmPluginVersion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: extensibility.GetWasmPluginVersionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> extensibility.WasmPluginVersion:
+            r"""Call the get wasm plugin version method over HTTP.
+
+            Args:
+                request (~.extensibility.GetWasmPluginVersionRequest):
+                    The request object. Request used by the ``GetWasmPluginVersion`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.extensibility.WasmPluginVersion:
+                    A single immutable version of a ``WasmPlugin`` resource.
+                Defines the Wasm module used and optionally its runtime
+                config.
+
+            """
+
+            http_options = (
+                _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_wasm_plugin_version(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseGetWasmPluginVersion._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetWasmPluginVersion",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetWasmPluginVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._GetWasmPluginVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = extensibility.WasmPluginVersion()
+            pb_resp = extensibility.WasmPluginVersion.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_wasm_plugin_version(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_wasm_plugin_version_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = extensibility.WasmPluginVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_wasm_plugin_version",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetWasmPluginVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListEndpointPolicies(
         _BaseNetworkServicesRestTransport._BaseListEndpointPolicies,
         NetworkServicesRestStub,
@@ -9249,6 +10669,307 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _ListWasmPlugins(
+        _BaseNetworkServicesRestTransport._BaseListWasmPlugins, NetworkServicesRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.ListWasmPlugins")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: extensibility.ListWasmPluginsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> extensibility.ListWasmPluginsResponse:
+            r"""Call the list wasm plugins method over HTTP.
+
+            Args:
+                request (~.extensibility.ListWasmPluginsRequest):
+                    The request object. Request used with the ``ListWasmPlugins`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.extensibility.ListWasmPluginsResponse:
+                    Response returned by the ``ListWasmPlugins`` method.
+            """
+
+            http_options = (
+                _BaseNetworkServicesRestTransport._BaseListWasmPlugins._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_wasm_plugins(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseListWasmPlugins._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseListWasmPlugins._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListWasmPlugins",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListWasmPlugins",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._ListWasmPlugins._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = extensibility.ListWasmPluginsResponse()
+            pb_resp = extensibility.ListWasmPluginsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_wasm_plugins(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_wasm_plugins_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = extensibility.ListWasmPluginsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_wasm_plugins",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListWasmPlugins",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListWasmPluginVersions(
+        _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions,
+        NetworkServicesRestStub,
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.ListWasmPluginVersions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: extensibility.ListWasmPluginVersionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> extensibility.ListWasmPluginVersionsResponse:
+            r"""Call the list wasm plugin versions method over HTTP.
+
+            Args:
+                request (~.extensibility.ListWasmPluginVersionsRequest):
+                    The request object. Request used with the ``ListWasmPluginVersions`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.extensibility.ListWasmPluginVersionsResponse:
+                    Response returned by the ``ListWasmPluginVersions``
+                method.
+
+            """
+
+            http_options = (
+                _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_wasm_plugin_versions(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseListWasmPluginVersions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListWasmPluginVersions",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListWasmPluginVersions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                NetworkServicesRestTransport._ListWasmPluginVersions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = extensibility.ListWasmPluginVersionsResponse()
+            pb_resp = extensibility.ListWasmPluginVersionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_wasm_plugin_versions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_wasm_plugin_versions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        extensibility.ListWasmPluginVersionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_wasm_plugin_versions",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListWasmPluginVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateEndpointPolicy(
         _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy,
         NetworkServicesRestStub,
@@ -10636,6 +12357,159 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 )
             return resp
 
+    class _UpdateWasmPlugin(
+        _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin, NetworkServicesRestStub
+    ):
+        def __hash__(self):
+            return hash("NetworkServicesRestTransport.UpdateWasmPlugin")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: extensibility.UpdateWasmPluginRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update wasm plugin method over HTTP.
+
+            Args:
+                request (~.extensibility.UpdateWasmPluginRequest):
+                    The request object. Request used by the ``UpdateWasmPlugin`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_wasm_plugin(
+                request, metadata
+            )
+            transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseNetworkServicesRestTransport._BaseUpdateWasmPlugin._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateWasmPlugin",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateWasmPlugin",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetworkServicesRestTransport._UpdateWasmPlugin._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_wasm_plugin(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_wasm_plugin_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_wasm_plugin",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateWasmPlugin",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def create_endpoint_policy(
         self,
@@ -10715,6 +12589,24 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         return self._CreateTlsRoute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_wasm_plugin(
+        self,
+    ) -> Callable[[extensibility.CreateWasmPluginRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateWasmPlugin(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_wasm_plugin_version(
+        self,
+    ) -> Callable[
+        [extensibility.CreateWasmPluginVersionRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateWasmPluginVersion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_endpoint_policy(
         self,
     ) -> Callable[
@@ -10791,6 +12683,24 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTlsRoute(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_wasm_plugin(
+        self,
+    ) -> Callable[[extensibility.DeleteWasmPluginRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteWasmPlugin(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_wasm_plugin_version(
+        self,
+    ) -> Callable[
+        [extensibility.DeleteWasmPluginVersionRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteWasmPluginVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_endpoint_policy(
@@ -10881,6 +12791,24 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTlsRoute(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_wasm_plugin(
+        self,
+    ) -> Callable[[extensibility.GetWasmPluginRequest], extensibility.WasmPlugin]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetWasmPlugin(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_wasm_plugin_version(
+        self,
+    ) -> Callable[
+        [extensibility.GetWasmPluginVersionRequest], extensibility.WasmPluginVersion
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetWasmPluginVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_endpoint_policies(
@@ -10989,6 +12917,27 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         return self._ListTlsRoutes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_wasm_plugins(
+        self,
+    ) -> Callable[
+        [extensibility.ListWasmPluginsRequest], extensibility.ListWasmPluginsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListWasmPlugins(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_wasm_plugin_versions(
+        self,
+    ) -> Callable[
+        [extensibility.ListWasmPluginVersionsRequest],
+        extensibility.ListWasmPluginVersionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListWasmPluginVersions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_endpoint_policy(
         self,
     ) -> Callable[
@@ -11065,6 +13014,14 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTlsRoute(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_wasm_plugin(
+        self,
+    ) -> Callable[[extensibility.UpdateWasmPluginRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateWasmPlugin(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):
