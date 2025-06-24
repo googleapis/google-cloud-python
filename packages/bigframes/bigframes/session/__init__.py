@@ -1343,6 +1343,40 @@ class Session(
                 "for large files to avoid loading the file into local memory."
             )
 
+    def deploy_remote_function(
+        self,
+        func,
+        **kwargs,
+    ):
+        """Orchestrates the creation of a BigQuery remote function that deploys immediately.
+
+        This method ensures that the remote function is created and available for
+        use in BigQuery as soon as this call is made.
+
+        Args:
+            func:
+                Function to deploy.
+            kwargs:
+                All arguments are passed directly to
+                :meth:`~bigframes.session.Session.remote_function`.  Please see
+                its docstring for parameter details.
+
+        Returns:
+            A wrapped remote function, usable in
+            :meth:`~bigframes.series.Series.apply`.
+        """
+        return self._function_session.deploy_remote_function(
+            func,
+            # Session-provided arguments.
+            session=self,
+            bigquery_client=self._clients_provider.bqclient,
+            bigquery_connection_client=self._clients_provider.bqconnectionclient,
+            cloud_functions_client=self._clients_provider.cloudfunctionsclient,
+            resource_manager_client=self._clients_provider.resourcemanagerclient,
+            # User-provided arguments.
+            **kwargs,
+        )
+
     def remote_function(
         self,
         # Make sure that the input/output types, and dataset can be used
@@ -1565,9 +1599,15 @@ class Session(
                 `bigframes_remote_function` - The bigquery remote function capable of calling into `bigframes_cloud_function`.
         """
         return self._function_session.remote_function(
+            # Session-provided arguments.
+            session=self,
+            bigquery_client=self._clients_provider.bqclient,
+            bigquery_connection_client=self._clients_provider.bqconnectionclient,
+            cloud_functions_client=self._clients_provider.cloudfunctionsclient,
+            resource_manager_client=self._clients_provider.resourcemanagerclient,
+            # User-provided arguments.
             input_types=input_types,
             output_type=output_type,
-            session=self,
             dataset=dataset,
             bigquery_connection=bigquery_connection,
             reuse=reuse,
@@ -1583,6 +1623,37 @@ class Session(
             cloud_function_memory_mib=cloud_function_memory_mib,
             cloud_function_ingress_settings=cloud_function_ingress_settings,
             cloud_build_service_account=cloud_build_service_account,
+        )
+
+    def deploy_udf(
+        self,
+        func,
+        **kwargs,
+    ):
+        """Orchestrates the creation of a BigQuery UDF that deploys immediately.
+
+        This method ensures that the UDF is created and available for
+        use in BigQuery as soon as this call is made.
+
+        Args:
+            func:
+                Function to deploy.
+            kwargs:
+                All arguments are passed directly to
+                :meth:`~bigframes.session.Session.udf`.  Please see
+                its docstring for parameter details.
+
+        Returns:
+            A wrapped Python user defined function, usable in
+            :meth:`~bigframes.series.Series.apply`.
+        """
+        return self._function_session.deploy_udf(
+            func,
+            # Session-provided arguments.
+            session=self,
+            bigquery_client=self._clients_provider.bqclient,
+            # User-provided arguments.
+            **kwargs,
         )
 
     def udf(
@@ -1726,9 +1797,12 @@ class Session(
                 deployed for the user defined code.
         """
         return self._function_session.udf(
+            # Session-provided arguments.
+            session=self,
+            bigquery_client=self._clients_provider.bqclient,
+            # User-provided arguments.
             input_types=input_types,
             output_type=output_type,
-            session=self,
             dataset=dataset,
             bigquery_connection=bigquery_connection,
             name=name,

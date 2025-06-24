@@ -668,6 +668,30 @@ class FunctionSession:
 
         return wrapper
 
+    def deploy_remote_function(
+        self,
+        func,
+        **kwargs,
+    ):
+        """Orchestrates the creation of a BigQuery remote function that deploys immediately.
+
+        This method ensures that the remote function is created and available for
+        use in BigQuery as soon as this call is made.
+
+        Args:
+            kwargs:
+                All arguments are passed directly to
+                :meth:`~bigframes.session.Session.remote_function`.  Please see
+                its docstring for parameter details.
+
+        Returns:
+            A wrapped remote function, usable in
+            :meth:`~bigframes.series.Series.apply`.
+        """
+        # TODO(tswast): If we update remote_function to defer deployment, update
+        # this method to deploy immediately.
+        return self.remote_function(**kwargs)(func)
+
     def udf(
         self,
         input_types: Union[None, type, Sequence[type]] = None,
@@ -865,6 +889,32 @@ class FunctionSession:
                 )
 
         return wrapper
+
+    def deploy_udf(
+        self,
+        func,
+        **kwargs,
+    ):
+        """Orchestrates the creation of a BigQuery UDF that deploys immediately.
+
+        This method ensures that the UDF is created and available for
+        use in BigQuery as soon as this call is made.
+
+        Args:
+            func:
+                Function to deploy.
+            kwargs:
+                All arguments are passed directly to
+                :meth:`~bigframes.session.Session.udf`.  Please see
+                its docstring for parameter details.
+
+        Returns:
+            A wrapped Python user defined function, usable in
+            :meth:`~bigframes.series.Series.apply`.
+        """
+        # TODO(tswast): If we update udf to defer deployment, update this method
+        # to deploy immediately.
+        return self.udf(**kwargs)(func)
 
 
 def _convert_row_processor_sig(

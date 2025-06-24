@@ -89,3 +89,57 @@ def test_missing_output_type():
         match="'output_type' was not set .* missing a return type annotation",
     ):
         remote_function_decorator(function_without_return_annotation)
+
+
+def test_deploy_remote_function():
+    session = mocks.create_bigquery_session()
+
+    def my_remote_func(x: int) -> int:
+        return x * 2
+
+    deployed = session.deploy_remote_function(
+        my_remote_func, cloud_function_service_account="test_sa@example.com"
+    )
+
+    # Test that the function would have been deployed somewhere.
+    assert deployed.bigframes_bigquery_function
+
+
+def test_deploy_remote_function_with_name():
+    session = mocks.create_bigquery_session()
+
+    def my_remote_func(x: int) -> int:
+        return x * 2
+
+    deployed = session.deploy_remote_function(
+        my_remote_func,
+        name="my_custom_name",
+        cloud_function_service_account="test_sa@example.com",
+    )
+
+    # Test that the function would have been deployed somewhere.
+    assert "my_custom_name" in deployed.bigframes_bigquery_function
+
+
+def test_deploy_udf():
+    session = mocks.create_bigquery_session()
+
+    def my_remote_func(x: int) -> int:
+        return x * 2
+
+    deployed = session.deploy_udf(my_remote_func)
+
+    # Test that the function would have been deployed somewhere.
+    assert deployed.bigframes_bigquery_function
+
+
+def test_deploy_udf_with_name():
+    session = mocks.create_bigquery_session()
+
+    def my_remote_func(x: int) -> int:
+        return x * 2
+
+    deployed = session.deploy_udf(my_remote_func, name="my_custom_name")
+
+    # Test that the function would have been deployed somewhere.
+    assert "my_custom_name" in deployed.bigframes_bigquery_function

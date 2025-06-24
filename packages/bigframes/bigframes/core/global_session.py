@@ -110,8 +110,8 @@ def get_global_session():
 _T = TypeVar("_T")
 
 
-def with_default_session(func: Callable[..., _T], *args, **kwargs) -> _T:
-    return func(get_global_session(), *args, **kwargs)
+def with_default_session(func_: Callable[..., _T], *args, **kwargs) -> _T:
+    return func_(get_global_session(), *args, **kwargs)
 
 
 class _GlobalSessionContext:

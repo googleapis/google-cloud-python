@@ -117,6 +117,22 @@ def remote_function(
 remote_function.__doc__ = inspect.getdoc(bigframes.session.Session.remote_function)
 
 
+def deploy_remote_function(
+    func,
+    **kwargs,
+):
+    return global_session.with_default_session(
+        bigframes.session.Session.deploy_remote_function,
+        func=func,
+        **kwargs,
+    )
+
+
+deploy_remote_function.__doc__ = inspect.getdoc(
+    bigframes.session.Session.deploy_remote_function
+)
+
+
 def udf(
     *,
     input_types: Union[None, type, Sequence[type]] = None,
@@ -138,6 +154,20 @@ def udf(
 
 
 udf.__doc__ = inspect.getdoc(bigframes.session.Session.udf)
+
+
+def deploy_udf(
+    func,
+    **kwargs,
+):
+    return global_session.with_default_session(
+        bigframes.session.Session.deploy_udf,
+        func=func,
+        **kwargs,
+    )
+
+
+deploy_udf.__doc__ = inspect.getdoc(bigframes.session.Session.deploy_udf)
 
 
 @typing.overload
@@ -330,6 +360,8 @@ _functions = [
     clean_up_by_session_id,
     concat,
     cut,
+    deploy_remote_function,
+    deploy_udf,
     get_default_session_id,
     get_dummies,
     merge,
