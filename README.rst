@@ -2042,6 +2042,24 @@ Example Applications
 .. _tutorial: https://cloud.google.com/python
 .. _python-docs-samples: https://github.com/GoogleCloudPlatform/python-docs-samples
 
+API Issue Tracker Directory
+===========================
+
+Here are public issue trackers for some Google Cloud APIs:
+
++------------------+--------------------------------------------------------+
+| API              | Issue Tracker Link                                    |
++==================+========================================================+
+| BigQuery         | https://issuetracker.google.com/issues?q=componentid:191641 |
++------------------+--------------------------------------------------------+
+| Cloud Storage    | https://issuetracker.google.com/issues?q=componentid:191657 |
++------------------+--------------------------------------------------------+
+| Pub/Sub          | https://issuetracker.google.com/issues?q=componentid:191660 |
++------------------+--------------------------------------------------------+
+| Translation API  | https://issuetracker.google.com/issues?q=componentid:206184 |
++------------------+--------------------------------------------------------+
+| Vision API       | https://issuetracker.google.com/issues?q=componentid:191904 |
++------------------+--------------------------------------------------------+
 
 Authentication
 ********************
