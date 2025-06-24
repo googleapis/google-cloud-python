@@ -1165,6 +1165,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Maintenance API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-maintenance-api>`_
+     - preview
+     - |PyPI-google-cloud-maintenance-api|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1673988>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1673988&template=1161103>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Managed Lustre API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-lustre>`_
      - preview
      - |PyPI-google-cloud-lustre|
@@ -1896,6 +1902,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-maps-fleetengine| image:: https://img.shields.io/pypi/v/google-maps-fleetengine.svg
      :target: https://pypi.org/project/google-maps-fleetengine
+.. |PyPI-google-cloud-maintenance-api| image:: https://img.shields.io/pypi/v/google-cloud-maintenance-api.svg
+     :target: https://pypi.org/project/google-cloud-maintenance-api
 .. |PyPI-google-cloud-lustre| image:: https://img.shields.io/pypi/v/google-cloud-lustre.svg
      :target: https://pypi.org/project/google-cloud-lustre
 .. |PyPI-google-cloud-managedkafka| image:: https://img.shields.io/pypi/v/google-cloud-managedkafka.svg
