@@ -13,23 +13,20 @@
 # limitations under the License.
 from __future__ import annotations
 
-import dataclasses
 import functools
 
 import sqlglot.expressions as sge
 
-from bigframes import dtypes
 from bigframes.core import expression
+from bigframes.core.compile.sqlglot.expressions import (
+    binary_compiler,
+    nary_compiler,
+    ternary_compiler,
+    typed_expr,
+    unary_compiler,
+)
 import bigframes.core.compile.sqlglot.sqlglot_ir as ir
 import bigframes.operations as ops
-
-
-@dataclasses.dataclass(frozen=True)
-class TypedExpr:
-    """SQLGlot expression with type."""
-
-    expr: sge.Expression
-    dtype: dtypes.ExpressionType
 
 
 @functools.singledispatch
@@ -63,46 +60,21 @@ def compile_constant_expression(
 def compile_op_expression(expr: expression.OpExpression) -> sge.Expression:
     # Non-recursively compiles the children scalar expressions.
     args = tuple(
-        TypedExpr(compile_scalar_expression(input), input.output_type)
+        typed_expr.TypedExpr(compile_scalar_expression(input), input.output_type)
         for input in expr.inputs
     )
 
     op = expr.op
-    op_name = expr.op.__class__.__name__
-    method_name = f"compile_{op_name.lower()}"
-    method = globals().get(method_name, None)
-    if method is None:
-        raise ValueError(
-            f"Compilation method '{method_name}' not found for operator '{op_name}'."
-        )
-
     if isinstance(op, ops.UnaryOp):
-        return method(op, args[0])
+        return unary_compiler.compile(op, args[0])
     elif isinstance(op, ops.BinaryOp):
-        return method(op, args[0], args[1])
+        return binary_compiler.compile(op, args[0], args[1])
     elif isinstance(op, ops.TernaryOp):
-        return method(op, args[0], args[1], args[2])
+        return ternary_compiler.compile(op, args[0], args[1], args[2])
     elif isinstance(op, ops.NaryOp):
-        return method(op, *args)
+        return nary_compiler.compile(op, *args)
     else:
         raise TypeError(
-            f"Operator '{op_name}' has an unrecognized arity or type "
+            f"Operator '{op.name}' has an unrecognized arity or type "
             "and cannot be compiled."
         )
-
-
-# TODO: add parenthesize for operators
-def compile_addop(op: ops.AddOp, left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    if left.dtype == dtypes.STRING_DTYPE and right.dtype == dtypes.STRING_DTYPE:
-        # String addition
-        return sge.Concat(expressions=[left.expr, right.expr])
-
-    # Numerical addition
-    return sge.Add(this=left.expr, expression=right.expr)
-
-
-def compile_ge(
-    op: ops.ge_op, left: TypedExpr, right: TypedExpr  # type: ignore[valid-type]
-) -> sge.Expression:
-
-    return sge.GTE(this=left.expr, expression=right.expr)
