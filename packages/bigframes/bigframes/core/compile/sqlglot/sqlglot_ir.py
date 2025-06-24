@@ -182,7 +182,7 @@ class SQLGlotIR:
 
             selections = [
                 sge.Alias(
-                    this=expr.alias_or_name,
+                    this=sge.to_identifier(expr.alias_or_name, quoted=cls.quoted),
                     alias=sge.to_identifier(output_id, quoted=cls.quoted),
                 )
                 for expr, output_id in zip(select_expr.expressions, output_ids)

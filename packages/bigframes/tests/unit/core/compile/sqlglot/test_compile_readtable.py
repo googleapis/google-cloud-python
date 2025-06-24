@@ -23,6 +23,20 @@ def test_compile_readtable(scalars_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(scalars_types_df.sql, "out.sql")
 
 
+def test_compile_readtable_w_repeated_types(repeated_types_df: bpd.DataFrame, snapshot):
+    snapshot.assert_match(repeated_types_df.sql, "out.sql")
+
+
+def test_compile_readtable_w_nested_structs_types(
+    nested_structs_types_df: bpd.DataFrame, snapshot
+):
+    snapshot.assert_match(nested_structs_types_df.sql, "out.sql")
+
+
+def test_compile_readtable_w_json_types(json_types_df: bpd.DataFrame, snapshot):
+    snapshot.assert_match(json_types_df.sql, "out.sql")
+
+
 def test_compile_readtable_w_ordering(scalars_types_df: bpd.DataFrame, snapshot):
     bf_df = scalars_types_df[["int64_col"]]
     bf_df = bf_df.sort_values("int64_col")

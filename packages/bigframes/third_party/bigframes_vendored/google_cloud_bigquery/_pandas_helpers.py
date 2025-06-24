@@ -17,6 +17,7 @@
 
 import warnings
 
+import db_dtypes
 import google.cloud.bigquery.schema as schema
 import pyarrow
 
@@ -61,6 +62,7 @@ BQ_TO_ARROW_SCALARS = {
     "TIME": pyarrow_time,
     "TIMESTAMP": pyarrow_timestamp,
     "BIGNUMERIC": pyarrow_bignumeric,
+    "JSON": db_dtypes.JSONArrowType,
 }
 ARROW_SCALAR_IDS_TO_BQ = {
     # https://arrow.apache.org/docs/python/api/datatypes.html#type-classes

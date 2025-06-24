@@ -29,22 +29,46 @@ CURRENT_DIR = pathlib.Path(__file__).parent
 DATA_DIR = CURRENT_DIR.parent.parent.parent.parent / "data"
 
 
-@pytest.fixture(scope="session")
-def compiler_session(scalars_types_table_schema):
+def _create_compiler_session(table_name, table_schema):
+    """Helper function to create a compiler session."""
     from bigframes.testing import compiler_session
 
-    # TODO: Check if ordering mode is needed for the tests.
-    table_name = "scalar_types"
     anonymous_dataset = bigquery.DatasetReference.from_string(
         "bigframes-dev.sqlglot_test"
     )
     session = mocks.create_bigquery_session(
         table_name=table_name,
-        table_schema=scalars_types_table_schema,
+        table_schema=table_schema,
         anonymous_dataset=anonymous_dataset,
     )
     session._executor = compiler_session.SQLCompilerExecutor()
     return session
+
+
+@pytest.fixture(scope="session")
+def compiler_session(scalars_types_table_schema):
+    """Compiler session for scalar types."""
+    return _create_compiler_session("scalar_types", scalars_types_table_schema)
+
+
+@pytest.fixture(scope="session")
+def compiler_session_w_repeated_types(repeated_types_table_schema):
+    """Compiler session for repeated data types."""
+    return _create_compiler_session("repeated_types", repeated_types_table_schema)
+
+
+@pytest.fixture(scope="session")
+def compiler_session_w_nested_structs_types(nested_structs_types_table_schema):
+    """Compiler session for nested STRUCT data types."""
+    return _create_compiler_session(
+        "nested_structs_types", nested_structs_types_table_schema
+    )
+
+
+@pytest.fixture(scope="session")
+def compiler_session_w_json_types(json_types_table_schema):
+    """Compiler session for JSON data types."""
+    return _create_compiler_session("json_types", json_types_table_schema)
 
 
 @pytest.fixture(scope="session")
@@ -92,6 +116,40 @@ def scalars_types_pandas_df() -> pd.DataFrame:
 
 
 @pytest.fixture(scope="session")
+def nested_structs_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
+    return [
+        bigquery.SchemaField("id", "INTEGER"),
+        bigquery.SchemaField(
+            "people",
+            "RECORD",
+            fields=[
+                bigquery.SchemaField("name", "STRING"),
+                bigquery.SchemaField("age", "INTEGER"),
+                bigquery.SchemaField(
+                    "address",
+                    "RECORD",
+                    fields=[
+                        bigquery.SchemaField("city", "STRING"),
+                        bigquery.SchemaField("country", "STRING"),
+                    ],
+                ),
+            ],
+        ),
+    ]
+
+
+@pytest.fixture(scope="session")
+def nested_structs_types_df(compiler_session_w_nested_structs_types) -> bpd.DataFrame:
+    """Returns a BigFrames DataFrame containing all scalar types and using the `rowindex`
+    column as the index."""
+    bf_df = compiler_session_w_nested_structs_types.read_gbq_table(
+        "bigframes-dev.sqlglot_test.nested_structs_types"
+    )
+    bf_df = bf_df.set_index("id", drop=False)
+    return bf_df
+
+
+@pytest.fixture(scope="session")
 def nested_structs_pandas_df() -> pd.DataFrame:
     """Returns a pandas DataFrame containing STRUCT types and using the `id`
     column as the index."""
@@ -117,7 +175,32 @@ def nested_structs_pandas_df() -> pd.DataFrame:
 
 
 @pytest.fixture(scope="session")
-def repeated_pandas_df() -> pd.DataFrame:
+def repeated_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
+    return [
+        bigquery.SchemaField("rowindex", "INTEGER"),
+        bigquery.SchemaField("int_list_col", "INTEGER", "REPEATED"),
+        bigquery.SchemaField("bool_list_col", "BOOLEAN", "REPEATED"),
+        bigquery.SchemaField("float_list_col", "FLOAT", "REPEATED"),
+        bigquery.SchemaField("date_list_col", "DATE", "REPEATED"),
+        bigquery.SchemaField("date_time_list_col", "DATETIME", "REPEATED"),
+        bigquery.SchemaField("numeric_list_col", "NUMERIC", "REPEATED"),
+        bigquery.SchemaField("string_list_col", "STRING", "REPEATED"),
+    ]
+
+
+@pytest.fixture(scope="session")
+def repeated_types_df(compiler_session_w_repeated_types) -> bpd.DataFrame:
+    """Returns a BigFrames DataFrame containing all scalar types and using the `rowindex`
+    column as the index."""
+    bf_df = compiler_session_w_repeated_types.read_gbq_table(
+        "bigframes-dev.sqlglot_test.repeated_types"
+    )
+    bf_df = bf_df.set_index("rowindex", drop=False)
+    return bf_df
+
+
+@pytest.fixture(scope="session")
+def repeated_types_pandas_df() -> pd.DataFrame:
     """Returns a pandas DataFrame containing LIST types and using the `rowindex`
     column as the index."""
 
@@ -125,8 +208,29 @@ def repeated_pandas_df() -> pd.DataFrame:
         DATA_DIR / "repeated.jsonl",
         lines=True,
     )
+    # TODO: add dtype conversion here if needed.
     df = df.set_index("rowindex")
     return df
+
+
+@pytest.fixture(scope="session")
+def json_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
+    return [
+        bigquery.SchemaField("rowindex", "INTEGER"),
+        bigquery.SchemaField("json_col", "JSON"),
+    ]
+
+
+@pytest.fixture(scope="session")
+def json_types_df(compiler_session_w_json_types) -> bpd.DataFrame:
+    """Returns a BigFrames DataFrame containing JSON types and using the `rowindex`
+    column as the index."""
+    bf_df = compiler_session_w_json_types.read_gbq_table(
+        "bigframes-dev.sqlglot_test.json_types"
+    )
+    # TODO(b/427305807): Why `drop=False` will produce two "rowindex" columns?
+    bf_df = bf_df.set_index("rowindex", drop=True)
+    return bf_df
 
 
 @pytest.fixture(scope="session")
@@ -149,8 +253,10 @@ def json_pandas_df() -> pd.DataFrame:
     ]
     df = pd.DataFrame(
         {
+            "rowindex": pd.Series(range(len(json_data)), dtype=dtypes.INT_DTYPE),
             "json_col": pd.Series(json_data, dtype=dtypes.JSON_DTYPE),
         },
-        index=pd.Series(range(len(json_data)), dtype=dtypes.INT_DTYPE),
     )
+    # TODO(b/427305807): Why `drop=False` will produce two "rowindex" columns?
+    df = df.set_index("rowindex", drop=True)
     return df

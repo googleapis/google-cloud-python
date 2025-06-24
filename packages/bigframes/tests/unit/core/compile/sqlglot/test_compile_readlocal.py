@@ -30,26 +30,31 @@ def test_compile_readlocal(
 
 def test_compile_readlocal_w_structs_df(
     nested_structs_pandas_df: pd.DataFrame,
-    compiler_session: bigframes.Session,
+    compiler_session_w_nested_structs_types: bigframes.Session,
     snapshot,
 ):
-    bf_df = bpd.DataFrame(nested_structs_pandas_df, session=compiler_session)
+    # TODO(b/427306734): Check why the output is different from the expected output.
+    bf_df = bpd.DataFrame(
+        nested_structs_pandas_df, session=compiler_session_w_nested_structs_types
+    )
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
 def test_compile_readlocal_w_lists_df(
-    repeated_pandas_df: pd.DataFrame,
-    compiler_session: bigframes.Session,
+    repeated_types_pandas_df: pd.DataFrame,
+    compiler_session_w_repeated_types: bigframes.Session,
     snapshot,
 ):
-    bf_df = bpd.DataFrame(repeated_pandas_df, session=compiler_session)
+    bf_df = bpd.DataFrame(
+        repeated_types_pandas_df, session=compiler_session_w_repeated_types
+    )
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
 def test_compile_readlocal_w_json_df(
     json_pandas_df: pd.DataFrame,
-    compiler_session: bigframes.Session,
+    compiler_session_w_json_types: bigframes.Session,
     snapshot,
 ):
-    bf_df = bpd.DataFrame(json_pandas_df, session=compiler_session)
+    bf_df = bpd.DataFrame(json_pandas_df, session=compiler_session_w_json_types)
     snapshot.assert_match(bf_df.sql, "out.sql")

@@ -49,21 +49,21 @@ WITH `bfcte_1` AS (
     *
   FROM (
     SELECT
-      bfcol_17 AS `bfcol_46`,
-      bfcol_18 AS `bfcol_47`,
-      bfcol_19 AS `bfcol_48`,
-      bfcol_20 AS `bfcol_49`,
-      bfcol_21 AS `bfcol_50`,
-      bfcol_22 AS `bfcol_51`
+      `bfcol_17` AS `bfcol_46`,
+      `bfcol_18` AS `bfcol_47`,
+      `bfcol_19` AS `bfcol_48`,
+      `bfcol_20` AS `bfcol_49`,
+      `bfcol_21` AS `bfcol_50`,
+      `bfcol_22` AS `bfcol_51`
     FROM `bfcte_6`
     UNION ALL
     SELECT
-      bfcol_40 AS `bfcol_46`,
-      bfcol_41 AS `bfcol_47`,
-      bfcol_42 AS `bfcol_48`,
-      bfcol_43 AS `bfcol_49`,
-      bfcol_44 AS `bfcol_50`,
-      bfcol_45 AS `bfcol_51`
+      `bfcol_40` AS `bfcol_46`,
+      `bfcol_41` AS `bfcol_47`,
+      `bfcol_42` AS `bfcol_48`,
+      `bfcol_43` AS `bfcol_49`,
+      `bfcol_44` AS `bfcol_50`,
+      `bfcol_45` AS `bfcol_51`
     FROM `bfcte_7`
   )
 )
