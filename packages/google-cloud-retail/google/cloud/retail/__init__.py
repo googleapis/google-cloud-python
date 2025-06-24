@@ -102,6 +102,7 @@ from google.cloud.retail_v2.types.common import (
     ColorInfo,
     Condition,
     CustomAttribute,
+    DoubleList,
     FulfillmentInfo,
     Image,
     Interval,
@@ -113,6 +114,7 @@ from google.cloud.retail_v2.types.common import (
     Rule,
     SearchSolutionUseCase,
     SolutionType,
+    StringList,
     UserInfo,
 )
 from google.cloud.retail_v2.types.completion_service import (
@@ -299,6 +301,7 @@ __all__ = (
     "ColorInfo",
     "Condition",
     "CustomAttribute",
+    "DoubleList",
     "FulfillmentInfo",
     "Image",
     "Interval",
@@ -307,6 +310,7 @@ __all__ = (
     "PriceInfo",
     "Rating",
     "Rule",
+    "StringList",
     "UserInfo",
     "AttributeConfigLevel",
     "RecommendationsFilteringOption",
