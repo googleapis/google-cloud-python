@@ -75,6 +75,7 @@ from .types.common import (
     ColorInfo,
     Condition,
     CustomAttribute,
+    DoubleList,
     FulfillmentInfo,
     Image,
     Interval,
@@ -86,6 +87,7 @@ from .types.common import (
     Rule,
     SearchSolutionUseCase,
     SolutionType,
+    StringList,
     UserInfo,
 )
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
@@ -273,6 +275,7 @@ __all__ = (
     "DeleteModelRequest",
     "DeleteProductRequest",
     "DeleteServingConfigRequest",
+    "DoubleList",
     "ExperimentInfo",
     "ExportAnalyticsMetricsRequest",
     "ExportAnalyticsMetricsResponse",
@@ -369,6 +372,7 @@ __all__ = (
     "SetInventoryRequest",
     "SetInventoryResponse",
     "SolutionType",
+    "StringList",
     "Tile",
     "TuneModelMetadata",
     "TuneModelRequest",

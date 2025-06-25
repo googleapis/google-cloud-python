@@ -440,6 +440,17 @@ class SearchRequest(proto.Message):
             local inventory with the matching product's
             [LocalInventory.place_id][google.cloud.retail.v2.LocalInventory.place_id]
             for revenue optimization.
+        user_attributes (MutableMapping[str, google.cloud.retail_v2.types.StringList]):
+            Optional. The user attributes that could be used for
+            personalization of search results.
+
+            -  Populate at most 100 key-value pairs per query.
+            -  Only supports string keys and repeated string values.
+            -  Duplcate keys are not allowed within a single query.
+
+            Example: user_attributes: [ { key: "pets" value { values:
+            "dog" values: "cat" } }, { key: "state" value { values: "CA"
+            } } ]
     """
 
     class SearchMode(proto.Enum):
@@ -912,10 +923,11 @@ class SearchRequest(proto.Message):
                 Default to
                 [Condition.DISABLED][google.cloud.retail.v2.SearchRequest.QueryExpansionSpec.Condition.DISABLED].
             pin_unexpanded_results (bool):
-                Whether to pin unexpanded results. If this
-                field is set to true, unexpanded products are
-                always at the top of the search results,
-                followed by the expanded results.
+                Whether to pin unexpanded results. The
+                default value is false. If this field is set to
+                true, unexpanded products are always at the top
+                of the search results, followed by the expanded
+                results.
         """
 
         class Condition(proto.Enum):
@@ -1276,6 +1288,12 @@ class SearchRequest(proto.Message):
         proto.STRING,
         number=46,
     )
+    user_attributes: MutableMapping[str, common.StringList] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=47,
+        message=common.StringList,
+    )
 
 
 class SearchResponse(proto.Message):
@@ -1447,6 +1465,8 @@ class SearchResponse(proto.Message):
 
                 -  ``purchased``: Indicates that this product has been
                    purchased before.
+            model_scores (MutableMapping[str, google.cloud.retail_v2.types.DoubleList]):
+                Google provided available scores.
         """
 
         id: str = proto.Field(
@@ -1479,6 +1499,12 @@ class SearchResponse(proto.Message):
         personal_labels: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=7,
+        )
+        model_scores: MutableMapping[str, common.DoubleList] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=8,
+            message=common.DoubleList,
         )
 
     class Facet(proto.Message):

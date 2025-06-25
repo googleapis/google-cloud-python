@@ -41,6 +41,7 @@ from .common import (
     ColorInfo,
     Condition,
     CustomAttribute,
+    DoubleList,
     FulfillmentInfo,
     Image,
     Interval,
@@ -52,6 +53,7 @@ from .common import (
     Rule,
     SearchSolutionUseCase,
     SolutionType,
+    StringList,
     UserInfo,
 )
 from .completion_service import CompleteQueryRequest, CompleteQueryResponse
@@ -205,6 +207,7 @@ __all__ = (
     "ColorInfo",
     "Condition",
     "CustomAttribute",
+    "DoubleList",
     "FulfillmentInfo",
     "Image",
     "Interval",
@@ -213,6 +216,7 @@ __all__ = (
     "PriceInfo",
     "Rating",
     "Rule",
+    "StringList",
     "UserInfo",
     "AttributeConfigLevel",
     "RecommendationsFilteringOption",
