@@ -943,9 +943,9 @@ class TranslateDocumentRequest(proto.Message):
         source_language_code (str):
             Optional. The ISO-639 language code of the input document if
             known, for example, "en-US" or "sr-Latn". Supported language
-            codes are listed in [Language Support]
-            (https://cloud.google.com/translate/docs/languages). If the
-            source language isn't specified, the API attempts to
+            codes are listed in `Language
+            Support <https://cloud.google.com/translate/docs/languages>`__.
+            If the source language isn't specified, the API attempts to
             identify the source language automatically and returns the
             source language within the response. Source language must be
             specified if the request contains a glossary or a custom
@@ -953,8 +953,8 @@ class TranslateDocumentRequest(proto.Message):
         target_language_code (str):
             Required. The ISO-639 language code to use for translation
             of the input document, set to one of the language codes
-            listed in [Language Support]
-            (https://cloud.google.com/translate/docs/languages).
+            listed in `Language
+            Support <https://cloud.google.com/translate/docs/languages>`__.
         document_input_config (google.cloud.translate_v3.types.DocumentInputConfig):
             Required. Input configurations.
         document_output_config (google.cloud.translate_v3.types.DocumentOutputConfig):
