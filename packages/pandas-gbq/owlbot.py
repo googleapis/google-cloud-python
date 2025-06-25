@@ -35,8 +35,8 @@ extras_by_python = {
 extras = ["tqdm", "geopandas"]
 templated_files = common.py_library(
     default_python_version="3.10",
-    unit_test_python_versions=["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"],
-    system_test_python_versions=["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"],
+    unit_test_python_versions=["3.9", "3.10", "3.11", "3.12", "3.13"],
+    system_test_python_versions=["3.9", "3.10", "3.11", "3.12", "3.13"],
     cov_level=96,
     unit_test_external_dependencies=["freezegun"],
     unit_test_extras=extras,
@@ -57,8 +57,9 @@ s.move(
         "docs/multiprocessing.rst",
         "noxfile.py",
         "README.rst",
-        # exclude this file as we have an alternate prerelease.cfg
         ".github/workflows/docs.yml",
+        ".github/sync-repo-settings.yaml",
+        # exclude this file as we have an alternate prerelease.cfg
         ".kokoro/presubmit/prerelease-deps.cfg",
         ".kokoro/presubmit/presubmit.cfg",
     ],
