@@ -74,6 +74,14 @@ class DeveloperConnectRestInterceptor:
 
     .. code-block:: python
         class MyCustomDeveloperConnectInterceptor(DeveloperConnectRestInterceptor):
+            def pre_create_account_connector(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_account_connector(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_connection(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -90,6 +98,14 @@ class DeveloperConnectRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_account_connector(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_account_connector(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_connection(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -103,6 +119,30 @@ class DeveloperConnectRestInterceptor:
                 return request, metadata
 
             def post_delete_git_repository_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_self(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_self(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_user(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_user(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_fetch_access_token(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_access_token(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -146,6 +186,22 @@ class DeveloperConnectRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_fetch_self(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_self(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_account_connector(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_account_connector(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_connection(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -159,6 +215,14 @@ class DeveloperConnectRestInterceptor:
                 return request, metadata
 
             def post_get_git_repository_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_account_connectors(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_account_connectors(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -178,6 +242,22 @@ class DeveloperConnectRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_users(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_users(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_account_connector(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_account_connector(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_connection(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -191,6 +271,55 @@ class DeveloperConnectRestInterceptor:
 
 
     """
+
+    def pre_create_account_connector(
+        self,
+        request: developer_connect.CreateAccountConnectorRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.CreateAccountConnectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_account_connector
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_create_account_connector(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_account_connector
+
+        DEPRECATED. Please use the `post_create_account_connector_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_create_account_connector` interceptor runs
+        before the `post_create_account_connector_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_account_connector_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_account_connector
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_create_account_connector_with_metadata`
+        interceptor in new development instead of the `post_create_account_connector` interceptor.
+        When both interceptors are used, this `post_create_account_connector_with_metadata` interceptor runs after the
+        `post_create_account_connector` interceptor. The (possibly modified) response returned by
+        `post_create_account_connector` will be passed to
+        `post_create_account_connector_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_connection(
         self,
@@ -290,6 +419,55 @@ class DeveloperConnectRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_account_connector(
+        self,
+        request: developer_connect.DeleteAccountConnectorRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.DeleteAccountConnectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_account_connector
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_delete_account_connector(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_account_connector
+
+        DEPRECATED. Please use the `post_delete_account_connector_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_delete_account_connector` interceptor runs
+        before the `post_delete_account_connector_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_account_connector_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_account_connector
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_delete_account_connector_with_metadata`
+        interceptor in new development instead of the `post_delete_account_connector` interceptor.
+        When both interceptors are used, this `post_delete_account_connector_with_metadata` interceptor runs after the
+        `post_delete_account_connector` interceptor. The (possibly modified) response returned by
+        `post_delete_account_connector` will be passed to
+        `post_delete_account_connector_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_connection(
         self,
         request: developer_connect.DeleteConnectionRequest,
@@ -385,6 +563,154 @@ class DeveloperConnectRestInterceptor:
         `post_delete_git_repository_link` interceptor. The (possibly modified) response returned by
         `post_delete_git_repository_link` will be passed to
         `post_delete_git_repository_link_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_self(
+        self,
+        request: developer_connect.DeleteSelfRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.DeleteSelfRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_self
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_delete_self(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_self
+
+        DEPRECATED. Please use the `post_delete_self_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_delete_self` interceptor runs
+        before the `post_delete_self_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_self_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_self
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_delete_self_with_metadata`
+        interceptor in new development instead of the `post_delete_self` interceptor.
+        When both interceptors are used, this `post_delete_self_with_metadata` interceptor runs after the
+        `post_delete_self` interceptor. The (possibly modified) response returned by
+        `post_delete_self` will be passed to
+        `post_delete_self_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_user(
+        self,
+        request: developer_connect.DeleteUserRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.DeleteUserRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_user
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_delete_user(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_user
+
+        DEPRECATED. Please use the `post_delete_user_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_delete_user` interceptor runs
+        before the `post_delete_user_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_user_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_user
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_delete_user_with_metadata`
+        interceptor in new development instead of the `post_delete_user` interceptor.
+        When both interceptors are used, this `post_delete_user_with_metadata` interceptor runs after the
+        `post_delete_user` interceptor. The (possibly modified) response returned by
+        `post_delete_user` will be passed to
+        `post_delete_user_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_fetch_access_token(
+        self,
+        request: developer_connect.FetchAccessTokenRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchAccessTokenRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for fetch_access_token
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_fetch_access_token(
+        self, response: developer_connect.FetchAccessTokenResponse
+    ) -> developer_connect.FetchAccessTokenResponse:
+        """Post-rpc interceptor for fetch_access_token
+
+        DEPRECATED. Please use the `post_fetch_access_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_fetch_access_token` interceptor runs
+        before the `post_fetch_access_token_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_access_token_with_metadata(
+        self,
+        response: developer_connect.FetchAccessTokenResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchAccessTokenResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_access_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_access_token_with_metadata`
+        interceptor in new development instead of the `post_fetch_access_token` interceptor.
+        When both interceptors are used, this `post_fetch_access_token_with_metadata` interceptor runs after the
+        `post_fetch_access_token` interceptor. The (possibly modified) response returned by
+        `post_fetch_access_token` will be passed to
+        `post_fetch_access_token_with_metadata`.
         """
         return response, metadata
 
@@ -645,6 +971,105 @@ class DeveloperConnectRestInterceptor:
         """
         return response, metadata
 
+    def pre_fetch_self(
+        self,
+        request: developer_connect.FetchSelfRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchSelfRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for fetch_self
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_fetch_self(
+        self, response: developer_connect.User
+    ) -> developer_connect.User:
+        """Post-rpc interceptor for fetch_self
+
+        DEPRECATED. Please use the `post_fetch_self_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_fetch_self` interceptor runs
+        before the `post_fetch_self_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_self_with_metadata(
+        self,
+        response: developer_connect.User,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[developer_connect.User, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for fetch_self
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_self_with_metadata`
+        interceptor in new development instead of the `post_fetch_self` interceptor.
+        When both interceptors are used, this `post_fetch_self_with_metadata` interceptor runs after the
+        `post_fetch_self` interceptor. The (possibly modified) response returned by
+        `post_fetch_self` will be passed to
+        `post_fetch_self_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_account_connector(
+        self,
+        request: developer_connect.GetAccountConnectorRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.GetAccountConnectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_account_connector
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_get_account_connector(
+        self, response: developer_connect.AccountConnector
+    ) -> developer_connect.AccountConnector:
+        """Post-rpc interceptor for get_account_connector
+
+        DEPRECATED. Please use the `post_get_account_connector_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_get_account_connector` interceptor runs
+        before the `post_get_account_connector_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_account_connector_with_metadata(
+        self,
+        response: developer_connect.AccountConnector,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.AccountConnector, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_account_connector
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_get_account_connector_with_metadata`
+        interceptor in new development instead of the `post_get_account_connector` interceptor.
+        When both interceptors are used, this `post_get_account_connector_with_metadata` interceptor runs after the
+        `post_get_account_connector` interceptor. The (possibly modified) response returned by
+        `post_get_account_connector` will be passed to
+        `post_get_account_connector_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_connection(
         self,
         request: developer_connect.GetConnectionRequest,
@@ -741,6 +1166,58 @@ class DeveloperConnectRestInterceptor:
         `post_get_git_repository_link` interceptor. The (possibly modified) response returned by
         `post_get_git_repository_link` will be passed to
         `post_get_git_repository_link_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_account_connectors(
+        self,
+        request: developer_connect.ListAccountConnectorsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.ListAccountConnectorsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_account_connectors
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_list_account_connectors(
+        self, response: developer_connect.ListAccountConnectorsResponse
+    ) -> developer_connect.ListAccountConnectorsResponse:
+        """Post-rpc interceptor for list_account_connectors
+
+        DEPRECATED. Please use the `post_list_account_connectors_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_list_account_connectors` interceptor runs
+        before the `post_list_account_connectors_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_account_connectors_with_metadata(
+        self,
+        response: developer_connect.ListAccountConnectorsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.ListAccountConnectorsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_account_connectors
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_list_account_connectors_with_metadata`
+        interceptor in new development instead of the `post_list_account_connectors` interceptor.
+        When both interceptors are used, this `post_list_account_connectors_with_metadata` interceptor runs after the
+        `post_list_account_connectors` interceptor. The (possibly modified) response returned by
+        `post_list_account_connectors` will be passed to
+        `post_list_account_connectors_with_metadata`.
         """
         return response, metadata
 
@@ -845,6 +1322,105 @@ class DeveloperConnectRestInterceptor:
         `post_list_git_repository_links` interceptor. The (possibly modified) response returned by
         `post_list_git_repository_links` will be passed to
         `post_list_git_repository_links_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_users(
+        self,
+        request: developer_connect.ListUsersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.ListUsersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_users
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_list_users(
+        self, response: developer_connect.ListUsersResponse
+    ) -> developer_connect.ListUsersResponse:
+        """Post-rpc interceptor for list_users
+
+        DEPRECATED. Please use the `post_list_users_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_list_users` interceptor runs
+        before the `post_list_users_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_users_with_metadata(
+        self,
+        response: developer_connect.ListUsersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.ListUsersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_users
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_list_users_with_metadata`
+        interceptor in new development instead of the `post_list_users` interceptor.
+        When both interceptors are used, this `post_list_users_with_metadata` interceptor runs after the
+        `post_list_users` interceptor. The (possibly modified) response returned by
+        `post_list_users` will be passed to
+        `post_list_users_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_account_connector(
+        self,
+        request: developer_connect.UpdateAccountConnectorRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.UpdateAccountConnectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_account_connector
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DeveloperConnect server.
+        """
+        return request, metadata
+
+    def post_update_account_connector(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_account_connector
+
+        DEPRECATED. Please use the `post_update_account_connector_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DeveloperConnect server but before
+        it is returned to user code. This `post_update_account_connector` interceptor runs
+        before the `post_update_account_connector_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_account_connector_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_account_connector
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DeveloperConnect server but before it is returned to user code.
+
+        We recommend only using this `post_update_account_connector_with_metadata`
+        interceptor in new development instead of the `post_update_account_connector` interceptor.
+        When both interceptors are used, this `post_update_account_connector_with_metadata` interceptor runs after the
+        `post_update_account_connector` interceptor. The (possibly modified) response returned by
+        `post_update_account_connector` will be passed to
+        `post_update_account_connector_with_metadata`.
         """
         return response, metadata
 
@@ -1184,6 +1760,162 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _CreateAccountConnector(
+        _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector,
+        DeveloperConnectRestStub,
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.CreateAccountConnector")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.CreateAccountConnectorRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create account connector method over HTTP.
+
+            Args:
+                request (~.developer_connect.CreateAccountConnectorRequest):
+                    The request object.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_account_connector(
+                request, metadata
+            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseCreateAccountConnector._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.CreateAccountConnector",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "CreateAccountConnector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                DeveloperConnectRestTransport._CreateAccountConnector._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_account_connector(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_account_connector_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.create_account_connector",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "CreateAccountConnector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateConnection(
         _BaseDeveloperConnectRestTransport._BaseCreateConnection,
         DeveloperConnectRestStub,
@@ -1496,6 +2228,157 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
+    class _DeleteAccountConnector(
+        _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector,
+        DeveloperConnectRestStub,
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.DeleteAccountConnector")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.DeleteAccountConnectorRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete account connector method over HTTP.
+
+            Args:
+                request (~.developer_connect.DeleteAccountConnectorRequest):
+                    The request object. Message for deleting a
+                AccountConnector
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_account_connector(
+                request, metadata
+            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteAccountConnector._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.DeleteAccountConnector",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteAccountConnector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                DeveloperConnectRestTransport._DeleteAccountConnector._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_account_connector(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_account_connector_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.delete_account_connector",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteAccountConnector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteConnection(
         _BaseDeveloperConnectRestTransport._BaseDeleteConnection,
         DeveloperConnectRestStub,
@@ -1790,6 +2673,455 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     extra={
                         "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
                         "rpcName": "DeleteGitRepositoryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteSelf(
+        _BaseDeveloperConnectRestTransport._BaseDeleteSelf, DeveloperConnectRestStub
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.DeleteSelf")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.DeleteSelfRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete self method over HTTP.
+
+            Args:
+                request (~.developer_connect.DeleteSelfRequest):
+                    The request object. Message for deleting a User of the
+                user themselves.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_self(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteSelf._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.DeleteSelf",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteSelf",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DeveloperConnectRestTransport._DeleteSelf._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_self(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_self_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.delete_self",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteSelf",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteUser(
+        _BaseDeveloperConnectRestTransport._BaseDeleteUser, DeveloperConnectRestStub
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.DeleteUser")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.DeleteUserRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete user method over HTTP.
+
+            Args:
+                request (~.developer_connect.DeleteUserRequest):
+                    The request object. Message for deleting a User
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_user(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseDeleteUser._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.DeleteUser",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteUser",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DeveloperConnectRestTransport._DeleteUser._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_user(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_user_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.delete_user",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteUser",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _FetchAccessToken(
+        _BaseDeveloperConnectRestTransport._BaseFetchAccessToken,
+        DeveloperConnectRestStub,
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.FetchAccessToken")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.FetchAccessTokenRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> developer_connect.FetchAccessTokenResponse:
+            r"""Call the fetch access token method over HTTP.
+
+            Args:
+                request (~.developer_connect.FetchAccessTokenRequest):
+                    The request object. Message for fetching an OAuth access
+                token.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.developer_connect.FetchAccessTokenResponse:
+                    Message for responding to getting an
+                OAuth access token.
+
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_fetch_access_token(
+                request, metadata
+            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseFetchAccessToken._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.FetchAccessToken",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchAccessToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DeveloperConnectRestTransport._FetchAccessToken._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = developer_connect.FetchAccessTokenResponse()
+            pb_resp = developer_connect.FetchAccessTokenResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_access_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_access_token_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        developer_connect.FetchAccessTokenResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.fetch_access_token",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchAccessToken",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2571,6 +3903,311 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
+    class _FetchSelf(
+        _BaseDeveloperConnectRestTransport._BaseFetchSelf, DeveloperConnectRestStub
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.FetchSelf")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.FetchSelfRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> developer_connect.User:
+            r"""Call the fetch self method over HTTP.
+
+            Args:
+                request (~.developer_connect.FetchSelfRequest):
+                    The request object. Message for fetching a User of the
+                user themselves.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.developer_connect.User:
+                    User represents a user connected to
+                the service providers through a
+                AccountConnector.
+
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_fetch_self(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseFetchSelf._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.FetchSelf",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchSelf",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DeveloperConnectRestTransport._FetchSelf._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = developer_connect.User()
+            pb_resp = developer_connect.User.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_self(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_self_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = developer_connect.User.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.fetch_self",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchSelf",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetAccountConnector(
+        _BaseDeveloperConnectRestTransport._BaseGetAccountConnector,
+        DeveloperConnectRestStub,
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.GetAccountConnector")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.GetAccountConnectorRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> developer_connect.AccountConnector:
+            r"""Call the get account connector method over HTTP.
+
+            Args:
+                request (~.developer_connect.GetAccountConnectorRequest):
+                    The request object. Message for getting a
+                AccountConnector
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.developer_connect.AccountConnector:
+                    AccountConnector encapsulates what a
+                platform administrator needs to
+                configure for users to connect to the
+                service providers, which includes, among
+                other fields, the OAuth client ID,
+                client secret, and authorization and
+                token endpoints.
+
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_account_connector(
+                request, metadata
+            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseGetAccountConnector._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.GetAccountConnector",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetAccountConnector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DeveloperConnectRestTransport._GetAccountConnector._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = developer_connect.AccountConnector()
+            pb_resp = developer_connect.AccountConnector.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_account_connector(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_account_connector_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = developer_connect.AccountConnector.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.get_account_connector",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetAccountConnector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetConnection(
         _BaseDeveloperConnectRestTransport._BaseGetConnection, DeveloperConnectRestStub
     ):
@@ -2863,6 +4500,162 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     extra={
                         "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
                         "rpcName": "GetGitRepositoryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListAccountConnectors(
+        _BaseDeveloperConnectRestTransport._BaseListAccountConnectors,
+        DeveloperConnectRestStub,
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.ListAccountConnectors")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.ListAccountConnectorsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> developer_connect.ListAccountConnectorsResponse:
+            r"""Call the list account connectors method over HTTP.
+
+            Args:
+                request (~.developer_connect.ListAccountConnectorsRequest):
+                    The request object. Message for requesting list of
+                AccountConnectors
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.developer_connect.ListAccountConnectorsResponse:
+                    Message for response to listing
+                AccountConnectors
+
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_account_connectors(
+                request, metadata
+            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseListAccountConnectors._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.ListAccountConnectors",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListAccountConnectors",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                DeveloperConnectRestTransport._ListAccountConnectors._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = developer_connect.ListAccountConnectorsResponse()
+            pb_resp = developer_connect.ListAccountConnectorsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_account_connectors(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_account_connectors_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        developer_connect.ListAccountConnectorsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.list_account_connectors",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListAccountConnectors",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3177,6 +4970,310 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 )
             return resp
 
+    class _ListUsers(
+        _BaseDeveloperConnectRestTransport._BaseListUsers, DeveloperConnectRestStub
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.ListUsers")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.ListUsersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> developer_connect.ListUsersResponse:
+            r"""Call the list users method over HTTP.
+
+            Args:
+                request (~.developer_connect.ListUsersRequest):
+                    The request object. Message for requesting a list of
+                Users
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.developer_connect.ListUsersResponse:
+                    Message for response to listing Users
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseListUsers._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_users(request, metadata)
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseListUsers._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseListUsers._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.ListUsers",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListUsers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DeveloperConnectRestTransport._ListUsers._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = developer_connect.ListUsersResponse()
+            pb_resp = developer_connect.ListUsersResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_users(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_users_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = developer_connect.ListUsersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.list_users",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListUsers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateAccountConnector(
+        _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector,
+        DeveloperConnectRestStub,
+    ):
+        def __hash__(self):
+            return hash("DeveloperConnectRestTransport.UpdateAccountConnector")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: developer_connect.UpdateAccountConnectorRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update account connector method over HTTP.
+
+            Args:
+                request (~.developer_connect.UpdateAccountConnectorRequest):
+                    The request object. Message for updating a
+                AccountConnector
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_account_connector(
+                request, metadata
+            )
+            transcoded_request = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDeveloperConnectRestTransport._BaseUpdateAccountConnector._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.UpdateAccountConnector",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "UpdateAccountConnector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                DeveloperConnectRestTransport._UpdateAccountConnector._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_account_connector(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_account_connector_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.update_account_connector",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "UpdateAccountConnector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateConnection(
         _BaseDeveloperConnectRestTransport._BaseUpdateConnection,
         DeveloperConnectRestStub,
@@ -3332,6 +5429,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             return resp
 
     @property
+    def create_account_connector(
+        self,
+    ) -> Callable[
+        [developer_connect.CreateAccountConnectorRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_connection(
         self,
     ) -> Callable[
@@ -3352,6 +5459,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
         return self._CreateGitRepositoryLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_account_connector(
+        self,
+    ) -> Callable[
+        [developer_connect.DeleteAccountConnectorRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_connection(
         self,
     ) -> Callable[
@@ -3370,6 +5487,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGitRepositoryLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_self(
+        self,
+    ) -> Callable[[developer_connect.DeleteSelfRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteSelf(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_user(
+        self,
+    ) -> Callable[[developer_connect.DeleteUserRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_access_token(
+        self,
+    ) -> Callable[
+        [developer_connect.FetchAccessTokenRequest],
+        developer_connect.FetchAccessTokenResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchAccessToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def fetch_git_hub_installations(
@@ -3426,6 +5570,25 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
         return self._FetchReadWriteToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def fetch_self(
+        self,
+    ) -> Callable[[developer_connect.FetchSelfRequest], developer_connect.User]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchSelf(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_account_connector(
+        self,
+    ) -> Callable[
+        [developer_connect.GetAccountConnectorRequest],
+        developer_connect.AccountConnector,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_connection(
         self,
     ) -> Callable[
@@ -3445,6 +5608,17 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGitRepositoryLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_account_connectors(
+        self,
+    ) -> Callable[
+        [developer_connect.ListAccountConnectorsRequest],
+        developer_connect.ListAccountConnectorsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAccountConnectors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_connections(
@@ -3467,6 +5641,26 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGitRepositoryLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_users(
+        self,
+    ) -> Callable[
+        [developer_connect.ListUsersRequest], developer_connect.ListUsersResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListUsers(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_account_connector(
+        self,
+    ) -> Callable[
+        [developer_connect.UpdateAccountConnectorRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateAccountConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_connection(
