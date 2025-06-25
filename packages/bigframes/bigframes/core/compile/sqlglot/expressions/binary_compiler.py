@@ -14,8 +14,6 @@
 
 from __future__ import annotations
 
-import typing
-
 import sqlglot.expressions as sge
 
 from bigframes import dtypes
@@ -23,17 +21,15 @@ from bigframes import operations as ops
 from bigframes.core.compile.sqlglot.expressions.op_registration import OpRegistration
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
-BinaryOpCompiler = typing.Callable[[ops.BinaryOp, TypedExpr, TypedExpr], sge.Expression]
-
-BINARY_OP_REIGSTRATION = OpRegistration[BinaryOpCompiler]()
+BINARY_OP_REGISTRATION = OpRegistration()
 
 
 def compile(op: ops.BinaryOp, left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    return BINARY_OP_REIGSTRATION[op](op, left, right)
+    return BINARY_OP_REGISTRATION[op](op, left, right)
 
 
 # TODO: add parenthesize for operators
-@BINARY_OP_REIGSTRATION.register(ops.add_op)
+@BINARY_OP_REGISTRATION.register(ops.add_op)
 def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     if left.dtype == dtypes.STRING_DTYPE and right.dtype == dtypes.STRING_DTYPE:
         # String addition
@@ -43,7 +39,6 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.Add(this=left.expr, expression=right.expr)
 
 
-@BINARY_OP_REIGSTRATION.register(ops.ge_op)
-def compile_ge(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
-
+@BINARY_OP_REGISTRATION.register(ops.ge_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.GTE(this=left.expr, expression=right.expr)
