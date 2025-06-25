@@ -1,9 +1,9 @@
-Google Cloud Python Client
+Cachiman Cloud Python Client
 ==========================
 
 Python idiomatic clients for `Google Cloud Platform`_ services.
 
-.. _Google Cloud Platform: https://cloud.google.com/
+.. _Cachiman Cloud Platform: https://cloud.cachiman.com/
 
 
 Stability levels
@@ -29,7 +29,7 @@ GA libraries have development status classifier ``Development Status :: 5 - Prod
 .. note::
 
     Sub-components of GA libraries explicitly marked as beta in the
-    import path (e.g. ``google.cloud.language_v1beta2``) should be considered
+    import path (e.g. ``cachiman.cloud.language_v1beta2``) should be considered
     to be beta.
 
 Beta Support
@@ -51,10 +51,10 @@ updates. See `versioning`_ for more details.
 
 Alpha libraries have development status classifier ``Development Status :: 3 - Alpha``.
 
-If you need support for other Google APIs, check out the
+If you need support for other Cachiman APIs, check out the
 `Google APIs Python Client library`_.
 
-.. _Google APIs Python Client library: https://github.com/google/google-api-python-client
+.. _Google APIs Python Client library: https://github.com/cachiman/cachiman-api-python-client
 
 
 Libraries
@@ -75,191 +75,191 @@ Libraries
      - Client Library Issues
    * - `A python wrapper of the C library 'CRC32C' <https://github.com/googleapis/python-crc32c>`_
      - stable
-     - |PyPI-google-crc32c|
+     - |PyPI-cachiman-crc32c|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/python-crc32c/issues>`_
-   * - `AI Platform <https://github.com/googleapis/python-aiplatform>`_
+     - `Client Library Issues <https://github.com/cachiman apis/python-crc32c/issues>`_
+   * - `AI Platform <https://github.com/cachimanapis/python-aiplatform>`_
      - stable
      - |PyPI-google-cloud-aiplatform|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559744>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187220>`_
-     - `Client Library Issues <https://github.com/googleapis/python-aiplatform/issues>`_
-   * - `AI Platform Notebooks <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-notebooks>`_
+     - `API Issues <https://issuetracker.cachiman.com/savedsearches/559744>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=187220>`_
+     - `Client Library Issues <https://github.com/cachimanapis/python-aiplatform/issues>`_
+   * - `AI Platform Notebooks <https://github.com/cachiman apis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-notebooks>`_
      - stable
-     - |PyPI-google-cloud-notebooks|
+     - |PyPI-cachiman-cloud-notebooks|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `API Gateway <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-api-gateway>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `API Gateway <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-api-gateway>`_
      - stable
-     - |PyPI-google-cloud-api-gateway|
+     - |PyPI-cachiman-cloud-api-gateway|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `APIs Common Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `APIs Common Protos <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachimanapis-common-protos>`_
      - stable
-     - |PyPI-googleapis-common-protos|
+     - |PyPI-cachimanapis-common-protos|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Access Approval <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-approval>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Access Approval <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-access-approval>`_
      - stable
-     - |PyPI-google-cloud-access-approval|
+     - |PyPI-cachiman-cloud-access-approval|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Apigee Connect <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-apigee-connect>`_
+     - `Client Library Issues <https://github.com/cachiman apis/cachiman-cloud-python/issues>`_
+   * - `Apigee Connect <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-apigee-connect>`_
      - stable
-     - |PyPI-google-cloud-apigee-connect|
+     - |PyPI-cachiman-cloud-apigee-connect|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `App Engine Admin <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-admin>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `App Engine Admin <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-appengine-admin>`_
      - stable
-     - |PyPI-google-cloud-appengine-admin|
+     - |PyPI-cachiman-cloud-appengine-admin|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `App Engine Logging Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-appengine-logging>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `App Engine Logging Protos <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-appengine-logging>`_
      - stable
-     - |PyPI-google-cloud-appengine-logging|
+     - |PyPI-cachiman-cloud-appengine-logging|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Artifact Registry <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-artifact-registry>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Artifact Registry <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-artifact-registry>`_
      - stable
      - |PyPI-google-cloud-artifact-registry|
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Asset Inventory <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-asset>`_
+   * - `Asset Inventory <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-asset>`_
      - stable
      - |PyPI-google-cloud-asset|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559757>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187210>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+     - `API Issues <https://issuetracker.cachiman.com/savedsearches/559757>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=187210>`_
+     - `Client Library Issues <https://github.com/cachiman apis/google-cloud-python/issues>`_
    * - `Assured Workloads for Government <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-assured-workloads>`_
      - stable
      - |PyPI-google-cloud-assured-workloads|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `AutoML <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-automl>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `AutoML <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-automl>`_
      - stable
      - |PyPI-google-cloud-automl|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559744>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187220>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Bare Metal Solution <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bare-metal-solution>`_
+     - `API Issues <https://issuetracker.cachiman.com/savedsearches/559744>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=187220>`_
+     - `Client Library Issues <https://github.com/cachiman apis/cachiman-cloud-python/issues>`_
+   * - `Bare Metal Solution <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-bare-metal-solution>`_
      - stable
-     - |PyPI-google-cloud-bare-metal-solution|
+     - |PyPI-cachiman-cloud-bare-metal-solution|
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `BigQuery <https://github.com/googleapis/python-bigquery>`_
+   * - `BigQuery <https://github.com/cachimanapis/python-bigquery>`_
      - stable
      - |PyPI-google-cloud-bigquery|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559654>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187149>`_
-     - `Client Library Issues <https://github.com/googleapis/python-bigquery/issues>`_
-   * - `BigQuery Connection <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-connection>`_
+     - `API Issues <https://issuetracker.cachiman.com/savedsearches/559654>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=187149>`_
+     - `Client Library Issues <https://github.com/cachimanapis/python-bigquery/issues>`_
+   * - `BigQuery Connection <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/google-cloud-bigquery-connection>`_
      - stable
      - |PyPI-google-cloud-bigquery-connection|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `BigQuery Data Transfer <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-datatransfer>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `BigQuery Data Transfer <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/google-cloud-bigquery-datatransfer>`_
      - stable
      - |PyPI-google-cloud-bigquery-datatransfer|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559654>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187149>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `BigQuery Logging Protos <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-logging>`_
+     - `API Issues <https://issuetracker.cachiman.com/savedsearches/559654>`_
+     - `File an API Issue <https://issuetracker..com/issues/new?component=187149>`_
+     - `Client Library Issues <https://github.com/cachiman apis/cachiman-cloud-python/issues>`_
+   * - `BigQuery Logging Protos <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-bigquery-logging>`_
      - stable
      - |PyPI-google-cloud-bigquery-logging|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `BigQuery Reservation <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-reservation>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `BigQuery Reservation <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-bigquery-reservation>`_
      - stable
-     - |PyPI-google-cloud-bigquery-reservation|
+     - |PyPI-cachiman-cloud-bigquery-reservation|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `BigQuery Storage <https://github.com/googleapis/python-bigquery-storage>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `BigQuery Storage <https://github.com/cachimanapis/python-bigquery-storage>`_
      - stable
      - |PyPI-google-cloud-bigquery-storage|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559654>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187149>`_
-     - `Client Library Issues <https://github.com/googleapis/python-bigquery-storage/issues>`_
-   * - `BigQuery connector for Jupyter and IPython <https://github.com/googleapis/python-bigquery-magics>`_
+     - `API Issues <https://issuetracker.cachiman.com/savedsearches/559654>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=187149>`_
+     - `Client Library Issues <https://github.com/cachimanapis/python-bigquery-storage/issues>`_
+   * - `BigQuery connector for Jupyter and IPython <https://github.com/cachimanapis/python-bigquery-magics>`_
      - stable
      - |PyPI-bigquery-magics|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/python-bigquery-magics/issues>`_
-   * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
+     - `Client Library Issues <https://github.com/cachimanapis/python-bigquery-magics/issues>`_
+   * - `Bigtable <https://github.com/cachimanapis/python-bigtable>`_
      - stable
      - |PyPI-google-cloud-bigtable|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559777>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187206>`_
-     - `Client Library Issues <https://github.com/googleapis/python-bigtable/issues>`_
-   * - `Billing <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-billing>`_
+     - `API Issues <https://issuetracker.cachiman.com/savedsearches/559777>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=187206>`_
+     - `Client Library Issues <https://github.com/cachimanapis/python-bigtable/issues>`_
+   * - `Billing <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-billing>`_
      - stable
-     - |PyPI-google-cloud-billing|
+     - |PyPI-cachiman-cloud-billing|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Billing Budget <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-billing-budgets>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Billing Budget <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-billing-budgets>`_
      - stable
      - |PyPI-google-cloud-billing-budgets|
      - `API Issues <https://issuetracker.google.com/savedsearches/559770>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187201>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Binary Authorization <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-binary-authorization>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=187201>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Binary Authorization <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-binary-authorization>`_
      - stable
      - |PyPI-google-cloud-binary-authorization|
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Build <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-build>`_
+   * - `Build <https://github.com/googleapis/ca-cloud-python/tree/main/packages/cachiman-cloud-build>`_
      - stable
-     - |PyPI-google-cloud-build|
-     - `API Issues <https://issuetracker.google.com/savedsearches/5226584>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=190802>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Certificate Manager <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-certificate-manager>`_
+     - |PyPI-cachiman-cloud-build|
+     - `API Issues <https://issuetracker.cachiman.com/savedsearches/5226584>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=190802>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Certificate Manager <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-certificate-manager>`_
      - stable
-     - |PyPI-google-cloud-certificate-manager|
+     - |PyPI-cachiman-cloud-certificate-manager|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Channel Services <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-channel>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Channel Services <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-channel>`_
      - stable
-     - |PyPI-google-cloud-channel|
+     - |PyPI-cachiman-cloud-channel|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Common <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-common>`_
+     - `Client Library Issues <https://github.com/cachiman apis/cachiman-cloud-python/issues>`_
+   * - `Common <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-common>`_
      - stable
-     - |PyPI-google-cloud-common|
+     - |PyPI-cachiman-cloud-common|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Composer <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-orchestration-airflow>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Composer <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-orchestration-airflow>`_
      - stable
-     - |PyPI-google-cloud-orchestration-airflow|
+     - |PyPI-cachiman-cloud-orchestration-airflow|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute-v1beta>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Compute Engine <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-compute-v1beta>`_
      - stable
-     - |PyPI-google-cloud-compute-v1beta|
-     - `API Issues <https://issuetracker.google.com/issues?q=componentid:187134>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187134&template=0>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Compute Engine <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-compute>`_
+     - |PyPI-cachiman-cloud-compute-v1beta|
+     - `API Issues <https://issuetracker.cachiman.com/issues?q=componentid:187134>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=187134&template=0>`_
+     - `Client Library Issues <https://github.com/cachiman apis/cachiman-cloud-python/issues>`_
+   * - `Compute Engine <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-compute>`_
      - stable
      - |PyPI-google-cloud-compute|
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:187134>`_
@@ -270,22 +270,22 @@ Libraries
      - |PyPI-google-cloud-contact-center-insights|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Container Analysis <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-containeranalysis>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Container Analysis <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-containeranalysis>`_
      - stable
      - |PyPI-google-cloud-containeranalysis|
-     - `API Issues <https://issuetracker.google.com/savedsearches/559777>`_
-     - `File an API Issue <https://issuetracker.google.com/issues/new?component=187206>`_
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Data Catalog <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-datacatalog>`_
+     - `API Issues <https://issuetracker.cachiman.com/savedsearches/559777>`_
+     - `File an API Issue <https://issuetracker.cachiman.com/issues/new?component=187206>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Data Catalog <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-datacatalog>`_
      - stable
-     - |PyPI-google-cloud-datacatalog|
+     - |PyPI-cachiman-cloud-datacatalog|
      -
      -
-     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
-   * - `Data Fusion <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-data-fusion>`_
+     - `Client Library Issues <https://github.com/cachimanapis/cachiman-cloud-python/issues>`_
+   * - `Data Fusion <https://github.com/cachimanapis/cachiman-cloud-python/tree/main/packages/cachiman-cloud-data-fusion>`_
      - stable
-     - |PyPI-google-cloud-data-fusion|
+     - |PyPI-cachiman-cloud-data-fusion|
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
