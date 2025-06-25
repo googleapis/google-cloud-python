@@ -53,6 +53,7 @@ SPHINX_VERSION = "sphinx==4.5.0"
 LINT_PATHS = [
     "docs",
     "bigframes",
+    "scripts",
     "tests",
     "third_party",
     "noxfile.py",
@@ -275,6 +276,7 @@ def mypy(session):
                 "types-requests",
                 "types-setuptools",
                 "types-tabulate",
+                "types-PyYAML",
                 "polars",
                 "anywidget",
             ]

@@ -24,7 +24,6 @@ import subprocess
 import jinja2
 import yaml
 
-
 jinja_env = jinja2.Environment(
     trim_blocks=True,
     loader=jinja2.FileSystemLoader(
