@@ -23,9 +23,11 @@ import pandas as pd
 
 import bigframes.core
 from bigframes.core import identifiers, nodes, ordering, window_spec
+from bigframes.core.compile.polars import lowering
 import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.rewrite
+import bigframes.core.rewrite.schema_binding
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -403,6 +405,8 @@ class PolarsCompiler:
         node = bigframes.core.rewrite.column_pruning(node)
         node = nodes.bottom_up(node, bigframes.core.rewrite.rewrite_slice)
         node = bigframes.core.rewrite.pull_out_window_order(node)
+        node = bigframes.core.rewrite.schema_binding.bind_schema_to_tree(node)
+        node = lowering.lower_ops_to_polars(node)
         return self.compile_node(node)
 
     @functools.singledispatchmethod

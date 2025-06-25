@@ -19,7 +19,7 @@ import dataclasses
 import functools
 import itertools
 import typing
-from typing import Generator, Mapping, TypeVar, Union
+from typing import Callable, Generator, Mapping, TypeVar, Union
 
 import pandas as pd
 
@@ -249,6 +249,10 @@ class Expression(abc.ABC):
         """True for identity operation that does not transform input."""
         return False
 
+    @abc.abstractmethod
+    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
+        ...
+
     def walk(self) -> Generator[Expression, None, None]:
         yield self
         for child in self.children:
@@ -311,6 +315,9 @@ class ScalarConstantExpression(Expression):
 
         return self.value == other.value and self.dtype == other.dtype
 
+    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
+        return self
+
 
 @dataclasses.dataclass(frozen=True)
 class UnboundVariableExpression(Expression):
@@ -361,6 +368,9 @@ class UnboundVariableExpression(Expression):
     @property
     def is_identity(self) -> bool:
         return True
+
+    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
+        return self
 
 
 @dataclasses.dataclass(frozen=True)
@@ -414,6 +424,9 @@ class DerefOp(Expression):
     def is_identity(self) -> bool:
         return True
 
+    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
+        return self
+
 
 @dataclasses.dataclass(frozen=True)
 class SchemaFieldRefExpression(Expression):
@@ -463,12 +476,15 @@ class SchemaFieldRefExpression(Expression):
     def is_identity(self) -> bool:
         return True
 
+    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
+        return self
+
 
 @dataclasses.dataclass(frozen=True)
 class OpExpression(Expression):
     """An expression representing a scalar operation applied to 1 or more argument sub-expressions."""
 
-    op: bigframes.operations.RowOp
+    op: bigframes.operations.ScalarOp
     inputs: typing.Tuple[Expression, ...]
 
     @property
@@ -552,6 +568,12 @@ class OpExpression(Expression):
         return (
             all(input.deterministic for input in self.inputs) and self.op.deterministic
         )
+
+    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
+        new_inputs = tuple(t(input) for input in self.inputs)
+        if new_inputs != self.inputs:
+            return dataclasses.replace(self, inputs=new_inputs)
+        return self
 
 
 def bind_schema_fields(

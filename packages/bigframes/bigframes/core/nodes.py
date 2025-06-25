@@ -1008,6 +1008,14 @@ class FilterNode(UnaryNode):
     def _node_expressions(self):
         return (self.predicate,)
 
+    def transform_exprs(
+        self, fn: Callable[[ex.Expression], ex.Expression]
+    ) -> FilterNode:
+        return dataclasses.replace(
+            self,
+            predicate=fn(self.predicate),
+        )
+
     def remap_vars(
         self, mappings: Mapping[identifiers.ColumnId, identifiers.ColumnId]
     ) -> FilterNode:
@@ -1066,6 +1074,20 @@ class OrderByNode(UnaryNode):
     def _node_expressions(self):
         return tuple(map(lambda x: x.scalar_expression, self.by))
 
+    def transform_exprs(
+        self, fn: Callable[[ex.Expression], ex.Expression]
+    ) -> OrderByNode:
+        new_by = cast(
+            tuple[OrderingExpression, ...],
+            tuple(
+                dataclasses.replace(
+                    by_expr, scalar_expression=fn(by_expr.scalar_expression)
+                )
+                for by_expr in self.by
+            ),
+        )
+        return dataclasses.replace(self, by=new_by)
+
     def remap_vars(
         self, mappings: Mapping[identifiers.ColumnId, identifiers.ColumnId]
     ) -> OrderByNode:
@@ -1078,14 +1100,9 @@ class OrderByNode(UnaryNode):
             itertools.chain.from_iterable(map(lambda x: x.referenced_columns, self.by))
         )
         ref_mapping = {id: ex.DerefOp(mappings[id]) for id in all_refs}
-        new_by = cast(
-            tuple[OrderingExpression, ...],
-            tuple(
-                by_expr.bind_refs(ref_mapping, allow_partial_bindings=True)
-                for by_expr in self.by
-            ),
+        return self.transform_exprs(
+            lambda ex: ex.bind_refs(ref_mapping, allow_partial_bindings=True)
         )
-        return dataclasses.replace(self, by=new_by)
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
@@ -1292,6 +1309,12 @@ class ProjectionNode(UnaryNode, AdditiveNode):
     @property
     def additive_base(self) -> BigFrameNode:
         return self.child
+
+    def transform_exprs(
+        self, fn: Callable[[ex.Expression], ex.Expression]
+    ) -> ProjectionNode:
+        new_fields = tuple((fn(ex), id) for ex, id in self.assignments)
+        return dataclasses.replace(self, assignments=new_fields)
 
     def replace_additive_base(self, node: BigFrameNode) -> ProjectionNode:
         return dataclasses.replace(self, child=node)
