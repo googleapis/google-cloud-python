@@ -40,6 +40,7 @@ from google.cloud.network_services_v1.types import (
     service_lb_policy as gcn_service_lb_policy,
 )
 from google.cloud.network_services_v1.types import endpoint_policy
+from google.cloud.network_services_v1.types import extensibility
 from google.cloud.network_services_v1.types import gateway
 from google.cloud.network_services_v1.types import gateway as gcn_gateway
 from google.cloud.network_services_v1.types import grpc_route
@@ -182,6 +183,51 @@ class NetworkServicesTransport(abc.ABC):
             ),
             self.delete_endpoint_policy: gapic_v1.method.wrap_method(
                 self.delete_endpoint_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_wasm_plugin_versions: gapic_v1.method.wrap_method(
+                self.list_wasm_plugin_versions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_wasm_plugin_version: gapic_v1.method.wrap_method(
+                self.get_wasm_plugin_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_wasm_plugin_version: gapic_v1.method.wrap_method(
+                self.create_wasm_plugin_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_wasm_plugin_version: gapic_v1.method.wrap_method(
+                self.delete_wasm_plugin_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_wasm_plugins: gapic_v1.method.wrap_method(
+                self.list_wasm_plugins,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_wasm_plugin: gapic_v1.method.wrap_method(
+                self.get_wasm_plugin,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_wasm_plugin: gapic_v1.method.wrap_method(
+                self.create_wasm_plugin,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_wasm_plugin: gapic_v1.method.wrap_method(
+                self.update_wasm_plugin,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_wasm_plugin: gapic_v1.method.wrap_method(
+                self.delete_wasm_plugin,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -512,6 +558,95 @@ class NetworkServicesTransport(abc.ABC):
         self,
     ) -> Callable[
         [endpoint_policy.DeleteEndpointPolicyRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_wasm_plugin_versions(
+        self,
+    ) -> Callable[
+        [extensibility.ListWasmPluginVersionsRequest],
+        Union[
+            extensibility.ListWasmPluginVersionsResponse,
+            Awaitable[extensibility.ListWasmPluginVersionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_wasm_plugin_version(
+        self,
+    ) -> Callable[
+        [extensibility.GetWasmPluginVersionRequest],
+        Union[
+            extensibility.WasmPluginVersion, Awaitable[extensibility.WasmPluginVersion]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_wasm_plugin_version(
+        self,
+    ) -> Callable[
+        [extensibility.CreateWasmPluginVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_wasm_plugin_version(
+        self,
+    ) -> Callable[
+        [extensibility.DeleteWasmPluginVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_wasm_plugins(
+        self,
+    ) -> Callable[
+        [extensibility.ListWasmPluginsRequest],
+        Union[
+            extensibility.ListWasmPluginsResponse,
+            Awaitable[extensibility.ListWasmPluginsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_wasm_plugin(
+        self,
+    ) -> Callable[
+        [extensibility.GetWasmPluginRequest],
+        Union[extensibility.WasmPlugin, Awaitable[extensibility.WasmPlugin]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_wasm_plugin(
+        self,
+    ) -> Callable[
+        [extensibility.CreateWasmPluginRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_wasm_plugin(
+        self,
+    ) -> Callable[
+        [extensibility.UpdateWasmPluginRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_wasm_plugin(
+        self,
+    ) -> Callable[
+        [extensibility.DeleteWasmPluginRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

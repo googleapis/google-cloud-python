@@ -40,6 +40,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.network_services_v1.types import (
     endpoint_policy,
+    extensibility,
     gateway,
     grpc_route,
     http_route,
@@ -202,6 +203,320 @@ class ListEndpointPoliciesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.endpoint_policies:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListWasmPluginVersionsPager:
+    """A pager for iterating through ``list_wasm_plugin_versions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListWasmPluginVersionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``wasm_plugin_versions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListWasmPluginVersions`` requests and continue to iterate
+    through the ``wasm_plugin_versions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListWasmPluginVersionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., extensibility.ListWasmPluginVersionsResponse],
+        request: extensibility.ListWasmPluginVersionsRequest,
+        response: extensibility.ListWasmPluginVersionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListWasmPluginVersionsRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListWasmPluginVersionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = extensibility.ListWasmPluginVersionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[extensibility.ListWasmPluginVersionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[extensibility.WasmPluginVersion]:
+        for page in self.pages:
+            yield from page.wasm_plugin_versions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListWasmPluginVersionsAsyncPager:
+    """A pager for iterating through ``list_wasm_plugin_versions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListWasmPluginVersionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``wasm_plugin_versions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListWasmPluginVersions`` requests and continue to iterate
+    through the ``wasm_plugin_versions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListWasmPluginVersionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[extensibility.ListWasmPluginVersionsResponse]],
+        request: extensibility.ListWasmPluginVersionsRequest,
+        response: extensibility.ListWasmPluginVersionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListWasmPluginVersionsRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListWasmPluginVersionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = extensibility.ListWasmPluginVersionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[extensibility.ListWasmPluginVersionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[extensibility.WasmPluginVersion]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.wasm_plugin_versions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListWasmPluginsPager:
+    """A pager for iterating through ``list_wasm_plugins`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListWasmPluginsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``wasm_plugins`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListWasmPlugins`` requests and continue to iterate
+    through the ``wasm_plugins`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListWasmPluginsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., extensibility.ListWasmPluginsResponse],
+        request: extensibility.ListWasmPluginsRequest,
+        response: extensibility.ListWasmPluginsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListWasmPluginsRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListWasmPluginsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = extensibility.ListWasmPluginsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[extensibility.ListWasmPluginsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[extensibility.WasmPlugin]:
+        for page in self.pages:
+            yield from page.wasm_plugins
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListWasmPluginsAsyncPager:
+    """A pager for iterating through ``list_wasm_plugins`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.network_services_v1.types.ListWasmPluginsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``wasm_plugins`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListWasmPlugins`` requests and continue to iterate
+    through the ``wasm_plugins`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.network_services_v1.types.ListWasmPluginsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[extensibility.ListWasmPluginsResponse]],
+        request: extensibility.ListWasmPluginsRequest,
+        response: extensibility.ListWasmPluginsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.network_services_v1.types.ListWasmPluginsRequest):
+                The initial request object.
+            response (google.cloud.network_services_v1.types.ListWasmPluginsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = extensibility.ListWasmPluginsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[extensibility.ListWasmPluginsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[extensibility.WasmPlugin]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.wasm_plugins:
                     yield response
 
         return async_generator()

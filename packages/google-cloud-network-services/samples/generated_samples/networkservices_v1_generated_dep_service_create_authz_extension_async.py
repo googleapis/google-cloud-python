@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for UpdateLbTrafficExtension
+# Snippet for CreateAuthzExtension
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-network-services
 
 
-# [START networkservices_v1_generated_DepService_UpdateLbTrafficExtension_async]
+# [START networkservices_v1_generated_DepService_CreateAuthzExtension_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,25 +34,25 @@
 from google.cloud import network_services_v1
 
 
-async def sample_update_lb_traffic_extension():
+async def sample_create_authz_extension():
     # Create a client
     client = network_services_v1.DepServiceAsyncClient()
 
     # Initialize request argument(s)
-    lb_traffic_extension = network_services_v1.LbTrafficExtension()
-    lb_traffic_extension.name = "name_value"
-    lb_traffic_extension.extension_chains.name = "name_value"
-    lb_traffic_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
-    lb_traffic_extension.extension_chains.extensions.name = "name_value"
-    lb_traffic_extension.extension_chains.extensions.service = "service_value"
-    lb_traffic_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
+    authz_extension = network_services_v1.AuthzExtension()
+    authz_extension.name = "name_value"
+    authz_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
+    authz_extension.authority = "authority_value"
+    authz_extension.service = "service_value"
 
-    request = network_services_v1.UpdateLbTrafficExtensionRequest(
-        lb_traffic_extension=lb_traffic_extension,
+    request = network_services_v1.CreateAuthzExtensionRequest(
+        parent="parent_value",
+        authz_extension_id="authz_extension_id_value",
+        authz_extension=authz_extension,
     )
 
     # Make the request
-    operation = client.update_lb_traffic_extension(request=request)
+    operation = client.create_authz_extension(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -61,4 +61,4 @@ async def sample_update_lb_traffic_extension():
     # Handle the response
     print(response)
 
-# [END networkservices_v1_generated_DepService_UpdateLbTrafficExtension_async]
+# [END networkservices_v1_generated_DepService_CreateAuthzExtension_async]

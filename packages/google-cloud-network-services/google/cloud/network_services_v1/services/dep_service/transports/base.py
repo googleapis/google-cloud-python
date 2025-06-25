@@ -186,6 +186,31 @@ class DepServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_authz_extensions: gapic_v1.method.wrap_method(
+                self.list_authz_extensions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_authz_extension: gapic_v1.method.wrap_method(
+                self.get_authz_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_authz_extension: gapic_v1.method.wrap_method(
+                self.create_authz_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_authz_extension: gapic_v1.method.wrap_method(
+                self.update_authz_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_authz_extension: gapic_v1.method.wrap_method(
+                self.delete_authz_extension,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -339,6 +364,53 @@ class DepServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [dep.DeleteLbRouteExtensionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_authz_extensions(
+        self,
+    ) -> Callable[
+        [dep.ListAuthzExtensionsRequest],
+        Union[
+            dep.ListAuthzExtensionsResponse, Awaitable[dep.ListAuthzExtensionsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_authz_extension(
+        self,
+    ) -> Callable[
+        [dep.GetAuthzExtensionRequest],
+        Union[dep.AuthzExtension, Awaitable[dep.AuthzExtension]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_authz_extension(
+        self,
+    ) -> Callable[
+        [dep.CreateAuthzExtensionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_authz_extension(
+        self,
+    ) -> Callable[
+        [dep.UpdateAuthzExtensionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_authz_extension(
+        self,
+    ) -> Callable[
+        [dep.DeleteAuthzExtensionRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

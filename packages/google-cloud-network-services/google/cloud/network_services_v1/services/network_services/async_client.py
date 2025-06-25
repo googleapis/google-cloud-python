@@ -66,6 +66,7 @@ from google.cloud.network_services_v1.types import (
 )
 from google.cloud.network_services_v1.types import common
 from google.cloud.network_services_v1.types import endpoint_policy
+from google.cloud.network_services_v1.types import extensibility
 from google.cloud.network_services_v1.types import gateway
 from google.cloud.network_services_v1.types import gateway as gcn_gateway
 from google.cloud.network_services_v1.types import grpc_route
@@ -176,6 +177,14 @@ class NetworkServicesAsyncClient:
     parse_tcp_route_path = staticmethod(NetworkServicesClient.parse_tcp_route_path)
     tls_route_path = staticmethod(NetworkServicesClient.tls_route_path)
     parse_tls_route_path = staticmethod(NetworkServicesClient.parse_tls_route_path)
+    wasm_plugin_path = staticmethod(NetworkServicesClient.wasm_plugin_path)
+    parse_wasm_plugin_path = staticmethod(NetworkServicesClient.parse_wasm_plugin_path)
+    wasm_plugin_version_path = staticmethod(
+        NetworkServicesClient.wasm_plugin_version_path
+    )
+    parse_wasm_plugin_version_path = staticmethod(
+        NetworkServicesClient.parse_wasm_plugin_version_path
+    )
     common_billing_account_path = staticmethod(
         NetworkServicesClient.common_billing_account_path
     )
@@ -1049,6 +1058,1193 @@ class NetworkServicesAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.delete_endpoint_policy
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_wasm_plugin_versions(
+        self,
+        request: Optional[
+            Union[extensibility.ListWasmPluginVersionsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListWasmPluginVersionsAsyncPager:
+        r"""Lists ``WasmPluginVersion`` resources in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            async def sample_list_wasm_plugin_versions():
+                # Create a client
+                client = network_services_v1.NetworkServicesAsyncClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.ListWasmPluginVersionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_wasm_plugin_versions(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.network_services_v1.types.ListWasmPluginVersionsRequest, dict]]):
+                The request object. Request used with the ``ListWasmPluginVersions`` method.
+            parent (:class:`str`):
+                Required. The ``WasmPlugin`` resource whose
+                ``WasmPluginVersion``\ s are listed, specified in the
+                following format:
+                ``projects/{project}/locations/global/wasmPlugins/{wasm_plugin}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.services.network_services.pagers.ListWasmPluginVersionsAsyncPager:
+                Response returned by the ListWasmPluginVersions method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, extensibility.ListWasmPluginVersionsRequest):
+            request = extensibility.ListWasmPluginVersionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_wasm_plugin_versions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListWasmPluginVersionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_wasm_plugin_version(
+        self,
+        request: Optional[
+            Union[extensibility.GetWasmPluginVersionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> extensibility.WasmPluginVersion:
+        r"""Gets details of the specified ``WasmPluginVersion`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            async def sample_get_wasm_plugin_version():
+                # Create a client
+                client = network_services_v1.NetworkServicesAsyncClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.GetWasmPluginVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_wasm_plugin_version(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.network_services_v1.types.GetWasmPluginVersionRequest, dict]]):
+                The request object. Request used by the ``GetWasmPluginVersion`` method.
+            name (:class:`str`):
+                Required. A name of the ``WasmPluginVersion`` resource
+                to get. Must be in the format
+                ``projects/{project}/locations/global/wasmPlugins/{wasm_plugin}/versions/{wasm_plugin_version}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.types.WasmPluginVersion:
+                A single immutable version of a WasmPlugin resource.
+                   Defines the Wasm module used and optionally its
+                   runtime config.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, extensibility.GetWasmPluginVersionRequest):
+            request = extensibility.GetWasmPluginVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_wasm_plugin_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_wasm_plugin_version(
+        self,
+        request: Optional[
+            Union[extensibility.CreateWasmPluginVersionRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        wasm_plugin_version: Optional[extensibility.WasmPluginVersion] = None,
+        wasm_plugin_version_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new ``WasmPluginVersion`` resource in a given project
+        and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            async def sample_create_wasm_plugin_version():
+                # Create a client
+                client = network_services_v1.NetworkServicesAsyncClient()
+
+                # Initialize request argument(s)
+                wasm_plugin_version = network_services_v1.WasmPluginVersion()
+                wasm_plugin_version.plugin_config_data = b'plugin_config_data_blob'
+
+                request = network_services_v1.CreateWasmPluginVersionRequest(
+                    parent="parent_value",
+                    wasm_plugin_version_id="wasm_plugin_version_id_value",
+                    wasm_plugin_version=wasm_plugin_version,
+                )
+
+                # Make the request
+                operation = client.create_wasm_plugin_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.network_services_v1.types.CreateWasmPluginVersionRequest, dict]]):
+                The request object. Request used by the ``CreateWasmPluginVersion`` method.
+            parent (:class:`str`):
+                Required. The parent resource of the
+                ``WasmPluginVersion`` resource. Must be in the format
+                ``projects/{project}/locations/global/wasmPlugins/{wasm_plugin}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            wasm_plugin_version (:class:`google.cloud.network_services_v1.types.WasmPluginVersion`):
+                Required. ``WasmPluginVersion`` resource to be created.
+                This corresponds to the ``wasm_plugin_version`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            wasm_plugin_version_id (:class:`str`):
+                Required. User-provided ID of the ``WasmPluginVersion``
+                resource to be created.
+
+                This corresponds to the ``wasm_plugin_version_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.network_services_v1.types.WasmPluginVersion` A single immutable version of a WasmPlugin resource.
+                   Defines the Wasm module used and optionally its
+                   runtime config.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, wasm_plugin_version, wasm_plugin_version_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, extensibility.CreateWasmPluginVersionRequest):
+            request = extensibility.CreateWasmPluginVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if wasm_plugin_version is not None:
+            request.wasm_plugin_version = wasm_plugin_version
+        if wasm_plugin_version_id is not None:
+            request.wasm_plugin_version_id = wasm_plugin_version_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_wasm_plugin_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            extensibility.WasmPluginVersion,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_wasm_plugin_version(
+        self,
+        request: Optional[
+            Union[extensibility.DeleteWasmPluginVersionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes the specified ``WasmPluginVersion`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            async def sample_delete_wasm_plugin_version():
+                # Create a client
+                client = network_services_v1.NetworkServicesAsyncClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.DeleteWasmPluginVersionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_wasm_plugin_version(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.network_services_v1.types.DeleteWasmPluginVersionRequest, dict]]):
+                The request object. Request used by the ``DeleteWasmPluginVersion`` method.
+            name (:class:`str`):
+                Required. A name of the ``WasmPluginVersion`` resource
+                to delete. Must be in the format
+                ``projects/{project}/locations/global/wasmPlugins/{wasm_plugin}/versions/{wasm_plugin_version}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, extensibility.DeleteWasmPluginVersionRequest):
+            request = extensibility.DeleteWasmPluginVersionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_wasm_plugin_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_wasm_plugins(
+        self,
+        request: Optional[Union[extensibility.ListWasmPluginsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListWasmPluginsAsyncPager:
+        r"""Lists ``WasmPlugin`` resources in a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            async def sample_list_wasm_plugins():
+                # Create a client
+                client = network_services_v1.NetworkServicesAsyncClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.ListWasmPluginsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_wasm_plugins(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.network_services_v1.types.ListWasmPluginsRequest, dict]]):
+                The request object. Request used with the ``ListWasmPlugins`` method.
+            parent (:class:`str`):
+                Required. The project and location from which the
+                ``WasmPlugin`` resources are listed, specified in the
+                following format:
+                ``projects/{project}/locations/global``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.services.network_services.pagers.ListWasmPluginsAsyncPager:
+                Response returned by the ListWasmPlugins method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, extensibility.ListWasmPluginsRequest):
+            request = extensibility.ListWasmPluginsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_wasm_plugins
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListWasmPluginsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_wasm_plugin(
+        self,
+        request: Optional[Union[extensibility.GetWasmPluginRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> extensibility.WasmPlugin:
+        r"""Gets details of the specified ``WasmPlugin`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            async def sample_get_wasm_plugin():
+                # Create a client
+                client = network_services_v1.NetworkServicesAsyncClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.GetWasmPluginRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_wasm_plugin(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.network_services_v1.types.GetWasmPluginRequest, dict]]):
+                The request object. Request used by the ``GetWasmPlugin`` method.
+            name (:class:`str`):
+                Required. A name of the ``WasmPlugin`` resource to get.
+                Must be in the format
+                ``projects/{project}/locations/global/wasmPlugins/{wasm_plugin}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.network_services_v1.types.WasmPlugin:
+                WasmPlugin is a resource representing a service executing
+                   a customer-provided Wasm module.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, extensibility.GetWasmPluginRequest):
+            request = extensibility.GetWasmPluginRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_wasm_plugin
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_wasm_plugin(
+        self,
+        request: Optional[Union[extensibility.CreateWasmPluginRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        wasm_plugin: Optional[extensibility.WasmPlugin] = None,
+        wasm_plugin_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new ``WasmPlugin`` resource in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            async def sample_create_wasm_plugin():
+                # Create a client
+                client = network_services_v1.NetworkServicesAsyncClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.CreateWasmPluginRequest(
+                    parent="parent_value",
+                    wasm_plugin_id="wasm_plugin_id_value",
+                )
+
+                # Make the request
+                operation = client.create_wasm_plugin(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.network_services_v1.types.CreateWasmPluginRequest, dict]]):
+                The request object. Request used by the ``CreateWasmPlugin`` method.
+            parent (:class:`str`):
+                Required. The parent resource of the ``WasmPlugin``
+                resource. Must be in the format
+                ``projects/{project}/locations/global``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            wasm_plugin (:class:`google.cloud.network_services_v1.types.WasmPlugin`):
+                Required. ``WasmPlugin`` resource to be created.
+                This corresponds to the ``wasm_plugin`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            wasm_plugin_id (:class:`str`):
+                Required. User-provided ID of the ``WasmPlugin``
+                resource to be created.
+
+                This corresponds to the ``wasm_plugin_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.network_services_v1.types.WasmPlugin` WasmPlugin is a resource representing a service executing
+                   a customer-provided Wasm module.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, wasm_plugin, wasm_plugin_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, extensibility.CreateWasmPluginRequest):
+            request = extensibility.CreateWasmPluginRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if wasm_plugin is not None:
+            request.wasm_plugin = wasm_plugin
+        if wasm_plugin_id is not None:
+            request.wasm_plugin_id = wasm_plugin_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_wasm_plugin
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            extensibility.WasmPlugin,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_wasm_plugin(
+        self,
+        request: Optional[Union[extensibility.UpdateWasmPluginRequest, dict]] = None,
+        *,
+        wasm_plugin: Optional[extensibility.WasmPlugin] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates the parameters of the specified ``WasmPlugin`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            async def sample_update_wasm_plugin():
+                # Create a client
+                client = network_services_v1.NetworkServicesAsyncClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.UpdateWasmPluginRequest(
+                )
+
+                # Make the request
+                operation = client.update_wasm_plugin(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.network_services_v1.types.UpdateWasmPluginRequest, dict]]):
+                The request object. Request used by the ``UpdateWasmPlugin`` method.
+            wasm_plugin (:class:`google.cloud.network_services_v1.types.WasmPlugin`):
+                Required. Updated ``WasmPlugin`` resource.
+                This corresponds to the ``wasm_plugin`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Used to specify the fields to be overwritten
+                in the ``WasmPlugin`` resource by the update. The fields
+                specified in the ``update_mask`` field are relative to
+                the resource, not the full request. An omitted
+                ``update_mask`` field is treated as an implied
+                ``update_mask`` field equivalent to all fields that are
+                populated (that have a non-empty value). The
+                ``update_mask`` field supports a special value ``*``,
+                which means that each field in the given ``WasmPlugin``
+                resource (including the empty ones) replaces the current
+                value.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.network_services_v1.types.WasmPlugin` WasmPlugin is a resource representing a service executing
+                   a customer-provided Wasm module.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [wasm_plugin, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, extensibility.UpdateWasmPluginRequest):
+            request = extensibility.UpdateWasmPluginRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if wasm_plugin is not None:
+            request.wasm_plugin = wasm_plugin
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_wasm_plugin
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("wasm_plugin.name", request.wasm_plugin.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            extensibility.WasmPlugin,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_wasm_plugin(
+        self,
+        request: Optional[Union[extensibility.DeleteWasmPluginRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes the specified ``WasmPlugin`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import network_services_v1
+
+            async def sample_delete_wasm_plugin():
+                # Create a client
+                client = network_services_v1.NetworkServicesAsyncClient()
+
+                # Initialize request argument(s)
+                request = network_services_v1.DeleteWasmPluginRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_wasm_plugin(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.network_services_v1.types.DeleteWasmPluginRequest, dict]]):
+                The request object. Request used by the ``DeleteWasmPlugin`` method.
+            name (:class:`str`):
+                Required. A name of the ``WasmPlugin`` resource to
+                delete. Must be in the format
+                ``projects/{project}/locations/global/wasmPlugins/{wasm_plugin}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, extensibility.DeleteWasmPluginRequest):
+            request = extensibility.DeleteWasmPluginRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_wasm_plugin
         ]
 
         # Certain fields should be provided within the metadata header;

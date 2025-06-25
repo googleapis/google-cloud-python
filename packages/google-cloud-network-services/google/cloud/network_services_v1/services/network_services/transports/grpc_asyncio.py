@@ -45,6 +45,7 @@ from google.cloud.network_services_v1.types import (
     service_lb_policy as gcn_service_lb_policy,
 )
 from google.cloud.network_services_v1.types import endpoint_policy
+from google.cloud.network_services_v1.types import extensibility
 from google.cloud.network_services_v1.types import gateway
 from google.cloud.network_services_v1.types import gateway as gcn_gateway
 from google.cloud.network_services_v1.types import grpc_route
@@ -518,6 +519,270 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_endpoint_policy"]
+
+    @property
+    def list_wasm_plugin_versions(
+        self,
+    ) -> Callable[
+        [extensibility.ListWasmPluginVersionsRequest],
+        Awaitable[extensibility.ListWasmPluginVersionsResponse],
+    ]:
+        r"""Return a callable for the list wasm plugin versions method over gRPC.
+
+        Lists ``WasmPluginVersion`` resources in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListWasmPluginVersionsRequest],
+                    Awaitable[~.ListWasmPluginVersionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_wasm_plugin_versions" not in self._stubs:
+            self._stubs["list_wasm_plugin_versions"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/ListWasmPluginVersions",
+                request_serializer=extensibility.ListWasmPluginVersionsRequest.serialize,
+                response_deserializer=extensibility.ListWasmPluginVersionsResponse.deserialize,
+            )
+        return self._stubs["list_wasm_plugin_versions"]
+
+    @property
+    def get_wasm_plugin_version(
+        self,
+    ) -> Callable[
+        [extensibility.GetWasmPluginVersionRequest],
+        Awaitable[extensibility.WasmPluginVersion],
+    ]:
+        r"""Return a callable for the get wasm plugin version method over gRPC.
+
+        Gets details of the specified ``WasmPluginVersion`` resource.
+
+        Returns:
+            Callable[[~.GetWasmPluginVersionRequest],
+                    Awaitable[~.WasmPluginVersion]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_wasm_plugin_version" not in self._stubs:
+            self._stubs["get_wasm_plugin_version"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/GetWasmPluginVersion",
+                request_serializer=extensibility.GetWasmPluginVersionRequest.serialize,
+                response_deserializer=extensibility.WasmPluginVersion.deserialize,
+            )
+        return self._stubs["get_wasm_plugin_version"]
+
+    @property
+    def create_wasm_plugin_version(
+        self,
+    ) -> Callable[
+        [extensibility.CreateWasmPluginVersionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create wasm plugin version method over gRPC.
+
+        Creates a new ``WasmPluginVersion`` resource in a given project
+        and location.
+
+        Returns:
+            Callable[[~.CreateWasmPluginVersionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_wasm_plugin_version" not in self._stubs:
+            self._stubs[
+                "create_wasm_plugin_version"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/CreateWasmPluginVersion",
+                request_serializer=extensibility.CreateWasmPluginVersionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_wasm_plugin_version"]
+
+    @property
+    def delete_wasm_plugin_version(
+        self,
+    ) -> Callable[
+        [extensibility.DeleteWasmPluginVersionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete wasm plugin version method over gRPC.
+
+        Deletes the specified ``WasmPluginVersion`` resource.
+
+        Returns:
+            Callable[[~.DeleteWasmPluginVersionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_wasm_plugin_version" not in self._stubs:
+            self._stubs[
+                "delete_wasm_plugin_version"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/DeleteWasmPluginVersion",
+                request_serializer=extensibility.DeleteWasmPluginVersionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_wasm_plugin_version"]
+
+    @property
+    def list_wasm_plugins(
+        self,
+    ) -> Callable[
+        [extensibility.ListWasmPluginsRequest],
+        Awaitable[extensibility.ListWasmPluginsResponse],
+    ]:
+        r"""Return a callable for the list wasm plugins method over gRPC.
+
+        Lists ``WasmPlugin`` resources in a given project and location.
+
+        Returns:
+            Callable[[~.ListWasmPluginsRequest],
+                    Awaitable[~.ListWasmPluginsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_wasm_plugins" not in self._stubs:
+            self._stubs["list_wasm_plugins"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/ListWasmPlugins",
+                request_serializer=extensibility.ListWasmPluginsRequest.serialize,
+                response_deserializer=extensibility.ListWasmPluginsResponse.deserialize,
+            )
+        return self._stubs["list_wasm_plugins"]
+
+    @property
+    def get_wasm_plugin(
+        self,
+    ) -> Callable[
+        [extensibility.GetWasmPluginRequest], Awaitable[extensibility.WasmPlugin]
+    ]:
+        r"""Return a callable for the get wasm plugin method over gRPC.
+
+        Gets details of the specified ``WasmPlugin`` resource.
+
+        Returns:
+            Callable[[~.GetWasmPluginRequest],
+                    Awaitable[~.WasmPlugin]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_wasm_plugin" not in self._stubs:
+            self._stubs["get_wasm_plugin"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/GetWasmPlugin",
+                request_serializer=extensibility.GetWasmPluginRequest.serialize,
+                response_deserializer=extensibility.WasmPlugin.deserialize,
+            )
+        return self._stubs["get_wasm_plugin"]
+
+    @property
+    def create_wasm_plugin(
+        self,
+    ) -> Callable[
+        [extensibility.CreateWasmPluginRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create wasm plugin method over gRPC.
+
+        Creates a new ``WasmPlugin`` resource in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateWasmPluginRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_wasm_plugin" not in self._stubs:
+            self._stubs["create_wasm_plugin"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/CreateWasmPlugin",
+                request_serializer=extensibility.CreateWasmPluginRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_wasm_plugin"]
+
+    @property
+    def update_wasm_plugin(
+        self,
+    ) -> Callable[
+        [extensibility.UpdateWasmPluginRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update wasm plugin method over gRPC.
+
+        Updates the parameters of the specified ``WasmPlugin`` resource.
+
+        Returns:
+            Callable[[~.UpdateWasmPluginRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_wasm_plugin" not in self._stubs:
+            self._stubs["update_wasm_plugin"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/UpdateWasmPlugin",
+                request_serializer=extensibility.UpdateWasmPluginRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_wasm_plugin"]
+
+    @property
+    def delete_wasm_plugin(
+        self,
+    ) -> Callable[
+        [extensibility.DeleteWasmPluginRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete wasm plugin method over gRPC.
+
+        Deletes the specified ``WasmPlugin`` resource.
+
+        Returns:
+            Callable[[~.DeleteWasmPluginRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_wasm_plugin" not in self._stubs:
+            self._stubs["delete_wasm_plugin"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/DeleteWasmPlugin",
+                request_serializer=extensibility.DeleteWasmPluginRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_wasm_plugin"]
 
     @property
     def list_gateways(
@@ -1772,6 +2037,51 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
             ),
             self.delete_endpoint_policy: self._wrap_method(
                 self.delete_endpoint_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_wasm_plugin_versions: self._wrap_method(
+                self.list_wasm_plugin_versions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_wasm_plugin_version: self._wrap_method(
+                self.get_wasm_plugin_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_wasm_plugin_version: self._wrap_method(
+                self.create_wasm_plugin_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_wasm_plugin_version: self._wrap_method(
+                self.delete_wasm_plugin_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_wasm_plugins: self._wrap_method(
+                self.list_wasm_plugins,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_wasm_plugin: self._wrap_method(
+                self.get_wasm_plugin,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_wasm_plugin: self._wrap_method(
+                self.create_wasm_plugin,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_wasm_plugin: self._wrap_method(
+                self.update_wasm_plugin,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_wasm_plugin: self._wrap_method(
+                self.delete_wasm_plugin,
                 default_timeout=None,
                 client_info=client_info,
             ),
