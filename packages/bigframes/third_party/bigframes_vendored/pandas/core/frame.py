@@ -4124,6 +4124,7 @@ class DataFrame(generic.NDFrame):
         **Examples:**
 
             >>> import bigframes.pandas as bpd
+            >>> import numpy as np
             >>> bpd.options.display.progress_bar = None
 
             >>> df = bpd.DataFrame({'A': [[0, 1, 2], [], [], [3, 4]],

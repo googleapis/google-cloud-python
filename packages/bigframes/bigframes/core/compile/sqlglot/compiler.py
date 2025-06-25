@@ -229,6 +229,14 @@ class SQLGlotCompiler:
             uid_gen=self.uid_gen,
         )
 
+    @_compile_node.register
+    def compile_explode(
+        self, node: nodes.ExplodeNode, child: ir.SQLGlotIR
+    ) -> ir.SQLGlotIR:
+        offsets_col = node.offsets_col.sql if (node.offsets_col is not None) else None
+        columns = tuple(ref.id.sql for ref in node.column_ids)
+        return child.explode(columns, offsets_col)
+
 
 def _replace_unsupported_ops(node: nodes.BigFrameNode):
     node = nodes.bottom_up(node, rewrite.rewrite_slice)

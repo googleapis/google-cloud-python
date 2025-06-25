@@ -290,6 +290,96 @@ class SQLGlotIR:
         ).sql(dialect=self.dialect, pretty=self.pretty)
         return f"{merge_str}\n{whens_str}"
 
+    def explode(
+        self,
+        column_names: tuple[str, ...],
+        offsets_col: typing.Optional[str],
+    ) -> SQLGlotIR:
+        num_columns = len(list(column_names))
+        assert num_columns > 0, "At least one column must be provided for explode."
+        if num_columns == 1:
+            return self._explode_single_column(column_names[0], offsets_col)
+        else:
+            return self._explode_multiple_columns(column_names, offsets_col)
+
+    def _explode_single_column(
+        self, column_name: str, offsets_col: typing.Optional[str]
+    ) -> SQLGlotIR:
+        """Helper method to handle the case of exploding a single column."""
+
+        offset = (
+            sge.to_identifier(offsets_col, quoted=self.quoted) if offsets_col else None
+        )
+        column = sge.to_identifier(column_name, quoted=self.quoted)
+        unnested_column_alias = sge.to_identifier(
+            next(self.uid_gen.get_uid_stream("bfcol_")), quoted=self.quoted
+        )
+        unnest_expr = sge.Unnest(
+            expressions=[column],
+            alias=sge.TableAlias(columns=[unnested_column_alias]),
+            offset=offset,
+        )
+        selection = sge.Star(replace=[unnested_column_alias.as_(column)])
+        # TODO: "CROSS" if not keep_empty else "LEFT"
+        # TODO: overlaps_with_parent to replace existing column.
+        new_expr = (
+            self._encapsulate_as_cte()
+            .select(selection, append=False)
+            .join(unnest_expr, join_type="CROSS")
+        )
+        return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
+
+    def _explode_multiple_columns(
+        self,
+        column_names: tuple[str, ...],
+        offsets_col: typing.Optional[str],
+    ) -> SQLGlotIR:
+        """Helper method to handle the case of exploding multiple columns."""
+        offset = (
+            sge.to_identifier(offsets_col, quoted=self.quoted) if offsets_col else None
+        )
+        columns = [
+            sge.to_identifier(column_name, quoted=self.quoted)
+            for column_name in column_names
+        ]
+
+        # If there are multiple columns, we need to unnest by zipping the arrays:
+        # https://cloud.google.com/bigquery/docs/arrays#zipping_arrays
+        column_lengths = [
+            sge.func("ARRAY_LENGTH", sge.to_identifier(column, quoted=self.quoted)) - 1
+            for column in columns
+        ]
+        generate_array = sge.func(
+            "GENERATE_ARRAY",
+            sge.convert(0),
+            sge.func("LEAST", *column_lengths),
+        )
+        unnested_offset_alias = sge.to_identifier(
+            next(self.uid_gen.get_uid_stream("bfcol_")), quoted=self.quoted
+        )
+        unnest_expr = sge.Unnest(
+            expressions=[generate_array],
+            alias=sge.TableAlias(columns=[unnested_offset_alias]),
+            offset=offset,
+        )
+        selection = sge.Star(
+            replace=[
+                sge.Bracket(
+                    this=column,
+                    expressions=[unnested_offset_alias],
+                    safe=True,
+                    offset=False,
+                ).as_(column)
+                for column in columns
+            ]
+        )
+        new_expr = (
+            self._encapsulate_as_cte()
+            .select(selection, append=False)
+            .join(unnest_expr, join_type="CROSS")
+        )
+        return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
+
     def _encapsulate_as_cte(
         self,
     ) -> sge.Select:
