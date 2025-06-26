@@ -43,6 +43,10 @@ from .services.business_info_service import (
     BusinessInfoServiceAsyncClient,
     BusinessInfoServiceClient,
 )
+from .services.checkout_settings_service import (
+    CheckoutSettingsServiceAsyncClient,
+    CheckoutSettingsServiceClient,
+)
 from .services.email_preferences_service import (
     EmailPreferencesServiceAsyncClient,
     EmailPreferencesServiceClient,
@@ -126,6 +130,14 @@ from .types.businessinfo import (
     BusinessInfo,
     GetBusinessInfoRequest,
     UpdateBusinessInfoRequest,
+)
+from .types.checkoutsettings import (
+    CheckoutSettings,
+    CreateCheckoutSettingsRequest,
+    DeleteCheckoutSettingsRequest,
+    GetCheckoutSettingsRequest,
+    UpdateCheckoutSettingsRequest,
+    UriSettings,
 )
 from .types.customerservice import CustomerService
 from .types.emailpreferences import (
@@ -254,6 +266,7 @@ __all__ = (
     "AutomaticImprovementsServiceAsyncClient",
     "BusinessIdentityServiceAsyncClient",
     "BusinessInfoServiceAsyncClient",
+    "CheckoutSettingsServiceAsyncClient",
     "EmailPreferencesServiceAsyncClient",
     "GbpAccountsServiceAsyncClient",
     "HomepageServiceAsyncClient",
@@ -291,8 +304,11 @@ __all__ = (
     "BusinessInfo",
     "BusinessInfoServiceClient",
     "CarrierRate",
+    "CheckoutSettings",
+    "CheckoutSettingsServiceClient",
     "ClaimHomepageRequest",
     "CreateAndConfigureAccountRequest",
+    "CreateCheckoutSettingsRequest",
     "CreateOmnichannelSettingRequest",
     "CreateOnlineReturnPolicyRequest",
     "CreateRegionRequest",
@@ -300,6 +316,7 @@ __all__ = (
     "CustomerService",
     "CutoffTime",
     "DeleteAccountRequest",
+    "DeleteCheckoutSettingsRequest",
     "DeleteOnlineReturnPolicyRequest",
     "DeleteRegionRequest",
     "DeleteUserRequest",
@@ -319,6 +336,7 @@ __all__ = (
     "GetAutomaticImprovementsRequest",
     "GetBusinessIdentityRequest",
     "GetBusinessInfoRequest",
+    "GetCheckoutSettingsRequest",
     "GetEmailPreferencesRequest",
     "GetHomepageRequest",
     "GetOmnichannelSettingRequest",
@@ -401,12 +419,14 @@ __all__ = (
     "UpdateAutomaticImprovementsRequest",
     "UpdateBusinessIdentityRequest",
     "UpdateBusinessInfoRequest",
+    "UpdateCheckoutSettingsRequest",
     "UpdateEmailPreferencesRequest",
     "UpdateHomepageRequest",
     "UpdateOmnichannelSettingRequest",
     "UpdateOnlineReturnPolicyRequest",
     "UpdateRegionRequest",
     "UpdateUserRequest",
+    "UriSettings",
     "User",
     "UserServiceClient",
     "Value",
