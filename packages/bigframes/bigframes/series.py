@@ -1598,6 +1598,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         else:
             raise AttributeError(key)
 
+    def __setitem__(self, key, value) -> None:
+        """Set item using direct assignment, delegating to .loc indexer."""
+        self.loc[key] = value
+
     def _apply_aggregation(
         self, op: agg_ops.UnaryAggregateOp | agg_ops.NullaryAggregateOp
     ) -> Any:

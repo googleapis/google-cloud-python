@@ -511,6 +511,69 @@ def test_series___getitem___with_default_index(scalars_dfs):
 
 
 @pytest.mark.parametrize(
+    ("index_col", "key", "value"),
+    (
+        ("int64_too", 2, "new_string_value"),
+        ("string_col", "Hello, World!", "updated_value"),
+        ("int64_too", 0, None),
+    ),
+)
+def test_series___setitem__(scalars_dfs, index_col, key, value):
+    col_name = "string_col"
+    scalars_df, scalars_pandas_df = scalars_dfs
+    scalars_df = scalars_df.set_index(index_col, drop=False)
+    scalars_pandas_df = scalars_pandas_df.set_index(index_col, drop=False)
+
+    bf_series = scalars_df[col_name]
+    pd_series = scalars_pandas_df[col_name].copy()
+
+    bf_series[key] = value
+    pd_series[key] = value
+
+    pd.testing.assert_series_equal(bf_series.to_pandas(), pd_series)
+
+
+@pytest.mark.parametrize(
+    ("key", "value"),
+    (
+        (0, 999),
+        (1, 888),
+        (0, None),
+        (-2345, 777),
+    ),
+)
+def test_series___setitem___with_int_key_numeric(scalars_dfs, key, value):
+    col_name = "int64_col"
+    index_col = "int64_too"
+    scalars_df, scalars_pandas_df = scalars_dfs
+    scalars_df = scalars_df.set_index(index_col, drop=False)
+    scalars_pandas_df = scalars_pandas_df.set_index(index_col, drop=False)
+
+    bf_series = scalars_df[col_name]
+    pd_series = scalars_pandas_df[col_name].copy()
+
+    bf_series[key] = value
+    pd_series[key] = value
+
+    pd.testing.assert_series_equal(bf_series.to_pandas(), pd_series)
+
+
+def test_series___setitem___with_default_index(scalars_dfs):
+    col_name = "float64_col"
+    key = 2
+    value = 123.456
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_series = scalars_df[col_name]
+    pd_series = scalars_pandas_df[col_name].copy()
+
+    bf_series[key] = value
+    pd_series[key] = value
+
+    assert bf_series.to_pandas().iloc[key] == pd_series.iloc[key]
+
+
+@pytest.mark.parametrize(
     ("col_name",),
     (
         ("float64_col",),
