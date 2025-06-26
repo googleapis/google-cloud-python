@@ -861,6 +861,12 @@ class IngestionFailureEvent(proto.Message):
 
         """
 
+    class MessageTransformationFailureReason(proto.Message):
+        r"""Set when a Pub/Sub message fails to get published due to a
+        message transformation error.
+
+        """
+
     class CloudStorageFailure(proto.Message):
         r"""Failure when ingesting from a Cloud Storage source.
 
@@ -898,6 +904,11 @@ class IngestionFailureEvent(proto.Message):
                 validation.
 
                 This field is a member of `oneof`_ ``reason``.
+            message_transformation_failure_reason (google.pubsub_v1.types.IngestionFailureEvent.MessageTransformationFailureReason):
+                Optional. Failure encountered when applying a
+                message transformation to the Pub/Sub message.
+
+                This field is a member of `oneof`_ ``reason``.
         """
 
         bucket: str = proto.Field(
@@ -931,6 +942,12 @@ class IngestionFailureEvent(proto.Message):
                 oneof="reason",
                 message="IngestionFailureEvent.SchemaViolationReason",
             )
+        )
+        message_transformation_failure_reason: "IngestionFailureEvent.MessageTransformationFailureReason" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            oneof="reason",
+            message="IngestionFailureEvent.MessageTransformationFailureReason",
         )
 
     class AwsMskFailureReason(proto.Message):
@@ -966,6 +983,11 @@ class IngestionFailureEvent(proto.Message):
                 validation.
 
                 This field is a member of `oneof`_ ``reason``.
+            message_transformation_failure_reason (google.pubsub_v1.types.IngestionFailureEvent.MessageTransformationFailureReason):
+                Optional. Failure encountered when applying a
+                message transformation to the Pub/Sub message.
+
+                This field is a member of `oneof`_ ``reason``.
         """
 
         cluster_arn: str = proto.Field(
@@ -997,6 +1019,12 @@ class IngestionFailureEvent(proto.Message):
                 oneof="reason",
                 message="IngestionFailureEvent.SchemaViolationReason",
             )
+        )
+        message_transformation_failure_reason: "IngestionFailureEvent.MessageTransformationFailureReason" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="reason",
+            message="IngestionFailureEvent.MessageTransformationFailureReason",
         )
 
     class AzureEventHubsFailureReason(proto.Message):
@@ -1032,6 +1060,11 @@ class IngestionFailureEvent(proto.Message):
                 validation.
 
                 This field is a member of `oneof`_ ``reason``.
+            message_transformation_failure_reason (google.pubsub_v1.types.IngestionFailureEvent.MessageTransformationFailureReason):
+                Optional. Failure encountered when applying a
+                message transformation to the Pub/Sub message.
+
+                This field is a member of `oneof`_ ``reason``.
         """
 
         namespace: str = proto.Field(
@@ -1063,6 +1096,12 @@ class IngestionFailureEvent(proto.Message):
                 oneof="reason",
                 message="IngestionFailureEvent.SchemaViolationReason",
             )
+        )
+        message_transformation_failure_reason: "IngestionFailureEvent.MessageTransformationFailureReason" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="reason",
+            message="IngestionFailureEvent.MessageTransformationFailureReason",
         )
 
     class ConfluentCloudFailureReason(proto.Message):
@@ -1098,6 +1137,11 @@ class IngestionFailureEvent(proto.Message):
                 validation.
 
                 This field is a member of `oneof`_ ``reason``.
+            message_transformation_failure_reason (google.pubsub_v1.types.IngestionFailureEvent.MessageTransformationFailureReason):
+                Optional. Failure encountered when applying a
+                message transformation to the Pub/Sub message.
+
+                This field is a member of `oneof`_ ``reason``.
         """
 
         cluster_id: str = proto.Field(
@@ -1130,9 +1174,20 @@ class IngestionFailureEvent(proto.Message):
                 message="IngestionFailureEvent.SchemaViolationReason",
             )
         )
+        message_transformation_failure_reason: "IngestionFailureEvent.MessageTransformationFailureReason" = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            oneof="reason",
+            message="IngestionFailureEvent.MessageTransformationFailureReason",
+        )
 
     class AwsKinesisFailureReason(proto.Message):
         r"""Failure when ingesting from an AWS Kinesis source.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1149,6 +1204,11 @@ class IngestionFailureEvent(proto.Message):
             schema_violation_reason (google.pubsub_v1.types.IngestionFailureEvent.SchemaViolationReason):
                 Optional. The Pub/Sub message failed schema
                 validation.
+
+                This field is a member of `oneof`_ ``reason``.
+            message_transformation_failure_reason (google.pubsub_v1.types.IngestionFailureEvent.MessageTransformationFailureReason):
+                Optional. Failure encountered when applying a
+                message transformation to the Pub/Sub message.
 
                 This field is a member of `oneof`_ ``reason``.
         """
@@ -1172,6 +1232,12 @@ class IngestionFailureEvent(proto.Message):
                 oneof="reason",
                 message="IngestionFailureEvent.SchemaViolationReason",
             )
+        )
+        message_transformation_failure_reason: "IngestionFailureEvent.MessageTransformationFailureReason" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="reason",
+            message="IngestionFailureEvent.MessageTransformationFailureReason",
         )
 
     topic: str = proto.Field(
@@ -3091,10 +3157,12 @@ class StreamingPullResponse(proto.Message):
             will not be empty.
         acknowledge_confirmation (google.pubsub_v1.types.StreamingPullResponse.AcknowledgeConfirmation):
             Optional. This field will only be set if
-            ``enable_exactly_once_delivery`` is set to ``true``.
+            ``enable_exactly_once_delivery`` is set to ``true`` and is
+            not guaranteed to be populated.
         modify_ack_deadline_confirmation (google.pubsub_v1.types.StreamingPullResponse.ModifyAckDeadlineConfirmation):
             Optional. This field will only be set if
-            ``enable_exactly_once_delivery`` is set to ``true``.
+            ``enable_exactly_once_delivery`` is set to ``true`` and is
+            not guaranteed to be populated.
         subscription_properties (google.pubsub_v1.types.StreamingPullResponse.SubscriptionProperties):
             Optional. Properties associated with this
             subscription.
