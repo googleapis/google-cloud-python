@@ -22,6 +22,7 @@ import warnings
 import google.auth.credentials
 import requests.adapters
 
+import bigframes._importing
 import bigframes.enums
 import bigframes.exceptions as bfe
 
@@ -94,6 +95,7 @@ class BigQueryOptions:
         requests_transport_adapters: Sequence[
             Tuple[str, requests.adapters.BaseAdapter]
         ] = (),
+        enable_polars_execution: bool = False,
     ):
         self._credentials = credentials
         self._project = project
@@ -113,6 +115,9 @@ class BigQueryOptions:
             client_endpoints_override = {}
 
         self._client_endpoints_override = client_endpoints_override
+        if enable_polars_execution:
+            bigframes._importing.import_polars()
+        self._enable_polars_execution = enable_polars_execution
 
     @property
     def application_name(self) -> Optional[str]:
@@ -424,3 +429,22 @@ class BigQueryOptions:
                 SESSION_STARTED_MESSAGE.format(attribute="requests_transport_adapters")
             )
         self._requests_transport_adapters = value
+
+    @property
+    def enable_polars_execution(self) -> bool:
+        """If True, will use polars to execute some simple query plans locally."""
+        return self._enable_polars_execution
+
+    @enable_polars_execution.setter
+    def enable_polars_execution(self, value: bool):
+        if self._session_started and self._enable_polars_execution != value:
+            raise ValueError(
+                SESSION_STARTED_MESSAGE.format(attribute="enable_polars_execution")
+            )
+        if value is True:
+            msg = bfe.format_message(
+                "Polars execution is an experimental feature, and may not be stable. Must have polars installed."
+            )
+            warnings.warn(msg, category=bfe.PreviewWarning)
+            bigframes._importing.import_polars()
+        self._enable_polars_execution = value

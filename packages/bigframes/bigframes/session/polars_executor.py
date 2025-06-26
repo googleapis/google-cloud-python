@@ -73,7 +73,7 @@ class PolarsExecutor(semi_executor.SemiExecutor):
         # Note: Ignoring ordered flag, as just executing totally ordered is fine.
         try:
             lazy_frame: pl.LazyFrame = self._compiler.compile(
-                array_value.ArrayValue(plan)
+                array_value.ArrayValue(plan).node
             )
         except Exception:
             return None

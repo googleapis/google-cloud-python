@@ -255,6 +255,7 @@ class Session(
             storage_manager=self._temp_storage_manager,
             strictly_ordered=self._strictly_ordered,
             metrics=self._metrics,
+            enable_polars_execution=context.enable_polars_execution,
         )
 
     def __del__(self):

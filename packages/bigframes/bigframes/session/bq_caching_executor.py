@@ -41,7 +41,13 @@ import bigframes.core.schema as schemata
 import bigframes.core.tree_properties as tree_properties
 import bigframes.dtypes
 import bigframes.features
-from bigframes.session import executor, loader, local_scan_executor, read_api_execution
+from bigframes.session import (
+    executor,
+    loader,
+    local_scan_executor,
+    read_api_execution,
+    semi_executor,
+)
 import bigframes.session._io.bigquery as bq_io
 import bigframes.session.metrics
 import bigframes.session.planner
@@ -147,6 +153,7 @@ class BigQueryCachingExecutor(executor.Executor):
         *,
         strictly_ordered: bool = True,
         metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
+        enable_polars_execution: bool = False,
     ):
         self.bqclient = bqclient
         self.storage_manager = storage_manager
@@ -155,14 +162,21 @@ class BigQueryCachingExecutor(executor.Executor):
         self.metrics = metrics
         self.loader = loader
         self.bqstoragereadclient = bqstoragereadclient
-        # Simple left-to-right precedence for now
-        self._semi_executors = (
+        self._enable_polars_execution = enable_polars_execution
+        self._semi_executors: Sequence[semi_executor.SemiExecutor] = (
             read_api_execution.ReadApiSemiExecutor(
                 bqstoragereadclient=bqstoragereadclient,
                 project=self.bqclient.project,
             ),
             local_scan_executor.LocalScanExecutor(),
         )
+        if enable_polars_execution:
+            from bigframes.session import polars_executor
+
+            self._semi_executors = (
+                *self._semi_executors,
+                polars_executor.PolarsExecutor(),
+            )
         self._upload_lock = threading.Lock()
 
     def to_sql(
@@ -637,8 +651,8 @@ class BigQueryCachingExecutor(executor.Executor):
         """Just execute whatever plan as is, without further caching or decomposition."""
         # First try to execute fast-paths
         if not output_spec.require_bq_table:
-            for semi_executor in self._semi_executors:
-                maybe_result = semi_executor.execute(plan, ordered=ordered, peek=peek)
+            for exec in self._semi_executors:
+                maybe_result = exec.execute(plan, ordered=ordered, peek=peek)
                 if maybe_result:
                     return maybe_result
 

@@ -15,3 +15,4 @@ matplotlib==3.7.1
 psutil==5.9.5
 seaborn==0.13.1
 traitlets==5.7.1
+polars==1.7.0
