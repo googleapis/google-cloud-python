@@ -60,6 +60,12 @@ from google.shopping.merchant_accounts_v1beta.services.business_info_service.asy
 from google.shopping.merchant_accounts_v1beta.services.business_info_service.client import (
     BusinessInfoServiceClient,
 )
+from google.shopping.merchant_accounts_v1beta.services.checkout_settings_service.async_client import (
+    CheckoutSettingsServiceAsyncClient,
+)
+from google.shopping.merchant_accounts_v1beta.services.checkout_settings_service.client import (
+    CheckoutSettingsServiceClient,
+)
 from google.shopping.merchant_accounts_v1beta.services.email_preferences_service.async_client import (
     EmailPreferencesServiceAsyncClient,
 )
@@ -181,6 +187,14 @@ from google.shopping.merchant_accounts_v1beta.types.businessinfo import (
     BusinessInfo,
     GetBusinessInfoRequest,
     UpdateBusinessInfoRequest,
+)
+from google.shopping.merchant_accounts_v1beta.types.checkoutsettings import (
+    CheckoutSettings,
+    CreateCheckoutSettingsRequest,
+    DeleteCheckoutSettingsRequest,
+    GetCheckoutSettingsRequest,
+    UpdateCheckoutSettingsRequest,
+    UriSettings,
 )
 from google.shopping.merchant_accounts_v1beta.types.customerservice import (
     CustomerService,
@@ -322,6 +336,8 @@ __all__ = (
     "BusinessIdentityServiceAsyncClient",
     "BusinessInfoServiceClient",
     "BusinessInfoServiceAsyncClient",
+    "CheckoutSettingsServiceClient",
+    "CheckoutSettingsServiceAsyncClient",
     "EmailPreferencesServiceClient",
     "EmailPreferencesServiceAsyncClient",
     "GbpAccountsServiceClient",
@@ -380,6 +396,12 @@ __all__ = (
     "BusinessInfo",
     "GetBusinessInfoRequest",
     "UpdateBusinessInfoRequest",
+    "CheckoutSettings",
+    "CreateCheckoutSettingsRequest",
+    "DeleteCheckoutSettingsRequest",
+    "GetCheckoutSettingsRequest",
+    "UpdateCheckoutSettingsRequest",
+    "UriSettings",
     "CustomerService",
     "EmailPreferences",
     "GetEmailPreferencesRequest",

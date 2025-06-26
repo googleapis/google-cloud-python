@@ -408,6 +408,85 @@
         }
       }
     },
+    "CheckoutSettingsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CheckoutSettingsServiceClient",
+          "rpcs": {
+            "CreateCheckoutSettings": {
+              "methods": [
+                "create_checkout_settings"
+              ]
+            },
+            "DeleteCheckoutSettings": {
+              "methods": [
+                "delete_checkout_settings"
+              ]
+            },
+            "GetCheckoutSettings": {
+              "methods": [
+                "get_checkout_settings"
+              ]
+            },
+            "UpdateCheckoutSettings": {
+              "methods": [
+                "update_checkout_settings"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CheckoutSettingsServiceAsyncClient",
+          "rpcs": {
+            "CreateCheckoutSettings": {
+              "methods": [
+                "create_checkout_settings"
+              ]
+            },
+            "DeleteCheckoutSettings": {
+              "methods": [
+                "delete_checkout_settings"
+              ]
+            },
+            "GetCheckoutSettings": {
+              "methods": [
+                "get_checkout_settings"
+              ]
+            },
+            "UpdateCheckoutSettings": {
+              "methods": [
+                "update_checkout_settings"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "CheckoutSettingsServiceClient",
+          "rpcs": {
+            "CreateCheckoutSettings": {
+              "methods": [
+                "create_checkout_settings"
+              ]
+            },
+            "DeleteCheckoutSettings": {
+              "methods": [
+                "delete_checkout_settings"
+              ]
+            },
+            "GetCheckoutSettings": {
+              "methods": [
+                "get_checkout_settings"
+              ]
+            },
+            "UpdateCheckoutSettings": {
+              "methods": [
+                "update_checkout_settings"
+              ]
+            }
+          }
+        }
+      }
+    },
     "EmailPreferencesService": {
       "clients": {
         "grpc": {

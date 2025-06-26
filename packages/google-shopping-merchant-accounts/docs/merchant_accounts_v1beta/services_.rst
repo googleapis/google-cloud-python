@@ -10,6 +10,7 @@ Services for Google Shopping Merchant Accounts v1beta API
     automatic_improvements_service
     business_identity_service
     business_info_service
+    checkout_settings_service
     email_preferences_service
     gbp_accounts_service
     homepage_service
