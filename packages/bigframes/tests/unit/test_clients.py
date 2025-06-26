@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
+from google.cloud import bigquery_connection_v1, resourcemanager_v3
+from google.iam.v1 import policy_pb2
 import pytest
 
 from bigframes import clients
@@ -65,3 +69,27 @@ def test_get_canonical_bq_connection_id_invalid_path():
             default_project="default-project",
             default_location="us",
         )
+
+
+def test_ensure_iam_binding():
+    bq_connection_client = mock.create_autospec(
+        bigquery_connection_v1.ConnectionServiceClient, instance=True
+    )
+    resource_manager_client = mock.create_autospec(
+        resourcemanager_v3.ProjectsClient, instance=True
+    )
+    resource_manager_client.get_iam_policy.return_value = policy_pb2.Policy(
+        bindings=[
+            policy_pb2.Binding(
+                role="roles/test.role1", members=["serviceAccount:serviceAccount1"]
+            )
+        ]
+    )
+    bq_connection_manager = clients.BqConnectionManager(
+        bq_connection_client, resource_manager_client
+    )
+    bq_connection_manager._IAM_WAIT_SECONDS = 0  # no need to wait in test
+    bq_connection_manager._ensure_iam_binding(
+        "test-project", "serviceAccount2", "roles/test.role2"
+    )
+    resource_manager_client.set_iam_policy.assert_called_once()
