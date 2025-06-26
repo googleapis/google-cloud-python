@@ -1767,3 +1767,70 @@ class TestCondition:
             description=None,
         )
         assert hash(cond1) is not None
+
+    def test_access_entry_view_equality(self):
+        from google.cloud import bigquery
+
+        entry1 = bigquery.dataset.AccessEntry(
+            entity_type="view",
+            entity_id={
+                "projectId": "my_project",
+                "datasetId": "my_dataset",
+                "tableId": "my_table",
+            },
+        )
+        entry2 = bigquery.dataset.AccessEntry.from_api_repr(
+            {
+                "view": {
+                    "projectId": "my_project",
+                    "datasetId": "my_dataset",
+                    "tableId": "my_table",
+                }
+            }
+        )
+
+        entry3 = bigquery.dataset.AccessEntry(
+            entity_type="routine",
+            entity_id={
+                "projectId": "my_project",
+                "datasetId": "my_dataset",
+                "routineId": "my_routine",
+            },
+        )
+
+        entry4 = bigquery.dataset.AccessEntry.from_api_repr(
+            {
+                "routine": {
+                    "projectId": "my_project",
+                    "datasetId": "my_dataset",
+                    "routineId": "my_routine",
+                }
+            }
+        )
+
+        entry5 = bigquery.dataset.AccessEntry(
+            entity_type="dataset",
+            entity_id={
+                "dataset": {
+                    "projectId": "my_project",
+                    "datasetId": "my_dataset",
+                },
+                "target_types": "VIEWS",
+            },
+        )
+
+        entry6 = bigquery.dataset.AccessEntry.from_api_repr(
+            {
+                "dataset": {
+                    "dataset": {
+                        "projectId": "my_project",
+                        "datasetId": "my_dataset",
+                    },
+                    "target_types": "VIEWS",
+                }
+            }
+        )
+
+        assert entry1 == entry2
+        assert entry3 == entry4
+        assert entry5 == entry6

@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import copy
+import json
 
 import typing
 from typing import Optional, List, Dict, Any, Union
@@ -506,7 +507,20 @@ class AccessEntry(object):
     def __eq__(self, other):
         if not isinstance(other, AccessEntry):
             return NotImplemented
-        return self._key() == other._key()
+        return (
+            self.role == other.role
+            and self.entity_type == other.entity_type
+            and self._normalize_entity_id(self.entity_id)
+            == self._normalize_entity_id(other.entity_id)
+            and self.condition == other.condition
+        )
+
+    @staticmethod
+    def _normalize_entity_id(value):
+        """Ensure consistent equality for dicts like 'view'."""
+        if isinstance(value, dict):
+            return json.dumps(value, sort_keys=True)
+        return value
 
     def __ne__(self, other):
         return not self == other
@@ -557,7 +571,6 @@ class AccessEntry(object):
             google.cloud.bigquery.dataset.AccessEntry:
                 Access entry parsed from ``resource``.
         """
-
         access_entry = cls()
         access_entry._properties = resource.copy()
         return access_entry
