@@ -13,6 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .image import (
+    GeneratedImage,
+    GenerateImageBackgroundConfig,
+    GenerateProductImageBackgroundRequest,
+    GenerateProductImageBackgroundResponse,
+    OutputImageConfig,
+    RemoveImageBackgroundConfig,
+    RemoveProductImageBackgroundRequest,
+    RemoveProductImageBackgroundResponse,
+    RgbColor,
+    UpscaleProductImageRequest,
+    UpscaleProductImageResponse,
+)
+from .productstudio_common import InputImage
 from .textsuggestions import (
     GenerateProductTextSuggestionsRequest,
     GenerateProductTextSuggestionsResponse,
@@ -25,6 +39,18 @@ from .textsuggestions import (
 )
 
 __all__ = (
+    "GeneratedImage",
+    "GenerateImageBackgroundConfig",
+    "GenerateProductImageBackgroundRequest",
+    "GenerateProductImageBackgroundResponse",
+    "OutputImageConfig",
+    "RemoveImageBackgroundConfig",
+    "RemoveProductImageBackgroundRequest",
+    "RemoveProductImageBackgroundResponse",
+    "RgbColor",
+    "UpscaleProductImageRequest",
+    "UpscaleProductImageResponse",
+    "InputImage",
     "GenerateProductTextSuggestionsRequest",
     "GenerateProductTextSuggestionsResponse",
     "Image",

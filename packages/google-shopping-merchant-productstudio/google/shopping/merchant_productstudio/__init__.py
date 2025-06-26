@@ -18,11 +18,33 @@ from google.shopping.merchant_productstudio import gapic_version as package_vers
 __version__ = package_version.__version__
 
 
+from google.shopping.merchant_productstudio_v1alpha.services.image_service.async_client import (
+    ImageServiceAsyncClient,
+)
+from google.shopping.merchant_productstudio_v1alpha.services.image_service.client import (
+    ImageServiceClient,
+)
 from google.shopping.merchant_productstudio_v1alpha.services.text_suggestions_service.async_client import (
     TextSuggestionsServiceAsyncClient,
 )
 from google.shopping.merchant_productstudio_v1alpha.services.text_suggestions_service.client import (
     TextSuggestionsServiceClient,
+)
+from google.shopping.merchant_productstudio_v1alpha.types.image import (
+    GeneratedImage,
+    GenerateImageBackgroundConfig,
+    GenerateProductImageBackgroundRequest,
+    GenerateProductImageBackgroundResponse,
+    OutputImageConfig,
+    RemoveImageBackgroundConfig,
+    RemoveProductImageBackgroundRequest,
+    RemoveProductImageBackgroundResponse,
+    RgbColor,
+    UpscaleProductImageRequest,
+    UpscaleProductImageResponse,
+)
+from google.shopping.merchant_productstudio_v1alpha.types.productstudio_common import (
+    InputImage,
 )
 from google.shopping.merchant_productstudio_v1alpha.types.textsuggestions import (
     GenerateProductTextSuggestionsRequest,
@@ -36,8 +58,22 @@ from google.shopping.merchant_productstudio_v1alpha.types.textsuggestions import
 )
 
 __all__ = (
+    "ImageServiceClient",
+    "ImageServiceAsyncClient",
     "TextSuggestionsServiceClient",
     "TextSuggestionsServiceAsyncClient",
+    "GeneratedImage",
+    "GenerateImageBackgroundConfig",
+    "GenerateProductImageBackgroundRequest",
+    "GenerateProductImageBackgroundResponse",
+    "OutputImageConfig",
+    "RemoveImageBackgroundConfig",
+    "RemoveProductImageBackgroundRequest",
+    "RemoveProductImageBackgroundResponse",
+    "RgbColor",
+    "UpscaleProductImageRequest",
+    "UpscaleProductImageResponse",
+    "InputImage",
     "GenerateProductTextSuggestionsRequest",
     "GenerateProductTextSuggestionsResponse",
     "Image",
