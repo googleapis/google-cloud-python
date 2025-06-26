@@ -20,10 +20,25 @@ from google.shopping.merchant_productstudio_v1alpha import (
 __version__ = package_version.__version__
 
 
+from .services.image_service import ImageServiceAsyncClient, ImageServiceClient
 from .services.text_suggestions_service import (
     TextSuggestionsServiceAsyncClient,
     TextSuggestionsServiceClient,
 )
+from .types.image import (
+    GeneratedImage,
+    GenerateImageBackgroundConfig,
+    GenerateProductImageBackgroundRequest,
+    GenerateProductImageBackgroundResponse,
+    OutputImageConfig,
+    RemoveImageBackgroundConfig,
+    RemoveProductImageBackgroundRequest,
+    RemoveProductImageBackgroundResponse,
+    RgbColor,
+    UpscaleProductImageRequest,
+    UpscaleProductImageResponse,
+)
+from .types.productstudio_common import InputImage
 from .types.textsuggestions import (
     GenerateProductTextSuggestionsRequest,
     GenerateProductTextSuggestionsResponse,
@@ -36,14 +51,28 @@ from .types.textsuggestions import (
 )
 
 __all__ = (
+    "ImageServiceAsyncClient",
     "TextSuggestionsServiceAsyncClient",
+    "GenerateImageBackgroundConfig",
+    "GenerateProductImageBackgroundRequest",
+    "GenerateProductImageBackgroundResponse",
     "GenerateProductTextSuggestionsRequest",
     "GenerateProductTextSuggestionsResponse",
+    "GeneratedImage",
     "Image",
+    "ImageServiceClient",
+    "InputImage",
+    "OutputImageConfig",
     "OutputSpec",
     "ProductInfo",
     "ProductTextGenerationMetadata",
     "ProductTextGenerationSuggestion",
+    "RemoveImageBackgroundConfig",
+    "RemoveProductImageBackgroundRequest",
+    "RemoveProductImageBackgroundResponse",
+    "RgbColor",
     "TextSuggestionsServiceClient",
     "TitleExample",
+    "UpscaleProductImageRequest",
+    "UpscaleProductImageResponse",
 )
