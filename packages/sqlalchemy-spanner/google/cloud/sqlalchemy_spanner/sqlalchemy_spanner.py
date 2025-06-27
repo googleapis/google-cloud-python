@@ -71,8 +71,6 @@ def reset_connection(dbapi_conn, connection_record, reset_state=None):
 
         dbapi_conn.staleness = None
         dbapi_conn.read_only = False
-    else:
-        dbapi_conn.rollback()
 
 
 # register a method to get a single value of a JSON object
