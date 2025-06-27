@@ -33,6 +33,8 @@ from sqlalchemy import (
     TextClause,
     Index,
     PickleType,
+    text,
+    event,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import SpannerPickleType
@@ -177,3 +179,18 @@ class TicketSale(Base):
         DateTime, nullable=False
     )
     singer_id: Mapped[str] = mapped_column(String(36), ForeignKey("singers.id"))
+    # Create a commit timestamp column and set a client-side default of
+    # PENDING_COMMIT_TIMESTAMP() An event handler below is responsible for
+    # setting PENDING_COMMIT_TIMESTAMP() on updates. If using SQLAlchemy
+    # core rather than the ORM, callers will need to supply their own
+    # PENDING_COMMIT_TIMESTAMP() values in their inserts & updates.
+    last_update_time: Mapped[datetime.datetime] = mapped_column(
+        spanner_allow_commit_timestamp=True,
+        default=text("PENDING_COMMIT_TIMESTAMP()"),
+    )
+
+
+@event.listens_for(TicketSale, "before_update")
+def ticket_sale_before_update(mapper, connection, target):
+    """Updates the commit timestamp when the row is updated."""
+    target.last_update_time = text("PENDING_COMMIT_TIMESTAMP()")

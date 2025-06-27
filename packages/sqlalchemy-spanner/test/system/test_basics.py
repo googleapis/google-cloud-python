@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import datetime
 import os
 from typing import Optional
 from sqlalchemy import (
@@ -29,10 +30,11 @@ from sqlalchemy import (
     select,
     update,
     delete,
+    event,
 )
 from sqlalchemy.orm import Session, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.types import REAL
-from sqlalchemy.testing import eq_, is_true
+from sqlalchemy.testing import eq_, is_true, is_not_none
 from sqlalchemy.testing.plugin.plugin_base import fixtures
 
 
@@ -300,3 +302,57 @@ class TestBasics(fixtures.TablesTest):
                 filter_names=["number_colors"], schema="schema"
             ),
         )
+
+    def test_commit_timestamp(self, connection):
+        """Ensures commit timestamps are set."""
+
+        class Base(DeclarativeBase):
+            pass
+
+        class TimestampUser(Base):
+            __tablename__ = "timestamp_users"
+            ID: Mapped[int] = mapped_column(primary_key=True)
+            name: Mapped[str]
+            updated_at: Mapped[datetime.datetime] = mapped_column(
+                spanner_allow_commit_timestamp=True,
+                default=text("PENDING_COMMIT_TIMESTAMP()"),
+            )
+
+        @event.listens_for(TimestampUser, "before_update")
+        def before_update(mapper, connection, target):
+            target.updated_at = text("PENDING_COMMIT_TIMESTAMP()")
+
+        engine = connection.engine
+        Base.metadata.create_all(engine)
+        try:
+            with Session(engine) as session:
+                session.add(TimestampUser(name="name"))
+                session.commit()
+
+            with Session(engine) as session:
+                users = list(
+                    session.scalars(
+                        select(TimestampUser).where(TimestampUser.name == "name")
+                    )
+                )
+                user = users[0]
+
+                is_not_none(user.updated_at)
+                created_at = user.updated_at
+
+                user.name = "new-name"
+                session.commit()
+
+            with Session(engine) as session:
+                users = list(
+                    session.scalars(
+                        select(TimestampUser).where(TimestampUser.name == "new-name")
+                    )
+                )
+                user = users[0]
+
+                is_not_none(user.updated_at)
+                is_true(user.updated_at > created_at)
+
+        finally:
+            Base.metadata.drop_all(engine)

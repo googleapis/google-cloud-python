@@ -578,6 +578,11 @@ class SpannerDDLCompiler(DDLCompiler):
         elif hasattr(column, "computed") and column.computed is not None:
             colspec += " " + self.process(column.computed)
 
+        if column.dialect_options.get("spanner", {}).get(
+            "allow_commit_timestamp", False
+        ):
+            colspec += " OPTIONS (allow_commit_timestamp=true)"
+
         return colspec
 
     def visit_computed_column(self, generated, **kw):

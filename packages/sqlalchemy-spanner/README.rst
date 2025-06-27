@@ -234,6 +234,22 @@ tables with this feature, make sure to call ``add_is_dependent_on()`` on
 the child table to request SQLAlchemy to create the parent table before
 the child table.
 
+Commit timestamps
+~~~~~~~~~~~~~~~~~~
+
+The dialect offers the ``spanner_allow_commit_timestamp`` option to
+column constructors for creating commit timestamp columns.
+
+.. code:: python
+
+   Table(
+       "table",
+       metadata,
+       Column("last_update_time", DateTime, spanner_allow_commit_timestamp=True),
+   )
+
+`See this documentation page for more details <https://cloud.google.com/spanner/docs/commit-timestamp>`__.
+
 Unique constraints
 ~~~~~~~~~~~~~~~~~~
 
