@@ -174,6 +174,11 @@ class Index(vendored_pandas_index.Index):
             index=typing.cast(typing.Tuple, self._block.index.names),
         )
 
+    def __setitem__(self, key, value) -> None:
+        """Index objects are immutable. Use Index constructor to create
+        modified Index."""
+        raise TypeError("Index does not support mutable operations")
+
     @property
     def size(self) -> int:
         return self.shape[0]
