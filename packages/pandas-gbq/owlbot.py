@@ -57,11 +57,16 @@ s.move(
         "docs/multiprocessing.rst",
         "noxfile.py",
         "README.rst",
-        ".github/workflows/docs.yml",
+        ".github/workflows/docs.yml", # to avoid overwriting python version
+        ".github/workflows/lint.yml", # to avoid overwriting python version
         ".github/sync-repo-settings.yaml",
         # exclude this file as we have an alternate prerelease.cfg
         ".kokoro/presubmit/prerelease-deps.cfg",
         ".kokoro/presubmit/presubmit.cfg",
+        "renovate.json", # to avoid overwriting the ignorePaths list additions:
+                         # ".github/workflows/docs.yml AND lint.yml" specifically
+                         # the version of python referenced in each of those files.
+                         # Currently renovate bot wants to change 3.10 to 3.13.
     ],
 )
 
