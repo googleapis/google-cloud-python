@@ -17,6 +17,8 @@ import time
 
 import bigframes
 
+READ_GBQ_COLAB_PAGE_SIZE = 100
+
 
 def get_configuration(include_table_id=False):
     parser = argparse.ArgumentParser()
@@ -94,6 +96,7 @@ def _str_to_bool(value):
 
 
 def _initialize_session(ordered: bool):
+    # TODO(tswast): add a flag to enable the polars semi-executor.
     context = bigframes.BigQueryOptions(
         location="US", ordering_mode="strict" if ordered else "partial"
     )
