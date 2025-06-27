@@ -19,7 +19,7 @@ import bigframes.pandas as bpd
 pytest.importorskip("pytest_snapshot")
 
 
-def test_compile_filter(scalars_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalars_types_df[["rowindex", "int64_col"]]
+def test_compile_filter(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["rowindex", "int64_col"]]
     bf_filter = bf_df[bf_df["rowindex"] >= 1]
     snapshot.assert_match(bf_filter.sql, "out.sql")

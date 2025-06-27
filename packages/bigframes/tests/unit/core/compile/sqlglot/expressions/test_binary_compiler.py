@@ -19,24 +19,24 @@ import bigframes.pandas as bpd
 pytest.importorskip("pytest_snapshot")
 
 
-def test_add_numeric(scalars_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalars_types_df[["int64_col"]]
+def test_add_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]]
 
     bf_df["int64_col"] = bf_df["int64_col"] + bf_df["int64_col"]
 
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
-def test_add_numeric_w_scalar(scalars_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalars_types_df[["int64_col"]]
+def test_add_numeric_w_scalar(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]]
 
     bf_df["int64_col"] = bf_df["int64_col"] + 1
 
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
-def test_add_string(scalars_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalars_types_df[["string_col"]]
+def test_add_string(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
 
     bf_df["string_col"] = bf_df["string_col"] + "a"
 

@@ -19,8 +19,8 @@ import bigframes.pandas as bpd
 pytest.importorskip("pytest_snapshot")
 
 
-def test_compile_readtable(scalars_types_df: bpd.DataFrame, snapshot):
-    snapshot.assert_match(scalars_types_df.sql, "out.sql")
+def test_compile_readtable(scalar_types_df: bpd.DataFrame, snapshot):
+    snapshot.assert_match(scalar_types_df.sql, "out.sql")
 
 
 def test_compile_readtable_w_repeated_types(repeated_types_df: bpd.DataFrame, snapshot):
@@ -37,13 +37,13 @@ def test_compile_readtable_w_json_types(json_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(json_types_df.sql, "out.sql")
 
 
-def test_compile_readtable_w_ordering(scalars_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalars_types_df[["int64_col"]]
+def test_compile_readtable_w_ordering(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]]
     bf_df = bf_df.sort_values("int64_col")
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
-def test_compile_readtable_w_limit(scalars_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalars_types_df[["int64_col"]]
+def test_compile_readtable_w_limit(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]]
     bf_df = bf_df.sort_index().head(10)
     snapshot.assert_match(bf_df.sql, "out.sql")

@@ -46,9 +46,9 @@ def _create_compiler_session(table_name, table_schema):
 
 
 @pytest.fixture(scope="session")
-def compiler_session(scalars_types_table_schema):
+def compiler_session(scalar_types_table_schema):
     """Compiler session for scalar types."""
-    return _create_compiler_session("scalar_types", scalars_types_table_schema)
+    return _create_compiler_session("scalar_types", scalar_types_table_schema)
 
 
 @pytest.fixture(scope="session")
@@ -72,7 +72,7 @@ def compiler_session_w_json_types(json_types_table_schema):
 
 
 @pytest.fixture(scope="session")
-def scalars_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
+def scalar_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
     return [
         bigquery.SchemaField("bool_col", "BOOLEAN"),
         bigquery.SchemaField("bytes_col", "BYTES"),
@@ -92,7 +92,7 @@ def scalars_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
 
 
 @pytest.fixture(scope="session")
-def scalars_types_df(compiler_session) -> bpd.DataFrame:
+def scalar_types_df(compiler_session) -> bpd.DataFrame:
     """Returns a BigFrames DataFrame containing all scalar types and using the `rowindex`
     column as the index."""
     bf_df = compiler_session.read_gbq_table("bigframes-dev.sqlglot_test.scalar_types")
@@ -101,7 +101,7 @@ def scalars_types_df(compiler_session) -> bpd.DataFrame:
 
 
 @pytest.fixture(scope="session")
-def scalars_types_pandas_df() -> pd.DataFrame:
+def scalar_types_pandas_df() -> pd.DataFrame:
     """Returns a pandas DataFrame containing all scalar types and using the `rowindex`
     column as the index."""
     # TODO: add tests for empty dataframes
