@@ -1,0 +1,502 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.ads.admanager_v1",
+  "protoPackage": "google.ads.admanager.v1",
+  "schema": "1.0",
+  "services": {
+    "AdBreakService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "AdBreakServiceClient",
+          "rpcs": {
+            "CreateAdBreak": {
+              "methods": [
+                "create_ad_break"
+              ]
+            },
+            "DeleteAdBreak": {
+              "methods": [
+                "delete_ad_break"
+              ]
+            },
+            "GetAdBreak": {
+              "methods": [
+                "get_ad_break"
+              ]
+            },
+            "ListAdBreaks": {
+              "methods": [
+                "list_ad_breaks"
+              ]
+            },
+            "UpdateAdBreak": {
+              "methods": [
+                "update_ad_break"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "AdUnitService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "AdUnitServiceClient",
+          "rpcs": {
+            "GetAdUnit": {
+              "methods": [
+                "get_ad_unit"
+              ]
+            },
+            "ListAdUnitSizes": {
+              "methods": [
+                "list_ad_unit_sizes"
+              ]
+            },
+            "ListAdUnits": {
+              "methods": [
+                "list_ad_units"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "BandwidthGroupService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "BandwidthGroupServiceClient",
+          "rpcs": {
+            "GetBandwidthGroup": {
+              "methods": [
+                "get_bandwidth_group"
+              ]
+            },
+            "ListBandwidthGroups": {
+              "methods": [
+                "list_bandwidth_groups"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CompanyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CompanyServiceClient",
+          "rpcs": {
+            "GetCompany": {
+              "methods": [
+                "get_company"
+              ]
+            },
+            "ListCompanies": {
+              "methods": [
+                "list_companies"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CustomFieldService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CustomFieldServiceClient",
+          "rpcs": {
+            "GetCustomField": {
+              "methods": [
+                "get_custom_field"
+              ]
+            },
+            "ListCustomFields": {
+              "methods": [
+                "list_custom_fields"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CustomTargetingKeyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CustomTargetingKeyServiceClient",
+          "rpcs": {
+            "GetCustomTargetingKey": {
+              "methods": [
+                "get_custom_targeting_key"
+              ]
+            },
+            "ListCustomTargetingKeys": {
+              "methods": [
+                "list_custom_targeting_keys"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "CustomTargetingValueService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CustomTargetingValueServiceClient",
+          "rpcs": {
+            "GetCustomTargetingValue": {
+              "methods": [
+                "get_custom_targeting_value"
+              ]
+            },
+            "ListCustomTargetingValues": {
+              "methods": [
+                "list_custom_targeting_values"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DeviceCategoryService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DeviceCategoryServiceClient",
+          "rpcs": {
+            "GetDeviceCategory": {
+              "methods": [
+                "get_device_category"
+              ]
+            },
+            "ListDeviceCategories": {
+              "methods": [
+                "list_device_categories"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "EntitySignalsMappingService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "EntitySignalsMappingServiceClient",
+          "rpcs": {
+            "BatchCreateEntitySignalsMappings": {
+              "methods": [
+                "batch_create_entity_signals_mappings"
+              ]
+            },
+            "BatchUpdateEntitySignalsMappings": {
+              "methods": [
+                "batch_update_entity_signals_mappings"
+              ]
+            },
+            "CreateEntitySignalsMapping": {
+              "methods": [
+                "create_entity_signals_mapping"
+              ]
+            },
+            "GetEntitySignalsMapping": {
+              "methods": [
+                "get_entity_signals_mapping"
+              ]
+            },
+            "ListEntitySignalsMappings": {
+              "methods": [
+                "list_entity_signals_mappings"
+              ]
+            },
+            "UpdateEntitySignalsMapping": {
+              "methods": [
+                "update_entity_signals_mapping"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "GeoTargetService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "GeoTargetServiceClient",
+          "rpcs": {
+            "GetGeoTarget": {
+              "methods": [
+                "get_geo_target"
+              ]
+            },
+            "ListGeoTargets": {
+              "methods": [
+                "list_geo_targets"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "NetworkService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "NetworkServiceClient",
+          "rpcs": {
+            "GetNetwork": {
+              "methods": [
+                "get_network"
+              ]
+            },
+            "ListNetworks": {
+              "methods": [
+                "list_networks"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "OperatingSystemService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "OperatingSystemServiceClient",
+          "rpcs": {
+            "GetOperatingSystem": {
+              "methods": [
+                "get_operating_system"
+              ]
+            },
+            "ListOperatingSystems": {
+              "methods": [
+                "list_operating_systems"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "OperatingSystemVersionService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "OperatingSystemVersionServiceClient",
+          "rpcs": {
+            "GetOperatingSystemVersion": {
+              "methods": [
+                "get_operating_system_version"
+              ]
+            },
+            "ListOperatingSystemVersions": {
+              "methods": [
+                "list_operating_system_versions"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "OrderService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "OrderServiceClient",
+          "rpcs": {
+            "GetOrder": {
+              "methods": [
+                "get_order"
+              ]
+            },
+            "ListOrders": {
+              "methods": [
+                "list_orders"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PlacementService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "PlacementServiceClient",
+          "rpcs": {
+            "GetPlacement": {
+              "methods": [
+                "get_placement"
+              ]
+            },
+            "ListPlacements": {
+              "methods": [
+                "list_placements"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PrivateAuctionDealService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "PrivateAuctionDealServiceClient",
+          "rpcs": {
+            "CreatePrivateAuctionDeal": {
+              "methods": [
+                "create_private_auction_deal"
+              ]
+            },
+            "GetPrivateAuctionDeal": {
+              "methods": [
+                "get_private_auction_deal"
+              ]
+            },
+            "ListPrivateAuctionDeals": {
+              "methods": [
+                "list_private_auction_deals"
+              ]
+            },
+            "UpdatePrivateAuctionDeal": {
+              "methods": [
+                "update_private_auction_deal"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PrivateAuctionService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "PrivateAuctionServiceClient",
+          "rpcs": {
+            "CreatePrivateAuction": {
+              "methods": [
+                "create_private_auction"
+              ]
+            },
+            "GetPrivateAuction": {
+              "methods": [
+                "get_private_auction"
+              ]
+            },
+            "ListPrivateAuctions": {
+              "methods": [
+                "list_private_auctions"
+              ]
+            },
+            "UpdatePrivateAuction": {
+              "methods": [
+                "update_private_auction"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ProgrammaticBuyerService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ProgrammaticBuyerServiceClient",
+          "rpcs": {
+            "GetProgrammaticBuyer": {
+              "methods": [
+                "get_programmatic_buyer"
+              ]
+            },
+            "ListProgrammaticBuyers": {
+              "methods": [
+                "list_programmatic_buyers"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ReportService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ReportServiceClient",
+          "rpcs": {
+            "CreateReport": {
+              "methods": [
+                "create_report"
+              ]
+            },
+            "FetchReportResultRows": {
+              "methods": [
+                "fetch_report_result_rows"
+              ]
+            },
+            "GetReport": {
+              "methods": [
+                "get_report"
+              ]
+            },
+            "ListReports": {
+              "methods": [
+                "list_reports"
+              ]
+            },
+            "RunReport": {
+              "methods": [
+                "run_report"
+              ]
+            },
+            "UpdateReport": {
+              "methods": [
+                "update_report"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RoleService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RoleServiceClient",
+          "rpcs": {
+            "GetRole": {
+              "methods": [
+                "get_role"
+              ]
+            },
+            "ListRoles": {
+              "methods": [
+                "list_roles"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "TaxonomyCategoryService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "TaxonomyCategoryServiceClient",
+          "rpcs": {
+            "GetTaxonomyCategory": {
+              "methods": [
+                "get_taxonomy_category"
+              ]
+            },
+            "ListTaxonomyCategories": {
+              "methods": [
+                "list_taxonomy_categories"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "UserService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "UserServiceClient",
+          "rpcs": {
+            "GetUser": {
+              "methods": [
+                "get_user"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
