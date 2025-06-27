@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.13.1...v1.14.0) (2025-06-27)
+
+
+### Features
+
+* Support commit timestamp option ([#697](https://github.com/googleapis/python-spanner-sqlalchemy/issues/697)) ([82bb8ed](https://github.com/googleapis/python-spanner-sqlalchemy/commit/82bb8ed583a5fd91c8a10fb73c85a6a5f45269f6))
+
 ## [1.13.1](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.13.0...v1.13.1) (2025-06-20)
 
 
