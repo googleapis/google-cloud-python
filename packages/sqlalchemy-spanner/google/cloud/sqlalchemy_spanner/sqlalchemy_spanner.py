@@ -807,10 +807,15 @@ class SpannerDialect(DefaultDialect):
     supports_sequences = True
     sequences_optional = False
     supports_identity_columns = True
-    supports_native_enum = True
     supports_native_boolean = True
     supports_native_decimal = True
     supports_statement_cache = True
+    # Spanner uses protos for enums. Creating a column like
+    # Column("an_enum", Enum("A", "B", "C")) will result in a String
+    # column. Setting supports_native_enum to False allows SQLAlchemy
+    # to generate check constraints to enforce the enum values if the
+    # create_constraint=True flag is passed to the Enum constructor.
+    supports_native_enum = False
 
     postfetch_lastrowid = False
     insert_returning = True
