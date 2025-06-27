@@ -3408,6 +3408,15 @@ def test__dir__with_rename(scalars_dfs):
     assert "drop" in results
 
 
+def test_loc_select_columns_w_repeats(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index[["int64_col", "int64_col", "int64_too"]].to_pandas()
+    pd_result = scalars_pandas_df_index[["int64_col", "int64_col", "int64_too"]]
+    pd.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+    )
+
+
 @pytest.mark.parametrize(
     ("start", "stop", "step"),
     [

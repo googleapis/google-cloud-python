@@ -330,12 +330,27 @@ class ArrayValue:
 
         return self.project_to_id(ex.const(value, dtype))
 
-    def select_columns(self, column_ids: typing.Sequence[str]) -> ArrayValue:
+    def select_columns(
+        self, column_ids: typing.Sequence[str], allow_renames: bool = False
+    ) -> ArrayValue:
         # This basically just drops and reorders columns - logically a no-op except as a final step
-        selections = (
-            bigframes.core.nodes.AliasedRef.identity(ids.ColumnId(col_id))
-            for col_id in column_ids
-        )
+        selections = []
+        seen = set()
+
+        for id in column_ids:
+            if id not in seen:
+                ref = nodes.AliasedRef.identity(ids.ColumnId(id))
+            elif allow_renames:
+                ref = nodes.AliasedRef(
+                    ex.deref(id), ids.ColumnId(bigframes.core.guid.generate_guid())
+                )
+            else:
+                raise ValueError(
+                    "Must set allow_renames=True to select columns repeatedly"
+                )
+            selections.append(ref)
+            seen.add(id)
+
         return ArrayValue(
             nodes.SelectionNode(
                 child=self.node,

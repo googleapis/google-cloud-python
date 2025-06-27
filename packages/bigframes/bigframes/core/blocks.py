@@ -1210,7 +1210,10 @@ class Block:
         return self.select_columns([id])
 
     def select_columns(self, ids: typing.Sequence[str]) -> Block:
-        expr = self._expr.select_columns([*self.index_columns, *ids])
+        # Allow renames as may end up selecting same columns multiple times
+        expr = self._expr.select_columns(
+            [*self.index_columns, *ids], allow_renames=True
+        )
         col_labels = self._get_labels_for_columns(ids)
         return Block(expr, self.index_columns, col_labels, self.index.names)
 
