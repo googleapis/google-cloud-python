@@ -1481,11 +1481,11 @@ class SpannerDialect(DefaultDialect):
             )
             FROM information_schema.table_constraints AS tc
             JOIN information_schema.constraint_column_usage AS ccu
-                ON ccu.table_catalog = tc.table_catalog
+                ON ccu.constraint_catalog = tc.table_catalog
                 and ccu.constraint_schema = tc.table_schema
                 and ccu.constraint_name = tc.constraint_name
             JOIN information_schema.constraint_table_usage AS ctu
-                ON ctu.table_catalog = tc.table_catalog
+                ON ctu.constraint_catalog = tc.table_catalog
                 and ctu.constraint_schema = tc.table_schema
                 and ctu.constraint_name = tc.constraint_name
             JOIN information_schema.key_column_usage AS kcu
