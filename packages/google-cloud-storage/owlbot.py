@@ -14,9 +14,32 @@
 
 """This script is used to synthesize generated parts of this library."""
 
+import json
+
 import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
+
+# ----------------------------------------------------------------------------
+# Copy the generated client from the owl-bot staging directory
+# ----------------------------------------------------------------------------
+
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get("default_version")
+
+for library in s.get_staging_dirs(default_version):
+    s.move(
+        [library],
+        excludes=[
+            "**/gapic_version.py",
+            "docs/**/*",
+            "scripts/fixup*.py",
+            "setup.py",
+            "noxfile.py",
+            "README.rst",
+        ],
+    )
+s.remove_staging_dirs()
 
 common = gcp.CommonTemplates()
 
