@@ -20,6 +20,7 @@ import pyarrow as pa
 
 from bigframes.core import array_value, bigframe_node, expression, local_data, nodes
 import bigframes.operations
+from bigframes.operations import aggregations as agg_ops
 from bigframes.session import executor, semi_executor
 
 if TYPE_CHECKING:
@@ -32,9 +33,11 @@ _COMPATIBLE_NODES = (
     nodes.ReversedNode,
     nodes.SelectionNode,
     nodes.SliceNode,
+    nodes.AggregateNode,
 )
 
 _COMPATIBLE_SCALAR_OPS = ()
+_COMPATIBLE_AGG_OPS = (agg_ops.SizeOp, agg_ops.SizeUnaryOp)
 
 
 def _get_expr_ops(expr: expression.Expression) -> set[bigframes.operations.ScalarOp]:
@@ -48,7 +51,8 @@ def _is_node_polars_executable(node: nodes.BigFrameNode):
         return False
     for expr in node._node_expressions:
         if isinstance(expr, expression.Aggregation):
-            return False
+            if not type(expr.op) in _COMPATIBLE_AGG_OPS:
+                return False
         if isinstance(expr, expression.Expression):
             if not _get_expr_ops(expr).issubset(_COMPATIBLE_SCALAR_OPS):
                 return False
