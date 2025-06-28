@@ -15,10 +15,14 @@
 FROM python:3.13.3-slim-bullseye
 
 RUN apt-get update \
-    && apt-get -y upgrade \
+    && apt-get upgrade -y \
     && apt-get install -y \
+    # TODO: Remove once we've migrated off bazel
+    build-essential \
     # TODO: This is only temporary. git is only needed to install packages from Github. We should use the artifact from PyPI.
     git \
+    # TODO: Remove once we've migrated off bazel
+    openjdk-17-jdk \
     pandoc \
     wget \
     zip \
@@ -27,8 +31,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -f /var/cache/apt/archives/*.deb
 
-# Configure user to avoid running as root
-env USER myuser
+RUN wget https://github.com/bazelbuild/bazelisk/releases/download/v1.26.0/bazelisk-linux-amd64
+RUN chmod +x bazelisk-linux-amd64
+RUN mv bazelisk-linux-amd64 /usr/local/bin/bazelisk
+
+RUN git clone https://github.com/googleapis/googleapis.git
+RUN cd googleapis && bazelisk build --nobuild //google/cloud/language/v1:language-v1-py
+RUN rm -rf googleapis
 
 WORKDIR /
 

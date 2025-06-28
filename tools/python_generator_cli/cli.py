@@ -151,17 +151,17 @@ def generate_library(api_root: str, generator_input: str, output: str, library_i
             for api_path in library_specific_config["apiPaths"]:
                 api_version = api_path.split("/")[-1]
                 with tempfile.TemporaryDirectory() as tmp_dir:
-                    bazel_command = f"gbazelisk query 'filter(\"-py$\", kind(\"rule\", //{api_path}/...:*))'"                    
+                    # todo need to store name of bazel rule
+                    bazel_command = f"bazelisk query --nofetch 'filter(\"-py$\", kind(\"rule\", //{api_path}/...:*))'"
                     
                     bazel_rule = subprocess.check_output(bazel_command, cwd=api_root, shell=True).decode("utf-8").strip()
-                    bazel_command = f"gbazelisk build --nofetch  {bazel_rule}"
+                    bazel_rule = "//google/cloud/language/v1"
+                    bazel_command = f"bazelisk build --nofetch  {bazel_rule}"
+                    # bazel_command = f"bazelisk build --nofetch  //google/cloud/language/v1:language-v1-py"
                     
                     subprocess.run([bazel_command], cwd=api_root, shell=True)
-                    bazel_command = "gbazelisk info bazel-bin"
+                    bazel_command = "bazelisk info bazel-bin"
                     bazel_bin = subprocess.check_output(bazel_command, cwd=api_root, shell=True).decode("utf-8").strip()
-                    # subprocess.run(
-                    #     f"cp -r {bazel_bin}/. {tmp_dir}", cwd=tmp_dir, shell=True
-                    # )
                     bazel_rule_split = bazel_rule.split(":")
                     parent_dir = bazel_rule_split[0].replace("//", "")
                     print(parent_dir)
