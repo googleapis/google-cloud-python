@@ -1012,9 +1012,15 @@
             "extra-files": [
                 "google/cloud/configdelivery/gapic_version.py",
                 "google/cloud/configdelivery_v1alpha/gapic_version.py",
+                "google/cloud/configdelivery_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.configdelivery.v1alpha.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.configdelivery.v1beta.json",
                     "type": "json"
                 }
             ],
