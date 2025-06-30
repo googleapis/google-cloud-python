@@ -3004,14 +3004,44 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if utils.is_dict_like(func):
             # Must check dict-like first because dictionaries are list-like
             # according to Pandas.
-            agg_cols = []
+
+            aggs = []
+            labels = []
+            funcnames = []
             for col_label, agg_func in func.items():
-                agg_cols.append(self[col_label].agg(agg_func))
+                agg_func_list = agg_func if utils.is_list_like(agg_func) else [agg_func]
+                col_id = self._block.resolve_label_exact(col_label)
+                if col_id is None:
+                    raise KeyError(f"Column {col_label} does not exist")
+                for agg_func in agg_func_list:
+                    agg_op = agg_ops.lookup_agg_func(typing.cast(str, agg_func))
+                    agg_expr = (
+                        ex.UnaryAggregation(agg_op, ex.deref(col_id))
+                        if isinstance(agg_op, agg_ops.UnaryAggregateOp)
+                        else ex.NullaryAggregation(agg_op)
+                    )
+                    aggs.append(agg_expr)
+                    labels.append(col_label)
+                    funcnames.append(agg_func)
 
-            from bigframes.core.reshape import api as reshape
-
-            return reshape.concat(agg_cols, axis=1)
-
+            # if any list in dict values, format output differently
+            if any(utils.is_list_like(v) for v in func.values()):
+                new_index, _ = self.columns.reindex(labels)
+                new_index = utils.combine_indices(new_index, pandas.Index(funcnames))
+                agg_block, _ = self._block.aggregate(
+                    aggregations=aggs, column_labels=new_index
+                )
+                return DataFrame(agg_block).stack().droplevel(0, axis="index")
+            else:
+                new_index, _ = self.columns.reindex(labels)
+                agg_block, _ = self._block.aggregate(
+                    aggregations=aggs, column_labels=new_index
+                )
+                return bigframes.series.Series(
+                    agg_block.transpose(
+                        single_row_mode=True, original_row_index=pandas.Index([None])
+                    )
+                )
         elif utils.is_list_like(func):
             aggregations = [agg_ops.lookup_agg_func(f) for f in func]
 
@@ -3027,7 +3057,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 )
             )
 
-        else:
+        else:  # function name string
             return bigframes.series.Series(
                 self._block.aggregate_all_and_stack(
                     agg_ops.lookup_agg_func(typing.cast(str, func))

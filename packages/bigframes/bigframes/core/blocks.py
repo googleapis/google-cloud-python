@@ -2030,7 +2030,7 @@ class Block:
         return block.set_index([resample_label_id])
 
     def _create_stack_column(self, col_label: typing.Tuple, stack_labels: pd.Index):
-        dtype = None
+        input_dtypes = []
         input_columns: list[Optional[str]] = []
         for uvalue in utils.index_as_tuples(stack_labels):
             label_to_match = (*col_label, *uvalue)
@@ -2040,15 +2040,18 @@ class Block:
             matching_ids = self.label_to_col_id.get(label_to_match, [])
             input_id = matching_ids[0] if len(matching_ids) > 0 else None
             if input_id:
-                if dtype and dtype != self._column_type(input_id):
-                    raise NotImplementedError(
-                        "Cannot stack columns with non-matching dtypes."
-                    )
-                else:
-                    dtype = self._column_type(input_id)
+                input_dtypes.append(self._column_type(input_id))
             input_columns.append(input_id)
             # Input column i is the first one that
-        return tuple(input_columns), dtype or pd.Float64Dtype()
+        if len(input_dtypes) > 0:
+            output_dtype = bigframes.dtypes.lcd_type(*input_dtypes)
+            if output_dtype is None:
+                raise NotImplementedError(
+                    "Cannot stack columns with non-matching dtypes."
+                )
+        else:
+            output_dtype = pd.Float64Dtype()
+        return tuple(input_columns), output_dtype
 
     def _column_type(self, col_id: str) -> bigframes.dtypes.Dtype:
         col_offset = self.value_columns.index(col_id)

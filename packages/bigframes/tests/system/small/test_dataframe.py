@@ -5538,7 +5538,7 @@ def test_astype_invalid_type_fail(scalars_dfs):
         bf_df.astype(123)
 
 
-def test_agg_with_dict(scalars_dfs):
+def test_agg_with_dict_lists(scalars_dfs):
     bf_df, pd_df = scalars_dfs
     agg_funcs = {
         "int64_too": ["min", "max"],
@@ -5549,6 +5549,38 @@ def test_agg_with_dict(scalars_dfs):
     pd_result = pd_df.agg(agg_funcs)
 
     pd.testing.assert_frame_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
+def test_agg_with_dict_list_and_str(scalars_dfs):
+    bf_df, pd_df = scalars_dfs
+    agg_funcs = {
+        "int64_too": ["min", "max"],
+        "int64_col": "sum",
+    }
+
+    bf_result = bf_df.agg(agg_funcs).to_pandas()
+    pd_result = pd_df.agg(agg_funcs)
+
+    pd.testing.assert_frame_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
+def test_agg_with_dict_strs(scalars_dfs):
+    bf_df, pd_df = scalars_dfs
+    agg_funcs = {
+        "int64_too": "min",
+        "int64_col": "sum",
+        "float64_col": "max",
+    }
+
+    bf_result = bf_df.agg(agg_funcs).to_pandas()
+    pd_result = pd_df.agg(agg_funcs)
+    pd_result.index = pd_result.index.astype("string[pyarrow]")
+
+    pd.testing.assert_series_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
 
