@@ -44,6 +44,7 @@ from pandas._typing import (
     ReadPickleBuffer,
     StorageOptions,
 )
+import pyarrow as pa
 
 import bigframes._config as config
 import bigframes.core.global_session as global_session
@@ -70,6 +71,21 @@ import bigframes.session.clients
 #    argument, even if we allow a default value.
 # 4. Allows to set BigQuery options for the BigFrames session based on the
 #    method and its arguments.
+
+
+def read_arrow(pa_table: pa.Table) -> bigframes.dataframe.DataFrame:
+    """Load a PyArrow Table to a BigQuery DataFrames DataFrame.
+
+    Args:
+        pa_table (pyarrow.Table):
+            PyArrow table to load data from.
+
+    Returns:
+        bigframes.dataframe.DataFrame:
+            A new DataFrame representing the data from the PyArrow table.
+    """
+    session = global_session.get_global_session()
+    return session.read_arrow(pa_table=pa_table)
 
 
 def read_csv(

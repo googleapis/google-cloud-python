@@ -55,12 +55,14 @@ from pandas._typing import (
     ReadPickleBuffer,
     StorageOptions,
 )
+import pyarrow as pa
 
 from bigframes import exceptions as bfe
 from bigframes import version
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
 import bigframes.constants
+import bigframes.core
 from bigframes.core import blocks, log_adapter, utils
 import bigframes.core.pyformat
 
@@ -965,6 +967,22 @@ class Session(
         import bigframes.dataframe as dataframe
 
         local_block = blocks.Block.from_local(pandas_dataframe, self)
+        return dataframe.DataFrame(local_block)
+
+    def read_arrow(self, pa_table: pa.Table) -> bigframes.dataframe.DataFrame:
+        """Load a PyArrow Table to a BigQuery DataFrames DataFrame.
+
+        Args:
+            pa_table (pyarrow.Table):
+                PyArrow table to load data from.
+
+        Returns:
+            bigframes.dataframe.DataFrame:
+                A new DataFrame representing the data from the PyArrow table.
+        """
+        import bigframes.dataframe as dataframe
+
+        local_block = blocks.Block.from_pyarrow(pa_table, self)
         return dataframe.DataFrame(local_block)
 
     def read_csv(

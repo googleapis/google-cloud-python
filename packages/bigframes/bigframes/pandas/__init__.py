@@ -40,6 +40,7 @@ from bigframes.pandas.core.api import to_timedelta
 from bigframes.pandas.io.api import (
     _read_gbq_colab,
     from_glob_path,
+    read_arrow,
     read_csv,
     read_gbq,
     read_gbq_function,
@@ -367,6 +368,7 @@ _functions = [
     merge,
     qcut,
     read_csv,
+    read_arrow,
     read_gbq,
     _read_gbq_colab,
     read_gbq_function,

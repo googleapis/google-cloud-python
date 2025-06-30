@@ -50,6 +50,7 @@ import bigframes.core.guid as guid
 import bigframes.core.identifiers
 import bigframes.core.join_def as join_defs
 import bigframes.core.ordering as ordering
+import bigframes.core.pyarrow_utils as pyarrow_utils
 import bigframes.core.schema as bf_schema
 import bigframes.core.sql as sql
 import bigframes.core.utils as utils
@@ -155,6 +156,36 @@ class Block:
         self._transpose_cache: Optional[Block] = transpose_cache
         self._view_ref: Optional[bigquery.TableReference] = None
         self._view_ref_dry_run: Optional[bigquery.TableReference] = None
+
+    @classmethod
+    def from_pyarrow(
+        cls,
+        data: pa.Table,
+        session: bigframes.Session,
+    ) -> Block:
+        column_labels = data.column_names
+
+        # TODO(tswast): Use array_value.promote_offsets() instead once that node is
+        # supported by the local engine.
+        offsets_col = bigframes.core.guid.generate_guid()
+        index_ids = [offsets_col]
+        index_labels = [None]
+
+        # TODO(https://github.com/googleapis/python-bigquery-dataframes/issues/859):
+        # Allow users to specify the "total ordering" column(s) or allow multiple
+        # such columns.
+        data = pyarrow_utils.append_offsets(data, offsets_col=offsets_col)
+
+        # from_pyarrow will normalize the types for us.
+        managed_data = local_data.ManagedArrowTable.from_pyarrow(data)
+        array_value = core.ArrayValue.from_managed(managed_data, session=session)
+        block = cls(
+            array_value,
+            column_labels=column_labels,
+            index_columns=index_ids,
+            index_labels=index_labels,
+        )
+        return block
 
     @classmethod
     def from_local(
