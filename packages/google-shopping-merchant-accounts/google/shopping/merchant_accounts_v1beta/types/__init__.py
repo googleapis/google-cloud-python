@@ -61,6 +61,14 @@ from .businessinfo import (
     GetBusinessInfoRequest,
     UpdateBusinessInfoRequest,
 )
+from .checkoutsettings import (
+    CheckoutSettings,
+    CreateCheckoutSettingsRequest,
+    DeleteCheckoutSettingsRequest,
+    GetCheckoutSettingsRequest,
+    UpdateCheckoutSettingsRequest,
+    UriSettings,
+)
 from .customerservice import CustomerService
 from .emailpreferences import (
     EmailPreferences,
@@ -215,6 +223,12 @@ __all__ = (
     "BusinessInfo",
     "GetBusinessInfoRequest",
     "UpdateBusinessInfoRequest",
+    "CheckoutSettings",
+    "CreateCheckoutSettingsRequest",
+    "DeleteCheckoutSettingsRequest",
+    "GetCheckoutSettingsRequest",
+    "UpdateCheckoutSettingsRequest",
+    "UriSettings",
     "CustomerService",
     "EmailPreferences",
     "GetEmailPreferencesRequest",
