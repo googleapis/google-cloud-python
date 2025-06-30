@@ -44,7 +44,7 @@ def aggregate_output(
     df_aggregated = (
         df.assign(rounded=df[group_column].astype("Int64").round(-9))
         .groupby("rounded")
-        .sum()
+        .sum(numeric_only=True)
     )
 
     df_aggregated.shape

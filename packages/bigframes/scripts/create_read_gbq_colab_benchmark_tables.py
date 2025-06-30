@@ -42,18 +42,6 @@ TABLE_STATS: dict[str, list[float]] = {
         17486432.0,
         1919625975.0,
     ],
-    "num_materialized_or_scanned_rows": [
-        0.0,
-        6.0,
-        100.0,
-        4955.0,
-        23108.0,
-        139504.0,
-        616341.0,
-        3855698.0,
-        83725698.0,
-        5991998082.0,
-    ],
     "avg_row_bytes": [
         0.00014346299635435792,
         0.005370969708923197,
@@ -524,10 +512,11 @@ def main():
         for i in range(num_percentiles):
             percentile = TABLE_STATS["percentile"][i]
             avg_row_bytes_raw = TABLE_STATS["avg_row_bytes"][i]
-            num_rows_raw = TABLE_STATS["num_materialized_or_scanned_rows"][i]
+            table_bytes_raw = TABLE_STATS["materialized_or_scanned_bytes"][i]
 
+            target_table_bytes = max(1, int(math.ceil(table_bytes_raw)))
             target_row_bytes = max(1, int(math.ceil(avg_row_bytes_raw)))
-            num_rows = max(1, int(math.ceil(num_rows_raw)))
+            num_rows = max(1, int(math.ceil(target_table_bytes / target_row_bytes)))
 
             table_name = f"percentile_{percentile:02d}"
             print(f"\n--- Processing Table: {table_name} ---")

@@ -14,6 +14,7 @@
 import pathlib
 
 import benchmark.utils as utils
+import pytest
 
 import bigframes.session
 
@@ -35,8 +36,15 @@ def filter_output(
 
     # Simulate the user filtering by a column and visualizing those results
     df_filtered = df[df["col_bool_0"]]
-    df_filtered.shape
-    next(iter(df_filtered.to_pandas_batches(page_size=PAGE_SIZE)))
+    rows, _ = df_filtered.shape
+
+    # It's possible we don't have any pages at all, since we filtered out all
+    # matching rows.
+    if rows == 0:
+        with pytest.raises(StopIteration):
+            next(iter(df_filtered.to_pandas_batches(page_size=PAGE_SIZE)))
+    else:
+        next(iter(df_filtered.to_pandas_batches(page_size=PAGE_SIZE)))
 
 
 if __name__ == "__main__":
