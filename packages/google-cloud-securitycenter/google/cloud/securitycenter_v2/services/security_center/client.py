@@ -73,11 +73,14 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.cloud.securitycenter_v2.services.security_center import pagers
 from google.cloud.securitycenter_v2.types import (
     access,
+    affected_resources,
+    ai_model,
     application,
     attack_exposure,
     attack_path,
     backup_disaster_recovery,
     bigquery_export,
+    chokepoint,
     cloud_armor,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
@@ -95,6 +98,8 @@ from google.cloud.securitycenter_v2.types import (
     group_membership,
     iam_binding,
     indicator,
+    ip_rules,
+    job,
     kernel_rootkit,
     kubernetes,
     load_balancer,
@@ -109,6 +114,7 @@ from google.cloud.securitycenter_v2.types import (
 from google.cloud.securitycenter_v2.types import (
     toxic_combination,
     valued_resource,
+    vertex_ai,
     vulnerability,
 )
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
@@ -124,7 +130,7 @@ from google.cloud.securitycenter_v2.types import finding
 from google.cloud.securitycenter_v2.types import finding as gcs_finding
 from google.cloud.securitycenter_v2.types import mute_config
 from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v2.types import notebook
+from google.cloud.securitycenter_v2.types import network, notebook
 from google.cloud.securitycenter_v2.types import notification_config
 from google.cloud.securitycenter_v2.types import org_policy, process, resource
 from google.cloud.securitycenter_v2.types import resource_value_config

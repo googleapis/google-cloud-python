@@ -22,19 +22,19 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v2",
     manifest={
-        "Disk",
+        "Network",
     },
 )
 
 
-class Disk(proto.Message):
-    r"""Contains information about the disk associated with the
+class Network(proto.Message):
+    r"""Contains information about a VPC network associated with the
     finding.
 
     Attributes:
         name (str):
-            The name of the disk, for example,
-            "https://www.googleapis.com/compute/v1/projects/{project-id}/zones/{zone-id}/disks/{disk-id}".
+            The name of the VPC network resource, for example,
+            ``//compute.googleapis.com/projects/my-project/global/networks/my-network``.
     """
 
     name: str = proto.Field(

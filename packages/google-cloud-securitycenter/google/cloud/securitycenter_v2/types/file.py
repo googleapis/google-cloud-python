@@ -54,6 +54,8 @@ class File(proto.Message):
         disk_path (google.cloud.securitycenter_v2.types.File.DiskPath):
             Path of the file in terms of underlying
             disk/partition identifiers.
+        operations (MutableSequence[google.cloud.securitycenter_v2.types.File.FileOperation]):
+            Operation(s) performed on a file.
     """
 
     class DiskPath(proto.Message):
@@ -76,6 +78,44 @@ class File(proto.Message):
         relative_path: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+
+    class FileOperation(proto.Message):
+        r"""Operation(s) performed on a file.
+
+        Attributes:
+            type_ (google.cloud.securitycenter_v2.types.File.FileOperation.OperationType):
+                The type of the operation
+        """
+
+        class OperationType(proto.Enum):
+            r"""The type of the operation
+
+            Values:
+                OPERATION_TYPE_UNSPECIFIED (0):
+                    The operation is unspecified.
+                OPEN (1):
+                    Represents an open operation.
+                READ (2):
+                    Represents a read operation.
+                RENAME (3):
+                    Represents a rename operation.
+                WRITE (4):
+                    Represents a write operation.
+                EXECUTE (5):
+                    Represents an execute operation.
+            """
+            OPERATION_TYPE_UNSPECIFIED = 0
+            OPEN = 1
+            READ = 2
+            RENAME = 3
+            WRITE = 4
+            EXECUTE = 5
+
+        type_: "File.FileOperation.OperationType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="File.FileOperation.OperationType",
         )
 
     path: str = proto.Field(
@@ -106,6 +146,11 @@ class File(proto.Message):
         proto.MESSAGE,
         number=7,
         message=DiskPath,
+    )
+    operations: MutableSequence[FileOperation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=FileOperation,
     )
 
 
