@@ -61,10 +61,9 @@ from google.ads.admanager_v1.services.company_service import (
 )
 from google.ads.admanager_v1.types import (
     applied_label,
-    company_credit_status_enum,
+    company_enums,
     company_messages,
     company_service,
-    company_type_enum,
 )
 
 CRED_INFO_JSON = {
@@ -1517,14 +1516,14 @@ def test_get_company_rest_call_success(request_type):
             name="name_value",
             company_id=1059,
             display_name="display_name_value",
-            type_=company_type_enum.CompanyTypeEnum.CompanyType.ADVERTISER,
+            type_=company_enums.CompanyTypeEnum.CompanyType.ADVERTISER,
             address="address_value",
             email="email_value",
             fax="fax_value",
             phone="phone_value",
             external_id="external_id_value",
             comment="comment_value",
-            credit_status=company_credit_status_enum.CompanyCreditStatusEnum.CompanyCreditStatus.ACTIVE,
+            credit_status=company_enums.CompanyCreditStatusEnum.CompanyCreditStatus.ACTIVE,
             primary_contact="primary_contact_value",
             applied_teams=["applied_teams_value"],
             third_party_company_id=2348,
@@ -1547,7 +1546,7 @@ def test_get_company_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.company_id == 1059
     assert response.display_name == "display_name_value"
-    assert response.type_ == company_type_enum.CompanyTypeEnum.CompanyType.ADVERTISER
+    assert response.type_ == company_enums.CompanyTypeEnum.CompanyType.ADVERTISER
     assert response.address == "address_value"
     assert response.email == "email_value"
     assert response.fax == "fax_value"
@@ -1556,7 +1555,7 @@ def test_get_company_rest_call_success(request_type):
     assert response.comment == "comment_value"
     assert (
         response.credit_status
-        == company_credit_status_enum.CompanyCreditStatusEnum.CompanyCreditStatus.ACTIVE
+        == company_enums.CompanyCreditStatusEnum.CompanyCreditStatus.ACTIVE
     )
     assert response.primary_contact == "primary_contact_value"
     assert response.applied_teams == ["applied_teams_value"]
@@ -1926,7 +1925,7 @@ def test_company_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/admanager",),
             quota_project_id="octopus",
         )
 
@@ -1949,7 +1948,7 @@ def test_company_service_auth_adc():
         CompanyServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/admanager",),
             quota_project_id=None,
         )
 

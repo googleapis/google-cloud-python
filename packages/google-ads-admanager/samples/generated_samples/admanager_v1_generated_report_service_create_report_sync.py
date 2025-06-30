@@ -41,7 +41,7 @@ def sample_create_report():
     # Initialize request argument(s)
     report = admanager_v1.Report()
     report.report_definition.dimensions = ['CUSTOM_DIMENSION_9_VALUE']
-    report.report_definition.metrics = ['YIELD_GROUP_MEDIATION_THIRD_PARTY_ECPM']
+    report.report_definition.metrics = ['YIELD_GROUP_SUCCESSFUL_RESPONSES']
     report.report_definition.report_type = "HISTORICAL"
 
     request = admanager_v1.CreateReportRequest(

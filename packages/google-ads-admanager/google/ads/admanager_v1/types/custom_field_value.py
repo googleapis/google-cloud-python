@@ -46,7 +46,6 @@ class CustomFieldValue(proto.Message):
 
     class Value(proto.Message):
         r"""Represent custom field value type.
-        Next Id: 5
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.

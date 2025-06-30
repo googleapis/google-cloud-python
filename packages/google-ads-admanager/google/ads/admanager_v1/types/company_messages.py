@@ -20,11 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    applied_label,
-    company_credit_status_enum,
-    company_type_enum,
-)
+from google.ads.admanager_v1.types import applied_label, company_enums
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
@@ -93,11 +89,11 @@ class Company(proto.Message):
             Optional. The resource names of Teams that are directly
             associated with the ``Company``. Format:
             "networks/{network_code}/teams/{team_id}".
-        update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the ``Company`` was last modified.
         third_party_company_id (int):
             Optional. The ID of the Google-recognized canonicalized form
             of the ``Company``.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the ``Company`` was last modified.
     """
 
     name: str = proto.Field(
@@ -112,10 +108,10 @@ class Company(proto.Message):
         proto.STRING,
         number=3,
     )
-    type_: company_type_enum.CompanyTypeEnum.CompanyType = proto.Field(
+    type_: company_enums.CompanyTypeEnum.CompanyType = proto.Field(
         proto.ENUM,
         number=4,
-        enum=company_type_enum.CompanyTypeEnum.CompanyType,
+        enum=company_enums.CompanyTypeEnum.CompanyType,
     )
     address: str = proto.Field(
         proto.STRING,
@@ -141,10 +137,12 @@ class Company(proto.Message):
         proto.STRING,
         number=10,
     )
-    credit_status: company_credit_status_enum.CompanyCreditStatusEnum.CompanyCreditStatus = proto.Field(
-        proto.ENUM,
-        number=11,
-        enum=company_credit_status_enum.CompanyCreditStatusEnum.CompanyCreditStatus,
+    credit_status: company_enums.CompanyCreditStatusEnum.CompanyCreditStatus = (
+        proto.Field(
+            proto.ENUM,
+            number=11,
+            enum=company_enums.CompanyCreditStatusEnum.CompanyCreditStatus,
+        )
     )
     applied_labels: MutableSequence[applied_label.AppliedLabel] = proto.RepeatedField(
         proto.MESSAGE,
@@ -160,14 +158,14 @@ class Company(proto.Message):
         proto.STRING,
         number=14,
     )
+    third_party_company_id: int = proto.Field(
+        proto.INT64,
+        number=16,
+    )
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=15,
         message=timestamp_pb2.Timestamp,
-    )
-    third_party_company_id: int = proto.Field(
-        proto.INT64,
-        number=16,
     )
 
 

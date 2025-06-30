@@ -3708,7 +3708,7 @@ def test_entity_signals_mapping_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/admanager",),
             quota_project_id="octopus",
         )
 
@@ -3731,7 +3731,7 @@ def test_entity_signals_mapping_service_auth_adc():
         EntitySignalsMappingServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/admanager",),
             quota_project_id=None,
         )
 

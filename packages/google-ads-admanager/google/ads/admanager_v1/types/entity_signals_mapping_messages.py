@@ -59,8 +59,10 @@ class EntitySignalsMapping(proto.Message):
             ``networks/{network_code}/entitySignalsMappings/{entity_signals_mapping_id}``
         entity_signals_mapping_id (int):
             Output only. ``EntitySignalsMapping`` ID.
+
+            This field is a member of `oneof`_ ``_entity_signals_mapping_id``.
         taxonomy_category_ids (MutableSequence[int]):
-            Required. The IDs of the categories that are
+            Optional. The IDs of the categories that are
             associated with the referencing entity.
     """
 
@@ -86,6 +88,7 @@ class EntitySignalsMapping(proto.Message):
     entity_signals_mapping_id: int = proto.Field(
         proto.INT64,
         number=2,
+        optional=True,
     )
     taxonomy_category_ids: MutableSequence[int] = proto.RepeatedField(
         proto.INT64,

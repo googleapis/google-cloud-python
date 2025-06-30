@@ -35,20 +35,14 @@ class Size(proto.Message):
 
     Attributes:
         width (int):
-            Required. The width of the
-            `Creative <google.ads.admanager.v1.Creative>`__,
-            `AdUnit <google.ads.admanager.v1.AdUnit>`__, or
-            `LineItem <google.ads.admanager.v1.LineItem>`__.
+            Required. The width of the Creative,
+            [AdUnit][google.ads.admanager.v1.AdUnit], or LineItem.
         height (int):
-            Required. The height of the
-            `Creative <google.ads.admanager.v1.Creative>`__,
-            `AdUnit <google.ads.admanager.v1.AdUnit>`__, or
-            `LineItem <google.ads.admanager.v1.LineItem>`__.
+            Required. The height of the Creative,
+            [AdUnit][google.ads.admanager.v1.AdUnit], or LineItem.
         size_type (google.ads.admanager_v1.types.SizeTypeEnum.SizeType):
-            Required. The SizeType of the
-            `Creative <google.ads.admanager.v1.Creative>`__,
-            `AdUnit <google.ads.admanager.v1.AdUnit>`__, or
-            `LineItem <google.ads.admanager.v1.LineItem>`__.
+            Required. The SizeType of the Creative,
+            [AdUnit][google.ads.admanager.v1.AdUnit], or LineItem.
     """
 
     width: int = proto.Field(

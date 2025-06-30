@@ -68,7 +68,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.report_service import pagers
-from google.ads.admanager_v1.types import report_service
+from google.ads.admanager_v1.types import report_messages, report_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, ReportServiceTransport
 from .transports.rest import ReportServiceRestTransport
@@ -728,7 +728,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> report_service.Report:
+    ) -> report_messages.Report:
         r"""API to retrieve a ``Report`` object.
 
         .. code-block:: python
@@ -952,11 +952,11 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
         request: Optional[Union[report_service.CreateReportRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        report: Optional[report_service.Report] = None,
+        report: Optional[report_messages.Report] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> report_service.Report:
+    ) -> report_messages.Report:
         r"""API to create a ``Report`` object.
 
         .. code-block:: python
@@ -977,7 +977,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
                 # Initialize request argument(s)
                 report = admanager_v1.Report()
                 report.report_definition.dimensions = ['CUSTOM_DIMENSION_9_VALUE']
-                report.report_definition.metrics = ['YIELD_GROUP_MEDIATION_THIRD_PARTY_ECPM']
+                report.report_definition.metrics = ['YIELD_GROUP_SUCCESSFUL_RESPONSES']
                 report.report_definition.report_type = "HISTORICAL"
 
                 request = admanager_v1.CreateReportRequest(
@@ -1070,12 +1070,12 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
         self,
         request: Optional[Union[report_service.UpdateReportRequest, dict]] = None,
         *,
-        report: Optional[report_service.Report] = None,
+        report: Optional[report_messages.Report] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> report_service.Report:
+    ) -> report_messages.Report:
         r"""API to update a ``Report`` object.
 
         .. code-block:: python
@@ -1096,7 +1096,7 @@ class ReportServiceClient(metaclass=ReportServiceClientMeta):
                 # Initialize request argument(s)
                 report = admanager_v1.Report()
                 report.report_definition.dimensions = ['CUSTOM_DIMENSION_9_VALUE']
-                report.report_definition.metrics = ['YIELD_GROUP_MEDIATION_THIRD_PARTY_ECPM']
+                report.report_definition.metrics = ['YIELD_GROUP_SUCCESSFUL_RESPONSES']
                 report.report_definition.report_type = "HISTORICAL"
 
                 request = admanager_v1.UpdateReportRequest(

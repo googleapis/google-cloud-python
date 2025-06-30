@@ -105,7 +105,7 @@ class NetworkServiceClientMeta(type):
 
 
 class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
-    """Provides methods for handling Network objects."""
+    """Provides methods for handling ``Network`` objects."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):

@@ -33,23 +33,27 @@ class Contact(proto.Message):
     associated to it, and can be invited to view their company's
     orders, line items, creatives, and reports.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The resource name of the ``Contact``. Format:
             ``networks/{network_code}/contacts/{contact_id}``
-        contact_id (int):
-            Output only. The unique ID of the contact.
-            This value is readonly and is assigned by
-            Google.
+        company_display_name (str):
+            Output only. The display name of the Company.
+
+            This field is a member of `oneof`_ ``_company_display_name``.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    contact_id: int = proto.Field(
-        proto.INT64,
-        number=2,
+    company_display_name: str = proto.Field(
+        proto.STRING,
+        number=19,
+        optional=True,
     )
 
 

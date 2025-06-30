@@ -240,10 +240,6 @@ class _BaseAdUnitServiceRestTransport(AdUnitServiceTransport):
                     "method": "get",
                     "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
-                },
             ]
             return http_options
 

@@ -33,30 +33,45 @@ __protobuf__ = proto.module(
 class CustomField(proto.Message):
     r"""An additional, user-created field on an entity.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The resource name of the ``CustomField``.
             Format:
-            ``networks/{network_code}/customFields/{custom_field_id}``
+            ``networks/{network_code}/customFields/{custom_field}``
         custom_field_id (int):
             Output only. Unique ID of the CustomField.
-            This value is readonly and is assigned by
-            Google.
+            This attribute is assigned by Google.
+
+            This field is a member of `oneof`_ ``_custom_field_id``.
         display_name (str):
             Required. Name of the CustomField. The max
             length is 127 characters.
+
+            This field is a member of `oneof`_ ``_display_name``.
         description (str):
             Optional. A description of the custom field.
             The maximum length is 511 characters.
+
+            This field is a member of `oneof`_ ``_description``.
         status (google.ads.admanager_v1.types.CustomFieldStatusEnum.CustomFieldStatus):
             Output only. The status of the ``CustomField``.
+
+            This field is a member of `oneof`_ ``_status``.
         entity_type (google.ads.admanager_v1.types.CustomFieldEntityTypeEnum.CustomFieldEntityType):
             Required. The type of entity the ``CustomField`` can be
             applied to.
+
+            This field is a member of `oneof`_ ``_entity_type``.
         data_type (google.ads.admanager_v1.types.CustomFieldDataTypeEnum.CustomFieldDataType):
             Required. The data type of the ``CustomField``.
+
+            This field is a member of `oneof`_ ``_data_type``.
         visibility (google.ads.admanager_v1.types.CustomFieldVisibilityEnum.CustomFieldVisibility):
             Required. The visibility of the ``CustomField``.
+
+            This field is a member of `oneof`_ ``_visibility``.
         options (MutableSequence[google.ads.admanager_v1.types.CustomFieldOption]):
             Optional. The drop-down options for the ``CustomField``.
 
@@ -71,24 +86,29 @@ class CustomField(proto.Message):
     custom_field_id: int = proto.Field(
         proto.INT64,
         number=2,
+        optional=True,
     )
     display_name: str = proto.Field(
         proto.STRING,
         number=3,
+        optional=True,
     )
     description: str = proto.Field(
         proto.STRING,
         number=4,
+        optional=True,
     )
     status: custom_field_enums.CustomFieldStatusEnum.CustomFieldStatus = proto.Field(
         proto.ENUM,
         number=5,
+        optional=True,
         enum=custom_field_enums.CustomFieldStatusEnum.CustomFieldStatus,
     )
     entity_type: custom_field_enums.CustomFieldEntityTypeEnum.CustomFieldEntityType = (
         proto.Field(
             proto.ENUM,
             number=7,
+            optional=True,
             enum=custom_field_enums.CustomFieldEntityTypeEnum.CustomFieldEntityType,
         )
     )
@@ -96,6 +116,7 @@ class CustomField(proto.Message):
         proto.Field(
             proto.ENUM,
             number=8,
+            optional=True,
             enum=custom_field_enums.CustomFieldDataTypeEnum.CustomFieldDataType,
         )
     )
@@ -103,6 +124,7 @@ class CustomField(proto.Message):
         proto.Field(
             proto.ENUM,
             number=9,
+            optional=True,
             enum=custom_field_enums.CustomFieldVisibilityEnum.CustomFieldVisibility,
         )
     )

@@ -41,7 +41,6 @@ def sample_batch_update_entity_signals_mappings():
     # Initialize request argument(s)
     requests = admanager_v1.UpdateEntitySignalsMappingRequest()
     requests.entity_signals_mapping.audience_segment_id = 1980
-    requests.entity_signals_mapping.taxonomy_category_ids = [2268, 2269]
 
     request = admanager_v1.BatchUpdateEntitySignalsMappingsRequest(
         parent="parent_value",

@@ -33,23 +33,33 @@ __protobuf__ = proto.module(
 class Order(proto.Message):
     r"""The ``Order`` resource.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The resource name of the ``Order``. Format:
             ``networks/{network_code}/orders/{order_id}``
         order_id (int):
             Output only. Order ID.
+
+            This field is a member of `oneof`_ ``_order_id``.
         display_name (str):
             Required. The display name of the Order.
             This value has a maximum length of 255
             characters.
+
+            This field is a member of `oneof`_ ``_display_name``.
         programmatic (bool):
             Optional. Specifies whether or not the Order
             is a programmatic order.
+
+            This field is a member of `oneof`_ ``_programmatic``.
         trafficker (str):
             Required. The resource name of the User responsible for
             trafficking the Order. Format:
             "networks/{network_code}/users/{user_id}".
+
+            This field is a member of `oneof`_ ``_trafficker``.
         advertiser_contacts (MutableSequence[str]):
             Optional. The resource names of Contacts from the advertiser
             of this Order. Format:
@@ -58,6 +68,8 @@ class Order(proto.Message):
             Required. The resource name of the Company, which is of type
             Company.Type.ADVERTISER, to which this order belongs.
             Format: "networks/{network_code}/companies/{company_id}".
+
+            This field is a member of `oneof`_ ``_advertiser``.
         agency_contacts (MutableSequence[str]):
             Optional. The resource names of Contacts from the
             advertising Agency of this Order. Format:
@@ -66,6 +78,8 @@ class Order(proto.Message):
             Optional. The resource name of the Company, which is of type
             Company.Type.AGENCY, with which this order is associated.
             Format: "networks/{network_code}/companies/{company_id}".
+
+            This field is a member of `oneof`_ ``_agency``.
         applied_teams (MutableSequence[str]):
             Optional. The resource names of Teams directly applied to
             this Order. Format:
@@ -78,51 +92,77 @@ class Order(proto.Message):
             Output only. The resource name of the User who created the
             Order on behalf of the advertiser. This value is assigned by
             Google. Format: "networks/{network_code}/users/{user_id}".
+
+            This field is a member of `oneof`_ ``_creator``.
         currency_code (str):
             Output only. The ISO 4217 3-letter currency
             code for the currency used by the Order. This
             value is the network's currency code.
+
+            This field is a member of `oneof`_ ``_currency_code``.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The instant at which the Order and its
             associated line items are eligible to begin serving. This
             attribute is derived from the line item of the order that
             has the earliest LineItem.start_time.
+
+            This field is a member of `oneof`_ ``_start_time``.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The instant at which the Order and its
             associated line items stop being served. This attribute is
             derived from the line item of the order that has the latest
             LineItem.end_time.
+
+            This field is a member of `oneof`_ ``_end_time``.
         unlimited_end_time (bool):
             Output only. Indicates whether or not this
             Order has an end time.
+
+            This field is a member of `oneof`_ ``_unlimited_end_time``.
         external_order_id (int):
             Optional. An arbitrary ID to associate to the
             Order, which can be used as a key to an external
             system.
+
+            This field is a member of `oneof`_ ``_external_order_id``.
         archived (bool):
             Output only. The archival status of the
             Order.
+
+            This field is a member of `oneof`_ ``_archived``.
         last_modified_by_app (str):
             Output only. The application which modified
             this order. This attribute is assigned by
             Google.
+
+            This field is a member of `oneof`_ ``_last_modified_by_app``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The instant this Order was last
             modified.
+
+            This field is a member of `oneof`_ ``_update_time``.
         notes (str):
             Optional. Provides any additional notes that
             may annotate the Order. This attribute has a
             maximum length of 65,535 characters.
+
+            This field is a member of `oneof`_ ``_notes``.
         po_number (str):
             Optional. The purchase order number for the
             Order. This value has a maximum length of 63
             characters.
+
+            This field is a member of `oneof`_ ``_po_number``.
         status (google.ads.admanager_v1.types.OrderStatusEnum.OrderStatus):
             Output only. The status of the Order.
+
+            This field is a member of `oneof`_ ``_status``.
         salesperson (str):
             Optional. The resource name of the User responsible for the
             sales of the Order. Format:
             "networks/{network_code}/users/{user_id}".
+
+            This field is a member of `oneof`_ ``_salesperson``.
         secondary_salespeople (MutableSequence[str]):
             Optional. Unordered list. The resource names of the
             secondary salespeople associated with the order. Format:
@@ -153,18 +193,22 @@ class Order(proto.Message):
     order_id: int = proto.Field(
         proto.INT64,
         number=4,
+        optional=True,
     )
     display_name: str = proto.Field(
         proto.STRING,
         number=2,
+        optional=True,
     )
     programmatic: bool = proto.Field(
         proto.BOOL,
         number=3,
+        optional=True,
     )
     trafficker: str = proto.Field(
         proto.STRING,
         number=23,
+        optional=True,
     )
     advertiser_contacts: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -173,6 +217,7 @@ class Order(proto.Message):
     advertiser: str = proto.Field(
         proto.STRING,
         number=6,
+        optional=True,
     )
     agency_contacts: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -181,6 +226,7 @@ class Order(proto.Message):
     agency: str = proto.Field(
         proto.STRING,
         number=8,
+        optional=True,
     )
     applied_teams: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -193,58 +239,71 @@ class Order(proto.Message):
     creator: str = proto.Field(
         proto.STRING,
         number=10,
+        optional=True,
     )
     currency_code: str = proto.Field(
         proto.STRING,
         number=11,
+        optional=True,
     )
     start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=19,
+        optional=True,
         message=timestamp_pb2.Timestamp,
     )
     end_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=12,
+        optional=True,
         message=timestamp_pb2.Timestamp,
     )
     unlimited_end_time: bool = proto.Field(
         proto.BOOL,
         number=45,
+        optional=True,
     )
     external_order_id: int = proto.Field(
-        proto.INT64,
+        proto.INT32,
         number=13,
+        optional=True,
     )
     archived: bool = proto.Field(
         proto.BOOL,
         number=14,
+        optional=True,
     )
     last_modified_by_app: str = proto.Field(
         proto.STRING,
         number=15,
+        optional=True,
     )
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=16,
+        optional=True,
         message=timestamp_pb2.Timestamp,
     )
     notes: str = proto.Field(
         proto.STRING,
         number=17,
+        optional=True,
     )
     po_number: str = proto.Field(
         proto.STRING,
         number=18,
+        optional=True,
     )
     status: order_enums.OrderStatusEnum.OrderStatus = proto.Field(
         proto.ENUM,
         number=20,
+        optional=True,
         enum=order_enums.OrderStatusEnum.OrderStatus,
     )
     salesperson: str = proto.Field(
         proto.STRING,
         number=21,
+        optional=True,
     )
     secondary_salespeople: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,

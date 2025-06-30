@@ -33,6 +33,8 @@ __protobuf__ = proto.module(
 class Placement(proto.Message):
     r"""The ``Placement`` resource.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The resource name of the ``Placement``. Format:
@@ -41,26 +43,35 @@ class Placement(proto.Message):
             Output only. ``Placement`` ID.
         display_name (str):
             Required. The display name of the placement.
-            Its maximum length is 255 characters.
+            This attribute has a maximum length of 255
+            characters.
+
+            This field is a member of `oneof`_ ``_display_name``.
         description (str):
             Optional. A description of the Placement.
-            This value is optional and its maximum length is
-            65,535 characters.
+            This attribute has a maximum length of 65,535
+            characters.
+
+            This field is a member of `oneof`_ ``_description``.
         placement_code (str):
             Output only. A string used to uniquely
             identify the Placement for purposes of serving
-            the ad. This attribute is read-only and is
-            assigned by Google when a placement is created.
+            the ad. This attribute is assigned by Google.
+
+            This field is a member of `oneof`_ ``_placement_code``.
         status (google.ads.admanager_v1.types.PlacementStatusEnum.PlacementStatus):
             Output only. The status of the Placement.
-            This attribute is read-only.
+
+            This field is a member of `oneof`_ ``_status``.
         targeted_ad_units (MutableSequence[str]):
             Optional. The resource names of AdUnits that constitute the
             Placement. Format:
-            "networks/{network_code}/adUnits/{ad_unit_id}".
+            "networks/{network_code}/adUnits/{ad_unit}".
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The instant this Placement was
             last modified.
+
+            This field is a member of `oneof`_ ``_update_time``.
     """
 
     name: str = proto.Field(
@@ -74,18 +85,22 @@ class Placement(proto.Message):
     display_name: str = proto.Field(
         proto.STRING,
         number=3,
+        optional=True,
     )
     description: str = proto.Field(
         proto.STRING,
         number=4,
+        optional=True,
     )
     placement_code: str = proto.Field(
         proto.STRING,
         number=5,
+        optional=True,
     )
     status: placement_enums.PlacementStatusEnum.PlacementStatus = proto.Field(
         proto.ENUM,
         number=6,
+        optional=True,
         enum=placement_enums.PlacementStatusEnum.PlacementStatus,
     )
     targeted_ad_units: MutableSequence[str] = proto.RepeatedField(
@@ -95,6 +110,7 @@ class Placement(proto.Message):
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=9,
+        optional=True,
         message=timestamp_pb2.Timestamp,
     )
 
