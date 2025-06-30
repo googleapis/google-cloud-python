@@ -1,0 +1,4776 @@
+{
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.ads.admanager.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-ads-admanager",
+    "version": "0.1.0"
+  },
+  "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.AdBreakServiceClient",
+          "shortName": "AdBreakServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.AdBreakServiceClient.create_ad_break",
+        "method": {
+          "fullName": "google.ads.admanager.v1.AdBreakService.CreateAdBreak",
+          "service": {
+            "fullName": "google.ads.admanager.v1.AdBreakService",
+            "shortName": "AdBreakService"
+          },
+          "shortName": "CreateAdBreak"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.CreateAdBreakRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "ad_break",
+            "type": "google.ads.admanager_v1.types.AdBreak"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.AdBreak",
+        "shortName": "create_ad_break"
+      },
+      "description": "Sample for CreateAdBreak",
+      "file": "admanager_v1_generated_ad_break_service_create_ad_break_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_AdBreakService_CreateAdBreak_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_ad_break_service_create_ad_break_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.AdBreakServiceClient",
+          "shortName": "AdBreakServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.AdBreakServiceClient.delete_ad_break",
+        "method": {
+          "fullName": "google.ads.admanager.v1.AdBreakService.DeleteAdBreak",
+          "service": {
+            "fullName": "google.ads.admanager.v1.AdBreakService",
+            "shortName": "AdBreakService"
+          },
+          "shortName": "DeleteAdBreak"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.DeleteAdBreakRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_ad_break"
+      },
+      "description": "Sample for DeleteAdBreak",
+      "file": "admanager_v1_generated_ad_break_service_delete_ad_break_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_AdBreakService_DeleteAdBreak_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_ad_break_service_delete_ad_break_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.AdBreakServiceClient",
+          "shortName": "AdBreakServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.AdBreakServiceClient.get_ad_break",
+        "method": {
+          "fullName": "google.ads.admanager.v1.AdBreakService.GetAdBreak",
+          "service": {
+            "fullName": "google.ads.admanager.v1.AdBreakService",
+            "shortName": "AdBreakService"
+          },
+          "shortName": "GetAdBreak"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetAdBreakRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.AdBreak",
+        "shortName": "get_ad_break"
+      },
+      "description": "Sample for GetAdBreak",
+      "file": "admanager_v1_generated_ad_break_service_get_ad_break_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_AdBreakService_GetAdBreak_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_ad_break_service_get_ad_break_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.AdBreakServiceClient",
+          "shortName": "AdBreakServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.AdBreakServiceClient.list_ad_breaks",
+        "method": {
+          "fullName": "google.ads.admanager.v1.AdBreakService.ListAdBreaks",
+          "service": {
+            "fullName": "google.ads.admanager.v1.AdBreakService",
+            "shortName": "AdBreakService"
+          },
+          "shortName": "ListAdBreaks"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListAdBreaksRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.ad_break_service.pagers.ListAdBreaksPager",
+        "shortName": "list_ad_breaks"
+      },
+      "description": "Sample for ListAdBreaks",
+      "file": "admanager_v1_generated_ad_break_service_list_ad_breaks_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_AdBreakService_ListAdBreaks_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_ad_break_service_list_ad_breaks_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.AdBreakServiceClient",
+          "shortName": "AdBreakServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.AdBreakServiceClient.update_ad_break",
+        "method": {
+          "fullName": "google.ads.admanager.v1.AdBreakService.UpdateAdBreak",
+          "service": {
+            "fullName": "google.ads.admanager.v1.AdBreakService",
+            "shortName": "AdBreakService"
+          },
+          "shortName": "UpdateAdBreak"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.UpdateAdBreakRequest"
+          },
+          {
+            "name": "ad_break",
+            "type": "google.ads.admanager_v1.types.AdBreak"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.AdBreak",
+        "shortName": "update_ad_break"
+      },
+      "description": "Sample for UpdateAdBreak",
+      "file": "admanager_v1_generated_ad_break_service_update_ad_break_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_AdBreakService_UpdateAdBreak_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_ad_break_service_update_ad_break_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.AdUnitServiceClient",
+          "shortName": "AdUnitServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.AdUnitServiceClient.get_ad_unit",
+        "method": {
+          "fullName": "google.ads.admanager.v1.AdUnitService.GetAdUnit",
+          "service": {
+            "fullName": "google.ads.admanager.v1.AdUnitService",
+            "shortName": "AdUnitService"
+          },
+          "shortName": "GetAdUnit"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetAdUnitRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.AdUnit",
+        "shortName": "get_ad_unit"
+      },
+      "description": "Sample for GetAdUnit",
+      "file": "admanager_v1_generated_ad_unit_service_get_ad_unit_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_AdUnitService_GetAdUnit_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_ad_unit_service_get_ad_unit_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.AdUnitServiceClient",
+          "shortName": "AdUnitServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.AdUnitServiceClient.list_ad_unit_sizes",
+        "method": {
+          "fullName": "google.ads.admanager.v1.AdUnitService.ListAdUnitSizes",
+          "service": {
+            "fullName": "google.ads.admanager.v1.AdUnitService",
+            "shortName": "AdUnitService"
+          },
+          "shortName": "ListAdUnitSizes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListAdUnitSizesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.ad_unit_service.pagers.ListAdUnitSizesPager",
+        "shortName": "list_ad_unit_sizes"
+      },
+      "description": "Sample for ListAdUnitSizes",
+      "file": "admanager_v1_generated_ad_unit_service_list_ad_unit_sizes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_AdUnitService_ListAdUnitSizes_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_ad_unit_service_list_ad_unit_sizes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.AdUnitServiceClient",
+          "shortName": "AdUnitServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.AdUnitServiceClient.list_ad_units",
+        "method": {
+          "fullName": "google.ads.admanager.v1.AdUnitService.ListAdUnits",
+          "service": {
+            "fullName": "google.ads.admanager.v1.AdUnitService",
+            "shortName": "AdUnitService"
+          },
+          "shortName": "ListAdUnits"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListAdUnitsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.ad_unit_service.pagers.ListAdUnitsPager",
+        "shortName": "list_ad_units"
+      },
+      "description": "Sample for ListAdUnits",
+      "file": "admanager_v1_generated_ad_unit_service_list_ad_units_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_AdUnitService_ListAdUnits_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_ad_unit_service_list_ad_units_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.BandwidthGroupServiceClient",
+          "shortName": "BandwidthGroupServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.BandwidthGroupServiceClient.get_bandwidth_group",
+        "method": {
+          "fullName": "google.ads.admanager.v1.BandwidthGroupService.GetBandwidthGroup",
+          "service": {
+            "fullName": "google.ads.admanager.v1.BandwidthGroupService",
+            "shortName": "BandwidthGroupService"
+          },
+          "shortName": "GetBandwidthGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetBandwidthGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.BandwidthGroup",
+        "shortName": "get_bandwidth_group"
+      },
+      "description": "Sample for GetBandwidthGroup",
+      "file": "admanager_v1_generated_bandwidth_group_service_get_bandwidth_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_BandwidthGroupService_GetBandwidthGroup_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_bandwidth_group_service_get_bandwidth_group_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.BandwidthGroupServiceClient",
+          "shortName": "BandwidthGroupServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.BandwidthGroupServiceClient.list_bandwidth_groups",
+        "method": {
+          "fullName": "google.ads.admanager.v1.BandwidthGroupService.ListBandwidthGroups",
+          "service": {
+            "fullName": "google.ads.admanager.v1.BandwidthGroupService",
+            "shortName": "BandwidthGroupService"
+          },
+          "shortName": "ListBandwidthGroups"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListBandwidthGroupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.bandwidth_group_service.pagers.ListBandwidthGroupsPager",
+        "shortName": "list_bandwidth_groups"
+      },
+      "description": "Sample for ListBandwidthGroups",
+      "file": "admanager_v1_generated_bandwidth_group_service_list_bandwidth_groups_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_BandwidthGroupService_ListBandwidthGroups_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_bandwidth_group_service_list_bandwidth_groups_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.CompanyServiceClient",
+          "shortName": "CompanyServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.CompanyServiceClient.get_company",
+        "method": {
+          "fullName": "google.ads.admanager.v1.CompanyService.GetCompany",
+          "service": {
+            "fullName": "google.ads.admanager.v1.CompanyService",
+            "shortName": "CompanyService"
+          },
+          "shortName": "GetCompany"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetCompanyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.Company",
+        "shortName": "get_company"
+      },
+      "description": "Sample for GetCompany",
+      "file": "admanager_v1_generated_company_service_get_company_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_CompanyService_GetCompany_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_company_service_get_company_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.CompanyServiceClient",
+          "shortName": "CompanyServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.CompanyServiceClient.list_companies",
+        "method": {
+          "fullName": "google.ads.admanager.v1.CompanyService.ListCompanies",
+          "service": {
+            "fullName": "google.ads.admanager.v1.CompanyService",
+            "shortName": "CompanyService"
+          },
+          "shortName": "ListCompanies"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListCompaniesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.company_service.pagers.ListCompaniesPager",
+        "shortName": "list_companies"
+      },
+      "description": "Sample for ListCompanies",
+      "file": "admanager_v1_generated_company_service_list_companies_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_CompanyService_ListCompanies_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_company_service_list_companies_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.CustomFieldServiceClient",
+          "shortName": "CustomFieldServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.CustomFieldServiceClient.get_custom_field",
+        "method": {
+          "fullName": "google.ads.admanager.v1.CustomFieldService.GetCustomField",
+          "service": {
+            "fullName": "google.ads.admanager.v1.CustomFieldService",
+            "shortName": "CustomFieldService"
+          },
+          "shortName": "GetCustomField"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetCustomFieldRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.CustomField",
+        "shortName": "get_custom_field"
+      },
+      "description": "Sample for GetCustomField",
+      "file": "admanager_v1_generated_custom_field_service_get_custom_field_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_CustomFieldService_GetCustomField_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_custom_field_service_get_custom_field_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.CustomFieldServiceClient",
+          "shortName": "CustomFieldServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.CustomFieldServiceClient.list_custom_fields",
+        "method": {
+          "fullName": "google.ads.admanager.v1.CustomFieldService.ListCustomFields",
+          "service": {
+            "fullName": "google.ads.admanager.v1.CustomFieldService",
+            "shortName": "CustomFieldService"
+          },
+          "shortName": "ListCustomFields"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListCustomFieldsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.custom_field_service.pagers.ListCustomFieldsPager",
+        "shortName": "list_custom_fields"
+      },
+      "description": "Sample for ListCustomFields",
+      "file": "admanager_v1_generated_custom_field_service_list_custom_fields_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_CustomFieldService_ListCustomFields_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_custom_field_service_list_custom_fields_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.CustomTargetingKeyServiceClient",
+          "shortName": "CustomTargetingKeyServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.CustomTargetingKeyServiceClient.get_custom_targeting_key",
+        "method": {
+          "fullName": "google.ads.admanager.v1.CustomTargetingKeyService.GetCustomTargetingKey",
+          "service": {
+            "fullName": "google.ads.admanager.v1.CustomTargetingKeyService",
+            "shortName": "CustomTargetingKeyService"
+          },
+          "shortName": "GetCustomTargetingKey"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetCustomTargetingKeyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.CustomTargetingKey",
+        "shortName": "get_custom_targeting_key"
+      },
+      "description": "Sample for GetCustomTargetingKey",
+      "file": "admanager_v1_generated_custom_targeting_key_service_get_custom_targeting_key_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_CustomTargetingKeyService_GetCustomTargetingKey_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_custom_targeting_key_service_get_custom_targeting_key_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.CustomTargetingKeyServiceClient",
+          "shortName": "CustomTargetingKeyServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.CustomTargetingKeyServiceClient.list_custom_targeting_keys",
+        "method": {
+          "fullName": "google.ads.admanager.v1.CustomTargetingKeyService.ListCustomTargetingKeys",
+          "service": {
+            "fullName": "google.ads.admanager.v1.CustomTargetingKeyService",
+            "shortName": "CustomTargetingKeyService"
+          },
+          "shortName": "ListCustomTargetingKeys"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListCustomTargetingKeysRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.custom_targeting_key_service.pagers.ListCustomTargetingKeysPager",
+        "shortName": "list_custom_targeting_keys"
+      },
+      "description": "Sample for ListCustomTargetingKeys",
+      "file": "admanager_v1_generated_custom_targeting_key_service_list_custom_targeting_keys_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_CustomTargetingKeyService_ListCustomTargetingKeys_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_custom_targeting_key_service_list_custom_targeting_keys_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.CustomTargetingValueServiceClient",
+          "shortName": "CustomTargetingValueServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.CustomTargetingValueServiceClient.get_custom_targeting_value",
+        "method": {
+          "fullName": "google.ads.admanager.v1.CustomTargetingValueService.GetCustomTargetingValue",
+          "service": {
+            "fullName": "google.ads.admanager.v1.CustomTargetingValueService",
+            "shortName": "CustomTargetingValueService"
+          },
+          "shortName": "GetCustomTargetingValue"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetCustomTargetingValueRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.CustomTargetingValue",
+        "shortName": "get_custom_targeting_value"
+      },
+      "description": "Sample for GetCustomTargetingValue",
+      "file": "admanager_v1_generated_custom_targeting_value_service_get_custom_targeting_value_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_CustomTargetingValueService_GetCustomTargetingValue_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_custom_targeting_value_service_get_custom_targeting_value_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.CustomTargetingValueServiceClient",
+          "shortName": "CustomTargetingValueServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.CustomTargetingValueServiceClient.list_custom_targeting_values",
+        "method": {
+          "fullName": "google.ads.admanager.v1.CustomTargetingValueService.ListCustomTargetingValues",
+          "service": {
+            "fullName": "google.ads.admanager.v1.CustomTargetingValueService",
+            "shortName": "CustomTargetingValueService"
+          },
+          "shortName": "ListCustomTargetingValues"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListCustomTargetingValuesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.custom_targeting_value_service.pagers.ListCustomTargetingValuesPager",
+        "shortName": "list_custom_targeting_values"
+      },
+      "description": "Sample for ListCustomTargetingValues",
+      "file": "admanager_v1_generated_custom_targeting_value_service_list_custom_targeting_values_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_CustomTargetingValueService_ListCustomTargetingValues_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_custom_targeting_value_service_list_custom_targeting_values_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.DeviceCategoryServiceClient",
+          "shortName": "DeviceCategoryServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.DeviceCategoryServiceClient.get_device_category",
+        "method": {
+          "fullName": "google.ads.admanager.v1.DeviceCategoryService.GetDeviceCategory",
+          "service": {
+            "fullName": "google.ads.admanager.v1.DeviceCategoryService",
+            "shortName": "DeviceCategoryService"
+          },
+          "shortName": "GetDeviceCategory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetDeviceCategoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.DeviceCategory",
+        "shortName": "get_device_category"
+      },
+      "description": "Sample for GetDeviceCategory",
+      "file": "admanager_v1_generated_device_category_service_get_device_category_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_DeviceCategoryService_GetDeviceCategory_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_device_category_service_get_device_category_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.DeviceCategoryServiceClient",
+          "shortName": "DeviceCategoryServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.DeviceCategoryServiceClient.list_device_categories",
+        "method": {
+          "fullName": "google.ads.admanager.v1.DeviceCategoryService.ListDeviceCategories",
+          "service": {
+            "fullName": "google.ads.admanager.v1.DeviceCategoryService",
+            "shortName": "DeviceCategoryService"
+          },
+          "shortName": "ListDeviceCategories"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListDeviceCategoriesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.device_category_service.pagers.ListDeviceCategoriesPager",
+        "shortName": "list_device_categories"
+      },
+      "description": "Sample for ListDeviceCategories",
+      "file": "admanager_v1_generated_device_category_service_list_device_categories_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_DeviceCategoryService_ListDeviceCategories_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_device_category_service_list_device_categories_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient",
+          "shortName": "EntitySignalsMappingServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient.batch_create_entity_signals_mappings",
+        "method": {
+          "fullName": "google.ads.admanager.v1.EntitySignalsMappingService.BatchCreateEntitySignalsMappings",
+          "service": {
+            "fullName": "google.ads.admanager.v1.EntitySignalsMappingService",
+            "shortName": "EntitySignalsMappingService"
+          },
+          "shortName": "BatchCreateEntitySignalsMappings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.BatchCreateEntitySignalsMappingsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "requests",
+            "type": "MutableSequence[google.ads.admanager_v1.types.CreateEntitySignalsMappingRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.BatchCreateEntitySignalsMappingsResponse",
+        "shortName": "batch_create_entity_signals_mappings"
+      },
+      "description": "Sample for BatchCreateEntitySignalsMappings",
+      "file": "admanager_v1_generated_entity_signals_mapping_service_batch_create_entity_signals_mappings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_EntitySignalsMappingService_BatchCreateEntitySignalsMappings_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_entity_signals_mapping_service_batch_create_entity_signals_mappings_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient",
+          "shortName": "EntitySignalsMappingServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient.batch_update_entity_signals_mappings",
+        "method": {
+          "fullName": "google.ads.admanager.v1.EntitySignalsMappingService.BatchUpdateEntitySignalsMappings",
+          "service": {
+            "fullName": "google.ads.admanager.v1.EntitySignalsMappingService",
+            "shortName": "EntitySignalsMappingService"
+          },
+          "shortName": "BatchUpdateEntitySignalsMappings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.BatchUpdateEntitySignalsMappingsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "requests",
+            "type": "MutableSequence[google.ads.admanager_v1.types.UpdateEntitySignalsMappingRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.BatchUpdateEntitySignalsMappingsResponse",
+        "shortName": "batch_update_entity_signals_mappings"
+      },
+      "description": "Sample for BatchUpdateEntitySignalsMappings",
+      "file": "admanager_v1_generated_entity_signals_mapping_service_batch_update_entity_signals_mappings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_EntitySignalsMappingService_BatchUpdateEntitySignalsMappings_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_entity_signals_mapping_service_batch_update_entity_signals_mappings_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient",
+          "shortName": "EntitySignalsMappingServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient.create_entity_signals_mapping",
+        "method": {
+          "fullName": "google.ads.admanager.v1.EntitySignalsMappingService.CreateEntitySignalsMapping",
+          "service": {
+            "fullName": "google.ads.admanager.v1.EntitySignalsMappingService",
+            "shortName": "EntitySignalsMappingService"
+          },
+          "shortName": "CreateEntitySignalsMapping"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.CreateEntitySignalsMappingRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "entity_signals_mapping",
+            "type": "google.ads.admanager_v1.types.EntitySignalsMapping"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.EntitySignalsMapping",
+        "shortName": "create_entity_signals_mapping"
+      },
+      "description": "Sample for CreateEntitySignalsMapping",
+      "file": "admanager_v1_generated_entity_signals_mapping_service_create_entity_signals_mapping_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_EntitySignalsMappingService_CreateEntitySignalsMapping_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_entity_signals_mapping_service_create_entity_signals_mapping_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient",
+          "shortName": "EntitySignalsMappingServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient.get_entity_signals_mapping",
+        "method": {
+          "fullName": "google.ads.admanager.v1.EntitySignalsMappingService.GetEntitySignalsMapping",
+          "service": {
+            "fullName": "google.ads.admanager.v1.EntitySignalsMappingService",
+            "shortName": "EntitySignalsMappingService"
+          },
+          "shortName": "GetEntitySignalsMapping"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetEntitySignalsMappingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.EntitySignalsMapping",
+        "shortName": "get_entity_signals_mapping"
+      },
+      "description": "Sample for GetEntitySignalsMapping",
+      "file": "admanager_v1_generated_entity_signals_mapping_service_get_entity_signals_mapping_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_EntitySignalsMappingService_GetEntitySignalsMapping_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_entity_signals_mapping_service_get_entity_signals_mapping_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient",
+          "shortName": "EntitySignalsMappingServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient.list_entity_signals_mappings",
+        "method": {
+          "fullName": "google.ads.admanager.v1.EntitySignalsMappingService.ListEntitySignalsMappings",
+          "service": {
+            "fullName": "google.ads.admanager.v1.EntitySignalsMappingService",
+            "shortName": "EntitySignalsMappingService"
+          },
+          "shortName": "ListEntitySignalsMappings"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListEntitySignalsMappingsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.entity_signals_mapping_service.pagers.ListEntitySignalsMappingsPager",
+        "shortName": "list_entity_signals_mappings"
+      },
+      "description": "Sample for ListEntitySignalsMappings",
+      "file": "admanager_v1_generated_entity_signals_mapping_service_list_entity_signals_mappings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_EntitySignalsMappingService_ListEntitySignalsMappings_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_entity_signals_mapping_service_list_entity_signals_mappings_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient",
+          "shortName": "EntitySignalsMappingServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.EntitySignalsMappingServiceClient.update_entity_signals_mapping",
+        "method": {
+          "fullName": "google.ads.admanager.v1.EntitySignalsMappingService.UpdateEntitySignalsMapping",
+          "service": {
+            "fullName": "google.ads.admanager.v1.EntitySignalsMappingService",
+            "shortName": "EntitySignalsMappingService"
+          },
+          "shortName": "UpdateEntitySignalsMapping"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.UpdateEntitySignalsMappingRequest"
+          },
+          {
+            "name": "entity_signals_mapping",
+            "type": "google.ads.admanager_v1.types.EntitySignalsMapping"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.EntitySignalsMapping",
+        "shortName": "update_entity_signals_mapping"
+      },
+      "description": "Sample for UpdateEntitySignalsMapping",
+      "file": "admanager_v1_generated_entity_signals_mapping_service_update_entity_signals_mapping_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_EntitySignalsMappingService_UpdateEntitySignalsMapping_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_entity_signals_mapping_service_update_entity_signals_mapping_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.GeoTargetServiceClient",
+          "shortName": "GeoTargetServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.GeoTargetServiceClient.get_geo_target",
+        "method": {
+          "fullName": "google.ads.admanager.v1.GeoTargetService.GetGeoTarget",
+          "service": {
+            "fullName": "google.ads.admanager.v1.GeoTargetService",
+            "shortName": "GeoTargetService"
+          },
+          "shortName": "GetGeoTarget"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetGeoTargetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.GeoTarget",
+        "shortName": "get_geo_target"
+      },
+      "description": "Sample for GetGeoTarget",
+      "file": "admanager_v1_generated_geo_target_service_get_geo_target_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_GeoTargetService_GetGeoTarget_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_geo_target_service_get_geo_target_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.GeoTargetServiceClient",
+          "shortName": "GeoTargetServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.GeoTargetServiceClient.list_geo_targets",
+        "method": {
+          "fullName": "google.ads.admanager.v1.GeoTargetService.ListGeoTargets",
+          "service": {
+            "fullName": "google.ads.admanager.v1.GeoTargetService",
+            "shortName": "GeoTargetService"
+          },
+          "shortName": "ListGeoTargets"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListGeoTargetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.geo_target_service.pagers.ListGeoTargetsPager",
+        "shortName": "list_geo_targets"
+      },
+      "description": "Sample for ListGeoTargets",
+      "file": "admanager_v1_generated_geo_target_service_list_geo_targets_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_GeoTargetService_ListGeoTargets_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_geo_target_service_list_geo_targets_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.NetworkServiceClient",
+          "shortName": "NetworkServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.NetworkServiceClient.get_network",
+        "method": {
+          "fullName": "google.ads.admanager.v1.NetworkService.GetNetwork",
+          "service": {
+            "fullName": "google.ads.admanager.v1.NetworkService",
+            "shortName": "NetworkService"
+          },
+          "shortName": "GetNetwork"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetNetworkRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.Network",
+        "shortName": "get_network"
+      },
+      "description": "Sample for GetNetwork",
+      "file": "admanager_v1_generated_network_service_get_network_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_NetworkService_GetNetwork_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_network_service_get_network_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.NetworkServiceClient",
+          "shortName": "NetworkServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.NetworkServiceClient.list_networks",
+        "method": {
+          "fullName": "google.ads.admanager.v1.NetworkService.ListNetworks",
+          "service": {
+            "fullName": "google.ads.admanager.v1.NetworkService",
+            "shortName": "NetworkService"
+          },
+          "shortName": "ListNetworks"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListNetworksRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.ListNetworksResponse",
+        "shortName": "list_networks"
+      },
+      "description": "Sample for ListNetworks",
+      "file": "admanager_v1_generated_network_service_list_networks_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_NetworkService_ListNetworks_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_network_service_list_networks_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.OperatingSystemServiceClient",
+          "shortName": "OperatingSystemServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.OperatingSystemServiceClient.get_operating_system",
+        "method": {
+          "fullName": "google.ads.admanager.v1.OperatingSystemService.GetOperatingSystem",
+          "service": {
+            "fullName": "google.ads.admanager.v1.OperatingSystemService",
+            "shortName": "OperatingSystemService"
+          },
+          "shortName": "GetOperatingSystem"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetOperatingSystemRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.OperatingSystem",
+        "shortName": "get_operating_system"
+      },
+      "description": "Sample for GetOperatingSystem",
+      "file": "admanager_v1_generated_operating_system_service_get_operating_system_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_OperatingSystemService_GetOperatingSystem_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_operating_system_service_get_operating_system_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.OperatingSystemServiceClient",
+          "shortName": "OperatingSystemServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.OperatingSystemServiceClient.list_operating_systems",
+        "method": {
+          "fullName": "google.ads.admanager.v1.OperatingSystemService.ListOperatingSystems",
+          "service": {
+            "fullName": "google.ads.admanager.v1.OperatingSystemService",
+            "shortName": "OperatingSystemService"
+          },
+          "shortName": "ListOperatingSystems"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListOperatingSystemsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.operating_system_service.pagers.ListOperatingSystemsPager",
+        "shortName": "list_operating_systems"
+      },
+      "description": "Sample for ListOperatingSystems",
+      "file": "admanager_v1_generated_operating_system_service_list_operating_systems_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_OperatingSystemService_ListOperatingSystems_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_operating_system_service_list_operating_systems_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.OperatingSystemVersionServiceClient",
+          "shortName": "OperatingSystemVersionServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.OperatingSystemVersionServiceClient.get_operating_system_version",
+        "method": {
+          "fullName": "google.ads.admanager.v1.OperatingSystemVersionService.GetOperatingSystemVersion",
+          "service": {
+            "fullName": "google.ads.admanager.v1.OperatingSystemVersionService",
+            "shortName": "OperatingSystemVersionService"
+          },
+          "shortName": "GetOperatingSystemVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetOperatingSystemVersionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.OperatingSystemVersion",
+        "shortName": "get_operating_system_version"
+      },
+      "description": "Sample for GetOperatingSystemVersion",
+      "file": "admanager_v1_generated_operating_system_version_service_get_operating_system_version_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_OperatingSystemVersionService_GetOperatingSystemVersion_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_operating_system_version_service_get_operating_system_version_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.OperatingSystemVersionServiceClient",
+          "shortName": "OperatingSystemVersionServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.OperatingSystemVersionServiceClient.list_operating_system_versions",
+        "method": {
+          "fullName": "google.ads.admanager.v1.OperatingSystemVersionService.ListOperatingSystemVersions",
+          "service": {
+            "fullName": "google.ads.admanager.v1.OperatingSystemVersionService",
+            "shortName": "OperatingSystemVersionService"
+          },
+          "shortName": "ListOperatingSystemVersions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListOperatingSystemVersionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.operating_system_version_service.pagers.ListOperatingSystemVersionsPager",
+        "shortName": "list_operating_system_versions"
+      },
+      "description": "Sample for ListOperatingSystemVersions",
+      "file": "admanager_v1_generated_operating_system_version_service_list_operating_system_versions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_OperatingSystemVersionService_ListOperatingSystemVersions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_operating_system_version_service_list_operating_system_versions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.OrderServiceClient",
+          "shortName": "OrderServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.OrderServiceClient.get_order",
+        "method": {
+          "fullName": "google.ads.admanager.v1.OrderService.GetOrder",
+          "service": {
+            "fullName": "google.ads.admanager.v1.OrderService",
+            "shortName": "OrderService"
+          },
+          "shortName": "GetOrder"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetOrderRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.Order",
+        "shortName": "get_order"
+      },
+      "description": "Sample for GetOrder",
+      "file": "admanager_v1_generated_order_service_get_order_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_OrderService_GetOrder_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_order_service_get_order_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.OrderServiceClient",
+          "shortName": "OrderServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.OrderServiceClient.list_orders",
+        "method": {
+          "fullName": "google.ads.admanager.v1.OrderService.ListOrders",
+          "service": {
+            "fullName": "google.ads.admanager.v1.OrderService",
+            "shortName": "OrderService"
+          },
+          "shortName": "ListOrders"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListOrdersRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.order_service.pagers.ListOrdersPager",
+        "shortName": "list_orders"
+      },
+      "description": "Sample for ListOrders",
+      "file": "admanager_v1_generated_order_service_list_orders_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_OrderService_ListOrders_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_order_service_list_orders_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PlacementServiceClient",
+          "shortName": "PlacementServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PlacementServiceClient.get_placement",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PlacementService.GetPlacement",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PlacementService",
+            "shortName": "PlacementService"
+          },
+          "shortName": "GetPlacement"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetPlacementRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.Placement",
+        "shortName": "get_placement"
+      },
+      "description": "Sample for GetPlacement",
+      "file": "admanager_v1_generated_placement_service_get_placement_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PlacementService_GetPlacement_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_placement_service_get_placement_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PlacementServiceClient",
+          "shortName": "PlacementServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PlacementServiceClient.list_placements",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PlacementService.ListPlacements",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PlacementService",
+            "shortName": "PlacementService"
+          },
+          "shortName": "ListPlacements"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListPlacementsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.placement_service.pagers.ListPlacementsPager",
+        "shortName": "list_placements"
+      },
+      "description": "Sample for ListPlacements",
+      "file": "admanager_v1_generated_placement_service_list_placements_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PlacementService_ListPlacements_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_placement_service_list_placements_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PrivateAuctionDealServiceClient",
+          "shortName": "PrivateAuctionDealServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PrivateAuctionDealServiceClient.create_private_auction_deal",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PrivateAuctionDealService.CreatePrivateAuctionDeal",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PrivateAuctionDealService",
+            "shortName": "PrivateAuctionDealService"
+          },
+          "shortName": "CreatePrivateAuctionDeal"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.CreatePrivateAuctionDealRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "private_auction_deal",
+            "type": "google.ads.admanager_v1.types.PrivateAuctionDeal"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.PrivateAuctionDeal",
+        "shortName": "create_private_auction_deal"
+      },
+      "description": "Sample for CreatePrivateAuctionDeal",
+      "file": "admanager_v1_generated_private_auction_deal_service_create_private_auction_deal_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PrivateAuctionDealService_CreatePrivateAuctionDeal_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_private_auction_deal_service_create_private_auction_deal_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PrivateAuctionDealServiceClient",
+          "shortName": "PrivateAuctionDealServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PrivateAuctionDealServiceClient.get_private_auction_deal",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PrivateAuctionDealService.GetPrivateAuctionDeal",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PrivateAuctionDealService",
+            "shortName": "PrivateAuctionDealService"
+          },
+          "shortName": "GetPrivateAuctionDeal"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetPrivateAuctionDealRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.PrivateAuctionDeal",
+        "shortName": "get_private_auction_deal"
+      },
+      "description": "Sample for GetPrivateAuctionDeal",
+      "file": "admanager_v1_generated_private_auction_deal_service_get_private_auction_deal_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PrivateAuctionDealService_GetPrivateAuctionDeal_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_private_auction_deal_service_get_private_auction_deal_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PrivateAuctionDealServiceClient",
+          "shortName": "PrivateAuctionDealServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PrivateAuctionDealServiceClient.list_private_auction_deals",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PrivateAuctionDealService.ListPrivateAuctionDeals",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PrivateAuctionDealService",
+            "shortName": "PrivateAuctionDealService"
+          },
+          "shortName": "ListPrivateAuctionDeals"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListPrivateAuctionDealsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.private_auction_deal_service.pagers.ListPrivateAuctionDealsPager",
+        "shortName": "list_private_auction_deals"
+      },
+      "description": "Sample for ListPrivateAuctionDeals",
+      "file": "admanager_v1_generated_private_auction_deal_service_list_private_auction_deals_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PrivateAuctionDealService_ListPrivateAuctionDeals_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_private_auction_deal_service_list_private_auction_deals_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PrivateAuctionDealServiceClient",
+          "shortName": "PrivateAuctionDealServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PrivateAuctionDealServiceClient.update_private_auction_deal",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PrivateAuctionDealService.UpdatePrivateAuctionDeal",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PrivateAuctionDealService",
+            "shortName": "PrivateAuctionDealService"
+          },
+          "shortName": "UpdatePrivateAuctionDeal"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.UpdatePrivateAuctionDealRequest"
+          },
+          {
+            "name": "private_auction_deal",
+            "type": "google.ads.admanager_v1.types.PrivateAuctionDeal"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.PrivateAuctionDeal",
+        "shortName": "update_private_auction_deal"
+      },
+      "description": "Sample for UpdatePrivateAuctionDeal",
+      "file": "admanager_v1_generated_private_auction_deal_service_update_private_auction_deal_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PrivateAuctionDealService_UpdatePrivateAuctionDeal_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_private_auction_deal_service_update_private_auction_deal_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PrivateAuctionServiceClient",
+          "shortName": "PrivateAuctionServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PrivateAuctionServiceClient.create_private_auction",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PrivateAuctionService.CreatePrivateAuction",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PrivateAuctionService",
+            "shortName": "PrivateAuctionService"
+          },
+          "shortName": "CreatePrivateAuction"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.CreatePrivateAuctionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "private_auction",
+            "type": "google.ads.admanager_v1.types.PrivateAuction"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.PrivateAuction",
+        "shortName": "create_private_auction"
+      },
+      "description": "Sample for CreatePrivateAuction",
+      "file": "admanager_v1_generated_private_auction_service_create_private_auction_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PrivateAuctionService_CreatePrivateAuction_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_private_auction_service_create_private_auction_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PrivateAuctionServiceClient",
+          "shortName": "PrivateAuctionServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PrivateAuctionServiceClient.get_private_auction",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PrivateAuctionService.GetPrivateAuction",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PrivateAuctionService",
+            "shortName": "PrivateAuctionService"
+          },
+          "shortName": "GetPrivateAuction"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetPrivateAuctionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.PrivateAuction",
+        "shortName": "get_private_auction"
+      },
+      "description": "Sample for GetPrivateAuction",
+      "file": "admanager_v1_generated_private_auction_service_get_private_auction_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PrivateAuctionService_GetPrivateAuction_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_private_auction_service_get_private_auction_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PrivateAuctionServiceClient",
+          "shortName": "PrivateAuctionServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PrivateAuctionServiceClient.list_private_auctions",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PrivateAuctionService.ListPrivateAuctions",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PrivateAuctionService",
+            "shortName": "PrivateAuctionService"
+          },
+          "shortName": "ListPrivateAuctions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListPrivateAuctionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.private_auction_service.pagers.ListPrivateAuctionsPager",
+        "shortName": "list_private_auctions"
+      },
+      "description": "Sample for ListPrivateAuctions",
+      "file": "admanager_v1_generated_private_auction_service_list_private_auctions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PrivateAuctionService_ListPrivateAuctions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_private_auction_service_list_private_auctions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.PrivateAuctionServiceClient",
+          "shortName": "PrivateAuctionServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.PrivateAuctionServiceClient.update_private_auction",
+        "method": {
+          "fullName": "google.ads.admanager.v1.PrivateAuctionService.UpdatePrivateAuction",
+          "service": {
+            "fullName": "google.ads.admanager.v1.PrivateAuctionService",
+            "shortName": "PrivateAuctionService"
+          },
+          "shortName": "UpdatePrivateAuction"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.UpdatePrivateAuctionRequest"
+          },
+          {
+            "name": "private_auction",
+            "type": "google.ads.admanager_v1.types.PrivateAuction"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.PrivateAuction",
+        "shortName": "update_private_auction"
+      },
+      "description": "Sample for UpdatePrivateAuction",
+      "file": "admanager_v1_generated_private_auction_service_update_private_auction_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_PrivateAuctionService_UpdatePrivateAuction_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_private_auction_service_update_private_auction_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.ProgrammaticBuyerServiceClient",
+          "shortName": "ProgrammaticBuyerServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.ProgrammaticBuyerServiceClient.get_programmatic_buyer",
+        "method": {
+          "fullName": "google.ads.admanager.v1.ProgrammaticBuyerService.GetProgrammaticBuyer",
+          "service": {
+            "fullName": "google.ads.admanager.v1.ProgrammaticBuyerService",
+            "shortName": "ProgrammaticBuyerService"
+          },
+          "shortName": "GetProgrammaticBuyer"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetProgrammaticBuyerRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.ProgrammaticBuyer",
+        "shortName": "get_programmatic_buyer"
+      },
+      "description": "Sample for GetProgrammaticBuyer",
+      "file": "admanager_v1_generated_programmatic_buyer_service_get_programmatic_buyer_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_ProgrammaticBuyerService_GetProgrammaticBuyer_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_programmatic_buyer_service_get_programmatic_buyer_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.ProgrammaticBuyerServiceClient",
+          "shortName": "ProgrammaticBuyerServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.ProgrammaticBuyerServiceClient.list_programmatic_buyers",
+        "method": {
+          "fullName": "google.ads.admanager.v1.ProgrammaticBuyerService.ListProgrammaticBuyers",
+          "service": {
+            "fullName": "google.ads.admanager.v1.ProgrammaticBuyerService",
+            "shortName": "ProgrammaticBuyerService"
+          },
+          "shortName": "ListProgrammaticBuyers"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListProgrammaticBuyersRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.programmatic_buyer_service.pagers.ListProgrammaticBuyersPager",
+        "shortName": "list_programmatic_buyers"
+      },
+      "description": "Sample for ListProgrammaticBuyers",
+      "file": "admanager_v1_generated_programmatic_buyer_service_list_programmatic_buyers_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_ProgrammaticBuyerService_ListProgrammaticBuyers_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_programmatic_buyer_service_list_programmatic_buyers_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.ReportServiceClient",
+          "shortName": "ReportServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.ReportServiceClient.create_report",
+        "method": {
+          "fullName": "google.ads.admanager.v1.ReportService.CreateReport",
+          "service": {
+            "fullName": "google.ads.admanager.v1.ReportService",
+            "shortName": "ReportService"
+          },
+          "shortName": "CreateReport"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.CreateReportRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "report",
+            "type": "google.ads.admanager_v1.types.Report"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.Report",
+        "shortName": "create_report"
+      },
+      "description": "Sample for CreateReport",
+      "file": "admanager_v1_generated_report_service_create_report_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_ReportService_CreateReport_sync",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_report_service_create_report_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.ReportServiceClient",
+          "shortName": "ReportServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.ReportServiceClient.fetch_report_result_rows",
+        "method": {
+          "fullName": "google.ads.admanager.v1.ReportService.FetchReportResultRows",
+          "service": {
+            "fullName": "google.ads.admanager.v1.ReportService",
+            "shortName": "ReportService"
+          },
+          "shortName": "FetchReportResultRows"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.FetchReportResultRowsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.report_service.pagers.FetchReportResultRowsPager",
+        "shortName": "fetch_report_result_rows"
+      },
+      "description": "Sample for FetchReportResultRows",
+      "file": "admanager_v1_generated_report_service_fetch_report_result_rows_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_ReportService_FetchReportResultRows_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_report_service_fetch_report_result_rows_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.ReportServiceClient",
+          "shortName": "ReportServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.ReportServiceClient.get_report",
+        "method": {
+          "fullName": "google.ads.admanager.v1.ReportService.GetReport",
+          "service": {
+            "fullName": "google.ads.admanager.v1.ReportService",
+            "shortName": "ReportService"
+          },
+          "shortName": "GetReport"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetReportRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.Report",
+        "shortName": "get_report"
+      },
+      "description": "Sample for GetReport",
+      "file": "admanager_v1_generated_report_service_get_report_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_ReportService_GetReport_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_report_service_get_report_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.ReportServiceClient",
+          "shortName": "ReportServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.ReportServiceClient.list_reports",
+        "method": {
+          "fullName": "google.ads.admanager.v1.ReportService.ListReports",
+          "service": {
+            "fullName": "google.ads.admanager.v1.ReportService",
+            "shortName": "ReportService"
+          },
+          "shortName": "ListReports"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListReportsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.report_service.pagers.ListReportsPager",
+        "shortName": "list_reports"
+      },
+      "description": "Sample for ListReports",
+      "file": "admanager_v1_generated_report_service_list_reports_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_ReportService_ListReports_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_report_service_list_reports_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.ReportServiceClient",
+          "shortName": "ReportServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.ReportServiceClient.run_report",
+        "method": {
+          "fullName": "google.ads.admanager.v1.ReportService.RunReport",
+          "service": {
+            "fullName": "google.ads.admanager.v1.ReportService",
+            "shortName": "ReportService"
+          },
+          "shortName": "RunReport"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.RunReportRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "run_report"
+      },
+      "description": "Sample for RunReport",
+      "file": "admanager_v1_generated_report_service_run_report_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_ReportService_RunReport_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_report_service_run_report_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.ReportServiceClient",
+          "shortName": "ReportServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.ReportServiceClient.update_report",
+        "method": {
+          "fullName": "google.ads.admanager.v1.ReportService.UpdateReport",
+          "service": {
+            "fullName": "google.ads.admanager.v1.ReportService",
+            "shortName": "ReportService"
+          },
+          "shortName": "UpdateReport"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.UpdateReportRequest"
+          },
+          {
+            "name": "report",
+            "type": "google.ads.admanager_v1.types.Report"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.Report",
+        "shortName": "update_report"
+      },
+      "description": "Sample for UpdateReport",
+      "file": "admanager_v1_generated_report_service_update_report_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_ReportService_UpdateReport_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_report_service_update_report_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.RoleServiceClient",
+          "shortName": "RoleServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.RoleServiceClient.get_role",
+        "method": {
+          "fullName": "google.ads.admanager.v1.RoleService.GetRole",
+          "service": {
+            "fullName": "google.ads.admanager.v1.RoleService",
+            "shortName": "RoleService"
+          },
+          "shortName": "GetRole"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetRoleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.Role",
+        "shortName": "get_role"
+      },
+      "description": "Sample for GetRole",
+      "file": "admanager_v1_generated_role_service_get_role_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_RoleService_GetRole_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_role_service_get_role_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.RoleServiceClient",
+          "shortName": "RoleServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.RoleServiceClient.list_roles",
+        "method": {
+          "fullName": "google.ads.admanager.v1.RoleService.ListRoles",
+          "service": {
+            "fullName": "google.ads.admanager.v1.RoleService",
+            "shortName": "RoleService"
+          },
+          "shortName": "ListRoles"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListRolesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.role_service.pagers.ListRolesPager",
+        "shortName": "list_roles"
+      },
+      "description": "Sample for ListRoles",
+      "file": "admanager_v1_generated_role_service_list_roles_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_RoleService_ListRoles_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_role_service_list_roles_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.TaxonomyCategoryServiceClient",
+          "shortName": "TaxonomyCategoryServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.TaxonomyCategoryServiceClient.get_taxonomy_category",
+        "method": {
+          "fullName": "google.ads.admanager.v1.TaxonomyCategoryService.GetTaxonomyCategory",
+          "service": {
+            "fullName": "google.ads.admanager.v1.TaxonomyCategoryService",
+            "shortName": "TaxonomyCategoryService"
+          },
+          "shortName": "GetTaxonomyCategory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetTaxonomyCategoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.TaxonomyCategory",
+        "shortName": "get_taxonomy_category"
+      },
+      "description": "Sample for GetTaxonomyCategory",
+      "file": "admanager_v1_generated_taxonomy_category_service_get_taxonomy_category_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_TaxonomyCategoryService_GetTaxonomyCategory_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_taxonomy_category_service_get_taxonomy_category_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.TaxonomyCategoryServiceClient",
+          "shortName": "TaxonomyCategoryServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.TaxonomyCategoryServiceClient.list_taxonomy_categories",
+        "method": {
+          "fullName": "google.ads.admanager.v1.TaxonomyCategoryService.ListTaxonomyCategories",
+          "service": {
+            "fullName": "google.ads.admanager.v1.TaxonomyCategoryService",
+            "shortName": "TaxonomyCategoryService"
+          },
+          "shortName": "ListTaxonomyCategories"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.ListTaxonomyCategoriesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.services.taxonomy_category_service.pagers.ListTaxonomyCategoriesPager",
+        "shortName": "list_taxonomy_categories"
+      },
+      "description": "Sample for ListTaxonomyCategories",
+      "file": "admanager_v1_generated_taxonomy_category_service_list_taxonomy_categories_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_TaxonomyCategoryService_ListTaxonomyCategories_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_taxonomy_category_service_list_taxonomy_categories_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.ads.admanager_v1.UserServiceClient",
+          "shortName": "UserServiceClient"
+        },
+        "fullName": "google.ads.admanager_v1.UserServiceClient.get_user",
+        "method": {
+          "fullName": "google.ads.admanager.v1.UserService.GetUser",
+          "service": {
+            "fullName": "google.ads.admanager.v1.UserService",
+            "shortName": "UserService"
+          },
+          "shortName": "GetUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.ads.admanager_v1.types.GetUserRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.ads.admanager_v1.types.User",
+        "shortName": "get_user"
+      },
+      "description": "Sample for GetUser",
+      "file": "admanager_v1_generated_user_service_get_user_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "admanager_v1_generated_UserService_GetUser_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "admanager_v1_generated_user_service_get_user_sync.py"
+    }
+  ]
+}
