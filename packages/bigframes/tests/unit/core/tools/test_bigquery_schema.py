@@ -9,9 +9,11 @@ from bigframes.core.tools import bigquery_schema
     "field, expected_sql",
     [
         # Simple types
-        (bigquery.SchemaField("test_field", "INTEGER"), "INTEGER"),
+        # Note: the REST API will return Legacy SQL data types, but we need to
+        # map to GoogleSQL. See internal issue b/428190014.
+        (bigquery.SchemaField("test_field", "INTEGER"), "INT64"),
         (bigquery.SchemaField("test_field", "STRING"), "STRING"),
-        (bigquery.SchemaField("test_field", "BOOLEAN"), "BOOLEAN"),
+        (bigquery.SchemaField("test_field", "BOOLEAN"), "BOOL"),
         # RECORD/STRUCT types with nested fields directly
         (
             bigquery.SchemaField(
@@ -30,7 +32,7 @@ from bigframes.core.tools import bigquery_schema
                     bigquery.SchemaField("another", "BOOLEAN"),
                 ),
             ),
-            "STRUCT<`sub_field` INTEGER, `another` BOOLEAN>",
+            "STRUCT<`sub_field` INT64, `another` BOOL>",
         ),
         # Array is handled by _field_to_sql, instead.
         (bigquery.SchemaField("test_field", "NUMERIC", mode="REPEATED"), "NUMERIC"),
@@ -54,7 +56,9 @@ def test_type_to_sql(field, expected_sql):
     "field, expected_sql",
     [
         # Simple field
-        (bigquery.SchemaField("id", "INTEGER", "NULLABLE"), "`id` INTEGER"),
+        # Note: the REST API will return Legacy SQL data types, but we need to
+        # map to GoogleSQL. See internal issue b/428190014.
+        (bigquery.SchemaField("id", "INTEGER", "NULLABLE"), "`id` INT64"),
         (bigquery.SchemaField("name", "STRING", "NULLABLE"), "`name` STRING"),
         # Repeated field
         (bigquery.SchemaField("tags", "STRING", "REPEATED"), "`tags` ARRAY<STRING>"),
@@ -69,7 +73,7 @@ def test_type_to_sql(field, expected_sql):
                     bigquery.SchemaField("zip", "INTEGER"),
                 ),
             ),
-            "`addresses` ARRAY<STRUCT<`street` STRING, `zip` INTEGER>>",
+            "`addresses` ARRAY<STRUCT<`street` STRING, `zip` INT64>>",
         ),
         # Simple STRUCT
         (
@@ -82,7 +86,7 @@ def test_type_to_sql(field, expected_sql):
                     bigquery.SchemaField("city", "STRING"),
                 ),
             ),
-            "`person` STRUCT<`age` INTEGER, `city` STRING>",
+            "`person` STRUCT<`age` INT64, `city` STRING>",
         ),
     ],
 )
@@ -102,7 +106,7 @@ def test_field_to_sql(field, expected_sql):
                 bigquery.SchemaField("id", "INTEGER"),
                 bigquery.SchemaField("name", "STRING"),
             ),
-            "STRUCT<`id` INTEGER, `name` STRING>",
+            "STRUCT<`id` INT64, `name` STRING>",
         ),
         # Nested RECORD/STRUCT
         (
@@ -118,7 +122,7 @@ def test_field_to_sql(field, expected_sql):
                     ),
                 ),
             ),
-            "STRUCT<`item_id` INTEGER, `details` STRUCT<`price` NUMERIC, `currency` STRING>>",
+            "STRUCT<`item_id` INT64, `details` STRUCT<`price` NUMERIC, `currency` STRING>>",
         ),
         # Repeated field
         (
@@ -143,7 +147,7 @@ def test_field_to_sql(field, expected_sql):
                 ),
                 bigquery.SchemaField("timestamp", "TIMESTAMP"),
             ),
-            "STRUCT<`event_name` STRING, `participants` ARRAY<STRUCT<`p_id` INTEGER, `roles` ARRAY<STRING>>>, `timestamp` TIMESTAMP>",
+            "STRUCT<`event_name` STRING, `participants` ARRAY<STRUCT<`p_id` INT64, `roles` ARRAY<STRING>>>, `timestamp` TIMESTAMP>",
         ),
     ],
 )
@@ -163,7 +167,7 @@ def test_to_struct(bqschema, expected_sql):
                 bigquery.SchemaField("id", "INTEGER"),
                 bigquery.SchemaField("name", "STRING"),
             ),
-            "UNNEST(ARRAY<STRUCT<`id` INTEGER, `name` STRING>>[])",
+            "UNNEST(ARRAY<STRUCT<`id` INT64, `name` STRING>>[])",
         ),
         # Complex schema with nested and repeated fields
         (
@@ -179,7 +183,7 @@ def test_to_struct(bqschema, expected_sql):
                     ),
                 ),
             ),
-            "UNNEST(ARRAY<STRUCT<`order_id` STRING, `items` ARRAY<STRUCT<`item_name` STRING, `quantity` INTEGER>>>>[])",
+            "UNNEST(ARRAY<STRUCT<`order_id` STRING, `items` ARRAY<STRUCT<`item_name` STRING, `quantity` INT64>>>>[])",
         ),
     ],
 )

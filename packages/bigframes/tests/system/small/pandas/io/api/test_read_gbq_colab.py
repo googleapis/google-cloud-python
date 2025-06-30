@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,94 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Tests for the pyformat feature."""
-
-# TODO(tswast): consolidate with pandas-gbq and bigquery-magics. See:
-# https://github.com/googleapis/python-bigquery-magics/blob/main/tests/unit/bigquery/test_pyformat.py
-
 from __future__ import annotations
 
 import datetime
 import decimal
-from typing import Any, Dict, List
 
 import db_dtypes  # type: ignore
 import geopandas  # type: ignore
-import google.cloud.bigquery
-import google.cloud.bigquery.table
 import numpy
 import pandas
 import pyarrow
 import pytest
 import shapely.geometry  # type: ignore
 
-from bigframes.core import pyformat
-from bigframes.testing import mocks
-
-
-@pytest.fixture
-def session():
-    return mocks.create_bigquery_session()
+from bigframes.pandas.io import api as module_under_test
 
 
 @pytest.mark.parametrize(
-    ("sql_template", "expected"),
+    ("df_pd",),
     (
-        (
-            "{my_project}.{my_dataset}.{my_table}",
-            ["my_project", "my_dataset", "my_table"],
-        ),
-        (
-            "{{not a format variable}}",
-            [],
-        ),
-    ),
-)
-def test_parse_fields(sql_template: str, expected: List[str]):
-    fields = pyformat._parse_fields(sql_template)
-    fields.sort()
-    expected.sort()
-    assert fields == expected
-
-
-def test_pyformat_with_unsupported_type_raises_typeerror(session):
-    pyformat_args = {"my_object": object()}
-    sql = "SELECT {my_object}"
-
-    with pytest.raises(TypeError, match="my_object has unsupported type: "):
-        pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
-
-
-def test_pyformat_with_missing_variable_raises_keyerror(session):
-    pyformat_args: Dict[str, Any] = {}
-    sql = "SELECT {my_object}"
-
-    with pytest.raises(KeyError, match="my_object"):
-        pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
-
-
-def test_pyformat_with_no_variables(session):
-    pyformat_args: Dict[str, Any] = {}
-    sql = "SELECT '{{escaped curly brackets}}'"
-    expected_sql = "SELECT '{escaped curly brackets}'"
-    got_sql = pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
-    assert got_sql == expected_sql
-
-
-@pytest.mark.parametrize(
-    ("df_pd", "expected_struct"),
-    (
-        pytest.param(
-            pandas.DataFrame(),
-            "STRUCT<>",
-            id="empty",
-        ),
-        pytest.param(
-            # Empty columns default to floating point, just like pandas.
-            pandas.DataFrame({"empty column": []}),
-            "STRUCT<`empty column` FLOAT64>",
-            id="empty column",
-        ),
         # Regression tests for b/428190014.
         #
         # Test every BigQuery type we support, especially those where the legacy
@@ -109,9 +40,6 @@ def test_pyformat_with_no_variables(session):
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
         # and compare to the legacy types at
         # https://cloud.google.com/bigquery/docs/data-types
-        #
-        # Test these against the real BigQuery dry run API in
-        # tests/system/small/pandas/io/api/test_read_gbq_colab.py
         pytest.param(
             pandas.DataFrame(
                 {
@@ -125,7 +53,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`ints` ARRAY<INT64>, `floats` ARRAY<FLOAT64>>",
             id="arrays",
         ),
         pytest.param(
@@ -139,7 +66,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`bool` BOOL, `boolean` BOOL, `object` BOOL, `arrow` BOOL>",
             id="bools",
         ),
         pytest.param(
@@ -152,7 +78,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`bytes` BYTES, `object` BYTES, `arrow` BYTES>",
             id="bytes",
         ),
         pytest.param(
@@ -176,7 +101,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`object` DATE, `arrow` DATE>",
             id="dates",
         ),
         pytest.param(
@@ -208,7 +132,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`object` DATETIME, `datetime64` DATETIME, `arrow` DATETIME>",
             id="datetimes",
         ),
         pytest.param(
@@ -231,7 +154,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`object` GEOGRAPHY, `geopandas` GEOGRAPHY>",
             id="geographys",
         ),
         # TODO(tswast): Add INTERVAL once BigFrames supports it.
@@ -246,7 +168,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`db_dtypes` JSON>",
             id="jsons",
         ),
         pytest.param(
@@ -260,7 +181,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`int64` INT64, `Int64` INT64, `object` INT64, `arrow` INT64>",
             id="ints",
         ),
         pytest.param(
@@ -276,7 +196,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`object` NUMERIC, `arrow` NUMERIC>",
             id="numerics",
         ),
         pytest.param(
@@ -289,7 +208,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`arrow` BIGNUMERIC>",
             id="bignumerics",
         ),
         pytest.param(
@@ -303,7 +221,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`float64` FLOAT64, `Float64` FLOAT64, `object` FLOAT64, `arrow` FLOAT64>",
             id="floats",
         ),
         # TODO(tswast): Add RANGE once BigFrames supports it.
@@ -315,7 +232,6 @@ def test_pyformat_with_no_variables(session):
                     "arrow": pandas.Series(["a", None, "c"], dtype="string[pyarrow]"),
                 }
             ),
-            "STRUCT<`string` STRING, `object` STRING, `arrow` STRING>",
             id="strings",
         ),
         pytest.param(
@@ -336,7 +252,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`arrow` STRUCT<`a` INT64, `b` FLOAT64, `c` STRING>>",
             id="structs",
         ),
         pytest.param(
@@ -360,7 +275,6 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`object` TIME, `arrow` TIME>",
             id="times",
         ),
         pytest.param(
@@ -400,116 +314,16 @@ def test_pyformat_with_no_variables(session):
                     ),
                 }
             ),
-            "STRUCT<`object` TIMESTAMP, `datetime64` TIMESTAMP, `arrow` TIMESTAMP>",
             id="timestamps",
         ),
-        # More complicated edge cases:
-        pytest.param(
-            pandas.DataFrame(
-                {
-                    "array of struct col": [
-                        [{"subfield": {"subsubfield": 1}, "subfield2": 2}],
-                    ],
-                }
-            ),
-            "STRUCT<`array of struct col` ARRAY<STRUCT<`subfield` STRUCT<`subsubfield` INT64>, `subfield2` INT64>>>",
-            id="array_of_structs",
-        ),
-        pytest.param(
-            pandas.DataFrame({"c1": [1, 2, 3], "c2": ["a", "b", "c"]}).rename(
-                columns={"c1": "c", "c2": "c"}
-            ),
-            "STRUCT<`c` INT64, `c_1` STRING>",
-            id="duplicate_column_names",
-        ),
     ),
 )
-def test_pyformat_with_pandas_dataframe_dry_run_no_session(df_pd, expected_struct):
-    pyformat_args: Dict[str, Any] = {"my_pandas_df": df_pd}
-    sql = "SELECT * FROM {my_pandas_df}"
-    expected_sql = f"SELECT * FROM UNNEST(ARRAY<{expected_struct}>[])"
-    got_sql = pyformat.pyformat(
-        sql, pyformat_args=pyformat_args, dry_run=True, session=None
+def test_read_gbq_colab_sessionless_dry_run_generates_valid_sql_for_local_dataframe(
+    df_pd: pandas.DataFrame,
+):
+    # This method will fail with an exception if it receives invalid SQL.
+    result = module_under_test._run_read_gbq_colab_sessionless_dry_run(
+        query="SELECT * FROM {df_pd}",
+        pyformat_args={"df_pd": df_pd},
     )
-    assert got_sql == expected_sql
-
-
-def test_pyformat_with_pandas_dataframe_not_dry_run_no_session_raises_valueerror():
-    pyformat_args: Dict[str, Any] = {"my_pandas_df": pandas.DataFrame()}
-    sql = "SELECT * FROM {my_pandas_df}"
-
-    with pytest.raises(ValueError, match="my_pandas_df"):
-        pyformat.pyformat(sql, pyformat_args=pyformat_args)
-
-
-def test_pyformat_with_query_string_replaces_variables(session):
-    pyformat_args = {
-        "my_string": "some string value",
-        "max_value": 2.25,
-        "year": 2025,
-        "null_value": None,
-        # Unreferenced values of unsupported type shouldn't cause issues.
-        "my_object": object(),
-    }
-
-    sql = """
-    SELECT {year} - year  AS age,
-    @myparam AS myparam,
-    '{{my_string}}' AS escaped_string,
-    {my_string} AS my_string,
-    {null_value} AS null_value,
-    FROM my_dataset.my_table
-    WHERE height < {max_value}
-    """.strip()
-
-    expected_sql = """
-    SELECT 2025 - year  AS age,
-    @myparam AS myparam,
-    '{my_string}' AS escaped_string,
-    'some string value' AS my_string,
-    NULL AS null_value,
-    FROM my_dataset.my_table
-    WHERE height < 2.25
-    """.strip()
-
-    got_sql = pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
-    assert got_sql == expected_sql
-
-
-@pytest.mark.parametrize(
-    ("table", "expected_sql"),
-    (
-        (
-            google.cloud.bigquery.Table("my-project.my_dataset.my_table"),
-            "SELECT * FROM `my-project`.`my_dataset`.`my_table`",
-        ),
-        (
-            google.cloud.bigquery.TableReference(
-                google.cloud.bigquery.DatasetReference("some-project", "some_dataset"),
-                "some_table",
-            ),
-            "SELECT * FROM `some-project`.`some_dataset`.`some_table`",
-        ),
-        (
-            google.cloud.bigquery.table.TableListItem(
-                {
-                    "tableReference": {
-                        "projectId": "ListedProject",
-                        "datasetId": "ListedDataset",
-                        "tableId": "ListedTable",
-                    }
-                }
-            ),
-            "SELECT * FROM `ListedProject`.`ListedDataset`.`ListedTable`",
-        ),
-    ),
-)
-def test_pyformat_with_table_replaces_variables(table, expected_sql, session=session):
-    pyformat_args = {
-        "table": table,
-        # Unreferenced values of unsupported type shouldn't cause issues.
-        "my_object": object(),
-    }
-    sql = "SELECT * FROM {table}"
-    got_sql = pyformat.pyformat(sql, pyformat_args=pyformat_args, session=session)
-    assert got_sql == expected_sql
+    assert isinstance(result, pandas.Series)

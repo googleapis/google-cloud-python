@@ -18,6 +18,12 @@ from typing import Tuple
 
 import google.cloud.bigquery
 
+_LEGACY_TO_GOOGLESQL_TYPES = {
+    "BOOLEAN": "BOOL",
+    "INTEGER": "INT64",
+    "FLOAT": "FLOAT64",
+}
+
 
 def _type_to_sql(field: google.cloud.bigquery.SchemaField):
     """Turn the type information of the field into SQL.
@@ -26,7 +32,12 @@ def _type_to_sql(field: google.cloud.bigquery.SchemaField):
     """
     if field.field_type.casefold() in ("record", "struct"):
         return _to_struct(field.fields)
-    return field.field_type
+
+    # Map from legacy SQL names (the ones used in the BigQuery schema API) to
+    # the GoogleSQL types. Importantly, FLOAT is from legacy SQL, but not valid
+    # in GoogleSQL. See internal issue b/428190014.
+    type_ = _LEGACY_TO_GOOGLESQL_TYPES.get(field.field_type.upper(), field.field_type)
+    return type_
 
 
 def _field_to_sql(field: google.cloud.bigquery.SchemaField):
