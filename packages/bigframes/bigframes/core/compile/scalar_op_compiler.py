@@ -1498,6 +1498,7 @@ def eq_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
+    x, y = _coerce_comparables(x, y)
     return x == y
 
 
@@ -1507,6 +1508,7 @@ def eq_nulls_match_op(
     y: ibis_types.Value,
 ):
     """Variant of eq_op where nulls match each other. Only use where dtypes are known to be same."""
+    x, y = _coerce_comparables(x, y)
     literal = ibis_types.literal("$NULL_SENTINEL$")
     if hasattr(x, "fill_null"):
         left = x.cast(ibis_dtypes.str).fill_null(literal)
@@ -1523,6 +1525,7 @@ def ne_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
+    x, y = _coerce_comparables(x, y)
     return x != y
 
 
@@ -1532,6 +1535,17 @@ def _null_or_value(value: ibis_types.Value, where_value: ibis_types.BooleanValue
         value,
         ibis_types.null(),
     )
+
+
+def _coerce_comparables(
+    x: ibis_types.Value,
+    y: ibis_types.Value,
+):
+    if x.type().is_boolean() and not y.type().is_boolean():
+        x = x.cast(ibis_dtypes.int64)
+    elif y.type().is_boolean() and not x.type().is_boolean():
+        y = y.cast(ibis_dtypes.int64)
+    return x, y
 
 
 @scalar_op_compiler.register_binary_op(ops.and_op)
@@ -1735,6 +1749,7 @@ def lt_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
+    x, y = _coerce_comparables(x, y)
     return x < y
 
 
@@ -1744,6 +1759,7 @@ def le_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
+    x, y = _coerce_comparables(x, y)
     return x <= y
 
 
@@ -1753,6 +1769,7 @@ def gt_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
+    x, y = _coerce_comparables(x, y)
     return x > y
 
 
@@ -1762,6 +1779,7 @@ def ge_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
+    x, y = _coerce_comparables(x, y)
     return x >= y
 
 
