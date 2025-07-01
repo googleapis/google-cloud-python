@@ -53,8 +53,7 @@ def test_polar_execution_sorted_filtered(session_w_polars, scalars_pandas_df_ind
         .to_pandas()
     )
 
-    # Filter and isnull not supported by polar engine yet, so falls back to bq execution
-    assert session_w_polars._metrics.execution_count == (execution_count_before + 1)
+    assert session_w_polars._metrics.execution_count == execution_count_before
     assert_pandas_df_equal(bf_result, pd_result)
 
 
