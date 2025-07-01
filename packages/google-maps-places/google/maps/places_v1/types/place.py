@@ -89,19 +89,23 @@ class Place(proto.Message):
             and Table B at
             https://developers.google.com/maps/documentation/places/web-service/place-types
         primary_type (str):
-            The primary type of the given result. This
-            type must one of the Places API supported types.
-            For example, "restaurant", "cafe", "airport",
-            etc.  A place can only have a single primary
-            type.  For the complete list of possible values,
-            see Table A and Table B at
-            https://developers.google.com/maps/documentation/places/web-service/place-types
+            The primary type of the given result. This type must be one
+            of the Places API supported types. For example,
+            "restaurant", "cafe", "airport", etc. A place can only have
+            a single primary type. For the complete list of possible
+            values, see Table A and Table B at
+            https://developers.google.com/maps/documentation/places/web-service/place-types.
+            The primary type may be missing if the place's primary type
+            is not a supported type. When a primary type is present, it
+            is always one of the types in the ``types`` field.
         primary_type_display_name (google.type.localized_text_pb2.LocalizedText):
             The display name of the primary type,
             localized to the request language if applicable.
             For the complete list of possible values, see
             Table A and Table B at
-            https://developers.google.com/maps/documentation/places/web-service/place-types
+            https://developers.google.com/maps/documentation/places/web-service/place-types.
+            The primary type may be missing if the place's
+            primary type is not a supported type.
         national_phone_number (str):
             A human-readable phone number for the place,
             in national format.
@@ -494,19 +498,34 @@ class Place(proto.Message):
 
                 This field is a member of `oneof`_ ``_open_now``.
             periods (MutableSequence[google.maps.places_v1.types.Place.OpeningHours.Period]):
-                The periods that this place is open during
-                the week. The periods are in chronological
-                order, starting with Sunday in the place-local
-                timezone. An empty (but not absent) value
-                indicates a place that is never open, e.g.
-                because it is closed temporarily for
-                renovations.
+                The periods that this place is open during the week. The
+                periods are in chronological order, in the place-local
+                timezone. An empty (but not absent) value indicates a place
+                that is never open, e.g. because it is closed temporarily
+                for renovations.
+
+                The starting day of ``periods`` is NOT fixed and should not
+                be assumed to be Sunday. The API determines the start day
+                based on a variety of factors. For example, for a 24/7
+                business, the first period may begin on the day of the
+                request. For other businesses, it might be the first day of
+                the week that they are open.
+
+                NOTE: The ordering of the ``periods`` array is independent
+                of the ordering of the ``weekday_descriptions`` array. Do
+                not assume they will begin on the same day.
             weekday_descriptions (MutableSequence[str]):
-                Localized strings describing the opening
-                hours of this place, one string for each day of
-                the week.  Will be empty if the hours are
-                unknown or could not be converted to localized
-                text. Example: "Sun: 18:00–06:00".
+                Localized strings describing the opening hours of this
+                place, one string for each day of the week.
+
+                NOTE: The order of the days and the start of the week is
+                determined by the locale (language and region). The ordering
+                of the ``periods`` array is independent of the ordering of
+                the ``weekday_descriptions`` array. Do not assume they will
+                begin on the same day.
+
+                Will be empty if the hours are unknown or could not be
+                converted to localized text. Example: "Sun: 18:00–06:00".
             secondary_hours_type (google.maps.places_v1.types.Place.OpeningHours.SecondaryHoursType):
                 A type string used to identify the type of
                 secondary hours.

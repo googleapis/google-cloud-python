@@ -117,9 +117,9 @@ class PlacesGrpcAsyncIOTransport(PlacesTransport):
     """gRPC AsyncIO backend transport for Places.
 
     Service definition for the Places API. Note: every request (except
-    for Autocomplete requests) requires a field mask set outside of the
-    request proto (``all/*``, is not assumed). The field mask can be set
-    via the HTTP header ``X-Goog-FieldMask``. See:
+    for Autocomplete and GetPhotoMedia requests) requires a field mask
+    set outside of the request proto (``all/*``, is not assumed). The
+    field mask can be set via the HTTP header ``X-Goog-FieldMask``. See:
     https://developers.google.com/maps/documentation/places/web-service/choose-fields
 
     This class defines the same methods as the primary client, so the
