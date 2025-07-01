@@ -30,6 +30,7 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet  # type: ignore
 
+from bigframes.core import pyarrow_utils
 import bigframes.core.schema as schemata
 import bigframes.dtypes
 
@@ -113,7 +114,9 @@ class ManagedArrowTable:
         schema = self.data.schema
         if duration_type == "int":
             schema = _schema_durations_to_ints(schema)
-            batches = map(functools.partial(_cast_pa_batch, schema=schema), batches)
+            batches = map(
+                functools.partial(pyarrow_utils.cast_batch, schema=schema), batches
+            )
 
         if offsets_col is not None:
             return schema.append(pa.field(offsets_col, pa.int64())), _append_offsets(
@@ -465,14 +468,6 @@ def _durations_to_ints(type: pa.DataType) -> pa.DataType:
 def _schema_durations_to_ints(schema: pa.Schema) -> pa.Schema:
     return pa.schema(
         pa.field(field.name, _durations_to_ints(field.type)) for field in schema
-    )
-
-
-# TODO: Use RecordBatch.cast once min pyarrow>=16.0
-def _cast_pa_batch(batch: pa.RecordBatch, schema: pa.Schema) -> pa.RecordBatch:
-    return pa.record_batch(
-        [arr.cast(type) for arr, type in zip(batch.columns, schema.types)],
-        schema=schema,
     )
 
 

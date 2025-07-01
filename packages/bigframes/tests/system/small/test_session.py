@@ -54,7 +54,13 @@ all_write_engines = pytest.mark.parametrize(
 def df_and_local_csv(scalars_df_index):
     # The auto detects of BigQuery load job have restrictions to detect the bytes,
     # datetime, numeric and geometry types, so they're skipped here.
-    drop_columns = ["bytes_col", "datetime_col", "numeric_col", "geography_col"]
+    drop_columns = [
+        "bytes_col",
+        "datetime_col",
+        "numeric_col",
+        "geography_col",
+        "duration_col",
+    ]
     scalars_df_index = scalars_df_index.drop(columns=drop_columns)
 
     with tempfile.TemporaryDirectory() as dir:
@@ -68,7 +74,13 @@ def df_and_local_csv(scalars_df_index):
 def df_and_gcs_csv(scalars_df_index, gcs_folder):
     # The auto detects of BigQuery load job have restrictions to detect the bytes,
     # datetime, numeric and geometry types, so they're skipped here.
-    drop_columns = ["bytes_col", "datetime_col", "numeric_col", "geography_col"]
+    drop_columns = [
+        "bytes_col",
+        "datetime_col",
+        "numeric_col",
+        "geography_col",
+        "duration_col",
+    ]
     scalars_df_index = scalars_df_index.drop(columns=drop_columns)
 
     path = gcs_folder + "test_read_csv_w_gcs_csv*.csv"
@@ -1808,6 +1820,7 @@ def test_read_parquet_gcs(
     df_out = df_out.assign(
         datetime_col=df_out["datetime_col"].astype("timestamp[us][pyarrow]"),
         timestamp_col=df_out["timestamp_col"].astype("timestamp[us, tz=UTC][pyarrow]"),
+        duration_col=df_out["duration_col"].astype("duration[us][pyarrow]"),
     )
 
     # Make sure we actually have at least some values before comparing.
@@ -1856,7 +1869,8 @@ def test_read_parquet_gcs_compressed(
     # DATETIME gets loaded as TIMESTAMP in parquet. See:
     # https://cloud.google.com/bigquery/docs/exporting-data#parquet_export_details
     df_out = df_out.assign(
-        datetime_col=df_out["datetime_col"].astype("timestamp[us][pyarrow]")
+        datetime_col=df_out["datetime_col"].astype("timestamp[us][pyarrow]"),
+        duration_col=df_out["duration_col"].astype("duration[us][pyarrow]"),
     )
 
     # Make sure we actually have at least some values before comparing.
@@ -1914,9 +1928,23 @@ def test_read_json_gcs_bq_engine(session, scalars_dfs, gcs_folder):
 
     # The auto detects of BigQuery load job have restrictions to detect the bytes,
     # datetime, numeric and geometry types, so they're skipped here.
-    df = df.drop(columns=["bytes_col", "datetime_col", "numeric_col", "geography_col"])
+    df = df.drop(
+        columns=[
+            "bytes_col",
+            "datetime_col",
+            "numeric_col",
+            "geography_col",
+            "duration_col",
+        ]
+    )
     scalars_df = scalars_df.drop(
-        columns=["bytes_col", "datetime_col", "numeric_col", "geography_col"]
+        columns=[
+            "bytes_col",
+            "datetime_col",
+            "numeric_col",
+            "geography_col",
+            "duration_col",
+        ]
     )
     assert df.shape[0] == scalars_df.shape[0]
     pd.testing.assert_series_equal(
@@ -1949,8 +1977,10 @@ def test_read_json_gcs_default_engine(session, scalars_dfs, gcs_folder):
 
     # The auto detects of BigQuery load job have restrictions to detect the bytes,
     # numeric and geometry types, so they're skipped here.
-    df = df.drop(columns=["bytes_col", "numeric_col", "geography_col"])
-    scalars_df = scalars_df.drop(columns=["bytes_col", "numeric_col", "geography_col"])
+    df = df.drop(columns=["bytes_col", "numeric_col", "geography_col", "duration_col"])
+    scalars_df = scalars_df.drop(
+        columns=["bytes_col", "numeric_col", "geography_col", "duration_col"]
+    )
 
     # pandas read_json does not respect the dtype overrides for these columns
     df = df.drop(columns=["date_col", "datetime_col", "time_col"])

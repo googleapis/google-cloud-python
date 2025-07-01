@@ -21,7 +21,13 @@ def test_df_describe_non_temporal(scalars_dfs):
     pytest.importorskip("pandas", minversion="2.0.0")
     scalars_df, scalars_pandas_df = scalars_dfs
     # excluding temporal columns here because BigFrames cannot perform percentiles operations on them
-    unsupported_columns = ["datetime_col", "timestamp_col", "time_col", "date_col"]
+    unsupported_columns = [
+        "datetime_col",
+        "timestamp_col",
+        "time_col",
+        "date_col",
+        "duration_col",
+    ]
     bf_result = scalars_df.drop(columns=unsupported_columns).describe().to_pandas()
 
     modified_pd_df = scalars_pandas_df.drop(columns=unsupported_columns)

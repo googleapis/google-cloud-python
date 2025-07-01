@@ -50,6 +50,7 @@ class ExecuteResult:
         result_rows = 0
 
         for batch in self._arrow_batches:
+            batch = pyarrow_utils.cast_batch(batch, self.schema.to_pyarrow())
             result_rows += batch.num_rows
 
             maximum_result_rows = bigframes.options.compute.maximum_result_rows

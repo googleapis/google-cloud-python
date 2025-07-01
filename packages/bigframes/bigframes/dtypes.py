@@ -247,6 +247,7 @@ DtypeString = Literal[
     "decimal128(38, 9)[pyarrow]",
     "decimal256(76, 38)[pyarrow]",
     "binary[pyarrow]",
+    "duration[us][pyarrow]",
 ]
 
 DTYPE_STRINGS = typing.get_args(DtypeString)
@@ -420,6 +421,8 @@ BIGFRAMES_STRING_TO_BIGFRAMES["string[pyarrow]"] = STRING_DTYPE
 
 # special case - both "Int64" and "int64[pyarrow]" are accepted
 BIGFRAMES_STRING_TO_BIGFRAMES["int64[pyarrow]"] = INT_DTYPE
+
+BIGFRAMES_STRING_TO_BIGFRAMES["duration[us][pyarrow]"] = TIMEDELTA_DTYPE
 
 # For the purposes of dataframe.memory_usage
 DTYPE_BYTE_SIZES = {

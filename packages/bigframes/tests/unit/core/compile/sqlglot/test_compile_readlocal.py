@@ -24,6 +24,8 @@ pytest.importorskip("pytest_snapshot")
 def test_compile_readlocal(
     scalar_types_pandas_df: pd.DataFrame, compiler_session: bigframes.Session, snapshot
 ):
+    # Durations not yet supported
+    scalar_types_pandas_df = scalar_types_pandas_df.drop(["duration_col"], axis=1)
     bf_df = bpd.DataFrame(scalar_types_pandas_df, session=compiler_session)
     snapshot.assert_match(bf_df.sql, "out.sql")
 

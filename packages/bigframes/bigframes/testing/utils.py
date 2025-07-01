@@ -185,6 +185,16 @@ def convert_pandas_dtypes(df: pd.DataFrame, bytes_col: bool):
             "timestamp_col"
         ]
 
+    if not isinstance(df["duration_col"].dtype, pd.ArrowDtype):
+        df["duration_col"] = df["duration_col"].astype(pd.Int64Dtype())
+        arrow_table = pa.Table.from_pandas(
+            pd.DataFrame(df, columns=["duration_col"]),
+            schema=pa.schema([("duration_col", pa.duration("us"))]),
+        )
+        df["duration_col"] = arrow_table.to_pandas(types_mapper=pd.ArrowDtype)[
+            "duration_col"
+        ]
+
     # Convert geography types columns.
     if "geography_col" in df.columns:
         df["geography_col"] = df["geography_col"].astype(

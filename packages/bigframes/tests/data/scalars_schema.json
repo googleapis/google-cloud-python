@@ -71,5 +71,11 @@
       "mode": "NULLABLE",
       "name": "timestamp_col",
       "type": "TIMESTAMP"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "duration_col",
+      "type": "INTEGER",
+      "description": "#microseconds"
     }
   ]
