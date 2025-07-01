@@ -1149,3 +1149,22 @@ def test_object_retention_lock(storage_client, buckets_to_delete, blobs_to_delet
     blob.retention.retain_until_time = None
     blob.patch(override_unlocked_retention=True)
     assert blob.retention.mode is None
+
+
+def test_blob_download_as_bytes_single_shot_download(
+    shared_bucket, blobs_to_delete, file_data, service_account
+):
+    blob_name = f"download-single-shot-{uuid.uuid4().hex}"
+    info = file_data["simple"]
+    with open(info["path"], "rb") as f:
+        payload = f.read()
+
+    blob = shared_bucket.blob(blob_name)
+    blob.upload_from_string(payload)
+    blobs_to_delete.append(blob)
+
+    result_regular_download = blob.download_as_bytes(single_shot_download=False)
+    assert result_regular_download == payload
+
+    result_single_shot_download = blob.download_as_bytes(single_shot_download=True)
+    assert result_single_shot_download == payload

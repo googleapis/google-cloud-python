@@ -213,6 +213,25 @@ class TestDownload(object):
             in error.args[0]
         )
 
+    @pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
+    def test__write_to_stream_single_shot_download(self, checksum):
+        stream = io.BytesIO()
+        download = download_mod.Download(
+            EXAMPLE_URL, stream=stream, checksum=checksum, single_shot_download=True
+        )
+
+        chunk1 = b"all at once!"
+        response = _mock_response(chunks=[chunk1], headers={})
+        ret_val = download._write_to_stream(response)
+
+        assert ret_val is None
+        assert stream.getvalue() == chunk1
+        assert download._bytes_downloaded == len(chunk1)
+
+        response.__enter__.assert_called_once_with()
+        response.__exit__.assert_called_once_with(None, None, None)
+        response.raw.read.assert_called_once_with(decode_content=True)
+
     def _consume_helper(
         self,
         stream=None,
@@ -691,6 +710,24 @@ class TestRawDownload(object):
             f"The download request read {download._bytes_downloaded} bytes of data."
             in error.args[0]
         )
+
+    def test__write_to_stream_single_shot_download(self):
+        stream = io.BytesIO()
+        download = download_mod.RawDownload(
+            EXAMPLE_URL, stream=stream, single_shot_download=True
+        )
+
+        chunk1 = b"all at once, raw!"
+        response = _mock_raw_response(chunks=[chunk1], headers={})
+        ret_val = download._write_to_stream(response)
+
+        assert ret_val is None
+        assert stream.getvalue() == chunk1
+        assert download._bytes_downloaded == len(chunk1)
+
+        response.__enter__.assert_called_once_with()
+        response.__exit__.assert_called_once_with(None, None, None)
+        response.raw.read.assert_called_once_with()
 
     def _consume_helper(
         self,
@@ -1333,6 +1370,7 @@ def _mock_response(status_code=http.client.OK, chunks=None, headers=None):
         response.__enter__.return_value = response
         response.__exit__.return_value = None
         response.iter_content.return_value = iter(chunks)
+        response.raw.read = mock.Mock(side_effect=lambda *args, **kwargs: b"".join(chunks))
         return response
     else:
         return mock.Mock(
@@ -1348,6 +1386,7 @@ def _mock_raw_response(status_code=http.client.OK, chunks=(), headers=None):
 
     mock_raw = mock.Mock(headers=headers, spec=["stream"])
     mock_raw.stream.return_value = iter(chunks)
+    mock_raw.read = mock.Mock(return_value=b"".join(chunks))
     response = mock.MagicMock(
         headers=headers,
         status_code=int(status_code),

@@ -35,6 +35,7 @@ VALID_DOWNLOAD_KWARGS = {
     "timeout",
     "retry",
     "raw_download",
+    "single_shot_download",
 }
 
 # Valid keyword arguments for upload methods.
@@ -99,8 +100,9 @@ class BlobReader(io.BufferedIOBase):
         - ``if_metageneration_not_match``
         - ``timeout``
         - ``raw_download``
+        - ``single_shot_download``
 
-        Note that download_kwargs (excluding ``raw_download``) are also applied to blob.reload(),
+        Note that download_kwargs (excluding ``raw_download`` and ``single_shot_download``) are also applied to blob.reload(),
         if a reload is needed during seek().
     """
 
@@ -177,7 +179,9 @@ class BlobReader(io.BufferedIOBase):
 
         if self._blob.size is None:
             reload_kwargs = {
-                k: v for k, v in self._download_kwargs.items() if k != "raw_download"
+                k: v
+                for k, v in self._download_kwargs.items()
+                if (k != "raw_download" and k != "single_shot_download")
             }
             self._blob.reload(**reload_kwargs)
 

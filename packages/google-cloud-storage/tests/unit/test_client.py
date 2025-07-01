@@ -1866,6 +1866,7 @@ class TestClient(unittest.TestCase):
             checksum="auto",
             timeout=_DEFAULT_TIMEOUT,
             retry=DEFAULT_RETRY,
+            single_shot_download=False,
         )
 
     def test_download_blob_to_file_with_uri(self):
@@ -1905,6 +1906,7 @@ class TestClient(unittest.TestCase):
             checksum="auto",
             timeout=_DEFAULT_TIMEOUT,
             retry=DEFAULT_RETRY,
+            single_shot_download=False,
         )
 
     def test_download_blob_to_file_with_invalid_uri(self):
@@ -2032,6 +2034,7 @@ class TestClient(unittest.TestCase):
             checksum="auto",
             timeout=_DEFAULT_TIMEOUT,
             retry=expected_retry,
+            single_shot_download=False,
         )
 
     def test_download_blob_to_file_wo_chunks_wo_raw(self):

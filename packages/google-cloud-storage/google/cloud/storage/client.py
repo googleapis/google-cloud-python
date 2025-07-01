@@ -1143,6 +1143,7 @@ class Client(ClientWithProject):
         timeout=_DEFAULT_TIMEOUT,
         checksum="auto",
         retry=DEFAULT_RETRY,
+        single_shot_download=False,
     ):
         """Download the contents of a blob object or blob URI into a file-like object.
 
@@ -1216,6 +1217,9 @@ class Client(ClientWithProject):
                 See the retry.py source code and docstrings in this package
                 (google.cloud.storage.retry) for information on retry types and how
                 to configure them.
+
+            single_shot_download (bool):
+                (Optional) If true, download the object in a single request.
         """
         with create_trace_span(name="Storage.Client.downloadBlobToFile"):
             if not isinstance(blob_or_uri, Blob):
@@ -1236,6 +1240,7 @@ class Client(ClientWithProject):
                 timeout=timeout,
                 checksum=checksum,
                 retry=retry,
+                single_shot_download=single_shot_download,
             )
 
     def list_blobs(
