@@ -4748,7 +4748,7 @@ class DataFrame(generic.NDFrame):
             right:
                 Object to merge with.
             how:
-                ``{'left', 'right', 'outer', 'inner'}, default 'inner'``
+                ``{'left', 'right', 'outer', 'inner', 'cross'}, default 'inner'``
                 Type of merge to be performed.
                 ``left``: use only keys from left frame, similar to a SQL left outer join;
                 preserve key order.

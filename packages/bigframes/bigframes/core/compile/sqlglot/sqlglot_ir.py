@@ -26,6 +26,7 @@ import sqlglot.expressions as sge
 
 from bigframes import dtypes
 from bigframes.core import guid
+from bigframes.core.compile.sqlglot.expressions import typed_expr
 import bigframes.core.compile.sqlglot.sqlglot_types as sgt
 import bigframes.core.local_data as local_data
 import bigframes.core.schema as bf_schema
@@ -212,7 +213,8 @@ class SQLGlotIR:
             for id, expr in selected_cols
         ]
 
-        new_expr = self._encapsulate_as_cte().select(*selections, append=False)
+        new_expr, _ = self._encapsulate_as_cte()
+        new_expr = new_expr.select(*selections, append=False)
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
     def order_by(
@@ -247,7 +249,8 @@ class SQLGlotIR:
             )
             for id, expr in projected_cols
         ]
-        new_expr = self._encapsulate_as_cte().select(*projected_cols_expr, append=True)
+        new_expr, _ = self._encapsulate_as_cte()
+        new_expr = new_expr.select(*projected_cols_expr, append=True)
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
     def filter(
@@ -255,10 +258,42 @@ class SQLGlotIR:
         condition: sge.Expression,
     ) -> SQLGlotIR:
         """Filters the query with the given condition."""
-        new_expr = self._encapsulate_as_cte()
+        new_expr, _ = self._encapsulate_as_cte()
         return SQLGlotIR(
             expr=new_expr.where(condition, append=False), uid_gen=self.uid_gen
         )
+
+    def join(
+        self,
+        right: SQLGlotIR,
+        join_type: typing.Literal["inner", "outer", "left", "right", "cross"],
+        conditions: tuple[tuple[typed_expr.TypedExpr, typed_expr.TypedExpr], ...],
+        *,
+        joins_nulls: bool = True,
+    ) -> SQLGlotIR:
+        """Joins the current query with another SQLGlotIR instance."""
+        left_select, left_table = self._encapsulate_as_cte()
+        right_select, right_table = right._encapsulate_as_cte()
+
+        left_ctes = left_select.args.pop("with", [])
+        right_ctes = right_select.args.pop("with", [])
+        merged_ctes = [*left_ctes, *right_ctes]
+
+        join_conditions = [
+            _join_condition(left, right, joins_nulls) for left, right in conditions
+        ]
+        join_on = sge.And(expressions=join_conditions) if join_conditions else None
+
+        join_type_str = join_type if join_type != "outer" else "full outer"
+        new_expr = (
+            sge.Select()
+            .select(sge.Star())
+            .from_(left_table)
+            .join(right_table, on=join_on, join_type=join_type_str)
+        )
+        new_expr.set("with", sge.With(expressions=merged_ctes))
+
+        return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
     def insert(
         self,
@@ -320,12 +355,12 @@ class SQLGlotIR:
             offset=offset,
         )
         selection = sge.Star(replace=[unnested_column_alias.as_(column)])
+
         # TODO: "CROSS" if not keep_empty else "LEFT"
         # TODO: overlaps_with_parent to replace existing column.
-        new_expr = (
-            self._encapsulate_as_cte()
-            .select(selection, append=False)
-            .join(unnest_expr, join_type="CROSS")
+        new_expr, _ = self._encapsulate_as_cte()
+        new_expr = new_expr.select(selection, append=False).join(
+            unnest_expr, join_type="CROSS"
         )
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
@@ -373,16 +408,15 @@ class SQLGlotIR:
                 for column in columns
             ]
         )
-        new_expr = (
-            self._encapsulate_as_cte()
-            .select(selection, append=False)
-            .join(unnest_expr, join_type="CROSS")
+        new_expr, _ = self._encapsulate_as_cte()
+        new_expr = new_expr.select(selection, append=False).join(
+            unnest_expr, join_type="CROSS"
         )
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
     def _encapsulate_as_cte(
         self,
-    ) -> sge.Select:
+    ) -> typing.Tuple[sge.Select, sge.Table]:
         """Transforms a given sge.Select query by pushing its main SELECT statement
         into a new CTE and then generates a 'SELECT * FROM new_cte_name'
         for the new query."""
@@ -397,11 +431,10 @@ class SQLGlotIR:
             alias=new_cte_name,
         )
         new_with_clause = sge.With(expressions=[*existing_ctes, new_cte])
-        new_select_expr = (
-            sge.Select().select(sge.Star()).from_(sge.Table(this=new_cte_name))
-        )
+        new_table_expr = sge.Table(this=new_cte_name)
+        new_select_expr = sge.Select().select(sge.Star()).from_(new_table_expr)
         new_select_expr.set("with", new_with_clause)
-        return new_select_expr
+        return new_select_expr, new_table_expr
 
 
 def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
@@ -451,3 +484,11 @@ def _table(table: bigquery.TableReference) -> sge.Table:
         db=sg.to_identifier(table.dataset_id, quoted=True),
         catalog=sg.to_identifier(table.project, quoted=True),
     )
+
+
+def _join_condition(
+    left: typed_expr.TypedExpr,
+    right: typed_expr.TypedExpr,
+    joins_nulls: bool,
+) -> typing.Union[sge.EQ, sge.And]:
+    return sge.EQ(this=left.expr, expression=right.expr)

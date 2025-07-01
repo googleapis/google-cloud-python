@@ -3369,8 +3369,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             "right",
             "cross",
         ] = "inner",
-        # TODO(garrettwu): Currently can take inner, outer, left and right. To support
-        # cross joins
         on: Union[blocks.Label, Sequence[blocks.Label], None] = None,
         *,
         left_on: Union[blocks.Label, Sequence[blocks.Label], None] = None,

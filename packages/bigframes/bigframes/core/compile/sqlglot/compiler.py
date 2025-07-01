@@ -22,6 +22,7 @@ import sqlglot.expressions as sge
 
 from bigframes.core import expression, guid, identifiers, nodes, pyarrow_utils, rewrite
 from bigframes.core.compile import configs
+from bigframes.core.compile.sqlglot.expressions import typed_expr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 import bigframes.core.compile.sqlglot.sqlglot_ir as ir
 import bigframes.core.ordering as bf_ordering
@@ -217,6 +218,29 @@ class SQLGlotCompiler:
     ) -> ir.SQLGlotIR:
         condition = scalar_compiler.compile_scalar_expression(node.predicate)
         return child.filter(condition)
+
+    @_compile_node.register
+    def compile_join(
+        self, node: nodes.JoinNode, left: ir.SQLGlotIR, right: ir.SQLGlotIR
+    ) -> ir.SQLGlotIR:
+        conditions = tuple(
+            (
+                typed_expr.TypedExpr(
+                    scalar_compiler.compile_scalar_expression(left), left.output_type
+                ),
+                typed_expr.TypedExpr(
+                    scalar_compiler.compile_scalar_expression(right), right.output_type
+                ),
+            )
+            for left, right in node.conditions
+        )
+
+        return left.join(
+            right,
+            join_type=node.type,
+            conditions=conditions,
+            joins_nulls=node.joins_nulls,
+        )
 
     @_compile_node.register
     def compile_concat(
