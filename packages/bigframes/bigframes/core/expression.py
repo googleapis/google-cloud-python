@@ -429,55 +429,27 @@ class DerefOp(Expression):
 
 
 @dataclasses.dataclass(frozen=True)
-class SchemaFieldRefExpression(Expression):
-    """An expression representing a schema field. This is essentially a DerefOp with input schema bound."""
+class ResolvedDerefOp(DerefOp):
+    """An expression that refers to a column by ID and resolved with schema bound."""
 
-    field: field.Field
+    dtype: dtypes.Dtype
+    is_nullable: bool
 
-    @property
-    def column_references(self) -> typing.Tuple[ids.ColumnId, ...]:
-        return (self.field.id,)
-
-    @property
-    def is_const(self) -> bool:
-        return False
-
-    @property
-    def nullable(self) -> bool:
-        return self.field.nullable
+    @classmethod
+    def from_field(cls, f: field.Field):
+        return cls(id=f.id, dtype=f.dtype, is_nullable=f.nullable)
 
     @property
     def is_resolved(self) -> bool:
         return True
 
     @property
+    def nullable(self) -> bool:
+        return self.is_nullable
+
+    @property
     def output_type(self) -> dtypes.ExpressionType:
-        return self.field.dtype
-
-    def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
-    ) -> Expression:
-        return self
-
-    def bind_refs(
-        self,
-        bindings: Mapping[ids.ColumnId, Expression],
-        allow_partial_bindings: bool = False,
-    ) -> Expression:
-        if self.field.id in bindings.keys():
-            return bindings[self.field.id]
-        return self
-
-    @property
-    def is_bijective(self) -> bool:
-        return True
-
-    @property
-    def is_identity(self) -> bool:
-        return True
-
-    def transform_children(self, t: Callable[[Expression], Expression]) -> Expression:
-        return self
+        return self.dtype
 
 
 @dataclasses.dataclass(frozen=True)
@@ -589,7 +561,7 @@ def bind_schema_fields(
         return expr
 
     expr_by_id = {
-        id: SchemaFieldRefExpression(field) for id, field in field_by_id.items()
+        id: ResolvedDerefOp.from_field(field) for id, field in field_by_id.items()
     }
     return expr.bind_refs(expr_by_id)
 

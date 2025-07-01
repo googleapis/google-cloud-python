@@ -52,4 +52,17 @@ def bind_schema_to_node(
 
         return dataclasses.replace(node, by=tuple(bound_bys))
 
+    if isinstance(node, nodes.JoinNode):
+        conditions = tuple(
+            (
+                ex.ResolvedDerefOp.from_field(node.left_child.field_by_id[left.id]),
+                ex.ResolvedDerefOp.from_field(node.right_child.field_by_id[right.id]),
+            )
+            for left, right in node.conditions
+        )
+        return dataclasses.replace(
+            node,
+            conditions=conditions,
+        )
+
     return node
