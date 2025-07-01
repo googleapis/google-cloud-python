@@ -112,6 +112,10 @@ class _BaseCustomTargetingValueServiceRestTransport(
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
+                    "uri": "/v1/{name=networks/*/customTargetingValues/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1/{name=networks/*/customTargetingKeys/*/customTargetingValues/*}",
                 },
             ]
@@ -163,6 +167,10 @@ class _BaseCustomTargetingValueServiceRestTransport(
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
+                    "uri": "/v1/{parent=networks/*}/customTargetingValues",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1/{parent=networks/*/customTargetingKeys/*}/customTargetingValues",
                 },
             ]
@@ -205,10 +213,6 @@ class _BaseCustomTargetingValueServiceRestTransport(
                 {
                     "method": "get",
                     "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
             return http_options

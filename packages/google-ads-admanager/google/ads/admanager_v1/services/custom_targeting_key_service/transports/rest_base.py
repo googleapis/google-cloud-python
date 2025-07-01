@@ -200,10 +200,6 @@ class _BaseCustomTargetingKeyServiceRestTransport(CustomTargetingKeyServiceTrans
                     "method": "get",
                     "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                 },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
-                },
             ]
             return http_options
 

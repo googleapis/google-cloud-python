@@ -56,6 +56,8 @@ class AdUnit(proto.Message):
             a parent except for the root ad unit, which is created by
             Google. Format:
             "networks/{network_code}/adUnits/{ad_unit_id}".
+
+            This field is a member of `oneof`_ ``_parent_ad_unit``.
         parent_path (MutableSequence[google.ads.admanager_v1.types.AdUnitParent]):
             Output only. The path to this AdUnit in the
             ad unit hierarchy represented as a list from the
@@ -64,25 +66,36 @@ class AdUnit(proto.Message):
         display_name (str):
             Required. The display name of the ad unit.
             Its maximum length is 255 characters.
+
+            This field is a member of `oneof`_ ``_display_name``.
         ad_unit_code (str):
-            Immutable. A string used to uniquely identify
-            the ad unit for the purposes of serving the ad.
-            This attribute is optional and can be set during
-            ad unit creation. If it is not provided, it will
-            be assigned by Google based on the ad unit ID.
+            Optional. Immutable. A string used to
+            uniquely identify the ad unit for the purposes
+            of serving the ad. This attribute can be set
+            during ad unit creation. If it is not provided,
+            it will be assigned by Google based on the ad
+            unit ID.
+
+            This field is a member of `oneof`_ ``_ad_unit_code``.
         status (google.ads.admanager_v1.types.AdUnitStatusEnum.AdUnitStatus):
             Output only. The status of this ad unit.  It
             defaults to ACTIVE.
+
+            This field is a member of `oneof`_ ``_status``.
         applied_target_window (google.ads.admanager_v1.types.TargetWindowEnum.TargetWindow):
             Optional. The target window directly applied
             to this AdUnit. If this field is not set, this
             AdUnit uses the target window specified in
             effectiveTargetWindow.
+
+            This field is a member of `oneof`_ ``_applied_target_window``.
         effective_target_window (google.ads.admanager_v1.types.TargetWindowEnum.TargetWindow):
             Output only. Non-empty default. The target
             window of this AdUnit. This value is inherited
             from ancestor AdUnits and defaults to TOP if no
             AdUnit in the hierarchy specifies it.
+
+            This field is a member of `oneof`_ ``_effective_target_window``.
         applied_teams (MutableSequence[str]):
             Optional. The resource names of Teams directly applied to
             this AdUnit. Format:
@@ -94,6 +107,8 @@ class AdUnit(proto.Message):
         description (str):
             Optional. A description of the ad unit. The
             maximum length is 65,535 characters.
+
+            This field is a member of `oneof`_ ``_description``.
         explicitly_targeted (bool):
             Optional. If this field is set to true, then
             the AdUnit will not be implicitly targeted when
@@ -101,12 +116,18 @@ class AdUnit(proto.Message):
             target such an AdUnit or else no line items will
             serve to it. This feature is only available for
             Ad Manager 360 accounts.
+
+            This field is a member of `oneof`_ ``_explicitly_targeted``.
         has_children (bool):
             Output only. This field is set to true if the
             ad unit has any children.
+
+            This field is a member of `oneof`_ ``_has_children``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this AdUnit was last
             modified.
+
+            This field is a member of `oneof`_ ``_update_time``.
         ad_unit_sizes (MutableSequence[google.ads.admanager_v1.types.AdUnitSize]):
             Optional. The sizes that can be served inside
             this ad unit.
@@ -114,11 +135,15 @@ class AdUnit(proto.Message):
             Optional. Determines what set top box video
             on demand channel this ad unit corresponds to in
             an external set top box ad campaign system.
+
+            This field is a member of `oneof`_ ``_external_set_top_box_channel_id``.
         refresh_delay (google.protobuf.duration_pb2.Duration):
             Optional. The duration after which an Ad Unit
             will automatically refresh. This is only valid
             for ad units in mobile apps. If not set, the ad
             unit will not refresh.
+
+            This field is a member of `oneof`_ ``_refresh_delay``.
         applied_labels (MutableSequence[google.ads.admanager_v1.types.AppliedLabel]):
             Optional. The set of labels applied directly
             to this ad unit.
@@ -127,8 +152,7 @@ class AdUnit(proto.Message):
             applied directly to the ad unit as well as those
             inherited from the parent ad units. If a label
             has been negated, only the negated label is
-            returned. This field is readonly and is assigned
-            by Google.
+            returned. This attribute is assigned by Google.
         applied_label_frequency_caps (MutableSequence[google.ads.admanager_v1.types.LabelFrequencyCap]):
             Optional. The set of label frequency caps
             applied directly to this ad unit. There is a
@@ -138,14 +162,15 @@ class AdUnit(proto.Message):
             directly to the ad unit as well as those
             inherited from parent ad units.
         smart_size_mode (google.ads.admanager_v1.types.SmartSizeModeEnum.SmartSizeMode):
-            Optional. The smart size mode for this ad
-            unit. This attribute is optional and defaults to
-            SmartSizeMode.NONE for fixed sizes.
+            Optional. Non-empty default. The smart size
+            mode for this ad unit. This attribute defaults
+            to SmartSizeMode.NONE for fixed sizes.
+
+            This field is a member of `oneof`_ ``_smart_size_mode``.
         applied_adsense_enabled (bool):
             Optional. The value of AdSense enabled
-            directly applied to this ad unit. This attribute
-            is optional and if not specified this ad unit
-            will inherit the value of
+            directly applied to this ad unit. If not
+            specified this ad unit will inherit the value of
             effectiveAdsenseEnabled from its ancestors.
 
             This field is a member of `oneof`_ ``_applied_adsense_enabled``.
@@ -157,6 +182,8 @@ class AdUnit(proto.Message):
             one has been set. If no ancestor of the ad unit
             has set appliedAdsenseEnabled, the attribute is
             defaulted to true.
+
+            This field is a member of `oneof`_ ``_effective_adsense_enabled``.
     """
 
     name: str = proto.Field(
@@ -170,6 +197,7 @@ class AdUnit(proto.Message):
     parent_ad_unit: str = proto.Field(
         proto.STRING,
         number=10,
+        optional=True,
     )
     parent_path: MutableSequence["AdUnitParent"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -179,24 +207,29 @@ class AdUnit(proto.Message):
     display_name: str = proto.Field(
         proto.STRING,
         number=9,
+        optional=True,
     )
     ad_unit_code: str = proto.Field(
         proto.STRING,
         number=2,
+        optional=True,
     )
     status: ad_unit_enums.AdUnitStatusEnum.AdUnitStatus = proto.Field(
         proto.ENUM,
         number=13,
+        optional=True,
         enum=ad_unit_enums.AdUnitStatusEnum.AdUnitStatus,
     )
     applied_target_window: ad_unit_enums.TargetWindowEnum.TargetWindow = proto.Field(
         proto.ENUM,
         number=44,
+        optional=True,
         enum=ad_unit_enums.TargetWindowEnum.TargetWindow,
     )
     effective_target_window: ad_unit_enums.TargetWindowEnum.TargetWindow = proto.Field(
         proto.ENUM,
         number=45,
+        optional=True,
         enum=ad_unit_enums.TargetWindowEnum.TargetWindow,
     )
     applied_teams: MutableSequence[str] = proto.RepeatedField(
@@ -210,18 +243,22 @@ class AdUnit(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=5,
+        optional=True,
     )
     explicitly_targeted: bool = proto.Field(
         proto.BOOL,
         number=6,
+        optional=True,
     )
     has_children: bool = proto.Field(
         proto.BOOL,
         number=7,
+        optional=True,
     )
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=8,
+        optional=True,
         message=timestamp_pb2.Timestamp,
     )
     ad_unit_sizes: MutableSequence["AdUnitSize"] = proto.RepeatedField(
@@ -232,10 +269,12 @@ class AdUnit(proto.Message):
     external_set_top_box_channel_id: str = proto.Field(
         proto.STRING,
         number=17,
+        optional=True,
     )
     refresh_delay: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=19,
+        optional=True,
         message=duration_pb2.Duration,
     )
     applied_labels: MutableSequence[applied_label.AppliedLabel] = proto.RepeatedField(
@@ -267,6 +306,7 @@ class AdUnit(proto.Message):
     smart_size_mode: ad_unit_enums.SmartSizeModeEnum.SmartSizeMode = proto.Field(
         proto.ENUM,
         number=25,
+        optional=True,
         enum=ad_unit_enums.SmartSizeModeEnum.SmartSizeMode,
     )
     applied_adsense_enabled: bool = proto.Field(
@@ -277,6 +317,7 @@ class AdUnit(proto.Message):
     effective_adsense_enabled: bool = proto.Field(
         proto.BOOL,
         number=27,
+        optional=True,
     )
 
 

@@ -21,7 +21,7 @@ from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.ads.admanager_v1.types import report_service
+from google.ads.admanager_v1.types import report_messages, report_service
 
 from .base import DEFAULT_CLIENT_INFO, ReportServiceTransport
 
@@ -397,10 +397,6 @@ class _BaseReportServiceRestTransport(ReportServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
                 },
             ]
             return http_options

@@ -225,13 +225,11 @@ class CustomTargetingValueServiceClient(
     @staticmethod
     def custom_targeting_value_path(
         network_code: str,
-        custom_targeting_key: str,
         custom_targeting_value: str,
     ) -> str:
         """Returns a fully-qualified custom_targeting_value string."""
-        return "networks/{network_code}/customTargetingKeys/{custom_targeting_key}/customTargetingValues/{custom_targeting_value}".format(
+        return "networks/{network_code}/customTargetingValues/{custom_targeting_value}".format(
             network_code=network_code,
-            custom_targeting_key=custom_targeting_key,
             custom_targeting_value=custom_targeting_value,
         )
 
@@ -239,9 +237,24 @@ class CustomTargetingValueServiceClient(
     def parse_custom_targeting_value_path(path: str) -> Dict[str, str]:
         """Parses a custom_targeting_value path into its component segments."""
         m = re.match(
-            r"^networks/(?P<network_code>.+?)/customTargetingKeys/(?P<custom_targeting_key>.+?)/customTargetingValues/(?P<custom_targeting_value>.+?)$",
+            r"^networks/(?P<network_code>.+?)/customTargetingValues/(?P<custom_targeting_value>.+?)$",
             path,
         )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def network_path(
+        network_code: str,
+    ) -> str:
+        """Returns a fully-qualified network string."""
+        return "networks/{network_code}".format(
+            network_code=network_code,
+        )
+
+    @staticmethod
+    def parse_network_path(path: str) -> Dict[str, str]:
+        """Parses a network path into its component segments."""
+        m = re.match(r"^networks/(?P<network_code>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -792,7 +805,7 @@ class CustomTargetingValueServiceClient(
             name (str):
                 Required. The resource name of the CustomTargetingValue.
                 Format:
-                ``networks/{network_code}/customTargetingKeys/{custom_targeting_key_id}/customTargetingValues/{custom_targeting_value_id}``
+                ``networks/{network_code}/customTargetingValues/{custom_targeting_value_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -907,7 +920,7 @@ class CustomTargetingValueServiceClient(
             parent (str):
                 Required. The parent, which owns this collection of
                 CustomTargetingValues. Format:
-                ``networks/{network_code}/customTargetingKeys/{custom_targeting_key_id}``
+                ``networks/{network_code}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

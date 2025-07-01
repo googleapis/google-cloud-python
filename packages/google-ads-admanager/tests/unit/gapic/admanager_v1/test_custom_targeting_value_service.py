@@ -1149,9 +1149,7 @@ def test_get_custom_targeting_value_rest_flattened():
         return_value = custom_targeting_value_messages.CustomTargetingValue()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "networks/sample1/customTargetingKeys/sample2/customTargetingValues/sample3"
-        }
+        sample_request = {"name": "networks/sample1/customTargetingValues/sample2"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -1178,8 +1176,7 @@ def test_get_custom_targeting_value_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=networks/*/customTargetingKeys/*/customTargetingValues/*}"
-            % client.transport._host,
+            "%s/v1/{name=networks/*/customTargetingValues/*}" % client.transport._host,
             args[1],
         )
 
@@ -1363,7 +1360,7 @@ def test_list_custom_targeting_values_rest_flattened():
         )
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "networks/sample1/customTargetingKeys/sample2"}
+        sample_request = {"parent": "networks/sample1"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -1392,8 +1389,7 @@ def test_list_custom_targeting_values_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=networks/*/customTargetingKeys/*}/customTargetingValues"
-            % client.transport._host,
+            "%s/v1/{parent=networks/*}/customTargetingValues" % client.transport._host,
             args[1],
         )
 
@@ -1464,7 +1460,7 @@ def test_list_custom_targeting_values_rest_pager(transport: str = "rest"):
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {"parent": "networks/sample1/customTargetingKeys/sample2"}
+        sample_request = {"parent": "networks/sample1"}
 
         pager = client.list_custom_targeting_values(request=sample_request)
 
@@ -1569,9 +1565,7 @@ def test_get_custom_targeting_value_rest_bad_request(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "networks/sample1/customTargetingKeys/sample2/customTargetingValues/sample3"
-    }
+    request_init = {"name": "networks/sample1/customTargetingValues/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1602,9 +1596,7 @@ def test_get_custom_targeting_value_rest_call_success(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "networks/sample1/customTargetingKeys/sample2/customTargetingValues/sample3"
-    }
+    request_init = {"name": "networks/sample1/customTargetingValues/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -1612,6 +1604,7 @@ def test_get_custom_targeting_value_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = custom_targeting_value_messages.CustomTargetingValue(
             name="name_value",
+            custom_targeting_key="custom_targeting_key_value",
             ad_tag_name="ad_tag_name_value",
             display_name="display_name_value",
             match_type=custom_targeting_value_enums.CustomTargetingValueMatchTypeEnum.CustomTargetingValueMatchType.EXACT,
@@ -1635,6 +1628,7 @@ def test_get_custom_targeting_value_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, custom_targeting_value_messages.CustomTargetingValue)
     assert response.name == "name_value"
+    assert response.custom_targeting_key == "custom_targeting_key_value"
     assert response.ad_tag_name == "ad_tag_name_value"
     assert response.display_name == "display_name_value"
     assert (
@@ -1724,7 +1718,7 @@ def test_list_custom_targeting_values_rest_bad_request(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1/customTargetingKeys/sample2"}
+    request_init = {"parent": "networks/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -1755,7 +1749,7 @@ def test_list_custom_targeting_values_rest_call_success(request_type):
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1/customTargetingKeys/sample2"}
+    request_init = {"parent": "networks/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2033,7 +2027,7 @@ def test_custom_targeting_value_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/admanager",),
             quota_project_id="octopus",
         )
 
@@ -2056,7 +2050,7 @@ def test_custom_targeting_value_service_auth_adc():
         CustomTargetingValueServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=(),
+            default_scopes=("https://www.googleapis.com/auth/admanager",),
             quota_project_id=None,
         )
 
@@ -2170,29 +2164,48 @@ def test_parse_custom_targeting_key_path():
 
 def test_custom_targeting_value_path():
     network_code = "oyster"
-    custom_targeting_key = "nudibranch"
-    custom_targeting_value = "cuttlefish"
-    expected = "networks/{network_code}/customTargetingKeys/{custom_targeting_key}/customTargetingValues/{custom_targeting_value}".format(
-        network_code=network_code,
-        custom_targeting_key=custom_targeting_key,
-        custom_targeting_value=custom_targeting_value,
+    custom_targeting_value = "nudibranch"
+    expected = (
+        "networks/{network_code}/customTargetingValues/{custom_targeting_value}".format(
+            network_code=network_code,
+            custom_targeting_value=custom_targeting_value,
+        )
     )
     actual = CustomTargetingValueServiceClient.custom_targeting_value_path(
-        network_code, custom_targeting_key, custom_targeting_value
+        network_code, custom_targeting_value
     )
     assert expected == actual
 
 
 def test_parse_custom_targeting_value_path():
     expected = {
-        "network_code": "mussel",
-        "custom_targeting_key": "winkle",
-        "custom_targeting_value": "nautilus",
+        "network_code": "cuttlefish",
+        "custom_targeting_value": "mussel",
     }
     path = CustomTargetingValueServiceClient.custom_targeting_value_path(**expected)
 
     # Check that the path construction is reversible.
     actual = CustomTargetingValueServiceClient.parse_custom_targeting_value_path(path)
+    assert expected == actual
+
+
+def test_network_path():
+    network_code = "winkle"
+    expected = "networks/{network_code}".format(
+        network_code=network_code,
+    )
+    actual = CustomTargetingValueServiceClient.network_path(network_code)
+    assert expected == actual
+
+
+def test_parse_network_path():
+    expected = {
+        "network_code": "nautilus",
+    }
+    path = CustomTargetingValueServiceClient.network_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CustomTargetingValueServiceClient.parse_network_path(path)
     assert expected == actual
 
 

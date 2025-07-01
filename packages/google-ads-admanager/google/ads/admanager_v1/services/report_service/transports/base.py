@@ -27,7 +27,7 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.ads.admanager_v1 import gapic_version as package_version
-from google.ads.admanager_v1.types import report_service
+from google.ads.admanager_v1.types import report_messages, report_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -40,7 +40,7 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class ReportServiceTransport(abc.ABC):
     """Abstract transport class for ReportService."""
 
-    AUTH_SCOPES = ()
+    AUTH_SCOPES = ("https://www.googleapis.com/auth/admanager",)
 
     DEFAULT_HOST: str = "admanager.googleapis.com"
 
@@ -189,7 +189,7 @@ class ReportServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [report_service.GetReportRequest],
-        Union[report_service.Report, Awaitable[report_service.Report]],
+        Union[report_messages.Report, Awaitable[report_messages.Report]],
     ]:
         raise NotImplementedError()
 
@@ -210,7 +210,7 @@ class ReportServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [report_service.CreateReportRequest],
-        Union[report_service.Report, Awaitable[report_service.Report]],
+        Union[report_messages.Report, Awaitable[report_messages.Report]],
     ]:
         raise NotImplementedError()
 
@@ -219,7 +219,7 @@ class ReportServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [report_service.UpdateReportRequest],
-        Union[report_service.Report, Awaitable[report_service.Report]],
+        Union[report_messages.Report, Awaitable[report_messages.Report]],
     ]:
         raise NotImplementedError()
 

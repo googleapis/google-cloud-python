@@ -229,7 +229,7 @@ class NetworkServiceRestStub:
 class NetworkServiceRestTransport(_BaseNetworkServiceRestTransport):
     """REST backend synchronous transport for NetworkService.
 
-    Provides methods for handling Network objects.
+    Provides methods for handling ``Network`` objects.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

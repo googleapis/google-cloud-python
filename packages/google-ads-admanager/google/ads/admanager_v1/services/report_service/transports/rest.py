@@ -29,7 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import report_service
+from google.ads.admanager_v1.types import report_messages, report_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseReportServiceRestTransport
@@ -142,8 +142,8 @@ class ReportServiceRestInterceptor:
         return request, metadata
 
     def post_create_report(
-        self, response: report_service.Report
-    ) -> report_service.Report:
+        self, response: report_messages.Report
+    ) -> report_messages.Report:
         """Post-rpc interceptor for create_report
 
         DEPRECATED. Please use the `post_create_report_with_metadata`
@@ -158,9 +158,9 @@ class ReportServiceRestInterceptor:
 
     def post_create_report_with_metadata(
         self,
-        response: report_service.Report,
+        response: report_messages.Report,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[report_service.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[report_messages.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -241,7 +241,9 @@ class ReportServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_report(self, response: report_service.Report) -> report_service.Report:
+    def post_get_report(
+        self, response: report_messages.Report
+    ) -> report_messages.Report:
         """Post-rpc interceptor for get_report
 
         DEPRECATED. Please use the `post_get_report_with_metadata`
@@ -256,9 +258,9 @@ class ReportServiceRestInterceptor:
 
     def post_get_report_with_metadata(
         self,
-        response: report_service.Report,
+        response: report_messages.Report,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[report_service.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[report_messages.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -386,8 +388,8 @@ class ReportServiceRestInterceptor:
         return request, metadata
 
     def post_update_report(
-        self, response: report_service.Report
-    ) -> report_service.Report:
+        self, response: report_messages.Report
+    ) -> report_messages.Report:
         """Post-rpc interceptor for update_report
 
         DEPRECATED. Please use the `post_update_report_with_metadata`
@@ -402,9 +404,9 @@ class ReportServiceRestInterceptor:
 
     def post_update_report_with_metadata(
         self,
-        response: report_service.Report,
+        response: report_messages.Report,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[report_service.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
+    ) -> Tuple[report_messages.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -547,10 +549,6 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                         "method": "get",
                         "uri": "/v1/{name=networks/*/operations/reports/runs/*}",
                     },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=networks/*/operations/reports/exports/*}",
-                    },
                 ],
             }
 
@@ -606,7 +604,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> report_service.Report:
+        ) -> report_messages.Report:
             r"""Call the create report method over HTTP.
 
             Args:
@@ -621,7 +619,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.report_service.Report:
+                ~.report_messages.Report:
                     The ``Report`` resource.
             """
 
@@ -687,8 +685,8 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = report_service.Report()
-            pb_resp = report_service.Report.pb(resp)
+            resp = report_messages.Report()
+            pb_resp = report_messages.Report.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -701,7 +699,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = report_service.Report.to_json(response)
+                    response_payload = report_messages.Report.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -907,7 +905,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> report_service.Report:
+        ) -> report_messages.Report:
             r"""Call the get report method over HTTP.
 
             Args:
@@ -922,7 +920,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.report_service.Report:
+                ~.report_messages.Report:
                     The ``Report`` resource.
             """
 
@@ -987,8 +985,8 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = report_service.Report()
-            pb_resp = report_service.Report.pb(resp)
+            resp = report_messages.Report()
+            pb_resp = report_messages.Report.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1001,7 +999,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = report_service.Report.to_json(response)
+                    response_payload = report_messages.Report.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1364,7 +1362,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> report_service.Report:
+        ) -> report_messages.Report:
             r"""Call the update report method over HTTP.
 
             Args:
@@ -1379,7 +1377,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                     be of type `bytes`.
 
             Returns:
-                ~.report_service.Report:
+                ~.report_messages.Report:
                     The ``Report`` resource.
             """
 
@@ -1445,8 +1443,8 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = report_service.Report()
-            pb_resp = report_service.Report.pb(resp)
+            resp = report_messages.Report()
+            pb_resp = report_messages.Report.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
@@ -1459,7 +1457,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = report_service.Report.to_json(response)
+                    response_payload = report_messages.Report.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1481,7 +1479,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
     @property
     def create_report(
         self,
-    ) -> Callable[[report_service.CreateReportRequest], report_service.Report]:
+    ) -> Callable[[report_service.CreateReportRequest], report_messages.Report]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReport(self._session, self._host, self._interceptor)  # type: ignore
@@ -1500,7 +1498,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
     @property
     def get_report(
         self,
-    ) -> Callable[[report_service.GetReportRequest], report_service.Report]:
+    ) -> Callable[[report_service.GetReportRequest], report_messages.Report]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReport(self._session, self._host, self._interceptor)  # type: ignore
@@ -1526,7 +1524,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
     @property
     def update_report(
         self,
-    ) -> Callable[[report_service.UpdateReportRequest], report_service.Report]:
+    ) -> Callable[[report_service.UpdateReportRequest], report_messages.Report]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateReport(self._session, self._host, self._interceptor)  # type: ignore

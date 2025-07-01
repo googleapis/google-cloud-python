@@ -43,7 +43,7 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class TaxonomyCategoryServiceTransport(abc.ABC):
     """Abstract transport class for TaxonomyCategoryService."""
 
-    AUTH_SCOPES = ()
+    AUTH_SCOPES = ("https://www.googleapis.com/auth/admanager",)
 
     DEFAULT_HOST: str = "admanager.googleapis.com"
 

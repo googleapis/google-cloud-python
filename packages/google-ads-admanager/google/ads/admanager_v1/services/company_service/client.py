@@ -67,10 +67,9 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.ads.admanager_v1.services.company_service import pagers
 from google.ads.admanager_v1.types import (
     applied_label,
-    company_credit_status_enum,
+    company_enums,
     company_messages,
     company_service,
-    company_type_enum,
 )
 
 from .transports.base import DEFAULT_CLIENT_INFO, CompanyServiceTransport

@@ -40,7 +40,7 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
 class CustomFieldServiceTransport(abc.ABC):
     """Abstract transport class for CustomFieldService."""
 
-    AUTH_SCOPES = ()
+    AUTH_SCOPES = ("https://www.googleapis.com/auth/admanager",)
 
     DEFAULT_HOST: str = "admanager.googleapis.com"
 

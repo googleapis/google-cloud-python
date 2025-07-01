@@ -1019,7 +1019,6 @@ class EntitySignalsMappingServiceClient(
                 # Initialize request argument(s)
                 entity_signals_mapping = admanager_v1.EntitySignalsMapping()
                 entity_signals_mapping.audience_segment_id = 1980
-                entity_signals_mapping.taxonomy_category_ids = [2268, 2269]
 
                 request = admanager_v1.CreateEntitySignalsMappingRequest(
                     parent="parent_value",
@@ -1153,7 +1152,6 @@ class EntitySignalsMappingServiceClient(
                 # Initialize request argument(s)
                 entity_signals_mapping = admanager_v1.EntitySignalsMapping()
                 entity_signals_mapping.audience_segment_id = 1980
-                entity_signals_mapping.taxonomy_category_ids = [2268, 2269]
 
                 request = admanager_v1.UpdateEntitySignalsMappingRequest(
                     entity_signals_mapping=entity_signals_mapping,
@@ -1294,7 +1292,6 @@ class EntitySignalsMappingServiceClient(
                 requests = admanager_v1.CreateEntitySignalsMappingRequest()
                 requests.parent = "parent_value"
                 requests.entity_signals_mapping.audience_segment_id = 1980
-                requests.entity_signals_mapping.taxonomy_category_ids = [2268, 2269]
 
                 request = admanager_v1.BatchCreateEntitySignalsMappingsRequest(
                     parent="parent_value",
@@ -1438,7 +1435,6 @@ class EntitySignalsMappingServiceClient(
                 # Initialize request argument(s)
                 requests = admanager_v1.UpdateEntitySignalsMappingRequest()
                 requests.entity_signals_mapping.audience_segment_id = 1980
-                requests.entity_signals_mapping.taxonomy_category_ids = [2268, 2269]
 
                 request = admanager_v1.BatchUpdateEntitySignalsMappingsRequest(
                     parent="parent_value",

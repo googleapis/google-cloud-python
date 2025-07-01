@@ -32,21 +32,33 @@ __protobuf__ = proto.module(
 class Role(proto.Message):
     r"""The ``Role`` resource.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The resource name of the ``Role``. Format:
             ``networks/{network_code}/roles/{role_id}``
         role_id (int):
             Output only. ``Role`` ID.
+
+            This field is a member of `oneof`_ ``_role_id``.
         display_name (str):
             Required. The display name of the ``Role``.
+
+            This field is a member of `oneof`_ ``_display_name``.
         description (str):
             Optional. The description of the ``Role``.
+
+            This field is a member of `oneof`_ ``_description``.
         built_in (bool):
             Output only. Whether the ``Role`` is a built-in or custom
             user role.
+
+            This field is a member of `oneof`_ ``_built_in``.
         status (google.ads.admanager_v1.types.RoleStatusEnum.RoleStatus):
             Output only. The status of the ``Role``.
+
+            This field is a member of `oneof`_ ``_status``.
     """
 
     name: str = proto.Field(
@@ -56,22 +68,27 @@ class Role(proto.Message):
     role_id: int = proto.Field(
         proto.INT64,
         number=2,
+        optional=True,
     )
     display_name: str = proto.Field(
         proto.STRING,
         number=3,
+        optional=True,
     )
     description: str = proto.Field(
         proto.STRING,
         number=4,
+        optional=True,
     )
     built_in: bool = proto.Field(
         proto.BOOL,
         number=5,
+        optional=True,
     )
     status: role_enums.RoleStatusEnum.RoleStatus = proto.Field(
         proto.ENUM,
         number=6,
+        optional=True,
         enum=role_enums.RoleStatusEnum.RoleStatus,
     )
 
