@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -63,6 +64,9 @@ class NotificationConfig(proto.Message):
             notifications.
 
             This field is a member of `oneof`_ ``notify_config``.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp of when the
+            notification config was last updated.
     """
 
     class StreamingConfig(proto.Message):
@@ -122,6 +126,11 @@ class NotificationConfig(proto.Message):
         number=5,
         oneof="notify_config",
         message=StreamingConfig,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
 
 

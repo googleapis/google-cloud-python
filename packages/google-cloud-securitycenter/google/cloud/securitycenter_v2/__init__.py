@@ -20,11 +20,14 @@ __version__ = package_version.__version__
 
 from .services.security_center import SecurityCenterAsyncClient, SecurityCenterClient
 from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
+from .types.affected_resources import AffectedResources
+from .types.ai_model import AiModel
 from .types.application import Application
 from .types.attack_exposure import AttackExposure
 from .types.attack_path import AttackPath
 from .types.backup_disaster_recovery import BackupDisasterRecovery
 from .types.bigquery_export import BigQueryExport
+from .types.chokepoint import Chokepoint
 from .types.cloud_armor import (
     AdaptiveProtection,
     Attack,
@@ -51,6 +54,8 @@ from .types.folder import Folder
 from .types.group_membership import GroupMembership
 from .types.iam_binding import IamBinding
 from .types.indicator import Indicator
+from .types.ip_rules import Allowed, Denied, IpRule, IpRules
+from .types.job import Job, JobState
 from .types.kernel_rootkit import KernelRootkit
 from .types.kubernetes import Kubernetes
 from .types.label import Label
@@ -58,6 +63,7 @@ from .types.load_balancer import LoadBalancer
 from .types.log_entry import CloudLoggingEntry, LogEntry
 from .types.mitre_attack import MitreAttack
 from .types.mute_config import MuteConfig
+from .types.network import Network
 from .types.notebook import Notebook
 from .types.notification_config import NotificationConfig
 from .types.notification_message import NotificationMessage
@@ -77,6 +83,7 @@ from .types.security_posture import SecurityPosture
 from .types.securitycenter_service import (
     BatchCreateResourceValueConfigsRequest,
     BatchCreateResourceValueConfigsResponse,
+    BigQueryDestination,
     BulkMuteFindingsRequest,
     BulkMuteFindingsResponse,
     CreateBigQueryExportRequest,
@@ -89,6 +96,8 @@ from .types.securitycenter_service import (
     DeleteMuteConfigRequest,
     DeleteNotificationConfigRequest,
     DeleteResourceValueConfigRequest,
+    ExportFindingsMetadata,
+    ExportFindingsResponse,
     GetBigQueryExportRequest,
     GetMuteConfigRequest,
     GetNotificationConfigRequest,
@@ -130,9 +139,11 @@ from .types.simulation import Simulation
 from .types.source import Source
 from .types.toxic_combination import ToxicCombination
 from .types.valued_resource import ResourceValueConfigMetadata, ValuedResource
+from .types.vertex_ai import VertexAi
 from .types.vulnerability import (
     Cve,
     Cvssv3,
+    Cwe,
     Package,
     Reference,
     SecurityBulletin,
@@ -143,6 +154,9 @@ __all__ = (
     "SecurityCenterAsyncClient",
     "Access",
     "AdaptiveProtection",
+    "AffectedResources",
+    "AiModel",
+    "Allowed",
     "Application",
     "Attack",
     "AttackExposure",
@@ -152,9 +166,11 @@ __all__ = (
     "BackupDisasterRecovery",
     "BatchCreateResourceValueConfigsRequest",
     "BatchCreateResourceValueConfigsResponse",
+    "BigQueryDestination",
     "BigQueryExport",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
+    "Chokepoint",
     "CloudArmor",
     "CloudDlpDataProfile",
     "CloudDlpInspection",
@@ -173,6 +189,7 @@ __all__ = (
     "CreateSourceRequest",
     "Cve",
     "Cvssv3",
+    "Cwe",
     "DataAccessEvent",
     "DataFlowEvent",
     "DataRetentionDeletionEvent",
@@ -181,10 +198,13 @@ __all__ = (
     "DeleteMuteConfigRequest",
     "DeleteNotificationConfigRequest",
     "DeleteResourceValueConfigRequest",
+    "Denied",
     "Disk",
     "EnvironmentVariable",
     "ExfilResource",
     "Exfiltration",
+    "ExportFindingsMetadata",
+    "ExportFindingsResponse",
     "ExternalSystem",
     "File",
     "Finding",
@@ -204,6 +224,10 @@ __all__ = (
     "GroupResult",
     "IamBinding",
     "Indicator",
+    "IpRule",
+    "IpRules",
+    "Job",
+    "JobState",
     "KernelRootkit",
     "Kubernetes",
     "Label",
@@ -227,6 +251,7 @@ __all__ = (
     "LogEntry",
     "MitreAttack",
     "MuteConfig",
+    "Network",
     "Notebook",
     "NotificationConfig",
     "NotificationMessage",
@@ -260,5 +285,6 @@ __all__ = (
     "UpdateSecurityMarksRequest",
     "UpdateSourceRequest",
     "ValuedResource",
+    "VertexAi",
     "Vulnerability",
 )

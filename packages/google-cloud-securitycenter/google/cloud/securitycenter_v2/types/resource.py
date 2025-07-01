@@ -41,7 +41,7 @@ class CloudProvider(proto.Enum):
         CLOUD_PROVIDER_UNSPECIFIED (0):
             The cloud provider is unspecified.
         GOOGLE_CLOUD_PLATFORM (1):
-            The cloud provider is Google Cloud Platform.
+            The cloud provider is Google Cloud.
         AMAZON_WEB_SERVICES (2):
             The cloud provider is Amazon Web Services.
         MICROSOFT_AZURE (3):
@@ -164,8 +164,8 @@ class Resource(proto.Message):
 
 
 class GcpMetadata(proto.Message):
-    r"""GCP metadata associated with the resource, only applicable if
-    the finding's cloud provider is Google Cloud Platform.
+    r"""Google Cloud metadata associated with the resource. Only
+    applicable if the finding's cloud provider is Google Cloud.
 
     Attributes:
         project (str):

@@ -22,23 +22,22 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v2",
     manifest={
-        "Disk",
+        "AffectedResources",
     },
 )
 
 
-class Disk(proto.Message):
-    r"""Contains information about the disk associated with the
-    finding.
+class AffectedResources(proto.Message):
+    r"""Details about resources affected by this finding.
 
     Attributes:
-        name (str):
-            The name of the disk, for example,
-            "https://www.googleapis.com/compute/v1/projects/{project-id}/zones/{zone-id}/disks/{disk-id}".
+        count (int):
+            The count of resources affected by the
+            finding.
     """
 
-    name: str = proto.Field(
-        proto.STRING,
+    count: int = proto.Field(
+        proto.INT64,
         number=1,
     )
 

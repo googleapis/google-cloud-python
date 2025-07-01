@@ -22,22 +22,26 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v2",
     manifest={
-        "Disk",
+        "Chokepoint",
     },
 )
 
 
-class Disk(proto.Message):
-    r"""Contains information about the disk associated with the
-    finding.
+class Chokepoint(proto.Message):
+    r"""Contains details about a chokepoint, which is a resource or resource
+    group where high-risk attack paths converge, based on [attack path
+    simulations]
+    (https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_path_simulations).
 
     Attributes:
-        name (str):
-            The name of the disk, for example,
-            "https://www.googleapis.com/compute/v1/projects/{project-id}/zones/{zone-id}/disks/{disk-id}".
+        related_findings (MutableSequence[str]):
+            List of resource names of findings associated
+            with this chokepoint. For example,
+            organizations/123/sources/456/findings/789. This
+            list will have at most 100 findings.
     """
 
-    name: str = proto.Field(
+    related_findings: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )

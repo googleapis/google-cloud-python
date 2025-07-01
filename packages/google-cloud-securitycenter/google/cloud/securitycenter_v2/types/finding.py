@@ -36,6 +36,9 @@ from google.cloud.securitycenter_v2.types import (
     group_membership,
     iam_binding,
 )
+from google.cloud.securitycenter_v2.types import (
+    affected_resources as gcs_affected_resources,
+)
 from google.cloud.securitycenter_v2.types import attack_exposure as gcs_attack_exposure
 from google.cloud.securitycenter_v2.types import (
     backup_disaster_recovery as gcs_backup_disaster_recovery,
@@ -58,15 +61,21 @@ from google.cloud.securitycenter_v2.types import (
 )
 from google.cloud.securitycenter_v2.types import vulnerability as gcs_vulnerability
 from google.cloud.securitycenter_v2.types import access as gcs_access
+from google.cloud.securitycenter_v2.types import ai_model as gcs_ai_model
 from google.cloud.securitycenter_v2.types import application as gcs_application
+from google.cloud.securitycenter_v2.types import chokepoint as gcs_chokepoint
 from google.cloud.securitycenter_v2.types import cloud_armor as gcs_cloud_armor
 from google.cloud.securitycenter_v2.types import database as gcs_database
 from google.cloud.securitycenter_v2.types import disk as gcs_disk
 from google.cloud.securitycenter_v2.types import indicator as gcs_indicator
+from google.cloud.securitycenter_v2.types import ip_rules as gcs_ip_rules
+from google.cloud.securitycenter_v2.types import job as gcs_job
 from google.cloud.securitycenter_v2.types import kubernetes as gcs_kubernetes
 from google.cloud.securitycenter_v2.types import load_balancer, log_entry
+from google.cloud.securitycenter_v2.types import network
 from google.cloud.securitycenter_v2.types import notebook as gcs_notebook
 from google.cloud.securitycenter_v2.types import org_policy, process
+from google.cloud.securitycenter_v2.types import vertex_ai as gcs_vertex_ai
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v2",
@@ -87,7 +96,7 @@ class Finding(proto.Message):
 
     Attributes:
         name (str):
-            The `relative resource
+            Identifier. The `relative resource
             name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
             of the finding. The following list shows some examples:
 
@@ -306,9 +315,13 @@ class Finding(proto.Message):
         org_policies (MutableSequence[google.cloud.securitycenter_v2.types.OrgPolicy]):
             Contains information about the org policies
             associated with the finding.
+        job (google.cloud.securitycenter_v2.types.Job):
+            Job associated with the finding.
         application (google.cloud.securitycenter_v2.types.Application):
             Represents an application associated with the
             finding.
+        ip_rules (google.cloud.securitycenter_v2.types.IpRules):
+            IP rules associated with the finding.
         backup_disaster_recovery (google.cloud.securitycenter_v2.types.BackupDisasterRecovery):
             Fields related to Backup and DR findings.
         security_posture (google.cloud.securitycenter_v2.types.SecurityPosture):
@@ -344,9 +357,26 @@ class Finding(proto.Message):
             finding.
         data_flow_events (MutableSequence[google.cloud.securitycenter_v2.types.DataFlowEvent]):
             Data flow events associated with the finding.
+        networks (MutableSequence[google.cloud.securitycenter_v2.types.Network]):
+            Represents the VPC networks that the resource
+            is attached to.
         data_retention_deletion_events (MutableSequence[google.cloud.securitycenter_v2.types.DataRetentionDeletionEvent]):
             Data retention deletion events associated
             with the finding.
+        affected_resources (google.cloud.securitycenter_v2.types.AffectedResources):
+            AffectedResources associated with the
+            finding.
+        ai_model (google.cloud.securitycenter_v2.types.AiModel):
+            The AI model associated with the finding.
+        chokepoint (google.cloud.securitycenter_v2.types.Chokepoint):
+            Contains details about a chokepoint, which is a resource or
+            resource group where high-risk attack paths converge, based
+            on [attack path simulations]
+            (https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_path_simulations).
+            This field cannot be updated. Its value is ignored in all
+            update requests.
+        vertex_ai (google.cloud.securitycenter_v2.types.VertexAi):
+            VertexAi associated with the finding.
     """
 
     class State(proto.Enum):
@@ -505,6 +535,10 @@ class Finding(proto.Message):
             SENSITIVE_DATA_RISK (8):
                 Describes a potential security risk to data
                 assets that contain sensitive data.
+            CHOKEPOINT (9):
+                Describes a resource or resource group where
+                high risk attack paths converge, based on attack
+                path simulations (APS).
         """
         FINDING_CLASS_UNSPECIFIED = 0
         THREAT = 1
@@ -515,6 +549,7 @@ class Finding(proto.Message):
         POSTURE_VIOLATION = 6
         TOXIC_COMBINATION = 7
         SENSITIVE_DATA_RISK = 8
+        CHOKEPOINT = 9
 
     class MuteInfo(proto.Message):
         r"""Mute information about the finding, including whether the
@@ -794,10 +829,20 @@ class Finding(proto.Message):
         number=43,
         message=org_policy.OrgPolicy,
     )
+    job: gcs_job.Job = proto.Field(
+        proto.MESSAGE,
+        number=44,
+        message=gcs_job.Job,
+    )
     application: gcs_application.Application = proto.Field(
         proto.MESSAGE,
         number=45,
         message=gcs_application.Application,
+    )
+    ip_rules: gcs_ip_rules.IpRules = proto.Field(
+        proto.MESSAGE,
+        number=46,
+        message=gcs_ip_rules.IpRules,
     )
     backup_disaster_recovery: gcs_backup_disaster_recovery.BackupDisasterRecovery = (
         proto.Field(
@@ -862,12 +907,37 @@ class Finding(proto.Message):
         number=62,
         message=data_flow_event.DataFlowEvent,
     )
+    networks: MutableSequence[network.Network] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=63,
+        message=network.Network,
+    )
     data_retention_deletion_events: MutableSequence[
         data_retention_deletion_event.DataRetentionDeletionEvent
     ] = proto.RepeatedField(
         proto.MESSAGE,
         number=64,
         message=data_retention_deletion_event.DataRetentionDeletionEvent,
+    )
+    affected_resources: gcs_affected_resources.AffectedResources = proto.Field(
+        proto.MESSAGE,
+        number=65,
+        message=gcs_affected_resources.AffectedResources,
+    )
+    ai_model: gcs_ai_model.AiModel = proto.Field(
+        proto.MESSAGE,
+        number=66,
+        message=gcs_ai_model.AiModel,
+    )
+    chokepoint: gcs_chokepoint.Chokepoint = proto.Field(
+        proto.MESSAGE,
+        number=69,
+        message=gcs_chokepoint.Chokepoint,
+    )
+    vertex_ai: gcs_vertex_ai.VertexAi = proto.Field(
+        proto.MESSAGE,
+        number=72,
+        message=gcs_vertex_ai.VertexAi,
     )
 
 

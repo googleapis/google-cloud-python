@@ -79,11 +79,14 @@ from google.cloud.securitycenter_v2.services.security_center import (
 )
 from google.cloud.securitycenter_v2.types import (
     access,
+    affected_resources,
+    ai_model,
     application,
     attack_exposure,
     attack_path,
     backup_disaster_recovery,
     bigquery_export,
+    chokepoint,
     cloud_armor,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
@@ -102,6 +105,8 @@ from google.cloud.securitycenter_v2.types import (
     group_membership,
     iam_binding,
     indicator,
+    ip_rules,
+    job,
     kernel_rootkit,
     kubernetes,
     label,
@@ -117,6 +122,7 @@ from google.cloud.securitycenter_v2.types import (
 from google.cloud.securitycenter_v2.types import (
     toxic_combination,
     valued_resource,
+    vertex_ai,
     vulnerability,
 )
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
@@ -133,7 +139,7 @@ from google.cloud.securitycenter_v2.types import finding
 from google.cloud.securitycenter_v2.types import finding as gcs_finding
 from google.cloud.securitycenter_v2.types import mute_config
 from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v2.types import notebook
+from google.cloud.securitycenter_v2.types import network, notebook
 from google.cloud.securitycenter_v2.types import notification_config
 from google.cloud.securitycenter_v2.types import org_policy, process, resource
 from google.cloud.securitycenter_v2.types import resource_value_config
@@ -29048,14 +29054,17 @@ def test_create_finding_rest_call_success(request_type):
                 "submission_time": {},
                 "suggested_upgrade_version": "suggested_upgrade_version_value",
             },
+            "provider_risk_score": 2046,
+            "reachable": True,
+            "cwes": [{"id": "id_value", "references": {}}],
         },
         "mute_update_time": {},
         "external_systems": {},
         "mitre_attack": {
             "primary_tactic": 1,
-            "primary_techniques": [49],
+            "primary_techniques": [70],
             "additional_tactics": [1],
-            "additional_techniques": [49],
+            "additional_techniques": [70],
             "version": "version_value",
         },
         "access": {
@@ -29100,6 +29109,7 @@ def test_create_finding_rest_call_success(request_type):
                         "partition_uuid": "partition_uuid_value",
                         "relative_path": "relative_path_value",
                     },
+                    "operations": [{"type_": 1}],
                 },
                 "libraries": {},
                 "script": {},
@@ -29109,6 +29119,7 @@ def test_create_finding_rest_call_success(request_type):
                 "env_variables_truncated": True,
                 "pid": 317,
                 "parent_pid": 1062,
+                "user_id": 747,
             }
         ],
         "contacts": {},
@@ -29219,7 +29230,31 @@ def test_create_finding_rest_call_success(request_type):
             "unexpected_processes_in_runqueue": True,
         },
         "org_policies": [{"name": "name_value"}],
+        "job": {
+            "name": "name_value",
+            "state": 1,
+            "error_code": 1060,
+            "location": "location_value",
+        },
         "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
+        "ip_rules": {
+            "direction": 1,
+            "allowed": {
+                "ip_rules": [
+                    {
+                        "protocol": "protocol_value",
+                        "port_ranges": [{"min_": 419, "max_": 421}],
+                    }
+                ]
+            },
+            "denied": {"ip_rules": {}},
+            "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
+            "destination_ip_ranges": [
+                "destination_ip_ranges_value1",
+                "destination_ip_ranges_value2",
+            ],
+            "exposed_services": ["exposed_services_value1", "exposed_services_value2"],
+        },
         "backup_disaster_recovery": {
             "backup_template": "backup_template_value",
             "policies": ["policies_value1", "policies_value2"],
@@ -29311,6 +29346,7 @@ def test_create_finding_rest_call_success(request_type):
                 "event_time": {},
             }
         ],
+        "networks": [{"name": "name_value"}],
         "data_retention_deletion_events": [
             {
                 "event_detection_time": {},
@@ -29319,6 +29355,29 @@ def test_create_finding_rest_call_success(request_type):
                 "event_type": 1,
             }
         ],
+        "affected_resources": {"count": 553},
+        "ai_model": {
+            "name": "name_value",
+            "domain": "domain_value",
+            "library": "library_value",
+            "location": "location_value",
+            "publisher": "publisher_value",
+            "deployment_platform": 1,
+            "display_name": "display_name_value",
+        },
+        "chokepoint": {
+            "related_findings": ["related_findings_value1", "related_findings_value2"]
+        },
+        "vertex_ai": {
+            "datasets": [
+                {
+                    "name": "name_value",
+                    "display_name": "display_name_value",
+                    "source": "source_value",
+                }
+            ],
+            "pipelines": [{"name": "name_value", "display_name": "display_name_value"}],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -29763,6 +29822,7 @@ def test_create_notification_config_rest_call_success(request_type):
         "pubsub_topic": "pubsub_topic_value",
         "service_account": "service_account_value",
         "streaming_config": {"filter": "filter_value"},
+        "update_time": {"seconds": 751, "nanos": 543},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -34033,14 +34093,17 @@ def test_update_finding_rest_call_success(request_type):
                 "submission_time": {},
                 "suggested_upgrade_version": "suggested_upgrade_version_value",
             },
+            "provider_risk_score": 2046,
+            "reachable": True,
+            "cwes": [{"id": "id_value", "references": {}}],
         },
         "mute_update_time": {},
         "external_systems": {},
         "mitre_attack": {
             "primary_tactic": 1,
-            "primary_techniques": [49],
+            "primary_techniques": [70],
             "additional_tactics": [1],
-            "additional_techniques": [49],
+            "additional_techniques": [70],
             "version": "version_value",
         },
         "access": {
@@ -34085,6 +34148,7 @@ def test_update_finding_rest_call_success(request_type):
                         "partition_uuid": "partition_uuid_value",
                         "relative_path": "relative_path_value",
                     },
+                    "operations": [{"type_": 1}],
                 },
                 "libraries": {},
                 "script": {},
@@ -34094,6 +34158,7 @@ def test_update_finding_rest_call_success(request_type):
                 "env_variables_truncated": True,
                 "pid": 317,
                 "parent_pid": 1062,
+                "user_id": 747,
             }
         ],
         "contacts": {},
@@ -34204,7 +34269,31 @@ def test_update_finding_rest_call_success(request_type):
             "unexpected_processes_in_runqueue": True,
         },
         "org_policies": [{"name": "name_value"}],
+        "job": {
+            "name": "name_value",
+            "state": 1,
+            "error_code": 1060,
+            "location": "location_value",
+        },
         "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
+        "ip_rules": {
+            "direction": 1,
+            "allowed": {
+                "ip_rules": [
+                    {
+                        "protocol": "protocol_value",
+                        "port_ranges": [{"min_": 419, "max_": 421}],
+                    }
+                ]
+            },
+            "denied": {"ip_rules": {}},
+            "source_ip_ranges": ["source_ip_ranges_value1", "source_ip_ranges_value2"],
+            "destination_ip_ranges": [
+                "destination_ip_ranges_value1",
+                "destination_ip_ranges_value2",
+            ],
+            "exposed_services": ["exposed_services_value1", "exposed_services_value2"],
+        },
         "backup_disaster_recovery": {
             "backup_template": "backup_template_value",
             "policies": ["policies_value1", "policies_value2"],
@@ -34296,6 +34385,7 @@ def test_update_finding_rest_call_success(request_type):
                 "event_time": {},
             }
         ],
+        "networks": [{"name": "name_value"}],
         "data_retention_deletion_events": [
             {
                 "event_detection_time": {},
@@ -34304,6 +34394,29 @@ def test_update_finding_rest_call_success(request_type):
                 "event_type": 1,
             }
         ],
+        "affected_resources": {"count": 553},
+        "ai_model": {
+            "name": "name_value",
+            "domain": "domain_value",
+            "library": "library_value",
+            "location": "location_value",
+            "publisher": "publisher_value",
+            "deployment_platform": 1,
+            "display_name": "display_name_value",
+        },
+        "chokepoint": {
+            "related_findings": ["related_findings_value1", "related_findings_value2"]
+        },
+        "vertex_ai": {
+            "datasets": [
+                {
+                    "name": "name_value",
+                    "display_name": "display_name_value",
+                    "source": "source_value",
+                }
+            ],
+            "pipelines": [{"name": "name_value", "display_name": "display_name_value"}],
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -34760,6 +34873,7 @@ def test_update_notification_config_rest_call_success(request_type):
         "pubsub_topic": "pubsub_topic_value",
         "service_account": "service_account_value",
         "streaming_config": {"filter": "filter_value"},
+        "update_time": {"seconds": 751, "nanos": 543},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

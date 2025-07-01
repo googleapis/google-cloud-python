@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
@@ -53,6 +54,9 @@ __protobuf__ = proto.module(
         "DeleteMuteConfigRequest",
         "DeleteNotificationConfigRequest",
         "DeleteResourceValueConfigRequest",
+        "BigQueryDestination",
+        "ExportFindingsMetadata",
+        "ExportFindingsResponse",
         "GetBigQueryExportRequest",
         "GetMuteConfigRequest",
         "GetNotificationConfigRequest",
@@ -501,6 +505,58 @@ class DeleteResourceValueConfigRequest(proto.Message):
         proto.STRING,
         number=1,
     )
+
+
+class BigQueryDestination(proto.Message):
+    r"""The destination big query dataset to export findings to.
+
+    Attributes:
+        dataset (str):
+            Required. The relative resource name of the
+            destination dataset, in the form
+            projects/{projectId}/datasets/{datasetId}.
+    """
+
+    dataset: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ExportFindingsMetadata(proto.Message):
+    r"""The LRO metadata for a ExportFindings request.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        export_start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Timestamp at which export was
+            started
+        big_query_destination (google.cloud.securitycenter_v2.types.BigQueryDestination):
+            Required. The destination big query dataset
+            to export findings to.
+
+            This field is a member of `oneof`_ ``destination``.
+    """
+
+    export_start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    big_query_destination: "BigQueryDestination" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message="BigQueryDestination",
+    )
+
+
+class ExportFindingsResponse(proto.Message):
+    r"""The response to a ExportFindings request. Contains the LRO
+    information.
+
+    """
 
 
 class GetBigQueryExportRequest(proto.Message):
