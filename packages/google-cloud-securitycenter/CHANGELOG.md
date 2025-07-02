@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.38.1...google-cloud-securitycenter-v1.39.0) (2025-07-02)
+
+
+### Features
+
+* Add AffectedResources proto ([62bb44c](https://github.com/googleapis/google-cloud-python/commit/62bb44c6ed45c1933fc08e299031c936de8e17f2))
+* Add AiModel proto ([62bb44c](https://github.com/googleapis/google-cloud-python/commit/62bb44c6ed45c1933fc08e299031c936de8e17f2))
+* Add ChokePoint proto ([62bb44c](https://github.com/googleapis/google-cloud-python/commit/62bb44c6ed45c1933fc08e299031c936de8e17f2))
+* Add IpRules proto ([62bb44c](https://github.com/googleapis/google-cloud-python/commit/62bb44c6ed45c1933fc08e299031c936de8e17f2))
+* Add Job proto ([62bb44c](https://github.com/googleapis/google-cloud-python/commit/62bb44c6ed45c1933fc08e299031c936de8e17f2))
+* Add Network proto ([62bb44c](https://github.com/googleapis/google-cloud-python/commit/62bb44c6ed45c1933fc08e299031c936de8e17f2))
+
 ## [1.38.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.38.0...google-cloud-securitycenter-v1.38.1) (2025-03-15)
 
 

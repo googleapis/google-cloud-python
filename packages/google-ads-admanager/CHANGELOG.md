@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.2.6...google-ads-admanager-v0.3.0) (2025-07-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* Added proto3 optional modifier to all primitive type fields
+* Moved Company enums to a separate file
+* Moved Report messages to a separate file
+* Changed canonical resource name format for CustomTargetingValue resource
+* New required field customTargetingKey added to CustomTargetingValue resource
+
+### Features
+
+* Added support for AdBreak resource ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Added support for BandwidthGroup resource ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Added support for DeviceCategory resource ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Added support for GeoTarget resource ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Added support for OperatingSystem resource ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Added support for OperatingSystemVersion resource ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Added support for PrivateAuction resource ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Added support for ProgrammaticBuyer ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* New required field customTargetingKey added to CustomTargetingValue resource ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+
+
+### Bug Fixes
+
+* Added proto3 optional modifier to all primitive type fields ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Changed canonical resource name format for CustomTargetingValue resource ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Moved Company enums to a separate file ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+* Moved Report messages to a separate file ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+
+
+### Documentation
+
+* Updated documentation for multiple Report enums ([8bd8937](https://github.com/googleapis/google-cloud-python/commit/8bd893714d28ef47ecb76aad6abc06158b0815b4))
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.2.5...google-ads-admanager-v0.2.6) (2025-06-11)
 
 

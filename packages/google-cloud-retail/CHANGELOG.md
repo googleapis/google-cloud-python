@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.2.0...google-cloud-retail-v2.3.0) (2025-07-02)
+
+
+### Features
+
+* add a model_scores field in SearchResponse.results to expose model quality signals ([cdfb4a3](https://github.com/googleapis/google-cloud-python/commit/cdfb4a337fa96b482f4db0e6e4691dc58d0f79c2))
+* add a user_attributes field in SearchRequest that can be used for personalization ([cdfb4a3](https://github.com/googleapis/google-cloud-python/commit/cdfb4a337fa96b482f4db0e6e4691dc58d0f79c2))
+
 ## [2.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.1.0...google-cloud-retail-v2.2.0) (2025-05-29)
 
 

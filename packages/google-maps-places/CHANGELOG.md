@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.2.1...google-maps-places-v0.2.2) (2025-07-02)
+
+
+### Documentation
+
+* [google-maps-places] clarify behavior of primary types and weekday text ([#14050](https://github.com/googleapis/google-cloud-python/issues/14050)) ([cf3183e](https://github.com/googleapis/google-cloud-python/commit/cf3183ec0774fb22afedea6e03716c31a9004b3a))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.2.0...google-maps-places-v0.2.1) (2025-05-29)
 
 

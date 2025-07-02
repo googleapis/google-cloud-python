@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.5.23](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.22...google-cloud-network-services-v0.5.23) (2025-07-02)
+
+
+### Features
+
+* Add support for WasmPlugin resource in NetworkServices API ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+
+
+### Documentation
+
+* A comment for enum `LoadBalancingScheme` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `authority` in message `.google.cloud.networkservices.v1.ExtensionChain` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `extensions` in message `.google.cloud.networkservices.v1.ExtensionChain` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `forwarding_rules` in message `.google.cloud.networkservices.v1.LbRouteExtension` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `forwarding_rules` in message `.google.cloud.networkservices.v1.LbTrafficExtension` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `load_balancing_scheme` in message `.google.cloud.networkservices.v1.LbRouteExtension` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `load_balancing_scheme` in message `.google.cloud.networkservices.v1.LbTrafficExtension` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `metadata` in message `.google.cloud.networkservices.v1.LbRouteExtension` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `metadata` in message `.google.cloud.networkservices.v1.LbTrafficExtension` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `order_by` in message `.google.cloud.networkservices.v1.ListLbRouteExtensionsRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `order_by` in message `.google.cloud.networkservices.v1.ListLbTrafficExtensionsRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `parent` in message `.google.cloud.networkservices.v1.ListLbRouteExtensionsRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `parent` in message `.google.cloud.networkservices.v1.ListLbTrafficExtensionsRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `request_id` in message `.google.cloud.networkservices.v1.CreateLbRouteExtensionRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `request_id` in message `.google.cloud.networkservices.v1.CreateLbTrafficExtensionRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `request_id` in message `.google.cloud.networkservices.v1.DeleteLbRouteExtensionRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `request_id` in message `.google.cloud.networkservices.v1.DeleteLbTrafficExtensionRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `request_id` in message `.google.cloud.networkservices.v1.UpdateLbRouteExtensionRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `request_id` in message `.google.cloud.networkservices.v1.UpdateLbTrafficExtensionRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `service` in message `.google.cloud.networkservices.v1.ExtensionChain` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `supported_events` in message `.google.cloud.networkservices.v1.ExtensionChain` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `timeout` in message `.google.cloud.networkservices.v1.ExtensionChain` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `update_mask` in message `.google.cloud.networkservices.v1.UpdateLbRouteExtensionRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+* A comment for field `update_mask` in message `.google.cloud.networkservices.v1.UpdateLbTrafficExtensionRequest` is changed ([decb2ac](https://github.com/googleapis/google-cloud-python/commit/decb2acc4665fede9168755751f0c3fa4c4d7db9))
+
 ## [0.5.22](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.21...google-cloud-network-services-v0.5.22) (2025-06-11)
 
 

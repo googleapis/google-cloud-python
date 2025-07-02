@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.20.0...google-cloud-dataproc-v5.21.0) (2025-07-02)
+
+
+### Features
+
+* [google-cloud-dataproc] Add `cluster_tier` to support creating premium clusters ([#14047](https://github.com/googleapis/google-cloud-python/issues/14047)) ([5a27ea2](https://github.com/googleapis/google-cloud-python/commit/5a27ea27c9a6016628957d1e1d118d3caaca9498))
+
 ## [5.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.19.0...google-cloud-dataproc-v5.20.0) (2025-06-11)
 
 

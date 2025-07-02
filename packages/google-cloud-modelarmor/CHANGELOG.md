@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.5...google-cloud-modelarmor-v0.2.6) (2025-07-02)
+
+
+### Features
+
+* Add MultiLingual Support for Sanitize APIs ([02d876c](https://github.com/googleapis/google-cloud-python/commit/02d876cdaa089818f34c286a5cb01b6cde3d8ad7))
+* Support added for `TXT` and `CSV` files ([02d876c](https://github.com/googleapis/google-cloud-python/commit/02d876cdaa089818f34c286a5cb01b6cde3d8ad7))
+
+
+### Documentation
+
+* Updated docs for Multi Language Detection Metadata ([02d876c](https://github.com/googleapis/google-cloud-python/commit/02d876cdaa089818f34c286a5cb01b6cde3d8ad7))
+
 ## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.4...google-cloud-modelarmor-v0.2.5) (2025-05-26)
 
 
