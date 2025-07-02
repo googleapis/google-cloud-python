@@ -21,6 +21,7 @@ import pyarrow as pa
 import pytest
 
 from bigframes import dtypes
+import bigframes.core as core
 import bigframes.pandas as bpd
 import bigframes.testing.mocks as mocks
 import bigframes.testing.utils
@@ -113,6 +114,16 @@ def scalar_types_pandas_df() -> pd.DataFrame:
 
     df = df.set_index("rowindex", drop=False)
     return df
+
+
+@pytest.fixture(scope="module")
+def scalar_types_array_value(
+    scalar_types_pandas_df: pd.DataFrame, compiler_session: bigframes.Session
+) -> core.ArrayValue:
+    managed_data_source = core.local_data.ManagedArrowTable.from_pandas(
+        scalar_types_pandas_df
+    )
+    return core.ArrayValue.from_managed(managed_data_source, compiler_session)
 
 
 @pytest.fixture(scope="session")

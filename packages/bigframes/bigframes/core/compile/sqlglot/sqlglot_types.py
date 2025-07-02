@@ -59,6 +59,8 @@ class SQLGlotType:
             return "JSON"
         elif bigframes_dtype == bigframes.dtypes.GEO_DTYPE:
             return "GEOGRAPHY"
+        elif bigframes_dtype == bigframes.dtypes.TIMEDELTA_DTYPE:
+            return "INT64"
         elif isinstance(bigframes_dtype, pd.ArrowDtype):
             if pa.types.is_list(bigframes_dtype.pyarrow_dtype):
                 inner_bigframes_dtype = bigframes.dtypes.arrow_dtype_to_bigframes_dtype(

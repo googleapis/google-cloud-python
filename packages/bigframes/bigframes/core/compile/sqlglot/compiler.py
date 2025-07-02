@@ -261,6 +261,12 @@ class SQLGlotCompiler:
         columns = tuple(ref.id.sql for ref in node.column_ids)
         return child.explode(columns, offsets_col)
 
+    @_compile_node.register
+    def compile_random_sample(
+        self, node: nodes.RandomSampleNode, child: ir.SQLGlotIR
+    ) -> ir.SQLGlotIR:
+        return child.sample(node.fraction)
+
 
 def _replace_unsupported_ops(node: nodes.BigFrameNode):
     node = nodes.bottom_up(node, rewrite.rewrite_slice)

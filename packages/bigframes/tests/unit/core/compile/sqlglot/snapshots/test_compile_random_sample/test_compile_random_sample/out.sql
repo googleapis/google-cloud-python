@@ -1,8 +1,8 @@
 WITH `bfcte_0` AS (
   SELECT
-    *
-  FROM UNNEST(ARRAY<STRUCT<`bfcol_0` INT64, `bfcol_1` BOOLEAN, `bfcol_2` BYTES, `bfcol_3` DATE, `bfcol_4` DATETIME, `bfcol_5` GEOGRAPHY, `bfcol_6` INT64, `bfcol_7` INT64, `bfcol_8` NUMERIC, `bfcol_9` FLOAT64, `bfcol_10` INT64, `bfcol_11` INT64, `bfcol_12` STRING, `bfcol_13` TIME, `bfcol_14` TIMESTAMP, `bfcol_15` INT64, `bfcol_16` INT64>>[STRUCT(
-    0,
+    *,
+    RAND() AS `bfcol_16`
+  FROM UNNEST(ARRAY<STRUCT<`bfcol_0` BOOLEAN, `bfcol_1` BYTES, `bfcol_2` DATE, `bfcol_3` DATETIME, `bfcol_4` GEOGRAPHY, `bfcol_5` INT64, `bfcol_6` INT64, `bfcol_7` NUMERIC, `bfcol_8` FLOAT64, `bfcol_9` INT64, `bfcol_10` INT64, `bfcol_11` STRING, `bfcol_12` TIME, `bfcol_13` TIMESTAMP, `bfcol_14` INT64, `bfcol_15` INT64>>[STRUCT(
     TRUE,
     CAST(b'Hello, World!' AS BYTES),
     CAST('2021-07-21' AS DATE),
@@ -20,7 +20,6 @@ WITH `bfcte_0` AS (
     4,
     0
   ), STRUCT(
-    1,
     FALSE,
     CAST(b'\xe3\x81\x93\xe3\x82\x93\xe3\x81\xab\xe3\x81\xa1\xe3\x81\xaf' AS BYTES),
     CAST('1991-02-03' AS DATE),
@@ -38,7 +37,6 @@ WITH `bfcte_0` AS (
     -1000000,
     1
   ), STRUCT(
-    2,
     TRUE,
     CAST(b'\xc2\xa1Hola Mundo!' AS BYTES),
     CAST('2023-03-01' AS DATE),
@@ -56,7 +54,6 @@ WITH `bfcte_0` AS (
     0,
     2
   ), STRUCT(
-    3,
     CAST(NULL AS BOOLEAN),
     CAST(NULL AS BYTES),
     CAST(NULL AS DATE),
@@ -74,7 +71,6 @@ WITH `bfcte_0` AS (
     CAST(NULL AS INT64),
     3
   ), STRUCT(
-    4,
     FALSE,
     CAST(b'\xe3\x81\x93\xe3\x82\x93\xe3\x81\xab\xe3\x81\xa1\xe3\x81\xaf' AS BYTES),
     CAST('2021-07-21' AS DATE),
@@ -92,7 +88,6 @@ WITH `bfcte_0` AS (
     31540000000000,
     4
   ), STRUCT(
-    5,
     FALSE,
     CAST(b'G\xc3\xbcten Tag' AS BYTES),
     CAST('1980-03-14' AS DATE),
@@ -110,7 +105,6 @@ WITH `bfcte_0` AS (
     4,
     5
   ), STRUCT(
-    6,
     TRUE,
     CAST(b'Hello\tBigFrames!\x07' AS BYTES),
     CAST('2023-05-23' AS DATE),
@@ -128,7 +122,6 @@ WITH `bfcte_0` AS (
     CAST(NULL AS INT64),
     6
   ), STRUCT(
-    7,
     TRUE,
     CAST(NULL AS BYTES),
     CAST('2038-01-20' AS DATE),
@@ -146,7 +139,6 @@ WITH `bfcte_0` AS (
     4,
     7
   ), STRUCT(
-    8,
     FALSE,
     CAST(NULL AS BYTES),
     CAST(NULL AS DATE),
@@ -164,24 +156,29 @@ WITH `bfcte_0` AS (
     432000000000,
     8
   )])
+), `bfcte_1` AS (
+  SELECT
+    *
+  FROM `bfcte_0`
+  WHERE
+    `bfcol_16` < 0.1
 )
 SELECT
-  `bfcol_0` AS `rowindex`,
-  `bfcol_1` AS `bool_col`,
-  `bfcol_2` AS `bytes_col`,
-  `bfcol_3` AS `date_col`,
-  `bfcol_4` AS `datetime_col`,
-  `bfcol_5` AS `geography_col`,
-  `bfcol_6` AS `int64_col`,
-  `bfcol_7` AS `int64_too`,
-  `bfcol_8` AS `numeric_col`,
-  `bfcol_9` AS `float64_col`,
-  `bfcol_10` AS `rowindex_1`,
-  `bfcol_11` AS `rowindex_2`,
-  `bfcol_12` AS `string_col`,
-  `bfcol_13` AS `time_col`,
-  `bfcol_14` AS `timestamp_col`,
-  `bfcol_15` AS `duration_col`
-FROM `bfcte_0`
+  `bfcol_0` AS `bool_col`,
+  `bfcol_1` AS `bytes_col`,
+  `bfcol_2` AS `date_col`,
+  `bfcol_3` AS `datetime_col`,
+  `bfcol_4` AS `geography_col`,
+  `bfcol_5` AS `int64_col`,
+  `bfcol_6` AS `int64_too`,
+  `bfcol_7` AS `numeric_col`,
+  `bfcol_8` AS `float64_col`,
+  `bfcol_9` AS `rowindex`,
+  `bfcol_10` AS `rowindex_2`,
+  `bfcol_11` AS `string_col`,
+  `bfcol_12` AS `time_col`,
+  `bfcol_13` AS `timestamp_col`,
+  `bfcol_14` AS `duration_col`
+FROM `bfcte_1`
 ORDER BY
-  `bfcol_16` ASC NULLS LAST
+  `bfcol_15` ASC NULLS LAST
