@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
 
+## [3.21.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.21.0...google-cloud-translate-v3.21.1) (2025-07-02)
+
+
+### Documentation
+
+* [google-cloud-translate] minor formatting ([#14035](https://github.com/googleapis/google-cloud-python/issues/14035)) ([bf121c4](https://github.com/googleapis/google-cloud-python/commit/bf121c44586c1dbb80b8e67c18018db75749e669))
+
 ## [3.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.20.3...google-cloud-translate-v3.21.0) (2025-06-23)
 
 

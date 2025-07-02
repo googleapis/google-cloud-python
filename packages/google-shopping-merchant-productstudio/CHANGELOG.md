@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-productstudio-v0.1.0...google-shopping-merchant-productstudio-v0.1.1) (2025-07-02)
+
+
+### Features
+
+* [google-shopping-merchant-productstudio] Initial Image API publication ([#14043](https://github.com/googleapis/google-cloud-python/issues/14043)) ([2ba9d58](https://github.com/googleapis/google-cloud-python/commit/2ba9d582c8fc75800480cfb0890ad1e1509a08ff))
+
 ## 0.1.0 (2025-06-11)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.5.0...google-cloud-storage-control-v1.6.0) (2025-07-02)
+
+
+### Features
+
+* [google-cloud-storage-control] Support REST transport for all clients ([#14029](https://github.com/googleapis/google-cloud-python/issues/14029)) ([3c3722b](https://github.com/googleapis/google-cloud-python/commit/3c3722bc960ca8f97ad204737088fa71dd4d2e45))
+
 ## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.4.0...google-cloud-storage-control-v1.5.0) (2025-05-15)
 
 

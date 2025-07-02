@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.9...google-cloud-developerconnect-v0.1.10) (2025-07-02)
+
+
+### Features
+
+* a new enum `google.cloud.developerconnect.v1.SystemProvider` is added ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+* a new field `bitbucket_cloud_config` is added to message `google.cloud.developerconnect.v1.Connection` ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+* a new field `bitbucket_data_center_config` is added to message `google.cloud.developerconnect.v1.Connection` ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+* a new field `oauth_start_uri` is added to message `google.cloud.developerconnect.v1.AccountConnector` ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+* a new field `provider_oauth_config` is added to message `google.cloud.developerconnect.v1.AccountConnector` ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+* a new message `google.cloud.developerconnect.v1.AccountConnector` is added ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+* a new message `google.cloud.developerconnect.v1.GitProxyConfig` is added ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+* a new message `google.cloud.developerconnect.v1.User` is added ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+* add DCI insights config proto ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+
+
+### Documentation
+
+* A comment for field `uid` in message `.google.cloud.developerconnect.v1.Connection` is changed ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+* A comment for field `uid` in message `.google.cloud.developerconnect.v1.GitRepositoryLink` is changed ([717d9b9](https://github.com/googleapis/google-cloud-python/commit/717d9b9dc6d75727ec235eaf80caa0458a888304))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-developerconnect-v0.1.8...google-cloud-developerconnect-v0.1.9) (2025-06-11)
 
 

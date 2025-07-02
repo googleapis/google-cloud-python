@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.5](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.4...google-shopping-merchant-accounts-v0.3.5) (2025-07-02)
+
+
+### Features
+
+* [google-shopping-merchant-accounts] Add CheckoutSettings service ([#14044](https://github.com/googleapis/google-cloud-python/issues/14044)) ([975b921](https://github.com/googleapis/google-cloud-python/commit/975b9212036325a23094af65fe1498c8bcb19945))
+
 ## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.3...google-shopping-merchant-accounts-v0.3.4) (2025-05-21)
 
 
