@@ -341,8 +341,9 @@ def is_json_encoding_type(type_: ExpressionType) -> bool:
     return type_ != GEO_DTYPE
 
 
-def is_numeric(type_: ExpressionType) -> bool:
-    return type_ in NUMERIC_BIGFRAMES_TYPES_PERMISSIVE
+def is_numeric(type_: ExpressionType, include_bool: bool = True) -> bool:
+    is_numeric = type_ in NUMERIC_BIGFRAMES_TYPES_PERMISSIVE
+    return is_numeric if include_bool else is_numeric and type_ != BOOL_DTYPE
 
 
 def is_iterable(type_: ExpressionType) -> bool:

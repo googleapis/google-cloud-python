@@ -491,4 +491,89 @@ def _join_condition(
     right: typed_expr.TypedExpr,
     joins_nulls: bool,
 ) -> typing.Union[sge.EQ, sge.And]:
-    return sge.EQ(this=left.expr, expression=right.expr)
+    """Generates a join condition to match pandas's null-handling logic.
+
+    Pandas treats null values as distinct from each other, leading to a
+    cross-join-like behavior for null keys. In contrast, BigQuery SQL treats
+    null values as equal, leading to a inner-join-like behavior.
+
+    This function generates the appropriate SQL condition to replicate the
+    desired pandas behavior in BigQuery.
+
+    Args:
+        left: The left-side join key.
+        right: The right-side join key.
+        joins_nulls: If True, generates complex logic to handle nulls/NaNs.
+            Otherwise, uses a simple equality check where appropriate.
+    """
+    is_floating_types = (
+        left.dtype == dtypes.FLOAT_DTYPE and right.dtype == dtypes.FLOAT_DTYPE
+    )
+    if not is_floating_types and not joins_nulls:
+        return sge.EQ(this=left.expr, expression=right.expr)
+
+    is_numeric_types = dtypes.is_numeric(
+        left.dtype, include_bool=False
+    ) and dtypes.is_numeric(right.dtype, include_bool=False)
+    if is_numeric_types:
+        return _join_condition_for_numeric(left, right)
+    else:
+        return _join_condition_for_others(left, right)
+
+
+def _join_condition_for_others(
+    left: typed_expr.TypedExpr,
+    right: typed_expr.TypedExpr,
+) -> sge.And:
+    """Generates a join condition for non-numeric types to match pandas's
+    null-handling logic.
+    """
+    left_str = _cast(left.expr, "STRING")
+    right_str = _cast(right.expr, "STRING")
+    left_0 = sge.func("COALESCE", left_str, _literal("0", dtypes.STRING_DTYPE))
+    left_1 = sge.func("COALESCE", left_str, _literal("1", dtypes.STRING_DTYPE))
+    right_0 = sge.func("COALESCE", right_str, _literal("0", dtypes.STRING_DTYPE))
+    right_1 = sge.func("COALESCE", right_str, _literal("1", dtypes.STRING_DTYPE))
+    return sge.And(
+        this=sge.EQ(this=left_0, expression=right_0),
+        expression=sge.EQ(this=left_1, expression=right_1),
+    )
+
+
+def _join_condition_for_numeric(
+    left: typed_expr.TypedExpr,
+    right: typed_expr.TypedExpr,
+) -> sge.And:
+    """Generates a join condition for non-numeric types to match pandas's
+    null-handling logic. Specifically for FLOAT types, Pandas treats NaN aren't
+    equal so need to coalesce as well with different constants.
+    """
+    is_floating_types = (
+        left.dtype == dtypes.FLOAT_DTYPE and right.dtype == dtypes.FLOAT_DTYPE
+    )
+    left_0 = sge.func("COALESCE", left.expr, _literal(0, left.dtype))
+    left_1 = sge.func("COALESCE", left.expr, _literal(1, left.dtype))
+    right_0 = sge.func("COALESCE", right.expr, _literal(0, right.dtype))
+    right_1 = sge.func("COALESCE", right.expr, _literal(1, right.dtype))
+    if not is_floating_types:
+        return sge.And(
+            this=sge.EQ(this=left_0, expression=right_0),
+            expression=sge.EQ(this=left_1, expression=right_1),
+        )
+
+    left_2 = sge.If(
+        this=sge.IsNan(this=left.expr), true=_literal(2, left.dtype), false=left_0
+    )
+    left_3 = sge.If(
+        this=sge.IsNan(this=left.expr), true=_literal(3, left.dtype), false=left_1
+    )
+    right_2 = sge.If(
+        this=sge.IsNan(this=right.expr), true=_literal(2, right.dtype), false=right_0
+    )
+    right_3 = sge.If(
+        this=sge.IsNan(this=right.expr), true=_literal(3, right.dtype), false=right_1
+    )
+    return sge.And(
+        this=sge.EQ(this=left_2, expression=right_2),
+        expression=sge.EQ(this=left_3, expression=right_3),
+    )

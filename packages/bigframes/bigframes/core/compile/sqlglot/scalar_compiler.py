@@ -39,7 +39,7 @@ def compile_scalar_expression(
 
 @compile_scalar_expression.register
 def compile_deref_expression(expr: expression.DerefOp) -> sge.Expression:
-    return sge.ColumnDef(this=sge.to_identifier(expr.id.sql, quoted=True))
+    return sge.Column(this=sge.to_identifier(expr.id.sql, quoted=True))
 
 
 @compile_scalar_expression.register

@@ -49,3 +49,13 @@ def test_compile_join_w_how(scalar_types_df: bpd.DataFrame):
     join_sql = left.merge(right, how="cross").sql
     assert "CROSS JOIN" in join_sql
     assert "ON" not in join_sql
+
+
+@pytest.mark.parametrize(
+    ("on"),
+    ["bool_col", "int64_col", "float64_col", "string_col", "time_col", "numeric_col"],
+)
+def test_compile_join_w_on(scalar_types_df: bpd.DataFrame, on: str, snapshot):
+    df = scalar_types_df[["rowindex", on]]
+    merge = df.merge(df, left_on=on, right_on=on)
+    snapshot.assert_match(merge.sql, "out.sql")

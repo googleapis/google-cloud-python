@@ -11,22 +11,23 @@ WITH `bfcte_1` AS (
 ), `bfcte_0` AS (
   SELECT
     `int64_col` AS `bfcol_4`,
-    `int64_too` AS `bfcol_5`
+    `rowindex` AS `bfcol_5`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_3` AS (
   SELECT
-    `bfcol_4` AS `bfcol_6`,
-    `bfcol_5` AS `bfcol_7`
+    `bfcol_5` AS `bfcol_6`,
+    `bfcol_4` AS `bfcol_7`
   FROM `bfcte_0`
 ), `bfcte_4` AS (
   SELECT
     *
   FROM `bfcte_2`
-  LEFT JOIN `bfcte_3`
-    ON   COALESCE(`bfcol_2`, 0) = COALESCE(`bfcol_6`, 0)
-      AND COALESCE(`bfcol_2`, 1) = COALESCE(`bfcol_6`, 1)
+  INNER JOIN `bfcte_3`
+    ON   COALESCE(`bfcol_3`, 0) = COALESCE(`bfcol_7`, 0)
+      AND COALESCE(`bfcol_3`, 1) = COALESCE(`bfcol_7`, 1)
 )
 SELECT
+  `bfcol_2` AS `rowindex_x`,
   `bfcol_3` AS `int64_col`,
-  `bfcol_7` AS `int64_too`
+  `bfcol_6` AS `rowindex_y`
 FROM `bfcte_4`
