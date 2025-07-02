@@ -986,6 +986,7 @@ def test_bigquery_magic_dryrun_option_sets_job_config(monkeypatch):
         google.auth.credentials.Credentials, instance=True
     )
 
+    magics.context.project = "project-from-context"
     run_query_patch = mock.patch(
         "google.cloud.bigquery.magics.magics._run_query", autospec=True
     )
@@ -1007,6 +1008,7 @@ def test_bigquery_magic_dryrun_option_returns_query_job(monkeypatch):
     magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
+    magics.context.project = "project-from-context"
     query_job_mock = mock.create_autospec(
         google.cloud.bigquery.job.QueryJob, instance=True
     )
@@ -1035,6 +1037,7 @@ def test_bigquery_magic_dryrun_option_variable_error_message(
         google.auth.credentials.Credentials, instance=True
     )
 
+    magics.context.project = "project-from-context"
     ipython_ns_cleanup.append((ip, "q_job"))
 
     run_query_patch = mock.patch(
@@ -1064,6 +1067,7 @@ def test_bigquery_magic_dryrun_option_saves_query_job_to_variable(
     magics.context.credentials = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
+    magics.context.project = "project-from-context"
     query_job_mock = mock.create_autospec(
         google.cloud.bigquery.job.QueryJob, instance=True
     )
@@ -1098,6 +1102,7 @@ def test_bigquery_magic_saves_query_job_to_variable_on_error(
         google.auth.credentials.Credentials, instance=True
     )
 
+    magics.context.project = "project-from-context"
     ipython_ns_cleanup.append((ip, "result"))
 
     client_query_patch = mock.patch(
