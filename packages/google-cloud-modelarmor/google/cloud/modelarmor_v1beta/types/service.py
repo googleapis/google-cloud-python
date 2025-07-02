@@ -246,7 +246,24 @@ class Template(proto.Message):
                 operations.
             log_sanitize_operations (bool):
                 Optional. If true, log sanitize operations.
+            multi_language_detection (google.cloud.modelarmor_v1beta.types.Template.TemplateMetadata.MultiLanguageDetection):
+                Optional. Metadata for multi language
+                detection.
         """
+
+        class MultiLanguageDetection(proto.Message):
+            r"""Metadata to enable multi language detection via template.
+
+            Attributes:
+                enable_multi_language_detection (bool):
+                    Required. If true, multi language detection
+                    will be enabled.
+            """
+
+            enable_multi_language_detection: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
 
         ignore_partial_invocation_failures: bool = proto.Field(
             proto.BOOL,
@@ -275,6 +292,13 @@ class Template(proto.Message):
         log_sanitize_operations: bool = proto.Field(
             proto.BOOL,
             number=7,
+        )
+        multi_language_detection: "Template.TemplateMetadata.MultiLanguageDetection" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=9,
+                message="Template.TemplateMetadata.MultiLanguageDetection",
+            )
         )
 
     name: str = proto.Field(
@@ -910,6 +934,9 @@ class SanitizeUserPromptRequest(proto.Message):
             name=projects/sample-project/locations/us-central1/templates/templ01
         user_prompt_data (google.cloud.modelarmor_v1beta.types.DataItem):
             Required. User prompt data to sanitize.
+        multi_language_detection_metadata (google.cloud.modelarmor_v1beta.types.MultiLanguageDetectionMetadata):
+            Optional. Metadata related to Multi Language
+            Detection.
     """
 
     name: str = proto.Field(
@@ -920,6 +947,11 @@ class SanitizeUserPromptRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message="DataItem",
+    )
+    multi_language_detection_metadata: "MultiLanguageDetectionMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="MultiLanguageDetectionMetadata",
     )
 
 
@@ -937,7 +969,8 @@ class SanitizeModelResponseRequest(proto.Message):
             Optional. User Prompt associated with Model
             response.
         multi_language_detection_metadata (google.cloud.modelarmor_v1beta.types.MultiLanguageDetectionMetadata):
-            Optional. Metadata related for Translations.
+            Optional. Metadata related for multi language
+            detection.
     """
 
     name: str = proto.Field(
@@ -1074,7 +1107,28 @@ class SanitizationResult(proto.Message):
 
 
 class MultiLanguageDetectionMetadata(proto.Message):
-    r"""Message for Translation Support."""
+    r"""Message for Enabling Multi Language Detection.
+
+    Attributes:
+        source_language (str):
+            Optional. Optional Source language of the
+            user prompt.
+            If multi-language detection is enabled but
+            language is not set in that case we would
+            automatically detect the source language.
+        enable_multi_language_detection (bool):
+            Optional. Enable detection of multi-language
+            prompts and responses.
+    """
+
+    source_language: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    enable_multi_language_detection: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class FilterResult(proto.Message):
