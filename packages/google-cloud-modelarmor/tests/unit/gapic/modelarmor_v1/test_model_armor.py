@@ -6629,6 +6629,7 @@ def test_create_template_rest_call_success(request_type):
             "custom_llm_response_safety_error_message": "custom_llm_response_safety_error_message_value",
             "log_template_operations": True,
             "log_sanitize_operations": True,
+            "multi_language_detection": {"enable_multi_language_detection": True},
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -6855,6 +6856,7 @@ def test_update_template_rest_call_success(request_type):
             "custom_llm_response_safety_error_message": "custom_llm_response_safety_error_message_value",
             "log_template_operations": True,
             "log_sanitize_operations": True,
+            "multi_language_detection": {"enable_multi_language_detection": True},
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
