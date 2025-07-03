@@ -257,7 +257,7 @@ class BucketNotification(object):
         with create_trace_span(name="Storage.BucketNotification.create"):
             if self.notification_id is not None:
                 raise ValueError(
-                    f"notification_id already set to {self.notification_id}; must be None to create a Notification."
+                    f"notification_id already set to {self.notification_id}; must be None to create a Notification."  # noqa: E702
                 )
 
             client = self._require_client(client)

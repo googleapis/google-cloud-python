@@ -324,7 +324,9 @@ class TestDownload(object):
             check_tombstoned(download, authorized_transport)
 
     @pytest.mark.parametrize("checksum", ["auto", "md5", "crc32c", None])
-    def test_single_shot_download_to_stream(self, add_files, authorized_transport, checksum):
+    def test_single_shot_download_to_stream(
+        self, add_files, authorized_transport, checksum
+    ):
         for info in ALL_FILES:
             actual_contents = self._get_contents(info)
             blob_name = get_blob_name(info)

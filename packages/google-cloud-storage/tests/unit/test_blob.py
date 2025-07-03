@@ -2099,7 +2099,7 @@ class Test_Blob(unittest.TestCase):
 
         properties = {}
         if charset is not None:
-            properties["contentType"] = f"text/plain; charset={charset}"
+            properties["contentType"] = f"text/plain; charset={charset}"  # noqa: E702
         elif no_charset:
             properties = {"contentType": "text/plain"}
 

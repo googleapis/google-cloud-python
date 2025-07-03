@@ -4094,7 +4094,7 @@ class Test_Bucket(unittest.TestCase):
                     break
             else:  # pragma: NO COVER
                 self.fail(
-                    f"Condition {expected_condition} not found in {policy_conditions}"
+                    f"Condition {expected_condition} not found in {policy_conditions}"  # noqa: E713
                 )
 
         return policy_fields, policy
