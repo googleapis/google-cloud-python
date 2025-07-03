@@ -32,9 +32,11 @@ BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.8"
+DEFAULT_PYTHON_VERSION = "3.12"
 
 DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
+
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.7",
     "3.8",
@@ -60,7 +62,6 @@ UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -77,7 +78,13 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 nox.options.sessions = [
-    "unit",
+    # TODO(https://github.com/googleapis/python-spanner/issues/1392):
+    # Remove or restore testing for Python 3.7/3.8
+    "unit-3.9",
+    "unit-3.10",
+    "unit-3.11",
+    "unit-3.12",
+    "unit-3.13",
     "system",
     "cover",
     "lint",
@@ -108,7 +115,9 @@ def lint(session):
     session.run("flake8", "google", "tests")
 
 
-@nox.session(python=DEFAULT_PYTHON_VERSION)
+# Use a python runtime which is available in the owlbot post processor here
+# https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
+@nox.session(python=["3.10", DEFAULT_PYTHON_VERSION])
 def blacken(session):
     """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
@@ -141,7 +150,7 @@ def format(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.install("docutils", "pygments")
+    session.install("docutils", "pygments", "setuptools>=79.0.1")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
@@ -320,6 +329,9 @@ def system(session, protobuf_implementation, database_dialect):
         session.skip(
             "Only run system tests on real Spanner with one protobuf implementation to speed up the build"
         )
+
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":

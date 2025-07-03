@@ -225,6 +225,7 @@ templated_files = common.py_library(
     cov_level=98,
     split_system_tests=True,
     system_test_extras=["tracing"],
+    system_test_python_versions=["3.12"]
 )
 s.move(
     templated_files,
@@ -258,4 +259,6 @@ s.replace("CONTRIBUTING.rst", "samples/snippets", "samples/samples")
 
 python.py_samples()
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# Use a python runtime which is available in the owlbot post processor here
+# https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
+s.shell.run(["nox", "-s", "blacken-3.10"], hide_output=False)
