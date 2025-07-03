@@ -91,6 +91,8 @@ class FlowsAsyncClient:
     parse_flow_validation_result_path = staticmethod(
         FlowsClient.parse_flow_validation_result_path
     )
+    generator_path = staticmethod(FlowsClient.generator_path)
+    parse_generator_path = staticmethod(FlowsClient.parse_generator_path)
     intent_path = staticmethod(FlowsClient.intent_path)
     parse_intent_path = staticmethod(FlowsClient.parse_intent_path)
     page_path = staticmethod(FlowsClient.page_path)

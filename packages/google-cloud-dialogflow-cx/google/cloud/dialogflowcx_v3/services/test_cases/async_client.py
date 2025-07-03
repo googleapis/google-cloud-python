@@ -92,6 +92,8 @@ class TestCasesAsyncClient:
     parse_environment_path = staticmethod(TestCasesClient.parse_environment_path)
     flow_path = staticmethod(TestCasesClient.flow_path)
     parse_flow_path = staticmethod(TestCasesClient.parse_flow_path)
+    generator_path = staticmethod(TestCasesClient.generator_path)
+    parse_generator_path = staticmethod(TestCasesClient.parse_generator_path)
     intent_path = staticmethod(TestCasesClient.intent_path)
     parse_intent_path = staticmethod(TestCasesClient.parse_intent_path)
     page_path = staticmethod(TestCasesClient.page_path)

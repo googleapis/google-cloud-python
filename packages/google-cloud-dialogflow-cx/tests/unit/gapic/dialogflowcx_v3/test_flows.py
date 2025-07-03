@@ -6792,6 +6792,13 @@ def test_create_flow_rest_call_success(request_type):
                         },
                     },
                     "enable_generative_fallback": True,
+                    "generators": [
+                        {
+                            "generator": "generator_value",
+                            "input_parameters": {},
+                            "output_parameter": "output_parameter_value",
+                        }
+                    ],
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
@@ -7500,6 +7507,13 @@ def test_update_flow_rest_call_success(request_type):
                         },
                     },
                     "enable_generative_fallback": True,
+                    "generators": [
+                        {
+                            "generator": "generator_value",
+                            "input_parameters": {},
+                            "output_parameter": "output_parameter_value",
+                        }
+                    ],
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
@@ -9412,11 +9426,40 @@ def test_parse_flow_validation_result_path():
     assert expected == actual
 
 
-def test_intent_path():
+def test_generator_path():
     project = "oyster"
     location = "nudibranch"
     agent = "cuttlefish"
-    intent = "mussel"
+    generator = "mussel"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/generators/{generator}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        generator=generator,
+    )
+    actual = FlowsClient.generator_path(project, location, agent, generator)
+    assert expected == actual
+
+
+def test_parse_generator_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "agent": "scallop",
+        "generator": "abalone",
+    }
+    path = FlowsClient.generator_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FlowsClient.parse_generator_path(path)
+    assert expected == actual
+
+
+def test_intent_path():
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    intent = "octopus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
         project=project,
         location=location,
@@ -9429,10 +9472,10 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "agent": "scallop",
-        "intent": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "intent": "mussel",
     }
     path = FlowsClient.intent_path(**expected)
 
@@ -9442,11 +9485,11 @@ def test_parse_intent_path():
 
 
 def test_page_path():
-    project = "squid"
-    location = "clam"
-    agent = "whelk"
-    flow = "octopus"
-    page = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    flow = "abalone"
+    page = "squid"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
         project=project,
         location=location,
@@ -9460,11 +9503,11 @@ def test_page_path():
 
 def test_parse_page_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "agent": "mussel",
-        "flow": "winkle",
-        "page": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "agent": "octopus",
+        "flow": "oyster",
+        "page": "nudibranch",
     }
     path = FlowsClient.page_path(**expected)
 
@@ -9474,11 +9517,11 @@ def test_parse_page_path():
 
 
 def test_transition_route_group_path():
-    project = "scallop"
-    location = "abalone"
-    agent = "squid"
-    flow = "clam"
-    transition_route_group = "whelk"
+    project = "cuttlefish"
+    location = "mussel"
+    agent = "winkle"
+    flow = "nautilus"
+    transition_route_group = "scallop"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
         location=location,
@@ -9494,11 +9537,11 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "agent": "nudibranch",
-        "flow": "cuttlefish",
-        "transition_route_group": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "agent": "clam",
+        "flow": "whelk",
+        "transition_route_group": "octopus",
     }
     path = FlowsClient.transition_route_group_path(**expected)
 
@@ -9508,10 +9551,10 @@ def test_parse_transition_route_group_path():
 
 
 def test_webhook_path():
-    project = "winkle"
-    location = "nautilus"
-    agent = "scallop"
-    webhook = "abalone"
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    webhook = "mussel"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -9524,10 +9567,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "agent": "whelk",
-        "webhook": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "agent": "scallop",
+        "webhook": "abalone",
     }
     path = FlowsClient.webhook_path(**expected)
 
@@ -9537,7 +9580,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9547,7 +9590,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = FlowsClient.common_billing_account_path(**expected)
 
@@ -9557,7 +9600,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -9567,7 +9610,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = FlowsClient.common_folder_path(**expected)
 
@@ -9577,7 +9620,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -9587,7 +9630,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = FlowsClient.common_organization_path(**expected)
 
@@ -9597,7 +9640,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -9607,7 +9650,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = FlowsClient.common_project_path(**expected)
 
@@ -9617,8 +9660,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -9629,8 +9672,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = FlowsClient.common_location_path(**expected)
 
