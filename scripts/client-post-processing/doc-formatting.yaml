@@ -401,7 +401,8 @@ replacements:
                   didn't change between get call and insert call.
     count: 1
   - paths: [
-      packages/google-shopping-merchant-reports/google/shopping/merchant_reports_v1beta/types/reports.py
+      packages/google-shopping-merchant-reports/google/shopping/merchant_reports_v1alpha/types/reports.py,
+      packages/google-shopping-merchant-reports/google/shopping/merchant_reports_v1beta/types/reports.py,
     ]
     before: |
       Here's an example of how the aggregated status is computed:\n
@@ -421,7 +422,7 @@ replacements:
               PENDING Disapproved \| Disapproved \| NOT_ELIGIBLE_OR_DISAPPROVED
               ```\n
               Values:
-    count: 1
+    count: 2
   - paths: [
       packages/google-cloud-monitoring/google/cloud/monitoring_v3/types/metric_service.py
     ]
