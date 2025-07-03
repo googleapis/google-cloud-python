@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.shopping.merchant.reports.v1beta",
-        "version": "v1beta"
+        "id": "google.shopping.merchant.reports.v1alpha",
+        "version": "v1alpha"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_reports_v1beta.ReportServiceAsyncClient",
+          "fullName": "google.shopping.merchant_reports_v1alpha.ReportServiceAsyncClient",
           "shortName": "ReportServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_reports_v1beta.ReportServiceAsyncClient.search",
+        "fullName": "google.shopping.merchant_reports_v1alpha.ReportServiceAsyncClient.search",
         "method": {
-          "fullName": "google.shopping.merchant.reports.v1beta.ReportService.Search",
+          "fullName": "google.shopping.merchant.reports.v1alpha.ReportService.Search",
           "service": {
-            "fullName": "google.shopping.merchant.reports.v1beta.ReportService",
+            "fullName": "google.shopping.merchant.reports.v1alpha.ReportService",
             "shortName": "ReportService"
           },
           "shortName": "Search"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_reports_v1beta.types.SearchRequest"
+            "type": "google.shopping.merchant_reports_v1alpha.types.SearchRequest"
           },
           {
             "name": "parent",
@@ -50,14 +50,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_reports_v1beta.services.report_service.pagers.SearchAsyncPager",
+        "resultType": "google.shopping.merchant_reports_v1alpha.services.report_service.pagers.SearchAsyncPager",
         "shortName": "search"
       },
       "description": "Sample for Search",
-      "file": "merchantapi_v1beta_generated_report_service_search_async.py",
+      "file": "merchantapi_v1alpha_generated_report_service_search_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ReportService_Search_async",
+      "regionTag": "merchantapi_v1alpha_generated_ReportService_Search_async",
       "segments": [
         {
           "end": 53,
@@ -90,20 +90,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_report_service_search_async.py"
+      "title": "merchantapi_v1alpha_generated_report_service_search_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_reports_v1beta.ReportServiceClient",
+          "fullName": "google.shopping.merchant_reports_v1alpha.ReportServiceClient",
           "shortName": "ReportServiceClient"
         },
-        "fullName": "google.shopping.merchant_reports_v1beta.ReportServiceClient.search",
+        "fullName": "google.shopping.merchant_reports_v1alpha.ReportServiceClient.search",
         "method": {
-          "fullName": "google.shopping.merchant.reports.v1beta.ReportService.Search",
+          "fullName": "google.shopping.merchant.reports.v1alpha.ReportService.Search",
           "service": {
-            "fullName": "google.shopping.merchant.reports.v1beta.ReportService",
+            "fullName": "google.shopping.merchant.reports.v1alpha.ReportService",
             "shortName": "ReportService"
           },
           "shortName": "Search"
@@ -111,7 +111,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_reports_v1beta.types.SearchRequest"
+            "type": "google.shopping.merchant_reports_v1alpha.types.SearchRequest"
           },
           {
             "name": "parent",
@@ -130,14 +130,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_reports_v1beta.services.report_service.pagers.SearchPager",
+        "resultType": "google.shopping.merchant_reports_v1alpha.services.report_service.pagers.SearchPager",
         "shortName": "search"
       },
       "description": "Sample for Search",
-      "file": "merchantapi_v1beta_generated_report_service_search_sync.py",
+      "file": "merchantapi_v1alpha_generated_report_service_search_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ReportService_Search_sync",
+      "regionTag": "merchantapi_v1alpha_generated_ReportService_Search_sync",
       "segments": [
         {
           "end": 53,
@@ -170,7 +170,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_report_service_search_sync.py"
+      "title": "merchantapi_v1alpha_generated_report_service_search_sync.py"
     }
   ]
 }
