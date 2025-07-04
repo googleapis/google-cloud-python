@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.41.1...google-cloud-dialogflow-cx-v1.42.0) (2025-07-04)
+
+
+### Features
+
+* **v3:** Add support for generator settings on fulfillment ([#14054](https://github.com/googleapis/google-cloud-python/issues/14054)) ([806bd71](https://github.com/googleapis/google-cloud-python/commit/806bd717a84957789c0596a9ac4de32fdd38fbb3))
+
 ## [1.41.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.41.0...google-cloud-dialogflow-cx-v1.41.1) (2025-06-11)
 
 

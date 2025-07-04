@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.15...google-shopping-merchant-reports-v0.1.16) (2025-07-04)
+
+
+### Features
+
+* [google-shopping-merchant-reports]Add v1alpha version to Merchant reports endpoint ([#14053](https://github.com/googleapis/google-cloud-python/issues/14053)) ([473cbaf](https://github.com/googleapis/google-cloud-python/commit/473cbaf8ee1a2c40c3de7f8f60bc6cdd14449267))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.14...google-shopping-merchant-reports-v0.1.15) (2025-06-11)
 
 
