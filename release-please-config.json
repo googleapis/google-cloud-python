@@ -1636,15 +1636,9 @@
             "extra-files": [
                 "google/cloud/geminidataanalytics/gapic_version.py",
                 "google/cloud/geminidataanalytics_v1alpha/gapic_version.py",
-                "google/cloud/geminidataanalytics_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.geminidataanalytics.v1alpha.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.geminidataanalytics.v1beta.json",
                     "type": "json"
                 }
             ],
