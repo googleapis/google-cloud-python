@@ -18,9 +18,12 @@ docker:
 deep-remove-regex:
   - /owl-bot-staging
 
+# In source, we've  used two capturing groups (v2) and (.*) to match the version
+# and the directory path.
+# In dest, we use $1 to refer to the first capturing group (v2) and $2 to refer
+# to the second capturing group (directory path).
 deep-copy-regex:
-  - source: /google/storage/v2/storage-v2-py/(.*)
+  - source: /google/storage/(v2)/storage-v2-py/(.*)
     dest: /owl-bot-staging/$1/$2
 
 begin-after-commit-hash: 6acf4a0a797f1082027985c55c4b14b60f673dd7
-
