@@ -620,14 +620,30 @@ class Block:
             ordered=True,
             use_explicit_destination=allow_large_results,
         )
+
+        total_batches = 0
         for df in execute_result.to_pandas_batches(
             page_size=page_size, max_results=max_results
         ):
+            total_batches += 1
             self._copy_index_to_pandas(df)
             if squeeze:
                 yield df.squeeze(axis=1)
             else:
                 yield df
+
+        # To reduce the number of edge cases to consider when working with the
+        # results of this, always return at least one DataFrame. See:
+        # b/428918844.
+        if total_batches == 0:
+            df = pd.DataFrame(
+                {
+                    col: pd.Series([], dtype=self.expr.get_column_type(col))
+                    for col in itertools.chain(self.value_columns, self.index_columns)
+                }
+            )
+            self._copy_index_to_pandas(df)
+            yield df
 
     def _copy_index_to_pandas(self, df: pd.DataFrame):
         """Set the index on pandas DataFrame to match this block.

@@ -347,6 +347,28 @@ def test_to_pandas_batches_w_correct_dtypes(scalars_df_default_index):
         pd.testing.assert_series_equal(actual, expected)
 
 
+def test_to_pandas_batches_w_empty_dataframe(session):
+    """Verify to_pandas_batches() APIs returns at least one DataFrame.
+
+    See b/428918844 for additional context.
+    """
+    empty = bpd.DataFrame(
+        {
+            "idx1": [],
+            "idx2": [],
+            "col1": pandas.Series([], dtype="string[pyarrow]"),
+            "col2": pandas.Series([], dtype="Int64"),
+        },
+        session=session,
+    ).set_index(["idx1", "idx2"], drop=True)
+
+    results = list(empty.to_pandas_batches())
+    assert len(results) == 1
+    assert list(results[0].index.names) == ["idx1", "idx2"]
+    assert list(results[0].columns) == ["col1", "col2"]
+    pandas.testing.assert_series_equal(results[0].dtypes, empty.dtypes)
+
+
 @pytest.mark.parametrize("allow_large_results", (True, False))
 def test_to_pandas_batches_w_page_size_and_max_results(session, allow_large_results):
     """Verify to_pandas_batches() APIs returns the expected page size.
