@@ -364,7 +364,7 @@ def test_where_series_multi_index(scalars_df_index, scalars_pandas_df_index):
         dataframe_bf.where(cond_bf).to_pandas()
     assert (
         str(context.value)
-        == "The dataframe.where() method does not support multi-index and/or multi-column."
+        == "The dataframe.where() method does not support multi-column."
     )
 
 

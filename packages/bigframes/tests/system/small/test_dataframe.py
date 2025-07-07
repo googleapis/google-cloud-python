@@ -375,15 +375,6 @@ def test_insert(scalars_dfs, loc, column, value, allow_duplicates):
     pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df, check_dtype=False)
 
 
-def test_where_series_cond(scalars_df_index, scalars_pandas_df_index):
-    # Condition is dataframe, other is None (as default).
-    cond_bf = scalars_df_index["int64_col"] > 0
-    cond_pd = scalars_pandas_df_index["int64_col"] > 0
-    bf_result = scalars_df_index.where(cond_bf).to_pandas()
-    pd_result = scalars_pandas_df_index.where(cond_pd)
-    pandas.testing.assert_frame_equal(bf_result, pd_result)
-
-
 def test_mask_series_cond(scalars_df_index, scalars_pandas_df_index):
     cond_bf = scalars_df_index["int64_col"] > 0
     cond_pd = scalars_pandas_df_index["int64_col"] > 0
@@ -395,8 +386,8 @@ def test_mask_series_cond(scalars_df_index, scalars_pandas_df_index):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
-def test_where_series_multi_index(scalars_df_index, scalars_pandas_df_index):
-    # Test when a dataframe has multi-index or multi-columns.
+def test_where_multi_column(scalars_df_index, scalars_pandas_df_index):
+    # Test when a dataframe has multi-columns.
     columns = ["int64_col", "float64_col"]
     dataframe_bf = scalars_df_index[columns]
 
@@ -409,8 +400,17 @@ def test_where_series_multi_index(scalars_df_index, scalars_pandas_df_index):
         dataframe_bf.where(cond_bf).to_pandas()
     assert (
         str(context.value)
-        == "The dataframe.where() method does not support multi-index and/or multi-column."
+        == "The dataframe.where() method does not support multi-column."
     )
+
+
+def test_where_series_cond(scalars_df_index, scalars_pandas_df_index):
+    # Condition is dataframe, other is None (as default).
+    cond_bf = scalars_df_index["int64_col"] > 0
+    cond_pd = scalars_pandas_df_index["int64_col"] > 0
+    bf_result = scalars_df_index.where(cond_bf).to_pandas()
+    pd_result = scalars_pandas_df_index.where(cond_pd)
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
 def test_where_series_cond_const_other(scalars_df_index, scalars_pandas_df_index):

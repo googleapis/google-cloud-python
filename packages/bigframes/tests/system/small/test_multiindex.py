@@ -19,6 +19,22 @@ import pytest
 import bigframes.pandas as bpd
 from bigframes.testing.utils import assert_pandas_df_equal
 
+# Sample MultiIndex for testing DataFrames where() method.
+_MULTI_INDEX = pandas.MultiIndex.from_tuples(
+    [
+        (0, "a"),
+        (1, "b"),
+        (2, "c"),
+        (0, "d"),
+        (1, "e"),
+        (2, "f"),
+        (0, "g"),
+        (1, "h"),
+        (2, "i"),
+    ],
+    names=["A", "B"],
+)
+
 
 def test_multi_index_from_arrays():
     bf_idx = bpd.MultiIndex.from_arrays(
@@ -539,6 +555,140 @@ def test_multi_index_dataframe_join_on(scalars_dfs, how):
     pd_df_b = pd_df[["float64_col"]]
     pd_result = pd_df_a.join(pd_df_b, on="rowindex_2", how=how)
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
+
+
+def test_multi_index_dataframe_where_series_cond_none_other(
+    scalars_df_index, scalars_pandas_df_index
+):
+    columns = ["int64_col", "float64_col"]
+
+    # Create multi-index dataframe.
+    dataframe_bf = bpd.DataFrame(
+        scalars_df_index[columns].values,
+        index=_MULTI_INDEX,
+        columns=scalars_df_index[columns].columns,
+    )
+    dataframe_pd = pandas.DataFrame(
+        scalars_pandas_df_index[columns].values,
+        index=_MULTI_INDEX,
+        columns=scalars_pandas_df_index[columns].columns,
+    )
+    dataframe_bf.columns.name = "test_name"
+    dataframe_pd.columns.name = "test_name"
+
+    # When condition is series and other is None.
+    series_cond_bf = dataframe_bf["int64_col"] > 0
+    series_cond_pd = dataframe_pd["int64_col"] > 0
+
+    bf_result = dataframe_bf.where(series_cond_bf).to_pandas()
+    pd_result = dataframe_pd.where(series_cond_pd)
+    pandas.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+        check_index_type=False,
+        check_dtype=False,
+    )
+    # Assert the index is still MultiIndex after the operation.
+    assert isinstance(bf_result.index, pandas.MultiIndex), "Expected a MultiIndex"
+    assert isinstance(pd_result.index, pandas.MultiIndex), "Expected a MultiIndex"
+
+
+def test_multi_index_dataframe_where_series_cond_dataframe_other(
+    scalars_df_index, scalars_pandas_df_index
+):
+    columns = ["int64_col", "int64_too"]
+
+    # Create multi-index dataframe.
+    dataframe_bf = bpd.DataFrame(
+        scalars_df_index[columns].values,
+        index=_MULTI_INDEX,
+        columns=scalars_df_index[columns].columns,
+    )
+    dataframe_pd = pandas.DataFrame(
+        scalars_pandas_df_index[columns].values,
+        index=_MULTI_INDEX,
+        columns=scalars_pandas_df_index[columns].columns,
+    )
+
+    # When condition is series and other is dataframe.
+    series_cond_bf = dataframe_bf["int64_col"] > 1000.0
+    series_cond_pd = dataframe_pd["int64_col"] > 1000.0
+    dataframe_other_bf = dataframe_bf * 100.0
+    dataframe_other_pd = dataframe_pd * 100.0
+
+    bf_result = dataframe_bf.where(series_cond_bf, dataframe_other_bf).to_pandas()
+    pd_result = dataframe_pd.where(series_cond_pd, dataframe_other_pd)
+    pandas.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+        check_index_type=False,
+        check_dtype=False,
+    )
+
+
+def test_multi_index_dataframe_where_dataframe_cond_constant_other(
+    scalars_df_index, scalars_pandas_df_index
+):
+    columns = ["int64_col", "float64_col"]
+
+    # Create multi-index dataframe.
+    dataframe_bf = bpd.DataFrame(
+        scalars_df_index[columns].values,
+        index=_MULTI_INDEX,
+        columns=scalars_df_index[columns].columns,
+    )
+    dataframe_pd = pandas.DataFrame(
+        scalars_pandas_df_index[columns].values,
+        index=_MULTI_INDEX,
+        columns=scalars_pandas_df_index[columns].columns,
+    )
+
+    # When condition is dataframe and other is a constant.
+    dataframe_cond_bf = dataframe_bf > 0
+    dataframe_cond_pd = dataframe_pd > 0
+    other = 0
+
+    bf_result = dataframe_bf.where(dataframe_cond_bf, other).to_pandas()
+    pd_result = dataframe_pd.where(dataframe_cond_pd, other)
+    pandas.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+        check_index_type=False,
+        check_dtype=False,
+    )
+
+
+def test_multi_index_dataframe_where_dataframe_cond_dataframe_other(
+    scalars_df_index, scalars_pandas_df_index
+):
+    columns = ["int64_col", "int64_too", "float64_col"]
+
+    # Create multi-index dataframe.
+    dataframe_bf = bpd.DataFrame(
+        scalars_df_index[columns].values,
+        index=_MULTI_INDEX,
+        columns=scalars_df_index[columns].columns,
+    )
+    dataframe_pd = pandas.DataFrame(
+        scalars_pandas_df_index[columns].values,
+        index=_MULTI_INDEX,
+        columns=scalars_pandas_df_index[columns].columns,
+    )
+
+    # When condition is dataframe and other is dataframe.
+    dataframe_cond_bf = dataframe_bf < 1000.0
+    dataframe_cond_pd = dataframe_pd < 1000.0
+    dataframe_other_bf = dataframe_bf * -1.0
+    dataframe_other_pd = dataframe_pd * -1.0
+
+    bf_result = dataframe_bf.where(dataframe_cond_bf, dataframe_other_bf).to_pandas()
+    pd_result = dataframe_pd.where(dataframe_cond_pd, dataframe_other_pd)
+    pandas.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+        check_index_type=False,
+        check_dtype=False,
+    )
 
 
 @pytest.mark.parametrize(
