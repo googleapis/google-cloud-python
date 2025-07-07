@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/googleapis/python-bigquery-magics/compare/v0.10.0...v0.10.1) (2025-07-07)
+
+
+### Dependencies
+
+* Move spanner-graph-notebook back to version 1.1.6 ([#126](https://github.com/googleapis/python-bigquery-magics/issues/126)) ([17ee695](https://github.com/googleapis/python-bigquery-magics/commit/17ee6956c8fec740440836609a9106e900b63074))
+
 ## [0.10.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.9.0...v0.10.0) (2025-05-16)
 
 
