@@ -31,6 +31,11 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
         .agg(TOTAL_REVENUE=bpd.NamedAgg(column="REVENUE", aggfunc="sum"))
         .rename(columns={"L_SUPPKEY": "SUPPLIER_NO"})
     )
+    # Round earlier to prevent non-determinism in the later join due to
+    # differences in distributed floating point operation sort order.
+    grouped_revenue = grouped_revenue.assign(
+        TOTAL_REVENUE=grouped_revenue["TOTAL_REVENUE"].round(2)
+    )
 
     joined_data = bpd.merge(
         supplier, grouped_revenue, left_on="S_SUPPKEY", right_on="SUPPLIER_NO"
@@ -43,10 +48,6 @@ def q(project_id: str, dataset_id: str, session: bigframes.Session):
     max_revenue_suppliers = joined_data[
         joined_data["TOTAL_REVENUE"] == joined_data["MAX_REVENUE"]
     ]
-
-    max_revenue_suppliers["TOTAL_REVENUE"] = max_revenue_suppliers[
-        "TOTAL_REVENUE"
-    ].round(2)
     q_final = max_revenue_suppliers[
         ["S_SUPPKEY", "S_NAME", "S_ADDRESS", "S_PHONE", "TOTAL_REVENUE"]
     ].sort_values("S_SUPPKEY")
