@@ -125,7 +125,7 @@ class dataplexCallTransformer(cst.CSTTransformer):
         'lookup_entry': ('name', 'entry', 'view', 'aspect_types', 'paths', ),
         'run_data_scan': ('name', ),
         'run_task': ('name', 'labels', 'args', ),
-        'search_entries': ('name', 'query', 'page_size', 'page_token', 'order_by', 'scope', ),
+        'search_entries': ('name', 'query', 'page_size', 'page_token', 'order_by', 'scope', 'semantic_search', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_aspect_type': ('aspect_type', 'update_mask', 'validate_only', ),

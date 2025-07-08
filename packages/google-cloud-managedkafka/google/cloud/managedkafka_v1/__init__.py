@@ -93,7 +93,9 @@ from .types.resources import (
     OperationMetadata,
     RebalanceConfig,
     TaskRetryPolicy,
+    TlsConfig,
     Topic,
+    TrustConfig,
 )
 
 __all__ = (
@@ -160,7 +162,9 @@ __all__ = (
     "StopConnectorRequest",
     "StopConnectorResponse",
     "TaskRetryPolicy",
+    "TlsConfig",
     "Topic",
+    "TrustConfig",
     "UpdateAclRequest",
     "UpdateClusterRequest",
     "UpdateConnectClusterRequest",

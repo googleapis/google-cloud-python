@@ -83,7 +83,9 @@ from .resources import (
     OperationMetadata,
     RebalanceConfig,
     TaskRetryPolicy,
+    TlsConfig,
     Topic,
+    TrustConfig,
 )
 
 __all__ = (
@@ -152,5 +154,7 @@ __all__ = (
     "OperationMetadata",
     "RebalanceConfig",
     "TaskRetryPolicy",
+    "TlsConfig",
     "Topic",
+    "TrustConfig",
 )
