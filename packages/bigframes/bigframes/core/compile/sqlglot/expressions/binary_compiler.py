@@ -42,3 +42,8 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
 @BINARY_OP_REGISTRATION.register(ops.ge_op)
 def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.GTE(this=left.expr, expression=right.expr)
+
+
+@BINARY_OP_REGISTRATION.register(ops.JSONSet)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.func("JSON_SET", left.expr, sge.convert(op.json_path), right.expr)

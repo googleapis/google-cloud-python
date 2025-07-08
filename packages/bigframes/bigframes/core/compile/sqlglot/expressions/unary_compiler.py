@@ -70,3 +70,49 @@ def _(op: ops.ArraySliceOp, expr: TypedExpr) -> sge.Expression:
     )
 
     return sge.array(selected_elements)
+
+
+# JSON Ops
+@UNARY_OP_REGISTRATION.register(ops.JSONExtract)
+def _(op: ops.JSONExtract, expr: TypedExpr) -> sge.Expression:
+    return sge.func("JSON_EXTRACT", expr.expr, sge.convert(op.json_path))
+
+
+@UNARY_OP_REGISTRATION.register(ops.JSONExtractArray)
+def _(op: ops.JSONExtractArray, expr: TypedExpr) -> sge.Expression:
+    return sge.func("JSON_EXTRACT_ARRAY", expr.expr, sge.convert(op.json_path))
+
+
+@UNARY_OP_REGISTRATION.register(ops.JSONExtractStringArray)
+def _(op: ops.JSONExtractStringArray, expr: TypedExpr) -> sge.Expression:
+    return sge.func("JSON_EXTRACT_STRING_ARRAY", expr.expr, sge.convert(op.json_path))
+
+
+@UNARY_OP_REGISTRATION.register(ops.JSONQuery)
+def _(op: ops.JSONQuery, expr: TypedExpr) -> sge.Expression:
+    return sge.func("JSON_QUERY", expr.expr, sge.convert(op.json_path))
+
+
+@UNARY_OP_REGISTRATION.register(ops.JSONQueryArray)
+def _(op: ops.JSONQueryArray, expr: TypedExpr) -> sge.Expression:
+    return sge.func("JSON_QUERY_ARRAY", expr.expr, sge.convert(op.json_path))
+
+
+@UNARY_OP_REGISTRATION.register(ops.JSONValue)
+def _(op: ops.JSONValue, expr: TypedExpr) -> sge.Expression:
+    return sge.func("JSON_VALUE", expr.expr, sge.convert(op.json_path))
+
+
+@UNARY_OP_REGISTRATION.register(ops.JSONValueArray)
+def _(op: ops.JSONValueArray, expr: TypedExpr) -> sge.Expression:
+    return sge.func("JSON_VALUE_ARRAY", expr.expr, sge.convert(op.json_path))
+
+
+@UNARY_OP_REGISTRATION.register(ops.ParseJSON)
+def _(op: ops.ParseJSON, expr: TypedExpr) -> sge.Expression:
+    return sge.func("PARSE_JSON", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.ToJSONString)
+def _(op: ops.ToJSONString, expr: TypedExpr) -> sge.Expression:
+    return sge.func("TO_JSON_STRING", expr.expr)

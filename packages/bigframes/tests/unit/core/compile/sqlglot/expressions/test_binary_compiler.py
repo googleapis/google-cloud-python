@@ -14,6 +14,7 @@
 
 import pytest
 
+import bigframes.bigquery as bbq
 import bigframes.pandas as bpd
 
 pytest.importorskip("pytest_snapshot")
@@ -41,3 +42,8 @@ def test_add_string(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df["string_col"] = bf_df["string_col"] + "a"
 
     snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_json_set(json_types_df: bpd.DataFrame, snapshot):
+    result = bbq.json_set(json_types_df["json_col"], [("$.a", 100), ("$.b", "hi")])
+    snapshot.assert_match(result.to_frame().sql, "out.sql")
