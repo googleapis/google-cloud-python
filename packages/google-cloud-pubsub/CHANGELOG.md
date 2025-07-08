@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.31.0](https://github.com/googleapis/python-pubsub/compare/v2.30.0...v2.31.0) (2025-06-26)
+
+
+### Features
+
+* Add MessageTransformationFailureReason to IngestionFailureEvent ([#1427](https://github.com/googleapis/python-pubsub/issues/1427)) ([8ab13e1](https://github.com/googleapis/python-pubsub/commit/8ab13e1b71c151f0146548e7224dd38c9d719a88))
+
+
+### Bug Fixes
+
+* Surface Fatal Stream Errors to Future; Adjust Retryable Error Codes ([#1422](https://github.com/googleapis/python-pubsub/issues/1422)) ([e081beb](https://github.com/googleapis/python-pubsub/commit/e081beb29056035304d365ec9c50fa7ffbac6886))
+
 ## [2.30.0](https://github.com/googleapis/python-pubsub/compare/v2.29.1...v2.30.0) (2025-06-07)
 
 
