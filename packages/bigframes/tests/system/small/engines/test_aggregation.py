@@ -25,6 +25,28 @@ pytest.importorskip("polars")
 REFERENCE_ENGINE = polars_executor.PolarsExecutor()
 
 
+def apply_agg_to_all_valid(
+    array: array_value.ArrayValue, op: agg_ops.UnaryAggregateOp, excluded_cols=[]
+) -> array_value.ArrayValue:
+    """
+    Apply the aggregation to every column in the array that has a compatible datatype.
+    """
+    exprs_by_name = []
+    for arg in array.column_ids:
+        if arg in excluded_cols:
+            continue
+        try:
+            _ = op.output_type(array.get_column_type(arg))
+            expr = expression.UnaryAggregation(op, expression.deref(arg))
+            name = f"{arg}-{op.name}"
+            exprs_by_name.append((expr, name))
+        except TypeError:
+            continue
+    assert len(exprs_by_name) > 0
+    new_arr = array.aggregate(exprs_by_name)
+    return new_arr
+
+
 @pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
 def test_engines_aggregate_size(
     scalars_array_value: array_value.ArrayValue,
@@ -45,6 +67,20 @@ def test_engines_aggregate_size(
             ),
         ),
     )
+    assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize(
+    "op",
+    [agg_ops.min_op, agg_ops.max_op, agg_ops.mean_op, agg_ops.sum_op, agg_ops.count_op],
+)
+def test_engines_unary_aggregates(
+    scalars_array_value: array_value.ArrayValue,
+    engine,
+    op,
+):
+    node = apply_agg_to_all_valid(scalars_array_value, op).node
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 

@@ -47,7 +47,15 @@ _COMPATIBLE_SCALAR_OPS = (
     bigframes.operations.ge_op,
     bigframes.operations.le_op,
 )
-_COMPATIBLE_AGG_OPS = (agg_ops.SizeOp, agg_ops.SizeUnaryOp)
+_COMPATIBLE_AGG_OPS = (
+    agg_ops.SizeOp,
+    agg_ops.SizeUnaryOp,
+    agg_ops.MinOp,
+    agg_ops.MaxOp,
+    agg_ops.SumOp,
+    agg_ops.MeanOp,
+    agg_ops.CountOp,
+)
 
 
 def _get_expr_ops(expr: expression.Expression) -> set[bigframes.operations.ScalarOp]:

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas.testing
+
 from bigframes.core import nodes
 from bigframes.session import semi_executor
 
@@ -25,7 +27,8 @@ def assert_equivalence_execution(
     e2_result = engine2.execute(node, ordered=True)
     assert e1_result is not None
     assert e2_result is not None
-    # Schemas might have extra nullity markers, normalize to node expected schema, which should be looser
-    e1_table = e1_result.to_arrow_table().cast(node.schema.to_pyarrow())
-    e2_table = e2_result.to_arrow_table().cast(node.schema.to_pyarrow())
-    assert e1_table.equals(e2_table), f"{e1_table} is not equal to {e2_table}"
+    # Convert to pandas, as pandas has better comparison utils than arrow
+    assert e1_result.schema == e2_result.schema
+    e1_table = e1_result.to_pandas()
+    e2_table = e2_result.to_pandas()
+    pandas.testing.assert_frame_equal(e1_table, e2_table, rtol=1e-10)
