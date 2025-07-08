@@ -18,13 +18,13 @@ from google.cloud.configdelivery import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.configdelivery_v1alpha.services.config_delivery.async_client import (
+from google.cloud.configdelivery_v1beta.services.config_delivery.async_client import (
     ConfigDeliveryAsyncClient,
 )
-from google.cloud.configdelivery_v1alpha.services.config_delivery.client import (
+from google.cloud.configdelivery_v1beta.services.config_delivery.client import (
     ConfigDeliveryClient,
 )
-from google.cloud.configdelivery_v1alpha.types.config_delivery import (
+from google.cloud.configdelivery_v1beta.types.config_delivery import (
     AbortRolloutRequest,
     AllAtOnceStrategy,
     AllAtOnceStrategyInfo,

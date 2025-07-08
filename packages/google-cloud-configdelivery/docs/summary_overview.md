@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Config Delivery API API
+#  API
 
-Overview of the APIs available for Config Delivery API API.
+Overview of the APIs available for  API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Config Delivery API API.
+ API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-configdelivery/latest/summary_class.html)
 
