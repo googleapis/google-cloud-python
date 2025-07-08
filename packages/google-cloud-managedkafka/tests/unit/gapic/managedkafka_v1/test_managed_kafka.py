@@ -14684,6 +14684,10 @@ def test_create_cluster_rest_call_success(request_type):
         "state": 1,
         "satisfies_pzi": True,
         "satisfies_pzs": True,
+        "tls_config": {
+            "trust_config": {"cas_configs": [{"ca_pool": "ca_pool_value"}]},
+            "ssl_principal_mapping_rules": "ssl_principal_mapping_rules_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -14893,6 +14897,10 @@ def test_update_cluster_rest_call_success(request_type):
         "state": 1,
         "satisfies_pzi": True,
         "satisfies_pzs": True,
+        "tls_config": {
+            "trust_config": {"cas_configs": [{"ca_pool": "ca_pool_value"}]},
+            "ssl_principal_mapping_rules": "ssl_principal_mapping_rules_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -19136,10 +19144,36 @@ def test_parse_acl_path():
     assert expected == actual
 
 
-def test_cluster_path():
+def test_ca_pool_path():
     project = "winkle"
     location = "nautilus"
-    cluster = "scallop"
+    ca_pool = "scallop"
+    expected = "projects/{project}/locations/{location}/caPools/{ca_pool}".format(
+        project=project,
+        location=location,
+        ca_pool=ca_pool,
+    )
+    actual = ManagedKafkaClient.ca_pool_path(project, location, ca_pool)
+    assert expected == actual
+
+
+def test_parse_ca_pool_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "ca_pool": "clam",
+    }
+    path = ManagedKafkaClient.ca_pool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ManagedKafkaClient.parse_ca_pool_path(path)
+    assert expected == actual
+
+
+def test_cluster_path():
+    project = "whelk"
+    location = "octopus"
+    cluster = "oyster"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}".format(
         project=project,
         location=location,
@@ -19151,9 +19185,9 @@ def test_cluster_path():
 
 def test_parse_cluster_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "cluster": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "cluster": "mussel",
     }
     path = ManagedKafkaClient.cluster_path(**expected)
 
@@ -19163,10 +19197,10 @@ def test_parse_cluster_path():
 
 
 def test_consumer_group_path():
-    project = "whelk"
-    location = "octopus"
-    cluster = "oyster"
-    consumer_group = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
+    cluster = "scallop"
+    consumer_group = "abalone"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/consumerGroups/{consumer_group}".format(
         project=project,
         location=location,
@@ -19181,10 +19215,10 @@ def test_consumer_group_path():
 
 def test_parse_consumer_group_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "cluster": "winkle",
-        "consumer_group": "nautilus",
+        "project": "squid",
+        "location": "clam",
+        "cluster": "whelk",
+        "consumer_group": "octopus",
     }
     path = ManagedKafkaClient.consumer_group_path(**expected)
 
@@ -19194,10 +19228,10 @@ def test_parse_consumer_group_path():
 
 
 def test_crypto_key_path():
-    project = "scallop"
-    location = "abalone"
-    key_ring = "squid"
-    crypto_key = "clam"
+    project = "oyster"
+    location = "nudibranch"
+    key_ring = "cuttlefish"
+    crypto_key = "mussel"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
         project=project,
         location=location,
@@ -19210,10 +19244,10 @@ def test_crypto_key_path():
 
 def test_parse_crypto_key_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "key_ring": "oyster",
-        "crypto_key": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
+        "key_ring": "scallop",
+        "crypto_key": "abalone",
     }
     path = ManagedKafkaClient.crypto_key_path(**expected)
 
@@ -19223,10 +19257,10 @@ def test_parse_crypto_key_path():
 
 
 def test_topic_path():
-    project = "cuttlefish"
-    location = "mussel"
-    cluster = "winkle"
-    topic = "nautilus"
+    project = "squid"
+    location = "clam"
+    cluster = "whelk"
+    topic = "octopus"
     expected = "projects/{project}/locations/{location}/clusters/{cluster}/topics/{topic}".format(
         project=project,
         location=location,
@@ -19239,10 +19273,10 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "cluster": "squid",
-        "topic": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "cluster": "cuttlefish",
+        "topic": "mussel",
     }
     path = ManagedKafkaClient.topic_path(**expected)
 
@@ -19252,7 +19286,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -19262,7 +19296,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = ManagedKafkaClient.common_billing_account_path(**expected)
 
@@ -19272,7 +19306,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -19282,7 +19316,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = ManagedKafkaClient.common_folder_path(**expected)
 
@@ -19292,7 +19326,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -19302,7 +19336,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = ManagedKafkaClient.common_organization_path(**expected)
 
@@ -19312,7 +19346,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -19322,7 +19356,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = ManagedKafkaClient.common_project_path(**expected)
 
@@ -19332,8 +19366,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -19344,8 +19378,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ManagedKafkaClient.common_location_path(**expected)
 

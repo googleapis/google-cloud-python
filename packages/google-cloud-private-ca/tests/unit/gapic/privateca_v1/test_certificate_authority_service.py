@@ -3277,7 +3277,6 @@ def test_activate_certificate_authority_non_empty_request_with_auto_populated_fi
     request = service.ActivateCertificateAuthorityRequest(
         name="name_value",
         pem_ca_certificate="pem_ca_certificate_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3293,7 +3292,6 @@ def test_activate_certificate_authority_non_empty_request_with_auto_populated_fi
         assert args[0] == service.ActivateCertificateAuthorityRequest(
             name="name_value",
             pem_ca_certificate="pem_ca_certificate_value",
-            request_id="request_id_value",
         )
 
 
@@ -3998,7 +3996,6 @@ def test_disable_certificate_authority_non_empty_request_with_auto_populated_fie
     # if they meet the requirements of AIP 4235.
     request = service.DisableCertificateAuthorityRequest(
         name="name_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4013,7 +4010,6 @@ def test_disable_certificate_authority_non_empty_request_with_auto_populated_fie
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.DisableCertificateAuthorityRequest(
             name="name_value",
-            request_id="request_id_value",
         )
 
 
@@ -4347,7 +4343,6 @@ def test_enable_certificate_authority_non_empty_request_with_auto_populated_fiel
     # if they meet the requirements of AIP 4235.
     request = service.EnableCertificateAuthorityRequest(
         name="name_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4362,7 +4357,6 @@ def test_enable_certificate_authority_non_empty_request_with_auto_populated_fiel
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.EnableCertificateAuthorityRequest(
             name="name_value",
-            request_id="request_id_value",
         )
 
 
@@ -5020,6 +5014,8 @@ def test_get_certificate_authority(request_type, transport: str = "grpc"):
             state=resources.CertificateAuthority.State.ENABLED,
             pem_ca_certificates=["pem_ca_certificates_value"],
             gcs_bucket="gcs_bucket_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
         response = client.get_certificate_authority(request)
 
@@ -5037,6 +5033,8 @@ def test_get_certificate_authority(request_type, transport: str = "grpc"):
     assert response.state == resources.CertificateAuthority.State.ENABLED
     assert response.pem_ca_certificates == ["pem_ca_certificates_value"]
     assert response.gcs_bucket == "gcs_bucket_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 def test_get_certificate_authority_non_empty_request_with_auto_populated_field():
@@ -5177,6 +5175,8 @@ async def test_get_certificate_authority_async(
                 state=resources.CertificateAuthority.State.ENABLED,
                 pem_ca_certificates=["pem_ca_certificates_value"],
                 gcs_bucket="gcs_bucket_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         response = await client.get_certificate_authority(request)
@@ -5195,6 +5195,8 @@ async def test_get_certificate_authority_async(
     assert response.state == resources.CertificateAuthority.State.ENABLED
     assert response.pem_ca_certificates == ["pem_ca_certificates_value"]
     assert response.gcs_bucket == "gcs_bucket_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.asyncio
@@ -5958,7 +5960,6 @@ def test_undelete_certificate_authority_non_empty_request_with_auto_populated_fi
     # if they meet the requirements of AIP 4235.
     request = service.UndeleteCertificateAuthorityRequest(
         name="name_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5973,7 +5974,6 @@ def test_undelete_certificate_authority_non_empty_request_with_auto_populated_fi
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.UndeleteCertificateAuthorityRequest(
             name="name_value",
-            request_id="request_id_value",
         )
 
 
@@ -6307,7 +6307,6 @@ def test_delete_certificate_authority_non_empty_request_with_auto_populated_fiel
     # if they meet the requirements of AIP 4235.
     request = service.DeleteCertificateAuthorityRequest(
         name="name_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6322,7 +6321,6 @@ def test_delete_certificate_authority_non_empty_request_with_auto_populated_fiel
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.DeleteCertificateAuthorityRequest(
             name="name_value",
-            request_id="request_id_value",
         )
 
 
@@ -6654,9 +6652,7 @@ def test_update_certificate_authority_non_empty_request_with_auto_populated_fiel
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = service.UpdateCertificateAuthorityRequest(
-        request_id="request_id_value",
-    )
+    request = service.UpdateCertificateAuthorityRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6668,9 +6664,7 @@ def test_update_certificate_authority_non_empty_request_with_auto_populated_fiel
         client.update_certificate_authority(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCertificateAuthorityRequest(
-            request_id="request_id_value",
-        )
+        assert args[0] == service.UpdateCertificateAuthorityRequest()
 
 
 def test_update_certificate_authority_use_cached_wrapped_rpc():
@@ -7012,7 +7006,6 @@ def test_create_ca_pool_non_empty_request_with_auto_populated_field():
     request = service.CreateCaPoolRequest(
         parent="parent_value",
         ca_pool_id="ca_pool_id_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7026,7 +7019,6 @@ def test_create_ca_pool_non_empty_request_with_auto_populated_field():
         assert args[0] == service.CreateCaPoolRequest(
             parent="parent_value",
             ca_pool_id="ca_pool_id_value",
-            request_id="request_id_value",
         )
 
 
@@ -7360,9 +7352,7 @@ def test_update_ca_pool_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = service.UpdateCaPoolRequest(
-        request_id="request_id_value",
-    )
+    request = service.UpdateCaPoolRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_ca_pool), "__call__") as call:
@@ -7372,9 +7362,7 @@ def test_update_ca_pool_non_empty_request_with_auto_populated_field():
         client.update_ca_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCaPoolRequest(
-            request_id="request_id_value",
-        )
+        assert args[0] == service.UpdateCaPoolRequest()
 
 
 def test_update_ca_pool_use_cached_wrapped_rpc():
@@ -8549,7 +8537,6 @@ def test_delete_ca_pool_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = service.DeleteCaPoolRequest(
         name="name_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8562,7 +8549,6 @@ def test_delete_ca_pool_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.DeleteCaPoolRequest(
             name="name_value",
-            request_id="request_id_value",
         )
 
 
@@ -10487,7 +10473,6 @@ def test_create_certificate_template_non_empty_request_with_auto_populated_field
     request = service.CreateCertificateTemplateRequest(
         parent="parent_value",
         certificate_template_id="certificate_template_id_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10503,7 +10488,6 @@ def test_create_certificate_template_non_empty_request_with_auto_populated_field
         assert args[0] == service.CreateCertificateTemplateRequest(
             parent="parent_value",
             certificate_template_id="certificate_template_id_value",
-            request_id="request_id_value",
         )
 
 
@@ -10857,7 +10841,6 @@ def test_delete_certificate_template_non_empty_request_with_auto_populated_field
     # if they meet the requirements of AIP 4235.
     request = service.DeleteCertificateTemplateRequest(
         name="name_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10872,7 +10855,6 @@ def test_delete_certificate_template_non_empty_request_with_auto_populated_field
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.DeleteCertificateTemplateRequest(
             name="name_value",
-            request_id="request_id_value",
         )
 
 
@@ -12107,9 +12089,7 @@ def test_update_certificate_template_non_empty_request_with_auto_populated_field
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = service.UpdateCertificateTemplateRequest(
-        request_id="request_id_value",
-    )
+    request = service.UpdateCertificateTemplateRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12121,9 +12101,7 @@ def test_update_certificate_template_non_empty_request_with_auto_populated_field
         client.update_certificate_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateCertificateTemplateRequest(
-            request_id="request_id_value",
-        )
+        assert args[0] == service.UpdateCertificateTemplateRequest()
 
 
 def test_update_certificate_template_use_cached_wrapped_rpc():
@@ -19549,6 +19527,8 @@ async def test_get_certificate_authority_empty_call_grpc_asyncio():
                 state=resources.CertificateAuthority.State.ENABLED,
                 pem_ca_certificates=["pem_ca_certificates_value"],
                 gcs_bucket="gcs_bucket_value",
+                satisfies_pzs=True,
+                satisfies_pzi=True,
             )
         )
         await client.get_certificate_authority(request=None)
@@ -20120,6 +20100,17 @@ def test_create_certificate_rest_call_success(request_type):
                     "province": "province_value",
                     "street_address": "street_address_value",
                     "postal_code": "postal_code_value",
+                    "rdn_sequence": [
+                        {
+                            "attributes": [
+                                {
+                                    "type_": 1,
+                                    "object_id": {"object_id_path": [1456, 1457]},
+                                    "value": "value_value",
+                                }
+                            ]
+                        }
+                    ],
                 },
                 "subject_alt_name": {
                     "dns_names": ["dns_names_value1", "dns_names_value2"],
@@ -20130,11 +20121,7 @@ def test_create_certificate_rest_call_success(request_type):
                     ],
                     "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
                     "custom_sans": [
-                        {
-                            "object_id": {"object_id_path": [1456, 1457]},
-                            "critical": True,
-                            "value": b"value_blob",
-                        }
+                        {"object_id": {}, "critical": True, "value": b"value_blob"}
                     ],
                 },
             },
@@ -20235,6 +20222,7 @@ def test_create_certificate_rest_call_success(request_type):
                 "aia_issuing_certificate_urls_value2",
             ],
             "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+            "tbs_certificate_digest": "tbs_certificate_digest_value",
         },
         "pem_certificate_chain": [
             "pem_certificate_chain_value1",
@@ -20886,6 +20874,17 @@ def test_update_certificate_rest_call_success(request_type):
                     "province": "province_value",
                     "street_address": "street_address_value",
                     "postal_code": "postal_code_value",
+                    "rdn_sequence": [
+                        {
+                            "attributes": [
+                                {
+                                    "type_": 1,
+                                    "object_id": {"object_id_path": [1456, 1457]},
+                                    "value": "value_value",
+                                }
+                            ]
+                        }
+                    ],
                 },
                 "subject_alt_name": {
                     "dns_names": ["dns_names_value1", "dns_names_value2"],
@@ -20896,11 +20895,7 @@ def test_update_certificate_rest_call_success(request_type):
                     ],
                     "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
                     "custom_sans": [
-                        {
-                            "object_id": {"object_id_path": [1456, 1457]},
-                            "critical": True,
-                            "value": b"value_blob",
-                        }
+                        {"object_id": {}, "critical": True, "value": b"value_blob"}
                     ],
                 },
             },
@@ -21001,6 +20996,7 @@ def test_update_certificate_rest_call_success(request_type):
                 "aia_issuing_certificate_urls_value2",
             ],
             "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+            "tbs_certificate_digest": "tbs_certificate_digest_value",
         },
         "pem_certificate_chain": [
             "pem_certificate_chain_value1",
@@ -21360,6 +21356,17 @@ def test_create_certificate_authority_rest_call_success(request_type):
                     "province": "province_value",
                     "street_address": "street_address_value",
                     "postal_code": "postal_code_value",
+                    "rdn_sequence": [
+                        {
+                            "attributes": [
+                                {
+                                    "type_": 1,
+                                    "object_id": {"object_id_path": [1456, 1457]},
+                                    "value": "value_value",
+                                }
+                            ]
+                        }
+                    ],
                 },
                 "subject_alt_name": {
                     "dns_names": ["dns_names_value1", "dns_names_value2"],
@@ -21370,11 +21377,7 @@ def test_create_certificate_authority_rest_call_success(request_type):
                     ],
                     "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
                     "custom_sans": [
-                        {
-                            "object_id": {"object_id_path": [1456, 1457]},
-                            "critical": True,
-                            "value": b"value_blob",
-                        }
+                        {"object_id": {}, "critical": True, "value": b"value_blob"}
                     ],
                 },
             },
@@ -21487,6 +21490,7 @@ def test_create_certificate_authority_rest_call_success(request_type):
                     "aia_issuing_certificate_urls_value2",
                 ],
                 "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+                "tbs_certificate_digest": "tbs_certificate_digest_value",
             }
         ],
         "gcs_bucket": "gcs_bucket_value",
@@ -21499,6 +21503,15 @@ def test_create_certificate_authority_rest_call_success(request_type):
         "delete_time": {},
         "expire_time": {},
         "labels": {},
+        "user_defined_access_urls": {
+            "aia_issuing_certificate_urls": [
+                "aia_issuing_certificate_urls_value1",
+                "aia_issuing_certificate_urls_value2",
+            ],
+            "crl_access_urls": ["crl_access_urls_value1", "crl_access_urls_value2"],
+        },
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -22112,6 +22125,8 @@ def test_get_certificate_authority_rest_call_success(request_type):
             state=resources.CertificateAuthority.State.ENABLED,
             pem_ca_certificates=["pem_ca_certificates_value"],
             gcs_bucket="gcs_bucket_value",
+            satisfies_pzs=True,
+            satisfies_pzi=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -22134,6 +22149,8 @@ def test_get_certificate_authority_rest_call_success(request_type):
     assert response.state == resources.CertificateAuthority.State.ENABLED
     assert response.pem_ca_certificates == ["pem_ca_certificates_value"]
     assert response.gcs_bucket == "gcs_bucket_value"
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -22661,6 +22678,17 @@ def test_update_certificate_authority_rest_call_success(request_type):
                     "province": "province_value",
                     "street_address": "street_address_value",
                     "postal_code": "postal_code_value",
+                    "rdn_sequence": [
+                        {
+                            "attributes": [
+                                {
+                                    "type_": 1,
+                                    "object_id": {"object_id_path": [1456, 1457]},
+                                    "value": "value_value",
+                                }
+                            ]
+                        }
+                    ],
                 },
                 "subject_alt_name": {
                     "dns_names": ["dns_names_value1", "dns_names_value2"],
@@ -22671,11 +22699,7 @@ def test_update_certificate_authority_rest_call_success(request_type):
                     ],
                     "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
                     "custom_sans": [
-                        {
-                            "object_id": {"object_id_path": [1456, 1457]},
-                            "critical": True,
-                            "value": b"value_blob",
-                        }
+                        {"object_id": {}, "critical": True, "value": b"value_blob"}
                     ],
                 },
             },
@@ -22788,6 +22812,7 @@ def test_update_certificate_authority_rest_call_success(request_type):
                     "aia_issuing_certificate_urls_value2",
                 ],
                 "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
+                "tbs_certificate_digest": "tbs_certificate_digest_value",
             }
         ],
         "gcs_bucket": "gcs_bucket_value",
@@ -22800,6 +22825,15 @@ def test_update_certificate_authority_rest_call_success(request_type):
         "delete_time": {},
         "expire_time": {},
         "labels": {},
+        "user_defined_access_urls": {
+            "aia_issuing_certificate_urls": [
+                "aia_issuing_certificate_urls_value1",
+                "aia_issuing_certificate_urls_value2",
+            ],
+            "crl_access_urls": ["crl_access_urls_value1", "crl_access_urls_value2"],
+        },
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23006,7 +23040,8 @@ def test_create_ca_pool_rest_call_success(request_type):
                     "elliptic_curve": {"signature_algorithm": 1},
                 }
             ],
-            "maximum_lifetime": {"seconds": 751, "nanos": 543},
+            "backdate_duration": {"seconds": 751, "nanos": 543},
+            "maximum_lifetime": {},
             "allowed_issuance_modes": {
                 "allow_csr_based_issuance": True,
                 "allow_config_based_issuance": True,
@@ -23299,7 +23334,8 @@ def test_update_ca_pool_rest_call_success(request_type):
                     "elliptic_curve": {"signature_algorithm": 1},
                 }
             ],
-            "maximum_lifetime": {"seconds": 751, "nanos": 543},
+            "backdate_duration": {"seconds": 751, "nanos": 543},
+            "maximum_lifetime": {},
             "allowed_issuance_modes": {
                 "allow_csr_based_issuance": True,
                 "allow_config_based_issuance": True,

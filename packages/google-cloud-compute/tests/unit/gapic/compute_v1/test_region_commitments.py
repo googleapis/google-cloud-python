@@ -3059,9 +3059,13 @@ def test_insert_rest_call_success(request_type):
                 "resource_status": {
                     "reservation_block_count": 2468,
                     "reservation_maintenance": {
+                        "instance_maintenance_ongoing_count": 3599,
+                        "instance_maintenance_pending_count": 3587,
                         "maintenance_ongoing_count": 2651,
                         "maintenance_pending_count": 2639,
                         "scheduling_type": "scheduling_type_value",
+                        "subblock_infra_maintenance_ongoing_count": 4222,
+                        "subblock_infra_maintenance_pending_count": 4210,
                         "upcoming_group_maintenance": {
                             "can_reschedule": True,
                             "latest_window_start_time": "latest_window_start_time_value",
@@ -3549,9 +3553,13 @@ def test_update_rest_call_success(request_type):
                 "resource_status": {
                     "reservation_block_count": 2468,
                     "reservation_maintenance": {
+                        "instance_maintenance_ongoing_count": 3599,
+                        "instance_maintenance_pending_count": 3587,
                         "maintenance_ongoing_count": 2651,
                         "maintenance_pending_count": 2639,
                         "scheduling_type": "scheduling_type_value",
+                        "subblock_infra_maintenance_ongoing_count": 4222,
+                        "subblock_infra_maintenance_pending_count": 4210,
                         "upcoming_group_maintenance": {
                             "can_reschedule": True,
                             "latest_window_start_time": "latest_window_start_time_value",
