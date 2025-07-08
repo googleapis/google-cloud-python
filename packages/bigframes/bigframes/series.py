@@ -648,13 +648,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 form the original Series. Results stream from bigquery,
                 see https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.table.RowIterator#google_cloud_bigquery_table_RowIterator_to_arrow_iterable
         """
-        df = self._block.to_pandas_batches(
+        batches = self._block.to_pandas_batches(
             page_size=page_size,
             max_results=max_results,
             allow_large_results=allow_large_results,
-            squeeze=True,
         )
-        return df
+        return map(lambda df: cast(pandas.Series, df.squeeze(1)), batches)
 
     def _compute_dry_run(self) -> bigquery.QueryJob:
         _, query_job = self._block._compute_dry_run((self._value_column,))

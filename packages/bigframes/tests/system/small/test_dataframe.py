@@ -871,6 +871,21 @@ def test_filter_df(scalars_dfs):
     assert_pandas_df_equal(bf_result, pd_result)
 
 
+def test_df_to_pandas_batches(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    capped_unfiltered_batches = scalars_df.to_pandas_batches(page_size=2, max_results=6)
+    bf_bool_series = scalars_df["bool_col"]
+    filtered_batches = scalars_df[bf_bool_series].to_pandas_batches()
+
+    pd_bool_series = scalars_pandas_df["bool_col"]
+    pd_result = scalars_pandas_df[pd_bool_series]
+
+    assert 6 == capped_unfiltered_batches.total_rows
+    assert len(pd_result) == filtered_batches.total_rows
+    assert_pandas_df_equal(pd.concat(filtered_batches), pd_result)
+
+
 def test_assign_new_column(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     kwargs = {"new_col": 2}

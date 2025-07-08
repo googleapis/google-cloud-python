@@ -29,7 +29,17 @@ import itertools
 import random
 import textwrap
 import typing
-from typing import Iterable, List, Literal, Mapping, Optional, Sequence, Tuple, Union
+from typing import (
+    Iterable,
+    Iterator,
+    List,
+    Literal,
+    Mapping,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 import warnings
 
 import bigframes_vendored.constants as constants
@@ -87,14 +97,22 @@ LevelType = typing.Hashable
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 
 
-class BlockHolder(typing.Protocol):
+@dataclasses.dataclass
+class PandasBatches(Iterator[pd.DataFrame]):
     """Interface for mutable objects with state represented by a block value object."""
 
-    def _set_block(self, block: Block):
-        """Set the underlying block value of the object"""
+    def __init__(
+        self, pandas_batches: Iterator[pd.DataFrame], total_rows: Optional[int] = 0
+    ):
+        self._dataframes: Iterator[pd.DataFrame] = pandas_batches
+        self._total_rows: Optional[int] = total_rows
 
-    def _get_block(self) -> Block:
-        """Get the underlying block value of the object"""
+    @property
+    def total_rows(self) -> Optional[int]:
+        return self._total_rows
+
+    def __next__(self) -> pd.DataFrame:
+        return next(self._dataframes)
 
 
 @dataclasses.dataclass()
@@ -599,8 +617,7 @@ class Block:
                 self.expr, n, use_explicit_destination=allow_large_results
             )
             df = result.to_pandas()
-            self._copy_index_to_pandas(df)
-            return df
+            return self._copy_index_to_pandas(df)
         else:
             return None
 
@@ -609,8 +626,7 @@ class Block:
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
         allow_large_results: Optional[bool] = None,
-        squeeze: Optional[bool] = False,
-    ):
+    ) -> Iterator[pd.DataFrame]:
         """Download results one message at a time.
 
         page_size and max_results determine the size and number of batches,
@@ -621,43 +637,43 @@ class Block:
             use_explicit_destination=allow_large_results,
         )
 
-        total_batches = 0
-        for df in execute_result.to_pandas_batches(
-            page_size=page_size, max_results=max_results
-        ):
-            total_batches += 1
-            self._copy_index_to_pandas(df)
-            if squeeze:
-                yield df.squeeze(axis=1)
-            else:
-                yield df
-
         # To reduce the number of edge cases to consider when working with the
         # results of this, always return at least one DataFrame. See:
         # b/428918844.
-        if total_batches == 0:
-            df = pd.DataFrame(
-                {
-                    col: pd.Series([], dtype=self.expr.get_column_type(col))
-                    for col in itertools.chain(self.value_columns, self.index_columns)
-                }
-            )
-            self._copy_index_to_pandas(df)
-            yield df
+        empty_val = pd.DataFrame(
+            {
+                col: pd.Series([], dtype=self.expr.get_column_type(col))
+                for col in itertools.chain(self.value_columns, self.index_columns)
+            }
+        )
+        dfs = map(
+            lambda a: a[0],
+            itertools.zip_longest(
+                execute_result.to_pandas_batches(page_size, max_results),
+                [0],
+                fillvalue=empty_val,
+            ),
+        )
+        dfs = iter(map(self._copy_index_to_pandas, dfs))
 
-    def _copy_index_to_pandas(self, df: pd.DataFrame):
-        """Set the index on pandas DataFrame to match this block.
+        total_rows = execute_result.total_rows
+        if (total_rows is not None) and (max_results is not None):
+            total_rows = min(total_rows, max_results)
 
-        Warning: This method modifies ``df`` inplace.
-        """
+        return PandasBatches(dfs, total_rows)
+
+    def _copy_index_to_pandas(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Set the index on pandas DataFrame to match this block."""
         # Note: If BigQuery DataFrame has null index, a default one will be created for the local materialization.
+        new_df = df.copy()
         if len(self.index_columns) > 0:
-            df.set_index(list(self.index_columns), inplace=True)
+            new_df.set_index(list(self.index_columns), inplace=True)
             # Pandas names is annotated as list[str] rather than the more
             # general Sequence[Label] that BigQuery DataFrames has.
             # See: https://github.com/pandas-dev/pandas-stubs/issues/804
-            df.index.names = self.index.names  # type: ignore
-        df.columns = self.column_labels
+            new_df.index.names = self.index.names  # type: ignore
+        new_df.columns = self.column_labels
+        return new_df
 
     def _materialize_local(
         self, materialize_options: MaterializationOptions = MaterializationOptions()
@@ -724,9 +740,7 @@ class Block:
             )
         else:
             df = execute_result.to_pandas()
-            self._copy_index_to_pandas(df)
-
-        return df, execute_result.query_job
+            return self._copy_index_to_pandas(df), execute_result.query_job
 
     def _downsample(
         self, total_rows: int, sampling_method: str, fraction: float, random_state
@@ -1591,8 +1605,7 @@ class Block:
         row_count = self.session._executor.execute(self.expr.row_count()).to_py_scalar()
 
         head_df = head_result.to_pandas()
-        self._copy_index_to_pandas(head_df)
-        return head_df, row_count, head_result.query_job
+        return self._copy_index_to_pandas(head_df), row_count, head_result.query_job
 
     def promote_offsets(self, label: Label = None) -> typing.Tuple[Block, str]:
         expr, result_id = self._expr.promote_offsets()
