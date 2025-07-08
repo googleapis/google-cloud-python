@@ -67,6 +67,9 @@ class ServiceLbPolicy(proto.Message):
         failover_config (google.cloud.network_services_v1.types.ServiceLbPolicy.FailoverConfig):
             Optional. Configuration related to health
             based failover.
+        isolation_config (google.cloud.network_services_v1.types.ServiceLbPolicy.IsolationConfig):
+            Optional. Configuration to provide isolation
+            support for the associated Backend Service.
     """
 
     class LoadBalancingAlgorithm(proto.Enum):
@@ -100,6 +103,41 @@ class ServiceLbPolicy(proto.Message):
         SPRAY_TO_REGION = 4
         WATERFALL_BY_REGION = 5
         WATERFALL_BY_ZONE = 6
+
+    class IsolationGranularity(proto.Enum):
+        r"""The granularity of this isolation restriction.
+
+        Values:
+            ISOLATION_GRANULARITY_UNSPECIFIED (0):
+                No isolation is configured for the backend
+                service. Traffic can overflow based on the load
+                balancing algorithm.
+            REGION (1):
+                Traffic for this service will be isolated at
+                the cloud region level.
+        """
+        ISOLATION_GRANULARITY_UNSPECIFIED = 0
+        REGION = 1
+
+    class IsolationMode(proto.Enum):
+        r"""The mode of this isolation restriction, defining whether
+        clients in a given region are allowed to reach out to another
+        region.
+
+        Values:
+            ISOLATION_MODE_UNSPECIFIED (0):
+                No isolation mode is configured for the
+                backend service.
+            NEAREST (1):
+                Traffic will be sent to the nearest region.
+            STRICT (2):
+                Traffic will fail if no serving backends are
+                available in the same region as the load
+                balancer.
+        """
+        ISOLATION_MODE_UNSPECIFIED = 0
+        NEAREST = 1
+        STRICT = 2
 
     class AutoCapacityDrain(proto.Message):
         r"""Option to specify if an unhealthy IG/NEG should be considered
@@ -146,6 +184,30 @@ class ServiceLbPolicy(proto.Message):
             number=1,
         )
 
+    class IsolationConfig(proto.Message):
+        r"""Configuration to provide isolation support for the associated
+        Backend Service.
+
+        Attributes:
+            isolation_granularity (google.cloud.network_services_v1.types.ServiceLbPolicy.IsolationGranularity):
+                Optional. The isolation granularity of the
+                load balancer.
+            isolation_mode (google.cloud.network_services_v1.types.ServiceLbPolicy.IsolationMode):
+                Optional. The isolation mode of the load
+                balancer.
+        """
+
+        isolation_granularity: "ServiceLbPolicy.IsolationGranularity" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ServiceLbPolicy.IsolationGranularity",
+        )
+        isolation_mode: "ServiceLbPolicy.IsolationMode" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ServiceLbPolicy.IsolationMode",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -183,6 +245,11 @@ class ServiceLbPolicy(proto.Message):
         proto.MESSAGE,
         number=10,
         message=FailoverConfig,
+    )
+    isolation_config: IsolationConfig = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=IsolationConfig,
     )
 
 

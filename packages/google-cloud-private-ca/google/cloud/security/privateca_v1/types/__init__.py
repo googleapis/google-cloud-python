@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 from .resources import (
+    AttributeType,
+    AttributeTypeAndValue,
     CaPool,
     Certificate,
     CertificateAuthority,
@@ -26,6 +28,7 @@ from .resources import (
     KeyUsage,
     ObjectId,
     PublicKey,
+    RelativeDistinguishedName,
     RevocationReason,
     Subject,
     SubjectAltNames,
@@ -75,6 +78,7 @@ from .service import (
 )
 
 __all__ = (
+    "AttributeTypeAndValue",
     "CaPool",
     "Certificate",
     "CertificateAuthority",
@@ -87,11 +91,13 @@ __all__ = (
     "KeyUsage",
     "ObjectId",
     "PublicKey",
+    "RelativeDistinguishedName",
     "Subject",
     "SubjectAltNames",
     "SubordinateConfig",
     "X509Extension",
     "X509Parameters",
+    "AttributeType",
     "RevocationReason",
     "SubjectRequestMode",
     "ActivateCertificateAuthorityRequest",
