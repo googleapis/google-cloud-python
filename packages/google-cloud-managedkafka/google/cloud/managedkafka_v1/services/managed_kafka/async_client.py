@@ -85,6 +85,8 @@ class ManagedKafkaAsyncClient:
 
     acl_path = staticmethod(ManagedKafkaClient.acl_path)
     parse_acl_path = staticmethod(ManagedKafkaClient.parse_acl_path)
+    ca_pool_path = staticmethod(ManagedKafkaClient.ca_pool_path)
+    parse_ca_pool_path = staticmethod(ManagedKafkaClient.parse_ca_pool_path)
     cluster_path = staticmethod(ManagedKafkaClient.cluster_path)
     parse_cluster_path = staticmethod(ManagedKafkaClient.parse_cluster_path)
     consumer_group_path = staticmethod(ManagedKafkaClient.consumer_group_path)

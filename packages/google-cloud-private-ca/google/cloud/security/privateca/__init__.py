@@ -25,6 +25,8 @@ from google.cloud.security.privateca_v1.services.certificate_authority_service.c
     CertificateAuthorityServiceClient,
 )
 from google.cloud.security.privateca_v1.types.resources import (
+    AttributeType,
+    AttributeTypeAndValue,
     CaPool,
     Certificate,
     CertificateAuthority,
@@ -37,6 +39,7 @@ from google.cloud.security.privateca_v1.types.resources import (
     KeyUsage,
     ObjectId,
     PublicKey,
+    RelativeDistinguishedName,
     RevocationReason,
     Subject,
     SubjectAltNames,
@@ -88,6 +91,7 @@ from google.cloud.security.privateca_v1.types.service import (
 __all__ = (
     "CertificateAuthorityServiceClient",
     "CertificateAuthorityServiceAsyncClient",
+    "AttributeTypeAndValue",
     "CaPool",
     "Certificate",
     "CertificateAuthority",
@@ -100,11 +104,13 @@ __all__ = (
     "KeyUsage",
     "ObjectId",
     "PublicKey",
+    "RelativeDistinguishedName",
     "Subject",
     "SubjectAltNames",
     "SubordinateConfig",
     "X509Extension",
     "X509Parameters",
+    "AttributeType",
     "RevocationReason",
     "SubjectRequestMode",
     "ActivateCertificateAuthorityRequest",

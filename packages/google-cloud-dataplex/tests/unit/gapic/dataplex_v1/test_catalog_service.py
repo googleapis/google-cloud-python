@@ -15614,6 +15614,7 @@ def test_search_entries_rest_required_fields(request_type=catalog.SearchEntriesR
             "page_token",
             "query",
             "scope",
+            "semantic_search",
         )
     )
     jsonified_request.update(unset_fields)
@@ -15686,6 +15687,7 @@ def test_search_entries_rest_unset_required_fields():
                 "pageToken",
                 "query",
                 "scope",
+                "semanticSearch",
             )
         )
         & set(
