@@ -3850,6 +3850,16 @@
             "component": "grpc-google-iam-v1",
             "extra-files": [],
             "release-type": "python"
+        },
+        "packages/google-cloud-managedkafka-schemaregistry": {
+            "extra-files": [
+                "google/cloud/managedkafka_schemaregistry_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.managedkafka.schemaregistry.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
         }
     }
 }
