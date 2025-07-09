@@ -100,6 +100,7 @@ class ExecutionCache:
         original_root: nodes.BigFrameNode,
         table: bigquery.Table,
         ordering: order.RowOrdering,
+        num_rows: Optional[int] = None,
     ):
         # Assumption: GBQ cached table uses field name as bq column name
         scan_list = nodes.ScanList(
@@ -112,7 +113,7 @@ class ExecutionCache:
             source=nodes.BigqueryDataSource(
                 nodes.GbqTable.from_table(table),
                 ordering=ordering,
-                n_rows=table.num_rows,
+                n_rows=num_rows,
             ),
             scan_list=scan_list,
             table_session=original_root.session,
@@ -468,14 +469,16 @@ class BigQueryCachingExecutor(executor.Executor):
                 plan, sort_rows=False, materialize_all_order_keys=True
             )
         )
-        tmp_table_ref = self._sql_as_cached_temp_table(
+        tmp_table_ref, num_rows = self._sql_as_cached_temp_table(
             compiled.sql,
             compiled.sql_schema,
             cluster_cols=bq_io.select_cluster_cols(compiled.sql_schema, cluster_cols),
         )
         tmp_table = self.bqclient.get_table(tmp_table_ref)
         assert compiled.row_order is not None
-        self.cache.cache_results_table(array_value.node, tmp_table, compiled.row_order)
+        self.cache.cache_results_table(
+            array_value.node, tmp_table, compiled.row_order, num_rows=num_rows
+        )
 
     def _cache_with_offsets(self, array_value: bigframes.core.ArrayValue):
         """Executes the query and uses the resulting table to rewrite future executions."""
@@ -487,14 +490,16 @@ class BigQueryCachingExecutor(executor.Executor):
                 sort_rows=False,
             )
         )
-        tmp_table_ref = self._sql_as_cached_temp_table(
+        tmp_table_ref, num_rows = self._sql_as_cached_temp_table(
             compiled.sql,
             compiled.sql_schema,
             cluster_cols=[offset_column],
         )
         tmp_table = self.bqclient.get_table(tmp_table_ref)
         assert compiled.row_order is not None
-        self.cache.cache_results_table(array_value.node, tmp_table, compiled.row_order)
+        self.cache.cache_results_table(
+            array_value.node, tmp_table, compiled.row_order, num_rows=num_rows
+        )
 
     def _cache_with_session_awareness(
         self,
@@ -552,7 +557,7 @@ class BigQueryCachingExecutor(executor.Executor):
         sql: str,
         schema: Sequence[bigquery.SchemaField],
         cluster_cols: Sequence[str],
-    ) -> bigquery.TableReference:
+    ) -> tuple[bigquery.TableReference, Optional[int]]:
         assert len(cluster_cols) <= _MAX_CLUSTER_COLUMNS
         temp_table = self.storage_manager.create_temp_table(schema, cluster_cols)
 
@@ -567,8 +572,8 @@ class BigQueryCachingExecutor(executor.Executor):
             job_config=job_config,
         )
         assert query_job is not None
-        query_job.result()
-        return query_job.destination
+        iter = query_job.result()
+        return query_job.destination, iter.total_rows
 
     def _validate_result_schema(
         self,

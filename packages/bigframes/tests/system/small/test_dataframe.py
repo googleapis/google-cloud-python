@@ -3458,6 +3458,24 @@ def test_iloc_slice(scalars_df_index, scalars_pandas_df_index, start, stop, step
     )
 
 
+@pytest.mark.parametrize(
+    ("start", "stop", "step"),
+    [
+        (0, 0, None),
+    ],
+)
+def test_iloc_slice_after_cache(
+    scalars_df_index, scalars_pandas_df_index, start, stop, step
+):
+    scalars_df_index.cache()
+    bf_result = scalars_df_index.iloc[start:stop:step].to_pandas()
+    pd_result = scalars_pandas_df_index.iloc[start:stop:step]
+    pd.testing.assert_frame_equal(
+        bf_result,
+        pd_result,
+    )
+
+
 def test_iloc_slice_zero_step(scalars_df_index):
     with pytest.raises(ValueError):
         scalars_df_index.iloc[0:0:0]

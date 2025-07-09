@@ -161,7 +161,7 @@ class SliceNode(UnaryNode):
         return (
             ((not self.start) or (self.start == 0))
             and (self.step == 1)
-            and ((self.stop is None) or (self.stop == self.row_count))
+            and ((self.stop is None) or (self.stop == self.child.row_count))
         )
 
     @property
