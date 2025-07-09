@@ -101,7 +101,7 @@ def default(session, install_extras=True):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov", "brotli", "-c", constraints_path)
+    session.install("mock", "pytest", "pytest-cov", "brotli", "grpcio", "grpcio-status", "-c", constraints_path)
 
     if install_extras:
         session.install("opentelemetry-api", "opentelemetry-sdk")
