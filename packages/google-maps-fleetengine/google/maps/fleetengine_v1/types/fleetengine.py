@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
         "TripWaypoint",
         "VehicleAttribute",
         "VehicleLocation",
+        "TripAttribute",
     },
 )
 
@@ -467,6 +468,17 @@ class VehicleLocation(proto.Message):
             Source of the raw location. Defaults to ``GPS``.
         raw_location_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
             Accuracy of ``raw_location`` as a radius, in meters.
+        flp_location (google.type.latlng_pb2.LatLng):
+            The location from Android's Fused Location
+            Provider.
+        flp_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Update timestamp of ``flp_location``.
+        flp_latlng_accuracy_meters (google.protobuf.wrappers_pb2.DoubleValue):
+            Accuracy of ``flp_location`` in meters as a radius.
+        flp_heading_degrees (google.protobuf.wrappers_pb2.Int32Value):
+            Direction the vehicle is moving in degrees, as determined by
+            the Fused Location Provider. 0 represents North. The valid
+            range is [0,360).
         supplemental_location (google.type.latlng_pb2.LatLng):
             Supplemental location provided by the
             integrating app.
@@ -598,6 +610,26 @@ class VehicleLocation(proto.Message):
         number=25,
         message=wrappers_pb2.DoubleValue,
     )
+    flp_location: latlng_pb2.LatLng = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        message=latlng_pb2.LatLng,
+    )
+    flp_update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        message=timestamp_pb2.Timestamp,
+    )
+    flp_latlng_accuracy_meters: wrappers_pb2.DoubleValue = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=wrappers_pb2.DoubleValue,
+    )
+    flp_heading_degrees: wrappers_pb2.Int32Value = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message=wrappers_pb2.Int32Value,
+    )
     supplemental_location: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
         number=18,
@@ -621,6 +653,56 @@ class VehicleLocation(proto.Message):
     road_snapped: bool = proto.Field(
         proto.BOOL,
         number=26,
+    )
+
+
+class TripAttribute(proto.Message):
+    r"""Describes a trip attribute as a key-value pair. The
+    "key:value" string length cannot exceed 256 characters.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        key (str):
+            The attribute's key. Keys may not contain the
+            colon character (:).
+        string_value (str):
+            String typed attribute value.
+
+            This field is a member of `oneof`_ ``trip_attribute_value``.
+        bool_value (bool):
+            Boolean typed attribute value.
+
+            This field is a member of `oneof`_ ``trip_attribute_value``.
+        number_value (float):
+            Double typed attribute value.
+
+            This field is a member of `oneof`_ ``trip_attribute_value``.
+    """
+
+    key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    string_value: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="trip_attribute_value",
+    )
+    bool_value: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+        oneof="trip_attribute_value",
+    )
+    number_value: float = proto.Field(
+        proto.DOUBLE,
+        number=4,
+        oneof="trip_attribute_value",
     )
 
 
