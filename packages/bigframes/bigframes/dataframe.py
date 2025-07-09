@@ -2802,6 +2802,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         axis: int | str = 0,
         how: str = "any",
+        thresh: typing.Optional[int] = None,
         subset: typing.Union[None, blocks.Label, Sequence[blocks.Label]] = None,
         inplace: bool = False,
         ignore_index=False,
@@ -2810,8 +2811,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise NotImplementedError(
                 f"'inplace'=True not supported. {constants.FEEDBACK_LINK}"
             )
-        if how not in ("any", "all"):
-            raise ValueError("'how' must be one of 'any', 'all'")
+
+        # Check if both thresh and how are explicitly provided
+        if thresh is not None:
+            # cannot specify both thresh and how parameters
+            if how != "any":
+                raise TypeError(
+                    "You cannot set both the how and thresh arguments at the same time."
+                )
+        else:
+            # Only validate 'how' when thresh is not provided
+            if how not in ("any", "all"):
+                raise ValueError("'how' must be one of 'any', 'all'")
 
         axis_n = utils.get_axis_number(axis)
 
@@ -2833,21 +2844,38 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     for id_ in self._block.label_to_col_id[label]
                 ]
 
-            result = block_ops.dropna(self._block, self._block.value_columns, how=how, subset=subset_ids)  # type: ignore
+            result = block_ops.dropna(
+                self._block,
+                self._block.value_columns,
+                how=how,
+                thresh=thresh,
+                subset=subset_ids,
+            )  # type: ignore
             if ignore_index:
                 result = result.reset_index()
             return DataFrame(result)
         else:
-            isnull_block = self._block.multi_apply_unary_op(ops.isnull_op)
-            if how == "any":
-                null_locations = DataFrame(isnull_block).any().to_pandas()
-            else:  # 'all'
-                null_locations = DataFrame(isnull_block).all().to_pandas()
-            keep_columns = [
-                col
-                for col, to_drop in zip(self._block.value_columns, null_locations)
-                if not to_drop
-            ]
+            if thresh is not None:
+                # Keep columns with at least 'thresh' non-null values
+                notnull_block = self._block.multi_apply_unary_op(ops.notnull_op)
+                notnull_counts = DataFrame(notnull_block).sum().to_pandas()
+
+                keep_columns = [
+                    col
+                    for col, count in zip(self._block.value_columns, notnull_counts)
+                    if count >= thresh
+                ]
+            else:
+                isnull_block = self._block.multi_apply_unary_op(ops.isnull_op)
+                if how == "any":
+                    null_locations = DataFrame(isnull_block).any().to_pandas()
+                else:  # 'all'
+                    null_locations = DataFrame(isnull_block).all().to_pandas()
+                keep_columns = [
+                    col
+                    for col, to_drop in zip(self._block.value_columns, null_locations)
+                    if not to_drop
+                ]
             return DataFrame(self._block.select_columns(keep_columns))
 
     def any(

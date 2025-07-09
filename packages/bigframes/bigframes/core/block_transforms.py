@@ -522,7 +522,8 @@ def rank(
 def dropna(
     block: blocks.Block,
     column_ids: typing.Sequence[str],
-    how: typing.Literal["all", "any"] = "any",
+    how: str = "any",
+    thresh: typing.Optional[int] = None,
     subset: Optional[typing.Sequence[str]] = None,
 ):
     """
@@ -531,17 +532,38 @@ def dropna(
     if subset is None:
         subset = column_ids
 
+    # Predicates to check for non-null values in the subset of columns
     predicates = [
         ops.notnull_op.as_expr(column_id)
         for column_id in column_ids
         if column_id in subset
     ]
+
     if len(predicates) == 0:
         return block
-    if how == "any":
-        predicate = functools.reduce(ops.and_op.as_expr, predicates)
-    else:  # "all"
-        predicate = functools.reduce(ops.or_op.as_expr, predicates)
+
+    if thresh is not None:
+        # Handle single predicate case
+        if len(predicates) == 1:
+            count_expr = ops.AsTypeOp(pd.Int64Dtype()).as_expr(predicates[0])
+        else:
+            # Sum the boolean expressions to count non-null values
+            count_expr = functools.reduce(
+                lambda a, b: ops.add_op.as_expr(
+                    ops.AsTypeOp(pd.Int64Dtype()).as_expr(a),
+                    ops.AsTypeOp(pd.Int64Dtype()).as_expr(b),
+                ),
+                predicates,
+            )
+        # Filter rows where count >= thresh
+        predicate = ops.ge_op.as_expr(count_expr, ex.const(thresh))
+    else:
+        # Only handle 'how' parameter when thresh is not specified
+        if how == "any":
+            predicate = functools.reduce(ops.and_op.as_expr, predicates)
+        else:  # "all"
+            predicate = functools.reduce(ops.or_op.as_expr, predicates)
+
     return block.filter(predicate)
 
 
