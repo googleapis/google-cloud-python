@@ -547,6 +547,11 @@ class PolarsCompiler:
         child_frames = [
             frame.rename(
                 {col: id.sql for col, id in zip(frame.columns, node.output_ids)}
+            ).cast(
+                {
+                    field.id.sql: _bigframes_dtype_to_polars_dtype(field.dtype)
+                    for field in node.fields
+                }
             )
             for frame in child_frames
         ]

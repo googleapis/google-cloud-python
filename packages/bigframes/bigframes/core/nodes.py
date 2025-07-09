@@ -424,7 +424,7 @@ class JoinNode(BigFrameNode):
 
 @dataclasses.dataclass(frozen=True, eq=False)
 class ConcatNode(BigFrameNode):
-    # TODO: Explcitly map column ids from each child
+    # TODO: Explcitly map column ids from each child?
     children: Tuple[BigFrameNode, ...]
     output_ids: Tuple[identifiers.ColumnId, ...]
 
