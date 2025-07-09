@@ -28,6 +28,12 @@ from synthtool.languages import python
 default_version = json.load(open(".repo-metadata.json", "rt")).get("default_version")
 
 for library in s.get_staging_dirs(default_version):
+    s.replace(
+        "google/cloud/storage_v2/__init__.py",
+        "from google.cloud.storage_v2 import gapic_version as package_version",
+        "from . import gapic_version as package_version"
+    )
+
     s.move(
         [library],
         excludes=[
