@@ -252,6 +252,26 @@ class ConfigTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_resource_changes: gapic_v1.method.wrap_method(
+                self.list_resource_changes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_resource_change: gapic_v1.method.wrap_method(
+                self.get_resource_change,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_resource_drifts: gapic_v1.method.wrap_method(
+                self.list_resource_drifts,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_resource_drift: gapic_v1.method.wrap_method(
+                self.get_resource_drift,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -522,6 +542,48 @@ class ConfigTransport(abc.ABC):
     ) -> Callable[
         [config.GetTerraformVersionRequest],
         Union[config.TerraformVersion, Awaitable[config.TerraformVersion]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_resource_changes(
+        self,
+    ) -> Callable[
+        [config.ListResourceChangesRequest],
+        Union[
+            config.ListResourceChangesResponse,
+            Awaitable[config.ListResourceChangesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_resource_change(
+        self,
+    ) -> Callable[
+        [config.GetResourceChangeRequest],
+        Union[config.ResourceChange, Awaitable[config.ResourceChange]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_resource_drifts(
+        self,
+    ) -> Callable[
+        [config.ListResourceDriftsRequest],
+        Union[
+            config.ListResourceDriftsResponse,
+            Awaitable[config.ListResourceDriftsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_resource_drift(
+        self,
+    ) -> Callable[
+        [config.GetResourceDriftRequest],
+        Union[config.ResourceDrift, Awaitable[config.ResourceDrift]],
     ]:
         raise NotImplementedError()
 

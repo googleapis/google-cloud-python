@@ -169,6 +169,22 @@ class ConfigRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_resource_change(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_resource_change(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_resource_drift(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_resource_drift(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_revision(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -206,6 +222,22 @@ class ConfigRestInterceptor:
                 return request, metadata
 
             def post_list_previews(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_resource_changes(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_resource_changes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_resource_drifts(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_resource_drifts(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -781,6 +813,100 @@ class ConfigRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_resource_change(
+        self,
+        request: config.GetResourceChangeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        config.GetResourceChangeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_resource_change
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Config server.
+        """
+        return request, metadata
+
+    def post_get_resource_change(
+        self, response: config.ResourceChange
+    ) -> config.ResourceChange:
+        """Post-rpc interceptor for get_resource_change
+
+        DEPRECATED. Please use the `post_get_resource_change_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Config server but before
+        it is returned to user code. This `post_get_resource_change` interceptor runs
+        before the `post_get_resource_change_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_resource_change_with_metadata(
+        self,
+        response: config.ResourceChange,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.ResourceChange, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_resource_change
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_get_resource_change_with_metadata`
+        interceptor in new development instead of the `post_get_resource_change` interceptor.
+        When both interceptors are used, this `post_get_resource_change_with_metadata` interceptor runs after the
+        `post_get_resource_change` interceptor. The (possibly modified) response returned by
+        `post_get_resource_change` will be passed to
+        `post_get_resource_change_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_resource_drift(
+        self,
+        request: config.GetResourceDriftRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.GetResourceDriftRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_resource_drift
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Config server.
+        """
+        return request, metadata
+
+    def post_get_resource_drift(
+        self, response: config.ResourceDrift
+    ) -> config.ResourceDrift:
+        """Post-rpc interceptor for get_resource_drift
+
+        DEPRECATED. Please use the `post_get_resource_drift_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Config server but before
+        it is returned to user code. This `post_get_resource_drift` interceptor runs
+        before the `post_get_resource_drift_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_resource_drift_with_metadata(
+        self,
+        response: config.ResourceDrift,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[config.ResourceDrift, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_resource_drift
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_get_resource_drift_with_metadata`
+        interceptor in new development instead of the `post_get_resource_drift` interceptor.
+        When both interceptors are used, this `post_get_resource_drift_with_metadata` interceptor runs after the
+        `post_get_resource_drift` interceptor. The (possibly modified) response returned by
+        `post_get_resource_drift` will be passed to
+        `post_get_resource_drift_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_revision(
         self,
         request: config.GetRevisionRequest,
@@ -1006,6 +1132,106 @@ class ConfigRestInterceptor:
         `post_list_previews` interceptor. The (possibly modified) response returned by
         `post_list_previews` will be passed to
         `post_list_previews_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_resource_changes(
+        self,
+        request: config.ListResourceChangesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        config.ListResourceChangesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_resource_changes
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Config server.
+        """
+        return request, metadata
+
+    def post_list_resource_changes(
+        self, response: config.ListResourceChangesResponse
+    ) -> config.ListResourceChangesResponse:
+        """Post-rpc interceptor for list_resource_changes
+
+        DEPRECATED. Please use the `post_list_resource_changes_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Config server but before
+        it is returned to user code. This `post_list_resource_changes` interceptor runs
+        before the `post_list_resource_changes_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_resource_changes_with_metadata(
+        self,
+        response: config.ListResourceChangesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        config.ListResourceChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_resource_changes
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_list_resource_changes_with_metadata`
+        interceptor in new development instead of the `post_list_resource_changes` interceptor.
+        When both interceptors are used, this `post_list_resource_changes_with_metadata` interceptor runs after the
+        `post_list_resource_changes` interceptor. The (possibly modified) response returned by
+        `post_list_resource_changes` will be passed to
+        `post_list_resource_changes_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_resource_drifts(
+        self,
+        request: config.ListResourceDriftsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        config.ListResourceDriftsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_resource_drifts
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Config server.
+        """
+        return request, metadata
+
+    def post_list_resource_drifts(
+        self, response: config.ListResourceDriftsResponse
+    ) -> config.ListResourceDriftsResponse:
+        """Post-rpc interceptor for list_resource_drifts
+
+        DEPRECATED. Please use the `post_list_resource_drifts_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Config server but before
+        it is returned to user code. This `post_list_resource_drifts` interceptor runs
+        before the `post_list_resource_drifts_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_resource_drifts_with_metadata(
+        self,
+        response: config.ListResourceDriftsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        config.ListResourceDriftsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_resource_drifts
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Config server but before it is returned to user code.
+
+        We recommend only using this `post_list_resource_drifts_with_metadata`
+        interceptor in new development instead of the `post_list_resource_drifts` interceptor.
+        When both interceptors are used, this `post_list_resource_drifts_with_metadata` interceptor runs after the
+        `post_list_resource_drifts` interceptor. The (possibly modified) response returned by
+        `post_list_resource_drifts` will be passed to
+        `post_list_resource_drifts_with_metadata`.
         """
         return response, metadata
 
@@ -3446,6 +3672,312 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                 )
             return resp
 
+    class _GetResourceChange(
+        _BaseConfigRestTransport._BaseGetResourceChange, ConfigRestStub
+    ):
+        def __hash__(self):
+            return hash("ConfigRestTransport.GetResourceChange")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: config.GetResourceChangeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> config.ResourceChange:
+            r"""Call the get resource change method over HTTP.
+
+            Args:
+                request (~.config.GetResourceChangeRequest):
+                    The request object. The request message for the
+                GetResourceChange method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.config.ResourceChange:
+                    A resource change represents a change
+                to a resource in the state file.
+
+            """
+
+            http_options = (
+                _BaseConfigRestTransport._BaseGetResourceChange._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_resource_change(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseConfigRestTransport._BaseGetResourceChange._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseConfigRestTransport._BaseGetResourceChange._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.config_v1.ConfigClient.GetResourceChange",
+                    extra={
+                        "serviceName": "google.cloud.config.v1.Config",
+                        "rpcName": "GetResourceChange",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ConfigRestTransport._GetResourceChange._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = config.ResourceChange()
+            pb_resp = config.ResourceChange.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_resource_change(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_resource_change_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = config.ResourceChange.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.config_v1.ConfigClient.get_resource_change",
+                    extra={
+                        "serviceName": "google.cloud.config.v1.Config",
+                        "rpcName": "GetResourceChange",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetResourceDrift(
+        _BaseConfigRestTransport._BaseGetResourceDrift, ConfigRestStub
+    ):
+        def __hash__(self):
+            return hash("ConfigRestTransport.GetResourceDrift")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: config.GetResourceDriftRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> config.ResourceDrift:
+            r"""Call the get resource drift method over HTTP.
+
+            Args:
+                request (~.config.GetResourceDriftRequest):
+                    The request object. The request message for the
+                GetResourceDrift method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.config.ResourceDrift:
+                    A resource drift represents a drift
+                to a resource in the state file.
+
+            """
+
+            http_options = (
+                _BaseConfigRestTransport._BaseGetResourceDrift._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_resource_drift(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseConfigRestTransport._BaseGetResourceDrift._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseConfigRestTransport._BaseGetResourceDrift._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.config_v1.ConfigClient.GetResourceDrift",
+                    extra={
+                        "serviceName": "google.cloud.config.v1.Config",
+                        "rpcName": "GetResourceDrift",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ConfigRestTransport._GetResourceDrift._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = config.ResourceDrift()
+            pb_resp = config.ResourceDrift.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_resource_drift(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_resource_drift_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = config.ResourceDrift.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.config_v1.ConfigClient.get_resource_drift",
+                    extra={
+                        "serviceName": "google.cloud.config.v1.Config",
+                        "rpcName": "GetResourceDrift",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetRevision(_BaseConfigRestTransport._BaseGetRevision, ConfigRestStub):
         def __hash__(self):
             return hash("ConfigRestTransport.GetRevision")
@@ -4198,6 +4730,311 @@ class ConfigRestTransport(_BaseConfigRestTransport):
                     extra={
                         "serviceName": "google.cloud.config.v1.Config",
                         "rpcName": "ListPreviews",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListResourceChanges(
+        _BaseConfigRestTransport._BaseListResourceChanges, ConfigRestStub
+    ):
+        def __hash__(self):
+            return hash("ConfigRestTransport.ListResourceChanges")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: config.ListResourceChangesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> config.ListResourceChangesResponse:
+            r"""Call the list resource changes method over HTTP.
+
+            Args:
+                request (~.config.ListResourceChangesRequest):
+                    The request object. The request message for the
+                ListResourceChanges method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.config.ListResourceChangesResponse:
+                    A response to a 'ListResourceChanges'
+                call. Contains a list of
+                ResourceChanges.
+
+            """
+
+            http_options = (
+                _BaseConfigRestTransport._BaseListResourceChanges._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_resource_changes(
+                request, metadata
+            )
+            transcoded_request = _BaseConfigRestTransport._BaseListResourceChanges._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseConfigRestTransport._BaseListResourceChanges._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.config_v1.ConfigClient.ListResourceChanges",
+                    extra={
+                        "serviceName": "google.cloud.config.v1.Config",
+                        "rpcName": "ListResourceChanges",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ConfigRestTransport._ListResourceChanges._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = config.ListResourceChangesResponse()
+            pb_resp = config.ListResourceChangesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_resource_changes(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_resource_changes_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = config.ListResourceChangesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.config_v1.ConfigClient.list_resource_changes",
+                    extra={
+                        "serviceName": "google.cloud.config.v1.Config",
+                        "rpcName": "ListResourceChanges",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListResourceDrifts(
+        _BaseConfigRestTransport._BaseListResourceDrifts, ConfigRestStub
+    ):
+        def __hash__(self):
+            return hash("ConfigRestTransport.ListResourceDrifts")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: config.ListResourceDriftsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> config.ListResourceDriftsResponse:
+            r"""Call the list resource drifts method over HTTP.
+
+            Args:
+                request (~.config.ListResourceDriftsRequest):
+                    The request object. The request message for the
+                ListResourceDrifts method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.config.ListResourceDriftsResponse:
+                    A response to a 'ListResourceDrifts'
+                call. Contains a list of ResourceDrifts.
+
+            """
+
+            http_options = (
+                _BaseConfigRestTransport._BaseListResourceDrifts._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_resource_drifts(
+                request, metadata
+            )
+            transcoded_request = _BaseConfigRestTransport._BaseListResourceDrifts._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseConfigRestTransport._BaseListResourceDrifts._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.config_v1.ConfigClient.ListResourceDrifts",
+                    extra={
+                        "serviceName": "google.cloud.config.v1.Config",
+                        "rpcName": "ListResourceDrifts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ConfigRestTransport._ListResourceDrifts._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = config.ListResourceDriftsResponse()
+            pb_resp = config.ListResourceDriftsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_resource_drifts(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_resource_drifts_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = config.ListResourceDriftsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.config_v1.ConfigClient.list_resource_drifts",
+                    extra={
+                        "serviceName": "google.cloud.config.v1.Config",
+                        "rpcName": "ListResourceDrifts",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -5221,6 +6058,22 @@ class ConfigRestTransport(_BaseConfigRestTransport):
         return self._GetResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_resource_change(
+        self,
+    ) -> Callable[[config.GetResourceChangeRequest], config.ResourceChange]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetResourceChange(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_resource_drift(
+        self,
+    ) -> Callable[[config.GetResourceDriftRequest], config.ResourceDrift]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetResourceDrift(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_revision(self) -> Callable[[config.GetRevisionRequest], config.Revision]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -5257,6 +6110,26 @@ class ConfigRestTransport(_BaseConfigRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPreviews(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_resource_changes(
+        self,
+    ) -> Callable[
+        [config.ListResourceChangesRequest], config.ListResourceChangesResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListResourceChanges(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_resource_drifts(
+        self,
+    ) -> Callable[
+        [config.ListResourceDriftsRequest], config.ListResourceDriftsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListResourceDrifts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_resources(
