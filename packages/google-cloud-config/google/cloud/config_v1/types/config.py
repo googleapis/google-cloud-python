@@ -76,6 +76,18 @@ __protobuf__ = proto.module(
         "ListTerraformVersionsRequest",
         "ListTerraformVersionsResponse",
         "TerraformVersion",
+        "ResourceChangeTerraformInfo",
+        "ResourceChange",
+        "PropertyChange",
+        "ListResourceChangesRequest",
+        "ListResourceChangesResponse",
+        "GetResourceChangeRequest",
+        "ResourceDriftTerraformInfo",
+        "ResourceDrift",
+        "PropertyDrift",
+        "ListResourceDriftsRequest",
+        "ListResourceDriftsResponse",
+        "GetResourceDriftRequest",
     },
 )
 
@@ -119,7 +131,7 @@ class Deployment(proto.Message):
 
             This field is a member of `oneof`_ ``blueprint``.
         name (str):
-            Resource name of the deployment. Format:
+            Identifier. Resource name of the deployment. Format:
             ``projects/{project}/locations/{location}/deployments/{deployment}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the deployment was
@@ -128,7 +140,8 @@ class Deployment(proto.Message):
             Output only. Time when the deployment was
             last modified.
         labels (MutableMapping[str, str]):
-            User-defined metadata for the deployment.
+            Optional. User-defined metadata for the
+            deployment.
         state (google.cloud.config_v1.types.Deployment.State):
             Output only. Current state of the deployment.
         latest_revision (str):
@@ -457,8 +470,8 @@ class TerraformBlueprint(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         input_values (MutableMapping[str, google.cloud.config_v1.types.TerraformVariable]):
-            Input variable values for the Terraform
-            blueprint.
+            Optional. Input variable values for the
+            Terraform blueprint.
     """
 
     gcs_source: str = proto.Field(
@@ -485,7 +498,7 @@ class TerraformVariable(proto.Message):
 
     Attributes:
         input_value (google.protobuf.struct_pb2.Value):
-            Input variable value.
+            Optional. Input variable value.
     """
 
     input_value: struct_pb2.Value = proto.Field(
@@ -1323,8 +1336,8 @@ class TerraformError(proto.Message):
         error_description (str):
             A human-readable error description.
         error (google.rpc.status_pb2.Status):
-            Original error response from underlying
-            Google API, if available.
+            Output only. Original error response from
+            underlying Google API, if available.
     """
 
     resource_address: str = proto.Field(
@@ -2037,7 +2050,7 @@ class Preview(proto.Message):
             This field is a member of `oneof`_ ``_tf_version_constraint``.
         annotations (MutableMapping[str, str]):
             Optional. Arbitrary key-value metadata
-            storage e.g. to help client tools identifiy
+            storage e.g. to help client tools identify
             preview during automation. See
             https://google.aip.dev/148#annotations for
             details on format and size limitations.
@@ -2613,14 +2626,15 @@ class ListTerraformVersionsRequest(proto.Message):
             are listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}'.
         page_size (int):
-            Optional. When requesting a page of resources, 'page_size'
-            specifies number of resources to return. If unspecified, at
-            most 500 will be returned. The maximum value is 1000.
+            Optional. When requesting a page of terraform versions,
+            'page_size' specifies number of terraform versions to
+            return. If unspecified, at most 500 will be returned. The
+            maximum value is 1000.
         page_token (str):
             Optional. Token returned by previous call to
             'ListTerraformVersions' which specifies the
             position in the list from where to continue
-            listing the resources.
+            listing the terraform versions.
         filter (str):
             Optional. Lists the TerraformVersions that match the filter
             expression. A filter expression filters the resources listed
@@ -2760,6 +2774,484 @@ class TerraformVersion(proto.Message):
         number=5,
         optional=True,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class ResourceChangeTerraformInfo(proto.Message):
+    r"""Terraform info of a ResourceChange.
+
+    Attributes:
+        address (str):
+            Output only. TF resource address that
+            uniquely identifies the resource.
+        type_ (str):
+            Output only. TF resource type.
+        resource_name (str):
+            Output only. TF resource name.
+        provider (str):
+            Output only. TF resource provider.
+        actions (MutableSequence[str]):
+            Output only. TF resource actions.
+    """
+
+    address: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    provider: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    actions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ResourceChange(proto.Message):
+    r"""A resource change represents a change to a resource in the
+    state file.
+
+    Attributes:
+        name (str):
+            Identifier. The name of the resource change. Format:
+            'projects/{project_id}/locations/{location}/previews/{preview}/resourceChanges/{resource_change}'.
+        terraform_info (google.cloud.config_v1.types.ResourceChangeTerraformInfo):
+            Output only. Terraform info of the resource
+            change.
+        intent (google.cloud.config_v1.types.ResourceChange.Intent):
+            Output only. The intent of the resource
+            change.
+        property_changes (MutableSequence[google.cloud.config_v1.types.PropertyChange]):
+            Output only. The property changes of the
+            resource change.
+    """
+
+    class Intent(proto.Enum):
+        r"""Possible intent of the resource change.
+
+        Values:
+            INTENT_UNSPECIFIED (0):
+                The default value.
+            CREATE (1):
+                The resource will be created.
+            UPDATE (2):
+                The resource will be updated.
+            DELETE (3):
+                The resource will be deleted.
+            RECREATE (4):
+                The resource will be recreated.
+            UNCHANGED (5):
+                The resource will be untouched.
+        """
+        INTENT_UNSPECIFIED = 0
+        CREATE = 1
+        UPDATE = 2
+        DELETE = 3
+        RECREATE = 4
+        UNCHANGED = 5
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    terraform_info: "ResourceChangeTerraformInfo" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ResourceChangeTerraformInfo",
+    )
+    intent: Intent = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Intent,
+    )
+    property_changes: MutableSequence["PropertyChange"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="PropertyChange",
+    )
+
+
+class PropertyChange(proto.Message):
+    r"""A property change represents a change to a property in the
+    state file.
+
+    Attributes:
+        path (str):
+            Output only. The path of the property change.
+        before_sensitive_paths (MutableSequence[str]):
+            Output only. The paths of sensitive fields in ``before``.
+            Paths are relative to ``path``.
+        before (google.protobuf.struct_pb2.Value):
+            Output only. Representations of the object
+            value before the actions.
+        after_sensitive_paths (MutableSequence[str]):
+            Output only. The paths of sensitive fields in ``after``.
+            Paths are relative to ``path``.
+        after (google.protobuf.struct_pb2.Value):
+            Output only. Representations of the object
+            value after the actions.
+    """
+
+    path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    before_sensitive_paths: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    before: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.Value,
+    )
+    after_sensitive_paths: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    after: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Value,
+    )
+
+
+class ListResourceChangesRequest(proto.Message):
+    r"""The request message for the ListResourceChanges method.
+
+    Attributes:
+        parent (str):
+            Required. The parent in whose context the ResourceChanges
+            are listed. The parent value is in the format:
+            'projects/{project_id}/locations/{location}/previews/{preview}'.
+        page_size (int):
+            Optional. When requesting a page of resource changes,
+            'page_size' specifies number of resource changes to return.
+            If unspecified, at most 500 will be returned. The maximum
+            value is 1000.
+        page_token (str):
+            Optional. Token returned by previous call to
+            'ListResourceChanges' which specifies the
+            position in the list from where to continue
+            listing the resource changes.
+        filter (str):
+            Optional. Lists the resource changes that match the filter
+            expression. A filter expression filters the resource changes
+            listed in the response. The expression must be of the form
+            '{field} {operator} {value}' where operators: '<', '>',
+            '<=', '>=', '!=', '=', ':' are supported (colon ':'
+            represents a HAS operator which is roughly synonymous with
+            equality). {field} can refer to a proto or JSON field, or a
+            synthetic field. Field names can be camelCase or snake_case.
+
+            Examples:
+
+            -  Filter by name: name =
+               "projects/foo/locations/us-central1/previews/dep/resourceChanges/baz
+        order_by (str):
+            Optional. Field to use to sort the list.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListResourceChangesResponse(proto.Message):
+    r"""A response to a 'ListResourceChanges' call. Contains a list
+    of ResourceChanges.
+
+    Attributes:
+        resource_changes (MutableSequence[google.cloud.config_v1.types.ResourceChange]):
+            List of ResourceChanges.
+        next_page_token (str):
+            A token to request the next page of resources
+            from the 'ListResourceChanges' method. The value
+            of an empty string means that  there are no more
+            resources to return.
+        unreachable (MutableSequence[str]):
+            Unreachable resources, if any.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    resource_changes: MutableSequence["ResourceChange"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ResourceChange",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetResourceChangeRequest(proto.Message):
+    r"""The request message for the GetResourceChange method.
+
+    Attributes:
+        name (str):
+            Required. The name of the resource change to retrieve.
+            Format:
+            'projects/{project_id}/locations/{location}/previews/{preview}/resourceChanges/{resource_change}'.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ResourceDriftTerraformInfo(proto.Message):
+    r"""Terraform info of a ResourceChange.
+
+    Attributes:
+        address (str):
+            Output only. The address of the drifted
+            resource.
+        type_ (str):
+            Output only. The type of the drifted
+            resource.
+        resource_name (str):
+            Output only. TF resource name.
+        provider (str):
+            Output only. The provider of the drifted
+            resource.
+    """
+
+    address: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    provider: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ResourceDrift(proto.Message):
+    r"""A resource drift represents a drift to a resource in the
+    state file.
+
+    Attributes:
+        name (str):
+            Identifier. The name of the resource drift. Format:
+            'projects/{project_id}/locations/{location}/previews/{preview}/resourceDrifts/{resource_drift}'.
+        terraform_info (google.cloud.config_v1.types.ResourceDriftTerraformInfo):
+            Output only. Terraform info of the resource
+            drift.
+        property_drifts (MutableSequence[google.cloud.config_v1.types.PropertyDrift]):
+            Output only. The property drifts of the
+            resource drift.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    terraform_info: "ResourceDriftTerraformInfo" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ResourceDriftTerraformInfo",
+    )
+    property_drifts: MutableSequence["PropertyDrift"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="PropertyDrift",
+    )
+
+
+class PropertyDrift(proto.Message):
+    r"""A property drift represents a drift to a property in the
+    state file.
+
+    Attributes:
+        path (str):
+            Output only. The path of the property drift.
+        before_sensitive_paths (MutableSequence[str]):
+            Output only. The paths of sensitive fields in ``before``.
+            Paths are relative to ``path``.
+        before (google.protobuf.struct_pb2.Value):
+            Output only. Representations of the object
+            value before the actions.
+        after_sensitive_paths (MutableSequence[str]):
+            Output only. The paths of sensitive fields in ``after``.
+            Paths are relative to ``path``.
+        after (google.protobuf.struct_pb2.Value):
+            Output only. Representations of the object
+            value after the actions.
+    """
+
+    path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    before_sensitive_paths: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    before: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.Value,
+    )
+    after_sensitive_paths: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    after: struct_pb2.Value = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Value,
+    )
+
+
+class ListResourceDriftsRequest(proto.Message):
+    r"""The request message for the ListResourceDrifts method.
+
+    Attributes:
+        parent (str):
+            Required. The parent in whose context the ResourceDrifts are
+            listed. The parent value is in the format:
+            'projects/{project_id}/locations/{location}/previews/{preview}'.
+        page_size (int):
+            Optional. When requesting a page of resource drifts,
+            'page_size' specifies number of resource drifts to return.
+            If unspecified, at most 500 will be returned. The maximum
+            value is 1000.
+        page_token (str):
+            Optional. Token returned by previous call to
+            'ListResourceDrifts' which specifies the
+            position in the list from where to continue
+            listing the resource drifts.
+        filter (str):
+            Optional. Lists the resource drifts that match the filter
+            expression. A filter expression filters the resource drifts
+            listed in the response. The expression must be of the form
+            '{field} {operator} {value}' where operators: '<', '>',
+            '<=', '>=', '!=', '=', ':' are supported (colon ':'
+            represents a HAS operator which is roughly synonymous with
+            equality). {field} can refer to a proto or JSON field, or a
+            synthetic field. Field names can be camelCase or snake_case.
+
+            Examples:
+
+            -  Filter by name: name =
+               "projects/foo/locations/us-central1/previews/dep/resourceDrifts/baz
+        order_by (str):
+            Optional. Field to use to sort the list.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListResourceDriftsResponse(proto.Message):
+    r"""A response to a 'ListResourceDrifts' call. Contains a list of
+    ResourceDrifts.
+
+    Attributes:
+        resource_drifts (MutableSequence[google.cloud.config_v1.types.ResourceDrift]):
+            List of ResourceDrifts.
+        next_page_token (str):
+            A token to request the next page of resources
+            from the 'ListResourceDrifts' method. The value
+            of an empty string means that there are no more
+            resources to return.
+        unreachable (MutableSequence[str]):
+            Unreachable resources, if any.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    resource_drifts: MutableSequence["ResourceDrift"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ResourceDrift",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetResourceDriftRequest(proto.Message):
+    r"""The request message for the GetResourceDrift method.
+
+    Attributes:
+        name (str):
+            Required. The name of the resource drift to retrieve.
+            Format:
+            'projects/{project_id}/locations/{location}/previews/{preview}/resourceDrifts/{resource_drift}'.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

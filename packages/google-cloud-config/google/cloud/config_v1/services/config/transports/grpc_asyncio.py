@@ -987,6 +987,115 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
             )
         return self._stubs["get_terraform_version"]
 
+    @property
+    def list_resource_changes(
+        self,
+    ) -> Callable[
+        [config.ListResourceChangesRequest],
+        Awaitable[config.ListResourceChangesResponse],
+    ]:
+        r"""Return a callable for the list resource changes method over gRPC.
+
+        Lists ResourceChanges for a given preview.
+
+        Returns:
+            Callable[[~.ListResourceChangesRequest],
+                    Awaitable[~.ListResourceChangesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_resource_changes" not in self._stubs:
+            self._stubs["list_resource_changes"] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/ListResourceChanges",
+                request_serializer=config.ListResourceChangesRequest.serialize,
+                response_deserializer=config.ListResourceChangesResponse.deserialize,
+            )
+        return self._stubs["list_resource_changes"]
+
+    @property
+    def get_resource_change(
+        self,
+    ) -> Callable[[config.GetResourceChangeRequest], Awaitable[config.ResourceChange]]:
+        r"""Return a callable for the get resource change method over gRPC.
+
+        Get a ResourceChange for a given preview.
+
+        Returns:
+            Callable[[~.GetResourceChangeRequest],
+                    Awaitable[~.ResourceChange]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_resource_change" not in self._stubs:
+            self._stubs["get_resource_change"] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/GetResourceChange",
+                request_serializer=config.GetResourceChangeRequest.serialize,
+                response_deserializer=config.ResourceChange.deserialize,
+            )
+        return self._stubs["get_resource_change"]
+
+    @property
+    def list_resource_drifts(
+        self,
+    ) -> Callable[
+        [config.ListResourceDriftsRequest], Awaitable[config.ListResourceDriftsResponse]
+    ]:
+        r"""Return a callable for the list resource drifts method over gRPC.
+
+        List ResourceDrifts for a given preview.
+
+        Returns:
+            Callable[[~.ListResourceDriftsRequest],
+                    Awaitable[~.ListResourceDriftsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_resource_drifts" not in self._stubs:
+            self._stubs["list_resource_drifts"] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/ListResourceDrifts",
+                request_serializer=config.ListResourceDriftsRequest.serialize,
+                response_deserializer=config.ListResourceDriftsResponse.deserialize,
+            )
+        return self._stubs["list_resource_drifts"]
+
+    @property
+    def get_resource_drift(
+        self,
+    ) -> Callable[[config.GetResourceDriftRequest], Awaitable[config.ResourceDrift]]:
+        r"""Return a callable for the get resource drift method over gRPC.
+
+        Get a ResourceDrift for a given preview.
+
+        Returns:
+            Callable[[~.GetResourceDriftRequest],
+                    Awaitable[~.ResourceDrift]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_resource_drift" not in self._stubs:
+            self._stubs["get_resource_drift"] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/GetResourceDrift",
+                request_serializer=config.GetResourceDriftRequest.serialize,
+                response_deserializer=config.ResourceDrift.deserialize,
+            )
+        return self._stubs["get_resource_drift"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1102,6 +1211,26 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
             ),
             self.get_terraform_version: self._wrap_method(
                 self.get_terraform_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_resource_changes: self._wrap_method(
+                self.list_resource_changes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_resource_change: self._wrap_method(
+                self.get_resource_change,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_resource_drifts: self._wrap_method(
+                self.list_resource_drifts,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_resource_drift: self._wrap_method(
+                self.get_resource_drift,
                 default_timeout=None,
                 client_info=client_info,
             ),

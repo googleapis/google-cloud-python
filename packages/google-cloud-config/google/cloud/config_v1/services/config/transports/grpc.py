@@ -953,6 +953,114 @@ class ConfigGrpcTransport(ConfigTransport):
             )
         return self._stubs["get_terraform_version"]
 
+    @property
+    def list_resource_changes(
+        self,
+    ) -> Callable[
+        [config.ListResourceChangesRequest], config.ListResourceChangesResponse
+    ]:
+        r"""Return a callable for the list resource changes method over gRPC.
+
+        Lists ResourceChanges for a given preview.
+
+        Returns:
+            Callable[[~.ListResourceChangesRequest],
+                    ~.ListResourceChangesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_resource_changes" not in self._stubs:
+            self._stubs["list_resource_changes"] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/ListResourceChanges",
+                request_serializer=config.ListResourceChangesRequest.serialize,
+                response_deserializer=config.ListResourceChangesResponse.deserialize,
+            )
+        return self._stubs["list_resource_changes"]
+
+    @property
+    def get_resource_change(
+        self,
+    ) -> Callable[[config.GetResourceChangeRequest], config.ResourceChange]:
+        r"""Return a callable for the get resource change method over gRPC.
+
+        Get a ResourceChange for a given preview.
+
+        Returns:
+            Callable[[~.GetResourceChangeRequest],
+                    ~.ResourceChange]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_resource_change" not in self._stubs:
+            self._stubs["get_resource_change"] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/GetResourceChange",
+                request_serializer=config.GetResourceChangeRequest.serialize,
+                response_deserializer=config.ResourceChange.deserialize,
+            )
+        return self._stubs["get_resource_change"]
+
+    @property
+    def list_resource_drifts(
+        self,
+    ) -> Callable[
+        [config.ListResourceDriftsRequest], config.ListResourceDriftsResponse
+    ]:
+        r"""Return a callable for the list resource drifts method over gRPC.
+
+        List ResourceDrifts for a given preview.
+
+        Returns:
+            Callable[[~.ListResourceDriftsRequest],
+                    ~.ListResourceDriftsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_resource_drifts" not in self._stubs:
+            self._stubs["list_resource_drifts"] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/ListResourceDrifts",
+                request_serializer=config.ListResourceDriftsRequest.serialize,
+                response_deserializer=config.ListResourceDriftsResponse.deserialize,
+            )
+        return self._stubs["list_resource_drifts"]
+
+    @property
+    def get_resource_drift(
+        self,
+    ) -> Callable[[config.GetResourceDriftRequest], config.ResourceDrift]:
+        r"""Return a callable for the get resource drift method over gRPC.
+
+        Get a ResourceDrift for a given preview.
+
+        Returns:
+            Callable[[~.GetResourceDriftRequest],
+                    ~.ResourceDrift]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_resource_drift" not in self._stubs:
+            self._stubs["get_resource_drift"] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/GetResourceDrift",
+                request_serializer=config.GetResourceDriftRequest.serialize,
+                response_deserializer=config.ResourceDrift.deserialize,
+            )
+        return self._stubs["get_resource_drift"]
+
     def close(self):
         self._logged_channel.close()
 
