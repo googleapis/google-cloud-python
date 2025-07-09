@@ -828,6 +828,22 @@ class TestLoadJobConfig(_Base):
             config._properties["load"]["writeDisposition"], write_disposition
         )
 
+    def test_time_zone_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.time_zone)
+
+    def test_time_zone_hit(self):
+        time_zone = "UTC"
+        config = self._get_target_class()()
+        config._properties["load"]["timeZone"] = time_zone
+        self.assertEqual(config.time_zone, time_zone)
+
+    def test_time_zone_setter(self):
+        time_zone = "America/New_York"
+        config = self._get_target_class()()
+        config.time_zone = time_zone
+        self.assertEqual(config._properties["load"]["timeZone"], time_zone)
+
     def test_parquet_options_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.parquet_options)
@@ -901,3 +917,114 @@ class TestLoadJobConfig(_Base):
             config._properties["load"]["columnNameCharacterMap"],
             ColumnNameCharacterMap.COLUMN_NAME_CHARACTER_MAP_UNSPECIFIED,
         )
+
+    RESOURCE = {
+        "load": {
+            "allowJaggedRows": True,
+            "createDisposition": "CREATE_NEVER",
+            "encoding": "UTF-8",
+            "fieldDelimiter": ",",
+            "ignoreUnknownValues": True,
+            "maxBadRecords": 10,
+            "nullMarker": "\\N",
+            "quote": '"',
+            "schema": {
+                "fields": [
+                    {"name": "name", "type": "STRING", "mode": "NULLABLE"},
+                    {"name": "age", "type": "INTEGER", "mode": "NULLABLE"},
+                ]
+            },
+            "skipLeadingRows": "1",
+            "sourceFormat": "CSV",
+            "timePartitioning": {
+                "type": "DAY",
+                "field": "transaction_date",
+            },
+            "useAvroLogicalTypes": True,
+            "writeDisposition": "WRITE_TRUNCATE",
+            "timeZone": "America/New_York",
+            "parquetOptions": {"enableListInference": True},
+            "columnNameCharacterMap": "V2",
+            "someNewField": "some-value",
+        }
+    }
+
+    def test_from_api_repr(self):
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            LoadJobConfig,
+            SourceFormat,
+            WriteDisposition,
+        )
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import TimePartitioning, TimePartitioningType
+
+        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
+
+        config = LoadJobConfig.from_api_repr(self.RESOURCE)
+
+        self.assertTrue(config.allow_jagged_rows)
+        self.assertEqual(config.create_disposition, CreateDisposition.CREATE_NEVER)
+        self.assertEqual(config.encoding, "UTF-8")
+        self.assertEqual(config.field_delimiter, ",")
+        self.assertTrue(config.ignore_unknown_values)
+        self.assertEqual(config.max_bad_records, 10)
+        self.assertEqual(config.null_marker, "\\N")
+        self.assertEqual(config.quote_character, '"')
+        self.assertEqual(
+            config.schema,
+            [SchemaField("name", "STRING"), SchemaField("age", "INTEGER")],
+        )
+        self.assertEqual(config.skip_leading_rows, 1)
+        self.assertEqual(config.source_format, SourceFormat.CSV)
+        self.assertEqual(
+            config.time_partitioning,
+            TimePartitioning(type_=TimePartitioningType.DAY, field="transaction_date"),
+        )
+        self.assertTrue(config.use_avro_logical_types)
+        self.assertEqual(config.write_disposition, WriteDisposition.WRITE_TRUNCATE)
+        self.assertEqual(config.time_zone, "America/New_York")
+        self.assertTrue(config.parquet_options.enable_list_inference)
+        self.assertEqual(config.column_name_character_map, ColumnNameCharacterMap.V2)
+        self.assertEqual(config._properties["load"]["someNewField"], "some-value")
+
+    def test_to_api_repr(self):
+        from google.cloud.bigquery.job import (
+            CreateDisposition,
+            LoadJobConfig,
+            SourceFormat,
+            WriteDisposition,
+        )
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import TimePartitioning, TimePartitioningType
+        from google.cloud.bigquery.format_options import ParquetOptions
+        from google.cloud.bigquery.job.load import ColumnNameCharacterMap
+
+        config = LoadJobConfig()
+        config.allow_jagged_rows = True
+        config.create_disposition = CreateDisposition.CREATE_NEVER
+        config.encoding = "UTF-8"
+        config.field_delimiter = ","
+        config.ignore_unknown_values = True
+        config.max_bad_records = 10
+        config.null_marker = r"\N"
+        config.quote_character = '"'
+        config.schema = [SchemaField("name", "STRING"), SchemaField("age", "INTEGER")]
+        config.skip_leading_rows = 1
+        config.source_format = SourceFormat.CSV
+        config.time_partitioning = TimePartitioning(
+            type_=TimePartitioningType.DAY, field="transaction_date"
+        )
+        config.use_avro_logical_types = True
+        config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        config.time_zone = "America/New_York"
+        parquet_options = ParquetOptions()
+        parquet_options.enable_list_inference = True
+        config.parquet_options = parquet_options
+        config.column_name_character_map = ColumnNameCharacterMap.V2
+        config._properties["load"]["someNewField"] = "some-value"
+
+        api_repr = config.to_api_repr()
+
+        expected = self.RESOURCE
+        self.assertEqual(api_repr, expected)

@@ -38,10 +38,14 @@ class TestLoadJob(_Base):
         self.OUTPUT_ROWS = 345
         self.REFERENCE_FILE_SCHEMA_URI = "gs://path/to/reference"
 
+        self.TIME_ZONE = "UTC"
+
     def _make_resource(self, started=False, ended=False):
         resource = super(TestLoadJob, self)._make_resource(started, ended)
         config = resource["configuration"]["load"]
         config["sourceUris"] = [self.SOURCE1]
+
+        config["timeZone"] = self.TIME_ZONE
         config["destinationTable"] = {
             "projectId": self.PROJECT,
             "datasetId": self.DS_ID,
@@ -152,6 +156,10 @@ class TestLoadJob(_Base):
             )
         else:
             self.assertIsNone(job.destination_encryption_configuration)
+        if "timeZone" in config:
+            self.assertEqual(job.time_zone, config["timeZone"])
+        else:
+            self.assertIsNone(job.time_zone)
 
     def test_ctor(self):
         client = _make_client(project=self.PROJECT)
@@ -194,6 +202,8 @@ class TestLoadJob(_Base):
         self.assertIsNone(job.clustering_fields)
         self.assertIsNone(job.schema_update_options)
         self.assertIsNone(job.reference_file_schema_uri)
+
+        self.assertIsNone(job.time_zone)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -431,6 +441,24 @@ class TestLoadJob(_Base):
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
 
+    def test_to_api_repr(self):
+        self._setUpConstants()
+        client = _make_client(project=self.PROJECT)
+        RESOURCE = self._make_resource(ended=False)
+
+        klass = self._get_target_class()
+        job = klass.from_api_repr(RESOURCE, client)
+        api_repr = job.to_api_repr()
+
+        # as per the documentation in load.py -> LoadJob.to_api_repr(),
+        # the return value from to_api_repr should not include statistics
+        expected = {
+            "jobReference": RESOURCE["jobReference"],
+            "configuration": RESOURCE["configuration"],
+        }
+
+        self.assertEqual(api_repr, expected)
+
     def test_begin_w_already_running(self):
         conn = make_connection()
         client = _make_client(project=self.PROJECT, connection=conn)
@@ -571,6 +599,7 @@ class TestLoadJob(_Base):
                 ]
             },
             "schemaUpdateOptions": [SchemaUpdateOption.ALLOW_FIELD_ADDITION],
+            "timeZone": self.TIME_ZONE,
         }
         RESOURCE["configuration"]["load"] = LOAD_CONFIGURATION
         conn1 = make_connection()
@@ -599,6 +628,9 @@ class TestLoadJob(_Base):
         config.write_disposition = WriteDisposition.WRITE_TRUNCATE
         config.schema_update_options = [SchemaUpdateOption.ALLOW_FIELD_ADDITION]
         config.reference_file_schema_uri = "gs://path/to/reference"
+
+        config.time_zone = self.TIME_ZONE
+
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
