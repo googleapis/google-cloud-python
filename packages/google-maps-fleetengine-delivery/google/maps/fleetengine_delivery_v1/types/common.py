@@ -235,6 +235,17 @@ class DeliveryVehicleLocation(proto.Message):
             Source of the raw location. Defaults to ``GPS``.
         raw_location_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
             Accuracy of ``raw_location`` as a radius, in meters.
+        flp_location (google.type.latlng_pb2.LatLng):
+            The location from Android's Fused Location
+            Provider.
+        flp_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Update timestamp of the ``flp_location``
+        flp_latlng_accuracy_meters (google.protobuf.wrappers_pb2.DoubleValue):
+            Accuracy of ``flp_location`` in meters as a radius.
+        flp_heading_degrees (google.protobuf.wrappers_pb2.Int32Value):
+            Direction the vehicle is moving in degrees, as determined by
+            the Fused Location Provider. 0 represents North. The valid
+            range is [0,360).
         supplemental_location (google.type.latlng_pb2.LatLng):
             Supplemental location provided by the
             integrating app.
@@ -365,6 +376,26 @@ class DeliveryVehicleLocation(proto.Message):
         proto.MESSAGE,
         number=25,
         message=wrappers_pb2.DoubleValue,
+    )
+    flp_location: latlng_pb2.LatLng = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        message=latlng_pb2.LatLng,
+    )
+    flp_update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        message=timestamp_pb2.Timestamp,
+    )
+    flp_latlng_accuracy_meters: wrappers_pb2.DoubleValue = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=wrappers_pb2.DoubleValue,
+    )
+    flp_heading_degrees: wrappers_pb2.Int32Value = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        message=wrappers_pb2.Int32Value,
     )
     supplemental_location: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
