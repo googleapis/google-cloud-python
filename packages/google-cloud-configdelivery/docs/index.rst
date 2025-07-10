@@ -19,6 +19,14 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
+    configdelivery_v1/services_
+    configdelivery_v1/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
     configdelivery_v1beta/services_
     configdelivery_v1beta/types_
 

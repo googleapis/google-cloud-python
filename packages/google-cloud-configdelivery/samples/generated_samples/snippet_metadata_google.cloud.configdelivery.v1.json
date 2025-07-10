@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.configdelivery.v1alpha",
-        "version": "v1alpha"
+        "id": "google.cloud.configdelivery.v1",
+        "version": "v1"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.abort_rollout",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.abort_rollout",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.AbortRollout",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.AbortRollout",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "AbortRollout"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.AbortRolloutRequest"
+            "type": "google.cloud.configdelivery_v1.types.AbortRolloutRequest"
           },
           {
             "name": "name",
@@ -54,10 +54,10 @@
         "shortName": "abort_rollout"
       },
       "description": "Sample for AbortRollout",
-      "file": "configdelivery_v1alpha_generated_config_delivery_abort_rollout_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_abort_rollout_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_AbortRollout_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_AbortRollout_async",
       "segments": [
         {
           "end": 55,
@@ -90,20 +90,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_abort_rollout_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_abort_rollout_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.abort_rollout",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.abort_rollout",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.AbortRollout",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.AbortRollout",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "AbortRollout"
@@ -111,7 +111,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.AbortRolloutRequest"
+            "type": "google.cloud.configdelivery_v1.types.AbortRolloutRequest"
           },
           {
             "name": "name",
@@ -134,10 +134,10 @@
         "shortName": "abort_rollout"
       },
       "description": "Sample for AbortRollout",
-      "file": "configdelivery_v1alpha_generated_config_delivery_abort_rollout_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_abort_rollout_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_AbortRollout_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_AbortRollout_sync",
       "segments": [
         {
           "end": 55,
@@ -170,21 +170,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_abort_rollout_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_abort_rollout_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.create_fleet_package",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.create_fleet_package",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.CreateFleetPackage",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.CreateFleetPackage",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "CreateFleetPackage"
@@ -192,7 +192,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.CreateFleetPackageRequest"
+            "type": "google.cloud.configdelivery_v1.types.CreateFleetPackageRequest"
           },
           {
             "name": "parent",
@@ -200,7 +200,7 @@
           },
           {
             "name": "fleet_package",
-            "type": "google.cloud.configdelivery_v1alpha.types.FleetPackage"
+            "type": "google.cloud.configdelivery_v1.types.FleetPackage"
           },
           {
             "name": "fleet_package_id",
@@ -223,10 +223,10 @@
         "shortName": "create_fleet_package"
       },
       "description": "Sample for CreateFleetPackage",
-      "file": "configdelivery_v1alpha_generated_config_delivery_create_fleet_package_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_create_fleet_package_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_CreateFleetPackage_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_CreateFleetPackage_async",
       "segments": [
         {
           "end": 62,
@@ -259,20 +259,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_create_fleet_package_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_create_fleet_package_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.create_fleet_package",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.create_fleet_package",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.CreateFleetPackage",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.CreateFleetPackage",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "CreateFleetPackage"
@@ -280,7 +280,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.CreateFleetPackageRequest"
+            "type": "google.cloud.configdelivery_v1.types.CreateFleetPackageRequest"
           },
           {
             "name": "parent",
@@ -288,7 +288,7 @@
           },
           {
             "name": "fleet_package",
-            "type": "google.cloud.configdelivery_v1alpha.types.FleetPackage"
+            "type": "google.cloud.configdelivery_v1.types.FleetPackage"
           },
           {
             "name": "fleet_package_id",
@@ -311,10 +311,10 @@
         "shortName": "create_fleet_package"
       },
       "description": "Sample for CreateFleetPackage",
-      "file": "configdelivery_v1alpha_generated_config_delivery_create_fleet_package_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_create_fleet_package_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_CreateFleetPackage_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_CreateFleetPackage_sync",
       "segments": [
         {
           "end": 62,
@@ -347,21 +347,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_create_fleet_package_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_create_fleet_package_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.create_release",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.create_release",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.CreateRelease",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.CreateRelease",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "CreateRelease"
@@ -369,7 +369,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.CreateReleaseRequest"
+            "type": "google.cloud.configdelivery_v1.types.CreateReleaseRequest"
           },
           {
             "name": "parent",
@@ -377,7 +377,7 @@
           },
           {
             "name": "release",
-            "type": "google.cloud.configdelivery_v1alpha.types.Release"
+            "type": "google.cloud.configdelivery_v1.types.Release"
           },
           {
             "name": "release_id",
@@ -400,10 +400,10 @@
         "shortName": "create_release"
       },
       "description": "Sample for CreateRelease",
-      "file": "configdelivery_v1alpha_generated_config_delivery_create_release_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_create_release_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_CreateRelease_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_CreateRelease_async",
       "segments": [
         {
           "end": 60,
@@ -436,20 +436,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_create_release_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_create_release_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.create_release",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.create_release",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.CreateRelease",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.CreateRelease",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "CreateRelease"
@@ -457,7 +457,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.CreateReleaseRequest"
+            "type": "google.cloud.configdelivery_v1.types.CreateReleaseRequest"
           },
           {
             "name": "parent",
@@ -465,7 +465,7 @@
           },
           {
             "name": "release",
-            "type": "google.cloud.configdelivery_v1alpha.types.Release"
+            "type": "google.cloud.configdelivery_v1.types.Release"
           },
           {
             "name": "release_id",
@@ -488,10 +488,10 @@
         "shortName": "create_release"
       },
       "description": "Sample for CreateRelease",
-      "file": "configdelivery_v1alpha_generated_config_delivery_create_release_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_create_release_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_CreateRelease_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_CreateRelease_sync",
       "segments": [
         {
           "end": 60,
@@ -524,21 +524,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_create_release_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_create_release_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.create_resource_bundle",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.create_resource_bundle",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.CreateResourceBundle",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.CreateResourceBundle",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "CreateResourceBundle"
@@ -546,7 +546,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.CreateResourceBundleRequest"
+            "type": "google.cloud.configdelivery_v1.types.CreateResourceBundleRequest"
           },
           {
             "name": "parent",
@@ -554,7 +554,7 @@
           },
           {
             "name": "resource_bundle",
-            "type": "google.cloud.configdelivery_v1alpha.types.ResourceBundle"
+            "type": "google.cloud.configdelivery_v1.types.ResourceBundle"
           },
           {
             "name": "resource_bundle_id",
@@ -577,10 +577,10 @@
         "shortName": "create_resource_bundle"
       },
       "description": "Sample for CreateResourceBundle",
-      "file": "configdelivery_v1alpha_generated_config_delivery_create_resource_bundle_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_create_resource_bundle_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_CreateResourceBundle_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_CreateResourceBundle_async",
       "segments": [
         {
           "end": 56,
@@ -613,20 +613,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_create_resource_bundle_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_create_resource_bundle_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.create_resource_bundle",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.create_resource_bundle",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.CreateResourceBundle",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.CreateResourceBundle",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "CreateResourceBundle"
@@ -634,7 +634,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.CreateResourceBundleRequest"
+            "type": "google.cloud.configdelivery_v1.types.CreateResourceBundleRequest"
           },
           {
             "name": "parent",
@@ -642,7 +642,7 @@
           },
           {
             "name": "resource_bundle",
-            "type": "google.cloud.configdelivery_v1alpha.types.ResourceBundle"
+            "type": "google.cloud.configdelivery_v1.types.ResourceBundle"
           },
           {
             "name": "resource_bundle_id",
@@ -665,10 +665,10 @@
         "shortName": "create_resource_bundle"
       },
       "description": "Sample for CreateResourceBundle",
-      "file": "configdelivery_v1alpha_generated_config_delivery_create_resource_bundle_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_create_resource_bundle_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_CreateResourceBundle_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_CreateResourceBundle_sync",
       "segments": [
         {
           "end": 56,
@@ -701,21 +701,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_create_resource_bundle_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_create_resource_bundle_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.create_variant",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.create_variant",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.CreateVariant",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.CreateVariant",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "CreateVariant"
@@ -723,7 +723,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.CreateVariantRequest"
+            "type": "google.cloud.configdelivery_v1.types.CreateVariantRequest"
           },
           {
             "name": "parent",
@@ -731,7 +731,7 @@
           },
           {
             "name": "variant",
-            "type": "google.cloud.configdelivery_v1alpha.types.Variant"
+            "type": "google.cloud.configdelivery_v1.types.Variant"
           },
           {
             "name": "variant_id",
@@ -754,10 +754,10 @@
         "shortName": "create_variant"
       },
       "description": "Sample for CreateVariant",
-      "file": "configdelivery_v1alpha_generated_config_delivery_create_variant_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_create_variant_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_CreateVariant_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_CreateVariant_async",
       "segments": [
         {
           "end": 60,
@@ -790,20 +790,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_create_variant_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_create_variant_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.create_variant",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.create_variant",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.CreateVariant",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.CreateVariant",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "CreateVariant"
@@ -811,7 +811,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.CreateVariantRequest"
+            "type": "google.cloud.configdelivery_v1.types.CreateVariantRequest"
           },
           {
             "name": "parent",
@@ -819,7 +819,7 @@
           },
           {
             "name": "variant",
-            "type": "google.cloud.configdelivery_v1alpha.types.Variant"
+            "type": "google.cloud.configdelivery_v1.types.Variant"
           },
           {
             "name": "variant_id",
@@ -842,10 +842,10 @@
         "shortName": "create_variant"
       },
       "description": "Sample for CreateVariant",
-      "file": "configdelivery_v1alpha_generated_config_delivery_create_variant_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_create_variant_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_CreateVariant_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_CreateVariant_sync",
       "segments": [
         {
           "end": 60,
@@ -878,21 +878,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_create_variant_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_create_variant_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.delete_fleet_package",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.delete_fleet_package",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.DeleteFleetPackage",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.DeleteFleetPackage",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "DeleteFleetPackage"
@@ -900,7 +900,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.DeleteFleetPackageRequest"
+            "type": "google.cloud.configdelivery_v1.types.DeleteFleetPackageRequest"
           },
           {
             "name": "name",
@@ -923,10 +923,10 @@
         "shortName": "delete_fleet_package"
       },
       "description": "Sample for DeleteFleetPackage",
-      "file": "configdelivery_v1alpha_generated_config_delivery_delete_fleet_package_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_delete_fleet_package_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_DeleteFleetPackage_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_DeleteFleetPackage_async",
       "segments": [
         {
           "end": 55,
@@ -959,20 +959,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_delete_fleet_package_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_delete_fleet_package_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.delete_fleet_package",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.delete_fleet_package",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.DeleteFleetPackage",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.DeleteFleetPackage",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "DeleteFleetPackage"
@@ -980,7 +980,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.DeleteFleetPackageRequest"
+            "type": "google.cloud.configdelivery_v1.types.DeleteFleetPackageRequest"
           },
           {
             "name": "name",
@@ -1003,10 +1003,10 @@
         "shortName": "delete_fleet_package"
       },
       "description": "Sample for DeleteFleetPackage",
-      "file": "configdelivery_v1alpha_generated_config_delivery_delete_fleet_package_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_delete_fleet_package_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_DeleteFleetPackage_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_DeleteFleetPackage_sync",
       "segments": [
         {
           "end": 55,
@@ -1039,21 +1039,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_delete_fleet_package_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_delete_fleet_package_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.delete_release",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.delete_release",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.DeleteRelease",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.DeleteRelease",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "DeleteRelease"
@@ -1061,7 +1061,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.DeleteReleaseRequest"
+            "type": "google.cloud.configdelivery_v1.types.DeleteReleaseRequest"
           },
           {
             "name": "name",
@@ -1084,10 +1084,10 @@
         "shortName": "delete_release"
       },
       "description": "Sample for DeleteRelease",
-      "file": "configdelivery_v1alpha_generated_config_delivery_delete_release_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_delete_release_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_DeleteRelease_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_DeleteRelease_async",
       "segments": [
         {
           "end": 55,
@@ -1120,20 +1120,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_delete_release_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_delete_release_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.delete_release",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.delete_release",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.DeleteRelease",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.DeleteRelease",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "DeleteRelease"
@@ -1141,7 +1141,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.DeleteReleaseRequest"
+            "type": "google.cloud.configdelivery_v1.types.DeleteReleaseRequest"
           },
           {
             "name": "name",
@@ -1164,10 +1164,10 @@
         "shortName": "delete_release"
       },
       "description": "Sample for DeleteRelease",
-      "file": "configdelivery_v1alpha_generated_config_delivery_delete_release_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_delete_release_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_DeleteRelease_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_DeleteRelease_sync",
       "segments": [
         {
           "end": 55,
@@ -1200,21 +1200,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_delete_release_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_delete_release_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.delete_resource_bundle",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.delete_resource_bundle",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.DeleteResourceBundle",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.DeleteResourceBundle",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "DeleteResourceBundle"
@@ -1222,7 +1222,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.DeleteResourceBundleRequest"
+            "type": "google.cloud.configdelivery_v1.types.DeleteResourceBundleRequest"
           },
           {
             "name": "name",
@@ -1245,10 +1245,10 @@
         "shortName": "delete_resource_bundle"
       },
       "description": "Sample for DeleteResourceBundle",
-      "file": "configdelivery_v1alpha_generated_config_delivery_delete_resource_bundle_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_delete_resource_bundle_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_DeleteResourceBundle_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_DeleteResourceBundle_async",
       "segments": [
         {
           "end": 55,
@@ -1281,20 +1281,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_delete_resource_bundle_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_delete_resource_bundle_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.delete_resource_bundle",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.delete_resource_bundle",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.DeleteResourceBundle",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.DeleteResourceBundle",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "DeleteResourceBundle"
@@ -1302,7 +1302,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.DeleteResourceBundleRequest"
+            "type": "google.cloud.configdelivery_v1.types.DeleteResourceBundleRequest"
           },
           {
             "name": "name",
@@ -1325,10 +1325,10 @@
         "shortName": "delete_resource_bundle"
       },
       "description": "Sample for DeleteResourceBundle",
-      "file": "configdelivery_v1alpha_generated_config_delivery_delete_resource_bundle_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_delete_resource_bundle_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_DeleteResourceBundle_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_DeleteResourceBundle_sync",
       "segments": [
         {
           "end": 55,
@@ -1361,21 +1361,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_delete_resource_bundle_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_delete_resource_bundle_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.delete_variant",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.delete_variant",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.DeleteVariant",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.DeleteVariant",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "DeleteVariant"
@@ -1383,7 +1383,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.DeleteVariantRequest"
+            "type": "google.cloud.configdelivery_v1.types.DeleteVariantRequest"
           },
           {
             "name": "name",
@@ -1406,10 +1406,10 @@
         "shortName": "delete_variant"
       },
       "description": "Sample for DeleteVariant",
-      "file": "configdelivery_v1alpha_generated_config_delivery_delete_variant_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_delete_variant_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_DeleteVariant_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_DeleteVariant_async",
       "segments": [
         {
           "end": 55,
@@ -1442,20 +1442,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_delete_variant_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_delete_variant_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.delete_variant",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.delete_variant",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.DeleteVariant",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.DeleteVariant",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "DeleteVariant"
@@ -1463,7 +1463,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.DeleteVariantRequest"
+            "type": "google.cloud.configdelivery_v1.types.DeleteVariantRequest"
           },
           {
             "name": "name",
@@ -1486,10 +1486,10 @@
         "shortName": "delete_variant"
       },
       "description": "Sample for DeleteVariant",
-      "file": "configdelivery_v1alpha_generated_config_delivery_delete_variant_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_delete_variant_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_DeleteVariant_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_DeleteVariant_sync",
       "segments": [
         {
           "end": 55,
@@ -1522,21 +1522,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_delete_variant_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_delete_variant_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.get_fleet_package",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.get_fleet_package",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetFleetPackage",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetFleetPackage",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetFleetPackage"
@@ -1544,7 +1544,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetFleetPackageRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetFleetPackageRequest"
           },
           {
             "name": "name",
@@ -1563,14 +1563,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.FleetPackage",
+        "resultType": "google.cloud.configdelivery_v1.types.FleetPackage",
         "shortName": "get_fleet_package"
       },
       "description": "Sample for GetFleetPackage",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_fleet_package_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_fleet_package_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetFleetPackage_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetFleetPackage_async",
       "segments": [
         {
           "end": 51,
@@ -1603,20 +1603,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_fleet_package_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_fleet_package_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.get_fleet_package",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.get_fleet_package",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetFleetPackage",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetFleetPackage",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetFleetPackage"
@@ -1624,7 +1624,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetFleetPackageRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetFleetPackageRequest"
           },
           {
             "name": "name",
@@ -1643,14 +1643,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.FleetPackage",
+        "resultType": "google.cloud.configdelivery_v1.types.FleetPackage",
         "shortName": "get_fleet_package"
       },
       "description": "Sample for GetFleetPackage",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_fleet_package_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_fleet_package_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetFleetPackage_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetFleetPackage_sync",
       "segments": [
         {
           "end": 51,
@@ -1683,21 +1683,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_fleet_package_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_fleet_package_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.get_release",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.get_release",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetRelease",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetRelease",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetRelease"
@@ -1705,7 +1705,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetReleaseRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetReleaseRequest"
           },
           {
             "name": "name",
@@ -1724,14 +1724,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.Release",
+        "resultType": "google.cloud.configdelivery_v1.types.Release",
         "shortName": "get_release"
       },
       "description": "Sample for GetRelease",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_release_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_release_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetRelease_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetRelease_async",
       "segments": [
         {
           "end": 51,
@@ -1764,20 +1764,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_release_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_release_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.get_release",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.get_release",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetRelease",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetRelease",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetRelease"
@@ -1785,7 +1785,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetReleaseRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetReleaseRequest"
           },
           {
             "name": "name",
@@ -1804,14 +1804,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.Release",
+        "resultType": "google.cloud.configdelivery_v1.types.Release",
         "shortName": "get_release"
       },
       "description": "Sample for GetRelease",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_release_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_release_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetRelease_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetRelease_sync",
       "segments": [
         {
           "end": 51,
@@ -1844,21 +1844,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_release_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_release_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.get_resource_bundle",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.get_resource_bundle",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetResourceBundle",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetResourceBundle",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetResourceBundle"
@@ -1866,7 +1866,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetResourceBundleRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetResourceBundleRequest"
           },
           {
             "name": "name",
@@ -1885,14 +1885,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.ResourceBundle",
+        "resultType": "google.cloud.configdelivery_v1.types.ResourceBundle",
         "shortName": "get_resource_bundle"
       },
       "description": "Sample for GetResourceBundle",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_resource_bundle_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_resource_bundle_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetResourceBundle_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetResourceBundle_async",
       "segments": [
         {
           "end": 51,
@@ -1925,20 +1925,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_resource_bundle_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_resource_bundle_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.get_resource_bundle",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.get_resource_bundle",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetResourceBundle",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetResourceBundle",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetResourceBundle"
@@ -1946,7 +1946,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetResourceBundleRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetResourceBundleRequest"
           },
           {
             "name": "name",
@@ -1965,14 +1965,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.ResourceBundle",
+        "resultType": "google.cloud.configdelivery_v1.types.ResourceBundle",
         "shortName": "get_resource_bundle"
       },
       "description": "Sample for GetResourceBundle",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_resource_bundle_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_resource_bundle_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetResourceBundle_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetResourceBundle_sync",
       "segments": [
         {
           "end": 51,
@@ -2005,21 +2005,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_resource_bundle_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_resource_bundle_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.get_rollout",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.get_rollout",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetRollout",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetRollout",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetRollout"
@@ -2027,7 +2027,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetRolloutRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetRolloutRequest"
           },
           {
             "name": "name",
@@ -2046,14 +2046,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.Rollout",
+        "resultType": "google.cloud.configdelivery_v1.types.Rollout",
         "shortName": "get_rollout"
       },
       "description": "Sample for GetRollout",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_rollout_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_rollout_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetRollout_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetRollout_async",
       "segments": [
         {
           "end": 51,
@@ -2086,20 +2086,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_rollout_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_rollout_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.get_rollout",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.get_rollout",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetRollout",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetRollout",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetRollout"
@@ -2107,7 +2107,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetRolloutRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetRolloutRequest"
           },
           {
             "name": "name",
@@ -2126,14 +2126,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.Rollout",
+        "resultType": "google.cloud.configdelivery_v1.types.Rollout",
         "shortName": "get_rollout"
       },
       "description": "Sample for GetRollout",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_rollout_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_rollout_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetRollout_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetRollout_sync",
       "segments": [
         {
           "end": 51,
@@ -2166,21 +2166,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_rollout_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_rollout_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.get_variant",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.get_variant",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetVariant",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetVariant",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetVariant"
@@ -2188,7 +2188,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetVariantRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetVariantRequest"
           },
           {
             "name": "name",
@@ -2207,14 +2207,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.Variant",
+        "resultType": "google.cloud.configdelivery_v1.types.Variant",
         "shortName": "get_variant"
       },
       "description": "Sample for GetVariant",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_variant_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_variant_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetVariant_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetVariant_async",
       "segments": [
         {
           "end": 51,
@@ -2247,20 +2247,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_variant_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_variant_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.get_variant",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.get_variant",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.GetVariant",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.GetVariant",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "GetVariant"
@@ -2268,7 +2268,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.GetVariantRequest"
+            "type": "google.cloud.configdelivery_v1.types.GetVariantRequest"
           },
           {
             "name": "name",
@@ -2287,14 +2287,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.types.Variant",
+        "resultType": "google.cloud.configdelivery_v1.types.Variant",
         "shortName": "get_variant"
       },
       "description": "Sample for GetVariant",
-      "file": "configdelivery_v1alpha_generated_config_delivery_get_variant_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_get_variant_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_GetVariant_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_GetVariant_sync",
       "segments": [
         {
           "end": 51,
@@ -2327,21 +2327,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_get_variant_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_get_variant_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.list_fleet_packages",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.list_fleet_packages",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListFleetPackages",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListFleetPackages",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListFleetPackages"
@@ -2349,7 +2349,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListFleetPackagesRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListFleetPackagesRequest"
           },
           {
             "name": "parent",
@@ -2368,14 +2368,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListFleetPackagesAsyncPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListFleetPackagesAsyncPager",
         "shortName": "list_fleet_packages"
       },
       "description": "Sample for ListFleetPackages",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_fleet_packages_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_fleet_packages_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListFleetPackages_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListFleetPackages_async",
       "segments": [
         {
           "end": 52,
@@ -2408,20 +2408,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_fleet_packages_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_fleet_packages_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.list_fleet_packages",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.list_fleet_packages",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListFleetPackages",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListFleetPackages",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListFleetPackages"
@@ -2429,7 +2429,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListFleetPackagesRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListFleetPackagesRequest"
           },
           {
             "name": "parent",
@@ -2448,14 +2448,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListFleetPackagesPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListFleetPackagesPager",
         "shortName": "list_fleet_packages"
       },
       "description": "Sample for ListFleetPackages",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_fleet_packages_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_fleet_packages_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListFleetPackages_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListFleetPackages_sync",
       "segments": [
         {
           "end": 52,
@@ -2488,21 +2488,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_fleet_packages_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_fleet_packages_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.list_releases",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.list_releases",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListReleases",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListReleases",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListReleases"
@@ -2510,7 +2510,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListReleasesRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListReleasesRequest"
           },
           {
             "name": "parent",
@@ -2529,14 +2529,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListReleasesAsyncPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListReleasesAsyncPager",
         "shortName": "list_releases"
       },
       "description": "Sample for ListReleases",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_releases_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_releases_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListReleases_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListReleases_async",
       "segments": [
         {
           "end": 52,
@@ -2569,20 +2569,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_releases_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_releases_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.list_releases",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.list_releases",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListReleases",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListReleases",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListReleases"
@@ -2590,7 +2590,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListReleasesRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListReleasesRequest"
           },
           {
             "name": "parent",
@@ -2609,14 +2609,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListReleasesPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListReleasesPager",
         "shortName": "list_releases"
       },
       "description": "Sample for ListReleases",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_releases_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_releases_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListReleases_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListReleases_sync",
       "segments": [
         {
           "end": 52,
@@ -2649,21 +2649,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_releases_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_releases_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.list_resource_bundles",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.list_resource_bundles",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListResourceBundles",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListResourceBundles",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListResourceBundles"
@@ -2671,7 +2671,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListResourceBundlesRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListResourceBundlesRequest"
           },
           {
             "name": "parent",
@@ -2690,14 +2690,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListResourceBundlesAsyncPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListResourceBundlesAsyncPager",
         "shortName": "list_resource_bundles"
       },
       "description": "Sample for ListResourceBundles",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_resource_bundles_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_resource_bundles_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListResourceBundles_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListResourceBundles_async",
       "segments": [
         {
           "end": 52,
@@ -2730,20 +2730,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_resource_bundles_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_resource_bundles_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.list_resource_bundles",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.list_resource_bundles",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListResourceBundles",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListResourceBundles",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListResourceBundles"
@@ -2751,7 +2751,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListResourceBundlesRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListResourceBundlesRequest"
           },
           {
             "name": "parent",
@@ -2770,14 +2770,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListResourceBundlesPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListResourceBundlesPager",
         "shortName": "list_resource_bundles"
       },
       "description": "Sample for ListResourceBundles",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_resource_bundles_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_resource_bundles_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListResourceBundles_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListResourceBundles_sync",
       "segments": [
         {
           "end": 52,
@@ -2810,21 +2810,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_resource_bundles_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_resource_bundles_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.list_rollouts",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.list_rollouts",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListRollouts",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListRollouts",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListRollouts"
@@ -2832,7 +2832,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListRolloutsRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListRolloutsRequest"
           },
           {
             "name": "parent",
@@ -2851,14 +2851,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListRolloutsAsyncPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListRolloutsAsyncPager",
         "shortName": "list_rollouts"
       },
       "description": "Sample for ListRollouts",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_rollouts_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_rollouts_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListRollouts_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListRollouts_async",
       "segments": [
         {
           "end": 52,
@@ -2891,20 +2891,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_rollouts_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_rollouts_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.list_rollouts",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.list_rollouts",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListRollouts",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListRollouts",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListRollouts"
@@ -2912,7 +2912,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListRolloutsRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListRolloutsRequest"
           },
           {
             "name": "parent",
@@ -2931,14 +2931,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListRolloutsPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListRolloutsPager",
         "shortName": "list_rollouts"
       },
       "description": "Sample for ListRollouts",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_rollouts_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_rollouts_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListRollouts_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListRollouts_sync",
       "segments": [
         {
           "end": 52,
@@ -2971,21 +2971,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_rollouts_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_rollouts_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.list_variants",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.list_variants",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListVariants",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListVariants",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListVariants"
@@ -2993,7 +2993,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListVariantsRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListVariantsRequest"
           },
           {
             "name": "parent",
@@ -3012,14 +3012,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListVariantsAsyncPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListVariantsAsyncPager",
         "shortName": "list_variants"
       },
       "description": "Sample for ListVariants",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_variants_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_variants_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListVariants_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListVariants_async",
       "segments": [
         {
           "end": 52,
@@ -3052,20 +3052,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_variants_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_variants_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.list_variants",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.list_variants",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ListVariants",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ListVariants",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ListVariants"
@@ -3073,7 +3073,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ListVariantsRequest"
+            "type": "google.cloud.configdelivery_v1.types.ListVariantsRequest"
           },
           {
             "name": "parent",
@@ -3092,14 +3092,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.configdelivery_v1alpha.services.config_delivery.pagers.ListVariantsPager",
+        "resultType": "google.cloud.configdelivery_v1.services.config_delivery.pagers.ListVariantsPager",
         "shortName": "list_variants"
       },
       "description": "Sample for ListVariants",
-      "file": "configdelivery_v1alpha_generated_config_delivery_list_variants_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_list_variants_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ListVariants_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ListVariants_sync",
       "segments": [
         {
           "end": 52,
@@ -3132,21 +3132,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_list_variants_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_list_variants_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.resume_rollout",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.resume_rollout",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ResumeRollout",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ResumeRollout",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ResumeRollout"
@@ -3154,7 +3154,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ResumeRolloutRequest"
+            "type": "google.cloud.configdelivery_v1.types.ResumeRolloutRequest"
           },
           {
             "name": "name",
@@ -3177,10 +3177,10 @@
         "shortName": "resume_rollout"
       },
       "description": "Sample for ResumeRollout",
-      "file": "configdelivery_v1alpha_generated_config_delivery_resume_rollout_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_resume_rollout_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ResumeRollout_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ResumeRollout_async",
       "segments": [
         {
           "end": 55,
@@ -3213,20 +3213,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_resume_rollout_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_resume_rollout_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.resume_rollout",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.resume_rollout",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.ResumeRollout",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.ResumeRollout",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "ResumeRollout"
@@ -3234,7 +3234,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.ResumeRolloutRequest"
+            "type": "google.cloud.configdelivery_v1.types.ResumeRolloutRequest"
           },
           {
             "name": "name",
@@ -3257,10 +3257,10 @@
         "shortName": "resume_rollout"
       },
       "description": "Sample for ResumeRollout",
-      "file": "configdelivery_v1alpha_generated_config_delivery_resume_rollout_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_resume_rollout_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_ResumeRollout_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_ResumeRollout_sync",
       "segments": [
         {
           "end": 55,
@@ -3293,21 +3293,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_resume_rollout_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_resume_rollout_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.suspend_rollout",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.suspend_rollout",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.SuspendRollout",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.SuspendRollout",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "SuspendRollout"
@@ -3315,7 +3315,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.SuspendRolloutRequest"
+            "type": "google.cloud.configdelivery_v1.types.SuspendRolloutRequest"
           },
           {
             "name": "name",
@@ -3338,10 +3338,10 @@
         "shortName": "suspend_rollout"
       },
       "description": "Sample for SuspendRollout",
-      "file": "configdelivery_v1alpha_generated_config_delivery_suspend_rollout_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_suspend_rollout_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_SuspendRollout_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_SuspendRollout_async",
       "segments": [
         {
           "end": 55,
@@ -3374,20 +3374,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_suspend_rollout_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_suspend_rollout_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.suspend_rollout",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.suspend_rollout",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.SuspendRollout",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.SuspendRollout",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "SuspendRollout"
@@ -3395,7 +3395,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.SuspendRolloutRequest"
+            "type": "google.cloud.configdelivery_v1.types.SuspendRolloutRequest"
           },
           {
             "name": "name",
@@ -3418,10 +3418,10 @@
         "shortName": "suspend_rollout"
       },
       "description": "Sample for SuspendRollout",
-      "file": "configdelivery_v1alpha_generated_config_delivery_suspend_rollout_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_suspend_rollout_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_SuspendRollout_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_SuspendRollout_sync",
       "segments": [
         {
           "end": 55,
@@ -3454,21 +3454,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_suspend_rollout_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_suspend_rollout_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.update_fleet_package",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.update_fleet_package",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.UpdateFleetPackage",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.UpdateFleetPackage",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "UpdateFleetPackage"
@@ -3476,11 +3476,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.UpdateFleetPackageRequest"
+            "type": "google.cloud.configdelivery_v1.types.UpdateFleetPackageRequest"
           },
           {
             "name": "fleet_package",
-            "type": "google.cloud.configdelivery_v1alpha.types.FleetPackage"
+            "type": "google.cloud.configdelivery_v1.types.FleetPackage"
           },
           {
             "name": "update_mask",
@@ -3503,10 +3503,10 @@
         "shortName": "update_fleet_package"
       },
       "description": "Sample for UpdateFleetPackage",
-      "file": "configdelivery_v1alpha_generated_config_delivery_update_fleet_package_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_update_fleet_package_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_UpdateFleetPackage_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_UpdateFleetPackage_async",
       "segments": [
         {
           "end": 60,
@@ -3539,20 +3539,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_update_fleet_package_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_update_fleet_package_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.update_fleet_package",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.update_fleet_package",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.UpdateFleetPackage",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.UpdateFleetPackage",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "UpdateFleetPackage"
@@ -3560,11 +3560,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.UpdateFleetPackageRequest"
+            "type": "google.cloud.configdelivery_v1.types.UpdateFleetPackageRequest"
           },
           {
             "name": "fleet_package",
-            "type": "google.cloud.configdelivery_v1alpha.types.FleetPackage"
+            "type": "google.cloud.configdelivery_v1.types.FleetPackage"
           },
           {
             "name": "update_mask",
@@ -3587,10 +3587,10 @@
         "shortName": "update_fleet_package"
       },
       "description": "Sample for UpdateFleetPackage",
-      "file": "configdelivery_v1alpha_generated_config_delivery_update_fleet_package_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_update_fleet_package_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_UpdateFleetPackage_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_UpdateFleetPackage_sync",
       "segments": [
         {
           "end": 60,
@@ -3623,21 +3623,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_update_fleet_package_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_update_fleet_package_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.update_release",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.update_release",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.UpdateRelease",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.UpdateRelease",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "UpdateRelease"
@@ -3645,11 +3645,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.UpdateReleaseRequest"
+            "type": "google.cloud.configdelivery_v1.types.UpdateReleaseRequest"
           },
           {
             "name": "release",
-            "type": "google.cloud.configdelivery_v1alpha.types.Release"
+            "type": "google.cloud.configdelivery_v1.types.Release"
           },
           {
             "name": "update_mask",
@@ -3672,10 +3672,10 @@
         "shortName": "update_release"
       },
       "description": "Sample for UpdateRelease",
-      "file": "configdelivery_v1alpha_generated_config_delivery_update_release_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_update_release_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_UpdateRelease_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_UpdateRelease_async",
       "segments": [
         {
           "end": 58,
@@ -3708,20 +3708,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_update_release_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_update_release_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.update_release",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.update_release",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.UpdateRelease",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.UpdateRelease",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "UpdateRelease"
@@ -3729,11 +3729,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.UpdateReleaseRequest"
+            "type": "google.cloud.configdelivery_v1.types.UpdateReleaseRequest"
           },
           {
             "name": "release",
-            "type": "google.cloud.configdelivery_v1alpha.types.Release"
+            "type": "google.cloud.configdelivery_v1.types.Release"
           },
           {
             "name": "update_mask",
@@ -3756,10 +3756,10 @@
         "shortName": "update_release"
       },
       "description": "Sample for UpdateRelease",
-      "file": "configdelivery_v1alpha_generated_config_delivery_update_release_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_update_release_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_UpdateRelease_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_UpdateRelease_sync",
       "segments": [
         {
           "end": 58,
@@ -3792,21 +3792,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_update_release_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_update_release_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.update_resource_bundle",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.update_resource_bundle",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.UpdateResourceBundle",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.UpdateResourceBundle",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "UpdateResourceBundle"
@@ -3814,11 +3814,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.UpdateResourceBundleRequest"
+            "type": "google.cloud.configdelivery_v1.types.UpdateResourceBundleRequest"
           },
           {
             "name": "resource_bundle",
-            "type": "google.cloud.configdelivery_v1alpha.types.ResourceBundle"
+            "type": "google.cloud.configdelivery_v1.types.ResourceBundle"
           },
           {
             "name": "update_mask",
@@ -3841,10 +3841,10 @@
         "shortName": "update_resource_bundle"
       },
       "description": "Sample for UpdateResourceBundle",
-      "file": "configdelivery_v1alpha_generated_config_delivery_update_resource_bundle_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_update_resource_bundle_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_UpdateResourceBundle_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_UpdateResourceBundle_async",
       "segments": [
         {
           "end": 54,
@@ -3877,20 +3877,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_update_resource_bundle_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_update_resource_bundle_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.update_resource_bundle",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.update_resource_bundle",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.UpdateResourceBundle",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.UpdateResourceBundle",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "UpdateResourceBundle"
@@ -3898,11 +3898,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.UpdateResourceBundleRequest"
+            "type": "google.cloud.configdelivery_v1.types.UpdateResourceBundleRequest"
           },
           {
             "name": "resource_bundle",
-            "type": "google.cloud.configdelivery_v1alpha.types.ResourceBundle"
+            "type": "google.cloud.configdelivery_v1.types.ResourceBundle"
           },
           {
             "name": "update_mask",
@@ -3925,10 +3925,10 @@
         "shortName": "update_resource_bundle"
       },
       "description": "Sample for UpdateResourceBundle",
-      "file": "configdelivery_v1alpha_generated_config_delivery_update_resource_bundle_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_update_resource_bundle_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_UpdateResourceBundle_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_UpdateResourceBundle_sync",
       "segments": [
         {
           "end": 54,
@@ -3961,21 +3961,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_update_resource_bundle_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_update_resource_bundle_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient",
           "shortName": "ConfigDeliveryAsyncClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryAsyncClient.update_variant",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryAsyncClient.update_variant",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.UpdateVariant",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.UpdateVariant",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "UpdateVariant"
@@ -3983,11 +3983,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.UpdateVariantRequest"
+            "type": "google.cloud.configdelivery_v1.types.UpdateVariantRequest"
           },
           {
             "name": "variant",
-            "type": "google.cloud.configdelivery_v1alpha.types.Variant"
+            "type": "google.cloud.configdelivery_v1.types.Variant"
           },
           {
             "name": "update_mask",
@@ -4010,10 +4010,10 @@
         "shortName": "update_variant"
       },
       "description": "Sample for UpdateVariant",
-      "file": "configdelivery_v1alpha_generated_config_delivery_update_variant_async.py",
+      "file": "configdelivery_v1_generated_config_delivery_update_variant_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_UpdateVariant_async",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_UpdateVariant_async",
       "segments": [
         {
           "end": 58,
@@ -4046,20 +4046,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_update_variant_async.py"
+      "title": "configdelivery_v1_generated_config_delivery_update_variant_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient",
+          "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient",
           "shortName": "ConfigDeliveryClient"
         },
-        "fullName": "google.cloud.configdelivery_v1alpha.ConfigDeliveryClient.update_variant",
+        "fullName": "google.cloud.configdelivery_v1.ConfigDeliveryClient.update_variant",
         "method": {
-          "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery.UpdateVariant",
+          "fullName": "google.cloud.configdelivery.v1.ConfigDelivery.UpdateVariant",
           "service": {
-            "fullName": "google.cloud.configdelivery.v1alpha.ConfigDelivery",
+            "fullName": "google.cloud.configdelivery.v1.ConfigDelivery",
             "shortName": "ConfigDelivery"
           },
           "shortName": "UpdateVariant"
@@ -4067,11 +4067,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.configdelivery_v1alpha.types.UpdateVariantRequest"
+            "type": "google.cloud.configdelivery_v1.types.UpdateVariantRequest"
           },
           {
             "name": "variant",
-            "type": "google.cloud.configdelivery_v1alpha.types.Variant"
+            "type": "google.cloud.configdelivery_v1.types.Variant"
           },
           {
             "name": "update_mask",
@@ -4094,10 +4094,10 @@
         "shortName": "update_variant"
       },
       "description": "Sample for UpdateVariant",
-      "file": "configdelivery_v1alpha_generated_config_delivery_update_variant_sync.py",
+      "file": "configdelivery_v1_generated_config_delivery_update_variant_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "configdelivery_v1alpha_generated_ConfigDelivery_UpdateVariant_sync",
+      "regionTag": "configdelivery_v1_generated_ConfigDelivery_UpdateVariant_sync",
       "segments": [
         {
           "end": 58,
@@ -4130,7 +4130,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "configdelivery_v1alpha_generated_config_delivery_update_variant_sync.py"
+      "title": "configdelivery_v1_generated_config_delivery_update_variant_sync.py"
     }
   ]
 }
