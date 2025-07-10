@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-configdelivery-v0.1.1...google-cloud-configdelivery-v0.1.2) (2025-07-10)
+
+
+### Features
+
+* [google-cloud-configdelivery] ConfigDelivery v1 Cloud API to manage packages across a fleet of Kubernetes clusters ([#14065](https://github.com/googleapis/google-cloud-python/issues/14065)) ([7dfa6e8](https://github.com/googleapis/google-cloud-python/commit/7dfa6e8fe34bee4a98b334a6e4e5e1ca7382b9f6))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-configdelivery-v0.1.0...google-cloud-configdelivery-v0.1.1) (2025-07-02)
 
 

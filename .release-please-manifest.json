@@ -59,7 +59,7 @@
     "packages/google-cloud-compute-v1beta": "0.1.3",
     "packages/google-cloud-confidentialcomputing": "0.4.18",
     "packages/google-cloud-config": "0.1.19",
-    "packages/google-cloud-configdelivery": "0.1.1",
+    "packages/google-cloud-configdelivery": "0.1.2",
     "packages/google-cloud-contact-center-insights": "1.23.3",
     "packages/google-cloud-container": "2.57.0",
     "packages/google-cloud-containeranalysis": "2.18.1",
