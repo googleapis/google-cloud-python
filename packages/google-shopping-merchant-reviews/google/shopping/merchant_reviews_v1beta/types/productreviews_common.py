@@ -104,7 +104,9 @@ class ProductReviewAttributes(proto.Message):
 
             This field is a member of `oneof`_ ``_title``.
         content (str):
-            Required. The content of the review.
+            Optional. The content of the review. If
+            empty, the content might still get populated
+            from pros and cons.
 
             This field is a member of `oneof`_ ``_content``.
         pros (MutableSequence[str]):
@@ -171,6 +173,16 @@ class ProductReviewAttributes(proto.Message):
             marked as spam in the publisher's system.
 
             This field is a member of `oneof`_ ``_is_spam``.
+        is_verified_purchase (bool):
+            Optional. Indicates whether the reviewer's
+            purchase is verified.
+
+            This field is a member of `oneof`_ ``_is_verified_purchase``.
+        is_incentivized_review (bool):
+            Optional. Indicates whether the review is
+            incentivized.
+
+            This field is a member of `oneof`_ ``_is_incentivized_review``.
         collection_method (google.shopping.merchant_reviews_v1beta.types.ProductReviewAttributes.CollectionMethod):
             Optional. The method used to collect the
             review.
@@ -361,6 +373,16 @@ class ProductReviewAttributes(proto.Message):
     is_spam: bool = proto.Field(
         proto.BOOL,
         number=27,
+        optional=True,
+    )
+    is_verified_purchase: bool = proto.Field(
+        proto.BOOL,
+        number=30,
+        optional=True,
+    )
+    is_incentivized_review: bool = proto.Field(
+        proto.BOOL,
+        number=31,
         optional=True,
     )
     collection_method: CollectionMethod = proto.Field(

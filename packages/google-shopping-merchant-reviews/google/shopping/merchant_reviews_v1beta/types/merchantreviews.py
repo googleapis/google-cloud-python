@@ -178,7 +178,7 @@ class MerchantReview(proto.Message):
             Optional. A list of merchant review
             attributes.
         custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
-            Required. A list of custom (merchant-provided) attributes.
+            Optional. A list of custom (merchant-provided) attributes.
             It can also be used for submitting any attribute of the data
             specification in its generic form (for example,
             ``{ "name": "size type", "value": "regular" }``). This is

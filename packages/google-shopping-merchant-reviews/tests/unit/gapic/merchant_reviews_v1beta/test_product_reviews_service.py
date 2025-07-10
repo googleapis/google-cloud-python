@@ -4115,6 +4115,8 @@ def test_insert_product_review_rest_call_success(request_type):
             "skus": ["skus_value1", "skus_value2"],
             "brands": ["brands_value1", "brands_value2"],
             "is_spam": True,
+            "is_verified_purchase": True,
+            "is_incentivized_review": True,
             "collection_method": 1,
             "transaction_id": "transaction_id_value",
         },
