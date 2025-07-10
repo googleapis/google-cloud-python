@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.11](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.2.10...google-maps-fleetengine-v0.2.11) (2025-07-10)
+
+
+### Features
+
+* [google-maps-fleetengine] add ability to specify trip attributes to Trip and deprecate Trip.remaining_waypoints_version ([#14070](https://github.com/googleapis/google-cloud-python/issues/14070)) ([d3c0825](https://github.com/googleapis/google-cloud-python/commit/d3c08252bf32f2f18ea30e80eae4baffe465b93a))
+
 ## [0.2.10](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.2.9...google-maps-fleetengine-v0.2.10) (2025-06-11)
 
 

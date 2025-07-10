@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reviews-v0.1.3...google-shopping-merchant-reviews-v0.1.4) (2025-07-10)
+
+
+### Features
+
+* A new field `is_incentivized_review` is added to message `.google.shopping.merchant.reviews.v1beta.ProductReviewAttributes` ([c2b35a3](https://github.com/googleapis/google-cloud-python/commit/c2b35a370a3d9414e817fb61848ac283b5af1f0a))
+* A new field `is_verified_purchase` is added to message `.google.shopping.merchant.reviews.v1beta.ProductReviewAttributes` ([c2b35a3](https://github.com/googleapis/google-cloud-python/commit/c2b35a370a3d9414e817fb61848ac283b5af1f0a))
+
+
+### Documentation
+
+* A comment for field `content` in message `.google.shopping.merchant.reviews.v1beta.ProductReviewAttributes` is changed ([c2b35a3](https://github.com/googleapis/google-cloud-python/commit/c2b35a370a3d9414e817fb61848ac283b5af1f0a))
+* A comment for field `review_language` in message `.google.shopping.merchant.reviews.v1beta.MerchantReviewAttributes` is changed ([c2b35a3](https://github.com/googleapis/google-cloud-python/commit/c2b35a370a3d9414e817fb61848ac283b5af1f0a))
+* A comment for field custom_attributes in message .google.shopping.merchant.reviews.v1beta.MerchantReview is changed ([c2b35a3](https://github.com/googleapis/google-cloud-python/commit/c2b35a370a3d9414e817fb61848ac283b5af1f0a))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reviews-v0.1.2...google-shopping-merchant-reviews-v0.1.3) (2025-06-11)
 
 

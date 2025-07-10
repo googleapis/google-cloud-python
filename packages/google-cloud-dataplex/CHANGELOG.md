@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.10.2...google-cloud-dataplex-v2.11.0) (2025-07-10)
+
+
+### Features
+
+* A new field semantic_search is added to message.google.cloud.dataplex.v1.SearchEntriesRequest ([47fa122](https://github.com/googleapis/google-cloud-python/commit/47fa12216d3ae440cbddbf9197ff72f237f88bd3))
+
 ## [2.10.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.10.1...google-cloud-dataplex-v2.10.2) (2025-05-15)
 
 

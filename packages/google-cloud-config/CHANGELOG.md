@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.1.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.18...google-cloud-config-v0.1.19) (2025-07-10)
+
+
+### Features
+
+* added resource change and drift details for the preview ([f5cd663](https://github.com/googleapis/google-cloud-python/commit/f5cd663a11af7ca0bd6b03dfff1a258401c78b0a))
+
+
+### Documentation
+
+* A comment for field `annotations` in message `.google.cloud.config.v1.Preview` is changed ([f5cd663](https://github.com/googleapis/google-cloud-python/commit/f5cd663a11af7ca0bd6b03dfff1a258401c78b0a))
+* A comment for field `error` in message `.google.cloud.config.v1.TerraformError` is changed ([f5cd663](https://github.com/googleapis/google-cloud-python/commit/f5cd663a11af7ca0bd6b03dfff1a258401c78b0a))
+* A comment for field `input_value` in message `.google.cloud.config.v1.TerraformVariable` is changed ([f5cd663](https://github.com/googleapis/google-cloud-python/commit/f5cd663a11af7ca0bd6b03dfff1a258401c78b0a))
+* A comment for field `input_values` in message `.google.cloud.config.v1.TerraformBlueprint` is changed ([f5cd663](https://github.com/googleapis/google-cloud-python/commit/f5cd663a11af7ca0bd6b03dfff1a258401c78b0a))
+* A comment for field `labels` in message `.google.cloud.config.v1.Deployment` is changed ([f5cd663](https://github.com/googleapis/google-cloud-python/commit/f5cd663a11af7ca0bd6b03dfff1a258401c78b0a))
+* A comment for field `name` in message `.google.cloud.config.v1.Deployment` is changed ([f5cd663](https://github.com/googleapis/google-cloud-python/commit/f5cd663a11af7ca0bd6b03dfff1a258401c78b0a))
+* A comment for field `page_size` in message `.google.cloud.config.v1.ListTerraformVersionsRequest` is changed ([f5cd663](https://github.com/googleapis/google-cloud-python/commit/f5cd663a11af7ca0bd6b03dfff1a258401c78b0a))
+* A comment for field `page_token` in message `.google.cloud.config.v1.ListTerraformVersionsRequest` is changed ([f5cd663](https://github.com/googleapis/google-cloud-python/commit/f5cd663a11af7ca0bd6b03dfff1a258401c78b0a))
+
 ## [0.1.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.17...google-cloud-config-v0.1.18) (2025-06-11)
 
 
