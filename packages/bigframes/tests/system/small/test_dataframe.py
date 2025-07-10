@@ -180,6 +180,26 @@ def test_df_construct_from_dict():
     )
 
 
+@pytest.mark.parametrize(
+    ("json_type"),
+    [
+        pytest.param(dtypes.JSON_DTYPE),
+        pytest.param("json"),
+    ],
+)
+def test_df_construct_w_json_dtype(json_type):
+    data = [
+        "1",
+        "false",
+        '["a", {"b": 1}, null]',
+        None,
+    ]
+    df = dataframe.DataFrame({"json_col": data}, dtype=json_type)
+
+    assert df["json_col"].dtype == dtypes.JSON_DTYPE
+    assert df["json_col"][1] == "false"
+
+
 def test_df_construct_inline_respects_location(reset_default_session_and_location):
     # Note: This starts a thread-local session.
     with bpd.option_context("bigquery.location", "europe-west1"):

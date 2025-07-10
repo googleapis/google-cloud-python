@@ -326,7 +326,14 @@ def test_series_construct_local_unordered_has_sequential_index(unordered_session
     pd.testing.assert_index_equal(series.index.to_pandas(), expected)
 
 
-def test_series_construct_w_dtype_for_json():
+@pytest.mark.parametrize(
+    ("json_type"),
+    [
+        pytest.param(dtypes.JSON_DTYPE),
+        pytest.param("json"),
+    ],
+)
+def test_series_construct_w_json_dtype(json_type):
     data = [
         "1",
         '"str"',
@@ -335,8 +342,9 @@ def test_series_construct_w_dtype_for_json():
         None,
         '{"a": {"b": [1, 2, 3], "c": true}}',
     ]
-    s = bigframes.pandas.Series(data, dtype=dtypes.JSON_DTYPE)
+    s = bigframes.pandas.Series(data, dtype=json_type)
 
+    assert s.dtype == dtypes.JSON_DTYPE
     assert s[0] == "1"
     assert s[1] == '"str"'
     assert s[2] == "false"

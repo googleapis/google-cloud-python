@@ -18,6 +18,7 @@ import numpy
 import pandas as pd
 import pytest
 
+from bigframes import dtypes
 import bigframes.pandas as bpd
 from bigframes.testing.utils import assert_pandas_index_equal_ignore_index_type
 
@@ -59,6 +60,26 @@ def test_index_construct_from_index():
         pd_index_input, dtype=pd.Int64Dtype(), name="index_name"
     )
     pd.testing.assert_index_equal(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("json_type"),
+    [
+        pytest.param(dtypes.JSON_DTYPE),
+        pytest.param("json"),
+    ],
+)
+def test_index_construct_w_json_dtype(json_type):
+    data = [
+        "1",
+        "false",
+        '["a", {"b": 1}, null]',
+        None,
+    ]
+    index = bpd.Index(data, dtype=json_type)
+
+    assert index.dtype == dtypes.JSON_DTYPE
+    assert index[1] == "false"
 
 
 def test_get_index(scalars_df_index, scalars_pandas_df_index):

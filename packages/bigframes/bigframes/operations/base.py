@@ -121,6 +121,8 @@ class SeriesMethods:
                 bf_dtype = bigframes.dtypes.bigframes_type(dtype)
                 block = block.multi_apply_unary_op(ops.AsTypeOp(to_type=bf_dtype))
         else:
+            if isinstance(dtype, str) and dtype.lower() == "json":
+                dtype = bigframes.dtypes.JSON_DTYPE
             pd_series = pd.Series(
                 data=data,
                 index=index,  # type:ignore
