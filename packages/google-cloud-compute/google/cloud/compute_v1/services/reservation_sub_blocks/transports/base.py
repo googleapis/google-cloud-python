@@ -26,6 +26,7 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.compute_v1 import gapic_version as package_version
+from google.cloud.compute_v1.services import zone_operations
 from google.cloud.compute_v1.types import compute
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -40,7 +41,6 @@ class ReservationSubBlocksTransport(abc.ABC):
     """Abstract transport class for ReservationSubBlocks."""
 
     AUTH_SCOPES = (
-        "https://www.googleapis.com/auth/compute.readonly",
         "https://www.googleapis.com/auth/compute",
         "https://www.googleapis.com/auth/cloud-platform",
     )
@@ -84,6 +84,7 @@ class ReservationSubBlocksTransport(abc.ABC):
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
         """
+        self._extended_operations_services: Dict[str, Any] = {}
 
         scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
 
@@ -146,6 +147,11 @@ class ReservationSubBlocksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.perform_maintenance: gapic_v1.method.wrap_method(
+                self.perform_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -182,8 +188,29 @@ class ReservationSubBlocksTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def perform_maintenance(
+        self,
+    ) -> Callable[
+        [compute.PerformMaintenanceReservationSubBlockRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def kind(self) -> str:
         raise NotImplementedError()
+
+    @property
+    def _zone_operations_client(self) -> zone_operations.ZoneOperationsClient:
+        ex_op_service = self._extended_operations_services.get("zone_operations")
+        if not ex_op_service:
+            ex_op_service = zone_operations.ZoneOperationsClient(
+                credentials=self._credentials,
+                transport=self.kind,
+            )
+            self._extended_operations_services["zone_operations"] = ex_op_service
+
+        return ex_op_service
 
 
 __all__ = ("ReservationSubBlocksTransport",)

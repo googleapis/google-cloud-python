@@ -7616,6 +7616,16 @@ def test_insert_rest_call_success(request_type):
         },
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
+        "tls_settings": {
+            "authentication_config": "authentication_config_value",
+            "sni": "sni_value",
+            "subject_alt_names": [
+                {
+                    "dns_name": "dns_name_value",
+                    "uniform_resource_identifier": "uniform_resource_identifier_value",
+                }
+            ],
+        },
         "used_by": [{"reference": "reference_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -8303,6 +8313,16 @@ def test_patch_rest_call_success(request_type):
         },
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
+        "tls_settings": {
+            "authentication_config": "authentication_config_value",
+            "sni": "sni_value",
+            "subject_alt_names": [
+                {
+                    "dns_name": "dns_name_value",
+                    "uniform_resource_identifier": "uniform_resource_identifier_value",
+                }
+            ],
+        },
         "used_by": [{"reference": "reference_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -9675,6 +9695,16 @@ def test_update_rest_call_success(request_type):
         },
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
+        "tls_settings": {
+            "authentication_config": "authentication_config_value",
+            "sni": "sni_value",
+            "subject_alt_names": [
+                {
+                    "dns_name": "dns_name_value",
+                    "uniform_resource_identifier": "uniform_resource_identifier_value",
+                }
+            ],
+        },
         "used_by": [{"reference": "reference_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
