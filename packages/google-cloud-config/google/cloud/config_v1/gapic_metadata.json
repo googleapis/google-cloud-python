@@ -70,6 +70,16 @@
                 "get_resource"
               ]
             },
+            "GetResourceChange": {
+              "methods": [
+                "get_resource_change"
+              ]
+            },
+            "GetResourceDrift": {
+              "methods": [
+                "get_resource_drift"
+              ]
+            },
             "GetRevision": {
               "methods": [
                 "get_revision"
@@ -93,6 +103,16 @@
             "ListPreviews": {
               "methods": [
                 "list_previews"
+              ]
+            },
+            "ListResourceChanges": {
+              "methods": [
+                "list_resource_changes"
+              ]
+            },
+            "ListResourceDrifts": {
+              "methods": [
+                "list_resource_drifts"
               ]
             },
             "ListResources": {
@@ -190,6 +210,16 @@
                 "get_resource"
               ]
             },
+            "GetResourceChange": {
+              "methods": [
+                "get_resource_change"
+              ]
+            },
+            "GetResourceDrift": {
+              "methods": [
+                "get_resource_drift"
+              ]
+            },
             "GetRevision": {
               "methods": [
                 "get_revision"
@@ -213,6 +243,16 @@
             "ListPreviews": {
               "methods": [
                 "list_previews"
+              ]
+            },
+            "ListResourceChanges": {
+              "methods": [
+                "list_resource_changes"
+              ]
+            },
+            "ListResourceDrifts": {
+              "methods": [
+                "list_resource_drifts"
               ]
             },
             "ListResources": {
@@ -310,6 +350,16 @@
                 "get_resource"
               ]
             },
+            "GetResourceChange": {
+              "methods": [
+                "get_resource_change"
+              ]
+            },
+            "GetResourceDrift": {
+              "methods": [
+                "get_resource_drift"
+              ]
+            },
             "GetRevision": {
               "methods": [
                 "get_revision"
@@ -333,6 +383,16 @@
             "ListPreviews": {
               "methods": [
                 "list_previews"
+              ]
+            },
+            "ListResourceChanges": {
+              "methods": [
+                "list_resource_changes"
+              ]
+            },
+            "ListResourceDrifts": {
+              "methods": [
+                "list_resource_drifts"
               ]
             },
             "ListResources": {

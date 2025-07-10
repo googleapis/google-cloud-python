@@ -819,3 +819,315 @@ class ListTerraformVersionsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListResourceChangesPager:
+    """A pager for iterating through ``list_resource_changes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListResourceChangesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``resource_changes`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListResourceChanges`` requests and continue to iterate
+    through the ``resource_changes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListResourceChangesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., config.ListResourceChangesResponse],
+        request: config.ListResourceChangesRequest,
+        response: config.ListResourceChangesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListResourceChangesRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListResourceChangesResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = config.ListResourceChangesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[config.ListResourceChangesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[config.ResourceChange]:
+        for page in self.pages:
+            yield from page.resource_changes
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListResourceChangesAsyncPager:
+    """A pager for iterating through ``list_resource_changes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListResourceChangesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``resource_changes`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListResourceChanges`` requests and continue to iterate
+    through the ``resource_changes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListResourceChangesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[config.ListResourceChangesResponse]],
+        request: config.ListResourceChangesRequest,
+        response: config.ListResourceChangesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListResourceChangesRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListResourceChangesResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = config.ListResourceChangesRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[config.ListResourceChangesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[config.ResourceChange]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.resource_changes:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListResourceDriftsPager:
+    """A pager for iterating through ``list_resource_drifts`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListResourceDriftsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``resource_drifts`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListResourceDrifts`` requests and continue to iterate
+    through the ``resource_drifts`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListResourceDriftsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., config.ListResourceDriftsResponse],
+        request: config.ListResourceDriftsRequest,
+        response: config.ListResourceDriftsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListResourceDriftsRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListResourceDriftsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = config.ListResourceDriftsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[config.ListResourceDriftsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[config.ResourceDrift]:
+        for page in self.pages:
+            yield from page.resource_drifts
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListResourceDriftsAsyncPager:
+    """A pager for iterating through ``list_resource_drifts`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.config_v1.types.ListResourceDriftsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``resource_drifts`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListResourceDrifts`` requests and continue to iterate
+    through the ``resource_drifts`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.config_v1.types.ListResourceDriftsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[config.ListResourceDriftsResponse]],
+        request: config.ListResourceDriftsRequest,
+        response: config.ListResourceDriftsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.config_v1.types.ListResourceDriftsRequest):
+                The initial request object.
+            response (google.cloud.config_v1.types.ListResourceDriftsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = config.ListResourceDriftsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[config.ListResourceDriftsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[config.ResourceDrift]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.resource_drifts:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
