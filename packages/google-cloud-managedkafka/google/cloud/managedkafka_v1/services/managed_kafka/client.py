@@ -229,6 +229,28 @@ class ManagedKafkaClient(metaclass=ManagedKafkaClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def ca_pool_path(
+        project: str,
+        location: str,
+        ca_pool: str,
+    ) -> str:
+        """Returns a fully-qualified ca_pool string."""
+        return "projects/{project}/locations/{location}/caPools/{ca_pool}".format(
+            project=project,
+            location=location,
+            ca_pool=ca_pool,
+        )
+
+    @staticmethod
+    def parse_ca_pool_path(path: str) -> Dict[str, str]:
+        """Parses a ca_pool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/caPools/(?P<ca_pool>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def cluster_path(
         project: str,
         location: str,
