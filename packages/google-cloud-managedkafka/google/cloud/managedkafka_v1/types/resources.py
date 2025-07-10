@@ -30,6 +30,8 @@ __protobuf__ = proto.module(
         "NetworkConfig",
         "AccessConfig",
         "GcpConfig",
+        "TlsConfig",
+        "TrustConfig",
         "Topic",
         "ConsumerTopicMetadata",
         "ConsumerPartitionMetadata",
@@ -86,6 +88,9 @@ class Cluster(proto.Message):
             Output only. Reserved for future use.
 
             This field is a member of `oneof`_ ``_satisfies_pzs``.
+        tls_config (google.cloud.managedkafka_v1.types.TlsConfig):
+            Optional. TLS configuration for the Kafka
+            cluster.
     """
 
     class State(proto.Enum):
@@ -155,6 +160,11 @@ class Cluster(proto.Message):
         proto.BOOL,
         number=12,
         optional=True,
+    )
+    tls_config: "TlsConfig" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="TlsConfig",
     )
 
 
@@ -277,6 +287,75 @@ class GcpConfig(proto.Message):
     kms_key: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class TlsConfig(proto.Message):
+    r"""The TLS configuration for the Kafka cluster.
+
+    Attributes:
+        trust_config (google.cloud.managedkafka_v1.types.TrustConfig):
+            Optional. The configuration of the broker
+            truststore. If specified, clients can use mTLS
+            for authentication.
+        ssl_principal_mapping_rules (str):
+            Optional. A list of rules for mapping from SSL principal
+            names to short names. These are applied in order by Kafka.
+            Refer to the Apache Kafka documentation for
+            ``ssl.principal.mapping.rules`` for the precise formatting
+            details and syntax. Example:
+            "RULE:^CN=(.*?),OU=ServiceUsers.*\ $/$1@example.com/,DEFAULT"
+
+            This is a static Kafka broker configuration. Setting or
+            modifying this field will trigger a rolling restart of the
+            Kafka brokers to apply the change. An empty string means no
+            rules are applied (Kafka default).
+    """
+
+    trust_config: "TrustConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TrustConfig",
+    )
+    ssl_principal_mapping_rules: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class TrustConfig(proto.Message):
+    r"""Sources of CA certificates to install in the broker's
+    truststore.
+
+    Attributes:
+        cas_configs (MutableSequence[google.cloud.managedkafka_v1.types.TrustConfig.CertificateAuthorityServiceConfig]):
+            Optional. Configuration for the Google
+            Certificate Authority Service. Maximum 10.
+    """
+
+    class CertificateAuthorityServiceConfig(proto.Message):
+        r"""A configuration for the Google Certificate Authority Service.
+
+        Attributes:
+            ca_pool (str):
+                Required. The name of the CA pool to pull CA certificates
+                from. Structured like:
+                projects/{project}/locations/{location}/caPools/{ca_pool}.
+                The CA pool does not need to be in the same project or
+                location as the Kafka cluster.
+        """
+
+        ca_pool: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    cas_configs: MutableSequence[
+        CertificateAuthorityServiceConfig
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=CertificateAuthorityServiceConfig,
     )
 
 
