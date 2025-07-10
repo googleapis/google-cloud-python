@@ -19,6 +19,7 @@ from .fleetengine import (
     PolylineFormatType,
     TerminalLocation,
     TerminalPointId,
+    TripAttribute,
     TripType,
     TripWaypoint,
     VehicleAttribute,
@@ -68,6 +69,7 @@ from .vehicles import (
 __all__ = (
     "TerminalLocation",
     "TerminalPointId",
+    "TripAttribute",
     "TripWaypoint",
     "VehicleAttribute",
     "VehicleLocation",
