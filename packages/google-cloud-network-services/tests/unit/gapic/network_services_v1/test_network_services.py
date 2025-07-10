@@ -47285,6 +47285,7 @@ def test_create_service_lb_policy_rest_call_success(request_type):
         "load_balancing_algorithm": 3,
         "auto_capacity_drain": {"enable": True},
         "failover_config": {"failover_health_threshold": 2649},
+        "isolation_config": {"isolation_granularity": 1, "isolation_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -47496,6 +47497,7 @@ def test_update_service_lb_policy_rest_call_success(request_type):
         "load_balancing_algorithm": 3,
         "auto_capacity_drain": {"enable": True},
         "failover_config": {"failover_health_threshold": 2649},
+        "isolation_config": {"isolation_granularity": 1, "isolation_mode": 1},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
