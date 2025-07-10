@@ -1886,6 +1886,10 @@ class SearchEntriesRequest(proto.Message):
             ``projects/<project_ref>``. If it is unspecified, it
             defaults to the organization where the project provided in
             ``name`` is located.
+        semantic_search (bool):
+            Optional. Specifies whether the search should
+            understand the meaning and intent behind the
+            query, rather than just matching keywords.
     """
 
     name: str = proto.Field(
@@ -1911,6 +1915,10 @@ class SearchEntriesRequest(proto.Message):
     scope: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    semantic_search: bool = proto.Field(
+        proto.BOOL,
+        number=11,
     )
 
 
