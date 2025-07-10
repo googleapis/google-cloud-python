@@ -25,6 +25,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.security.privateca.v1",
     manifest={
+        "AttributeType",
         "RevocationReason",
         "SubjectRequestMode",
         "CertificateAuthority",
@@ -40,12 +41,50 @@ __protobuf__ = proto.module(
         "ObjectId",
         "X509Extension",
         "KeyUsage",
+        "AttributeTypeAndValue",
+        "RelativeDistinguishedName",
         "Subject",
         "SubjectAltNames",
         "CertificateIdentityConstraints",
         "CertificateExtensionConstraints",
     },
 )
+
+
+class AttributeType(proto.Enum):
+    r"""[AttributeType][google.cloud.security.privateca.v1.AttributeType]
+    specifies the type of Attribute in a relative distinguished name.
+
+    Values:
+        ATTRIBUTE_TYPE_UNSPECIFIED (0):
+            Attribute type is unspecified.
+        COMMON_NAME (1):
+            The "common name" of the subject.
+        COUNTRY_CODE (2):
+            The country code of the subject.
+        ORGANIZATION (3):
+            The organization of the subject.
+        ORGANIZATIONAL_UNIT (4):
+            The organizational unit of the subject.
+        LOCALITY (5):
+            The locality or city of the subject.
+        PROVINCE (6):
+            The province, territory, or regional state of
+            the subject.
+        STREET_ADDRESS (7):
+            The street address of the subject.
+        POSTAL_CODE (8):
+            The postal code of the subject.
+    """
+    ATTRIBUTE_TYPE_UNSPECIFIED = 0
+    COMMON_NAME = 1
+    COUNTRY_CODE = 2
+    ORGANIZATION = 3
+    ORGANIZATIONAL_UNIT = 4
+    LOCALITY = 5
+    PROVINCE = 6
+    STREET_ADDRESS = 7
+    POSTAL_CODE = 8
 
 
 class RevocationReason(proto.Enum):
@@ -126,6 +165,17 @@ class SubjectRequestMode(proto.Enum):
             are specified in the certificate request. This mode requires
             the caller to have the ``privateca.certificates.create``
             permission.
+        RDN_SEQUENCE (3):
+            A mode used to get an accurate representation of the Subject
+            field's distinguished name. Indicates that the certificate's
+            [Subject][google.cloud.security.privateca.v1.Subject] and/or
+            [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
+            are specified in the certificate request. When parsing a PEM
+            CSR this mode will maintain the sequence of RDNs found in
+            the CSR's subject field in the issued
+            [Certificate][google.cloud.security.privateca.v1.Certificate].
+            This mode requires the caller to have the
+            ``privateca.certificates.create`` permission.
         REFLECTED_SPIFFE (2):
             A mode reserved for special cases. Indicates that the
             certificate should have one SPIFFE
@@ -140,6 +190,7 @@ class SubjectRequestMode(proto.Enum):
     """
     SUBJECT_REQUEST_MODE_UNSPECIFIED = 0
     DEFAULT = 1
+    RDN_SEQUENCE = 3
     REFLECTED_SPIFFE = 2
 
 
@@ -153,7 +204,7 @@ class CertificateAuthority(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this
+            Identifier. The resource name for this
             [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
             in the format
             ``projects/*/locations/*/caPools/*/certificateAuthorities/*``.
@@ -244,6 +295,15 @@ class CertificateAuthority(proto.Message):
             state.
         labels (MutableMapping[str, str]):
             Optional. Labels with user-defined metadata.
+        user_defined_access_urls (google.cloud.security.privateca_v1.types.CertificateAuthority.UserDefinedAccessUrls):
+            Optional. User-defined URLs for CA
+            certificate and CRLs. The service does not
+            publish content to these URLs. It is up to the
+            user to mirror content to these URLs.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
     """
 
     class Type(proto.Enum):
@@ -426,6 +486,36 @@ class CertificateAuthority(proto.Message):
             enum="CertificateAuthority.SignHashAlgorithm",
         )
 
+    class UserDefinedAccessUrls(proto.Message):
+        r"""User-defined URLs for accessing content published by this
+        [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+
+        Attributes:
+            aia_issuing_certificate_urls (MutableSequence[str]):
+                Optional. A list of URLs where the issuer CA certificate may
+                be downloaded, which appears in the "Authority Information
+                Access" extension in the certificate. If specified, the
+                default [Cloud Storage
+                URLs][google.cloud.security.privateca.v1.CertificateAuthority.AccessUrls.ca_certificate_access_url]
+                will be omitted.
+            crl_access_urls (MutableSequence[str]):
+                Optional. A list of URLs where to obtain CRL information,
+                i.e. the DistributionPoint.fullName described by
+                https://tools.ietf.org/html/rfc5280#section-4.2.1.13. If
+                specified, the default [Cloud Storage
+                URLs][google.cloud.security.privateca.v1.CertificateAuthority.AccessUrls.crl_access_urls]
+                will be omitted.
+        """
+
+        aia_issuing_certificate_urls: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        crl_access_urls: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -510,6 +600,19 @@ class CertificateAuthority(proto.Message):
         proto.STRING,
         number=17,
     )
+    user_defined_access_urls: UserDefinedAccessUrls = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=UserDefinedAccessUrls,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=19,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=20,
+    )
 
 
 class CaPool(proto.Message):
@@ -525,7 +628,7 @@ class CaPool(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this
+            Identifier. The resource name for this
             [CaPool][google.cloud.security.privateca.v1.CaPool] in the
             format ``projects/*/locations/*/caPools/*``.
         tier (google.cloud.security.privateca_v1.types.CaPool.Tier):
@@ -649,6 +752,17 @@ class CaPool(proto.Message):
                 is specified, then the certificate request's public key must
                 match one of the key types listed here. Otherwise, any key
                 may be used.
+            backdate_duration (google.protobuf.duration_pb2.Duration):
+                Optional. The duration to backdate all certificates issued
+                from this
+                [CaPool][google.cloud.security.privateca.v1.CaPool]. If not
+                set, the certificates will be issued with a not_before_time
+                of the issuance time (i.e. the current time). If set, the
+                certificates will be issued with a not_before_time of the
+                issuance time minus the backdate_duration. The
+                not_after_time will be adjusted to preserve the requested
+                lifetime. The backdate_duration must be less than or equal
+                to 48 hours.
             maximum_lifetime (google.protobuf.duration_pb2.Duration):
                 Optional. The maximum lifetime allowed for issued
                 [Certificates][google.cloud.security.privateca.v1.Certificate].
@@ -855,6 +969,11 @@ class CaPool(proto.Message):
             number=1,
             message="CaPool.IssuancePolicy.AllowedKeyType",
         )
+        backdate_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
+        )
         maximum_lifetime: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
@@ -916,7 +1035,7 @@ class CertificateRevocationList(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this
+            Identifier. The resource name for this
             [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList]
             in the format
             ``projects/*/locations/*/caPools/*certificateAuthorities/*/ certificateRevocationLists/*``.
@@ -1067,7 +1186,7 @@ class Certificate(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this
+            Identifier. The resource name for this
             [Certificate][google.cloud.security.privateca.v1.Certificate]
             in the format
             ``projects/*/locations/*/caPools/*/certificates/*``.
@@ -1235,7 +1354,7 @@ class CertificateTemplate(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this
+            Identifier. The resource name for this
             [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
             in the format
             ``projects/*/locations/*/certificateTemplates/*``.
@@ -1370,7 +1489,9 @@ class X509Parameters(proto.Message):
         ca_options (google.cloud.security.privateca_v1.types.X509Parameters.CaOptions):
             Optional. Describes options in this
             [X509Parameters][google.cloud.security.privateca.v1.X509Parameters]
-            that are relevant in a CA certificate.
+            that are relevant in a CA certificate. If not specified, a
+            default basic constraints extension with ``is_ca=false``
+            will be added for leaf certificates.
         policy_ids (MutableSequence[google.cloud.security.privateca_v1.types.ObjectId]):
             Optional. Describes the X.509 certificate
             policy object identifiers, per
@@ -1388,26 +1509,29 @@ class X509Parameters(proto.Message):
     """
 
     class CaOptions(proto.Message):
-        r"""Describes values that are relevant in a CA certificate.
+        r"""Describes the X.509 basic constraints extension, per `RFC 5280
+        section
+        4.2.1.9 <https://tools.ietf.org/html/rfc5280#section-4.2.1.9>`__
+
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             is_ca (bool):
-                Optional. Refers to the "CA" X.509 extension,
-                which is a boolean value. When this value is
-                missing, the extension will be omitted from the
-                CA certificate.
+                Optional. Refers to the "CA" boolean field in
+                the X.509 extension. When this value is missing,
+                the basic constraints extension will be omitted
+                from the certificate.
 
                 This field is a member of `oneof`_ ``_is_ca``.
             max_issuer_path_length (int):
                 Optional. Refers to the path length
-                restriction X.509 extension. For a CA
-                certificate, this value describes the depth of
-                subordinate CA certificates that are allowed.
+                constraint field in the X.509 extension. For a
+                CA certificate, this value describes the depth
+                of subordinate CA certificates that are allowed.
                 If this value is less than 0, the request will
                 fail. If this value is missing, the max path
-                length will be omitted from the CA certificate.
+                length will be omitted from the certificate.
 
                 This field is a member of `oneof`_ ``_max_issuer_path_length``.
         """
@@ -1788,6 +1912,12 @@ class CertificateDescription(proto.Message):
             Access" extension in the certificate.
         cert_fingerprint (google.cloud.security.privateca_v1.types.CertificateDescription.CertificateFingerprint):
             The hash of the x.509 certificate.
+        tbs_certificate_digest (str):
+            The hash of the pre-signed certificate, which
+            will be signed by the CA. Corresponds to the TBS
+            Certificate in
+            https://tools.ietf.org/html/rfc5280#section-4.1.2.
+            The field will always be populated.
     """
 
     class SubjectDescription(proto.Message):
@@ -1914,6 +2044,10 @@ class CertificateDescription(proto.Message):
         proto.MESSAGE,
         number=8,
         message=CertificateFingerprint,
+    )
+    tbs_certificate_digest: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 
@@ -2126,6 +2260,69 @@ class KeyUsage(proto.Message):
     )
 
 
+class AttributeTypeAndValue(proto.Message):
+    r"""[AttributeTypeAndValue][google.cloud.security.privateca.v1.AttributeTypeAndValue]
+    specifies an attribute type and value. It can use either a OID or
+    enum value to specify the attribute type.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        type_ (google.cloud.security.privateca_v1.types.AttributeType):
+            The attribute type of the attribute and value
+            pair.
+
+            This field is a member of `oneof`_ ``attribute_type``.
+        object_id (google.cloud.security.privateca_v1.types.ObjectId):
+            Object ID for an attribute type of an
+            attribute and value pair.
+
+            This field is a member of `oneof`_ ``attribute_type``.
+        value (str):
+            The value for the attribute type.
+    """
+
+    type_: "AttributeType" = proto.Field(
+        proto.ENUM,
+        number=1,
+        oneof="attribute_type",
+        enum="AttributeType",
+    )
+    object_id: "ObjectId" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="attribute_type",
+        message="ObjectId",
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class RelativeDistinguishedName(proto.Message):
+    r"""[RelativeDistinguishedName][google.cloud.security.privateca.v1.RelativeDistinguishedName]
+    specifies a relative distinguished name which will be used to build
+    a distinguished name.
+
+    Attributes:
+        attributes (MutableSequence[google.cloud.security.privateca_v1.types.AttributeTypeAndValue]):
+            Attributes describes the attribute value
+            assertions in the RDN.
+    """
+
+    attributes: MutableSequence["AttributeTypeAndValue"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AttributeTypeAndValue",
+    )
+
+
 class Subject(proto.Message):
     r"""[Subject][google.cloud.security.privateca.v1.Subject] describes
     parts of a distinguished name that, in turn, describes the subject
@@ -2149,6 +2346,9 @@ class Subject(proto.Message):
             The street address of the subject.
         postal_code (str):
             The postal code of the subject.
+        rdn_sequence (MutableSequence[google.cloud.security.privateca_v1.types.RelativeDistinguishedName]):
+            This field can be used in place of the named
+            subject fields.
     """
 
     common_name: str = proto.Field(
@@ -2182,6 +2382,11 @@ class Subject(proto.Message):
     postal_code: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    rdn_sequence: MutableSequence["RelativeDistinguishedName"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="RelativeDistinguishedName",
     )
 
 
