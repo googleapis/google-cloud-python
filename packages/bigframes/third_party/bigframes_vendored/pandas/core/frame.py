@@ -3067,6 +3067,20 @@ class DataFrame(generic.NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def __radd__(self, other) -> DataFrame:
+        """Get addition of other and DataFrame, element-wise (binary operator `+`).
+
+        Equivalent to ``DataFrame.radd(other)``.
+
+        Args:
+            other (float, int, or Series):
+                Any single or multiple element data structure, or list-like object.
+
+        Returns:
+            bigframes.pandas.DataFrame: DataFrame result of the arithmetic operation.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def sub(self, other, axis: str | int = "columns") -> DataFrame:
         """Get subtraction of DataFrame and other, element-wise (binary operator `-`).
 

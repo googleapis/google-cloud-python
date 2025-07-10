@@ -1046,14 +1046,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         # TODO(swast): Support fill_value parameter.
         # TODO(swast): Support level parameter with MultiIndex.
-        return self.add(other, axis=axis)
+        return self._apply_binop(other, ops.add_op, axis=axis, reverse=True)
 
     def __add__(self, other) -> DataFrame:
         return self.add(other)
 
     __add__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__add__)
 
-    __radd__ = __add__
+    def __radd__(self, other) -> DataFrame:
+        return self.radd(other)
+
+    __radd__.__doc__ = inspect.getdoc(vendored_pandas_frame.DataFrame.__radd__)
 
     def sub(
         self,

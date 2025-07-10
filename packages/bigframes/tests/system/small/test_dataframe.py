@@ -2578,6 +2578,22 @@ def test_scalar_binop(scalars_dfs, op, other_scalar, reverse_operands):
     assert_pandas_df_equal(bf_result, pd_result)
 
 
+def test_dataframe_string_radd_const(scalars_dfs):
+    pytest.importorskip(
+        "pandas",
+        minversion="2.0.0",
+        reason="PyArrow string addition requires pandas 2.0+",
+    )
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+    columns = ["string_col", "string_col"]
+
+    bf_result = ("prefix" + scalars_df[columns]).to_pandas()
+    pd_result = "prefix" + scalars_pandas_df[columns]
+
+    assert_pandas_df_equal(bf_result, pd_result)
+
+
 @pytest.mark.parametrize(("other_scalar"), [1, -2])
 def test_mod(scalars_dfs, other_scalar):
     # Zero case excluded as pandas produces 0 result for Int64 inputs rather than NA/NaN.
