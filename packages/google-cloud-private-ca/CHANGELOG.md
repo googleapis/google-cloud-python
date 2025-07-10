@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.14.3...google-cloud-private-ca-v1.15.0) (2025-07-10)
+
+
+### Features
+
+* add backdate duration ([c28164a](https://github.com/googleapis/google-cloud-python/commit/c28164ad7a90516348c40331685d0332cbbb36f6))
+* add RDN sequence ([c28164a](https://github.com/googleapis/google-cloud-python/commit/c28164ad7a90516348c40331685d0332cbbb36f6))
+* add User Defined Access URLs ([c28164a](https://github.com/googleapis/google-cloud-python/commit/c28164ad7a90516348c40331685d0332cbbb36f6))
+* adds tbs_certificate_digest to CertificateDescription ([c28164a](https://github.com/googleapis/google-cloud-python/commit/c28164ad7a90516348c40331685d0332cbbb36f6))
+
 ## [1.14.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-private-ca-v1.14.2...google-cloud-private-ca-v1.14.3) (2025-06-11)
 
 

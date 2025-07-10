@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.11...google-cloud-managedkafka-v0.1.12) (2025-07-10)
+
+
+### Features
+
+* update libraries and clients for Managed Kafka ([feb3366](https://github.com/googleapis/google-cloud-python/commit/feb3366d4b5c7263210d6513854535bec6de8422))
+
 ## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managedkafka-v0.1.10...google-cloud-managedkafka-v0.1.11) (2025-05-26)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.24](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.23...google-cloud-network-services-v0.5.24) (2025-07-10)
+
+
+### Features
+
+* Add isolation support to prevent cross-region overflow by adding a new field "isolation_config" to message "ServiceLbPolicy" ([9117f23](https://github.com/googleapis/google-cloud-python/commit/9117f237322c25916e4245012a19a9d12790097a))
+
 ## [0.5.23](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.5.22...google-cloud-network-services-v0.5.23) (2025-07-02)
 
 
