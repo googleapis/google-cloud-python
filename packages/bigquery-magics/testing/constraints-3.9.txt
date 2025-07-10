@@ -1,8 +1,17 @@
-# IMPORTANT: When Python 3.8 support is dropped, update these to
-# match the minimums in setup.py.
+# This constraints file is used to check that lower bounds
+# are correct in setup.py
+# List *all* library dependencies and extras in this file.
+# Pin the version to the lower bound.
 #
-# We try to test across major versions of our dependencies.
-# This is the last pandas 2.0.x release.
-pandas==2.0.3
-bigframes==1.17.0
-geopandas==1.0.1
+# e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
+# Then this file should have foo==1.14.0
+db-dtypes==0.3.0
+google-cloud-bigquery==3.13.0
+google-cloud-bigquery-storage==2.6.0
+ipywidgets==7.7.1
+ipython==7.23.1
+ipykernel==5.5.6
+pandas==1.2.0
+pyarrow==3.0.0
+pydata-google-auth==1.5.0
+tqdm==4.7.4

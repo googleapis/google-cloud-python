@@ -32,9 +32,7 @@ extras_storage = ["bqstorage"]
 extras_bf = ["bqstorage", "bigframes", "geopandas"]
 extras_spanner = ["spanner-graph-notebook"]
 extras_by_python = {
-    "3.7": extras_storage,
-    "3.8": extras_storage,
-    "3.9": extras_bf,
+    "3.9": extras_storage,
     "3.10": extras_bf,
     # Use a middle version of Python to test when no extras are installed.
     "3.11": [],
@@ -42,8 +40,8 @@ extras_by_python = {
     "3.13": extras_bf,
 }
 templated_files = common.py_library(
-    unit_test_python_versions=["3.7", "3.8", "3.9", "3.11", "3.12", "3.13"],
-    system_test_python_versions=["3.8", "3.11", "3.12", "3.13"],
+    unit_test_python_versions=["3.9", "3.11", "3.12", "3.13"],
+    system_test_python_versions=["3.9", "3.11", "3.12", "3.13"],
     cov_level=100,
     unit_test_extras_by_python=extras_by_python,
     unit_test_external_dependencies=["google-cloud-testutils"],
@@ -52,6 +50,7 @@ templated_files = common.py_library(
         "pandas": "https://pandas.pydata.org/pandas-docs/stable/",
         "pydata-google-auth": "https://pydata-google-auth.readthedocs.io/en/latest/",
     },
+    default_python_version="3.10",
 )
 s.move(
     templated_files,
@@ -61,7 +60,6 @@ s.move(
         "docs/multiprocessing.rst",
         "noxfile.py",
         "README.rst",
-        ".github/workflows/unittest.yml",
     ],
 )
 

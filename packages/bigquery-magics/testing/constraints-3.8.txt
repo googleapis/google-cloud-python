@@ -1,8 +1,0 @@
-# IMPORTANT: When Python 3.7 support is dropped, update these to
-# match the minimums in setup.py.
-#
-# We try to test across major versions of our dependencies.
-# This is the last ipython 7.x release
-ipython==7.34.0
-# This is the last pandas 1.5.x release.
-pandas==1.5.3
