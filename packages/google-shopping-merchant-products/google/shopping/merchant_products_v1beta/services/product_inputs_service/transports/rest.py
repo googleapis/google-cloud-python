@@ -469,6 +469,8 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 surfaces. Product inputs, rules and supplemental data
                 source data are combined to create the processed
                 [Product][google.shopping.merchant.products.v1beta.Product].
+                For more information, see `Manage
+                products </merchant/api/guides/products/overview>`__.
 
                 Required product input attributes to pass data
                 validation checks are primarily defined in the `Products
@@ -487,8 +489,14 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
 
                 All fields in the product input and its sub-messages
                 match the English name of their corresponding attribute
-                in the vertical spec with `some
+                in the `Products Data
+                Specification <https://support.google.com/merchants/answer/188494>`__
+                with `some
                 exceptions <https://support.google.com/merchants/answer/7052112>`__.
+                The following reference documentation lists the field
+                names in the **camelCase** casing style while the
+                Products Data Specification lists the names in the
+                **snake_case** casing style.
 
             """
 
@@ -656,6 +664,8 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 surfaces. Product inputs, rules and supplemental data
                 source data are combined to create the processed
                 [Product][google.shopping.merchant.products.v1beta.Product].
+                For more information, see `Manage
+                products </merchant/api/guides/products/overview>`__.
 
                 Required product input attributes to pass data
                 validation checks are primarily defined in the `Products
@@ -674,8 +684,14 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
 
                 All fields in the product input and its sub-messages
                 match the English name of their corresponding attribute
-                in the vertical spec with `some
+                in the `Products Data
+                Specification <https://support.google.com/merchants/answer/188494>`__
+                with `some
                 exceptions <https://support.google.com/merchants/answer/7052112>`__.
+                The following reference documentation lists the field
+                names in the **camelCase** casing style while the
+                Products Data Specification lists the names in the
+                **snake_case** casing style.
 
             """
 

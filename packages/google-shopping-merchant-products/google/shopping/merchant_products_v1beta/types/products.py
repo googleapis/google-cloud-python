@@ -76,7 +76,12 @@ class Product(proto.Message):
             639-1 <http://en.wikipedia.org/wiki/ISO_639-1>`__ language
             code for the product.
         feed_label (str):
-            Output only. The feed label for the product.
+            Output only. The feed label lets you categorize and identify
+            your products. The maximum allowed characters is 20 and the
+            supported characters are\ ``A-Z``, ``0-9``, hyphen and
+            underscore. The feed label must not include any spaces. For
+            more information, see `Using feed
+            labels <//support.google.com/merchants/answer/14994087>`__
         data_source (str):
             Output only. The primary data source of the
             product.
@@ -196,9 +201,9 @@ class ListProductsRequest(proto.Message):
         page_size (int):
             The maximum number of products to return. The
             service may return fewer than this value.
-            The maximum value is 250; values above 250 will
-            be coerced to 250. If unspecified, the maximum
-            number of products will be returned.
+            The maximum value is 1000; values above 1000
+            will be coerced to 1000. If unspecified, the
+            maximum number of products will be returned.
         page_token (str):
             A page token, received from a previous ``ListProducts``
             call. Provide this to retrieve the subsequent page.

@@ -85,10 +85,10 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_identifier_exists``.
         is_bundle (bool):
-            Whether the item is a merchant-defined
-            bundle. A bundle is a custom grouping of
-            different products sold by a merchant for a
-            single price.
+            Whether the item is a business-defined sub-API. A [sub-API]
+            (https://support.google.com/merchants/answer/6324449) is a
+            custom grouping of different products sold by a business for
+            a single price.
 
             This field is a member of `oneof`_ ``_is_bundle``.
         title (str):
@@ -147,7 +147,9 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_age_group``.
         availability (str):
-            Availability status of the item.
+            `Availability <https://support.google.com/merchants/answer/6324448>`__
+            status of the item. For example, "in_stock" or
+            "out_of_stock".
 
             This field is a member of `oneof`_ ``_availability``.
         availability_date (google.protobuf.timestamp_pb2.Timestamp):
@@ -155,19 +157,24 @@ class Attributes(proto.Message):
             delivery, in `ISO
             8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
         brand (str):
-            Brand of the item.
+            `Brand <https://support.google.com/merchants/answer/6324351>`__
+            of the item. For example, "Google".
 
             This field is a member of `oneof`_ ``_brand``.
         color (str):
-            Color of the item.
+            `Color <https://support.google.com/merchants/answer/6324487>`__
+            of the item. For example, "red".
 
             This field is a member of `oneof`_ ``_color``.
         condition (str):
-            Condition or state of the item.
+            `Condition <https://support.google.com/merchants/answer/6324469>`__
+            or state of the item. For example, "new" or "used".
 
             This field is a member of `oneof`_ ``_condition``.
         gender (str):
-            Target gender of the item.
+            Target
+            `gender <https://support.google.com/merchants/answer/6324479>`__
+            of the item. For example, "male" or "female".
 
             This field is a member of `oneof`_ ``_gender``.
         google_product_category (str):
@@ -182,13 +189,22 @@ class Attributes(proto.Message):
             Global Trade Item Numbers
             (`GTIN <https://support.google.com/merchants/answer/188494#gtin>`__)
             of the item. You can provide up to 10 GTINs.
+
+            Deprecated: Use ``gtins`` instead.
+        gtins (MutableSequence[str]):
+            Global Trade Item Numbers
+            (`GTIN <https://support.google.com/merchants/answer/188494#gtin>`__)
+            of the item. You can provide up to 10 GTINs.
         item_group_id (str):
             Shared identifier for all variants of the
             same product.
 
             This field is a member of `oneof`_ ``_item_group_id``.
         material (str):
-            The material of which the item is made.
+            The
+            `material <https://support.google.com/merchants/answer/6324410>`__
+            of which the item is made. For example, "Leather" or
+            "Cotton".
 
             This field is a member of `oneof`_ ``_material``.
         mpn (str):
@@ -198,11 +214,16 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_mpn``.
         pattern (str):
-            The item's pattern (for example, polka dots).
+            The item's
+            `pattern <https://support.google.com/merchants/answer/6324483>`__.
+            For example, polka dots.
 
             This field is a member of `oneof`_ ``_pattern``.
         price (google.shopping.type.types.Price):
             Price of the item.
+        maximum_retail_price (google.shopping.type.types.Price):
+            Maximum retail price (MRP) of the item.
+            Applicable to India only.
         installment (google.shopping.merchant_products_v1beta.types.Installment):
             Number and amount of installments to pay for
             an item.
@@ -220,13 +241,13 @@ class Attributes(proto.Message):
             item.
         product_types (MutableSequence[str]):
             Categories of the item (formatted as in `product data
-            specification <https://support.google.com/merchants/answer/188494#product_type>`__).
+            specification <https://support.google.com/merchants/answer/7052112#product_category>`__).
         sale_price (google.shopping.type.types.Price):
             Advertised sale price of the item.
         sale_price_effective_date (google.type.interval_pb2.Interval):
-            Date range during which the item is on sale (see `product
+            Date range during which the item is on sale, see `product
             data
-            specification <https://support.google.com/merchants/answer/188494#sale_price_effective_date>`__).
+            specification <https://support.google.com/merchants/answer/7052112#price_and_availability>`__.
         sell_on_google_quantity (int):
             The quantity of the product that is available
             for selling on Google. Supported only for online
@@ -286,26 +307,29 @@ class Attributes(proto.Message):
         size (str):
             Size of the item. Only one value is allowed. For variants
             with different sizes, insert a separate product for each
-            size with the same ``itemGroupId`` value (see
-            [https://support.google.com/merchants/answer/6324492](size
-            definition)).
+            size with the same ``itemGroupId`` value, see
+            `Size <https://support.google.com/merchants/answer/6324492>`__.
 
             This field is a member of `oneof`_ ``_size``.
         size_system (str):
-            System in which the size is specified.
-            Recommended for apparel items.
+            System in which the size is specified. Recommended for
+            apparel items. For example, "US", "UK", "DE". For more
+            information, see `Size
+            system <https://support.google.com/merchants/answer/6324502>`__.
 
             This field is a member of `oneof`_ ``_size_system``.
         size_types (MutableSequence[str]):
             The cut of the item. It can be used to represent combined
             size types for apparel items. Maximum two of size types can
-            be provided (see
-            [https://support.google.com/merchants/answer/6324497](size
-            type)).
+            be provided, see `Size
+            type <https://support.google.com/merchants/answer/6324497>`__.
+            For example, "petite", "plus size".
         taxes (MutableSequence[google.shopping.merchant_products_v1beta.types.Tax]):
             Tax information.
         tax_category (str):
-            The tax category of the product.
+            The `tax
+            category <https://support.google.com/merchants/answer/7569847>`__
+            of the product.
 
             This field is a member of `oneof`_ ``_tax_category``.
         energy_efficiency_class (str):
@@ -330,12 +354,14 @@ class Attributes(proto.Message):
             price.
         multipack (int):
             The number of identical products in a
-            merchant-defined multipack.
+            business-defined multipack.
 
             This field is a member of `oneof`_ ``_multipack``.
         ads_grouping (str):
-            Used to group items in an arbitrary way. Only
-            for CPA%, discouraged otherwise.
+            Used to group items in an arbitrary way. Only for CPA%,
+            discouraged otherwise. For more information, see `Display
+            ads
+            attribute <https://support.google.com/merchants/answer/6069387>`__.
 
             This field is a member of `oneof`_ ``_ads_grouping``.
         ads_labels (MutableSequence[str]):
@@ -353,15 +379,17 @@ class Attributes(proto.Message):
             Technical specification or additional product
             details.
         product_highlights (MutableSequence[str]):
-            Bullet points describing the most relevant
-            highlights of a product.
+            Bullet points describing the most relevant `product
+            highlights <https://support.google.com/merchants/answer/9216100>`__.
         display_ads_id (str):
             An identifier for an item for dynamic
             remarketing campaigns.
 
             This field is a member of `oneof`_ ``_display_ads_id``.
         display_ads_similar_ids (MutableSequence[str]):
-            Advertiser-specified recommendations.
+            Advertiser-specified recommendations. For more information,
+            see `Display ads attribute
+            specification <https://support.google.com/merchants/answer/6069387>`__.
         display_ads_title (str):
             Title of an item for dynamic remarketing
             campaigns.
@@ -373,53 +401,66 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_display_ads_link``.
         display_ads_value (float):
-            Offer margin for dynamic remarketing
-            campaigns.
+            Offer margin for dynamic remarketing campaigns. For more
+            information, see `Display ads
+            attribute <https://support.google.com/merchants/answer/6069387>`__.
 
             This field is a member of `oneof`_ ``_display_ads_value``.
         promotion_ids (MutableSequence[str]):
             The unique ID of a promotion.
         pickup_method (str):
-            The pick up option for the item.
+            The
+            `pickup <https://support.google.com/merchants/answer/14634021>`__
+            option for the item.
 
             This field is a member of `oneof`_ ``_pickup_method``.
         pickup_sla (str):
-            Item store pickup timeline.
+            Item store pickup timeline. For more information, see
+            `Pickup
+            SLA <https://support.google.com/merchants/answer/14635400>`__.
 
             This field is a member of `oneof`_ ``_pickup_sla``.
         link_template (str):
-            Link template for merchant hosted local
-            storefront.
+            `Link
+            template <https://support.google.com/merchants/answer/13871172>`__
+            for business hosted local storefront.
 
             This field is a member of `oneof`_ ``_link_template``.
         mobile_link_template (str):
-            Link template for merchant hosted local
-            storefront optimized for mobile devices.
+            `Link
+            template <https://support.google.com/merchants/answer/13870216>`__
+            for business hosted local storefront optimized for mobile
+            devices.
 
             This field is a member of `oneof`_ ``_mobile_link_template``.
         custom_label_0 (str):
-            Custom label 0 for custom grouping of items
-            in a Shopping campaign.
+            `Custom label
+            0 <https://support.google.com/merchants/answer/6324473>`__
+            for custom grouping of items in a Shopping campaign.
 
             This field is a member of `oneof`_ ``_custom_label_0``.
         custom_label_1 (str):
-            Custom label 1 for custom grouping of items
-            in a Shopping campaign.
+            `Custom label
+            1 <https://support.google.com/merchants/answer/6324473>`__
+            for custom grouping of items in a Shopping campaign.
 
             This field is a member of `oneof`_ ``_custom_label_1``.
         custom_label_2 (str):
-            Custom label 2 for custom grouping of items
-            in a Shopping campaign.
+            `Custom label
+            2 <https://support.google.com/merchants/answer/6324473>`__
+            for custom grouping of items in a Shopping campaign.
 
             This field is a member of `oneof`_ ``_custom_label_2``.
         custom_label_3 (str):
-            Custom label 3 for custom grouping of items
-            in a Shopping campaign.
+            `Custom label
+            3 <https://support.google.com/merchants/answer/6324473>`__
+            for custom grouping of items in a Shopping campaign.
 
             This field is a member of `oneof`_ ``_custom_label_3``.
         custom_label_4 (str):
-            Custom label 4 for custom grouping of items
-            in a Shopping campaign.
+            `Custom label
+            4 <https://support.google.com/merchants/answer/6324473>`__
+            for custom grouping of items in a Shopping campaign.
 
             This field is a member of `oneof`_ ``_custom_label_4``.
         included_destinations (MutableSequence[str]):
@@ -427,15 +468,29 @@ class Attributes(proto.Message):
             (corresponds to checked check boxes in Merchant Center).
             Default destinations are always included unless provided in
             ``excludedDestinations``.
+
+            For more information, see `Included
+            destination <https://support.google.com/merchants/answer/7501026>`__.
+
+            Note: We recommend setting destinations on datasources level
+            for most use cases. Use this field within products to only
+            setup exceptions.
         excluded_destinations (MutableSequence[str]):
-            The list of destinations to exclude for this
-            target (corresponds to unchecked check boxes in
-            Merchant Center).
+            The list of destinations to exclude for this target
+            (corresponds to unchecked check boxes in Merchant Center).
+
+            For more information, see `Excluded
+            destination <https://support.google.com/merchants/answer/6324486>`__.
+
+            Note: We recommend setting destinations on datasources level
+            for most use cases. Use this field within products to only
+            setup exceptions.
         shopping_ads_excluded_countries (MutableSequence[str]):
-            List of country codes (ISO 3166-1 alpha-2) to
-            exclude the offer from Shopping Ads destination.
-            Countries from this list are removed from
-            countries configured in data source settings.
+            List of country codes `(ISO 3166-1
+            alpha-2) <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`__
+            to exclude the offer from Shopping Ads destination.
+            Countries from this list are removed from countries
+            configured in data source settings.
         external_seller_id (str):
             Required for multi-seller accounts. Use this
             attribute if you're a marketplace uploading
@@ -481,13 +536,13 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_structured_description``.
         auto_pricing_min_price (google.shopping.type.types.Price):
-            A safeguard in the "Automated Discounts"
-            (https://support.google.com/merchants/answer/10295759)
-            and "Dynamic Promotions"
+            A safeguard in the [automated discounts]
+            (https://support.google.com/merchants/answer/10295759) and
+            "Dynamic Promotions"
             (https://support.google.com/merchants/answer/13949249)
-            projects, ensuring that discounts on merchants'
-            offers do not fall below this value, thereby
-            preserving the offer's value and profitability.
+            projects, ensuring that discounts on business offers do not
+            fall below this value, thereby preserving the offer's value
+            and profitability.
         sustainability_incentives (MutableSequence[google.shopping.merchant_products_v1beta.types.ProductSustainabilityIncentive]):
             The list of sustainability incentive
             programs.
@@ -596,6 +651,10 @@ class Attributes(proto.Message):
         proto.STRING,
         number=26,
     )
+    gtins: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=140,
+    )
     item_group_id: str = proto.Field(
         proto.STRING,
         number=27,
@@ -619,6 +678,11 @@ class Attributes(proto.Message):
     price: types.Price = proto.Field(
         proto.MESSAGE,
         number=31,
+        message=types.Price,
+    )
+    maximum_retail_price: types.Price = proto.Field(
+        proto.MESSAGE,
+        number=139,
         message=types.Price,
     )
     installment: "Installment" = proto.Field(
@@ -1213,12 +1277,12 @@ class LoyaltyProgram(proto.Message):
         program_label (str):
             The label of the loyalty program. This is an
             internal label that uniquely identifies the
-            relationship between a merchant entity and a
+            relationship between a business entity and a
             loyalty program entity. The label must be
             provided so that the system can associate the
             assets below (for example, price and points)
-            with a merchant. The corresponding program must
-            be linked to the merchant account.
+            with a business. The corresponding program must
+            be linked to the Merchant Center account.
 
             This field is a member of `oneof`_ ``_program_label``.
         tier_label (str):
@@ -1740,7 +1804,7 @@ class ProductStatus(proto.Message):
                 How this issue affects serving of the offer.
             resolution (str):
                 Whether the issue can be resolved by the
-                merchant.
+                business.
             attribute (str):
                 The attribute's name, if the issue is caused
                 by a single attribute.
