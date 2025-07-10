@@ -744,14 +744,18 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> productinputs.ProductInput:
-        r"""Uploads a product input to your Merchant Center
-        account. If an input with the same contentLanguage,
-        offerId, and dataSource already exists, this method
-        replaces that entry.
+        r"""`Uploads a product input to your Merchant Center
+        account </merchant/api/guides/products/overview#upload-product-input>`__.
+        You must have a products data source to be able to insert a
+        product. The unique identifier of the data source is passed as a
+        query parameter in the request URL.
 
-        After inserting, updating, or deleting a product input,
-        it may take several minutes before the processed product
-        can be retrieved.
+        If an input with the same contentLanguage, offerId, and
+        dataSource already exists, this method replaces that entry.
+
+        After inserting, updating, or deleting a product input, it may
+        take several minutes before the processed product can be
+        retrieved.
 
         .. code-block:: python
 
@@ -806,6 +810,8 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                    inputs, rules and supplemental data source data are
                    combined to create the processed
                    [Product][google.shopping.merchant.products.v1beta.Product].
+                   For more information, see [Manage
+                   products](/merchant/api/guides/products/overview).
 
                    Required product input attributes to pass data
                    validation checks are primarily defined in the
@@ -824,8 +830,14 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
 
                    All fields in the product input and its sub-messages
                    match the English name of their corresponding
-                   attribute in the vertical spec with [some
+                   attribute in the [Products Data
+                   Specification](\ https://support.google.com/merchants/answer/188494)
+                   with [some
                    exceptions](\ https://support.google.com/merchants/answer/7052112).
+                   The following reference documentation lists the field
+                   names in the **camelCase** casing style while the
+                   Products Data Specification lists the names in the
+                   **snake_case** casing style.
 
         """
         # Create or coerce a protobuf request object.
@@ -962,6 +974,8 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
                    inputs, rules and supplemental data source data are
                    combined to create the processed
                    [Product][google.shopping.merchant.products.v1beta.Product].
+                   For more information, see [Manage
+                   products](/merchant/api/guides/products/overview).
 
                    Required product input attributes to pass data
                    validation checks are primarily defined in the
@@ -980,8 +994,14 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
 
                    All fields in the product input and its sub-messages
                    match the English name of their corresponding
-                   attribute in the vertical spec with [some
+                   attribute in the [Products Data
+                   Specification](\ https://support.google.com/merchants/answer/188494)
+                   with [some
                    exceptions](\ https://support.google.com/merchants/answer/7052112).
+                   The following reference documentation lists the field
+                   names in the **camelCase** casing style while the
+                   Products Data Specification lists the names in the
+                   **snake_case** casing style.
 
         """
         # Create or coerce a protobuf request object.
@@ -1080,11 +1100,11 @@ class ProductInputsServiceClient(metaclass=ProductInputsServiceClientMeta):
             name (str):
                 Required. The name of the product input resource to
                 delete. Format:
-                accounts/{account}/productInputs/{product} where the
+                ``accounts/{account}/productInputs/{product}`` where the
                 last section ``product`` consists of 4 parts:
-                channel~content_language~feed_label~offer_id example for
-                product name is
-                "accounts/123/productInputs/online~en~US~sku123"
+                ``channel~content_language~feed_label~offer_id`` example
+                for product name is
+                ``accounts/123/productInputs/online~en~US~sku123``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
