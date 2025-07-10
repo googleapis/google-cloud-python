@@ -13,18 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.bigquery_datapolicies import gapic_version as package_version
+from google.cloud.bigquery.datapolicies_v2beta1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery_datapolicies_v1beta1.services.data_policy_service.async_client import (
+from .services.data_policy_service import (
     DataPolicyServiceAsyncClient,
-)
-from google.cloud.bigquery_datapolicies_v1beta1.services.data_policy_service.client import (
     DataPolicyServiceClient,
 )
-from google.cloud.bigquery_datapolicies_v1beta1.types.datapolicy import (
+from .types.datapolicy import (
+    AddGranteesRequest,
     CreateDataPolicyRequest,
     DataMaskingPolicy,
     DataPolicy,
@@ -32,18 +31,21 @@ from google.cloud.bigquery_datapolicies_v1beta1.types.datapolicy import (
     GetDataPolicyRequest,
     ListDataPoliciesRequest,
     ListDataPoliciesResponse,
+    RemoveGranteesRequest,
     UpdateDataPolicyRequest,
 )
 
 __all__ = (
-    "DataPolicyServiceClient",
     "DataPolicyServiceAsyncClient",
+    "AddGranteesRequest",
     "CreateDataPolicyRequest",
     "DataMaskingPolicy",
     "DataPolicy",
+    "DataPolicyServiceClient",
     "DeleteDataPolicyRequest",
     "GetDataPolicyRequest",
     "ListDataPoliciesRequest",
     "ListDataPoliciesResponse",
+    "RemoveGranteesRequest",
     "UpdateDataPolicyRequest",
 )

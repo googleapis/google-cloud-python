@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of BigQuery Data Policy.
+This package includes clients for multiple versions of .
 By default, you will get version ``bigquery_datapolicies_v1``.
 
 
