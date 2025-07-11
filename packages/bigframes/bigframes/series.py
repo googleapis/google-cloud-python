@@ -257,6 +257,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             map(lambda x: x.squeeze(axis=1), self._block.to_pandas_batches())
         )
 
+    def __contains__(self, key) -> bool:
+        return key in self.index
+
     def copy(self) -> Series:
         return Series(self._block)
 

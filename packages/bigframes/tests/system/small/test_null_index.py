@@ -396,3 +396,7 @@ def test_null_index_index_property(scalars_df_null_index):
 def test_null_index_transpose(scalars_df_null_index):
     with pytest.raises(bigframes.exceptions.NullIndexError):
         _ = scalars_df_null_index.T
+
+
+def test_null_index_contains(scalars_df_null_index):
+    assert 3 not in scalars_df_null_index

@@ -16,8 +16,9 @@
 
 from __future__ import annotations
 
+import functools
 import typing
-from typing import Hashable, Literal, Optional, overload, Sequence, Union
+from typing import cast, Hashable, Literal, Optional, overload, Sequence, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.indexes.base as vendored_pandas_index
@@ -528,6 +529,29 @@ class Index(vendored_pandas_index.Index):
                 ex.free_var("arg")
             )
         ).fillna(value=False)
+
+    def __contains__(self, key) -> bool:
+        hash(key)  # to throw for unhashable values
+        if self.nlevels == 0:
+            return False
+
+        if (not isinstance(key, tuple)) or (self.nlevels == 1):
+            key = (key,)
+
+        match_exprs = []
+        for key_part, index_col, dtype in zip(
+            key, self._block.index_columns, self._block.index.dtypes
+        ):
+            key_type = bigframes.dtypes.is_compatible(key_part, dtype)
+            if key_type is None:
+                return False
+            key_expr = ex.const(key_part, key_type)
+            match_expr = ops.eq_null_match_op.as_expr(ex.deref(index_col), key_expr)
+            match_exprs.append(match_expr)
+
+        match_expr_final = functools.reduce(ops.and_op.as_expr, match_exprs)
+        block, match_col = self._block.project_expr(match_expr_final)
+        return cast(bool, block.get_stat(match_col, agg_ops.AnyOp()))
 
     def _apply_unary_expr(
         self,

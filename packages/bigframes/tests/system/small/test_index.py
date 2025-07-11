@@ -398,6 +398,18 @@ def test_index_drop_duplicates(scalars_df_index, scalars_pandas_df_index, keep):
     )
 
 
+@pytest.mark.parametrize(
+    ("key",),
+    [("hello",), (2,), (123123321,), (2.0,), (False,), ((2,),), (pd.NA,)],
+)
+def test_index_contains(scalars_df_index, scalars_pandas_df_index, key):
+    col_name = "int64_col"
+    bf_result = key in scalars_df_index.set_index(col_name).index
+    pd_result = key in scalars_pandas_df_index.set_index(col_name).index
+
+    assert bf_result == pd_result
+
+
 def test_index_isin_list(scalars_df_index, scalars_pandas_df_index):
     col_name = "int64_col"
     bf_series = (

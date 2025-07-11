@@ -4451,6 +4451,22 @@ def test_df___array__(scalars_df_index, scalars_pandas_df_index):
     )
 
 
+@pytest.mark.parametrize(
+    ("key",),
+    [
+        ("hello",),
+        (2,),
+        ("int64_col",),
+        (None,),
+    ],
+)
+def test_df_contains(scalars_df_index, scalars_pandas_df_index, key):
+    bf_result = key in scalars_df_index
+    pd_result = key in scalars_pandas_df_index
+
+    assert bf_result == pd_result
+
+
 def test_df_getattr_attribute_error_when_pandas_has(scalars_df_index):
     # swapaxes is implemented in pandas but not in bigframes
     with pytest.raises(AttributeError):

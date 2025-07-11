@@ -1388,3 +1388,26 @@ def test_column_multi_index_w_na_stack(scalars_df_index, scalars_pandas_df_index
     # Pandas produces pd.NA, where bq dataframes produces NaN
     pd_result["c"] = pd_result["c"].replace(pandas.NA, np.nan)
     pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("key",),
+    [
+        ("hello",),
+        (2,),
+        (123123321,),
+        (2.0,),
+        (pandas.NA,),
+        (False,),
+        ((2,),),
+        ((2, False),),
+        ((2.0, False),),
+        ((2, True),),
+    ],
+)
+def test_multi_index_contains(scalars_df_index, scalars_pandas_df_index, key):
+    col_name = ["int64_col", "bool_col"]
+    bf_result = key in scalars_df_index.set_index(col_name).index
+    pd_result = key in scalars_pandas_df_index.set_index(col_name).index
+
+    assert bf_result == pd_result
