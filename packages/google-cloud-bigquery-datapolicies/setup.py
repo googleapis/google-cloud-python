@@ -29,7 +29,7 @@ description = "Google Cloud Bigquery Datapolicies API client library"
 version = None
 
 with open(
-    os.path.join(package_root, "google/cloud/bigquery_datapolicies/gapic_version.py")
+    os.path.join(package_root, "google/cloud/bigquery/datapolicies/gapic_version.py")
 ) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
     assert len(version_candidates) == 1
