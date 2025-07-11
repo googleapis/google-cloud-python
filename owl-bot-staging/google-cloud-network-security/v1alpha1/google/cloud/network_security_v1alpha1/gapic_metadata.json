@@ -1,0 +1,103 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.network_security_v1alpha1",
+  "protoPackage": "google.cloud.networksecurity.v1alpha1",
+  "schema": "1.0",
+  "services": {
+    "NetworkSecurity": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "NetworkSecurityClient",
+          "rpcs": {
+            "CreateClientTlsPolicy": {
+              "methods": [
+                "create_client_tls_policy"
+              ]
+            },
+            "DeleteClientTlsPolicy": {
+              "methods": [
+                "delete_client_tls_policy"
+              ]
+            },
+            "GetClientTlsPolicy": {
+              "methods": [
+                "get_client_tls_policy"
+              ]
+            },
+            "ListClientTlsPolicies": {
+              "methods": [
+                "list_client_tls_policies"
+              ]
+            },
+            "UpdateClientTlsPolicy": {
+              "methods": [
+                "update_client_tls_policy"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "NetworkSecurityAsyncClient",
+          "rpcs": {
+            "CreateClientTlsPolicy": {
+              "methods": [
+                "create_client_tls_policy"
+              ]
+            },
+            "DeleteClientTlsPolicy": {
+              "methods": [
+                "delete_client_tls_policy"
+              ]
+            },
+            "GetClientTlsPolicy": {
+              "methods": [
+                "get_client_tls_policy"
+              ]
+            },
+            "ListClientTlsPolicies": {
+              "methods": [
+                "list_client_tls_policies"
+              ]
+            },
+            "UpdateClientTlsPolicy": {
+              "methods": [
+                "update_client_tls_policy"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "NetworkSecurityClient",
+          "rpcs": {
+            "CreateClientTlsPolicy": {
+              "methods": [
+                "create_client_tls_policy"
+              ]
+            },
+            "DeleteClientTlsPolicy": {
+              "methods": [
+                "delete_client_tls_policy"
+              ]
+            },
+            "GetClientTlsPolicy": {
+              "methods": [
+                "get_client_tls_policy"
+              ]
+            },
+            "ListClientTlsPolicies": {
+              "methods": [
+                "list_client_tls_policies"
+              ]
+            },
+            "UpdateClientTlsPolicy": {
+              "methods": [
+                "update_client_tls_policy"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
