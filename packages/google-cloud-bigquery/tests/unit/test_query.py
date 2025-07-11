@@ -2000,6 +2000,22 @@ class Test_QueryResults(unittest.TestCase):
         query = self._make_one(resource)
         self.assertEqual(query.total_bytes_processed, 123456)
 
+    def test_slot_millis_missing(self):
+        query = self._make_one(self._make_resource())
+        self.assertIsNone(query.slot_millis)
+
+    def test_slot_millis_present_integer(self):
+        resource = self._make_resource()
+        resource["totalSlotMs"] = 123456
+        query = self._make_one(resource)
+        self.assertEqual(query.slot_millis, 123456)
+
+    def test_slot_millis_present_string(self):
+        resource = self._make_resource()
+        resource["totalSlotMs"] = "123456"
+        query = self._make_one(resource)
+        self.assertEqual(query.slot_millis, 123456)
+
     def test_num_dml_affected_rows_missing(self):
         query = self._make_one(self._make_resource())
         self.assertIsNone(query.num_dml_affected_rows)

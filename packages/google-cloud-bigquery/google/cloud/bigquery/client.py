@@ -4144,6 +4144,7 @@ class Client(ClientWithProject):
         num_dml_affected_rows: Optional[int] = None,
         query: Optional[str] = None,
         total_bytes_processed: Optional[int] = None,
+        slot_millis: Optional[int] = None,
     ) -> RowIterator:
         """List the rows of a completed query.
         See
@@ -4195,6 +4196,8 @@ class Client(ClientWithProject):
                 The query text used.
             total_bytes_processed (Optional[int]):
                 total bytes processed from job statistics, if present.
+            slot_millis (Optional[int]):
+                Number of slot ms the user is actually billed for.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -4234,6 +4237,7 @@ class Client(ClientWithProject):
             num_dml_affected_rows=num_dml_affected_rows,
             query=query,
             total_bytes_processed=total_bytes_processed,
+            slot_millis=slot_millis,
         )
         return row_iterator
 

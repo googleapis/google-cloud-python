@@ -560,6 +560,7 @@ def query_and_wait(
             num_dml_affected_rows=query_results.num_dml_affected_rows,
             query=query,
             total_bytes_processed=query_results.total_bytes_processed,
+            slot_millis=query_results.slot_millis,
         )
 
     if job_retry is not None:

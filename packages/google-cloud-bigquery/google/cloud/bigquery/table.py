@@ -1812,6 +1812,7 @@ class RowIterator(HTTPIterator):
         num_dml_affected_rows: Optional[int] = None,
         query: Optional[str] = None,
         total_bytes_processed: Optional[int] = None,
+        slot_millis: Optional[int] = None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1841,6 +1842,7 @@ class RowIterator(HTTPIterator):
         self._num_dml_affected_rows = num_dml_affected_rows
         self._query = query
         self._total_bytes_processed = total_bytes_processed
+        self._slot_millis = slot_millis
 
     @property
     def _billing_project(self) -> Optional[str]:
@@ -1897,6 +1899,11 @@ class RowIterator(HTTPIterator):
     def total_bytes_processed(self) -> Optional[int]:
         """total bytes processed from job statistics, if present."""
         return self._total_bytes_processed
+
+    @property
+    def slot_millis(self) -> Optional[int]:
+        """Number of slot ms the user is actually billed for."""
+        return self._slot_millis
 
     def _is_almost_completely_cached(self):
         """Check if all results are completely cached.

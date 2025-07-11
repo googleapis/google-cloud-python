@@ -5718,6 +5718,7 @@ class TestClient(unittest.TestCase):
             "rows": [{"f": [{"v": "5552452"}]}],
             "queryId": "job_abcDEF_",
             "totalBytesProcessed": 1234,
+            "totalSlotMs": 5678,
         }
         creds = _make_credentials()
         http = object()
@@ -5735,6 +5736,7 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(rows.location)
         self.assertEqual(rows.query, query)
         self.assertEqual(rows.total_bytes_processed, 1234)
+        self.assertEqual(rows.slot_millis, 5678)
 
         # Verify the request we send is to jobs.query.
         conn.api_request.assert_called_once()

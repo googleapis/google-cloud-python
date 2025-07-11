@@ -1283,6 +1283,20 @@ class _QueryResults(object):
             return int(total_bytes_processed)
 
     @property
+    def slot_millis(self):
+        """Total number of slot ms the user is actually billed for.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.slot_millis
+
+        Returns:
+            Optional[int]: Count generated on the server (None until set by the server).
+        """
+        slot_millis = self._properties.get("totalSlotMs")
+        if slot_millis is not None:
+            return int(slot_millis)
+
+    @property
     def num_dml_affected_rows(self):
         """Total number of rows affected by a DML query.
 
