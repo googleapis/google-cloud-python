@@ -17,6 +17,7 @@ import logging as std_logging
 from collections import OrderedDict
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
+import uuid
 
 from google.cloud.videointelligence_v1p1beta1 import gapic_version as package_version
 

@@ -20,6 +20,7 @@ import logging as std_logging
 import os
 import re
 from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
+import uuid
 import warnings
 
 from google.cloud.videointelligence_v1p1beta1 import gapic_version as package_version
