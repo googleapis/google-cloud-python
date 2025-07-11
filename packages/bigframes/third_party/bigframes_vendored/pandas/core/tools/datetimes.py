@@ -1,17 +1,22 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/tools/datetimes.py
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import List, Mapping, Tuple, Union
 
 import pandas as pd
 
-from bigframes import constants, series
+from bigframes import constants, dataframe, series
 
 local_iterables = Union[List, Tuple, pd.Series, pd.DataFrame, Mapping]
 
 
 def to_datetime(
-    arg,
+    arg: Union[
+        Union[int, float, str, datetime, date],
+        local_iterables,
+        series.Series,
+        dataframe.DataFrame,
+    ],
     *,
     utc=False,
     format=None,
@@ -58,7 +63,7 @@ def to_datetime(
         dtype: timestamp[us, tz=UTC][pyarrow]
 
     Args:
-        arg (int, float, str, datetime, list, tuple, 1-d array, Series):
+        arg (int, float, str, datetime, date, list, tuple, 1-d array, Series):
             The object to convert to a datetime.
         utc (bool, default False):
             Control timezone-related parsing, localization and conversion. If True, the

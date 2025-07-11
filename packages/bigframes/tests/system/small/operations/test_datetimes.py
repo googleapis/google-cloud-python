@@ -13,12 +13,15 @@
 # limitations under the License.
 
 import datetime
+import typing
 
 import numpy
+from packaging import version
 from pandas import testing
 import pandas as pd
 import pytest
 
+import bigframes.pandas as bpd
 import bigframes.series
 from bigframes.testing.utils import assert_series_equal
 
@@ -548,3 +551,23 @@ def test_timedelta_dt_accessors_on_wrong_type_raise_exception(scalars_dfs, acces
 
     with pytest.raises(TypeError):
         access(bf_df["timestamp_col"])
+
+
+@pytest.mark.parametrize(
+    "col",
+    # TODO(b/431276706) test timestamp_col too.
+    ["date_col", "datetime_col"],
+)
+def test_to_datetime(scalars_dfs, col):
+    if version.Version(pd.__version__) <= version.Version("2.1.0"):
+        pytest.skip("timezone conversion bug")
+    bf_df, pd_df = scalars_dfs
+
+    actual_result = typing.cast(
+        bigframes.series.Series, bpd.to_datetime(bf_df[col])
+    ).to_pandas()
+
+    expected_result = pd.Series(pd.to_datetime(pd_df[col]))
+    testing.assert_series_equal(
+        actual_result, expected_result, check_dtype=False, check_index_type=False
+    )

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from collections.abc import Mapping
-from datetime import datetime
+from datetime import date, datetime
 from typing import Optional, Union
 
 import bigframes_vendored.constants as constants
@@ -28,7 +28,7 @@ import bigframes.series
 
 def to_datetime(
     arg: Union[
-        Union[int, float, str, datetime],
+        Union[int, float, str, datetime, date],
         vendored_pandas_datetimes.local_iterables,
         bigframes.series.Series,
         bigframes.dataframe.DataFrame,
@@ -38,7 +38,7 @@ def to_datetime(
     format: Optional[str] = None,
     unit: Optional[str] = None,
 ) -> Union[pd.Timestamp, datetime, bigframes.series.Series]:
-    if isinstance(arg, (int, float, str, datetime)):
+    if isinstance(arg, (int, float, str, datetime, date)):
         return pd.to_datetime(
             arg,
             utc=utc,
@@ -62,7 +62,11 @@ def to_datetime(
             f"Unit parameter is not supported for non-numerical input types. {constants.FEEDBACK_LINK}"
         )
 
-    if arg.dtype in (bigframes.dtypes.TIMESTAMP_DTYPE, bigframes.dtypes.DATETIME_DTYPE):
+    if arg.dtype in (
+        bigframes.dtypes.TIMESTAMP_DTYPE,
+        bigframes.dtypes.DATETIME_DTYPE,
+        bigframes.dtypes.DATE_DTYPE,
+    ):
         to_type = (
             bigframes.dtypes.TIMESTAMP_DTYPE if utc else bigframes.dtypes.DATETIME_DTYPE
         )
