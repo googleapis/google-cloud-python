@@ -20,6 +20,11 @@
                 "retrieve_big_query_table_context"
               ]
             },
+            "RetrieveBigQueryTableContexts": {
+              "methods": [
+                "retrieve_big_query_table_contexts"
+              ]
+            },
             "RetrieveBigQueryTableContextsFromRecentTables": {
               "methods": [
                 "retrieve_big_query_table_contexts_from_recent_tables"
@@ -28,6 +33,11 @@
             "RetrieveBigQueryTableSuggestedDescriptions": {
               "methods": [
                 "retrieve_big_query_table_suggested_descriptions"
+              ]
+            },
+            "RetrieveBigQueryTableSuggestedExamples": {
+              "methods": [
+                "retrieve_big_query_table_suggested_examples"
               ]
             }
           }
@@ -45,6 +55,11 @@
                 "retrieve_big_query_table_context"
               ]
             },
+            "RetrieveBigQueryTableContexts": {
+              "methods": [
+                "retrieve_big_query_table_contexts"
+              ]
+            },
             "RetrieveBigQueryTableContextsFromRecentTables": {
               "methods": [
                 "retrieve_big_query_table_contexts_from_recent_tables"
@@ -53,6 +68,11 @@
             "RetrieveBigQueryTableSuggestedDescriptions": {
               "methods": [
                 "retrieve_big_query_table_suggested_descriptions"
+              ]
+            },
+            "RetrieveBigQueryTableSuggestedExamples": {
+              "methods": [
+                "retrieve_big_query_table_suggested_examples"
               ]
             }
           }
@@ -70,6 +90,11 @@
                 "retrieve_big_query_table_context"
               ]
             },
+            "RetrieveBigQueryTableContexts": {
+              "methods": [
+                "retrieve_big_query_table_contexts"
+              ]
+            },
             "RetrieveBigQueryTableContextsFromRecentTables": {
               "methods": [
                 "retrieve_big_query_table_contexts_from_recent_tables"
@@ -78,6 +103,11 @@
             "RetrieveBigQueryTableSuggestedDescriptions": {
               "methods": [
                 "retrieve_big_query_table_suggested_descriptions"
+              ]
+            },
+            "RetrieveBigQueryTableSuggestedExamples": {
+              "methods": [
+                "retrieve_big_query_table_suggested_examples"
               ]
             }
           }
@@ -104,9 +134,24 @@
                 "get_data_agent"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "ListAccessibleDataAgents": {
+              "methods": [
+                "list_accessible_data_agents"
+              ]
+            },
             "ListDataAgents": {
               "methods": [
                 "list_data_agents"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
               ]
             },
             "UpdateDataAgent": {
@@ -134,9 +179,24 @@
                 "get_data_agent"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "ListAccessibleDataAgents": {
+              "methods": [
+                "list_accessible_data_agents"
+              ]
+            },
             "ListDataAgents": {
               "methods": [
                 "list_data_agents"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
               ]
             },
             "UpdateDataAgent": {
@@ -164,9 +224,24 @@
                 "get_data_agent"
               ]
             },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "ListAccessibleDataAgents": {
+              "methods": [
+                "list_accessible_data_agents"
+              ]
+            },
             "ListDataAgents": {
               "methods": [
                 "list_data_agents"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
               ]
             },
             "UpdateDataAgent": {

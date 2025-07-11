@@ -24,6 +24,8 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
@@ -371,6 +373,38 @@ class DataAgentServiceGrpcTransport(DataAgentServiceTransport):
         return self._stubs["list_data_agents"]
 
     @property
+    def list_accessible_data_agents(
+        self,
+    ) -> Callable[
+        [data_agent_service.ListAccessibleDataAgentsRequest],
+        data_agent_service.ListAccessibleDataAgentsResponse,
+    ]:
+        r"""Return a callable for the list accessible data agents method over gRPC.
+
+        Lists DataAgents that are accessible to the caller in
+        a given project and location.
+
+        Returns:
+            Callable[[~.ListAccessibleDataAgentsRequest],
+                    ~.ListAccessibleDataAgentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_accessible_data_agents" not in self._stubs:
+            self._stubs[
+                "list_accessible_data_agents"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/ListAccessibleDataAgents",
+                request_serializer=data_agent_service.ListAccessibleDataAgentsRequest.serialize,
+                response_deserializer=data_agent_service.ListAccessibleDataAgentsResponse.deserialize,
+            )
+        return self._stubs["list_accessible_data_agents"]
+
+    @property
     def get_data_agent(
         self,
     ) -> Callable[[data_agent_service.GetDataAgentRequest], data_agent.DataAgent]:
@@ -480,6 +514,58 @@ class DataAgentServiceGrpcTransport(DataAgentServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_data_agent"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+
+        Gets the IAM policy for DataAgent
+
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+
+        Sets the IAM policy for a DataAgent.
+
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
 
     def close(self):
         self._logged_channel.close()

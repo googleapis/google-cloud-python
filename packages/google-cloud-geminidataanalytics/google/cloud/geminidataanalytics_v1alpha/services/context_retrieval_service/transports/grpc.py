@@ -360,6 +360,40 @@ class ContextRetrievalServiceGrpcTransport(ContextRetrievalServiceTransport):
         return self._stubs["retrieve_big_query_table_context"]
 
     @property
+    def retrieve_big_query_table_contexts(
+        self,
+    ) -> Callable[
+        [context_retrieval_service.RetrieveBigQueryTableContextsRequest],
+        context_retrieval_service.RetrieveBigQueryTableContextsResponse,
+    ]:
+        r"""Return a callable for the retrieve big query table
+        contexts method over gRPC.
+
+        Retrieves BigQuery table contextual data for provided
+        table references. Contextual data includes table schema
+        information as well as sample values.
+
+        Returns:
+            Callable[[~.RetrieveBigQueryTableContextsRequest],
+                    ~.RetrieveBigQueryTableContextsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "retrieve_big_query_table_contexts" not in self._stubs:
+            self._stubs[
+                "retrieve_big_query_table_contexts"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1alpha.ContextRetrievalService/RetrieveBigQueryTableContexts",
+                request_serializer=context_retrieval_service.RetrieveBigQueryTableContextsRequest.serialize,
+                response_deserializer=context_retrieval_service.RetrieveBigQueryTableContextsResponse.deserialize,
+            )
+        return self._stubs["retrieve_big_query_table_contexts"]
+
+    @property
     def retrieve_big_query_table_contexts_from_recent_tables(
         self,
     ) -> Callable[
@@ -427,6 +461,39 @@ class ContextRetrievalServiceGrpcTransport(ContextRetrievalServiceTransport):
                 response_deserializer=context_retrieval_service.RetrieveBigQueryTableSuggestedDescriptionsResponse.deserialize,
             )
         return self._stubs["retrieve_big_query_table_suggested_descriptions"]
+
+    @property
+    def retrieve_big_query_table_suggested_examples(
+        self,
+    ) -> Callable[
+        [context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesRequest],
+        context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesResponse,
+    ]:
+        r"""Return a callable for the retrieve big query table
+        suggested examples method over gRPC.
+
+        Retrieves BigQuery table schema with suggested NL-SQL
+        examples.
+
+        Returns:
+            Callable[[~.RetrieveBigQueryTableSuggestedExamplesRequest],
+                    ~.RetrieveBigQueryTableSuggestedExamplesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "retrieve_big_query_table_suggested_examples" not in self._stubs:
+            self._stubs[
+                "retrieve_big_query_table_suggested_examples"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1alpha.ContextRetrievalService/RetrieveBigQueryTableSuggestedExamples",
+                request_serializer=context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesRequest.serialize,
+                response_deserializer=context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesResponse.deserialize,
+            )
+        return self._stubs["retrieve_big_query_table_suggested_examples"]
 
     @property
     def retrieve_big_query_recent_relevant_tables(

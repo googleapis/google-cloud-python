@@ -45,13 +45,18 @@ class geminidataanalyticsCallTransformer(cst.CSTTransformer):
         'delete_data_agent': ('name', 'request_id', ),
         'get_conversation': ('name', ),
         'get_data_agent': ('name', ),
+        'get_iam_policy': ('resource', 'options', ),
+        'list_accessible_data_agents': ('parent', 'page_size', 'page_token', 'filter', 'order_by', 'show_deleted', 'creator_filter', ),
         'list_conversations': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_data_agents': ('parent', 'page_size', 'page_token', 'filter', 'order_by', 'show_deleted', ),
         'list_messages': ('parent', 'page_size', 'page_token', 'filter', ),
         'retrieve_big_query_recent_relevant_tables': ('parent', 'query', ),
         'retrieve_big_query_table_context': ('project', 'parent', 'query', 'direct_lookup', ),
+        'retrieve_big_query_table_contexts': ('parent', 'query', 'direct_lookups', ),
         'retrieve_big_query_table_contexts_from_recent_tables': ('parent', 'query', ),
         'retrieve_big_query_table_suggested_descriptions': ('parent', 'direct_lookup', ),
+        'retrieve_big_query_table_suggested_examples': ('parent', 'direct_lookup', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'update_data_agent': ('data_agent', 'update_mask', 'request_id', ),
     }
 

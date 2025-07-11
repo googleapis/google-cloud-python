@@ -26,10 +26,14 @@ __protobuf__ = proto.module(
     manifest={
         "RetrieveBigQueryTableContextRequest",
         "RetrieveBigQueryTableContextResponse",
+        "RetrieveBigQueryTableContextsRequest",
+        "RetrieveBigQueryTableContextsResponse",
         "RetrieveBigQueryTableContextsFromRecentTablesRequest",
         "RetrieveBigQueryTableContextsFromRecentTablesResponse",
         "RetrieveBigQueryTableSuggestedDescriptionsRequest",
         "RetrieveBigQueryTableSuggestedDescriptionsResponse",
+        "RetrieveBigQueryTableSuggestedExamplesRequest",
+        "RetrieveBigQueryTableSuggestedExamplesResponse",
         "RetrieveBigQueryRecentRelevantTablesRequest",
         "RetrieveBigQueryRecentRelevantTablesResponse",
         "DirectLookup",
@@ -44,13 +48,13 @@ class RetrieveBigQueryTableContextRequest(proto.Message):
 
     Attributes:
         project (str):
-
+            Required.
         parent (str):
             Required. Parent value for
             RetrieveBigQueryTableContextRequest. Pattern:
-            projects/{project}/locations/{location} For
-            location, use "global" for now. Regional
-            location value will be supported in the future.
+            ``projects/{project}/locations/{location}`` For location,
+            use "global" for now. Regional location value will be
+            supported in the future.
         query (str):
             Optional. User query in natural language.
         direct_lookup (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.DirectLookup]):
@@ -97,7 +101,7 @@ class RetrieveBigQueryTableContextResponse(proto.Message):
                 The fully qualified resource name of the candidate in its
                 source system, if applicable. E.g. for BigQuery tables, the
                 format is:
-                //bigquery.googleapis.com/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}
+                ``bigquery.googleapis.com/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}``
             content (str):
                 Content in string format.
         """
@@ -123,6 +127,55 @@ class RetrieveBigQueryTableContextResponse(proto.Message):
     )
 
 
+class RetrieveBigQueryTableContextsRequest(proto.Message):
+    r"""Request for retrieving BigQuery table contextual data via
+    direct lookup.
+
+    Attributes:
+        parent (str):
+            Required. Parent value for
+            RetrieveBigQueryTableContextRequest. Pattern:
+            ``projects/{project}/locations/{location}`` For location,
+            use "global" for now. Regional location value will be
+            supported in the future.
+        query (str):
+            Optional. User query in natural language.
+        direct_lookups (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.DirectLookup]):
+            Optional. A list of direct lookup parameters.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    direct_lookups: MutableSequence["DirectLookup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="DirectLookup",
+    )
+
+
+class RetrieveBigQueryTableContextsResponse(proto.Message):
+    r"""Response for retrieving BigQuery table contextual data via
+    direct lookup.
+
+    Attributes:
+        table_candidates (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.TableCandidate]):
+            List of retrieved candidates with their
+            bundled metadata.
+    """
+
+    table_candidates: MutableSequence["TableCandidate"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TableCandidate",
+    )
+
+
 class RetrieveBigQueryTableContextsFromRecentTablesRequest(proto.Message):
     r"""Request for retrieving BigQuery table contextual data from
     recently accessed tables. Response is sorted by semantic
@@ -132,11 +185,9 @@ class RetrieveBigQueryTableContextsFromRecentTablesRequest(proto.Message):
         parent (str):
             Required. Parent value for
             RetrieveBigQueryTableContextsFromRecentTablesRequest.
-            Pattern:
-
-            projects/{project}/locations/{location} For
-            location, use "global" for now. Regional
-            location value will be supported in the future.
+            Pattern: ``projects/{project}/locations/{location}`` For
+            location, use "global" for now. Regional location value will
+            be supported in the future.
         query (str):
             Optional. User query in natural language.
     """
@@ -177,12 +228,10 @@ class RetrieveBigQueryTableSuggestedDescriptionsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Parent value for
-            RetrieveBigQueryTableSuggestedDescriptionsRequest.
-            Pattern:
-
-            projects/{project}/locations/{location} For
-            location, use "global" for now. Regional
-            location value will be supported in the future.
+            RetrieveBigQueryTableSuggestedDescriptionsRequest. Pattern:
+            ``projects/{project}/locations/{location}`` For location,
+            use "global" for now. Regional location value will be
+            supported in the future.
         direct_lookup (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.DirectLookup]):
             Optional. A list of direct lookup parameters.
     """
@@ -216,6 +265,74 @@ class RetrieveBigQueryTableSuggestedDescriptionsResponse(proto.Message):
     )
 
 
+class RetrieveBigQueryTableSuggestedExamplesRequest(proto.Message):
+    r"""Request for retrieving BigQuery table schema with suggested
+    NL-SQL examples.
+
+    Attributes:
+        parent (str):
+            Required. Parent value for
+            RetrieveBigQueryTableSuggestedExamplesRequest. Pattern:
+            ``projects/{project}/locations/{location}`` For location,
+            use "global" for now. Regional location value will be
+            supported in the future.
+        direct_lookup (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.DirectLookup]):
+            Optional. A list of direct lookup parameters.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    direct_lookup: MutableSequence["DirectLookup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="DirectLookup",
+    )
+
+
+class RetrieveBigQueryTableSuggestedExamplesResponse(proto.Message):
+    r"""Request for retrieving BigQuery table schema with suggested
+    NL-SQL examples.
+
+    Attributes:
+        example_suggestions (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.RetrieveBigQueryTableSuggestedExamplesResponse.ExampleSuggestion]):
+            List of suggested examples.
+    """
+
+    class ExampleSuggestion(proto.Message):
+        r"""A suggested BigQuery NL-SQL example for the given table.
+
+        Attributes:
+            nl_query (str):
+                The natural language query.
+            sql (str):
+                The SQL answer to the query.
+            linked_bigquery_tables (MutableSequence[str]):
+                The linked table resources for the suggested
+                example.
+        """
+
+        nl_query: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        sql: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        linked_bigquery_tables: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+
+    example_suggestions: MutableSequence[ExampleSuggestion] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=ExampleSuggestion,
+    )
+
+
 class RetrieveBigQueryRecentRelevantTablesRequest(proto.Message):
     r"""Request for retrieving BigQuery table references from
     recently accessed tables. Response is sorted by semantic
@@ -225,9 +342,9 @@ class RetrieveBigQueryRecentRelevantTablesRequest(proto.Message):
         parent (str):
             Required. Parent value for
             RetrieveBigQueryRecentTablesRequest. Pattern:
-            projects/{project}/locations/{location} For
-            location, use "global" for now. Regional
-            location value will be supported in the future.
+            ``projects/{project}/locations/{location}`` For location,
+            use "global" for now. Regional location value will be
+            supported in the future.
         query (str):
             Optional. User query in natural language.
     """
@@ -285,7 +402,7 @@ class TableCandidate(proto.Message):
             The fully qualified resource name of the candidate in its
             source system, if applicable. E.g. for BigQuery tables, the
             format is:
-            //bigquery.googleapis.com/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}.
+            ``bigquery.googleapis.com/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}``.
         icl_string (str):
             In-context-learning string. For example,
             could be in DDL format.

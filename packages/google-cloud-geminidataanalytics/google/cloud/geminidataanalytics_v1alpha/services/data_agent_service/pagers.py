@@ -198,3 +198,163 @@ class ListDataAgentsAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAccessibleDataAgentsPager:
+    """A pager for iterating through ``list_accessible_data_agents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.geminidataanalytics_v1alpha.types.ListAccessibleDataAgentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``data_agents`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAccessibleDataAgents`` requests and continue to iterate
+    through the ``data_agents`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.geminidataanalytics_v1alpha.types.ListAccessibleDataAgentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., data_agent_service.ListAccessibleDataAgentsResponse],
+        request: data_agent_service.ListAccessibleDataAgentsRequest,
+        response: data_agent_service.ListAccessibleDataAgentsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.geminidataanalytics_v1alpha.types.ListAccessibleDataAgentsRequest):
+                The initial request object.
+            response (google.cloud.geminidataanalytics_v1alpha.types.ListAccessibleDataAgentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = data_agent_service.ListAccessibleDataAgentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[data_agent_service.ListAccessibleDataAgentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[data_agent.DataAgent]:
+        for page in self.pages:
+            yield from page.data_agents
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAccessibleDataAgentsAsyncPager:
+    """A pager for iterating through ``list_accessible_data_agents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.geminidataanalytics_v1alpha.types.ListAccessibleDataAgentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``data_agents`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAccessibleDataAgents`` requests and continue to iterate
+    through the ``data_agents`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.geminidataanalytics_v1alpha.types.ListAccessibleDataAgentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[data_agent_service.ListAccessibleDataAgentsResponse]
+        ],
+        request: data_agent_service.ListAccessibleDataAgentsRequest,
+        response: data_agent_service.ListAccessibleDataAgentsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.geminidataanalytics_v1alpha.types.ListAccessibleDataAgentsRequest):
+                The initial request object.
+            response (google.cloud.geminidataanalytics_v1alpha.types.ListAccessibleDataAgentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = data_agent_service.ListAccessibleDataAgentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[data_agent_service.ListAccessibleDataAgentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[data_agent.DataAgent]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.data_agents:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
