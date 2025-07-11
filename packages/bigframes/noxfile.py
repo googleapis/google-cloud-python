@@ -431,6 +431,8 @@ def doctest(session: nox.sessions.Session):
             "bigframes/core/compile/polars",
             "--ignore",
             "bigframes/testing",
+            "--ignore",
+            "bigframes/display/anywidget.py",
         ),
         test_folder="bigframes",
         check_cov=True,

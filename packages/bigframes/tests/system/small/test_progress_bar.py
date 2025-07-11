@@ -174,7 +174,7 @@ def test_repr_anywidget_dataframe(penguins_df_default_index: bf.dataframe.DataFr
         assert EXPECTED_DRY_RUN_MESSAGE in actual_repr
 
 
-def test_repr_anywidget_idex(penguins_df_default_index: bf.dataframe.DataFrame):
+def test_repr_anywidget_index(penguins_df_default_index: bf.dataframe.DataFrame):
     pytest.importorskip("anywidget")
     with bf.option_context("display.repr_mode", "anywidget"):
         index = penguins_df_default_index.index

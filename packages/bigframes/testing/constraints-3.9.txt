@@ -33,3 +33,6 @@ pytz==2022.7
 toolz==0.11
 typing-extensions==4.5.0
 rich==12.4.4
+# For anywidget mode
+anywidget>=0.9.18
+traitlets==5.0.0

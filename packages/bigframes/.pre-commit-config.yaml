@@ -42,3 +42,8 @@ repos:
         additional_dependencies: [types-requests, types-tabulate, types-PyYAML, pandas-stubs<=2.2.3.241126]
         exclude: "^third_party"
         args: ["--check-untyped-defs", "--explicit-package-bases", "--ignore-missing-imports"]
+-   repo: https://github.com/biomejs/pre-commit
+    rev: v2.0.2
+    hooks:
+    -   id: biome-check
+        files: '\.js$'

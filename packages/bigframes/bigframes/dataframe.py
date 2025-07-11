@@ -779,22 +779,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if opts.repr_mode == "deferred":
             return formatter.repr_query_job(self._compute_dry_run())
 
-        if opts.repr_mode == "anywidget":
-            import anywidget  # type: ignore
-
-            # create an iterator for the data batches
-            batches = self.to_pandas_batches()
-
-            # get the first page result
-            try:
-                first_page = next(iter(batches))
-            except StopIteration:
-                first_page = pandas.DataFrame(columns=self.columns)
-
-            # Instantiate and return the widget. The widget's frontend will
-            # handle the display of the table and pagination
-            return anywidget.AnyWidget(dataframe=first_page)
-
+        # Process blob columns first, regardless of display mode
         self._cached()
         df = self.copy()
         if bigframes.options.display.blob_display:
@@ -806,7 +791,31 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             for col in blob_cols:
                 # TODO(garrettwu): Not necessary to get access urls for all the rows. Update when having a to get URLs from local data.
                 df[col] = df[col].blob._get_runtime(mode="R", with_metadata=True)
+        else:
+            blob_cols = []
 
+        if opts.repr_mode == "anywidget":
+            try:
+                from IPython.display import display as ipython_display
+
+                from bigframes import display
+
+                # Always create a new widget instance for each display call
+                # This ensures that each cell gets its own widget and prevents
+                # unintended sharing between cells
+                widget = display.TableWidget(df.copy())
+
+                ipython_display(widget)
+                return ""  # Return empty string since we used display()
+
+            except (AttributeError, ValueError, ImportError):
+                # Fallback if anywidget is not available
+                warnings.warn(
+                    "Anywidget mode is not available. Please `pip install anywidget traitlets` or `pip install 'bigframes[anywidget]'` to use interactive tables. Falling back to deferred mode."
+                )
+                return formatter.repr_query_job(self._compute_dry_run())
+
+        # Continue with regular HTML rendering for non-anywidget modes
         # TODO(swast): pass max_columns and get the true column count back. Maybe
         # get 1 more column than we have requested so that pandas can add the
         # ... for us?
@@ -815,7 +824,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
         self._set_internal_query_job(query_job)
-
         column_count = len(pandas_df.columns)
 
         with display_options.pandas_repr(opts):
