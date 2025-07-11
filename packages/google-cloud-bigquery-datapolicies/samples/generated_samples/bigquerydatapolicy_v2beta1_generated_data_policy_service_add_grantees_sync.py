@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.bigquery import datapolicies_v2beta1
+from google.cloud import bigquery_datapolicies_v2beta1
 
 
 def sample_add_grantees():
     # Create a client
-    client = datapolicies_v2beta1.DataPolicyServiceClient()
+    client = bigquery_datapolicies_v2beta1.DataPolicyServiceClient()
 
     # Initialize request argument(s)
-    request = datapolicies_v2beta1.AddGranteesRequest(
+    request = bigquery_datapolicies_v2beta1.AddGranteesRequest(
         data_policy="data_policy_value",
         grantees=['grantees_value1', 'grantees_value2'],
     )

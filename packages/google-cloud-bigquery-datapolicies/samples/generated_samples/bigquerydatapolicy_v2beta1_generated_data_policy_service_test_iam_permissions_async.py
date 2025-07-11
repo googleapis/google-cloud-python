@@ -31,13 +31,13 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.bigquery import datapolicies_v2beta1
+from google.cloud import bigquery_datapolicies_v2beta1
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
     # Create a client
-    client = datapolicies_v2beta1.DataPolicyServiceAsyncClient()
+    client = bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient()
 
     # Initialize request argument(s)
     request = iam_policy_pb2.TestIamPermissionsRequest(

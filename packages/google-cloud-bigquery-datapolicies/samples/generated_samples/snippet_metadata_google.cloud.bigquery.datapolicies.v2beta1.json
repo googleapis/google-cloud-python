@@ -16,10 +16,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.add_grantees",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.add_grantees",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.AddGrantees",
           "service": {
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.AddGranteesRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.AddGranteesRequest"
           },
           {
             "name": "data_policy",
@@ -54,7 +54,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "add_grantees"
       },
       "description": "Sample for AddGrantees",
@@ -100,10 +100,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.add_grantees",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.add_grantees",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.AddGrantees",
           "service": {
@@ -115,7 +115,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.AddGranteesRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.AddGranteesRequest"
           },
           {
             "name": "data_policy",
@@ -138,7 +138,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "add_grantees"
       },
       "description": "Sample for AddGrantees",
@@ -185,10 +185,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.create_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.create_data_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.CreateDataPolicy",
           "service": {
@@ -200,7 +200,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.CreateDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.CreateDataPolicyRequest"
           },
           {
             "name": "parent",
@@ -208,7 +208,7 @@
           },
           {
             "name": "data_policy",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy"
           },
           {
             "name": "data_policy_id",
@@ -227,7 +227,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "create_data_policy"
       },
       "description": "Sample for CreateDataPolicy",
@@ -273,10 +273,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.create_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.create_data_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.CreateDataPolicy",
           "service": {
@@ -288,7 +288,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.CreateDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.CreateDataPolicyRequest"
           },
           {
             "name": "parent",
@@ -296,7 +296,7 @@
           },
           {
             "name": "data_policy",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy"
           },
           {
             "name": "data_policy_id",
@@ -315,7 +315,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "create_data_policy"
       },
       "description": "Sample for CreateDataPolicy",
@@ -362,10 +362,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.delete_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.delete_data_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.DeleteDataPolicy",
           "service": {
@@ -377,7 +377,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.DeleteDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DeleteDataPolicyRequest"
           },
           {
             "name": "name",
@@ -439,10 +439,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.delete_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.delete_data_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.DeleteDataPolicy",
           "service": {
@@ -454,7 +454,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.DeleteDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DeleteDataPolicyRequest"
           },
           {
             "name": "name",
@@ -517,10 +517,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.get_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.get_data_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.GetDataPolicy",
           "service": {
@@ -532,7 +532,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.GetDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.GetDataPolicyRequest"
           },
           {
             "name": "name",
@@ -551,7 +551,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "get_data_policy"
       },
       "description": "Sample for GetDataPolicy",
@@ -597,10 +597,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.get_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.get_data_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.GetDataPolicy",
           "service": {
@@ -612,7 +612,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.GetDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.GetDataPolicyRequest"
           },
           {
             "name": "name",
@@ -631,7 +631,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "get_data_policy"
       },
       "description": "Sample for GetDataPolicy",
@@ -678,10 +678,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.get_iam_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.get_iam_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.GetIamPolicy",
           "service": {
@@ -754,10 +754,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.get_iam_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.get_iam_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.GetIamPolicy",
           "service": {
@@ -831,10 +831,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.list_data_policies",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.list_data_policies",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.ListDataPolicies",
           "service": {
@@ -846,7 +846,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.ListDataPoliciesRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.ListDataPoliciesRequest"
           },
           {
             "name": "parent",
@@ -865,7 +865,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.services.data_policy_service.pagers.ListDataPoliciesAsyncPager",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.services.data_policy_service.pagers.ListDataPoliciesAsyncPager",
         "shortName": "list_data_policies"
       },
       "description": "Sample for ListDataPolicies",
@@ -911,10 +911,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.list_data_policies",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.list_data_policies",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.ListDataPolicies",
           "service": {
@@ -926,7 +926,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.ListDataPoliciesRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.ListDataPoliciesRequest"
           },
           {
             "name": "parent",
@@ -945,7 +945,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.services.data_policy_service.pagers.ListDataPoliciesPager",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.services.data_policy_service.pagers.ListDataPoliciesPager",
         "shortName": "list_data_policies"
       },
       "description": "Sample for ListDataPolicies",
@@ -992,10 +992,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.remove_grantees",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.remove_grantees",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.RemoveGrantees",
           "service": {
@@ -1007,7 +1007,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.RemoveGranteesRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.RemoveGranteesRequest"
           },
           {
             "name": "data_policy",
@@ -1030,7 +1030,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "remove_grantees"
       },
       "description": "Sample for RemoveGrantees",
@@ -1076,10 +1076,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.remove_grantees",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.remove_grantees",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.RemoveGrantees",
           "service": {
@@ -1091,7 +1091,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.RemoveGranteesRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.RemoveGranteesRequest"
           },
           {
             "name": "data_policy",
@@ -1114,7 +1114,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "remove_grantees"
       },
       "description": "Sample for RemoveGrantees",
@@ -1161,10 +1161,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.set_iam_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.set_iam_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.SetIamPolicy",
           "service": {
@@ -1237,10 +1237,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.set_iam_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.set_iam_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.SetIamPolicy",
           "service": {
@@ -1314,10 +1314,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.test_iam_permissions",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.test_iam_permissions",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.TestIamPermissions",
           "service": {
@@ -1390,10 +1390,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.test_iam_permissions",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.test_iam_permissions",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.TestIamPermissions",
           "service": {
@@ -1467,10 +1467,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceAsyncClient.update_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.update_data_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.UpdateDataPolicy",
           "service": {
@@ -1482,11 +1482,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.UpdateDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.UpdateDataPolicyRequest"
           },
           {
             "name": "data_policy",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy"
           },
           {
             "name": "update_mask",
@@ -1505,7 +1505,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "update_data_policy"
       },
       "description": "Sample for UpdateDataPolicy",
@@ -1551,10 +1551,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery.datapolicies_v2beta1.DataPolicyServiceClient.update_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.update_data_policy",
         "method": {
           "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.UpdateDataPolicy",
           "service": {
@@ -1566,11 +1566,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.UpdateDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.UpdateDataPolicyRequest"
           },
           {
             "name": "data_policy",
-            "type": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy"
           },
           {
             "name": "update_mask",
@@ -1589,7 +1589,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery.datapolicies_v2beta1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "update_data_policy"
       },
       "description": "Sample for UpdateDataPolicy",

@@ -31,19 +31,19 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.bigquery import datapolicies_v2beta1
+from google.cloud import bigquery_datapolicies_v2beta1
 
 
 def sample_update_data_policy():
     # Create a client
-    client = datapolicies_v2beta1.DataPolicyServiceClient()
+    client = bigquery_datapolicies_v2beta1.DataPolicyServiceClient()
 
     # Initialize request argument(s)
-    data_policy = datapolicies_v2beta1.DataPolicy()
+    data_policy = bigquery_datapolicies_v2beta1.DataPolicy()
     data_policy.data_masking_policy.predefined_expression = "DEFAULT_MASKING_VALUE"
     data_policy.data_policy_type = "RAW_DATA_ACCESS_POLICY"
 
-    request = datapolicies_v2beta1.UpdateDataPolicyRequest(
+    request = bigquery_datapolicies_v2beta1.UpdateDataPolicyRequest(
         data_policy=data_policy,
     )
 

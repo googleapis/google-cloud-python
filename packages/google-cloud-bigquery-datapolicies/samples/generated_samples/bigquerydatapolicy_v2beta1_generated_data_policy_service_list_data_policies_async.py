@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud.bigquery import datapolicies_v2beta1
+from google.cloud import bigquery_datapolicies_v2beta1
 
 
 async def sample_list_data_policies():
     # Create a client
-    client = datapolicies_v2beta1.DataPolicyServiceAsyncClient()
+    client = bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = datapolicies_v2beta1.ListDataPoliciesRequest(
+    request = bigquery_datapolicies_v2beta1.ListDataPoliciesRequest(
         parent="parent_value",
     )
 
