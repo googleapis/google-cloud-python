@@ -67,7 +67,7 @@ class ListMessagesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The conversation to list messages under. Format:
-            projects/{project}/locations/{location}/conversations/{conversation_id}
+            ``projects/{project}/locations/{location}/conversations/{conversation_id}``
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. The max page
@@ -188,8 +188,8 @@ class ChatRequest(proto.Message):
             Optional. The GCP project to be used for
             quota and billing.
         parent (str):
-            Required. The parent value for chat request.
-            Pattern: projects/{project}/locations/{location}
+            Required. The parent value for chat request. Pattern:
+            ``projects/{project}/locations/{location}``
         messages (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Message]):
             Required. Content of current conversation.
     """
@@ -287,7 +287,7 @@ class ConversationReference(proto.Message):
     Attributes:
         conversation (str):
             Required. Name of the conversation resource. Format:
-            projects/{project}/locations/{location}/conversations/{conversation_id}
+            ``projects/{project}/locations/{location}/conversations/{conversation_id}``
         data_agent_context (google.cloud.geminidataanalytics_v1alpha.types.DataAgentContext):
             Required. Context for the chat request using
             a data agent.
@@ -416,6 +416,13 @@ class SystemMessage(proto.Message):
             An error message.
 
             This field is a member of `oneof`_ ``kind``.
+        group_id (int):
+            Identifies the group that the event belongs
+            to. Similar events are deemed to be logically
+            relevant to each other and should be shown
+            together in the UI.
+
+            This field is a member of `oneof`_ ``_group_id``.
     """
 
     text: "TextMessage" = proto.Field(
@@ -454,6 +461,11 @@ class SystemMessage(proto.Message):
         oneof="kind",
         message="ErrorMessage",
     )
+    group_id: int = proto.Field(
+        proto.INT32,
+        number=12,
+        optional=True,
+    )
 
 
 class TextMessage(proto.Message):
@@ -461,7 +473,7 @@ class TextMessage(proto.Message):
 
     Attributes:
         parts (MutableSequence[str]):
-            Output only. The parts of the message.
+            Optional. The parts of the message.
     """
 
     parts: MutableSequence[str] = proto.RepeatedField(
@@ -511,8 +523,8 @@ class SchemaQuery(proto.Message):
 
     Attributes:
         question (str):
-            Output only. The question to send to the
-            system for schema resolution.
+            Optional. The question to send to the system
+            for schema resolution.
     """
 
     question: str = proto.Field(
@@ -526,8 +538,8 @@ class SchemaResult(proto.Message):
 
     Attributes:
         datasources (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Datasource]):
-            Output only. The datasources used to resolve
-            the schema query.
+            Optional. The datasources used to resolve the
+            schema query.
     """
 
     datasources: MutableSequence[datasource.Datasource] = proto.RepeatedField(
@@ -683,18 +695,18 @@ class DataQuery(proto.Message):
 
     Attributes:
         question (str):
-            Output only. A natural language question to
+            Optional. A natural language question to
             answer.
         name (str):
-            Output only. A snake-case name for the query that reflects
-            its intent. It is used to name the corresponding data
-            result, so that it can be referenced in later steps.
+            Optional. A snake-case name for the query that reflects its
+            intent. It is used to name the corresponding data result, so
+            that it can be referenced in later steps.
 
-            Example: "total_sales_by_product" Example:
-            "sales_for_product_12345".
+            -  Example: "total_sales_by_product"
+            -  Example: "sales_for_product_12345".
         datasources (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Datasource]):
-            Output only. The datasources available to
-            answer the question.
+            Optional. The datasources available to answer
+            the question.
     """
 
     question: str = proto.Field(
@@ -717,18 +729,18 @@ class DataResult(proto.Message):
 
     Attributes:
         name (str):
-            Output only. A snake-case name for the data result that
+            Optional. A snake-case name for the data result that
             reflects its contents. The name is used to pass the result
             around by reference, and serves as a signal about its
             meaning.
 
-            Example: "total_sales_by_product" Example:
-            "sales_for_product_12345".
+            -  Example: "total_sales_by_product"
+            -  Example: "sales_for_product_12345".
         schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
-            Output only. The schema of the data.
+            Optional. The schema of the data.
         data (MutableSequence[google.protobuf.struct_pb2.Struct]):
-            Output only. The content of the data. Each
-            row is a struct that matches the schema. Simple
+            Optional. The content of the data. Each row
+            is a struct that matches the schema. Simple
             values are represented as strings, while nested
             structures are represented as lists or structs.
     """
@@ -769,13 +781,12 @@ class BigQueryJob(proto.Message):
             See
             https://cloud.google.com/bigquery/docs/reference/rest/v2/JobReference
         destination_table (google.cloud.geminidataanalytics_v1alpha.types.BigQueryTableReference):
-            Output only. A reference to the destination
+            Optional. A reference to the destination
             table of the job's query results.
-
             See
             https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationquery
         schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
-            Output only. The schema of the job's query
+            Optional. The schema of the job's query
             results.
             See
             https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobstatistics2
@@ -846,11 +857,11 @@ class AnalysisQuery(proto.Message):
 
     Attributes:
         question (str):
-            Output only. An analysis question to help
-            answer the user's original question.
+            Optional. An analysis question to help answer
+            the user's original question.
         data_result_names (MutableSequence[str]):
-            Output only. The names of previously
-            retrieved data results to analyze.
+            Optional. The names of previously retrieved
+            data results to analyze.
     """
 
     question: str = proto.Field(
@@ -1008,11 +1019,11 @@ class ChartQuery(proto.Message):
 
     Attributes:
         instructions (str):
-            Output only. Natural language instructions
-            for generating the chart.
+            Optional. Natural language instructions for
+            generating the chart.
         data_result_name (str):
-            Output only. The name of a previously
-            retrieved data result to use in the chart.
+            Optional. The name of a previously retrieved
+            data result to use in the chart.
     """
 
     instructions: str = proto.Field(
@@ -1030,7 +1041,7 @@ class ChartResult(proto.Message):
 
     Attributes:
         vega_config (google.protobuf.struct_pb2.Struct):
-            Output only. A generated Vega chart config.
+            Optional. A generated Vega chart config.
             See https://vega.github.io/vega/docs/config/
         image (google.cloud.geminidataanalytics_v1alpha.types.Blob):
             Optional. A rendering of the chart if this

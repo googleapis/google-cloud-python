@@ -23,6 +23,8 @@ from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
@@ -142,6 +144,11 @@ class DataAgentServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_accessible_data_agents: gapic_v1.method.wrap_method(
+                self.list_accessible_data_agents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_data_agent: gapic_v1.method.wrap_method(
                 self.get_data_agent,
                 default_timeout=None,
@@ -159,6 +166,16 @@ class DataAgentServiceTransport(abc.ABC):
             ),
             self.delete_data_agent: gapic_v1.method.wrap_method(
                 self.delete_data_agent,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -221,6 +238,18 @@ class DataAgentServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_accessible_data_agents(
+        self,
+    ) -> Callable[
+        [data_agent_service.ListAccessibleDataAgentsRequest],
+        Union[
+            data_agent_service.ListAccessibleDataAgentsResponse,
+            Awaitable[data_agent_service.ListAccessibleDataAgentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_data_agent(
         self,
     ) -> Callable[
@@ -253,6 +282,24 @@ class DataAgentServiceTransport(abc.ABC):
     ) -> Callable[
         [data_agent_service.DeleteDataAgentRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
     ]:
         raise NotImplementedError()
 

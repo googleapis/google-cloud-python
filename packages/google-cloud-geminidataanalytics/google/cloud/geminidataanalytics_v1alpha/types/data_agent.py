@@ -45,13 +45,13 @@ class DataAgent(proto.Message):
         name (str):
             Optional. Identifier. The unique resource name of a Agent.
             Format:
-            "projects/{project}/locations/{location}/dataAgents/{data_agent_id}"
+            ``projects/{project}/locations/{location}/dataAgents/{data_agent_id}``
             ``{data_agent}`` is the resource id and should be 63
             characters or less and must match the format described in
             https://google.aip.dev/122#resource-id-segments
 
             Example:
-            "projects/1234567890/locations/us-central1/dataAgents/my-agent".
+            ``projects/1234567890/locations/us-central1/dataAgents/my-agent``.
         display_name (str):
             Optional. User friendly display name.
 

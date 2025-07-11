@@ -28,6 +28,8 @@ __protobuf__ = proto.module(
     manifest={
         "ListDataAgentsRequest",
         "ListDataAgentsResponse",
+        "ListAccessibleDataAgentsRequest",
+        "ListAccessibleDataAgentsResponse",
         "GetDataAgentRequest",
         "CreateDataAgentRequest",
         "UpdateDataAgentRequest",
@@ -100,6 +102,121 @@ class ListDataAgentsResponse(proto.Message):
     Attributes:
         data_agents (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.DataAgent]):
             The list of DataAgent.
+        next_page_token (str):
+            The next page token or empty if none.
+        unreachable (MutableSequence[str]):
+            Unordered list. Locations that could not be
+            reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    data_agents: MutableSequence[gcg_data_agent.DataAgent] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcg_data_agent.DataAgent,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListAccessibleDataAgentsRequest(proto.Message):
+    r"""Message for requesting list of accessible DataAgents.
+
+    Attributes:
+        parent (str):
+            Required. Parent value for
+            ListAccessibleDataAgentsRequest.
+        page_size (int):
+            Optional. Server may return fewer items than
+            requested. If unspecified, server will pick an
+            appropriate default.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListAccessibleDataAgents`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListAccessibleDataAgents`` must match the call that
+            provided the page token. The service may return fewer than
+            this value.
+        filter (str):
+            Optional. Filtering results. See
+            `AIP-160 <https://google.aip.dev/160>`__ for syntax.
+        order_by (str):
+            Optional. User specification for how to order
+            the results.
+        show_deleted (bool):
+            Optional. If true, the list results will
+            include soft-deleted DataAgents. Defaults to
+            false.
+        creator_filter (google.cloud.geminidataanalytics_v1alpha.types.ListAccessibleDataAgentsRequest.CreatorFilter):
+            Optional. Filter for the creator of the
+            agent.
+    """
+
+    class CreatorFilter(proto.Enum):
+        r"""Filter for the creator of the agent.
+
+        Values:
+            CREATOR_FILTER_UNSPECIFIED (0):
+                Default value.
+            NONE (1):
+                No creator-specific filter will be applied.
+                All agents will be returned.
+            CREATOR_ONLY (2):
+                Only agents created by the user calling the
+                API will be returned.
+        """
+        CREATOR_FILTER_UNSPECIFIED = 0
+        NONE = 1
+        CREATOR_ONLY = 2
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    show_deleted: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    creator_filter: CreatorFilter = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=CreatorFilter,
+    )
+
+
+class ListAccessibleDataAgentsResponse(proto.Message):
+    r"""Message for response to listing accessible DataAgents.
+
+    Attributes:
+        data_agents (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.DataAgent]):
+            The list of accessible DataAgent.
         next_page_token (str):
             The next page token or empty if none.
         unreachable (MutableSequence[str]):

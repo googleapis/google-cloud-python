@@ -397,6 +397,100 @@ class ContextRetrievalServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def retrieve_big_query_table_contexts(
+        self,
+        request: Optional[
+            Union[context_retrieval_service.RetrieveBigQueryTableContextsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> context_retrieval_service.RetrieveBigQueryTableContextsResponse:
+        r"""Retrieves BigQuery table contextual data for provided
+        table references. Contextual data includes table schema
+        information as well as sample values.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import geminidataanalytics_v1alpha
+
+            async def sample_retrieve_big_query_table_contexts():
+                # Create a client
+                client = geminidataanalytics_v1alpha.ContextRetrievalServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = geminidataanalytics_v1alpha.RetrieveBigQueryTableContextsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.retrieve_big_query_table_contexts(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.geminidataanalytics_v1alpha.types.RetrieveBigQueryTableContextsRequest, dict]]):
+                The request object. Request for retrieving BigQuery table
+                contextual data via direct lookup.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.geminidataanalytics_v1alpha.types.RetrieveBigQueryTableContextsResponse:
+                Response for retrieving BigQuery
+                table contextual data via direct lookup.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, context_retrieval_service.RetrieveBigQueryTableContextsRequest
+        ):
+            request = context_retrieval_service.RetrieveBigQueryTableContextsRequest(
+                request
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.retrieve_big_query_table_contexts
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def retrieve_big_query_table_contexts_from_recent_tables(
         self,
         request: Optional[
@@ -578,6 +672,105 @@ class ContextRetrievalServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.retrieve_big_query_table_suggested_descriptions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def retrieve_big_query_table_suggested_examples(
+        self,
+        request: Optional[
+            Union[
+                context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesResponse:
+        r"""Retrieves BigQuery table schema with suggested NL-SQL
+        examples.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import geminidataanalytics_v1alpha
+
+            async def sample_retrieve_big_query_table_suggested_examples():
+                # Create a client
+                client = geminidataanalytics_v1alpha.ContextRetrievalServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = geminidataanalytics_v1alpha.RetrieveBigQueryTableSuggestedExamplesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.retrieve_big_query_table_suggested_examples(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.geminidataanalytics_v1alpha.types.RetrieveBigQueryTableSuggestedExamplesRequest, dict]]):
+                The request object. Request for retrieving BigQuery table
+                schema with suggested NL-SQL examples.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.geminidataanalytics_v1alpha.types.RetrieveBigQueryTableSuggestedExamplesResponse:
+                Request for retrieving BigQuery table
+                schema with suggested NL-SQL examples.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesRequest,
+        ):
+            request = (
+                context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesRequest(
+                    request
+                )
+            )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.retrieve_big_query_table_suggested_examples
         ]
 
         # Certain fields should be provided within the metadata header;

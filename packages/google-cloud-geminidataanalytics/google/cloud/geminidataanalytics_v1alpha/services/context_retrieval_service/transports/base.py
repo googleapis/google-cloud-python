@@ -139,6 +139,11 @@ class ContextRetrievalServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.retrieve_big_query_table_contexts: gapic_v1.method.wrap_method(
+                self.retrieve_big_query_table_contexts,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.retrieve_big_query_table_contexts_from_recent_tables: gapic_v1.method.wrap_method(
                 self.retrieve_big_query_table_contexts_from_recent_tables,
                 default_timeout=None,
@@ -146,6 +151,11 @@ class ContextRetrievalServiceTransport(abc.ABC):
             ),
             self.retrieve_big_query_table_suggested_descriptions: gapic_v1.method.wrap_method(
                 self.retrieve_big_query_table_suggested_descriptions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.retrieve_big_query_table_suggested_examples: gapic_v1.method.wrap_method(
+                self.retrieve_big_query_table_suggested_examples,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -208,6 +218,18 @@ class ContextRetrievalServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def retrieve_big_query_table_contexts(
+        self,
+    ) -> Callable[
+        [context_retrieval_service.RetrieveBigQueryTableContextsRequest],
+        Union[
+            context_retrieval_service.RetrieveBigQueryTableContextsResponse,
+            Awaitable[context_retrieval_service.RetrieveBigQueryTableContextsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def retrieve_big_query_table_contexts_from_recent_tables(
         self,
     ) -> Callable[
@@ -232,6 +254,20 @@ class ContextRetrievalServiceTransport(abc.ABC):
             context_retrieval_service.RetrieveBigQueryTableSuggestedDescriptionsResponse,
             Awaitable[
                 context_retrieval_service.RetrieveBigQueryTableSuggestedDescriptionsResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def retrieve_big_query_table_suggested_examples(
+        self,
+    ) -> Callable[
+        [context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesRequest],
+        Union[
+            context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesResponse,
+            Awaitable[
+                context_retrieval_service.RetrieveBigQueryTableSuggestedExamplesResponse
             ],
         ],
     ]:

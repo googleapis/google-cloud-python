@@ -451,9 +451,8 @@ class DataChatServiceAsyncClient:
             request (Optional[Union[google.cloud.geminidataanalytics_v1alpha.types.CreateConversationRequest, dict]]):
                 The request object. Request for creating a conversation.
             parent (:class:`str`):
-                Required. Parent value for
-                CreateConversationRequest. Format:
-                projects/{project}/locations/{location}
+                Required. Parent value for CreateConversationRequest.
+                Format: ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -578,10 +577,8 @@ class DataChatServiceAsyncClient:
                 The request object. Request for getting a conversation
                 based on parent and conversation id.
             name (:class:`str`):
-                Required. Name of the resource.
-                Format:
-
-                projects/{project}/locations/{location}/conversations/{conversation}
+                Required. Name of the resource. Format:
+                ``projects/{project}/locations/{location}/conversations/{conversation}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -690,9 +687,8 @@ class DataChatServiceAsyncClient:
                 The request object. Request for listing conversations
                 based on parent.
             parent (:class:`str`):
-                Required. Parent value for
-                ListConversationsRequest. Format:
-                projects/{project}/locations/{location}
+                Required. Parent value for ListConversationsRequest.
+                Format: ``projects/{project}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -819,7 +815,7 @@ class DataChatServiceAsyncClient:
             parent (:class:`str`):
                 Required. The conversation to list messages under.
                 Format:
-                projects/{project}/locations/{location}/conversations/{conversation_id}
+                ``projects/{project}/locations/{location}/conversations/{conversation_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
