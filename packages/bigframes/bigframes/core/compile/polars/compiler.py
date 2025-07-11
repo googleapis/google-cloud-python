@@ -487,8 +487,14 @@ class PolarsCompiler:
     def compile_join(self, node: nodes.JoinNode):
         left = self.compile_node(node.left_child)
         right = self.compile_node(node.right_child)
-        left_on = [l_name.id.sql for l_name, _ in node.conditions]
-        right_on = [r_name.id.sql for _, r_name in node.conditions]
+
+        left_on = []
+        right_on = []
+        for left_ex, right_ex in node.conditions:
+            left_ex, right_ex = lowering._coerce_comparables(left_ex, right_ex)
+            left_on.append(self.expr_compiler.compile_expression(left_ex))
+            right_on.append(self.expr_compiler.compile_expression(right_ex))
+
         if node.type == "right":
             return self._ordered_join(
                 right, left, "left", right_on, left_on, node.joins_nulls
@@ -502,8 +508,8 @@ class PolarsCompiler:
         left_frame: pl.LazyFrame,
         right_frame: pl.LazyFrame,
         how: Literal["inner", "outer", "left", "cross"],
-        left_on: Sequence[str],
-        right_on: Sequence[str],
+        left_on: Sequence[pl.Expr],
+        right_on: Sequence[pl.Expr],
         join_nulls: bool,
     ):
         if how == "right":
