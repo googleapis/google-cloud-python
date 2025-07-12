@@ -25,7 +25,7 @@ import pytest
 
 class TestExternalConfig(unittest.TestCase):
     SOURCE_URIS = ["gs://foo", "gs://bar"]
-
+    DATE_FORMAT = "MM/DD/YYYY"
     TIME_ZONE = "America/Los_Angeles"
 
     BASE_RESOURCE = {
@@ -35,6 +35,7 @@ class TestExternalConfig(unittest.TestCase):
         "autodetect": True,
         "ignoreUnknownValues": False,
         "compression": "compression",
+        "dateFormat": DATE_FORMAT,
         "timeZone": TIME_ZONE,
     }
 
@@ -82,6 +83,7 @@ class TestExternalConfig(unittest.TestCase):
         ec.connection_id = "path/to/connection"
         ec.schema = [schema.SchemaField("full_name", "STRING", mode="REQUIRED")]
 
+        ec.date_format = self.DATE_FORMAT
         ec.time_zone = self.TIME_ZONE
         exp_schema = {
             "fields": [{"name": "full_name", "type": "STRING", "mode": "REQUIRED"}]
@@ -96,6 +98,7 @@ class TestExternalConfig(unittest.TestCase):
             "compression": "compression",
             "connectionId": "path/to/connection",
             "schema": exp_schema,
+            "dateFormat": self.DATE_FORMAT,
             "timeZone": self.TIME_ZONE,
         }
         self.assertEqual(got_resource, exp_resource)
@@ -132,7 +135,7 @@ class TestExternalConfig(unittest.TestCase):
         self.assertEqual(ec.ignore_unknown_values, False)
         self.assertEqual(ec.max_bad_records, 17)
         self.assertEqual(ec.source_uris, self.SOURCE_URIS)
-
+        self.assertEqual(ec.date_format, self.DATE_FORMAT)
         self.assertEqual(ec.time_zone, self.TIME_ZONE)
 
     def test_to_api_repr_source_format(self):

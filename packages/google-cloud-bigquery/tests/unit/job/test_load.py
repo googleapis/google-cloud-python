@@ -37,14 +37,14 @@ class TestLoadJob(_Base):
         self.OUTPUT_BYTES = 23456
         self.OUTPUT_ROWS = 345
         self.REFERENCE_FILE_SCHEMA_URI = "gs://path/to/reference"
-
+        self.DATE_FORMAT = "%Y-%m-%d"
         self.TIME_ZONE = "UTC"
 
     def _make_resource(self, started=False, ended=False):
         resource = super(TestLoadJob, self)._make_resource(started, ended)
         config = resource["configuration"]["load"]
         config["sourceUris"] = [self.SOURCE1]
-
+        config["dateFormat"] = self.DATE_FORMAT
         config["timeZone"] = self.TIME_ZONE
         config["destinationTable"] = {
             "projectId": self.PROJECT,
@@ -147,7 +147,6 @@ class TestLoadJob(_Base):
             )
         else:
             self.assertIsNone(job.reference_file_schema_uri)
-
         if "destinationEncryptionConfiguration" in config:
             self.assertIsNotNone(job.destination_encryption_configuration)
             self.assertEqual(
@@ -156,6 +155,10 @@ class TestLoadJob(_Base):
             )
         else:
             self.assertIsNone(job.destination_encryption_configuration)
+        if "dateFormat" in config:
+            self.assertEqual(job.date_format, config["dateFormat"])
+        else:
+            self.assertIsNone(job.date_format)
         if "timeZone" in config:
             self.assertEqual(job.time_zone, config["timeZone"])
         else:
@@ -202,7 +205,7 @@ class TestLoadJob(_Base):
         self.assertIsNone(job.clustering_fields)
         self.assertIsNone(job.schema_update_options)
         self.assertIsNone(job.reference_file_schema_uri)
-
+        self.assertIsNone(job.date_format)
         self.assertIsNone(job.time_zone)
 
     def test_ctor_w_config(self):
@@ -599,6 +602,7 @@ class TestLoadJob(_Base):
                 ]
             },
             "schemaUpdateOptions": [SchemaUpdateOption.ALLOW_FIELD_ADDITION],
+            "dateFormat": self.DATE_FORMAT,
             "timeZone": self.TIME_ZONE,
         }
         RESOURCE["configuration"]["load"] = LOAD_CONFIGURATION
@@ -628,7 +632,7 @@ class TestLoadJob(_Base):
         config.write_disposition = WriteDisposition.WRITE_TRUNCATE
         config.schema_update_options = [SchemaUpdateOption.ALLOW_FIELD_ADDITION]
         config.reference_file_schema_uri = "gs://path/to/reference"
-
+        config.date_format = self.DATE_FORMAT
         config.time_zone = self.TIME_ZONE
 
         with mock.patch(

@@ -549,6 +549,19 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop("sourceFormat", value)
 
     @property
+    def date_format(self) -> Optional[str]:
+        """Optional[str]: Date format used for parsing DATE values.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.date_format
+        """
+        return self._get_sub_prop("dateFormat")
+
+    @date_format.setter
+    def date_format(self, value: Optional[str]):
+        self._set_sub_prop("dateFormat", value)
+
+    @property
     def time_zone(self) -> Optional[str]:
         """Optional[str]: Default time zone that will apply when parsing timestamp
         values that have no specific time zone.
@@ -902,6 +915,13 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.clustering_fields`.
         """
         return self.configuration.clustering_fields
+
+    @property
+    def date_format(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.date_format`.
+        """
+        return self.configuration.date_format
 
     @property
     def time_zone(self):

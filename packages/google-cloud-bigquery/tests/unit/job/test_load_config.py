@@ -828,6 +828,22 @@ class TestLoadJobConfig(_Base):
             config._properties["load"]["writeDisposition"], write_disposition
         )
 
+    def test_date_format_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.date_format)
+
+    def test_date_format_hit(self):
+        date_format = "%Y-%m-%d"
+        config = self._get_target_class()()
+        config._properties["load"]["dateFormat"] = date_format
+        self.assertEqual(config.date_format, date_format)
+
+    def test_date_format_setter(self):
+        date_format = "YYYY/MM/DD"
+        config = self._get_target_class()()
+        config.date_format = date_format
+        self.assertEqual(config._properties["load"]["dateFormat"], date_format)
+
     def test_time_zone_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.time_zone)
@@ -942,6 +958,7 @@ class TestLoadJobConfig(_Base):
             },
             "useAvroLogicalTypes": True,
             "writeDisposition": "WRITE_TRUNCATE",
+            "dateFormat": "%Y-%m-%d",
             "timeZone": "America/New_York",
             "parquetOptions": {"enableListInference": True},
             "columnNameCharacterMap": "V2",
@@ -983,6 +1000,7 @@ class TestLoadJobConfig(_Base):
         )
         self.assertTrue(config.use_avro_logical_types)
         self.assertEqual(config.write_disposition, WriteDisposition.WRITE_TRUNCATE)
+        self.assertEqual(config.date_format, "%Y-%m-%d")
         self.assertEqual(config.time_zone, "America/New_York")
         self.assertTrue(config.parquet_options.enable_list_inference)
         self.assertEqual(config.column_name_character_map, ColumnNameCharacterMap.V2)
@@ -1017,6 +1035,7 @@ class TestLoadJobConfig(_Base):
         )
         config.use_avro_logical_types = True
         config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        config.date_format = "%Y-%m-%d"
         config.time_zone = "America/New_York"
         parquet_options = ParquetOptions()
         parquet_options.enable_list_inference = True
