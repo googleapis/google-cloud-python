@@ -94,7 +94,7 @@ class SummarizeMaintenancesRequest(proto.Message):
             -  maintenanceCompleteTime Examples:
             -  state="SCHEDULED"
             -  resource.location="us-central1-c"
-            -  resource.resourceName=~"\*/instance-20241212-211259"
+            -  resource.resourceName=~"*/instance-20241212-211259"
             -  maintenanceStartTime>"2000-10-11T20:44:51Z"
             -  state="SCHEDULED" OR
                resource.type="compute.googleapis.com/Instance"
@@ -128,7 +128,7 @@ class SummarizeMaintenancesRequest(proto.Message):
 
 
 class SummarizeMaintenancesResponse(proto.Message):
-    r"""
+    r"""Request message for SummarizeMaintenances custom method.
 
     Attributes:
         maintenances (MutableSequence[google.cloud.maintenance_api_v1beta.types.MaintenanceSummary]):
@@ -211,7 +211,8 @@ class MaintenanceSummary(proto.Message):
     """
 
     class Stats(proto.Message):
-        r"""
+        r"""Stats indicates the type of aggregate and the corresponding
+        aggregates.
 
         Attributes:
             group_by (str):
@@ -236,7 +237,7 @@ class MaintenanceSummary(proto.Message):
         )
 
     class Aggregate(proto.Message):
-        r"""
+        r"""Aggregate is a <group, count> pair.
 
         Attributes:
             group (str):
@@ -350,7 +351,7 @@ class ResourceMaintenance(proto.Message):
         user_controllable (bool):
             Output only. Indicates whether the user has
             some control over that maintenance, either
-            proactively before maintenance was scheduled
+             proactively before maintenance was scheduled
             with maintenance policy or  with reactive
             controls after it was scheduled (see controls
             field)

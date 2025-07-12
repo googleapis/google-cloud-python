@@ -769,6 +769,8 @@ class MaintenanceClient(metaclass=MaintenanceClientMeta):
 
         Returns:
             google.cloud.maintenance_api_v1beta.services.maintenance.pagers.SummarizeMaintenancesPager:
+                Request message for
+                SummarizeMaintenances custom method.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
