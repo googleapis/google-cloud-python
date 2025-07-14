@@ -44,7 +44,7 @@ def fake_session() -> Generator[bigframes.Session, None, None]:
         yield session
 
 
-@pytest.fixture(scope="session", params=["pyarrow", "polars", "bq"])
+@pytest.fixture(scope="session", params=["pyarrow", "polars", "bq", "bq-sqlglot"])
 def engine(request, bigquery_client: bigquery.Client) -> semi_executor.SemiExecutor:
     if request.param == "pyarrow":
         return local_scan_executor.LocalScanExecutor()
@@ -52,6 +52,10 @@ def engine(request, bigquery_client: bigquery.Client) -> semi_executor.SemiExecu
         return polars_executor.PolarsExecutor()
     if request.param == "bq":
         return direct_gbq_execution.DirectGbqExecutor(bigquery_client)
+    if request.param == "bq-sqlglot":
+        return direct_gbq_execution.DirectGbqExecutor(
+            bigquery_client, compiler="sqlglot"
+        )
     raise ValueError(f"Unrecognized param: {request.param}")
 
 

@@ -25,7 +25,7 @@ pytest.importorskip("polars")
 REFERENCE_ENGINE = polars_executor.PolarsExecutor()
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_reverse(
     scalars_array_value: array_value.ArrayValue,
     engine,
@@ -34,7 +34,7 @@ def test_engines_reverse(
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_double_reverse(
     scalars_array_value: array_value.ArrayValue,
     engine,
@@ -43,7 +43,7 @@ def test_engines_double_reverse(
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 @pytest.mark.parametrize(
     "sort_col",
     [
@@ -70,7 +70,7 @@ def test_engines_sort_over_column(
     assert_equivalence_execution(node, REFERENCE_ENGINE, engine)
 
 
-@pytest.mark.parametrize("engine", ["polars", "bq"], indirect=True)
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_sort_multi_column_refs(
     scalars_array_value: array_value.ArrayValue,
     engine,

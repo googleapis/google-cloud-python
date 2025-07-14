@@ -88,6 +88,8 @@ def test_engines_read_local_w_zero_row_source(
     assert_equivalence_execution(local_node, REFERENCE_ENGINE, engine)
 
 
+# TODO: Fix sqlglot impl
+@pytest.mark.parametrize("engine", ["polars", "bq", "pyarrow"], indirect=True)
 def test_engines_read_local_w_nested_source(
     fake_session: bigframes.Session,
     nested_data_source: local_data.ManagedArrowTable,

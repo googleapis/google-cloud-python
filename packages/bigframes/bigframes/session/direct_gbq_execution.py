@@ -13,13 +13,14 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Optional, Tuple
+from typing import Literal, Optional, Tuple
 
 from google.cloud import bigquery
 import google.cloud.bigquery.job as bq_job
 import google.cloud.bigquery.table as bq_table
 
 from bigframes.core import compile, nodes
+from bigframes.core.compile import sqlglot
 from bigframes.session import executor, semi_executor
 import bigframes.session._io.bigquery as bq_io
 
@@ -29,8 +30,15 @@ import bigframes.session._io.bigquery as bq_io
 # or record metrics. Also avoids caching, and most pre-compile rewrites, to better serve as a
 # reference for validating more complex executors.
 class DirectGbqExecutor(semi_executor.SemiExecutor):
-    def __init__(self, bqclient: bigquery.Client):
+    def __init__(
+        self, bqclient: bigquery.Client, compiler: Literal["ibis", "sqlglot"] = "ibis"
+    ):
         self.bqclient = bqclient
+        self._compile_fn = (
+            compile.compile_sql
+            if compiler == "ibis"
+            else sqlglot.SQLGlotCompiler()._compile_sql
+        )
 
     def execute(
         self,
@@ -42,9 +50,10 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         # TODO(swast): plumb through the api_name of the user-facing api that
         # caused this query.
 
-        compiled = compile.compile_sql(
+        compiled = self._compile_fn(
             compile.CompileRequest(plan, sort_rows=ordered, peek_count=peek)
         )
+
         iterator, query_job = self._run_execute_query(
             sql=compiled.sql,
         )
