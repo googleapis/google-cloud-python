@@ -23,8 +23,8 @@ WITH `bfcte_1` AS (
     *
   FROM `bfcte_2`
   INNER JOIN `bfcte_3`
-    ON   COALESCE(`bfcol_3`, 0) = COALESCE(`bfcol_7`, 0)
-      AND COALESCE(`bfcol_3`, 1) = COALESCE(`bfcol_7`, 1)
+    ON COALESCE(`bfcol_3`, 0) = COALESCE(`bfcol_7`, 0)
+    AND COALESCE(`bfcol_3`, 1) = COALESCE(`bfcol_7`, 1)
 )
 SELECT
   `bfcol_2` AS `rowindex_x`,

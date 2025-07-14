@@ -23,8 +23,8 @@ WITH `bfcte_1` AS (
     *
   FROM `bfcte_2`
   LEFT JOIN `bfcte_3`
-    ON   COALESCE(`bfcol_2`, 0) = COALESCE(`bfcol_6`, 0)
-      AND COALESCE(`bfcol_2`, 1) = COALESCE(`bfcol_6`, 1)
+    ON COALESCE(`bfcol_2`, 0) = COALESCE(`bfcol_6`, 0)
+    AND COALESCE(`bfcol_2`, 1) = COALESCE(`bfcol_6`, 1)
 )
 SELECT
   `bfcol_3` AS `int64_col`,

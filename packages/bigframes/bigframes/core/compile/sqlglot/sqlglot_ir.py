@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import dataclasses
+import functools
 import typing
 
 from google.cloud import bigquery
@@ -25,11 +26,9 @@ import sqlglot.dialects.bigquery
 import sqlglot.expressions as sge
 
 from bigframes import dtypes
-from bigframes.core import guid, utils
+from bigframes.core import guid, local_data, schema, utils
 from bigframes.core.compile.sqlglot.expressions import typed_expr
 import bigframes.core.compile.sqlglot.sqlglot_types as sgt
-import bigframes.core.local_data as local_data
-import bigframes.core.schema as bf_schema
 
 # shapely.wkt.dumps was moved to shapely.io.to_wkt in 2.0.
 try:
@@ -68,7 +67,7 @@ class SQLGlotIR:
     def from_pyarrow(
         cls,
         pa_table: pa.Table,
-        schema: bf_schema.ArraySchema,
+        schema: schema.ArraySchema,
         uid_gen: guid.SequentialUIDGenerator,
     ) -> SQLGlotIR:
         """Builds SQLGlot expression from a pyarrow table.
@@ -280,9 +279,13 @@ class SQLGlotIR:
 
     def filter(
         self,
-        condition: sge.Expression,
+        conditions: tuple[sge.Expression, ...],
     ) -> SQLGlotIR:
         """Filters the query by adding a WHERE clause."""
+        condition = _and(conditions)
+        if condition is None:
+            return SQLGlotIR(expr=self.expr.copy(), uid_gen=self.uid_gen)
+
         new_expr = _select_to_cte(
             self.expr,
             sge.to_identifier(
@@ -316,10 +319,11 @@ class SQLGlotIR:
         right_ctes = right_select.args.pop("with", [])
         merged_ctes = [*left_ctes, *right_ctes]
 
-        join_conditions = [
-            _join_condition(left, right, joins_nulls) for left, right in conditions
-        ]
-        join_on = sge.And(expressions=join_conditions) if join_conditions else None
+        join_on = _and(
+            tuple(
+                _join_condition(left, right, joins_nulls) for left, right in conditions
+            )
+        )
 
         join_type_str = join_type if join_type != "outer" else "full outer"
         new_expr = (
@@ -362,6 +366,47 @@ class SQLGlotIR:
         new_expr = _select_to_cte(
             self.expr.select(uuid_expr, append=True), new_cte_name
         ).where(condition, append=False)
+        return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
+
+    def aggregate(
+        self,
+        aggregations: tuple[tuple[str, sge.Expression], ...],
+        by_cols: tuple[sge.Expression, ...],
+        dropna_cols: tuple[sge.Expression, ...],
+    ) -> SQLGlotIR:
+        """Applies the aggregation expressions.
+
+        Args:
+            aggregations: output_column_id, aggregation_expr tuples
+            by_cols: column expressions for aggregation
+            dropna_cols: columns whether null keys should be dropped
+        """
+        aggregations_expr = [
+            sge.Alias(
+                this=expr,
+                alias=sge.to_identifier(id, quoted=self.quoted),
+            )
+            for id, expr in aggregations
+        ]
+
+        new_expr = _select_to_cte(
+            self.expr,
+            sge.to_identifier(
+                next(self.uid_gen.get_uid_stream("bfcte_")), quoted=self.quoted
+            ),
+        )
+        new_expr = new_expr.group_by(*by_cols).select(
+            *[*by_cols, *aggregations_expr], append=False
+        )
+
+        condition = _and(
+            tuple(
+                sg.not_(sge.Is(this=drop_col, expression=sge.Null()))
+                for drop_col in dropna_cols
+            )
+        )
+        if condition is not None:
+            new_expr = new_expr.where(condition, append=False)
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
     def insert(
@@ -549,6 +594,16 @@ def _table(table: bigquery.TableReference) -> sge.Table:
         this=sg.to_identifier(table.table_id, quoted=True),
         db=sg.to_identifier(table.dataset_id, quoted=True),
         catalog=sg.to_identifier(table.project, quoted=True),
+    )
+
+
+def _and(conditions: tuple[sge.Expression, ...]) -> typing.Optional[sge.Expression]:
+    """Chains multiple expressions together using a logical AND."""
+    if not conditions:
+        return None
+
+    return functools.reduce(
+        lambda left, right: sge.And(this=left, expression=right), conditions
     )
 
 
