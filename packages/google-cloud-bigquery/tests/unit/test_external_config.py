@@ -27,6 +27,8 @@ class TestExternalConfig(unittest.TestCase):
     SOURCE_URIS = ["gs://foo", "gs://bar"]
     DATE_FORMAT = "MM/DD/YYYY"
     TIME_ZONE = "America/Los_Angeles"
+    TIME_FORMAT = "HH24:MI:SS"
+    TIMESTAMP_FORMAT = "MM/DD/YYYY HH24:MI:SS.FF6 TZR"
 
     BASE_RESOURCE = {
         "sourceFormat": "",
@@ -37,6 +39,8 @@ class TestExternalConfig(unittest.TestCase):
         "compression": "compression",
         "dateFormat": DATE_FORMAT,
         "timeZone": TIME_ZONE,
+        "timeFormat": TIME_FORMAT,
+        "timestampFormat": TIMESTAMP_FORMAT,
     }
 
     def test_from_api_repr_base(self):
@@ -85,6 +89,9 @@ class TestExternalConfig(unittest.TestCase):
 
         ec.date_format = self.DATE_FORMAT
         ec.time_zone = self.TIME_ZONE
+        ec.time_format = self.TIME_FORMAT
+        ec.timestamp_format = self.TIMESTAMP_FORMAT
+
         exp_schema = {
             "fields": [{"name": "full_name", "type": "STRING", "mode": "REQUIRED"}]
         }
@@ -100,6 +107,8 @@ class TestExternalConfig(unittest.TestCase):
             "schema": exp_schema,
             "dateFormat": self.DATE_FORMAT,
             "timeZone": self.TIME_ZONE,
+            "timeFormat": self.TIME_FORMAT,
+            "timestampFormat": self.TIMESTAMP_FORMAT,
         }
         self.assertEqual(got_resource, exp_resource)
 
@@ -137,6 +146,8 @@ class TestExternalConfig(unittest.TestCase):
         self.assertEqual(ec.source_uris, self.SOURCE_URIS)
         self.assertEqual(ec.date_format, self.DATE_FORMAT)
         self.assertEqual(ec.time_zone, self.TIME_ZONE)
+        self.assertEqual(ec.time_format, self.TIME_FORMAT)
+        self.assertEqual(ec.timestamp_format, self.TIMESTAMP_FORMAT)
 
     def test_to_api_repr_source_format(self):
         ec = external_config.ExternalConfig("CSV")

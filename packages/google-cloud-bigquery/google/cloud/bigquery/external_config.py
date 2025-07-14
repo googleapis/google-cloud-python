@@ -880,6 +880,34 @@ class ExternalConfig(object):
         self._properties["timeZone"] = value
 
     @property
+    def time_format(self) -> Optional[str]:
+        """Optional[str]: Format used to parse TIME values. Supports C-style and SQL-style values.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.time_format
+        """
+        result = self._properties.get("timeFormat")
+        return typing.cast(str, result)
+
+    @time_format.setter
+    def time_format(self, value: Optional[str]):
+        self._properties["timeFormat"] = value
+
+    @property
+    def timestamp_format(self) -> Optional[str]:
+        """Optional[str]: Format used to parse TIMESTAMP values. Supports C-style and SQL-style values.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.timestamp_format
+        """
+        result = self._properties.get("timestampFormat")
+        return typing.cast(str, result)
+
+    @timestamp_format.setter
+    def timestamp_format(self, value: Optional[str]):
+        self._properties["timestampFormat"] = value
+
+    @property
     def connection_id(self):
         """Optional[str]: [Experimental] ID of a BigQuery Connection API
         resource.

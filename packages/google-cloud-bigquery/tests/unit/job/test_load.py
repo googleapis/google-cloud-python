@@ -39,6 +39,8 @@ class TestLoadJob(_Base):
         self.REFERENCE_FILE_SCHEMA_URI = "gs://path/to/reference"
         self.DATE_FORMAT = "%Y-%m-%d"
         self.TIME_ZONE = "UTC"
+        self.TIME_FORMAT = "%H:%M:%S"
+        self.TIMESTAMP_FORMAT = "YYYY-MM-DD HH:MM:SS.SSSSSSZ"
 
     def _make_resource(self, started=False, ended=False):
         resource = super(TestLoadJob, self)._make_resource(started, ended)
@@ -46,6 +48,9 @@ class TestLoadJob(_Base):
         config["sourceUris"] = [self.SOURCE1]
         config["dateFormat"] = self.DATE_FORMAT
         config["timeZone"] = self.TIME_ZONE
+        config["timeFormat"] = self.TIME_FORMAT
+        config["timestampFormat"] = self.TIMESTAMP_FORMAT
+
         config["destinationTable"] = {
             "projectId": self.PROJECT,
             "datasetId": self.DS_ID,
@@ -163,6 +168,14 @@ class TestLoadJob(_Base):
             self.assertEqual(job.time_zone, config["timeZone"])
         else:
             self.assertIsNone(job.time_zone)
+        if "timeFormat" in config:
+            self.assertEqual(job.time_format, config["timeFormat"])
+        else:
+            self.assertIsNone(job.time_format)
+        if "timestampFormat" in config:
+            self.assertEqual(job.timestamp_format, config["timestampFormat"])
+        else:
+            self.assertIsNone(job.timestamp_format)
 
     def test_ctor(self):
         client = _make_client(project=self.PROJECT)
@@ -207,6 +220,8 @@ class TestLoadJob(_Base):
         self.assertIsNone(job.reference_file_schema_uri)
         self.assertIsNone(job.date_format)
         self.assertIsNone(job.time_zone)
+        self.assertIsNone(job.time_format)
+        self.assertIsNone(job.timestamp_format)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -604,7 +619,10 @@ class TestLoadJob(_Base):
             "schemaUpdateOptions": [SchemaUpdateOption.ALLOW_FIELD_ADDITION],
             "dateFormat": self.DATE_FORMAT,
             "timeZone": self.TIME_ZONE,
+            "timeFormat": self.TIME_FORMAT,
+            "timestampFormat": self.TIMESTAMP_FORMAT,
         }
+
         RESOURCE["configuration"]["load"] = LOAD_CONFIGURATION
         conn1 = make_connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
@@ -634,6 +652,8 @@ class TestLoadJob(_Base):
         config.reference_file_schema_uri = "gs://path/to/reference"
         config.date_format = self.DATE_FORMAT
         config.time_zone = self.TIME_ZONE
+        config.time_format = self.TIME_FORMAT
+        config.timestamp_format = self.TIMESTAMP_FORMAT
 
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"

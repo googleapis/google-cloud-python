@@ -860,6 +860,40 @@ class TestLoadJobConfig(_Base):
         config.time_zone = time_zone
         self.assertEqual(config._properties["load"]["timeZone"], time_zone)
 
+    def test_time_format_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.time_format)
+
+    def test_time_format_hit(self):
+        time_format = "%H:%M:%S"
+        config = self._get_target_class()()
+        config._properties["load"]["timeFormat"] = time_format
+        self.assertEqual(config.time_format, time_format)
+
+    def test_time_format_setter(self):
+        time_format = "HH24:MI:SS"
+        config = self._get_target_class()()
+        config.time_format = time_format
+        self.assertEqual(config._properties["load"]["timeFormat"], time_format)
+
+    def test_timestamp_format_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.timestamp_format)
+
+    def test_timestamp_format_hit(self):
+        timestamp_format = "%Y-%m-%dT%H:%M:%S.%fZ"
+        config = self._get_target_class()()
+        config._properties["load"]["timestampFormat"] = timestamp_format
+        self.assertEqual(config.timestamp_format, timestamp_format)
+
+    def test_timestamp_format_setter(self):
+        timestamp_format = "YYYY/MM/DD HH24:MI:SS.FF6 TZR"
+        config = self._get_target_class()()
+        config.timestamp_format = timestamp_format
+        self.assertEqual(
+            config._properties["load"]["timestampFormat"], timestamp_format
+        )
+
     def test_parquet_options_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.parquet_options)
