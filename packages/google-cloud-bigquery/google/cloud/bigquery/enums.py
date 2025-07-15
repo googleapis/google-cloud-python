@@ -462,3 +462,21 @@ class JobCreationMode(object):
     The conditions under which BigQuery can decide to not create a Job are
     subject to change.
     """
+
+
+class SourceColumnMatch(str, enum.Enum):
+    """Uses sensible defaults based on how the schema is provided.
+    If autodetect is used, then columns are matched by name. Otherwise, columns
+    are matched by position. This is done to keep the behavior backward-compatible.
+    """
+
+    SOURCE_COLUMN_MATCH_UNSPECIFIED = "SOURCE_COLUMN_MATCH_UNSPECIFIED"
+    """Unspecified column name match option."""
+
+    POSITION = "POSITION"
+    """Matches by position. This assumes that the columns are ordered the same
+    way as the schema."""
+
+    NAME = "NAME"
+    """Matches by name. This reads the header row as column names and reorders
+    columns to match the field names in the schema."""

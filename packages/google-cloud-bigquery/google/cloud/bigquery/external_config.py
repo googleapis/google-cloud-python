@@ -30,6 +30,7 @@ from google.cloud.bigquery._helpers import _bytes_to_json
 from google.cloud.bigquery._helpers import _int_or_none
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery import _helpers
+from google.cloud.bigquery.enums import SourceColumnMatch
 from google.cloud.bigquery.format_options import AvroOptions, ParquetOptions
 from google.cloud.bigquery import schema
 from google.cloud.bigquery.schema import SchemaField
@@ -473,6 +474,39 @@ class CSVOptions(object):
     @skip_leading_rows.setter
     def skip_leading_rows(self, value):
         self._properties["skipLeadingRows"] = str(value)
+
+    @property
+    def source_column_match(self) -> Optional[SourceColumnMatch]:
+        """Optional[google.cloud.bigquery.enums.SourceColumnMatch]: Controls the
+        strategy used to match loaded columns to the schema. If not set, a sensible
+        default is chosen based on how the schema is provided. If autodetect is
+        used, then columns are matched by name. Otherwise, columns are matched by
+        position. This is done to keep the behavior backward-compatible.
+
+        Acceptable values are:
+
+            SOURCE_COLUMN_MATCH_UNSPECIFIED: Unspecified column name match option.
+            POSITION: matches by position. This assumes that the columns are ordered
+            the same way as the schema.
+            NAME: matches by name. This reads the header row as column names and
+            reorders columns to match the field names in the schema.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#CsvOptions.FIELDS.source_column_match
+        """
+
+        value = self._properties.get("sourceColumnMatch")
+        return SourceColumnMatch(value) if value is not None else None
+
+    @source_column_match.setter
+    def source_column_match(self, value: Union[SourceColumnMatch, str, None]):
+        if value is not None and not isinstance(value, (SourceColumnMatch, str)):
+            raise TypeError(
+                "value must be a google.cloud.bigquery.enums.SourceColumnMatch, str, or None"
+            )
+        if isinstance(value, SourceColumnMatch):
+            value = value.value
+        self._properties["sourceColumnMatch"] = value if value else None
 
     @property
     def null_markers(self) -> Optional[Iterable[str]]:

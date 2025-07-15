@@ -15,9 +15,10 @@
 """Classes for load jobs."""
 
 import typing
-from typing import FrozenSet, List, Iterable, Optional
+from typing import FrozenSet, List, Iterable, Optional, Union
 
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
+from google.cloud.bigquery.enums import SourceColumnMatch
 from google.cloud.bigquery.external_config import HivePartitioningOptions
 from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery import _helpers
@@ -570,6 +571,39 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop("sourceFormat", value)
 
     @property
+    def source_column_match(self) -> Optional[SourceColumnMatch]:
+        """Optional[google.cloud.bigquery.enums.SourceColumnMatch]: Controls the
+        strategy used to match loaded columns to the schema. If not set, a sensible
+        default is chosen based on how the schema is provided. If autodetect is
+        used, then columns are matched by name. Otherwise, columns are matched by
+        position. This is done to keep the behavior backward-compatible.
+
+        Acceptable values are:
+
+            SOURCE_COLUMN_MATCH_UNSPECIFIED: Unspecified column name match option.
+            POSITION: matches by position. This assumes that the columns are ordered
+            the same way as the schema.
+            NAME: matches by name. This reads the header row as column names and
+            reorders columns to match the field names in the schema.
+
+        See:
+
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.source_column_match
+        """
+        value = self._get_sub_prop("sourceColumnMatch")
+        return SourceColumnMatch(value) if value is not None else None
+
+    @source_column_match.setter
+    def source_column_match(self, value: Union[SourceColumnMatch, str, None]):
+        if value is not None and not isinstance(value, (SourceColumnMatch, str)):
+            raise TypeError(
+                "value must be a google.cloud.bigquery.enums.SourceColumnMatch, str, or None"
+            )
+        if isinstance(value, SourceColumnMatch):
+            value = value.value
+        self._set_sub_prop("sourceColumnMatch", value if value else None)
+
+    @property
     def date_format(self) -> Optional[str]:
         """Optional[str]: Date format used for parsing DATE values.
 
@@ -982,6 +1016,13 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.clustering_fields`.
         """
         return self.configuration.clustering_fields
+
+    @property
+    def source_column_match(self) -> Optional[SourceColumnMatch]:
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.source_column_match`.
+        """
+        return self.configuration.source_column_match
 
     @property
     def date_format(self):

@@ -844,6 +844,38 @@ class TestLoadJobConfig(_Base):
             config._properties["load"]["writeDisposition"], write_disposition
         )
 
+    def test_source_column_match_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.source_column_match)
+
+    def test_source_column_match_hit(self):
+        from google.cloud.bigquery.enums import SourceColumnMatch
+
+        option_enum = SourceColumnMatch.NAME
+        config = self._get_target_class()()
+        # Assume API stores the string value of the enum
+        config._properties["load"]["sourceColumnMatch"] = option_enum.value
+        self.assertEqual(config.source_column_match, option_enum)
+
+    def test_source_column_match_setter(self):
+        from google.cloud.bigquery.enums import SourceColumnMatch
+
+        option_enum = SourceColumnMatch.POSITION
+        config = self._get_target_class()()
+        config.source_column_match = option_enum
+        # Assert that the string value of the enum is stored
+        self.assertEqual(
+            config._properties["load"]["sourceColumnMatch"], option_enum.value
+        )
+        option_str = "NAME"
+        config.source_column_match = option_str
+        self.assertEqual(config._properties["load"]["sourceColumnMatch"], option_str)
+
+    def test_source_column_match_setter_invalid_type(self):
+        config = self._get_target_class()()
+        with self.assertRaises(TypeError):
+            config.source_column_match = 3.14
+
     def test_date_format_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.date_format)
