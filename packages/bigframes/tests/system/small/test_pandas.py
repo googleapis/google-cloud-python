@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from datetime import datetime
+import re
 import typing
 
 import pandas as pd
@@ -343,7 +344,7 @@ def test_merge_left_on_right_on(scalars_dfs, merge_how):
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
 
 
-def test_pd_merge_cross(scalars_dfs):
+def test_merge_cross(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     left_columns = ["int64_col", "float64_col", "int64_too"]
     right_columns = ["int64_col", "bool_col", "string_col", "rowindex_2"]
@@ -396,6 +397,61 @@ def test_merge_series(scalars_dfs, merge_how):
     )
 
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
+
+
+def test_merge_w_common_columns(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    left_columns = ["int64_col", "int64_too"]
+    right_columns = ["int64_col", "bool_col"]
+
+    df = bpd.merge(
+        scalars_df[left_columns], scalars_df[right_columns], "inner", sort=True
+    )
+
+    pd_result = pd.merge(
+        scalars_pandas_df[left_columns],
+        scalars_pandas_df[right_columns],
+        "inner",
+        sort=True,
+    )
+    assert_pandas_df_equal(df.to_pandas(), pd_result, ignore_order=True)
+
+
+def test_merge_raises_error_when_no_common_columns(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+    left_columns = ["float64_col", "int64_too"]
+    right_columns = ["int64_col", "bool_col"]
+
+    left = scalars_df[left_columns]
+    right = scalars_df[right_columns]
+
+    with pytest.raises(
+        ValueError,
+        match="No common columns to perform merge on.",
+    ):
+        bpd.merge(left, right, "inner")
+
+
+def test_merge_raises_error_when_left_right_on_set(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+    left_columns = ["int64_col", "int64_too"]
+    right_columns = ["int64_col", "bool_col"]
+
+    left = scalars_df[left_columns]
+    right = scalars_df[right_columns]
+
+    with pytest.raises(
+        ValueError,
+        match=re.escape("Can not pass both `on` and `left_on` + `right_on` params."),
+    ):
+        bpd.merge(
+            left,
+            right,
+            "inner",
+            left_on="int64_too",
+            right_on="int64_col",
+            on="int64_col",
+        )
 
 
 def _convert_pandas_category(pd_s: pd.Series):

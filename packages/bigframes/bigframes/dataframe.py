@@ -3434,15 +3434,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )
             return DataFrame(result_block)
 
-        if on is None:
-            if left_on is None or right_on is None:
-                raise ValueError("Must specify `on` or `left_on` + `right_on`.")
-        else:
-            if left_on is not None or right_on is not None:
-                raise ValueError(
-                    "Can not pass both `on` and `left_on` + `right_on` params."
-                )
-            left_on, right_on = on, on
+        left_on, right_on = self._validate_left_right_on(
+            right, on, left_on=left_on, right_on=right_on
+        )
 
         if utils.is_list_like(left_on):
             left_on = list(left_on)  # type: ignore
@@ -3478,6 +3472,41 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             suffixes=suffixes,
         )
         return DataFrame(block)
+
+    def _validate_left_right_on(
+        self,
+        right: DataFrame,
+        on: Union[blocks.Label, Sequence[blocks.Label], None] = None,
+        *,
+        left_on: Union[blocks.Label, Sequence[blocks.Label], None] = None,
+        right_on: Union[blocks.Label, Sequence[blocks.Label], None] = None,
+    ):
+        if on is not None:
+            if left_on is not None or right_on is not None:
+                raise ValueError(
+                    "Can not pass both `on` and `left_on` + `right_on` params."
+                )
+            return on, on
+
+        if left_on is not None and right_on is not None:
+            return left_on, right_on
+
+        left_cols = self.columns
+        right_cols = right.columns
+        common_cols = left_cols.intersection(right_cols)
+        if len(common_cols) == 0:
+            raise ValueError(
+                "No common columns to perform merge on."
+                f"Merge options: left_on={left_on}, "
+                f"right_on={right_on}, "
+            )
+        if (
+            not left_cols.join(common_cols, how="inner").is_unique
+            or not right_cols.join(common_cols, how="inner").is_unique
+        ):
+            raise ValueError(f"Data columns not unique: {repr(common_cols)}")
+
+        return common_cols, common_cols
 
     def join(
         self,
