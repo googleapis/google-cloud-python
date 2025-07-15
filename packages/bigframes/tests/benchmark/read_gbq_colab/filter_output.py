@@ -14,7 +14,6 @@
 import pathlib
 
 import benchmark.utils as utils
-import pytest
 
 import bigframes.session
 
@@ -40,11 +39,8 @@ def filter_output(
 
     # It's possible we don't have any pages at all, since we filtered out all
     # matching rows.
-    if rows == 0:
-        with pytest.raises(StopIteration):
-            next(iter(df_filtered.to_pandas_batches(page_size=PAGE_SIZE)))
-    else:
-        next(iter(df_filtered.to_pandas_batches(page_size=PAGE_SIZE)))
+    first_page = next(iter(df_filtered.to_pandas_batches(page_size=PAGE_SIZE)))
+    assert len(first_page.index) <= rows
 
 
 if __name__ == "__main__":
