@@ -277,6 +277,7 @@ class TestExternalConfig(unittest.TestCase):
                     "allowJaggedRows": False,
                     "encoding": "encoding",
                     "preserveAsciiControlCharacters": False,
+                    "nullMarkers": ["", "NA"],
                 },
             },
         )
@@ -293,6 +294,7 @@ class TestExternalConfig(unittest.TestCase):
         self.assertEqual(ec.options.allow_jagged_rows, False)
         self.assertEqual(ec.options.encoding, "encoding")
         self.assertEqual(ec.options.preserve_ascii_control_characters, False)
+        self.assertEqual(ec.options.null_markers, ["", "NA"])
 
         got_resource = ec.to_api_repr()
 
@@ -314,6 +316,7 @@ class TestExternalConfig(unittest.TestCase):
         options.skip_leading_rows = 123
         options.allow_jagged_rows = False
         options.preserve_ascii_control_characters = False
+        options.null_markers = ["", "NA"]
         ec.csv_options = options
 
         exp_resource = {
@@ -326,6 +329,7 @@ class TestExternalConfig(unittest.TestCase):
                 "allowJaggedRows": False,
                 "encoding": "encoding",
                 "preserveAsciiControlCharacters": False,
+                "nullMarkers": ["", "NA"],
             },
         }
 

@@ -474,6 +474,27 @@ class CSVOptions(object):
     def skip_leading_rows(self, value):
         self._properties["skipLeadingRows"] = str(value)
 
+    @property
+    def null_markers(self) -> Optional[Iterable[str]]:
+        """Optional[Iterable[str]]: A list of strings represented as SQL NULL values in a CSV file.
+
+        .. note::
+            null_marker and null_markers can't be set at the same time.
+            If null_marker is set, null_markers has to be not set.
+            If null_markers is set, null_marker has to be not set.
+            If both null_marker and null_markers are set at the same time, a user error would be thrown.
+            Any strings listed in null_markers, including empty string would be interpreted as SQL NULL.
+            This applies to all column types.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#CsvOptions.FIELDS.null_markers
+        """
+        return self._properties.get("nullMarkers")
+
+    @null_markers.setter
+    def null_markers(self, value: Optional[Iterable[str]]):
+        self._properties["nullMarkers"] = value
+
     def to_api_repr(self) -> dict:
         """Build an API representation of this object.
 

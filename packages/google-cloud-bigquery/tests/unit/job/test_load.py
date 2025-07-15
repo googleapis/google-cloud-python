@@ -42,6 +42,7 @@ class TestLoadJob(_Base):
         self.TIME_ZONE = "UTC"
         self.TIME_FORMAT = "%H:%M:%S"
         self.TIMESTAMP_FORMAT = "YYYY-MM-DD HH:MM:SS.SSSSSSZ"
+        self.NULL_MARKERS = ["", "NA"]
 
     def _make_resource(self, started=False, ended=False):
         resource = super(TestLoadJob, self)._make_resource(started, ended)
@@ -52,6 +53,7 @@ class TestLoadJob(_Base):
         config["timeZone"] = self.TIME_ZONE
         config["timeFormat"] = self.TIME_FORMAT
         config["timestampFormat"] = self.TIMESTAMP_FORMAT
+        config["nullMarkers"] = self.NULL_MARKERS
 
         config["destinationTable"] = {
             "projectId": self.PROJECT,
@@ -140,6 +142,10 @@ class TestLoadJob(_Base):
             self.assertEqual(job.null_marker, config["nullMarker"])
         else:
             self.assertIsNone(job.null_marker)
+        if "nullMarkers" in config:
+            self.assertEqual(job.null_markers, config["nullMarkers"])
+        else:
+            self.assertIsNone(job.null_markers)
         if "quote" in config:
             self.assertEqual(job.quote_character, config["quote"])
         else:
@@ -211,6 +217,7 @@ class TestLoadJob(_Base):
         self.assertIsNone(job.ignore_unknown_values)
         self.assertIsNone(job.max_bad_records)
         self.assertIsNone(job.null_marker)
+        self.assertIsNone(job.null_markers)
         self.assertIsNone(job.quote_character)
         self.assertIsNone(job.skip_leading_rows)
         self.assertIsNone(job.source_format)

@@ -469,6 +469,22 @@ class TestLoadJobConfig(_Base):
         config.null_marker = null_marker
         self.assertEqual(config._properties["load"]["nullMarker"], null_marker)
 
+    def test_null_markers_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.null_markers)
+
+    def test_null_markers_hit(self):
+        null_markers = ["", "NA"]
+        config = self._get_target_class()()
+        config._properties["load"]["nullMarkers"] = null_markers
+        self.assertEqual(config.null_markers, null_markers)
+
+    def test_null_markers_setter(self):
+        null_markers = ["", "NA"]
+        config = self._get_target_class()()
+        config.null_markers = null_markers
+        self.assertEqual(config._properties["load"]["nullMarkers"], null_markers)
+
     def test_preserve_ascii_control_characters_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.preserve_ascii_control_characters)

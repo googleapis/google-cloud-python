@@ -387,6 +387,27 @@ class LoadJobConfig(_JobConfig):
         self._set_sub_prop("nullMarker", value)
 
     @property
+    def null_markers(self) -> Optional[List[str]]:
+        """Optional[List[str]]: A list of strings represented as SQL NULL values in a CSV file.
+
+        .. note::
+            null_marker and null_markers can't be set at the same time.
+            If null_marker is set, null_markers has to be not set.
+            If null_markers is set, null_marker has to be not set.
+            If both null_marker and null_markers are set at the same time, a user error would be thrown.
+            Any strings listed in null_markers, including empty string would be interpreted as SQL NULL.
+            This applies to all column types.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.null_markers
+        """
+        return self._get_sub_prop("nullMarkers")
+
+    @null_markers.setter
+    def null_markers(self, value: Optional[List[str]]):
+        self._set_sub_prop("nullMarkers", value)
+
+    @property
     def preserve_ascii_control_characters(self):
         """Optional[bool]: Preserves the embedded ASCII control characters when sourceFormat is set to CSV.
 
@@ -853,6 +874,13 @@ class LoadJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.LoadJobConfig.null_marker`.
         """
         return self.configuration.null_marker
+
+    @property
+    def null_markers(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.null_markers`.
+        """
+        return self.configuration.null_markers
 
     @property
     def quote_character(self):
