@@ -108,6 +108,7 @@
     "packages/google-cloud-kms": "3.5.1",
     "packages/google-cloud-kms-inventory": "0.2.15",
     "packages/google-cloud-language": "2.17.2",
+    "packages/google-cloud-licensemanager": "0.0.0",
     "packages/google-cloud-life-sciences": "0.9.18",
     "packages/google-cloud-lustre": "0.1.1",
     "packages/google-cloud-maintenance-api": "0.1.0",
