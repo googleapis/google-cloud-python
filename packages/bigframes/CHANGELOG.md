@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.11.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.10.0...v2.11.0) (2025-07-15)
+
+
+### Features
+
+* Add `__contains__` to Index, Series, DataFrame ([#1899](https://github.com/googleapis/python-bigquery-dataframes/issues/1899)) ([07222bf](https://github.com/googleapis/python-bigquery-dataframes/commit/07222bfe2f6ae60859d33eb366598d7dee5c0572))
+* Add `thresh` param for Dataframe.dropna ([#1885](https://github.com/googleapis/python-bigquery-dataframes/issues/1885)) ([1395a50](https://github.com/googleapis/python-bigquery-dataframes/commit/1395a502ffa0faf4b7462045dcb0657485c7ce26))
+* Add concat pushdown for hybrid engine ([#1891](https://github.com/googleapis/python-bigquery-dataframes/issues/1891)) ([813624d](https://github.com/googleapis/python-bigquery-dataframes/commit/813624dddfd4f2396c8b1c9768c0c831bb0681ac))
+* Add pagination buttons (prev/next) to anywidget mode for DataFrames ([#1841](https://github.com/googleapis/python-bigquery-dataframes/issues/1841)) ([8eca767](https://github.com/googleapis/python-bigquery-dataframes/commit/8eca767425c7910c8f907747a8a8b335df0caa1a))
+* Add total_rows property to pandas batches iterator ([#1888](https://github.com/googleapis/python-bigquery-dataframes/issues/1888)) ([e3f5e65](https://github.com/googleapis/python-bigquery-dataframes/commit/e3f5e6539d220f8da57f08f67863ade29df4ad16))
+* Hybrid engine local join support ([#1900](https://github.com/googleapis/python-bigquery-dataframes/issues/1900)) ([1aa7950](https://github.com/googleapis/python-bigquery-dataframes/commit/1aa7950334bdc826a9a0a1894dad67ca6f755425))
+* Support `date` data type for to_datetime() ([#1902](https://github.com/googleapis/python-bigquery-dataframes/issues/1902)) ([24050cb](https://github.com/googleapis/python-bigquery-dataframes/commit/24050cb00247f68eb4ece827fd31ee1dd8b25380))
+* Support bpd.Series(json_data, dtype="json") ([#1882](https://github.com/googleapis/python-bigquery-dataframes/issues/1882)) ([05cb7d0](https://github.com/googleapis/python-bigquery-dataframes/commit/05cb7d0bc3599054acf8ecb8b15eb2045b9bf463))
+
+
+### Bug Fixes
+
+* Bpd.merge on common columns ([#1905](https://github.com/googleapis/python-bigquery-dataframes/issues/1905)) ([a1fa112](https://github.com/googleapis/python-bigquery-dataframes/commit/a1fa11291305a1da0d6a4121436c09ed04b224b5))
+* DataFrame string addition respects order ([#1894](https://github.com/googleapis/python-bigquery-dataframes/issues/1894)) ([52c8233](https://github.com/googleapis/python-bigquery-dataframes/commit/52c82337bcc9f2b6cfc1c6ac14deb83b693d114d))
+* Show slot_millis_sum warning only when `allow_large_results=False` ([#1892](https://github.com/googleapis/python-bigquery-dataframes/issues/1892)) ([25efabc](https://github.com/googleapis/python-bigquery-dataframes/commit/25efabc4897e0692725618ce43134127a7f2c2ee))
+* Used query row count metadata instead of table metadata ([#1893](https://github.com/googleapis/python-bigquery-dataframes/issues/1893)) ([e1ebc53](https://github.com/googleapis/python-bigquery-dataframes/commit/e1ebc5369a416280cec0ab1513e763b7a2fe3c20))
+
 ## [2.10.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.9.0...v2.10.0) (2025-07-08)
 
 
