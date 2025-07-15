@@ -67,6 +67,40 @@ class DatetimeProperties:
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
+    def day_of_week(self):
+        """The day of the week with Monday=0, Sunday=6.
+
+        Return the day of the week. It is assumed the week starts on
+        Monday, which is denoted by 0 and ends on Sunday, which is denoted
+        by 6.
+
+        **Examples:**
+
+            >>> import pandas as pd
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series(
+            ...     pd.date_range('2016-12-31', '2017-01-08', freq='D').to_series()
+            ... )
+            >>> s.dt.day_of_week
+            2016-12-31 00:00:00    5
+            2017-01-01 00:00:00    6
+            2017-01-02 00:00:00    0
+            2017-01-03 00:00:00    1
+            2017-01-04 00:00:00    2
+            2017-01-05 00:00:00    3
+            2017-01-06 00:00:00    4
+            2017-01-07 00:00:00    5
+            2017-01-08 00:00:00    6
+            dtype: Int64
+
+        Returns:
+            Series: Containing integers indicating the day number.
+        """
+
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
     def dayofyear(self):
         """The ordinal day of the year.
 
@@ -79,6 +113,34 @@ class DatetimeProperties:
             ...     pd.date_range('2016-12-28', '2017-01-03', freq='D').to_series()
             ... )
             >>> s.dt.dayofyear
+            2016-12-28 00:00:00    363
+            2016-12-29 00:00:00    364
+            2016-12-30 00:00:00    365
+            2016-12-31 00:00:00    366
+            2017-01-01 00:00:00      1
+            2017-01-02 00:00:00      2
+            2017-01-03 00:00:00      3
+            dtype: Int64
+
+        Returns:
+            Series: Containing integers indicating the day number.
+        """
+
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def day_of_year(self):
+        """The ordinal day of the year.
+
+        **Examples:**
+
+            >>> import pandas as pd
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+            >>> s = bpd.Series(
+            ...     pd.date_range('2016-12-28', '2017-01-03', freq='D').to_series()
+            ... )
+            >>> s.dt.day_of_year
             2016-12-28 00:00:00    363
             2016-12-29 00:00:00    364
             2016-12-30 00:00:00    365

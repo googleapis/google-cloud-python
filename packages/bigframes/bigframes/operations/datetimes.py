@@ -50,8 +50,16 @@ class DatetimeMethods(
         return self._apply_unary_op(ops.dayofweek_op)
 
     @property
+    def day_of_week(self) -> series.Series:
+        return self.dayofweek
+
+    @property
     def dayofyear(self) -> series.Series:
         return self._apply_unary_op(ops.dayofyear_op)
+
+    @property
+    def day_of_year(self) -> series.Series:
+        return self.dayofyear
 
     @property
     def date(self) -> series.Series:
