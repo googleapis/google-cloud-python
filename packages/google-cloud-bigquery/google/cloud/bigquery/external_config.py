@@ -863,6 +863,21 @@ class ExternalConfig(object):
         self._properties["dateFormat"] = value
 
     @property
+    def datetime_format(self) -> Optional[str]:
+        """Optional[str]: Format used to parse DATETIME values. Supports C-style
+        and SQL-style values.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.datetime_format
+        """
+        result = self._properties.get("datetimeFormat")
+        return typing.cast(str, result)
+
+    @datetime_format.setter
+    def datetime_format(self, value: Optional[str]):
+        self._properties["datetimeFormat"] = value
+
+    @property
     def time_zone(self) -> Optional[str]:
         """Optional[str]: Time zone used when parsing timestamp values that do not
         have specific time zone information (e.g. 2024-04-20 12:34:56). The expected

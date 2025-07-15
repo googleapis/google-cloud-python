@@ -844,6 +844,22 @@ class TestLoadJobConfig(_Base):
         config.date_format = date_format
         self.assertEqual(config._properties["load"]["dateFormat"], date_format)
 
+    def test_datetime_format_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.datetime_format)
+
+    def test_datetime_format_hit(self):
+        datetime_format = "%Y-%m-%dT%H:%M:%S"
+        config = self._get_target_class()()
+        config._properties["load"]["datetimeFormat"] = datetime_format
+        self.assertEqual(config.datetime_format, datetime_format)
+
+    def test_datetime_format_setter(self):
+        datetime_format = "YYYY/MM/DD HH24:MI:SS"
+        config = self._get_target_class()()
+        config.datetime_format = datetime_format
+        self.assertEqual(config._properties["load"]["datetimeFormat"], datetime_format)
+
     def test_time_zone_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.time_zone)
