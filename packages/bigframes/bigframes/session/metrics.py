@@ -51,6 +51,9 @@ class ExecutionMetrics:
             write_stats_to_disk(len(query), total_bytes_processed)
             return
 
+        if query_job.configuration.dry_run:
+            write_stats_to_disk(len(query_job.query), 0, 0, 0)
+
         stats = get_performance_stats(query_job)
         if stats is not None:
             query_char_count, bytes_processed, slot_millis, execution_secs = stats

@@ -983,6 +983,8 @@ class GbqDataLoader:
             )
             job_config.dry_run = True
             query_job = self._bqclient.query(query, job_config=job_config)
+            if self._metrics is not None:
+                self._metrics.count_job_stats(query_job=query_job)
             return dry_runs.get_query_stats_with_inferred_dtypes(
                 query_job, list(columns), index_cols
             )

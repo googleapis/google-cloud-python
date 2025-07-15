@@ -100,7 +100,12 @@ def collect_benchmark_result(
             == len(local_seconds_files)
         ):
             raise ValueError(
-                "Mismatch in the number of report files for bytes, millis, seconds and query char count."
+                "Mismatch in the number of report files for bytes, millis, seconds and query char count: \n"
+                f"millis_files: {len(millis_files)}\n"
+                f"bq_seconds_files: {len(bq_seconds_files)}\n"
+                f"bytes_files: {len(bytes_files)}\n"
+                f"query_char_count_files: {len(query_char_count_files)}\n"
+                f"local_seconds_files: {len(local_seconds_files)}\n"
             )
 
         has_full_metrics = len(bq_seconds_files) == len(local_seconds_files)
