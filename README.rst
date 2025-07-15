@@ -1153,6 +1153,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `License Manager API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-licensemanager>`_
+     - preview
+     - |PyPI-google-cloud-licensemanager|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1659587>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1659587>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Life Sciences <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-life-sciences>`_
      - preview
      - |PyPI-google-cloud-life-sciences|
@@ -1898,6 +1904,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-kms-inventory
 .. |PyPI-google-maps-fleetengine-delivery| image:: https://img.shields.io/pypi/v/google-maps-fleetengine-delivery.svg
      :target: https://pypi.org/project/google-maps-fleetengine-delivery
+.. |PyPI-google-cloud-licensemanager| image:: https://img.shields.io/pypi/v/google-cloud-licensemanager.svg
+     :target: https://pypi.org/project/google-cloud-licensemanager
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
 .. |PyPI-google-maps-fleetengine| image:: https://img.shields.io/pypi/v/google-maps-fleetengine.svg
