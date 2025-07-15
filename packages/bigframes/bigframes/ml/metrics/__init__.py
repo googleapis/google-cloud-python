@@ -18,6 +18,7 @@ from bigframes.ml.metrics._metrics import (
     auc,
     confusion_matrix,
     f1_score,
+    mean_absolute_error,
     mean_squared_error,
     precision_score,
     r2_score,
@@ -36,6 +37,7 @@ __all__ = [
     "confusion_matrix",
     "precision_score",
     "f1_score",
+    "mean_absolute_error",
     "mean_squared_error",
     "pairwise",
 ]

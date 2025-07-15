@@ -344,3 +344,17 @@ def mean_squared_error(
 mean_squared_error.__doc__ = inspect.getdoc(
     vendored_metrics_regression.mean_squared_error
 )
+
+
+def mean_absolute_error(
+    y_true: Union[bpd.DataFrame, bpd.Series],
+    y_pred: Union[bpd.DataFrame, bpd.Series],
+) -> float:
+    y_true_series, y_pred_series = utils.batch_convert_to_series(y_true, y_pred)
+
+    return (y_pred_series - y_true_series).abs().sum() / len(y_true_series)
+
+
+mean_absolute_error.__doc__ = inspect.getdoc(
+    vendored_metrics_regression.mean_absolute_error
+)

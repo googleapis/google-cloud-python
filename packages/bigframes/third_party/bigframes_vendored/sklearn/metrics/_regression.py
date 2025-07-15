@@ -91,3 +91,30 @@ def mean_squared_error(y_true, y_pred) -> float:
         float: Mean squared error.
     """
     raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+
+def mean_absolute_error(y_true, y_pred) -> float:
+    """Mean absolute error regression loss.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
+        >>> bpd.options.display.progress_bar = None
+
+        >>> y_true = bpd.DataFrame([3, -0.5, 2, 7])
+        >>> y_pred = bpd.DataFrame([2.5, 0.0, 2, 8])
+        >>> mae = bigframes.ml.metrics.mean_absolute_error(y_true, y_pred)
+        >>> mae
+        np.float64(0.5)
+
+    Args:
+        y_true (Series or DataFrame of shape (n_samples,)):
+            Ground truth (correct) target values.
+        y_pred (Series or DataFrame of shape (n_samples,)):
+            Estimated target values.
+
+    Returns:
+        float: Mean absolute error.
+    """
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

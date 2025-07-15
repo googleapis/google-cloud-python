@@ -818,3 +818,10 @@ def test_mean_squared_error(session: bigframes.Session):
     df = session.read_pandas(pd_df)
     mse = metrics.mean_squared_error(df["y_true"], df["y_pred"])
     assert mse == 0.375
+
+
+def test_mean_absolute_error(session: bigframes.Session):
+    pd_df = pd.DataFrame({"y_true": [3, -0.5, 2, 7], "y_pred": [2.5, 0.0, 2, 8]})
+    df = session.read_pandas(pd_df)
+    mse = metrics.mean_absolute_error(df["y_true"], df["y_pred"])
+    assert mse == 0.5
