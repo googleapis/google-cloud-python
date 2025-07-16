@@ -1,0 +1,3 @@
+packages_to_onboard: [
+  "google-cloud-language"
+]
