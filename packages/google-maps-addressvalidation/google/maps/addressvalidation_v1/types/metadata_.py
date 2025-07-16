@@ -28,9 +28,9 @@ __protobuf__ = proto.module(
 
 
 class AddressMetadata(proto.Message):
-    r"""The metadata for the address. ``metadata`` is not guaranteed to be
-    fully populated for every address sent to the Address Validation
-    API.
+    r"""The metadata for the post-processed address. ``metadata`` is not
+    guaranteed to be fully populated for every address sent to the
+    Address Validation API.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
