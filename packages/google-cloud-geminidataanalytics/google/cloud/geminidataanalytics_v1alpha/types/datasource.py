@@ -290,7 +290,7 @@ class Datasource(proto.Message):
 
             This field is a member of `oneof`_ ``reference``.
         schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
-            Output only. The schema of the datasource.
+            Optional. The schema of the datasource.
     """
 
     bigquery_table_reference: "BigQueryTableReference" = proto.Field(
@@ -322,7 +322,7 @@ class Schema(proto.Message):
 
     Attributes:
         fields (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Field]):
-            Output only. The fields in the schema.
+            Optional. The fields in the schema.
         display_name (str):
             Optional. Table display_name (same as label in
             cloud/data_analytics/anarres/data/looker/proto/model_explore.proto),
@@ -345,20 +345,24 @@ class Field(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The name of the field.
+            Optional. The name of the field.
         type_ (str):
-            Output only. The type of the field.
+            Optional. The type of the field.
         description (str):
-            Output only. A brief description of the
-            field.
+            Optional. A brief description of the field.
         mode (str):
-            Output only. The mode of the field (e.g.,
+            Optional. The mode of the field (e.g.,
             NULLABLE, REPEATED).
         display_name (str):
             Optional. Field display_name (same as label in
         subfields (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Field]):
             Optional. Recursive property for nested
             schema structures.
+        category (str):
+            Optional. Field category, not required,
+            currently only useful for Looker. We are using a
+            string to avoid depending on an external package
+            and keep this package self-contained.
     """
 
     name: str = proto.Field(
@@ -385,6 +389,10 @@ class Field(proto.Message):
         proto.MESSAGE,
         number=9,
         message="Field",
+    )
+    category: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
 
 

@@ -41,11 +41,10 @@ class Conversation(proto.Message):
             name of a conversation. It's not expected to be
             set when creating a conversation.
         agents (MutableSequence[str]):
-            Required. Agent(s) in the conversation.
-            Currently, only one agent is supported. This
-            field is repeated to allow for future support of
-            multiple agents in a conversation. Format:
-            projects/{project}/locations/{location}/dataAgents/{agent}
+            Required. Agent(s) in the conversation. Currently, only one
+            agent is supported. This field is repeated to allow for
+            future support of multiple agents in a conversation. Format:
+            ``projects/{project}/locations/{location}/dataAgents/{agent}``
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation timestamp.
         last_used_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -88,9 +87,8 @@ class CreateConversationRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent value for
-            CreateConversationRequest. Format:
-            projects/{project}/locations/{location}
+            Required. Parent value for CreateConversationRequest.
+            Format: ``projects/{project}/locations/{location}``
         conversation_id (str):
             Optional. The conversation id of the
             conversation to create.
@@ -130,10 +128,8 @@ class GetConversationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the resource.
-            Format:
-
-            projects/{project}/locations/{location}/conversations/{conversation}
+            Required. Name of the resource. Format:
+            ``projects/{project}/locations/{location}/conversations/{conversation}``
     """
 
     name: str = proto.Field(
@@ -147,9 +143,8 @@ class ListConversationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent value for
-            ListConversationsRequest. Format:
-            projects/{project}/locations/{location}
+            Required. Parent value for ListConversationsRequest. Format:
+            ``projects/{project}/locations/{location}``
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. The max page
