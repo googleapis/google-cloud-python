@@ -28,17 +28,10 @@ RELEASE_PLEASE_MANIFEST_JSON = ROOT_DIR / ".release-please-manifest.json"
 GAPIC_METADATA_JSON = "gapic_metadata.json"
 
 
-def configure_state_yaml(package_dirs: List[Path]) -> None:
+def configure_state_yaml() -> None:
     """
     This method updates the `state.yaml` file in the directory
     `.librarian`.
-
-    Args:
-        package_dirs(List[pathlib.Path]): A list of Paths, one for each package in the
-            `packages/` folder whose entry will be updated in the `state.yaml`.
-
-    Returns:
-        None
     """
 
     state_dict = {}
@@ -83,22 +76,5 @@ def configure_state_yaml(package_dirs: List[Path]) -> None:
         yaml.dump(state_dict, f)
 
 
-def get_all_packages(packages_dir: Path = PACKAGES_DIR) -> List[Path]:
-    """
-    Walks through all API packages in the specified `packages_dir` path.
-
-    Args:
-        packages_dir(pathlib.Path): Path to the directory which contains packages.
-
-    Returns:
-        List[pathlib.Path] where each entry corresponds to a package within the
-            specified `packages_dir`.
-    """
-    if not Path(packages_dir).exists():
-        raise FileNotFoundError(f"Directory {packages_dir} not found")
-    return [obj.parents[0].resolve() for obj in packages_dir.rglob("**/.OwlBot.yaml")]
-
-
 if __name__ == "__main__":
-    package_dirs = get_all_packages()
-    configure_state_yaml(package_dirs)
+    configure_state_yaml()
