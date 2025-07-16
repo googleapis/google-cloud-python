@@ -72,7 +72,7 @@ class firestore_adminCallTransformer(cst.CSTTransformer):
         'list_indexes': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_user_creds': ('parent', ),
         'reset_user_password': ('name', ),
-        'restore_database': ('parent', 'database_id', 'backup', 'encryption_config', ),
+        'restore_database': ('parent', 'database_id', 'backup', 'encryption_config', 'tags', ),
         'update_backup_schedule': ('backup_schedule', 'update_mask', ),
         'update_database': ('database', 'update_mask', ),
         'update_field': ('field', 'update_mask', ),

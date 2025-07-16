@@ -1047,6 +1047,12 @@ class RestoreDatabaseRequest(proto.Message):
             If this field is not specified, the restored database will
             use the same encryption configuration as the backup, namely
             [use_source_encryption][google.firestore.admin.v1.Database.EncryptionConfig.use_source_encryption].
+        tags (MutableMapping[str, str]):
+            Optional. Immutable. Tags to be bound to the restored
+            database.
+
+            The tags should be provided in the format of
+            ``tagKeys/{tag_key_id} -> tagValues/{tag_value_id}``.
     """
 
     parent: str = proto.Field(
@@ -1065,6 +1071,11 @@ class RestoreDatabaseRequest(proto.Message):
         proto.MESSAGE,
         number=9,
         message=gfa_database.Database.EncryptionConfig,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
     )
 
 

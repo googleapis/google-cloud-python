@@ -119,6 +119,13 @@ class Database(proto.Message):
         source_info (google.cloud.firestore_admin_v1.types.Database.SourceInfo):
             Output only. Information about the provenance
             of this database.
+        tags (MutableMapping[str, str]):
+            Optional. Input only. Immutable. Tag
+            keys/values directly bound to this resource. For
+            example:
+
+              "123/environment": "production",
+              "123/costCenter": "marketing".
         free_tier (bool):
             Output only. Background: Free tier is the
             ability of a Firestore database to use a small
@@ -523,6 +530,11 @@ class Database(proto.Message):
         proto.MESSAGE,
         number=26,
         message=SourceInfo,
+    )
+    tags: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=29,
     )
     free_tier: bool = proto.Field(
         proto.BOOL,
