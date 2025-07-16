@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [0.10.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.18...google-cloud-run-v0.10.19) (2025-07-16)
+
+
+### Features
+
+* add new field `term_signal` to `.google.cloud.run.v2.TaskAttemptResult` ([078e0e2](https://github.com/googleapis/google-cloud-python/commit/078e0e2ccb5f59a9c78c89d63b7e57c9d7dca9c2))
+* support GPU zonal redundancy setting for Cloud Run jobs ([078e0e2](https://github.com/googleapis/google-cloud-python/commit/078e0e2ccb5f59a9c78c89d63b7e57c9d7dca9c2))
+
 ## [0.10.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.17...google-cloud-run-v0.10.18) (2025-05-15)
 
 
