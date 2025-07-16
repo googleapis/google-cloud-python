@@ -1642,9 +1642,15 @@
             "extra-files": [
                 "google/cloud/geminidataanalytics/gapic_version.py",
                 "google/cloud/geminidataanalytics_v1alpha/gapic_version.py",
+                "google/cloud/geminidataanalytics_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.geminidataanalytics.v1alpha.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.geminidataanalytics.v1beta.json",
                     "type": "json"
                 }
             ],
@@ -2170,10 +2176,16 @@
             "extra-files": [
                 "google/cloud/network_security/gapic_version.py",
                 "google/cloud/network_security_v1/gapic_version.py",
+                "google/cloud/network_security_v1alpha1/gapic_version.py",
                 "google/cloud/network_security_v1beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.networksecurity.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networksecurity.v1alpha1.json",
                     "type": "json"
                 },
                 {
