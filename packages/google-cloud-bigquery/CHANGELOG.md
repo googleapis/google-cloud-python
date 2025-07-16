@@ -5,6 +5,34 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.35.0](https://github.com/googleapis/python-bigquery/compare/v3.34.0...v3.35.0) (2025-07-15)
+
+
+### Features
+
+* Add null_markers property to LoadJobConfig and CSVOptions ([#2239](https://github.com/googleapis/python-bigquery/issues/2239)) ([289446d](https://github.com/googleapis/python-bigquery/commit/289446dd8c356d11a0b63b8e6275629b1ae5dc08))
+* Add total slot ms to RowIterator ([#2233](https://github.com/googleapis/python-bigquery/issues/2233)) ([d44bf02](https://github.com/googleapis/python-bigquery/commit/d44bf0231e6e96369e4e03667a3f96618fb664e2))
+* Add UpdateMode to update_dataset ([#2204](https://github.com/googleapis/python-bigquery/issues/2204)) ([eb9c2af](https://github.com/googleapis/python-bigquery/commit/eb9c2aff242c5107f968bbd8b6a9d30cecc877f6))
+* Adds dataset_view parameter to get_dataset method ([#2198](https://github.com/googleapis/python-bigquery/issues/2198)) ([28a5750](https://github.com/googleapis/python-bigquery/commit/28a5750d455f0381548df6f9b1f7661823837d81))
+* Adds date_format to load job and external config ([#2231](https://github.com/googleapis/python-bigquery/issues/2231)) ([7d31828](https://github.com/googleapis/python-bigquery/commit/7d3182802deccfceb0646b87fc8d12275d0a569b))
+* Adds datetime_format as an option ([#2236](https://github.com/googleapis/python-bigquery/issues/2236)) ([54d3dc6](https://github.com/googleapis/python-bigquery/commit/54d3dc66244d50a031e3c80d43d372d2743ecbc3))
+* Adds source_column_match and associated tests ([#2227](https://github.com/googleapis/python-bigquery/issues/2227)) ([6d5d236](https://github.com/googleapis/python-bigquery/commit/6d5d23685cd457d85955356705c1101e9ec3cdcd))
+* Adds time_format and timestamp_format and associated tests ([#2238](https://github.com/googleapis/python-bigquery/issues/2238)) ([371ad29](https://github.com/googleapis/python-bigquery/commit/371ad292df537278767dba71d81822ed57dd8e7d))
+* Adds time_zone to external config and load job ([#2229](https://github.com/googleapis/python-bigquery/issues/2229)) ([b2300d0](https://github.com/googleapis/python-bigquery/commit/b2300d032843512b7e4a5703377632fe60ef3f8d))
+
+
+### Bug Fixes
+
+* Adds magics.context.project to eliminate issues with unit tests … ([#2228](https://github.com/googleapis/python-bigquery/issues/2228)) ([27ff3a8](https://github.com/googleapis/python-bigquery/commit/27ff3a89a5f97305fa3ff673aa9183baa7df200f))
+* Fix rows returned when both start_index and page_size are provided ([#2181](https://github.com/googleapis/python-bigquery/issues/2181)) ([45643a2](https://github.com/googleapis/python-bigquery/commit/45643a2e20ce5d503118522dd195aeca00dec3bc))
+* Make AccessEntry equality consistent with from_api_repr ([#2218](https://github.com/googleapis/python-bigquery/issues/2218)) ([4941de4](https://github.com/googleapis/python-bigquery/commit/4941de441cb32cabeb55ec0320f305fb62551155))
+* Update type hints for various BigQuery files ([#2206](https://github.com/googleapis/python-bigquery/issues/2206)) ([b863291](https://github.com/googleapis/python-bigquery/commit/b86329188ba35e61871db82ae1d95d2a576eed1b))
+
+
+### Documentation
+
+* Improve clarity of "Output Only" fields in Dataset class ([#2201](https://github.com/googleapis/python-bigquery/issues/2201)) ([bd5aba8](https://github.com/googleapis/python-bigquery/commit/bd5aba8ba40c2f35fb672a68eed11d6baedb304f))
+
 ## [3.34.0](https://github.com/googleapis/python-bigquery/compare/v3.33.0...v3.34.0) (2025-05-27)
 
 
