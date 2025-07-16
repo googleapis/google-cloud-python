@@ -78,6 +78,11 @@ class TaskTemplate(proto.Message):
         node_selector (google.cloud.run_v2.types.NodeSelector):
             Optional. The node selector for the task
             template.
+        gpu_zonal_redundancy_disabled (bool):
+            Optional. True if GPU zonal redundancy is
+            disabled on this task template.
+
+            This field is a member of `oneof`_ ``_gpu_zonal_redundancy_disabled``.
     """
 
     containers: MutableSequence[k8s_min.Container] = proto.RepeatedField(
@@ -122,6 +127,11 @@ class TaskTemplate(proto.Message):
         proto.MESSAGE,
         number=11,
         message=vendor_settings.NodeSelector,
+    )
+    gpu_zonal_redundancy_disabled: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+        optional=True,
     )
 
 

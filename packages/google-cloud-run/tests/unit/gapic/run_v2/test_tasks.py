@@ -1078,6 +1078,7 @@ def test_get_task(request_type, transport: str = "grpc"):
             encryption_key="encryption_key_value",
             log_uri="log_uri_value",
             satisfies_pzs=True,
+            gpu_zonal_redundancy_disabled=True,
             etag="etag_value",
         )
         response = client.get_task(request)
@@ -1108,6 +1109,7 @@ def test_get_task(request_type, transport: str = "grpc"):
     assert response.encryption_key == "encryption_key_value"
     assert response.log_uri == "log_uri_value"
     assert response.satisfies_pzs is True
+    assert response.gpu_zonal_redundancy_disabled is True
     assert response.etag == "etag_value"
 
 
@@ -1247,6 +1249,7 @@ async def test_get_task_async(
                 encryption_key="encryption_key_value",
                 log_uri="log_uri_value",
                 satisfies_pzs=True,
+                gpu_zonal_redundancy_disabled=True,
                 etag="etag_value",
             )
         )
@@ -1278,6 +1281,7 @@ async def test_get_task_async(
     assert response.encryption_key == "encryption_key_value"
     assert response.log_uri == "log_uri_value"
     assert response.satisfies_pzs is True
+    assert response.gpu_zonal_redundancy_disabled is True
     assert response.etag == "etag_value"
 
 
@@ -2569,6 +2573,7 @@ async def test_get_task_empty_call_grpc_asyncio():
                 encryption_key="encryption_key_value",
                 log_uri="log_uri_value",
                 satisfies_pzs=True,
+                gpu_zonal_redundancy_disabled=True,
                 etag="etag_value",
             )
         )
@@ -2678,6 +2683,7 @@ def test_get_task_rest_call_success(request_type):
             encryption_key="encryption_key_value",
             log_uri="log_uri_value",
             satisfies_pzs=True,
+            gpu_zonal_redundancy_disabled=True,
             etag="etag_value",
         )
 
@@ -2713,6 +2719,7 @@ def test_get_task_rest_call_success(request_type):
     assert response.encryption_key == "encryption_key_value"
     assert response.log_uri == "log_uri_value"
     assert response.satisfies_pzs is True
+    assert response.gpu_zonal_redundancy_disabled is True
     assert response.etag == "etag_value"
 
 
