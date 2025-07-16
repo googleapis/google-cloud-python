@@ -702,6 +702,9 @@ class FunctionSession:
         bigquery_connection: Optional[str] = None,
         name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
+        max_batching_rows: Optional[int] = None,
+        container_cpu: Optional[float] = None,
+        container_memory: Optional[str] = None,
     ):
         """Decorator to turn a Python user defined function (udf) into a
         BigQuery managed function.
@@ -769,6 +772,21 @@ class FunctionSession:
                 dependency is added to the `requirements.txt` as is, and can be
                 of the form supported in
                 https://pip.pypa.io/en/stable/reference/requirements-file-format/.
+            max_batching_rows (int, Optional):
+                The maximum number of rows in each batch. If you specify
+                max_batching_rows, BigQuery determines the number of rows in a
+                batch, up to the max_batching_rows limit. If max_batching_rows
+                is not specified, the number of rows to batch is determined
+                automatically.
+            container_cpu (float, Optional):
+                The CPU limits for containers that run Python UDFs. By default,
+                the CPU allocated is 0.33 vCPU. See details at
+                https://cloud.google.com/bigquery/docs/user-defined-functions-python#configure-container-limits.
+            container_memory (str, Optional):
+                The memory limits for containers that run Python UDFs. By
+                default, the memory allocated to each container instance is
+                512 MiB. See details at
+                https://cloud.google.com/bigquery/docs/user-defined-functions-python#configure-container-limits.
         """
 
         warnings.warn("udf is in preview.", category=bfe.PreviewWarning, stacklevel=5)
@@ -854,6 +872,9 @@ class FunctionSession:
                 output_type=udf_sig.sql_output_type,
                 name=name,
                 packages=packages,
+                max_batching_rows=max_batching_rows,
+                container_cpu=container_cpu,
+                container_memory=container_memory,
                 is_row_processor=is_row_processor,
                 bq_connection_id=bq_connection_id,
             )

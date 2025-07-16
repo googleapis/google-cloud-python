@@ -142,6 +142,9 @@ def udf(
     bigquery_connection: Optional[str] = None,
     name: str,
     packages: Optional[Sequence[str]] = None,
+    max_batching_rows: Optional[int] = None,
+    container_cpu: Optional[float] = None,
+    container_memory: Optional[str] = None,
 ):
     return global_session.with_default_session(
         bigframes.session.Session.udf,
@@ -151,6 +154,9 @@ def udf(
         bigquery_connection=bigquery_connection,
         name=name,
         packages=packages,
+        max_batching_rows=max_batching_rows,
+        container_cpu=container_cpu,
+        container_memory=container_memory,
     )
 
 

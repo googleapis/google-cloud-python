@@ -202,6 +202,9 @@ class FunctionClient:
         output_type: str,
         name: Optional[str],
         packages: Optional[Sequence[str]],
+        max_batching_rows: Optional[int],
+        container_cpu: Optional[float],
+        container_memory: Optional[str],
         is_row_processor: bool,
         bq_connection_id,
         *,
@@ -234,6 +237,12 @@ class FunctionClient:
             "runtime_version": _MANAGED_FUNC_PYTHON_VERSION,
             "entry_point": "bigframes_handler",
         }
+        if max_batching_rows:
+            managed_function_options["max_batching_rows"] = max_batching_rows
+        if container_cpu:
+            managed_function_options["container_cpu"] = container_cpu
+        if container_memory:
+            managed_function_options["container_memory"] = container_memory
 
         # Augment user package requirements with any internal package
         # requirements.
