@@ -2255,10 +2255,7 @@ class Bucket(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     ):
-        """Move a blob to a new name within a single HNS bucket.
-
-        *This feature is currently only supported for HNS (Heirarchical
-        Namespace) buckets.*
+        """Move a blob to a new name atomically.
 
         If :attr:`user_project` is set on the bucket, bills the API request to that project.
 
