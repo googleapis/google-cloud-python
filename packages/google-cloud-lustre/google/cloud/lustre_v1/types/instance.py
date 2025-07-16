@@ -78,7 +78,8 @@ class Instance(proto.Message):
         gke_support_enabled (bool):
             Optional. Indicates whether you want to
             enable support for GKE clients. By default, GKE
-            clients are not supported.
+            clients are not supported. Deprecated. No longer
+            required for GKE instance creation.
     """
 
     class State(proto.Enum):
@@ -100,6 +101,8 @@ class Instance(proto.Message):
                 The instance is being repaired.
             STOPPED (6):
                 The instance is stopped.
+            UPDATING (7):
+                The instance is being updated.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
@@ -108,6 +111,7 @@ class Instance(proto.Message):
         UPGRADING = 4
         REPAIRING = 5
         STOPPED = 6
+        UPDATING = 7
 
     name: str = proto.Field(
         proto.STRING,
