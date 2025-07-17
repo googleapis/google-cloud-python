@@ -1707,7 +1707,7 @@ def test_df_apply_axis_1_aggregates(session, scalars_dfs):
                 {
                     "dtype": row.dtype,
                     "count": row.count(),
-                    "min": row.max(),
+                    "min": row.min(),
                     "max": row.max(),
                     "mean": row.mean(),
                     "std": row.std(),
