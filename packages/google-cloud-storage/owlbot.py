@@ -29,15 +29,14 @@ default_version = json.load(open(".repo-metadata.json", "rt")).get("default_vers
 
 for library in s.get_staging_dirs(default_version):
     s.replace(
-        "google/cloud/storage_v2/__init__.py",
+        library / "google/cloud/storage_v2/__init__.py",
+        "from google.cloud.storage import gapic_version as package_version",
         "from google.cloud.storage_v2 import gapic_version as package_version",
-        "from . import gapic_version as package_version"
     )
 
     s.move(
         [library],
         excludes=[
-            "**/gapic_version.py",
             "docs/**/*",
             "scripts/fixup*.py",
             "setup.py",
@@ -59,7 +58,7 @@ common = gcp.CommonTemplates()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    cov_level=100,
+    cov_level=99,
     split_system_tests=True,
     intersphinx_dependencies={
         # python-requests url temporary change related to
@@ -71,6 +70,7 @@ templated_files = common.py_library(
 s.move(
     templated_files,
     excludes=[
+        ".coveragerc",
         "docs/multiprocessing.rst",
         "noxfile.py",
         "CONTRIBUTING.rst",

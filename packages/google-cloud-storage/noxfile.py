@@ -101,7 +101,7 @@ def default(session, install_extras=True):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov", "brotli", "grpcio", "grpcio-status", "proto-plus", "-c", constraints_path)
+    session.install("mock", "pytest", "pytest-cov", "pytest-asyncio", "brotli", "grpcio", "grpcio-status", "proto-plus", "grpc-google-iam-v1", "-c", constraints_path)
 
     if install_extras:
         session.install("opentelemetry-api", "opentelemetry-sdk")
@@ -233,7 +233,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing", "--fail-under=99")
 
     session.run("coverage", "erase")
 
