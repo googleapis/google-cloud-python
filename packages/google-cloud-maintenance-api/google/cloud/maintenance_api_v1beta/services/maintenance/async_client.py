@@ -351,6 +351,8 @@ class MaintenanceAsyncClient:
 
         Returns:
             google.cloud.maintenance_api_v1beta.services.maintenance.pagers.SummarizeMaintenancesAsyncPager:
+                Request message for
+                SummarizeMaintenances custom method.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

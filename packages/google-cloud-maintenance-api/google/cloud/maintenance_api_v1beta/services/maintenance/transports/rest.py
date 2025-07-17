@@ -753,6 +753,8 @@ class MaintenanceRestTransport(_BaseMaintenanceRestTransport):
 
             Returns:
                 ~.maintenance_service.SummarizeMaintenancesResponse:
+                    Request message for
+                SummarizeMaintenances custom method.
 
             """
 
