@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-lustre-v0.1.1...google-cloud-lustre-v0.1.2) (2025-07-16)
+
+
+### Features
+
+* add a new instance state UPDATING ([10d3aa9](https://github.com/googleapis/google-cloud-python/commit/10d3aa9b31b8e43e8e981bf18c9f3494583834d1))
+
+
+### Documentation
+
+* deprecate gke_support_enabled flag ([10d3aa9](https://github.com/googleapis/google-cloud-python/commit/10d3aa9b31b8e43e8e981bf18c9f3494583834d1))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-lustre-v0.1.0...google-cloud-lustre-v0.1.1) (2025-06-05)
 
 

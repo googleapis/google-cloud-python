@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.20](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.19...google-maps-addressvalidation-v0.3.20) (2025-07-16)
+
+
+### Features
+
+* add has_spell_corrected_components field to the Address Validation verdict in the API response ([07eae34](https://github.com/googleapis/google-cloud-python/commit/07eae3433833700a6d9effba92e2b241b77d9b0b))
+
+
+### Documentation
+
+* update proto field descriptions ([07eae34](https://github.com/googleapis/google-cloud-python/commit/07eae3433833700a6d9effba92e2b241b77d9b0b))
+
 ## [0.3.19](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.18...google-maps-addressvalidation-v0.3.19) (2025-06-11)
 
 

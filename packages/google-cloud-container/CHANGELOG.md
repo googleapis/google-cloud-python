@@ -4,6 +4,48 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.58.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.57.0...google-cloud-container-v2.58.0) (2025-07-16)
+
+
+### Features
+
+* A new enum `Mode` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new enum `TransparentHugepageDefrag` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new enum `TransparentHugepageEnabled` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `additional_ip_ranges_configs` is added to message `.google.container.v1.IPAllocationPolicy` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `auto_ipam_config` is added to message `.google.container.v1.IPAllocationPolicy` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `boot_disk` is added to message `.google.container.v1.NodeConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `boot_disk` is added to message `.google.container.v1.UpdateNodePoolRequest` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `default_compute_class_config` is added to message `.google.container.v1.ClusterAutoscaling` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `desired_additional_ip_ranges_config` is added to message `.google.container.v1.ClusterUpdate` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `desired_auto_ipam_config` is added to message `.google.container.v1.ClusterUpdate` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `desired_user_managed_keys_config` is added to message `.google.container.v1.ClusterUpdate` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `eviction_max_pod_grace_period_seconds` is added to message `.google.container.v1.NodeKubeletConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `eviction_minimum_reclaim` is added to message `.google.container.v1.NodeKubeletConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `eviction_soft_grace_period` is added to message `.google.container.v1.NodeKubeletConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `eviction_soft` is added to message `.google.container.v1.NodeKubeletConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `gke_auto_upgrade_config` is added to message `.google.container.v1.Cluster` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `gke_auto_upgrade_config` is added to message `.google.container.v1.ClusterUpdate` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `lustre_csi_driver_config` is added to message `.google.container.v1.AddonsConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `max_parallel_image_pulls` is added to message `.google.container.v1.NodeKubeletConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `min_node_cpus` is added to message `.google.container.v1.SoleTenantConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `mode` is added to message `.google.container.v1.AnonymousAuthenticationConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `single_process_oom_kill` is added to message `.google.container.v1.NodeKubeletConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `subnetwork` is added to message `.google.container.v1.NodeNetworkConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `transparent_hugepage_defrag` is added to message `.google.container.v1.LinuxNodeConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new field `transparent_hugepage_enabled` is added to message `.google.container.v1.LinuxNodeConfig` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `AdditionalIPRangesConfig` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `AutoIpamConfig` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `BootDisk` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `DefaultComputeClassConfig` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `DesiredAdditionalIPRangesConfig` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `EvictionGracePeriod` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `EvictionMinimumReclaim` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `EvictionSignals` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `GkeAutoUpgradeConfig` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new message `LustreCsiDriverConfig` is added ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+* A new value `CLOUD_KMS_KEY_DESTROYED` is added to enum `Code` ([f4d2243](https://github.com/googleapis/google-cloud-python/commit/f4d2243ec503df329818db074d349679cc442d9c))
+
 ## [2.57.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.56.1...google-cloud-container-v2.57.0) (2025-05-26)
 
 
