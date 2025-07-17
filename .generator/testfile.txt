@@ -1,0 +1,2 @@
+# google-cloud-language    # google/cloud/language/v1
+# api_path = f"google/cloud/{library_id.split('-')[-1]}/v1"

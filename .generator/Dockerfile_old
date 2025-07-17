@@ -1,0 +1,80 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+FROM marketplace.gcr.io/google/ubuntu2404 AS build
+
+# https://devguide.python.org/getting-started/setup-building/#install-dependencies build-essential to libzstd-dev are optional.
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get install -y \
+    build-essential \
+    gdb \
+    lcov \
+    pkg-config \
+    libbz2-dev \
+    libffi-dev \
+    libgdbm-dev \
+    libgdbm-compat-dev \
+    liblzma-dev \
+    libncurses5-dev \
+    libreadline6-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    lzma \ 
+    lzma-dev \
+    tk-dev \
+    uuid-dev \
+    zlib1g-dev \
+    libzstd-dev \
+    wget \
+    zip \
+    && apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -f /var/cache/apt/archives/*.deb 
+
+
+# Download/install protoc
+RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
+RUN unzip protoc-25.3-linux-x86_64.zip -d protoc
+RUN mv protoc/bin/* /usr/local/bin/
+RUN mv protoc/include/* /usr/local/include/
+RUN chmod +x /usr/local/bin/protoc
+ENV PATH="/usr/bin:${PATH}"
+
+# Download bazelisk
+RUN wget -L https://github.com/bazelbuild/bazelisk/releases/download/v1.26.0/bazelisk-linux-amd64 -o bazelisk
+RUN chmod +x bazelisk
+
+# TODO: Configure user to avoid running as root
+ENV USER myuser
+WORKDIR /
+
+
+###################### Install python 3.13.5
+# TODO: Use an ENV variable for specifying the Python version.
+
+# Download python 3.13.5
+RUN wget https://www.python.org/ftp/python/3.13.5/Python-3.13.5.tgz
+
+# Extract files
+RUN tar -xvf Python-3.13.5.tgz
+
+# Install python 3.13
+RUN ./Python-3.13.5/configure --enable-optimizations
+RUN make altinstall
+
+# COPY requirements.in /requirements.in
+# RUN pip install -r requirements.in
