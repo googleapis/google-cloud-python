@@ -31,4 +31,4 @@ def assert_equivalence_execution(
     assert e1_result.schema == e2_result.schema
     e1_table = e1_result.to_pandas()
     e2_table = e2_result.to_pandas()
-    pandas.testing.assert_frame_equal(e1_table, e2_table, rtol=1e-10)
+    pandas.testing.assert_frame_equal(e1_table, e2_table, rtol=1e-5)

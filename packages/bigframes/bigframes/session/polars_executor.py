@@ -21,6 +21,7 @@ import pyarrow as pa
 from bigframes.core import array_value, bigframe_node, expression, local_data, nodes
 import bigframes.operations
 from bigframes.operations import aggregations as agg_ops
+from bigframes.operations import comparison_ops, numeric_ops
 from bigframes.session import executor, semi_executor
 
 if TYPE_CHECKING:
@@ -41,13 +42,19 @@ _COMPATIBLE_NODES = (
 )
 
 _COMPATIBLE_SCALAR_OPS = (
-    bigframes.operations.eq_op,
-    bigframes.operations.eq_null_match_op,
-    bigframes.operations.ne_op,
-    bigframes.operations.gt_op,
-    bigframes.operations.lt_op,
-    bigframes.operations.ge_op,
-    bigframes.operations.le_op,
+    comparison_ops.EqOp,
+    comparison_ops.EqNullsMatchOp,
+    comparison_ops.NeOp,
+    comparison_ops.LtOp,
+    comparison_ops.GtOp,
+    comparison_ops.LeOp,
+    comparison_ops.GeOp,
+    numeric_ops.AddOp,
+    numeric_ops.SubOp,
+    numeric_ops.MulOp,
+    numeric_ops.DivOp,
+    numeric_ops.FloorDivOp,
+    numeric_ops.ModOp,
 )
 _COMPATIBLE_AGG_OPS = (
     agg_ops.SizeOp,
@@ -74,7 +81,7 @@ def _is_node_polars_executable(node: nodes.BigFrameNode):
             if not type(expr.op) in _COMPATIBLE_AGG_OPS:
                 return False
         if isinstance(expr, expression.Expression):
-            if not _get_expr_ops(expr).issubset(_COMPATIBLE_SCALAR_OPS):
+            if not set(map(type, _get_expr_ops(expr))).issubset(_COMPATIBLE_SCALAR_OPS):
                 return False
     return True
 
@@ -117,7 +124,8 @@ class PolarsExecutor(semi_executor.SemiExecutor):
     def _adapt_array(self, array: pa.Array) -> pa.Array:
         target_type = local_data.logical_type_replacements(array.type)
         if target_type != array.type:
-            return array.cast(target_type)
+            # Safe is false to handle weird polars decimal scaling
+            return array.cast(target_type, safe=False)
         return array
 
     def _adapt_batch(self, batch: pa.RecordBatch) -> pa.RecordBatch:

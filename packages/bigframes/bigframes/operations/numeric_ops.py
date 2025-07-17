@@ -140,7 +140,8 @@ class AddOp(base_ops.BinaryOp):
     def output_type(self, *input_types):
         left_type = input_types[0]
         right_type = input_types[1]
-        if all(map(dtypes.is_string_like, input_types)) and len(set(input_types)) == 1:
+        # TODO: Binary/bytes addition requires impl
+        if all(map(lambda t: t == dtypes.STRING_DTYPE, input_types)):
             # String addition
             return input_types[0]
 
@@ -179,7 +180,10 @@ class SubOp(base_ops.BinaryOp):
         left_type = input_types[0]
         right_type = input_types[1]
 
-        if dtypes.is_datetime_like(left_type) and dtypes.is_datetime_like(right_type):
+        if left_type == dtypes.DATETIME_DTYPE and right_type == dtypes.DATETIME_DTYPE:
+            return dtypes.TIMEDELTA_DTYPE
+
+        if left_type == dtypes.TIMESTAMP_DTYPE and right_type == dtypes.TIMESTAMP_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
 
         if left_type == dtypes.DATE_DTYPE and right_type == dtypes.DATE_DTYPE:
@@ -193,6 +197,9 @@ class SubOp(base_ops.BinaryOp):
 
         if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
+
+        if left_type == dtypes.BOOL_DTYPE and right_type == dtypes.BOOL_DTYPE:
+            raise TypeError(f"Cannot subtract dtypes {left_type} and {right_type}")
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (
             right_type is None or dtypes.is_numeric(right_type)
@@ -214,9 +221,15 @@ class MulOp(base_ops.BinaryOp):
         left_type = input_types[0]
         right_type = input_types[1]
 
-        if left_type == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
+        if left_type == dtypes.TIMEDELTA_DTYPE and right_type in (
+            dtypes.INT_DTYPE,
+            dtypes.FLOAT_DTYPE,
+        ):
             return dtypes.TIMEDELTA_DTYPE
-        if dtypes.is_numeric(left_type) and right_type == dtypes.TIMEDELTA_DTYPE:
+        if (
+            left_type in (dtypes.INT_DTYPE, dtypes.FLOAT_DTYPE)
+            and right_type == dtypes.TIMEDELTA_DTYPE
+        ):
             return dtypes.TIMEDELTA_DTYPE
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (
@@ -239,10 +252,14 @@ class DivOp(base_ops.BinaryOp):
         right_type = input_types[1]
 
         if left_type == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
+            # will fail outright if result undefined or otherwise can't be coerced back into an int
             return dtypes.TIMEDELTA_DTYPE
 
         if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.FLOAT_DTYPE
+
+        if left_type == dtypes.BOOL_DTYPE and right_type == dtypes.BOOL_DTYPE:
+            raise TypeError(f"Cannot divide dtypes {left_type} and {right_type}")
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (
             right_type is None or dtypes.is_numeric(right_type)
@@ -265,11 +282,14 @@ class FloorDivOp(base_ops.BinaryOp):
         left_type = input_types[0]
         right_type = input_types[1]
 
+        if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
+            return dtypes.INT_DTYPE
+
         if left_type == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right_type):
             return dtypes.TIMEDELTA_DTYPE
 
-        if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
-            return dtypes.INT_DTYPE
+        if left_type == dtypes.BOOL_DTYPE and right_type == dtypes.BOOL_DTYPE:
+            raise TypeError(f"Cannot floor divide dtypes {left_type} and {right_type}")
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (
             right_type is None or dtypes.is_numeric(right_type)
@@ -292,6 +312,14 @@ class ModOp(base_ops.BinaryOp):
 
         if left_type == dtypes.TIMEDELTA_DTYPE and right_type == dtypes.TIMEDELTA_DTYPE:
             return dtypes.TIMEDELTA_DTYPE
+        if left_type in (
+            dtypes.NUMERIC_DTYPE,
+            dtypes.BIGNUMERIC_DTYPE,
+        ) or right_type in (dtypes.NUMERIC_DTYPE, dtypes.BIGNUMERIC_DTYPE):
+            raise TypeError(f"Cannot mod dtypes {left_type} and {right_type}")
+
+        if left_type == dtypes.BOOL_DTYPE and right_type == dtypes.BOOL_DTYPE:
+            raise TypeError(f"Cannot mod dtypes {left_type} and {right_type}")
 
         if (left_type is None or dtypes.is_numeric(left_type)) and (
             right_type is None or dtypes.is_numeric(right_type)
