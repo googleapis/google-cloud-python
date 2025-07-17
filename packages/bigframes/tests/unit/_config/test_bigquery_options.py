@@ -58,6 +58,18 @@ def test_setter_raises_if_session_started(attribute, original_value, new_value):
     assert getattr(options, attribute) is not new_value
 
 
+def test_location_set_us_twice():
+    """This test ensures the fix for b/423220936 is working as expected."""
+    options = bigquery_options.BigQueryOptions()
+    setattr(options, "location", "us")
+    assert getattr(options, "location") == "US"
+
+    options._session_started = True
+
+    setattr(options, "location", "us")
+    assert getattr(options, "location") == "US"
+
+
 @pytest.mark.parametrize(
     [
         "attribute",

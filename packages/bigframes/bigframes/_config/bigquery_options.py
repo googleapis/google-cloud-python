@@ -171,7 +171,7 @@ class BigQueryOptions:
 
     @location.setter
     def location(self, value: Optional[str]):
-        if self._session_started and self._location != value:
+        if self._session_started and self._location != _get_validated_location(value):
             raise ValueError(SESSION_STARTED_MESSAGE.format(attribute="location"))
         self._location = _get_validated_location(value)
 
