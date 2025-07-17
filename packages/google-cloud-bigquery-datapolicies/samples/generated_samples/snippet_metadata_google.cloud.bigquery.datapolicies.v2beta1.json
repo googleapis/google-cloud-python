@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.cloud.bigquery.datapolicies.v1",
-        "version": "v1"
+        "id": "google.cloud.bigquery.datapolicies.v2beta1",
+        "version": "v2beta1"
       }
     ],
     "language": "PYTHON",
@@ -16,30 +16,30 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient.create_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.add_grantees",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.CreateDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.AddGrantees",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
-          "shortName": "CreateDataPolicy"
+          "shortName": "AddGrantees"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.CreateDataPolicyRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.AddGranteesRequest"
           },
           {
             "name": "data_policy",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy"
+            "type": "str"
+          },
+          {
+            "name": "grantees",
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -54,22 +54,22 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy",
-        "shortName": "create_data_policy"
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
+        "shortName": "add_grantees"
       },
-      "description": "Sample for CreateDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_create_data_policy_async.py",
+      "description": "Sample for AddGrantees",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_add_grantees_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_CreateDataPolicy_async",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_AddGrantees_async",
       "segments": [
         {
-          "end": 56,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -79,51 +79,51 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 46,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 51,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_create_data_policy_async.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_add_grantees_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient.create_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.add_grantees",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.CreateDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.AddGrantees",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
-          "shortName": "CreateDataPolicy"
+          "shortName": "AddGrantees"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.CreateDataPolicyRequest"
-          },
-          {
-            "name": "parent",
-            "type": "str"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.AddGranteesRequest"
           },
           {
             "name": "data_policy",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy"
+            "type": "str"
+          },
+          {
+            "name": "grantees",
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -138,22 +138,22 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy",
-        "shortName": "create_data_policy"
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
+        "shortName": "add_grantees"
       },
-      "description": "Sample for CreateDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_create_data_policy_sync.py",
+      "description": "Sample for AddGrantees",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_add_grantees_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_CreateDataPolicy_sync",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_AddGrantees_sync",
       "segments": [
         {
-          "end": 56,
+          "end": 52,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 56,
+          "end": 52,
           "start": 27,
           "type": "SHORT"
         },
@@ -163,36 +163,213 @@
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 50,
+          "end": 46,
           "start": 41,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 53,
-          "start": 51,
+          "end": 49,
+          "start": 47,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 57,
-          "start": 54,
+          "end": 53,
+          "start": 50,
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_create_data_policy_sync.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_add_grantees_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient.delete_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.create_data_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.DeleteDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.CreateDataPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
+            "shortName": "DataPolicyService"
+          },
+          "shortName": "CreateDataPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.CreateDataPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_policy",
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy"
+          },
+          {
+            "name": "data_policy_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
+        "shortName": "create_data_policy"
+      },
+      "description": "Sample for CreateDataPolicy",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_create_data_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_CreateDataPolicy_async",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_create_data_policy_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
+          "shortName": "DataPolicyServiceClient"
+        },
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.create_data_policy",
+        "method": {
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.CreateDataPolicy",
+          "service": {
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
+            "shortName": "DataPolicyService"
+          },
+          "shortName": "CreateDataPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.CreateDataPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_policy",
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy"
+          },
+          {
+            "name": "data_policy_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
+        "shortName": "create_data_policy"
+      },
+      "description": "Sample for CreateDataPolicy",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_create_data_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_CreateDataPolicy_sync",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_create_data_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
+          "shortName": "DataPolicyServiceAsyncClient"
+        },
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.delete_data_policy",
+        "method": {
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.DeleteDataPolicy",
+          "service": {
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "DeleteDataPolicy"
@@ -200,7 +377,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.DeleteDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DeleteDataPolicyRequest"
           },
           {
             "name": "name",
@@ -222,10 +399,10 @@
         "shortName": "delete_data_policy"
       },
       "description": "Sample for DeleteDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_delete_data_policy_async.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_delete_data_policy_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_DeleteDataPolicy_async",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_DeleteDataPolicy_async",
       "segments": [
         {
           "end": 49,
@@ -256,20 +433,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_delete_data_policy_async.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_delete_data_policy_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient.delete_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.delete_data_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.DeleteDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.DeleteDataPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "DeleteDataPolicy"
@@ -277,7 +454,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.DeleteDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DeleteDataPolicyRequest"
           },
           {
             "name": "name",
@@ -299,10 +476,10 @@
         "shortName": "delete_data_policy"
       },
       "description": "Sample for DeleteDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_delete_data_policy_sync.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_delete_data_policy_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_DeleteDataPolicy_sync",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_DeleteDataPolicy_sync",
       "segments": [
         {
           "end": 49,
@@ -333,21 +510,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_delete_data_policy_sync.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_delete_data_policy_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient.get_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.get_data_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.GetDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.GetDataPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "GetDataPolicy"
@@ -355,7 +532,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.GetDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.GetDataPolicyRequest"
           },
           {
             "name": "name",
@@ -374,14 +551,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "get_data_policy"
       },
       "description": "Sample for GetDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_get_data_policy_async.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_get_data_policy_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_GetDataPolicy_async",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_GetDataPolicy_async",
       "segments": [
         {
           "end": 51,
@@ -414,20 +591,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_get_data_policy_async.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_get_data_policy_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient.get_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.get_data_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.GetDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.GetDataPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "GetDataPolicy"
@@ -435,7 +612,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.GetDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.GetDataPolicyRequest"
           },
           {
             "name": "name",
@@ -454,14 +631,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "get_data_policy"
       },
       "description": "Sample for GetDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_get_data_policy_sync.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_get_data_policy_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_GetDataPolicy_sync",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_GetDataPolicy_sync",
       "segments": [
         {
           "end": 51,
@@ -494,21 +671,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_get_data_policy_sync.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_get_data_policy_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient.get_iam_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.get_iam_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.GetIamPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.GetIamPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "GetIamPolicy"
@@ -535,10 +712,10 @@
         "shortName": "get_iam_policy"
       },
       "description": "Sample for GetIamPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_get_iam_policy_async.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_get_iam_policy_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_GetIamPolicy_async",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_GetIamPolicy_async",
       "segments": [
         {
           "end": 52,
@@ -571,20 +748,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_get_iam_policy_async.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_get_iam_policy_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient.get_iam_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.get_iam_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.GetIamPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.GetIamPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "GetIamPolicy"
@@ -611,10 +788,10 @@
         "shortName": "get_iam_policy"
       },
       "description": "Sample for GetIamPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_get_iam_policy_sync.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_get_iam_policy_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_GetIamPolicy_sync",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_GetIamPolicy_sync",
       "segments": [
         {
           "end": 52,
@@ -647,21 +824,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_get_iam_policy_sync.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_get_iam_policy_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient.list_data_policies",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.list_data_policies",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.ListDataPolicies",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.ListDataPolicies",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "ListDataPolicies"
@@ -669,7 +846,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.ListDataPoliciesRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.ListDataPoliciesRequest"
           },
           {
             "name": "parent",
@@ -688,14 +865,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.services.data_policy_service.pagers.ListDataPoliciesAsyncPager",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.services.data_policy_service.pagers.ListDataPoliciesAsyncPager",
         "shortName": "list_data_policies"
       },
       "description": "Sample for ListDataPolicies",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_list_data_policies_async.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_list_data_policies_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_ListDataPolicies_async",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_ListDataPolicies_async",
       "segments": [
         {
           "end": 52,
@@ -728,20 +905,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_list_data_policies_async.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_list_data_policies_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient.list_data_policies",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.list_data_policies",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.ListDataPolicies",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.ListDataPolicies",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "ListDataPolicies"
@@ -749,7 +926,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.ListDataPoliciesRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.ListDataPoliciesRequest"
           },
           {
             "name": "parent",
@@ -768,14 +945,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.services.data_policy_service.pagers.ListDataPoliciesPager",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.services.data_policy_service.pagers.ListDataPoliciesPager",
         "shortName": "list_data_policies"
       },
       "description": "Sample for ListDataPolicies",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_list_data_policies_sync.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_list_data_policies_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_ListDataPolicies_sync",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_ListDataPolicies_sync",
       "segments": [
         {
           "end": 52,
@@ -808,37 +985,37 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_list_data_policies_sync.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_list_data_policies_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient.rename_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.remove_grantees",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.RenameDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.RemoveGrantees",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
-          "shortName": "RenameDataPolicy"
+          "shortName": "RemoveGrantees"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.RenameDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.RemoveGranteesRequest"
           },
           {
-            "name": "name",
+            "name": "data_policy",
             "type": "str"
           },
           {
-            "name": "new_data_policy_id",
-            "type": "str"
+            "name": "grantees",
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -853,14 +1030,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy",
-        "shortName": "rename_data_policy"
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
+        "shortName": "remove_grantees"
       },
-      "description": "Sample for RenameDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_rename_data_policy_async.py",
+      "description": "Sample for RemoveGrantees",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_remove_grantees_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_RenameDataPolicy_async",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_RemoveGrantees_async",
       "segments": [
         {
           "end": 52,
@@ -893,36 +1070,36 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_rename_data_policy_async.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_remove_grantees_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient.rename_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.remove_grantees",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.RenameDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.RemoveGrantees",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
-          "shortName": "RenameDataPolicy"
+          "shortName": "RemoveGrantees"
         },
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.RenameDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.RemoveGranteesRequest"
           },
           {
-            "name": "name",
+            "name": "data_policy",
             "type": "str"
           },
           {
-            "name": "new_data_policy_id",
-            "type": "str"
+            "name": "grantees",
+            "type": "MutableSequence[str]"
           },
           {
             "name": "retry",
@@ -937,14 +1114,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy",
-        "shortName": "rename_data_policy"
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
+        "shortName": "remove_grantees"
       },
-      "description": "Sample for RenameDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_rename_data_policy_sync.py",
+      "description": "Sample for RemoveGrantees",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_remove_grantees_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_RenameDataPolicy_sync",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_RemoveGrantees_sync",
       "segments": [
         {
           "end": 52,
@@ -977,21 +1154,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_rename_data_policy_sync.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_remove_grantees_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient.set_iam_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.set_iam_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.SetIamPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.SetIamPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "SetIamPolicy"
@@ -1018,10 +1195,10 @@
         "shortName": "set_iam_policy"
       },
       "description": "Sample for SetIamPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_set_iam_policy_async.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_set_iam_policy_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_SetIamPolicy_async",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_SetIamPolicy_async",
       "segments": [
         {
           "end": 52,
@@ -1054,20 +1231,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_set_iam_policy_async.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_set_iam_policy_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient.set_iam_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.set_iam_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.SetIamPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.SetIamPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "SetIamPolicy"
@@ -1094,10 +1271,10 @@
         "shortName": "set_iam_policy"
       },
       "description": "Sample for SetIamPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_set_iam_policy_sync.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_set_iam_policy_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_SetIamPolicy_sync",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_SetIamPolicy_sync",
       "segments": [
         {
           "end": 52,
@@ -1130,21 +1307,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_set_iam_policy_sync.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_set_iam_policy_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient.test_iam_permissions",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.test_iam_permissions",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.TestIamPermissions",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.TestIamPermissions",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "TestIamPermissions"
@@ -1171,10 +1348,10 @@
         "shortName": "test_iam_permissions"
       },
       "description": "Sample for TestIamPermissions",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_test_iam_permissions_async.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_test_iam_permissions_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_TestIamPermissions_async",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_TestIamPermissions_async",
       "segments": [
         {
           "end": 53,
@@ -1207,20 +1384,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_test_iam_permissions_async.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_test_iam_permissions_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient.test_iam_permissions",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.test_iam_permissions",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.TestIamPermissions",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.TestIamPermissions",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "TestIamPermissions"
@@ -1247,10 +1424,10 @@
         "shortName": "test_iam_permissions"
       },
       "description": "Sample for TestIamPermissions",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_test_iam_permissions_sync.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_test_iam_permissions_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_TestIamPermissions_sync",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_TestIamPermissions_sync",
       "segments": [
         {
           "end": 53,
@@ -1283,21 +1460,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_test_iam_permissions_sync.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient",
           "shortName": "DataPolicyServiceAsyncClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceAsyncClient.update_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceAsyncClient.update_data_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.UpdateDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.UpdateDataPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "UpdateDataPolicy"
@@ -1305,11 +1482,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.UpdateDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.UpdateDataPolicyRequest"
           },
           {
             "name": "data_policy",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy"
           },
           {
             "name": "update_mask",
@@ -1328,14 +1505,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "update_data_policy"
       },
       "description": "Sample for UpdateDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_update_data_policy_async.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_update_data_policy_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_UpdateDataPolicy_async",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_UpdateDataPolicy_async",
       "segments": [
         {
           "end": 55,
@@ -1368,20 +1545,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_update_data_policy_async.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_update_data_policy_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient",
+          "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient",
           "shortName": "DataPolicyServiceClient"
         },
-        "fullName": "google.cloud.bigquery_datapolicies_v1.DataPolicyServiceClient.update_data_policy",
+        "fullName": "google.cloud.bigquery_datapolicies_v2beta1.DataPolicyServiceClient.update_data_policy",
         "method": {
-          "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService.UpdateDataPolicy",
+          "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService.UpdateDataPolicy",
           "service": {
-            "fullName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+            "fullName": "google.cloud.bigquery.datapolicies.v2beta1.DataPolicyService",
             "shortName": "DataPolicyService"
           },
           "shortName": "UpdateDataPolicy"
@@ -1389,11 +1566,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.UpdateDataPolicyRequest"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.UpdateDataPolicyRequest"
           },
           {
             "name": "data_policy",
-            "type": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy"
+            "type": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy"
           },
           {
             "name": "update_mask",
@@ -1412,14 +1589,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.bigquery_datapolicies_v1.types.DataPolicy",
+        "resultType": "google.cloud.bigquery_datapolicies_v2beta1.types.DataPolicy",
         "shortName": "update_data_policy"
       },
       "description": "Sample for UpdateDataPolicy",
-      "file": "bigquerydatapolicy_v1_generated_data_policy_service_update_data_policy_sync.py",
+      "file": "bigquerydatapolicy_v2beta1_generated_data_policy_service_update_data_policy_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "bigquerydatapolicy_v1_generated_DataPolicyService_UpdateDataPolicy_sync",
+      "regionTag": "bigquerydatapolicy_v2beta1_generated_DataPolicyService_UpdateDataPolicy_sync",
       "segments": [
         {
           "end": 55,
@@ -1452,7 +1629,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "bigquerydatapolicy_v1_generated_data_policy_service_update_data_policy_sync.py"
+      "title": "bigquerydatapolicy_v2beta1_generated_data_policy_service_update_data_policy_sync.py"
     }
   ]
 }
