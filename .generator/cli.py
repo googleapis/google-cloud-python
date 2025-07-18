@@ -15,15 +15,15 @@
 import argparse
 import sys
 
-def handle_configure(args):
+def handle_configure(dry_run=False):
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command.
     print("'configure' command executed.")
 
-def handle_generate(args):
+def handle_generate(dry_run=False):
     # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command.
     print("'generate' command executed.")
 
-def handle_build(args):
+def handle_build(dry_run=False):
     # TODO(https://github.com/googleapis/librarian/issues/450): Implement build command.
     print("'build' command executed.")
 
