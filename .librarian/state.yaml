@@ -1,4 +1,4 @@
-image: gapic-generator-python:latest
+image: google-cloud-python-generator:latest
 libraries:
 - apis:
   - path: google/cloud/language/v1beta2
