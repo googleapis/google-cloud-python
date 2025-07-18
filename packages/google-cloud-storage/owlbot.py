@@ -37,6 +37,7 @@ for library in s.get_staging_dirs(default_version):
     s.move(
         [library],
         excludes=[
+            ".coveragerc",
             "docs/**/*",
             "scripts/fixup*.py",
             "setup.py",
@@ -107,12 +108,6 @@ export TEST_UNIVERSE_PROJECT_ID=$(gcloud secrets versions access latest --projec
 export TEST_UNIVERSE_LOCATION=$(gcloud secrets versions access latest --project cloud-devrel-kokoro-resources --secret=client-library-test-universe-storage-location)
 
 """)
-
-s.replace(
-    ".coveragerc",
-    "omit =",
-    """omit =
-  .nox/*""")
 
 python.py_samples(skip_readmes=True)
 
