@@ -16,10 +16,13 @@ from cli import handle_generate, handle_build, handle_configure
 
 
 def test_handle_configure_dry_run():
+    # This is a simple test to ensure that the dry run command succeeds.
     handle_configure(dry_run=True)
 
 def test_handle_generate_dry_run():
+    # This is a simple test to ensure that the dry run command succeeds.
     handle_generate(dry_run=True)
 
 def test_handle_build_dry_run():
+    # This is a simple test to ensure that the dry run command succeeds.
     handle_build(dry_run=True)
