@@ -143,7 +143,7 @@ class ExplainedPolicy(proto.Message):
             another policy that overrides this policy. To determine
             whether the principal actually has the permission, use the
             ``access`` field in the
-            [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
+            [TroubleshootIamPolicyResponse][google.cloud.policytroubleshooter.v3.TroubleshootIamPolicyResponse].
         full_resource_name (str):
             The full resource name that identifies the resource. For
             example,
@@ -173,7 +173,7 @@ class ExplainedPolicy(proto.Message):
         relevance (google.cloud.policysimulator_v1.types.HeuristicRelevance):
             The relevance of this policy to the overall determination in
             the
-            [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
+            [TroubleshootIamPolicyResponse][google.cloud.policytroubleshooter.v3.TroubleshootIamPolicyResponse].
 
             If the user who created the
             [Replay][google.cloud.policysimulator.v1.Replay] does not
@@ -221,7 +221,7 @@ class BindingExplanation(proto.Message):
             another binding that overrides this binding. To determine
             whether the principal actually has the permission, use the
             ``access`` field in the
-            [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
+            [TroubleshootIamPolicyResponse][google.cloud.policytroubleshooter.v3.TroubleshootIamPolicyResponse].
         role (str):
             The role that this binding grants. For example,
             ``roles/compute.serviceAgent``.
