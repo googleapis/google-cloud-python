@@ -21,13 +21,15 @@ from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.policysimulator_v1.types import simulator
+from google.cloud.policysimulator_v1.types import orgpolicy as gcp_orgpolicy
 
-from .base import DEFAULT_CLIENT_INFO, SimulatorTransport
+from .base import DEFAULT_CLIENT_INFO, OrgPolicyViolationsPreviewServiceTransport
 
 
-class _BaseSimulatorRestTransport(SimulatorTransport):
-    """Base REST backend transport for Simulator.
+class _BaseOrgPolicyViolationsPreviewServiceRestTransport(
+    OrgPolicyViolationsPreviewServiceTransport
+):
+    """Base REST backend transport for OrgPolicyViolationsPreviewService.
 
     Note: This class is not meant to be used directly. Use its sync and
     async sub-classes instead.
@@ -88,7 +90,7 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
             api_audience=api_audience,
         )
 
-    class _BaseCreateReplay:
+    class _BaseCreateOrgPolicyViolationsPreview:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -107,25 +109,17 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/replays",
-                    "body": "replay",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*/locations/*}/replays",
-                    "body": "replay",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*/locations/*}/replays",
-                    "body": "replay",
+                    "uri": "/v1/{parent=organizations/*/locations/*}/orgPolicyViolationsPreviews",
+                    "body": "org_policy_violations_preview",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = simulator.CreateReplayRequest.pb(request)
+            pb_request = gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -147,7 +141,7 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
                 )
             )
             query_params.update(
-                _BaseSimulatorRestTransport._BaseCreateReplay._get_unset_required_fields(
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_unset_required_fields(
                     query_params
                 )
             )
@@ -155,7 +149,7 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseGetReplay:
+    class _BaseGetOrgPolicyViolationsPreview:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -174,22 +168,14 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/replays/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/locations/*/replays/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/locations/*/replays/*}",
+                    "uri": "/v1/{name=organizations/*/locations/*/orgPolicyViolationsPreviews/*}",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = simulator.GetReplayRequest.pb(request)
+            pb_request = gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -202,7 +188,7 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
                 )
             )
             query_params.update(
-                _BaseSimulatorRestTransport._BaseGetReplay._get_unset_required_fields(
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_unset_required_fields(
                     query_params
                 )
             )
@@ -210,7 +196,7 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
-    class _BaseListReplayResults:
+    class _BaseListOrgPolicyViolations:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
@@ -229,22 +215,14 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/replays/*}/results",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/locations/*/replays/*}/results",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/locations/*/replays/*}/results",
+                    "uri": "/v1/{parent=organizations/*/locations/*/orgPolicyViolationsPreviews/*}/orgPolicyViolations",
                 },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = simulator.ListReplayResultsRequest.pb(request)
+            pb_request = gcp_orgpolicy.ListOrgPolicyViolationsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -257,7 +235,56 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
                 )
             )
             query_params.update(
-                _BaseSimulatorRestTransport._BaseListReplayResults._get_unset_required_fields(
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
+    class _BaseListOrgPolicyViolationsPreviews:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=organizations/*/locations/*}/orgPolicyViolationsPreviews",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_unset_required_fields(
                     query_params
                 )
             )
@@ -364,4 +391,4 @@ class _BaseSimulatorRestTransport(SimulatorTransport):
             return query_params
 
 
-__all__ = ("_BaseSimulatorRestTransport",)
+__all__ = ("_BaseOrgPolicyViolationsPreviewServiceRestTransport",)

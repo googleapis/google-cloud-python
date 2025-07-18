@@ -18,6 +18,12 @@ from google.cloud.policysimulator import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.policysimulator_v1.services.org_policy_violations_preview_service.async_client import (
+    OrgPolicyViolationsPreviewServiceAsyncClient,
+)
+from google.cloud.policysimulator_v1.services.org_policy_violations_preview_service.client import (
+    OrgPolicyViolationsPreviewServiceClient,
+)
 from google.cloud.policysimulator_v1.services.simulator.async_client import (
     SimulatorAsyncClient,
 )
@@ -28,6 +34,20 @@ from google.cloud.policysimulator_v1.types.explanations import (
     BindingExplanation,
     ExplainedPolicy,
     HeuristicRelevance,
+)
+from google.cloud.policysimulator_v1.types.orgpolicy import (
+    CreateOrgPolicyViolationsPreviewOperationMetadata,
+    CreateOrgPolicyViolationsPreviewRequest,
+    GetOrgPolicyViolationsPreviewRequest,
+    ListOrgPolicyViolationsPreviewsRequest,
+    ListOrgPolicyViolationsPreviewsResponse,
+    ListOrgPolicyViolationsRequest,
+    ListOrgPolicyViolationsResponse,
+    OrgPolicyOverlay,
+    OrgPolicyViolation,
+    OrgPolicyViolationsPreview,
+    PreviewState,
+    ResourceContext,
 )
 from google.cloud.policysimulator_v1.types.simulator import (
     AccessStateDiff,
@@ -44,6 +64,8 @@ from google.cloud.policysimulator_v1.types.simulator import (
 )
 
 __all__ = (
+    "OrgPolicyViolationsPreviewServiceClient",
+    "OrgPolicyViolationsPreviewServiceAsyncClient",
     "SimulatorClient",
     "SimulatorAsyncClient",
     "AccessTuple",
@@ -51,6 +73,18 @@ __all__ = (
     "ExplainedPolicy",
     "AccessState",
     "HeuristicRelevance",
+    "CreateOrgPolicyViolationsPreviewOperationMetadata",
+    "CreateOrgPolicyViolationsPreviewRequest",
+    "GetOrgPolicyViolationsPreviewRequest",
+    "ListOrgPolicyViolationsPreviewsRequest",
+    "ListOrgPolicyViolationsPreviewsResponse",
+    "ListOrgPolicyViolationsRequest",
+    "ListOrgPolicyViolationsResponse",
+    "OrgPolicyOverlay",
+    "OrgPolicyViolation",
+    "OrgPolicyViolationsPreview",
+    "ResourceContext",
+    "PreviewState",
     "AccessStateDiff",
     "CreateReplayRequest",
     "ExplainedAccess",
