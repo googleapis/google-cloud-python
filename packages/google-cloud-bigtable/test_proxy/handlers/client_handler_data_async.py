@@ -276,7 +276,7 @@ class TestProxyClientHandlerAsync:
                 prepare_operation_timeout=operation_timeout,
             )
         )
-        rows = [r async for r in result]
+        rows = CrossSync.rm_aio([r async for r in result])
         md = result.metadata
         proto_rows = []
         for r in rows:

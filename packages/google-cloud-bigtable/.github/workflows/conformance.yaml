@@ -24,17 +24,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        test-version: [ "v0.0.2" ]
+        test-version: [ "v0.0.4" ]
         py-version: [ 3.8 ]
-        client-type: [ "async", "sync", "legacy" ]
+        client-type: [ "async", "sync"]
+        # None of the clients currently support reverse scans, execute query plan refresh, retry info, or routing cookie
         include:
+          - client-type: "async"
+            test_args: "-skip \"PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie\""
           - client-type: "sync"
-            # sync client does not support concurrent streams
-            test_args: "-skip _Generic_MultiStream"
-          - client-type: "legacy"
-            # legacy client is synchronous and does not support concurrent streams
-            # legacy client does not expose mutate_row. Disable those tests
-            test_args: "-skip _Generic_MultiStream -skip TestMutateRow_"
+            test_args: "-skip \"PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie|_Generic_MultiStream\""
       fail-fast: false
     name: "${{ matrix.client-type }} client / python ${{ matrix.py-version }} / test tag ${{ matrix.test-version }}"
     steps:

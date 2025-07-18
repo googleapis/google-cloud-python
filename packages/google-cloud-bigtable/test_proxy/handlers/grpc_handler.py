@@ -8,6 +8,17 @@ from google.rpc.status_pb2 import Status
 from google.protobuf import json_format
 
 
+def correct_cancelled(status):
+    """
+    Deadline exceeded errors are a race between client side cancellation and server
+    side deadline exceeded. For the purpose of these tests, the client will never cancel,
+    so we adjust cancelled errors to deadline_exceeded for consistency.
+    """
+    if status.code == 1:
+        return Status(code=4, message="deadlineexceeded")
+    return status
+
+
 class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
     """
     Implements a grpc server that proxies conformance test requests to the client library
@@ -75,7 +86,7 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
         status = Status()
         rows = []
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(code=5, message=client_response["error"])
+            status = correct_cancelled(Status(code=5, message=client_response["error"]))
         else:
             rows = [data_pb2.Row(**d) for d in client_response]
         result = test_proxy_pb2.RowsResult(rows=rows, status=status)
@@ -86,9 +97,11 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
         status = Status()
         row = None
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(
-                code=client_response.get("code", 5),
-                message=client_response.get("error"),
+            status = correct_cancelled(
+                Status(
+                    code=client_response.get("code", 5),
+                    message=client_response.get("error"),
+                )
             )
         elif client_response != "None":
             row = data_pb2.Row(**client_response)
@@ -99,8 +112,11 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
     def MutateRow(self, request, context, client_response=None):
         status = Status()
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(
-                code=client_response.get("code", 5), message=client_response["error"]
+            status = correct_cancelled(
+                Status(
+                    code=client_response.get("code", 5),
+                    message=client_response["error"],
+                )
             )
         return test_proxy_pb2.MutateRowResult(status=status)
 
@@ -112,24 +128,27 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
             entries = [
                 bigtable_pb2.MutateRowsResponse.Entry(
                     index=exc_dict.get("index", 1),
-                    status=Status(code=exc_dict.get("code", 5)),
+                    status=correct_cancelled(Status(code=exc_dict.get("code", 5))),
                 )
                 for exc_dict in client_response.get("subexceptions", [])
             ]
-            if not entries:
-                # only return failure on the overall request if there are failed entries
-                status = Status(
+            status = correct_cancelled(
+                Status(
                     code=client_response.get("code", 5),
                     message=client_response["error"],
                 )
+            )
         response = test_proxy_pb2.MutateRowsResult(status=status, entries=entries)
         return response
 
     @delegate_to_client_handler
     def CheckAndMutateRow(self, request, context, client_response=None):
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(
-                code=client_response.get("code", 5), message=client_response["error"]
+            status = correct_cancelled(
+                Status(
+                    code=client_response.get("code", 5),
+                    message=client_response["error"],
+                )
             )
             response = test_proxy_pb2.CheckAndMutateRowResult(status=status)
         else:
@@ -146,9 +165,11 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
         status = Status()
         row = None
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(
-                code=client_response.get("code", 5),
-                message=client_response.get("error"),
+            status = correct_cancelled(
+                Status(
+                    code=client_response.get("code", 5),
+                    message=client_response.get("error"),
+                )
             )
         elif client_response != "None":
             row = data_pb2.Row(**client_response)
@@ -160,9 +181,11 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
         status = Status()
         sample_list = []
         if isinstance(client_response, dict) and "error" in client_response:
-            status = Status(
-                code=client_response.get("code", 5),
-                message=client_response.get("error"),
+            status = correct_cancelled(
+                Status(
+                    code=client_response.get("code", 5),
+                    message=client_response.get("error"),
+                )
             )
         else:
             for sample in client_response:
@@ -177,7 +200,9 @@ class TestProxyGrpcServer(test_proxy_pb2_grpc.CloudBigtableV2TestProxyServicer):
     def ExecuteQuery(self, request, context, client_response=None):
         if isinstance(client_response, dict) and "error" in client_response:
             return test_proxy_pb2.ExecuteQueryResult(
-                status=Status(code=13, message=client_response["error"])
+                status=correct_cancelled(
+                    Status(code=client_response.get("code", 13), message=client_response["error"])
+                )
             )
         else:
             return test_proxy_pb2.ExecuteQueryResult(
