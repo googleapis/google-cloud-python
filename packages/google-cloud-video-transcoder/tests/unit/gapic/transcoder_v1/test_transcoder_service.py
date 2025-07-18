@@ -1181,6 +1181,7 @@ def test_create_job(request_type, transport: str = "grpc"):
             mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             batch_mode_priority=2023,
             optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+            fill_content_gaps=True,
             template_id="template_id_value",
         )
         response = client.create_job(request)
@@ -1201,6 +1202,7 @@ def test_create_job(request_type, transport: str = "grpc"):
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
     assert response.batch_mode_priority == 2023
     assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
+    assert response.fill_content_gaps is True
 
 
 def test_create_job_non_empty_request_with_auto_populated_field():
@@ -1332,6 +1334,7 @@ async def test_create_job_async(
                 mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
                 batch_mode_priority=2023,
                 optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+                fill_content_gaps=True,
             )
         )
         response = await client.create_job(request)
@@ -1352,6 +1355,7 @@ async def test_create_job_async(
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
     assert response.batch_mode_priority == 2023
     assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
+    assert response.fill_content_gaps is True
 
 
 @pytest.mark.asyncio
@@ -2062,6 +2066,7 @@ def test_get_job(request_type, transport: str = "grpc"):
             mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             batch_mode_priority=2023,
             optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+            fill_content_gaps=True,
             template_id="template_id_value",
         )
         response = client.get_job(request)
@@ -2082,6 +2087,7 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
     assert response.batch_mode_priority == 2023
     assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
+    assert response.fill_content_gaps is True
 
 
 def test_get_job_non_empty_request_with_auto_populated_field():
@@ -2213,6 +2219,7 @@ async def test_get_job_async(
                 mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
                 batch_mode_priority=2023,
                 optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+                fill_content_gaps=True,
             )
         )
         response = await client.get_job(request)
@@ -2233,6 +2240,7 @@ async def test_get_job_async(
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
     assert response.batch_mode_priority == 2023
     assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
+    assert response.fill_content_gaps is True
 
 
 @pytest.mark.asyncio
@@ -6198,6 +6206,7 @@ async def test_create_job_empty_call_grpc_asyncio():
                 mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
                 batch_mode_priority=2023,
                 optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+                fill_content_gaps=True,
             )
         )
         await client.create_job(request=None)
@@ -6260,6 +6269,7 @@ async def test_get_job_empty_call_grpc_asyncio():
                 mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
                 batch_mode_priority=2023,
                 optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+                fill_content_gaps=True,
             )
         )
         await client.get_job(request=None)
@@ -6513,6 +6523,7 @@ def test_create_job_rest_call_success(request_type):
                             "width_pixels": 1300,
                             "height_pixels": 1389,
                             "frame_rate": 0.1046,
+                            "frame_rate_conversion_strategy": 1,
                             "bitrate_bps": 1167,
                             "pixel_format": "pixel_format_value",
                             "rate_control_mode": "rate_control_mode_value",
@@ -6530,11 +6541,14 @@ def test_create_job_rest_call_success(request_type):
                             "profile": "profile_value",
                             "tune": "tune_value",
                             "preset": "preset_value",
+                            "sdr": {},
+                            "hlg": {},
                         },
                         "h265": {
                             "width_pixels": 1300,
                             "height_pixels": 1389,
                             "frame_rate": 0.1046,
+                            "frame_rate_conversion_strategy": 1,
                             "bitrate_bps": 1167,
                             "pixel_format": "pixel_format_value",
                             "rate_control_mode": "rate_control_mode_value",
@@ -6551,11 +6565,15 @@ def test_create_job_rest_call_success(request_type):
                             "profile": "profile_value",
                             "tune": "tune_value",
                             "preset": "preset_value",
+                            "sdr": {},
+                            "hlg": {},
+                            "hdr10": {},
                         },
                         "vp9": {
                             "width_pixels": 1300,
                             "height_pixels": 1389,
                             "frame_rate": 0.1046,
+                            "frame_rate_conversion_strategy": 1,
                             "bitrate_bps": 1167,
                             "pixel_format": "pixel_format_value",
                             "rate_control_mode": "rate_control_mode_value",
@@ -6563,6 +6581,8 @@ def test_create_job_rest_call_success(request_type):
                             "gop_frame_count": 1592,
                             "gop_duration": {},
                             "profile": "profile_value",
+                            "sdr": {},
+                            "hlg": {},
                         },
                     },
                     "audio_stream": {
@@ -6615,6 +6635,7 @@ def test_create_job_rest_call_success(request_type):
                         "individual_segments": True,
                     },
                     "encryption_id": "encryption_id_value",
+                    "fmp4": {"codec_tag": "codec_tag_value"},
                 }
             ],
             "manifests": [
@@ -6701,6 +6722,7 @@ def test_create_job_rest_call_success(request_type):
         "mode": 1,
         "batch_mode_priority": 2023,
         "optimization": 1,
+        "fill_content_gaps": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6783,6 +6805,7 @@ def test_create_job_rest_call_success(request_type):
             mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             batch_mode_priority=2023,
             optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+            fill_content_gaps=True,
             template_id="template_id_value",
         )
 
@@ -6808,6 +6831,7 @@ def test_create_job_rest_call_success(request_type):
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
     assert response.batch_mode_priority == 2023
     assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
+    assert response.fill_content_gaps is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7046,6 +7070,7 @@ def test_get_job_rest_call_success(request_type):
             mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
             batch_mode_priority=2023,
             optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+            fill_content_gaps=True,
             template_id="template_id_value",
         )
 
@@ -7071,6 +7096,7 @@ def test_get_job_rest_call_success(request_type):
     assert response.mode == resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE
     assert response.batch_mode_priority == 2023
     assert response.optimization == resources.Job.OptimizationStrategy.AUTODETECT
+    assert response.fill_content_gaps is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7337,6 +7363,7 @@ def test_create_job_template_rest_call_success(request_type):
                             "width_pixels": 1300,
                             "height_pixels": 1389,
                             "frame_rate": 0.1046,
+                            "frame_rate_conversion_strategy": 1,
                             "bitrate_bps": 1167,
                             "pixel_format": "pixel_format_value",
                             "rate_control_mode": "rate_control_mode_value",
@@ -7354,11 +7381,14 @@ def test_create_job_template_rest_call_success(request_type):
                             "profile": "profile_value",
                             "tune": "tune_value",
                             "preset": "preset_value",
+                            "sdr": {},
+                            "hlg": {},
                         },
                         "h265": {
                             "width_pixels": 1300,
                             "height_pixels": 1389,
                             "frame_rate": 0.1046,
+                            "frame_rate_conversion_strategy": 1,
                             "bitrate_bps": 1167,
                             "pixel_format": "pixel_format_value",
                             "rate_control_mode": "rate_control_mode_value",
@@ -7375,11 +7405,15 @@ def test_create_job_template_rest_call_success(request_type):
                             "profile": "profile_value",
                             "tune": "tune_value",
                             "preset": "preset_value",
+                            "sdr": {},
+                            "hlg": {},
+                            "hdr10": {},
                         },
                         "vp9": {
                             "width_pixels": 1300,
                             "height_pixels": 1389,
                             "frame_rate": 0.1046,
+                            "frame_rate_conversion_strategy": 1,
                             "bitrate_bps": 1167,
                             "pixel_format": "pixel_format_value",
                             "rate_control_mode": "rate_control_mode_value",
@@ -7387,6 +7421,8 @@ def test_create_job_template_rest_call_success(request_type):
                             "gop_frame_count": 1592,
                             "gop_duration": {},
                             "profile": "profile_value",
+                            "sdr": {},
+                            "hlg": {},
                         },
                     },
                     "audio_stream": {
@@ -7439,6 +7475,7 @@ def test_create_job_template_rest_call_success(request_type):
                         "individual_segments": True,
                     },
                     "encryption_id": "encryption_id_value",
+                    "fmp4": {"codec_tag": "codec_tag_value"},
                 }
             ],
             "manifests": [
