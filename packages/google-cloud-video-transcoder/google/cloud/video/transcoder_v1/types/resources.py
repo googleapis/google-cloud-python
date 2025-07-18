@@ -110,7 +110,8 @@ class Job(proto.Message):
             use these to organize and group your jobs.
         error (google.rpc.status_pb2.Status):
             Output only. An error object that describes the reason for
-            the failure. This property is always present when ``state``
+            the failure. This property is always present when
+            [ProcessingState][google.cloud.video.transcoder.v1.Job.ProcessingState]
             is ``FAILED``.
         mode (google.cloud.video.transcoder_v1.types.Job.ProcessingMode):
             The processing mode of the job. The default is
@@ -124,6 +125,10 @@ class Job(proto.Message):
         optimization (google.cloud.video.transcoder_v1.types.Job.OptimizationStrategy):
             Optional. The optimization strategy of the job. The default
             is ``AUTODETECT``.
+        fill_content_gaps (bool):
+            Optional. Insert silence and duplicate frames
+            when timestamp gaps are detected in a given
+            stream.
     """
 
     class ProcessingState(proto.Enum):
@@ -141,7 +146,7 @@ class Job(proto.Message):
                 The job has been completed successfully.
             FAILED (4):
                 The job has failed. For additional information, see
-                ``failure_reason`` and ``failure_details``
+                `Troubleshooting <https://cloud.google.com/transcoder/docs/troubleshooting>`__.
         """
         PROCESSING_STATE_UNSPECIFIED = 0
         PENDING = 1
@@ -253,6 +258,10 @@ class Job(proto.Message):
         number=22,
         enum=OptimizationStrategy,
     )
+    fill_content_gaps: bool = proto.Field(
+        proto.BOOL,
+        number=25,
+    )
 
 
 class JobTemplate(proto.Message):
@@ -293,8 +302,8 @@ class JobConfig(proto.Message):
         inputs (MutableSequence[google.cloud.video.transcoder_v1.types.Input]):
             List of input assets stored in Cloud Storage.
         edit_list (MutableSequence[google.cloud.video.transcoder_v1.types.EditAtom]):
-            List of ``Edit atom``\ s. Defines the ultimate timeline of
-            the resulting file or manifest.
+            List of edit atoms. Defines the ultimate
+            timeline of the resulting file or manifest.
         elementary_streams (MutableSequence[google.cloud.video.transcoder_v1.types.ElementaryStream]):
             List of elementary streams.
         mux_streams (MutableSequence[google.cloud.video.transcoder_v1.types.MuxStream]):
@@ -393,8 +402,9 @@ class Input(proto.Message):
             URI of the media. Input files must be at least 5 seconds in
             duration and stored in Cloud Storage (for example,
             ``gs://bucket/inputs/file.mp4``). If empty, the value is
-            populated from ``Job.input_uri``. See `Supported input and
-            output
+            populated from
+            [Job.input_uri][google.cloud.video.transcoder.v1.Job.input_uri].
+            See `Supported input and output
             formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__.
         preprocessing_config (google.cloud.video.transcoder_v1.types.PreprocessingConfig):
             Preprocessing configurations.
@@ -421,9 +431,10 @@ class Output(proto.Message):
     Attributes:
         uri (str):
             URI for the output file(s). For example,
-            ``gs://my-bucket/outputs/``. If empty, the value is
-            populated from ``Job.output_uri``. See `Supported input and
-            output
+            ``gs://my-bucket/outputs/``. Must be a directory and not a
+            top-level bucket. If empty, the value is populated from
+            [Job.output_uri][google.cloud.video.transcoder.v1.Job.output_uri].
+            See `Supported input and output
             formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__.
     """
 
@@ -441,9 +452,10 @@ class EditAtom(proto.Message):
             A unique key for this atom. Must be specified
             when using advanced mapping.
         inputs (MutableSequence[str]):
-            List of ``Input.key``\ s identifying files that should be
-            used in this atom. The listed ``inputs`` must have the same
-            timeline.
+            List of
+            [Input.key][google.cloud.video.transcoder.v1.Input.key]
+            values identifying files that should be used in this atom.
+            The listed ``inputs`` must have the same timeline.
         end_time_offset (google.protobuf.duration_pb2.Duration):
             End time in seconds for the atom, relative to the input file
             timeline. When ``end_time_offset`` is not specified, the
@@ -546,15 +558,16 @@ class ElementaryStream(proto.Message):
 class MuxStream(proto.Message):
     r"""Multiplexing settings for output stream.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         key (str):
-            A unique key for this multiplexed stream. HLS media
-            manifests will be named ``MuxStream.key`` with the ``.m3u8``
-            extension suffix.
+            A unique key for this multiplexed stream.
         file_name (str):
             The name of the generated file. The default is
-            ``MuxStream.key`` with the extension suffix corresponding to
-            the ``MuxStream.container``.
+            [MuxStream.key][google.cloud.video.transcoder.v1.MuxStream.key]
+            with the extension suffix corresponding to the
+            [MuxStream.container][google.cloud.video.transcoder.v1.MuxStream.container].
 
             Individual segments also have an incremental 10-digit
             zero-padded suffix starting from 0 before the extension,
@@ -562,24 +575,54 @@ class MuxStream(proto.Message):
         container (str):
             The container format. The default is ``mp4``
 
-            Supported container formats:
+            Supported streaming formats:
 
             -  ``ts``
             -  ``fmp4``- the corresponding file extension is ``.m4s``
+
+            Supported standalone file formats:
+
             -  ``mp4``
+            -  ``mp3``
+            -  ``ogg``
             -  ``vtt``
 
             See also: `Supported input and output
             formats <https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>`__
         elementary_streams (MutableSequence[str]):
-            List of ``ElementaryStream.key``\ s multiplexed in this
-            stream.
+            List of
+            [ElementaryStream.key][google.cloud.video.transcoder.v1.ElementaryStream.key]
+            values multiplexed in this stream.
         segment_settings (google.cloud.video.transcoder_v1.types.SegmentSettings):
             Segment settings for ``ts``, ``fmp4`` and ``vtt``.
         encryption_id (str):
             Identifier of the encryption configuration to
             use. If omitted, output will be unencrypted.
+        fmp4 (google.cloud.video.transcoder_v1.types.MuxStream.Fmp4Config):
+            Optional. ``fmp4`` container configuration.
+
+            This field is a member of `oneof`_ ``container_config``.
     """
+
+    class Fmp4Config(proto.Message):
+        r"""``fmp4`` container configuration.
+
+        Attributes:
+            codec_tag (str):
+                Optional. Specify the codec tag string that will be used in
+                the media bitstream. When not specified, the codec
+                appropriate value is used.
+
+                Supported H265 codec tags:
+
+                -  ``hvc1`` (default)
+                -  ``hev1``
+        """
+
+        codec_tag: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     key: str = proto.Field(
         proto.STRING,
@@ -606,6 +649,12 @@ class MuxStream(proto.Message):
         proto.STRING,
         number=7,
     )
+    fmp4: Fmp4Config = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="container_config",
+        message=Fmp4Config,
+    )
 
 
 class Manifest(proto.Message):
@@ -617,16 +666,20 @@ class Manifest(proto.Message):
         file_name (str):
             The name of the generated file. The default is ``manifest``
             with the extension suffix corresponding to the
-            ``Manifest.type``.
+            [Manifest.type][google.cloud.video.transcoder.v1.Manifest.type].
         type_ (google.cloud.video.transcoder_v1.types.Manifest.ManifestType):
             Required. Type of the manifest.
         mux_streams (MutableSequence[str]):
-            Required. List of user given ``MuxStream.key``\ s that
-            should appear in this manifest.
+            Required. List of user supplied
+            [MuxStream.key][google.cloud.video.transcoder.v1.MuxStream.key]
+            values that should appear in this manifest.
 
-            When ``Manifest.type`` is ``HLS``, a media manifest with
-            name ``MuxStream.key`` and ``.m3u8`` extension is generated
-            for each element of the ``Manifest.mux_streams``.
+            When
+            [Manifest.type][google.cloud.video.transcoder.v1.Manifest.type]
+            is ``HLS``, a media manifest with name
+            [MuxStream.key][google.cloud.video.transcoder.v1.MuxStream.key]
+            and ``.m3u8`` extension is generated for each element in
+            this list.
         dash (google.cloud.video.transcoder_v1.types.Manifest.DashConfig):
             ``DASH`` manifest configuration.
 
@@ -668,11 +721,33 @@ class Manifest(proto.Message):
                     The segment reference scheme is not
                     specified.
                 SEGMENT_LIST (1):
-                    Lists the URLs of media files for each
-                    segment.
+                    Explicitly lists the URLs of media files for each segment.
+                    For example, if
+                    [SegmentSettings.individual_segments][google.cloud.video.transcoder.v1.SegmentSettings.individual_segments]
+                    is ``true``, then the manifest contains fields similar to
+                    the following:
+
+                    .. code:: xml
+
+                       <Initialization sourceURL="my-hd-stream-init.m4s"/>
+                         <SegmentList presentationTimeOffset="0" duration="1000"
+                         timescale="10000">
+                           <SegmentURL media="hd-stream0000000000.m4s"/>
+                           <SegmentURL media="hd-stream0000000001.m4s"/>
+                           ...
                 SEGMENT_TEMPLATE_NUMBER (2):
-                    Lists each segment from a template with
-                    $Number$ variable.
+                    [SegmentSettings.individual_segments][google.cloud.video.transcoder.v1.SegmentSettings.individual_segments]
+                    must be set to ``true`` to use this segment reference
+                    scheme. Uses the DASH specification ``<SegmentTemplate>``
+                    tag to determine the URLs of media files for each segment.
+                    For example:
+
+                    .. code:: xml
+
+                       <SegmentTemplate presentationTimeOffset="0" timescale="10000"
+                             initialization="my-hd-stream-init.m4s"
+                             media="hd-stream$Number%010d$.m4s" startNumber="0">
+                         ...
             """
             SEGMENT_REFERENCE_SCHEME_UNSPECIFIED = 0
             SEGMENT_LIST = 1
@@ -869,7 +944,7 @@ class Overlay(proto.Message):
         image (google.cloud.video.transcoder_v1.types.Overlay.Image):
             Image overlay.
         animations (MutableSequence[google.cloud.video.transcoder_v1.types.Overlay.Animation]):
-            List of Animations. The list should be
+            List of animations. The list should be
             chronological, without any time overlap.
     """
 
@@ -1013,7 +1088,7 @@ class Overlay(proto.Message):
 
     class AnimationEnd(proto.Message):
         r"""End previous overlay animation from the video. Without
-        AnimationEnd, the overlay object will keep the state of previous
+        ``AnimationEnd``, the overlay object will keep the state of previous
         animation until the end of the video.
 
         Attributes:
@@ -1483,6 +1558,39 @@ class VideoStream(proto.Message):
             This field is a member of `oneof`_ ``codec_settings``.
     """
 
+    class FrameRateConversionStrategy(proto.Enum):
+        r"""The conversion strategy for desired frame rate.
+
+        Values:
+            FRAME_RATE_CONVERSION_STRATEGY_UNSPECIFIED (0):
+                Unspecified frame rate conversion strategy.
+            DOWNSAMPLE (1):
+                Selectively retain frames to reduce the output frame rate.
+                Every *n* th frame is kept, where
+                ``n = ceil(input frame rate / target frame rate)``. When *n*
+                = 1 (that is, the target frame rate is greater than the
+                input frame rate), the output frame rate matches the input
+                frame rate. When *n* > 1, frames are dropped and the output
+                frame rate is equal to ``(input frame rate / n)``. For more
+                information, see `Calculate frame
+                rate <https://cloud.google.com/transcoder/docs/concepts/frame-rate>`__.
+            DROP_DUPLICATE (2):
+                Drop or duplicate frames to match the
+                specified frame rate.
+        """
+        FRAME_RATE_CONVERSION_STRATEGY_UNSPECIFIED = 0
+        DOWNSAMPLE = 1
+        DROP_DUPLICATE = 2
+
+    class H264ColorFormatSDR(proto.Message):
+        r"""Convert the input video to a Standard Dynamic Range (SDR)
+        video.
+
+        """
+
+    class H264ColorFormatHLG(proto.Message):
+        r"""Convert the input video to a Hybrid Log Gamma (HLG) video."""
+
     class H264CodecSettings(proto.Message):
         r"""H264 codec settings.
 
@@ -1521,14 +1629,12 @@ class VideoStream(proto.Message):
                 API detects any rotation metadata and swaps the
                 requested height and width for the output.
             frame_rate (float):
-                Required. The target video frame rate in frames per second
-                (FPS). Must be less than or equal to 120. Will default to
-                the input frame rate if larger than the input frame rate.
-                The API will generate an output FPS that is divisible by the
-                input FPS, and smaller or equal to the target FPS. See
-                `Calculating frame
-                rate <https://cloud.google.com/transcoder/docs/concepts/frame-rate>`__
-                for more information.
+                Required. The target video frame rate in
+                frames per second (FPS). Must be less than or
+                equal to 120.
+            frame_rate_conversion_strategy (google.cloud.video.transcoder_v1.types.VideoStream.FrameRateConversionStrategy):
+                Optional. Frame rate conversion strategy for desired frame
+                rate. The default is ``DOWNSAMPLE``.
             bitrate_bps (int):
                 Required. The video bitrate in bits per
                 second. The minimum value is 1,000. The maximum
@@ -1548,7 +1654,7 @@ class VideoStream(proto.Message):
                 -  ``yuv422p12`` 12-bit HDR pixel format
                 -  ``yuv444p12`` 12-bit HDR pixel format
             rate_control_mode (str):
-                Specify the ``rate_control_mode``. The default is ``vbr``.
+                Specify the mode. The default is ``vbr``.
 
                 Supported rate control modes:
 
@@ -1576,16 +1682,18 @@ class VideoStream(proto.Message):
                 This field is a member of `oneof`_ ``gop_mode``.
             enable_two_pass (bool):
                 Use two-pass encoding strategy to achieve better video
-                quality. ``VideoStream.rate_control_mode`` must be ``vbr``.
-                The default is ``false``.
+                quality.
+                [H264CodecSettings.rate_control_mode][google.cloud.video.transcoder.v1.VideoStream.H264CodecSettings.rate_control_mode]
+                must be ``vbr``. The default is ``false``.
             vbv_size_bits (int):
                 Size of the Video Buffering Verifier (VBV) buffer in bits.
                 Must be greater than zero. The default is equal to
-                ``VideoStream.bitrate_bps``.
+                [H264CodecSettings.bitrate_bps][google.cloud.video.transcoder.v1.VideoStream.H264CodecSettings.bitrate_bps].
             vbv_fullness_bits (int):
                 Initial fullness of the Video Buffering Verifier (VBV)
                 buffer in bits. Must be greater than zero. The default is
-                equal to 90% of ``VideoStream.vbv_size_bits``.
+                equal to 90% of
+                [H264CodecSettings.vbv_size_bits][google.cloud.video.transcoder.v1.VideoStream.H264CodecSettings.vbv_size_bits].
             entropy_coder (str):
                 The entropy coder to use. The default is ``cabac``.
 
@@ -1599,7 +1707,8 @@ class VideoStream(proto.Message):
             b_frame_count (int):
                 The number of consecutive B-frames. Must be greater than or
                 equal to zero. Must be less than
-                ``VideoStream.gop_frame_count`` if set. The default is 0.
+                [H264CodecSettings.gop_frame_count][google.cloud.video.transcoder.v1.VideoStream.H264CodecSettings.gop_frame_count]
+                if set. The default is 0.
             aq_strength (float):
                 Specify the intensity of the adaptive
                 quantizer (AQ). Must be between 0 and 1, where 0
@@ -1632,6 +1741,14 @@ class VideoStream(proto.Message):
                 Note that certain values for this field may cause the
                 transcoder to override other fields you set in the
                 ``H264CodecSettings`` message.
+            sdr (google.cloud.video.transcoder_v1.types.VideoStream.H264ColorFormatSDR):
+                Optional. SDR color format setting for H264.
+
+                This field is a member of `oneof`_ ``color_format``.
+            hlg (google.cloud.video.transcoder_v1.types.VideoStream.H264ColorFormatHLG):
+                Optional. HLG color format setting for H264.
+
+                This field is a member of `oneof`_ ``color_format``.
         """
 
         width_pixels: int = proto.Field(
@@ -1645,6 +1762,13 @@ class VideoStream(proto.Message):
         frame_rate: float = proto.Field(
             proto.DOUBLE,
             number=3,
+        )
+        frame_rate_conversion_strategy: "VideoStream.FrameRateConversionStrategy" = (
+            proto.Field(
+                proto.ENUM,
+                number=23,
+                enum="VideoStream.FrameRateConversionStrategy",
+            )
         )
         bitrate_bps: int = proto.Field(
             proto.INT32,
@@ -1717,6 +1841,33 @@ class VideoStream(proto.Message):
             proto.STRING,
             number=20,
         )
+        sdr: "VideoStream.H264ColorFormatSDR" = proto.Field(
+            proto.MESSAGE,
+            number=21,
+            oneof="color_format",
+            message="VideoStream.H264ColorFormatSDR",
+        )
+        hlg: "VideoStream.H264ColorFormatHLG" = proto.Field(
+            proto.MESSAGE,
+            number=22,
+            oneof="color_format",
+            message="VideoStream.H264ColorFormatHLG",
+        )
+
+    class H265ColorFormatSDR(proto.Message):
+        r"""Convert the input video to a Standard Dynamic Range (SDR)
+        video.
+
+        """
+
+    class H265ColorFormatHLG(proto.Message):
+        r"""Convert the input video to a Hybrid Log Gamma (HLG) video."""
+
+    class H265ColorFormatHDR10(proto.Message):
+        r"""Convert the input video to a High Dynamic Range 10 (HDR10)
+        video.
+
+        """
 
     class H265CodecSettings(proto.Message):
         r"""H265 codec settings.
@@ -1756,14 +1907,12 @@ class VideoStream(proto.Message):
                 API detects any rotation metadata and swaps the
                 requested height and width for the output.
             frame_rate (float):
-                Required. The target video frame rate in frames per second
-                (FPS). Must be less than or equal to 120. Will default to
-                the input frame rate if larger than the input frame rate.
-                The API will generate an output FPS that is divisible by the
-                input FPS, and smaller or equal to the target FPS. See
-                `Calculating frame
-                rate <https://cloud.google.com/transcoder/docs/concepts/frame-rate>`__
-                for more information.
+                Required. The target video frame rate in
+                frames per second (FPS). Must be less than or
+                equal to 120.
+            frame_rate_conversion_strategy (google.cloud.video.transcoder_v1.types.VideoStream.FrameRateConversionStrategy):
+                Optional. Frame rate conversion strategy for desired frame
+                rate. The default is ``DOWNSAMPLE``.
             bitrate_bps (int):
                 Required. The video bitrate in bits per
                 second. The minimum value is 1,000. The maximum
@@ -1783,7 +1932,7 @@ class VideoStream(proto.Message):
                 -  ``yuv422p12`` 12-bit HDR pixel format
                 -  ``yuv444p12`` 12-bit HDR pixel format
             rate_control_mode (str):
-                Specify the ``rate_control_mode``. The default is ``vbr``.
+                Specify the mode. The default is ``vbr``.
 
                 Supported rate control modes:
 
@@ -1811,8 +1960,9 @@ class VideoStream(proto.Message):
                 This field is a member of `oneof`_ ``gop_mode``.
             enable_two_pass (bool):
                 Use two-pass encoding strategy to achieve better video
-                quality. ``VideoStream.rate_control_mode`` must be ``vbr``.
-                The default is ``false``.
+                quality.
+                [H265CodecSettings.rate_control_mode][google.cloud.video.transcoder.v1.VideoStream.H265CodecSettings.rate_control_mode]
+                must be ``vbr``. The default is ``false``.
             vbv_size_bits (int):
                 Size of the Video Buffering Verifier (VBV) buffer in bits.
                 Must be greater than zero. The default is equal to
@@ -1820,14 +1970,16 @@ class VideoStream(proto.Message):
             vbv_fullness_bits (int):
                 Initial fullness of the Video Buffering Verifier (VBV)
                 buffer in bits. Must be greater than zero. The default is
-                equal to 90% of ``VideoStream.vbv_size_bits``.
+                equal to 90% of
+                [H265CodecSettings.vbv_size_bits][google.cloud.video.transcoder.v1.VideoStream.H265CodecSettings.vbv_size_bits].
             b_pyramid (bool):
                 Allow B-pyramid for reference frame selection. This may not
                 be supported on all decoders. The default is ``false``.
             b_frame_count (int):
                 The number of consecutive B-frames. Must be greater than or
                 equal to zero. Must be less than
-                ``VideoStream.gop_frame_count`` if set. The default is 0.
+                [H265CodecSettings.gop_frame_count][google.cloud.video.transcoder.v1.VideoStream.H265CodecSettings.gop_frame_count]
+                if set. The default is 0.
             aq_strength (float):
                 Specify the intensity of the adaptive
                 quantizer (AQ). Must be between 0 and 1, where 0
@@ -1880,6 +2032,19 @@ class VideoStream(proto.Message):
                 Note that certain values for this field may cause the
                 transcoder to override other fields you set in the
                 ``H265CodecSettings`` message.
+            sdr (google.cloud.video.transcoder_v1.types.VideoStream.H265ColorFormatSDR):
+                Optional. SDR color format setting for H265.
+
+                This field is a member of `oneof`_ ``color_format``.
+            hlg (google.cloud.video.transcoder_v1.types.VideoStream.H265ColorFormatHLG):
+                Optional. HLG color format setting for H265.
+
+                This field is a member of `oneof`_ ``color_format``.
+            hdr10 (google.cloud.video.transcoder_v1.types.VideoStream.H265ColorFormatHDR10):
+                Optional. HDR10 color format setting for
+                H265.
+
+                This field is a member of `oneof`_ ``color_format``.
         """
 
         width_pixels: int = proto.Field(
@@ -1893,6 +2058,13 @@ class VideoStream(proto.Message):
         frame_rate: float = proto.Field(
             proto.DOUBLE,
             number=3,
+        )
+        frame_rate_conversion_strategy: "VideoStream.FrameRateConversionStrategy" = (
+            proto.Field(
+                proto.ENUM,
+                number=23,
+                enum="VideoStream.FrameRateConversionStrategy",
+            )
         )
         bitrate_bps: int = proto.Field(
             proto.INT32,
@@ -1961,6 +2133,33 @@ class VideoStream(proto.Message):
             proto.STRING,
             number=19,
         )
+        sdr: "VideoStream.H265ColorFormatSDR" = proto.Field(
+            proto.MESSAGE,
+            number=20,
+            oneof="color_format",
+            message="VideoStream.H265ColorFormatSDR",
+        )
+        hlg: "VideoStream.H265ColorFormatHLG" = proto.Field(
+            proto.MESSAGE,
+            number=21,
+            oneof="color_format",
+            message="VideoStream.H265ColorFormatHLG",
+        )
+        hdr10: "VideoStream.H265ColorFormatHDR10" = proto.Field(
+            proto.MESSAGE,
+            number=22,
+            oneof="color_format",
+            message="VideoStream.H265ColorFormatHDR10",
+        )
+
+    class Vp9ColorFormatSDR(proto.Message):
+        r"""Convert the input video to a Standard Dynamic Range (SDR)
+        video.
+
+        """
+
+    class Vp9ColorFormatHLG(proto.Message):
+        r"""Convert the input video to a Hybrid Log Gamma (HLG) video."""
 
     class Vp9CodecSettings(proto.Message):
         r"""VP9 codec settings.
@@ -2000,14 +2199,12 @@ class VideoStream(proto.Message):
                 API detects any rotation metadata and swaps the
                 requested height and width for the output.
             frame_rate (float):
-                Required. The target video frame rate in frames per second
-                (FPS). Must be less than or equal to 120. Will default to
-                the input frame rate if larger than the input frame rate.
-                The API will generate an output FPS that is divisible by the
-                input FPS, and smaller or equal to the target FPS. See
-                `Calculating frame
-                rate <https://cloud.google.com/transcoder/docs/concepts/frame-rate>`__
-                for more information.
+                Required. The target video frame rate in
+                frames per second (FPS). Must be less than or
+                equal to 120.
+            frame_rate_conversion_strategy (google.cloud.video.transcoder_v1.types.VideoStream.FrameRateConversionStrategy):
+                Optional. Frame rate conversion strategy for desired frame
+                rate. The default is ``DOWNSAMPLE``.
             bitrate_bps (int):
                 Required. The video bitrate in bits per
                 second. The minimum value is 1,000. The maximum
@@ -2027,7 +2224,7 @@ class VideoStream(proto.Message):
                 -  ``yuv422p12`` 12-bit HDR pixel format
                 -  ``yuv444p12`` 12-bit HDR pixel format
             rate_control_mode (str):
-                Specify the ``rate_control_mode``. The default is ``vbr``.
+                Specify the mode. The default is ``vbr``.
 
                 Supported rate control modes:
 
@@ -2065,6 +2262,14 @@ class VideoStream(proto.Message):
                 Note that certain values for this field may cause the
                 transcoder to override other fields you set in the
                 ``Vp9CodecSettings`` message.
+            sdr (google.cloud.video.transcoder_v1.types.VideoStream.Vp9ColorFormatSDR):
+                Optional. SDR color format setting for VP9.
+
+                This field is a member of `oneof`_ ``color_format``.
+            hlg (google.cloud.video.transcoder_v1.types.VideoStream.Vp9ColorFormatHLG):
+                Optional. HLG color format setting for VP9.
+
+                This field is a member of `oneof`_ ``color_format``.
         """
 
         width_pixels: int = proto.Field(
@@ -2078,6 +2283,13 @@ class VideoStream(proto.Message):
         frame_rate: float = proto.Field(
             proto.DOUBLE,
             number=3,
+        )
+        frame_rate_conversion_strategy: "VideoStream.FrameRateConversionStrategy" = (
+            proto.Field(
+                proto.ENUM,
+                number=13,
+                enum="VideoStream.FrameRateConversionStrategy",
+            )
         )
         bitrate_bps: int = proto.Field(
             proto.INT32,
@@ -2109,6 +2321,18 @@ class VideoStream(proto.Message):
         profile: str = proto.Field(
             proto.STRING,
             number=10,
+        )
+        sdr: "VideoStream.Vp9ColorFormatSDR" = proto.Field(
+            proto.MESSAGE,
+            number=11,
+            oneof="color_format",
+            message="VideoStream.Vp9ColorFormatSDR",
+        )
+        hlg: "VideoStream.Vp9ColorFormatHLG" = proto.Field(
+            proto.MESSAGE,
+            number=12,
+            oneof="color_format",
+            message="VideoStream.Vp9ColorFormatHLG",
         )
 
     h264: H264CodecSettings = proto.Field(
@@ -2146,6 +2370,7 @@ class AudioStream(proto.Message):
             -  ``mp3``
             -  ``ac3``
             -  ``eac3``
+            -  ``vorbis``
         bitrate_bps (int):
             Required. Audio bitrate in bits per second.
             Must be between 1 and 10,000,000.
@@ -2167,8 +2392,10 @@ class AudioStream(proto.Message):
             -  ``fc`` - Front center channel
             -  ``lfe`` - Low frequency
         mapping_ (MutableSequence[google.cloud.video.transcoder_v1.types.AudioStream.AudioMapping]):
-            The mapping for the ``Job.edit_list`` atoms with audio
-            ``EditAtom.inputs``.
+            The mapping for the
+            [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list]
+            atoms with audio
+            [EditAtom.inputs][google.cloud.video.transcoder.v1.EditAtom.inputs].
         sample_rate_hertz (int):
             The audio sample rate in Hertz. The default
             is 48000 Hertz.
@@ -2184,15 +2411,21 @@ class AudioStream(proto.Message):
     """
 
     class AudioMapping(proto.Message):
-        r"""The mapping for the ``Job.edit_list`` atoms with audio
-        ``EditAtom.inputs``.
+        r"""The mapping for the
+        [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list]
+        atoms with audio
+        [EditAtom.inputs][google.cloud.video.transcoder.v1.EditAtom.inputs].
 
         Attributes:
             atom_key (str):
-                Required. The ``EditAtom.key`` that references the atom with
-                audio inputs in the ``Job.edit_list``.
+                Required. The
+                [EditAtom.key][google.cloud.video.transcoder.v1.EditAtom.key]
+                that references the atom with audio inputs in the
+                [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list].
             input_key (str):
-                Required. The ``Input.key`` that identifies the input file.
+                Required. The
+                [Input.key][google.cloud.video.transcoder.v1.Input.key] that
+                identifies the input file.
             input_track (int):
                 Required. The zero-based index of the track
                 in the input file.
@@ -2289,8 +2522,10 @@ class TextStream(proto.Message):
             https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             Not supported in MP4 files.
         mapping_ (MutableSequence[google.cloud.video.transcoder_v1.types.TextStream.TextMapping]):
-            The mapping for the ``Job.edit_list`` atoms with text
-            ``EditAtom.inputs``.
+            The mapping for the
+            [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list]
+            atoms with text
+            [EditAtom.inputs][google.cloud.video.transcoder.v1.EditAtom.inputs].
         display_name (str):
             The name for this particular text stream that
             will be added to the HLS/DASH manifest. Not
@@ -2298,15 +2533,21 @@ class TextStream(proto.Message):
     """
 
     class TextMapping(proto.Message):
-        r"""The mapping for the ``Job.edit_list`` atoms with text
-        ``EditAtom.inputs``.
+        r"""The mapping for the
+        [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list]
+        atoms with text
+        [EditAtom.inputs][google.cloud.video.transcoder.v1.EditAtom.inputs].
 
         Attributes:
             atom_key (str):
-                Required. The ``EditAtom.key`` that references atom with
-                text inputs in the ``Job.edit_list``.
+                Required. The
+                [EditAtom.key][google.cloud.video.transcoder.v1.EditAtom.key]
+                that references atom with text inputs in the
+                [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list].
             input_key (str):
-                Required. The ``Input.key`` that identifies the input file.
+                Required. The
+                [Input.key][google.cloud.video.transcoder.v1.Input.key] that
+                identifies the input file.
             input_track (int):
                 Required. The zero-based index of the track
                 in the input file.

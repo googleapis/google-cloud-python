@@ -554,11 +554,29 @@ class TranscoderServiceGrpcAsyncIOTransport(TranscoderServiceTransport):
             ),
             self.list_jobs: self._wrap_method(
                 self.list_jobs,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_job: self._wrap_method(
                 self.get_job,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -574,11 +592,29 @@ class TranscoderServiceGrpcAsyncIOTransport(TranscoderServiceTransport):
             ),
             self.list_job_templates: self._wrap_method(
                 self.list_job_templates,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_job_template: self._wrap_method(
                 self.get_job_template,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
