@@ -205,7 +205,7 @@ class TestProxyClientHandler:
             operation_timeout=operation_timeout,
             prepare_operation_timeout=operation_timeout,
         )
-        rows = [r async for r in result]
+        rows = [r for r in result]
         md = result.metadata
         proto_rows = []
         for r in rows:

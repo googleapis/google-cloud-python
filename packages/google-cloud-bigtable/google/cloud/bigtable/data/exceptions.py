@@ -331,6 +331,9 @@ class FailedQueryShardError(Exception):
 class InvalidExecuteQueryResponse(core_exceptions.GoogleAPICallError):
     """Exception raised to invalid query response data from back-end."""
 
+    # Set to internal. This is representative of an internal error.
+    code = 13
+
 
 class ParameterTypeInferenceFailed(ValueError):
     """Exception raised when query parameter types were not provided and cannot be inferred."""
