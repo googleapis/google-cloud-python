@@ -14,6 +14,26 @@
 
 import argparse
 import sys
+import json
+import os
+import logging
+
+logger = logging.getLogger()
+
+LIBRARIAN = "/librarian"
+
+# Helper function that reads a json file path and returns the loaded json content.
+def _read_json_file(path):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Request file not found at '{path}'")
+    try:
+        with open(path, 'r') as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        raise ValueError(f"Invalid JSON in request file '{path}'")
+    except IOError as e:
+        raise IOError(f"Invalid JSON in request file '{path}': {e}")
+
 
 def handle_configure(dry_run=False):
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command.
@@ -21,6 +41,17 @@ def handle_configure(dry_run=False):
 
 def handle_generate(dry_run=False):
     # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command.
+
+    # Read a generate-request.json file
+    request_path = f"{LIBRARIAN}/generate-request.json"
+    try:
+        request_data = _read_json_file(request_path)
+    except Exception as e:
+        logger.error(e)
+        sys.exit(1)
+
+    # Print the data:
+    print(json.dumps(request_data, indent=2))
     print("'generate' command executed.")
 
 def handle_build(dry_run=False):
