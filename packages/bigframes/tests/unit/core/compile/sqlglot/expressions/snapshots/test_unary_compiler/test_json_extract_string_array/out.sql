@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    JSON_EXTRACT(`bfcol_0`, '$') AS `bfcol_1`
+    JSON_EXTRACT_STRING_ARRAY(`bfcol_0`, '$') AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

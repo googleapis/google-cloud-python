@@ -12,38 +12,56 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import typing
+
 import pytest
 
-import bigframes.bigquery as bbq
+from bigframes import operations as ops
+import bigframes.core.expression as ex
 import bigframes.pandas as bpd
 
 pytest.importorskip("pytest_snapshot")
 
 
+def _apply_binary_op(
+    obj: bpd.DataFrame,
+    op: ops.BinaryOp,
+    l_arg: str,
+    r_arg: typing.Union[str, ex.Expression],
+) -> str:
+    array_value = obj._block.expr
+    op_expr = op.as_expr(l_arg, r_arg)
+    result, col_ids = array_value.compute_values([op_expr])
+
+    # Rename columns for deterministic golden SQL results.
+    assert len(col_ids) == 1
+    result = result.rename_columns({col_ids[0]: l_arg}).select_columns([l_arg])
+
+    sql = result.session._executor.to_sql(result, enable_cache=False)
+    return sql
+
+
 def test_add_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col"]]
-
-    bf_df["int64_col"] = bf_df["int64_col"] + bf_df["int64_col"]
-
-    snapshot.assert_match(bf_df.sql, "out.sql")
+    sql = _apply_binary_op(bf_df, ops.add_op, "int64_col", "int64_col")
+    snapshot.assert_match(sql, "out.sql")
 
 
 def test_add_numeric_w_scalar(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col"]]
-
-    bf_df["int64_col"] = bf_df["int64_col"] + 1
-
-    snapshot.assert_match(bf_df.sql, "out.sql")
+    sql = _apply_binary_op(bf_df, ops.add_op, "int64_col", ex.const(1))
+    snapshot.assert_match(sql, "out.sql")
 
 
 def test_add_string(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["string_col"]]
-
-    bf_df["string_col"] = bf_df["string_col"] + "a"
-
-    snapshot.assert_match(bf_df.sql, "out.sql")
+    sql = _apply_binary_op(bf_df, ops.add_op, "string_col", ex.const("a"))
+    snapshot.assert_match(sql, "out.sql")
 
 
 def test_json_set(json_types_df: bpd.DataFrame, snapshot):
-    result = bbq.json_set(json_types_df["json_col"], [("$.a", 100), ("$.b", "hi")])
-    snapshot.assert_match(result.to_frame().sql, "out.sql")
+    bf_df = json_types_df[["json_col"]]
+    sql = _apply_binary_op(
+        bf_df, ops.JSONSet(json_path="$.a"), "json_col", ex.const(100)
+    )
+    snapshot.assert_match(sql, "out.sql")
