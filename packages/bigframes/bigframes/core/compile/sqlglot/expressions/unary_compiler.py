@@ -23,11 +23,50 @@ from bigframes import operations as ops
 from bigframes.core.compile.sqlglot.expressions.op_registration import OpRegistration
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
+_NAN = sge.Cast(this=sge.convert("NaN"), to="FLOAT64")
+_INF = sge.Cast(this=sge.convert("Infinity"), to="FLOAT64")
+
+# Approx Highest number you can pass in to EXP function and get a valid FLOAT64 result
+# FLOAT64 has 11 exponent bits, so max values is about 2**(2**10)
+# ln(2**(2**10)) == (2**10)*ln(2) ~= 709.78, so EXP(x) for x>709.78 will overflow.
+_FLOAT64_EXP_BOUND = sge.convert(709.78)
+
 UNARY_OP_REGISTRATION = OpRegistration()
 
 
 def compile(op: ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return UNARY_OP_REGISTRATION[op](op, expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.arccos_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.func("ABS", expr.expr) > sge.convert(1),
+                true=_NAN,
+            )
+        ],
+        default=sge.func("ACOS", expr.expr),
+    )
+
+
+@UNARY_OP_REGISTRATION.register(ops.arcsin_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.func("ABS", expr.expr) > sge.convert(1),
+                true=_NAN,
+            )
+        ],
+        default=sge.func("ASIN", expr.expr),
+    )
+
+
+@UNARY_OP_REGISTRATION.register(ops.arctan_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("ATAN", expr.expr)
 
 
 @UNARY_OP_REGISTRATION.register(ops.ArrayToStringOp)
@@ -70,6 +109,49 @@ def _(op: ops.ArraySliceOp, expr: TypedExpr) -> sge.Expression:
     )
 
     return sge.array(selected_elements)
+
+
+@UNARY_OP_REGISTRATION.register(ops.cos_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("COS", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.hash_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("FARM_FINGERPRINT", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.isnull_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Is(this=expr.expr, expression=sge.Null())
+
+
+@UNARY_OP_REGISTRATION.register(ops.notnull_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Not(this=sge.Is(this=expr.expr, expression=sge.Null()))
+
+
+@UNARY_OP_REGISTRATION.register(ops.sin_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("SIN", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.sinh_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=sge.func("ABS", expr.expr) > _FLOAT64_EXP_BOUND,
+                true=sge.func("SIGN", expr.expr) * _INF,
+            )
+        ],
+        default=sge.func("SINH", expr.expr),
+    )
+
+
+@UNARY_OP_REGISTRATION.register(ops.tan_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("TAN", expr.expr)
 
 
 # JSON Ops

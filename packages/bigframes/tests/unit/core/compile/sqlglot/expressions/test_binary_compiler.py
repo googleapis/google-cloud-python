@@ -44,18 +44,21 @@ def _apply_binary_op(
 def test_add_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col"]]
     sql = _apply_binary_op(bf_df, ops.add_op, "int64_col", "int64_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_add_numeric_w_scalar(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col"]]
     sql = _apply_binary_op(bf_df, ops.add_op, "int64_col", ex.const(1))
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_add_string(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["string_col"]]
     sql = _apply_binary_op(bf_df, ops.add_op, "string_col", ex.const("a"))
+
     snapshot.assert_match(sql, "out.sql")
 
 
@@ -64,4 +67,5 @@ def test_json_set(json_types_df: bpd.DataFrame, snapshot):
     sql = _apply_binary_op(
         bf_df, ops.JSONSet(json_path="$.a"), "json_col", ex.const(100)
     )
+
     snapshot.assert_match(sql, "out.sql")

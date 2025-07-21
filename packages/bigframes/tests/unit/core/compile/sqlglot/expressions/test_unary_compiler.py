@@ -34,73 +34,155 @@ def _apply_unary_op(obj: bpd.DataFrame, op: ops.UnaryOp, arg: str) -> str:
     return sql
 
 
+def test_arccos(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.arccos_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_arcsin(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.arcsin_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_arctan(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.arctan_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_array_to_string(repeated_types_df: bpd.DataFrame, snapshot):
     bf_df = repeated_types_df[["string_list_col"]]
     sql = _apply_unary_op(bf_df, ops.ArrayToStringOp(delimiter="."), "string_list_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_array_index(repeated_types_df: bpd.DataFrame, snapshot):
     bf_df = repeated_types_df[["string_list_col"]]
     sql = _apply_unary_op(bf_df, convert_index(1), "string_list_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_array_slice_with_only_start(repeated_types_df: bpd.DataFrame, snapshot):
     bf_df = repeated_types_df[["string_list_col"]]
     sql = _apply_unary_op(bf_df, convert_slice(slice(1, None)), "string_list_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_array_slice_with_start_and_stop(repeated_types_df: bpd.DataFrame, snapshot):
     bf_df = repeated_types_df[["string_list_col"]]
     sql = _apply_unary_op(bf_df, convert_slice(slice(1, 5)), "string_list_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_cos(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.cos_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_hash(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(bf_df, ops.hash_op, "string_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_isnull(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.isnull_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_notnull(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.notnull_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_sin(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.sin_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_sinh(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.sinh_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_tan(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.tan_op, "float64_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_json_extract(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df[["json_col"]]
     sql = _apply_unary_op(bf_df, ops.JSONExtract(json_path="$"), "json_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_json_extract_array(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df[["json_col"]]
     sql = _apply_unary_op(bf_df, ops.JSONExtractArray(json_path="$"), "json_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_json_extract_string_array(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df[["json_col"]]
     sql = _apply_unary_op(bf_df, ops.JSONExtractStringArray(json_path="$"), "json_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_json_query(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df[["json_col"]]
     sql = _apply_unary_op(bf_df, ops.JSONQuery(json_path="$"), "json_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_json_query_array(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df[["json_col"]]
     sql = _apply_unary_op(bf_df, ops.JSONQueryArray(json_path="$"), "json_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_json_value(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df[["json_col"]]
     sql = _apply_unary_op(bf_df, ops.JSONValue(json_path="$"), "json_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_parse_json(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["string_col"]]
     sql = _apply_unary_op(bf_df, ops.ParseJSON(), "string_col")
+
     snapshot.assert_match(sql, "out.sql")
 
 
 def test_to_json_string(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df[["json_col"]]
     sql = _apply_unary_op(bf_df, ops.ToJSONString(), "json_col")
+
     snapshot.assert_match(sql, "out.sql")
