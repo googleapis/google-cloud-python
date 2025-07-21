@@ -23,6 +23,7 @@ logger = logging.getLogger()
 LIBRARIAN = "/librarian"
 
 # Helper function that reads a json file path and returns the loaded json content.
+# Remove me.
 def _read_json_file(path):
     if not os.path.exists(path):
         raise FileNotFoundError(f"Request file not found at '{path}'")
