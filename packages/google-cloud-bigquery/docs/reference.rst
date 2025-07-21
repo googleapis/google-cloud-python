@@ -22,6 +22,7 @@ Job
 ===
 
 .. automodule:: google.cloud.bigquery.job
+   :inherited-members:
 
 .. toctree::
   :maxdepth: 2
