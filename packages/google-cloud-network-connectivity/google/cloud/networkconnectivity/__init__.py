@@ -30,6 +30,12 @@ from google.cloud.networkconnectivity_v1.services.hub_service.async_client impor
 from google.cloud.networkconnectivity_v1.services.hub_service.client import (
     HubServiceClient,
 )
+from google.cloud.networkconnectivity_v1.services.internal_range_service.async_client import (
+    InternalRangeServiceAsyncClient,
+)
+from google.cloud.networkconnectivity_v1.services.internal_range_service.client import (
+    InternalRangeServiceClient,
+)
 from google.cloud.networkconnectivity_v1.services.policy_based_routing_service.async_client import (
     PolicyBasedRoutingServiceAsyncClient,
 )
@@ -131,6 +137,15 @@ from google.cloud.networkconnectivity_v1.types.hub import (
     UpdateHubRequest,
     UpdateSpokeRequest,
 )
+from google.cloud.networkconnectivity_v1.types.internal_range import (
+    CreateInternalRangeRequest,
+    DeleteInternalRangeRequest,
+    GetInternalRangeRequest,
+    InternalRange,
+    ListInternalRangesRequest,
+    ListInternalRangesResponse,
+    UpdateInternalRangeRequest,
+)
 from google.cloud.networkconnectivity_v1.types.policy_based_routing import (
     CreatePolicyBasedRouteRequest,
     DeletePolicyBasedRouteRequest,
@@ -145,6 +160,8 @@ __all__ = (
     "CrossNetworkAutomationServiceAsyncClient",
     "HubServiceClient",
     "HubServiceAsyncClient",
+    "InternalRangeServiceClient",
+    "InternalRangeServiceAsyncClient",
     "PolicyBasedRoutingServiceClient",
     "PolicyBasedRoutingServiceAsyncClient",
     "OperationMetadata",
@@ -238,6 +255,13 @@ __all__ = (
     "RouteType",
     "SpokeType",
     "State",
+    "CreateInternalRangeRequest",
+    "DeleteInternalRangeRequest",
+    "GetInternalRangeRequest",
+    "InternalRange",
+    "ListInternalRangesRequest",
+    "ListInternalRangesResponse",
+    "UpdateInternalRangeRequest",
     "CreatePolicyBasedRouteRequest",
     "DeletePolicyBasedRouteRequest",
     "GetPolicyBasedRouteRequest",

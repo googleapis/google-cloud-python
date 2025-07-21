@@ -108,6 +108,15 @@ from .hub import (
     UpdateHubRequest,
     UpdateSpokeRequest,
 )
+from .internal_range import (
+    CreateInternalRangeRequest,
+    DeleteInternalRangeRequest,
+    GetInternalRangeRequest,
+    InternalRange,
+    ListInternalRangesRequest,
+    ListInternalRangesResponse,
+    UpdateInternalRangeRequest,
+)
 from .policy_based_routing import (
     CreatePolicyBasedRouteRequest,
     DeletePolicyBasedRouteRequest,
@@ -209,6 +218,13 @@ __all__ = (
     "RouteType",
     "SpokeType",
     "State",
+    "CreateInternalRangeRequest",
+    "DeleteInternalRangeRequest",
+    "GetInternalRangeRequest",
+    "InternalRange",
+    "ListInternalRangesRequest",
+    "ListInternalRangesResponse",
+    "UpdateInternalRangeRequest",
     "CreatePolicyBasedRouteRequest",
     "DeletePolicyBasedRouteRequest",
     "GetPolicyBasedRouteRequest",

@@ -443,6 +443,70 @@
         }
       }
     },
+    "InternalRangeService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "InternalRangeServiceClient",
+          "rpcs": {
+            "CreateInternalRange": {
+              "methods": [
+                "create_internal_range"
+              ]
+            },
+            "DeleteInternalRange": {
+              "methods": [
+                "delete_internal_range"
+              ]
+            },
+            "GetInternalRange": {
+              "methods": [
+                "get_internal_range"
+              ]
+            },
+            "ListInternalRanges": {
+              "methods": [
+                "list_internal_ranges"
+              ]
+            },
+            "UpdateInternalRange": {
+              "methods": [
+                "update_internal_range"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "InternalRangeServiceAsyncClient",
+          "rpcs": {
+            "CreateInternalRange": {
+              "methods": [
+                "create_internal_range"
+              ]
+            },
+            "DeleteInternalRange": {
+              "methods": [
+                "delete_internal_range"
+              ]
+            },
+            "GetInternalRange": {
+              "methods": [
+                "get_internal_range"
+              ]
+            },
+            "ListInternalRanges": {
+              "methods": [
+                "list_internal_ranges"
+              ]
+            },
+            "UpdateInternalRange": {
+              "methods": [
+                "update_internal_range"
+              ]
+            }
+          }
+        }
+      }
+    },
     "PolicyBasedRoutingService": {
       "clients": {
         "grpc": {

@@ -5,4 +5,5 @@ Services for Google Cloud Networkconnectivity v1 API
 
     cross_network_automation_service
     hub_service
+    internal_range_service
     policy_based_routing_service

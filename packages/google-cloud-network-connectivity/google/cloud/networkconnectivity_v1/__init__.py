@@ -23,6 +23,10 @@ from .services.cross_network_automation_service import (
     CrossNetworkAutomationServiceClient,
 )
 from .services.hub_service import HubServiceAsyncClient, HubServiceClient
+from .services.internal_range_service import (
+    InternalRangeServiceAsyncClient,
+    InternalRangeServiceClient,
+)
 from .services.policy_based_routing_service import (
     PolicyBasedRoutingServiceAsyncClient,
     PolicyBasedRoutingServiceClient,
@@ -122,6 +126,15 @@ from .types.hub import (
     UpdateHubRequest,
     UpdateSpokeRequest,
 )
+from .types.internal_range import (
+    CreateInternalRangeRequest,
+    DeleteInternalRangeRequest,
+    GetInternalRangeRequest,
+    InternalRange,
+    ListInternalRangesRequest,
+    ListInternalRangesResponse,
+    UpdateInternalRangeRequest,
+)
 from .types.policy_based_routing import (
     CreatePolicyBasedRouteRequest,
     DeletePolicyBasedRouteRequest,
@@ -134,6 +147,7 @@ from .types.policy_based_routing import (
 __all__ = (
     "CrossNetworkAutomationServiceAsyncClient",
     "HubServiceAsyncClient",
+    "InternalRangeServiceAsyncClient",
     "PolicyBasedRoutingServiceAsyncClient",
     "AcceptHubSpokeRequest",
     "AcceptHubSpokeResponse",
@@ -142,6 +156,7 @@ __all__ = (
     "AutoAccept",
     "ConnectionErrorType",
     "CreateHubRequest",
+    "CreateInternalRangeRequest",
     "CreatePolicyBasedRouteRequest",
     "CreateServiceConnectionMapRequest",
     "CreateServiceConnectionPolicyRequest",
@@ -149,6 +164,7 @@ __all__ = (
     "CreateSpokeRequest",
     "CrossNetworkAutomationServiceClient",
     "DeleteHubRequest",
+    "DeleteInternalRangeRequest",
     "DeletePolicyBasedRouteRequest",
     "DeleteServiceClassRequest",
     "DeleteServiceConnectionMapRequest",
@@ -157,6 +173,7 @@ __all__ = (
     "DeleteSpokeRequest",
     "GetGroupRequest",
     "GetHubRequest",
+    "GetInternalRangeRequest",
     "GetPolicyBasedRouteRequest",
     "GetRouteRequest",
     "GetRouteTableRequest",
@@ -171,6 +188,8 @@ __all__ = (
     "HubStatusEntry",
     "IPVersion",
     "Infrastructure",
+    "InternalRange",
+    "InternalRangeServiceClient",
     "LinkedInterconnectAttachments",
     "LinkedProducerVpcNetwork",
     "LinkedRouterApplianceInstances",
@@ -182,6 +201,8 @@ __all__ = (
     "ListHubSpokesResponse",
     "ListHubsRequest",
     "ListHubsResponse",
+    "ListInternalRangesRequest",
+    "ListInternalRangesResponse",
     "ListPolicyBasedRoutesRequest",
     "ListPolicyBasedRoutesResponse",
     "ListRouteTablesRequest",
@@ -231,6 +252,7 @@ __all__ = (
     "State",
     "UpdateGroupRequest",
     "UpdateHubRequest",
+    "UpdateInternalRangeRequest",
     "UpdateServiceClassRequest",
     "UpdateServiceConnectionMapRequest",
     "UpdateServiceConnectionPolicyRequest",
