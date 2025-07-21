@@ -64,8 +64,7 @@ WORKDIR /app
 # TODO(https://github.com/googleapis/librarian/issues/906): Clone googleapis and run bazelisk build.
 
 # Copy the CLI script into the container and set ownership.
-# No other files or dependencies are needed for this simple script.
-COPY cli.py .
+COPY .generator/cli.py .
 
 # Set the entrypoint for the container to run the script.
 ENTRYPOINT ["python3.13", "./cli.py"]
