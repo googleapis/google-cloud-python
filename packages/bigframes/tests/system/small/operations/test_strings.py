@@ -324,13 +324,10 @@ def test_isalpha(weird_strings, weird_strings_pd):
     )
 
 
-@pytest.mark.skipif(
-    "dev" in pa.__version__,
-    # b/333484335 pyarrow is inconsistent on the behavior
-    reason="pyarrow dev version is inconsistent on isdigit behavior.",
-)
 def test_isdigit(weird_strings, weird_strings_pd):
-    pd_result = weird_strings_pd.str.isdigit()
+    # check the behavior against normal pandas str, since pyarrow has a bug with superscripts/fractions b/333484335
+    # astype object instead of str to support pd.NA
+    pd_result = weird_strings_pd.astype(object).str.isdigit()
     bf_result = weird_strings.str.isdigit().to_pandas()
 
     pd.testing.assert_series_equal(

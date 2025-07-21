@@ -487,9 +487,9 @@ def isalpha_op_impl(x: ibis_types.Value):
 
 @scalar_op_compiler.register_unary_op(ops.isdigit_op)
 def isdigit_op_impl(x: ibis_types.Value):
-    # Based on docs, should include superscript/subscript-ed numbers
-    # Tests however pass only when set to Nd unicode class
-    return typing.cast(ibis_types.StringValue, x).re_search(r"^(\p{Nd})+$")
+    return typing.cast(ibis_types.StringValue, x).re_search(
+        r"^[\p{Nd}\x{00B9}\x{00B2}\x{00B3}\x{2070}\x{2074}-\x{2079}\x{2080}-\x{2089}]+$"
+    )
 
 
 @scalar_op_compiler.register_unary_op(ops.isdecimal_op)
