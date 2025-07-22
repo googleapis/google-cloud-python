@@ -24,35 +24,56 @@ LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
 
 
-# Helper function that reads a json file path and returns the loaded json content.
 def _read_json_file(path):
+    """Helper function that reads a json file path and returns the loaded json content.
+
+    Args:
+        path (str): The file path to read.
+
+    Returns:
+        dict: The parsed JSON content.
+
+    Raises:
+        FileNotFoundError: If the file is not found at the specified path.
+        json.JSONDecodeError: If the file does not contain valid JSON.
+        IOError: If there is an issue reading the file.
+    """
     with open(path, "r") as f:
         return json.load(f)
 
 
-def handle_configure(dry_run=False):
-    # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command.
+def handle_configure():
+    # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
     logger.info("'configure' command executed.")
 
 
-def handle_generate(dry_run=False):
+def handle_generate():
+    """The main coordinator for the code generation process.
+
+    This function orchestrates the generation of a client library by reading a
+    `librarian/generate-request.json` file, determining the necessary Bazel rule for each API, and
+    (in future steps) executing the build.
+
+    Raises:
+        ValueError: If the `generate-request.json` file is not found or read.
+    """
 
     # Read a generate-request.json file
-    if not dry_run:
-        try:
-            request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
-        except Exception as e:
-            logger.error(f"failed to read {LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}: {e}")
-            sys.exit(1)
+    try:
+        request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
+    except Exception as e:
+        raise ValueError(
+            f"failed to read {LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}"
+        ) from e
 
-        logger.info(json.dumps(request_data, indent=2))
+    logger.info(json.dumps(request_data, indent=2))
 
-    # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command.
+    # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command and update docstring.
     logger.info("'generate' command executed.")
 
 
-def handle_build(dry_run=False):
-    # TODO(https://github.com/googleapis/librarian/issues/450): Implement build command.
+def handle_build():
+    # TODO(https://github.com/googleapis/librarian/issues/450): Implement build command and update docstring.
     logger.info("'build' command executed.")
 
 
@@ -60,11 +81,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
     subparsers = parser.add_subparsers(
         dest="command", required=True, help="Available commands"
-    )
-
-    # This flag is needed for testing.
-    parser.add_argument(
-        "--dry-run", action="store_true", help="Perform a dry run for testing purposes."
     )
 
     # Define commands
@@ -87,4 +103,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     args = parser.parse_args()
-    args.func(dry_run=args.dry_run)
+    args.func()

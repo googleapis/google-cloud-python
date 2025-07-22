@@ -49,14 +49,15 @@ def mock_generate_request_file(tmp_path, monkeypatch):
     return request_file
 
 
-def test_handle_configure_dry_run():
-    # This is a simple test to ensure that the dry run command succeeds.
-    handle_configure(dry_run=True)
+def test_handle_configure_success(caplog, mock_generate_request_file):
+    """
+    Tests the successful execution path of handle_configure.
+    """
+    caplog.set_level(logging.INFO)
 
+    handle_configure()
 
-def test_handle_generate_dry_run():
-    # This is a simple test to ensure that the dry run command succeeds.
-    handle_generate(dry_run=True)
+    assert "'configure' command executed." in caplog.text
 
 
 def test_handle_generate_success(caplog, mock_generate_request_file):
@@ -65,15 +66,29 @@ def test_handle_generate_success(caplog, mock_generate_request_file):
     """
     caplog.set_level(logging.INFO)
 
-    handle_generate(dry_run=False)
+    handle_generate()
 
     assert "google-cloud-language" in caplog.text
     assert "'generate' command executed." in caplog.text
 
 
-def test_handle_build_dry_run():
-    # This is a simple test to ensure that the dry run command succeeds.
-    handle_build(dry_run=True)
+def test_handle_generate_fail(caplog):
+    """
+    Tests the failed to read `librarian/generate-request.json` file in handle_generates.
+    """
+    with pytest.raises(ValueError):
+        handle_generate()
+
+
+def test_handle_build_success(caplog, mock_generate_request_file):
+    """
+    Tests the successful execution path of handle_build.
+    """
+    caplog.set_level(logging.INFO)
+
+    handle_build()
+
+    assert "'build' command executed." in caplog.text
 
 
 def test_read_valid_json(mocker):
