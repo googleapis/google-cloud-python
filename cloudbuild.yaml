@@ -23,6 +23,6 @@ steps:
       - '.generator/Dockerfile'
       - '.'
 
-# This section solves the logging error by automatically creating a bucket.
+# This section automatically create a storage bucket for storing docker build logs.
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
