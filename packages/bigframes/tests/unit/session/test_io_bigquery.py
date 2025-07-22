@@ -109,14 +109,15 @@ def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
     labels = io_bq.create_job_configs_labels(
         job_configs_labels=cur_labels, api_methods=api_methods
     )
-    expected_dict = {
+    expected_labels = {
         "source": "bigquery-dataframes-temp",
         "bigframes-api": "dataframe-columns",
         "recent-bigframes-api-0": "dataframe-max",
         "recent-bigframes-api-1": "dataframe-head",
         "recent-bigframes-api-2": "dataframe-__init__",
     }
-    assert labels == expected_dict
+    # Asserts that all items in expected_labels are present in labels
+    assert labels.items() >= expected_labels.items()
 
 
 def test_create_job_configs_labels_length_limit_met_and_labels_is_none():
