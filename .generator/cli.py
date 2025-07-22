@@ -21,7 +21,7 @@ import sys
 logger = logging.getLogger()
 
 LIBRARIAN_DIR = "/librarian"
-GENERATOR_DIR = "/.generator"
+GENERATOR_DIR = ".generator"
 GENERATE_REQUEST_FILE = "generate-request.json"
 
 
@@ -80,16 +80,17 @@ if __name__ == "__main__":
     )
 
     # Define commands
+    handler_map = {
+        "configure": handle_configure,
+        "generate": handle_generate,
+        "build": handle_build,
+    }
+    
     for command_name, help_text in [
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
         ("build", "Run unit tests via nox for the generated library."),
     ]:
-        handler_map = {
-            "configure": handle_configure,
-            "generate": handle_generate,
-            "build": handle_build,
-        }
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
 
