@@ -15,6 +15,7 @@
 import os
 import pytest
 import json
+import logging
 
 from unittest.mock import mock_open
 
@@ -58,15 +59,16 @@ def test_handle_generate_dry_run():
     handle_generate(dry_run=True)
 
 
-def test_handle_generate_success(capsys, mock_generate_request_file):
+def test_handle_generate_success(caplog, mock_generate_request_file):
     """
     Tests the successful execution path of handle_generate.
     """
+    caplog.set_level(logging.INFO)
+
     handle_generate(dry_run=False)
 
-    captured = capsys.readouterr()
-    assert "google-cloud-language" in captured.out
-    assert "'generate' command executed." in captured.out
+    assert "google-cloud-language" in caplog.text
+    assert "'generate' command executed." in caplog.text
 
 
 def test_handle_build_dry_run():

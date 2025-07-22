@@ -32,7 +32,7 @@ def _read_json_file(path):
 
 def handle_configure(dry_run=False):
     # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command.
-    print("'configure' command executed.")
+    logger.info("'configure' command executed.")
 
 
 def handle_generate(dry_run=False):
@@ -42,19 +42,18 @@ def handle_generate(dry_run=False):
         try:
             request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
         except Exception as e:
-            logger.error(e)
+            logger.error(f"failed to read {LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}: {e}")
             sys.exit(1)
 
-        # Print the data:
-        print(json.dumps(request_data, indent=2))
+        logger.info(json.dumps(request_data, indent=2))
 
     # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command.
-    print("'generate' command executed.")
+    logger.info("'generate' command executed.")
 
 
 def handle_build(dry_run=False):
     # TODO(https://github.com/googleapis/librarian/issues/450): Implement build command.
-    print("'build' command executed.")
+    logger.info("'build' command executed.")
 
 
 if __name__ == "__main__":
