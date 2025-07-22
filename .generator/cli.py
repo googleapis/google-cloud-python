@@ -20,7 +20,17 @@ import sys
 
 logger = logging.getLogger()
 
-LIBRARIAN = "/librarian"
+LIBRARIAN_DIR = "/librarian"
+GENERATOR_DIR = "/.generator"
+GENERATE_REQUEST_FILE = "generate-request.json"
+
+
+def _get_base_dir():
+    """Returns the correct base directory based on the environment."""
+    environment = os.getenv("PY_GENERATOR_ENV", "production").lower()
+    if environment == "test":
+        return GENERATOR_DIR
+    return LIBRARIAN_DIR
 
 
 # Helper function that reads a json file path and returns the loaded json content.
@@ -38,9 +48,8 @@ def handle_generate(dry_run=False):
 
     # Read a generate-request.json file
     if not dry_run:
-        request_path = f"{LIBRARIAN}/generate-request.json"
         try:
-            request_data = _read_json_file(request_path)
+            request_data = _read_json_file(f"{_get_base_dir()}/{GENERATE_REQUEST_FILE}")
         except Exception as e:
             logger.error(e)
             sys.exit(1)

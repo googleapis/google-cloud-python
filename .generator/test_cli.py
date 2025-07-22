@@ -15,7 +15,25 @@
 import pytest
 import json
 
-from cli import _read_json_file, handle_generate, handle_build, handle_configure
+from unittest.mock import mock_open
+
+from cli import (
+    _read_json_file,
+    handle_generate,
+    handle_build,
+    handle_configure,
+    GENERATOR_DIR,
+    GENERATE_REQUEST_FILE,
+)
+
+
+# # The fixture is defined directly in the test file
+@pytest.fixture(autouse=True)
+def set_test_environment(monkeypatch):
+    """
+    Sets the environment variable only for tests in this file.
+    """
+    monkeypatch.setenv("PY_GENERATOR_ENV", "test")
 
 
 def test_handle_configure_dry_run():
