@@ -16,6 +16,7 @@ import os
 import pytest
 import json
 import logging
+import subprocess
 
 from unittest.mock import mock_open, MagicMock
 
@@ -75,6 +76,22 @@ def test_determine_bazel_rule_success(mocker, caplog):
 
     assert rule == "//google/cloud/language/v1:google-cloud-language-v1-py"
     assert "Found Bazel rule" in caplog.text
+
+
+def test_determine_bazel_rule_command_fails(mocker, caplog):
+    """
+    Tests that an exception is raised if the subprocess command fails.
+    """
+    caplog.set_level(logging.INFO)
+    mocker.patch(
+        "cli.subprocess.run",
+        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Bazel error"),
+    )
+
+    with pytest.raises(ValueError):
+        _determine_bazel_rule("google/cloud/language/v1")
+
+    assert "Found Bazel rule" not in caplog.text
 
 
 def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
