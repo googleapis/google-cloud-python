@@ -1,0 +1,13 @@
+dbt_sample_project:
+  outputs:
+    dev:        # The target environment name (e.g., dev, prod)
+      compute_region: us-central1         # Region used for compute operations
+      dataset: dbt_sample_dateset         # BigQuery dataset where dbt will create models
+      gcs_bucket: dbt_sample_bucket       # GCS bucket to store output files
+      location: US                        # BigQuery dataset location
+      method: oauth                       # Authentication method
+      priority: interactive               # Job priority: "interactive" or "batch"
+      project: bigframes-dev              # GCP project ID
+      threads: 1                          # Number of threads dbt can use for running models in parallel
+      type: bigquery                      # Specifies the dbt adapter
+  target: dev   # The default target environment
