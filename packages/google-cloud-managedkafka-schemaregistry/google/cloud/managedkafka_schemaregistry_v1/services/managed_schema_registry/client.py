@@ -3790,7 +3790,7 @@ class ManagedSchemaRegistryClient(metaclass=ManagedSchemaRegistryClientMeta):
                 Required. The name of the resource to check
                 compatibility for. The format is either of following:
 
-                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions:
+                -  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions`:
                    Check compatibility with one or more versions of the
                    specified subject.
                 -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/{subject}/versions/{version}:

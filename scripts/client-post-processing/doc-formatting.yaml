@@ -596,20 +596,11 @@ replacements:
                       - An IG/NEG is considered unhealthy if less than
     count: 1
   - paths: [
+      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/types/schema_registry.py,
+      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/services/managed_schema_registry/client.py,
       packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/services/managed_schema_registry/async_client.py,
     ]
     before: |
-      -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions:
-      \                   Check compatibility with one or more versions of the
-      \                   specified subject.
-      \                -  projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/{subject}/versions/{version}:
-      \                   Check compatibility with a specific version of the
-      \                   subject.
-    after: |
-      -  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions`:
-                         Check compatibility with one or more versions of the
-                         specified subject.
-                      -  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/{subject}/versions/{version}`:
-                         Check compatibility with a specific version of the
-                         subject.
-    count: 1
+      -  projects/\{project\}/locations/\{location\}/schemaRegistries/\{schema_registry\}/compatibility/subjects/\*/versions:
+    after: "-  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions`:\n"
+    count: 3
