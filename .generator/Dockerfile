@@ -35,6 +35,7 @@ RUN apt-get update && \
 
 # Set up environment variables for tool versions to make updates easier.
 ENV PYTHON_VERSION=3.11.5
+ENV BAZELISK_VERSION=v1.19.0
 
 # Create a symbolic link for `python3` to point to our specific version.
 ENV PATH /usr/local/bin/python3.11:$PATH
@@ -50,7 +51,9 @@ RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VER
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 
-# TODO(https://github.com/googleapis/librarian/issues/903): Install Bazelisk for building a client library.
+# Install Bazelisk
+RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VERSION}/bazelisk-linux-amd64 -O /usr/local/bin/bazelisk && \
+    chmod +x /usr/local/bin/bazelisk
 
 # TODO(https://github.com/googleapis/librarian/issues/902): Create a dedicate non-root user and 
 # switch to the non-root user to run subsequent commands.

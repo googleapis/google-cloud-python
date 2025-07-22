@@ -21,6 +21,7 @@ from unittest.mock import mock_open, MagicMock
 
 from cli import (
     _read_json_file,
+    _determine_bazel_rule,
     handle_generate,
     handle_build,
     handle_configure,
@@ -60,30 +61,35 @@ def test_handle_configure_success(caplog, mock_generate_request_file):
     assert "'configure' command executed." in caplog.text
 
 
+def test_determine_bazel_rule_success(mocker, caplog):
+    """
+    Tests the happy path of _determine_bazel_rule.
+    """
+    caplog.set_level(logging.INFO)
+    mock_result = MagicMock(
+        stdout="//google/cloud/language/v1:google-cloud-language-v1-py\n"
+    )
+    mocker.patch("cli.subprocess.run", return_value=mock_result)
+
+    rule = _determine_bazel_rule("google/cloud/language/v1")
+
+    assert rule == "//google/cloud/language/v1:google-cloud-language-v1-py"
+    assert "Found Bazel rule" in caplog.text
+
+
 def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
     """
     Tests the successful execution path of handle_generate.
     """
     caplog.set_level(logging.INFO)
 
-    mock_query_result = MagicMock(
-        stdout="//google/cloud/language/v1:google-cloud-language-v1-py\n", returncode=0
-    )
-
-    mock_subprocess = mocker.patch(
-        "cli.subprocess.run", side_effect=[mock_query_result]
+    mock_determine_rule = mocker.patch(
+        "cli._determine_bazel_rule", return_value="mock-rule"
     )
 
     handle_generate()
 
-    # captured = capsys.readouterr()
-    assert "google-cloud-language" in caplog.text
-    assert (
-        "Found Bazel rule: //google/cloud/language/v1:google-cloud-language-v1-py"
-        in caplog.text
-    )
-    assert "'generate' command executed." in caplog.text
-    assert mock_subprocess.call_count == 1
+    mock_determine_rule.assert_called_once_with("google/cloud/language/v1")
 
 
 def test_handle_generate_fail(caplog):
