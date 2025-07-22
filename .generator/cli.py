@@ -74,7 +74,19 @@ def handle_generate():
 
 def handle_build():
     """The main coordinator for validating client library generation."""
-    sesssions = ["unit-3.9", "unit-3.10", "unit-3.11", "unit-3.12", "unit-3.13", "docs", "system", "lint", "lint_setup_py", "mypy", "check_lower_bounds"]
+    sesssions = [
+        "unit-3.9",
+        "unit-3.10",
+        "unit-3.11",
+        "unit-3.12",
+        "unit-3.13",
+        "docs",
+        "system",
+        "lint",
+        "lint_setup_py",
+        "mypy",
+        "check_lower_bounds",
+    ]
     for nox_session in sesssions:
         command = ["nox", "-s", nox_session]
         result = subprocess.run(command, capture_output=True, text=True, check=True)
