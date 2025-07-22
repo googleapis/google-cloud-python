@@ -74,7 +74,7 @@ def _determine_bazel_rule(api_path):
         )
         bazel_rule = result.stdout.strip()
         if not bazel_rule:
-            raise ValueError(f"Bazel query `{query}` returned an empty bazel rule.")
+            raise ValueError(f"Bazelisk query `{query}` returned an empty bazel rule.")
 
         logger.info(f"Found Bazel rule: {bazel_rule}")
         return bazel_rule
