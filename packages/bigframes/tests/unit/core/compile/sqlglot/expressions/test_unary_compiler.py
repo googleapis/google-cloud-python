@@ -34,6 +34,13 @@ def _apply_unary_op(obj: bpd.DataFrame, op: ops.UnaryOp, arg: str) -> str:
     return sql
 
 
+def test_arccosh(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.arccosh_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_arccos(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.arccos_op, "float64_col")
@@ -48,9 +55,92 @@ def test_arcsin(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_arcsinh(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.arcsinh_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_arctan(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.arctan_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_arctanh(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.arctanh_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_abs(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.abs_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_capitalize(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(bf_df, ops.capitalize_op, "string_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_ceil(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.ceil_op, "float64_col")
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_date(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.date_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_day(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.day_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_dayofweek(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.dayofweek_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_dayofyear(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.dayofyear_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_exp(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.exp_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_expm1(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.expm1_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_floor(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.floor_op, "float64_col")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -86,6 +176,13 @@ def test_array_slice_with_start_and_stop(repeated_types_df: bpd.DataFrame, snaps
 def test_cos(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.cos_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_cosh(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.cosh_op, "float64_col")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -128,6 +225,13 @@ def test_sinh(scalar_types_df: bpd.DataFrame, snapshot):
 def test_tan(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.tan_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_tanh(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["float64_col"]]
+    sql = _apply_unary_op(bf_df, ops.tanh_op, "float64_col")
 
     snapshot.assert_match(sql, "out.sql")
 
