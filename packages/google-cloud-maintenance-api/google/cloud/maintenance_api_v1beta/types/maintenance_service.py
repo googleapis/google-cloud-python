@@ -128,7 +128,7 @@ class SummarizeMaintenancesRequest(proto.Message):
 
 
 class SummarizeMaintenancesResponse(proto.Message):
-    r"""
+    r"""Request message for SummarizeMaintenances custom method.
 
     Attributes:
         maintenances (MutableSequence[google.cloud.maintenance_api_v1beta.types.MaintenanceSummary]):
@@ -211,7 +211,8 @@ class MaintenanceSummary(proto.Message):
     """
 
     class Stats(proto.Message):
-        r"""
+        r"""Stats indicates the type of aggregate and the corresponding
+        aggregates.
 
         Attributes:
             group_by (str):
@@ -236,7 +237,7 @@ class MaintenanceSummary(proto.Message):
         )
 
     class Aggregate(proto.Message):
-        r"""
+        r"""Aggregate is a <group, count> pair.
 
         Attributes:
             group (str):
