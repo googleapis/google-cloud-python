@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import pytest
 import json
 
@@ -22,18 +23,29 @@ from cli import (
     handle_generate,
     handle_build,
     handle_configure,
-    GENERATOR_DIR,
+    LIBRARIAN_DIR,
     GENERATE_REQUEST_FILE,
 )
 
 
-# # The fixture is defined directly in the test file
-@pytest.fixture(autouse=True)
-def set_test_environment(monkeypatch):
-    """
-    Sets the environment variable only for tests in this file.
-    """
-    monkeypatch.setenv("PY_GENERATOR_ENV", "test")
+@pytest.fixture
+def mock_generate_request_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/generate-request.json
+    request_path = f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir()
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_content = {
+        "id": "google-cloud-language",
+        "apis": [{"path": "google/cloud/language/v1"}],
+    }
+    request_file.write_text(json.dumps(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
 
 
 def test_handle_configure_dry_run():
@@ -44,6 +56,17 @@ def test_handle_configure_dry_run():
 def test_handle_generate_dry_run():
     # This is a simple test to ensure that the dry run command succeeds.
     handle_generate(dry_run=True)
+
+
+def test_handle_generate_success(capsys, mock_generate_request_file):
+    """
+    Tests the successful execution path of handle_generate.
+    """
+    handle_generate(dry_run=False)
+
+    captured = capsys.readouterr()
+    assert "google-cloud-language" in captured.out
+    assert "'generate' command executed." in captured.out
 
 
 def test_handle_build_dry_run():

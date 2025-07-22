@@ -20,17 +20,8 @@ import sys
 
 logger = logging.getLogger()
 
-LIBRARIAN_DIR = "/librarian"
-GENERATOR_DIR = ".generator"
+LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
-
-
-def _get_base_dir():
-    """Returns the correct base directory based on the environment."""
-    environment = os.getenv("PY_GENERATOR_ENV", "production").lower()
-    if environment == "test":
-        return GENERATOR_DIR
-    return LIBRARIAN_DIR
 
 
 # Helper function that reads a json file path and returns the loaded json content.
@@ -49,7 +40,7 @@ def handle_generate(dry_run=False):
     # Read a generate-request.json file
     if not dry_run:
         try:
-            request_data = _read_json_file(f"{_get_base_dir()}/{GENERATE_REQUEST_FILE}")
+            request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
         except Exception as e:
             logger.error(e)
             sys.exit(1)
@@ -74,9 +65,7 @@ if __name__ == "__main__":
 
     # This flag is needed for testing.
     parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Perform a dry run for testing purposes."
+        "--dry-run", action="store_true", help="Perform a dry run for testing purposes."
     )
 
     # Define commands
@@ -85,7 +74,7 @@ if __name__ == "__main__":
         "generate": handle_generate,
         "build": handle_build,
     }
-    
+
     for command_name, help_text in [
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
