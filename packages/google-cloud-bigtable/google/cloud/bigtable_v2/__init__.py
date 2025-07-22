@@ -50,6 +50,7 @@ from .types.data import Column
 from .types.data import ColumnMetadata
 from .types.data import ColumnRange
 from .types.data import Family
+from .types.data import Idempotency
 from .types.data import Mutation
 from .types.data import PartialResultSet
 from .types.data import ProtoFormat
@@ -93,6 +94,7 @@ __all__ = (
     "FullReadStatsView",
     "GenerateInitialChangeStreamPartitionsRequest",
     "GenerateInitialChangeStreamPartitionsResponse",
+    "Idempotency",
     "MutateRowRequest",
     "MutateRowResponse",
     "MutateRowsRequest",

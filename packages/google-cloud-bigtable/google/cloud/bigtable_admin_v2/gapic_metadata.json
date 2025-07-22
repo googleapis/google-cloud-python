@@ -514,6 +514,11 @@
                 "create_backup"
               ]
             },
+            "CreateSchemaBundle": {
+              "methods": [
+                "create_schema_bundle"
+              ]
+            },
             "CreateTable": {
               "methods": [
                 "create_table"
@@ -532,6 +537,11 @@
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
+              ]
+            },
+            "DeleteSchemaBundle": {
+              "methods": [
+                "delete_schema_bundle"
               ]
             },
             "DeleteSnapshot": {
@@ -569,6 +579,11 @@
                 "get_iam_policy"
               ]
             },
+            "GetSchemaBundle": {
+              "methods": [
+                "get_schema_bundle"
+              ]
+            },
             "GetSnapshot": {
               "methods": [
                 "get_snapshot"
@@ -587,6 +602,11 @@
             "ListBackups": {
               "methods": [
                 "list_backups"
+              ]
+            },
+            "ListSchemaBundles": {
+              "methods": [
+                "list_schema_bundles"
               ]
             },
             "ListSnapshots": {
@@ -637,6 +657,11 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateSchemaBundle": {
+              "methods": [
+                "update_schema_bundle"
               ]
             },
             "UpdateTable": {
@@ -669,6 +694,11 @@
                 "create_backup"
               ]
             },
+            "CreateSchemaBundle": {
+              "methods": [
+                "create_schema_bundle"
+              ]
+            },
             "CreateTable": {
               "methods": [
                 "create_table"
@@ -687,6 +717,11 @@
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
+              ]
+            },
+            "DeleteSchemaBundle": {
+              "methods": [
+                "delete_schema_bundle"
               ]
             },
             "DeleteSnapshot": {
@@ -724,6 +759,11 @@
                 "get_iam_policy"
               ]
             },
+            "GetSchemaBundle": {
+              "methods": [
+                "get_schema_bundle"
+              ]
+            },
             "GetSnapshot": {
               "methods": [
                 "get_snapshot"
@@ -742,6 +782,11 @@
             "ListBackups": {
               "methods": [
                 "list_backups"
+              ]
+            },
+            "ListSchemaBundles": {
+              "methods": [
+                "list_schema_bundles"
               ]
             },
             "ListSnapshots": {
@@ -792,6 +837,11 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateSchemaBundle": {
+              "methods": [
+                "update_schema_bundle"
               ]
             },
             "UpdateTable": {
@@ -824,6 +874,11 @@
                 "create_backup"
               ]
             },
+            "CreateSchemaBundle": {
+              "methods": [
+                "create_schema_bundle"
+              ]
+            },
             "CreateTable": {
               "methods": [
                 "create_table"
@@ -842,6 +897,11 @@
             "DeleteBackup": {
               "methods": [
                 "delete_backup"
+              ]
+            },
+            "DeleteSchemaBundle": {
+              "methods": [
+                "delete_schema_bundle"
               ]
             },
             "DeleteSnapshot": {
@@ -879,6 +939,11 @@
                 "get_iam_policy"
               ]
             },
+            "GetSchemaBundle": {
+              "methods": [
+                "get_schema_bundle"
+              ]
+            },
             "GetSnapshot": {
               "methods": [
                 "get_snapshot"
@@ -897,6 +962,11 @@
             "ListBackups": {
               "methods": [
                 "list_backups"
+              ]
+            },
+            "ListSchemaBundles": {
+              "methods": [
+                "list_schema_bundles"
               ]
             },
             "ListSnapshots": {
@@ -947,6 +1017,11 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateSchemaBundle": {
+              "methods": [
+                "update_schema_bundle"
               ]
             },
             "UpdateTable": {

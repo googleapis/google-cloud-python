@@ -397,6 +397,31 @@ class BigtableTableAdminTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_schema_bundle: gapic_v1.method.wrap_method(
+                self.create_schema_bundle,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_schema_bundle: gapic_v1.method.wrap_method(
+                self.update_schema_bundle,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_schema_bundle: gapic_v1.method.wrap_method(
+                self.get_schema_bundle,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_schema_bundles: gapic_v1.method.wrap_method(
+                self.list_schema_bundles,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_schema_bundle: gapic_v1.method.wrap_method(
+                self.delete_schema_bundle,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -701,6 +726,54 @@ class BigtableTableAdminTransport(abc.ABC):
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_schema_bundle(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.CreateSchemaBundleRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_schema_bundle(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.UpdateSchemaBundleRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_schema_bundle(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.GetSchemaBundleRequest],
+        Union[table.SchemaBundle, Awaitable[table.SchemaBundle]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_schema_bundles(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.ListSchemaBundlesRequest],
+        Union[
+            bigtable_table_admin.ListSchemaBundlesResponse,
+            Awaitable[bigtable_table_admin.ListSchemaBundlesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_schema_bundle(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.DeleteSchemaBundleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

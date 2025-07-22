@@ -1166,7 +1166,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
-        Gets the access control policy for a Table or Backup
+        Gets the access control policy for a Bigtable
         resource. Returns an empty policy if the resource exists
         but does not have a policy set.
 
@@ -1194,7 +1194,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
-        Sets the access control policy on a Table or Backup
+        Sets the access control policy on a Bigtable
         resource. Replaces any existing policy.
 
         Returns:
@@ -1225,7 +1225,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns permissions that the caller has on the
-        specified Table or Backup resource.
+        specified Bigtable resource.
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],
@@ -1244,6 +1244,145 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
+
+    @property
+    def create_schema_bundle(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.CreateSchemaBundleRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create schema bundle method over gRPC.
+
+        Creates a new schema bundle in the specified table.
+
+        Returns:
+            Callable[[~.CreateSchemaBundleRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_schema_bundle" not in self._stubs:
+            self._stubs["create_schema_bundle"] = self._logged_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/CreateSchemaBundle",
+                request_serializer=bigtable_table_admin.CreateSchemaBundleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_schema_bundle"]
+
+    @property
+    def update_schema_bundle(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.UpdateSchemaBundleRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update schema bundle method over gRPC.
+
+        Updates a schema bundle in the specified table.
+
+        Returns:
+            Callable[[~.UpdateSchemaBundleRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_schema_bundle" not in self._stubs:
+            self._stubs["update_schema_bundle"] = self._logged_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/UpdateSchemaBundle",
+                request_serializer=bigtable_table_admin.UpdateSchemaBundleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_schema_bundle"]
+
+    @property
+    def get_schema_bundle(
+        self,
+    ) -> Callable[[bigtable_table_admin.GetSchemaBundleRequest], table.SchemaBundle]:
+        r"""Return a callable for the get schema bundle method over gRPC.
+
+        Gets metadata information about the specified schema
+        bundle.
+
+        Returns:
+            Callable[[~.GetSchemaBundleRequest],
+                    ~.SchemaBundle]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_schema_bundle" not in self._stubs:
+            self._stubs["get_schema_bundle"] = self._logged_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle",
+                request_serializer=bigtable_table_admin.GetSchemaBundleRequest.serialize,
+                response_deserializer=table.SchemaBundle.deserialize,
+            )
+        return self._stubs["get_schema_bundle"]
+
+    @property
+    def list_schema_bundles(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.ListSchemaBundlesRequest],
+        bigtable_table_admin.ListSchemaBundlesResponse,
+    ]:
+        r"""Return a callable for the list schema bundles method over gRPC.
+
+        Lists all schema bundles associated with the
+        specified table.
+
+        Returns:
+            Callable[[~.ListSchemaBundlesRequest],
+                    ~.ListSchemaBundlesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_schema_bundles" not in self._stubs:
+            self._stubs["list_schema_bundles"] = self._logged_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/ListSchemaBundles",
+                request_serializer=bigtable_table_admin.ListSchemaBundlesRequest.serialize,
+                response_deserializer=bigtable_table_admin.ListSchemaBundlesResponse.deserialize,
+            )
+        return self._stubs["list_schema_bundles"]
+
+    @property
+    def delete_schema_bundle(
+        self,
+    ) -> Callable[[bigtable_table_admin.DeleteSchemaBundleRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete schema bundle method over gRPC.
+
+        Deletes a schema bundle in the specified table.
+
+        Returns:
+            Callable[[~.DeleteSchemaBundleRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_schema_bundle" not in self._stubs:
+            self._stubs["delete_schema_bundle"] = self._logged_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/DeleteSchemaBundle",
+                request_serializer=bigtable_table_admin.DeleteSchemaBundleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_schema_bundle"]
 
     def close(self):
         self._logged_channel.close()

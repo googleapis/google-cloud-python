@@ -74,6 +74,14 @@ __protobuf__ = proto.module(
         "UpdateAuthorizedViewRequest",
         "UpdateAuthorizedViewMetadata",
         "DeleteAuthorizedViewRequest",
+        "CreateSchemaBundleRequest",
+        "CreateSchemaBundleMetadata",
+        "UpdateSchemaBundleRequest",
+        "UpdateSchemaBundleMetadata",
+        "GetSchemaBundleRequest",
+        "ListSchemaBundlesRequest",
+        "ListSchemaBundlesResponse",
+        "DeleteSchemaBundleRequest",
     },
 )
 
@@ -1484,7 +1492,7 @@ class CreateAuthorizedViewMetadata(proto.Message):
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.CreateAuthorizedViewRequest):
             The request that prompted the initiation of
-            this CreateInstance operation.
+            this CreateAuthorizedView operation.
         request_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the original request was
             received.
@@ -1536,7 +1544,7 @@ class ListAuthorizedViewsRequest(proto.Message):
             previous call.
         view (google.cloud.bigtable_admin_v2.types.AuthorizedView.ResponseView):
             Optional. The resource_view to be applied to the returned
-            views' fields. Default to NAME_ONLY.
+            AuthorizedViews' fields. Default to NAME_ONLY.
     """
 
     parent: str = proto.Field(
@@ -1620,8 +1628,8 @@ class UpdateAuthorizedViewRequest(proto.Message):
         authorized_view (google.cloud.bigtable_admin_v2.types.AuthorizedView):
             Required. The AuthorizedView to update. The ``name`` in
             ``authorized_view`` is used to identify the AuthorizedView.
-            AuthorizedView name must in this format
-            projects//instances//tables//authorizedViews/<authorized_view>
+            AuthorizedView name must in this format:
+            ``projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorized_view}``.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The list of fields to update. A mask specifying
             which fields in the AuthorizedView resource should be
@@ -1700,6 +1708,249 @@ class DeleteAuthorizedViewRequest(proto.Message):
             not match the current etag of the
             AuthorizedView, deletion will be blocked and an
             ABORTED error will be returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateSchemaBundleRequest(proto.Message):
+    r"""The request for
+    [CreateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.CreateSchemaBundle].
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this schema bundle will
+            be created. Values are of the form
+            ``projects/{project}/instances/{instance}/tables/{table}``.
+        schema_bundle_id (str):
+            Required. The unique ID to use for the schema
+            bundle, which will become the final component of
+            the schema bundle's resource name.
+        schema_bundle (google.cloud.bigtable_admin_v2.types.SchemaBundle):
+            Required. The schema bundle to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    schema_bundle_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    schema_bundle: gba_table.SchemaBundle = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gba_table.SchemaBundle,
+    )
+
+
+class CreateSchemaBundleMetadata(proto.Message):
+    r"""The metadata for the Operation returned by
+    [CreateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.CreateSchemaBundle].
+
+    Attributes:
+        name (str):
+            The unique name identifying this schema bundle. Values are
+            of the form
+            ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            If set, the time at which this operation
+            finished or was canceled.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class UpdateSchemaBundleRequest(proto.Message):
+    r"""The request for
+    [UpdateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.UpdateSchemaBundle].
+
+    Attributes:
+        schema_bundle (google.cloud.bigtable_admin_v2.types.SchemaBundle):
+            Required. The schema bundle to update.
+
+            The schema bundle's ``name`` field is used to identify the
+            schema bundle to update. Values are of the form
+            ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The list of fields to update.
+        ignore_warnings (bool):
+            Optional. If set, ignore the safety checks
+            when updating the Schema Bundle. The safety
+            checks are:
+
+            - The new Schema Bundle is backwards compatible
+              with the existing Schema Bundle.
+    """
+
+    schema_bundle: gba_table.SchemaBundle = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gba_table.SchemaBundle,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    ignore_warnings: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class UpdateSchemaBundleMetadata(proto.Message):
+    r"""The metadata for the Operation returned by
+    [UpdateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.UpdateSchemaBundle].
+
+    Attributes:
+        name (str):
+            The unique name identifying this schema bundle. Values are
+            of the form
+            ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which this operation started.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            If set, the time at which this operation
+            finished or was canceled.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class GetSchemaBundleRequest(proto.Message):
+    r"""The request for
+    [GetSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.GetSchemaBundle].
+
+    Attributes:
+        name (str):
+            Required. The unique name of the schema bundle to retrieve.
+            Values are of the form
+            ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListSchemaBundlesRequest(proto.Message):
+    r"""The request for
+    [ListSchemaBundles][google.bigtable.admin.v2.BigtableTableAdmin.ListSchemaBundles].
+
+    Attributes:
+        parent (str):
+            Required. The parent, which owns this collection of schema
+            bundles. Values are of the form
+            ``projects/{project}/instances/{instance}/tables/{table}``.
+        page_size (int):
+            The maximum number of schema bundles to
+            return. If the value is positive, the server may
+            return at most this value. If unspecified, the
+            server will return the maximum allowed page
+            size.
+        page_token (str):
+            A page token, received from a previous ``ListSchemaBundles``
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListSchemaBundles`` must match the call that provided the
+            page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSchemaBundlesResponse(proto.Message):
+    r"""The response for
+    [ListSchemaBundles][google.bigtable.admin.v2.BigtableTableAdmin.ListSchemaBundles].
+
+    Attributes:
+        schema_bundles (MutableSequence[google.cloud.bigtable_admin_v2.types.SchemaBundle]):
+            The schema bundles from the specified table.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    schema_bundles: MutableSequence[gba_table.SchemaBundle] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gba_table.SchemaBundle,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DeleteSchemaBundleRequest(proto.Message):
+    r"""The request for
+    [DeleteSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSchemaBundle].
+
+    Attributes:
+        name (str):
+            Required. The unique name of the schema bundle to delete.
+            Values are of the form
+            ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
+        etag (str):
+            Optional. The etag of the schema bundle.
+            If this is provided, it must match the server's
+            etag. The server returns an ABORTED error on a
+            mismatched etag.
     """
 
     name: str = proto.Field(

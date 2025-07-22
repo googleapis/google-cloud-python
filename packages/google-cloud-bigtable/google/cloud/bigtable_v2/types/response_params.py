@@ -29,10 +29,7 @@ __protobuf__ = proto.module(
 
 
 class ResponseParams(proto.Message):
-    r"""Response metadata proto This is an experimental feature that will be
-    used to get zone_id and cluster_id from response trailers to tag the
-    metrics. This should not be used by customers directly
-
+    r"""Response metadata proto
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 

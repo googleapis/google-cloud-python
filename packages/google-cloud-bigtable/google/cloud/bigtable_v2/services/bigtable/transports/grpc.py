@@ -538,10 +538,11 @@ class BigtableGrpcTransport(BigtableTransport):
         r"""Return a callable for the generate initial change stream
         partitions method over gRPC.
 
-        NOTE: This API is intended to be used by Apache Beam BigtableIO.
         Returns the current list of partitions that make up the table's
         change stream. The union of partitions will cover the entire
         keyspace. Partitions can be read with ``ReadChangeStream``.
+        NOTE: This API is only intended to be used by Apache Beam
+        BigtableIO.
 
         Returns:
             Callable[[~.GenerateInitialChangeStreamPartitionsRequest],
@@ -571,10 +572,11 @@ class BigtableGrpcTransport(BigtableTransport):
     ]:
         r"""Return a callable for the read change stream method over gRPC.
 
-        NOTE: This API is intended to be used by Apache Beam
-        BigtableIO. Reads changes from a table's change stream.
-        Changes will reflect both user-initiated mutations and
-        mutations that are caused by garbage collection.
+        Reads changes from a table's change stream. Changes
+        will reflect both user-initiated mutations and mutations
+        that are caused by garbage collection.
+        NOTE: This API is only intended to be used by Apache
+        Beam BigtableIO.
 
         Returns:
             Callable[[~.ReadChangeStreamRequest],

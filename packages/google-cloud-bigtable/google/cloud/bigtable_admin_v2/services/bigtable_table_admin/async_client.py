@@ -103,6 +103,10 @@ class BigtableTableAdminAsyncClient:
     )
     instance_path = staticmethod(BigtableTableAdminClient.instance_path)
     parse_instance_path = staticmethod(BigtableTableAdminClient.parse_instance_path)
+    schema_bundle_path = staticmethod(BigtableTableAdminClient.schema_bundle_path)
+    parse_schema_bundle_path = staticmethod(
+        BigtableTableAdminClient.parse_schema_bundle_path
+    )
     snapshot_path = staticmethod(BigtableTableAdminClient.snapshot_path)
     parse_snapshot_path = staticmethod(BigtableTableAdminClient.parse_snapshot_path)
     table_path = staticmethod(BigtableTableAdminClient.table_path)
@@ -1396,8 +1400,8 @@ class BigtableTableAdminAsyncClient:
             authorized_view (:class:`google.cloud.bigtable_admin_v2.types.AuthorizedView`):
                 Required. The AuthorizedView to update. The ``name`` in
                 ``authorized_view`` is used to identify the
-                AuthorizedView. AuthorizedView name must in this format
-                projects//instances//tables//authorizedViews/<authorized_view>
+                AuthorizedView. AuthorizedView name must in this format:
+                ``projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorized_view}``.
 
                 This corresponds to the ``authorized_view`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3148,7 +3152,7 @@ class BigtableTableAdminAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
-        r"""Gets the access control policy for a Table or Backup
+        r"""Gets the access control policy for a Bigtable
         resource. Returns an empty policy if the resource exists
         but does not have a policy set.
 
@@ -3261,7 +3265,7 @@ class BigtableTableAdminAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
-        r"""Sets the access control policy on a Table or Backup
+        r"""Sets the access control policy on a Bigtable
         resource. Replaces any existing policy.
 
         Args:
@@ -3375,7 +3379,7 @@ class BigtableTableAdminAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the
-        specified Table or Backup resource.
+        specified Bigtable resource.
 
         Args:
             request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
@@ -3457,6 +3461,511 @@ class BigtableTableAdminAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def create_schema_bundle(
+        self,
+        request: Optional[
+            Union[bigtable_table_admin.CreateSchemaBundleRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        schema_bundle_id: Optional[str] = None,
+        schema_bundle: Optional[table.SchemaBundle] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new schema bundle in the specified table.
+
+        Args:
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.CreateSchemaBundleRequest, dict]]):
+                The request object. The request for
+                [CreateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.CreateSchemaBundle].
+            parent (:class:`str`):
+                Required. The parent resource where this schema bundle
+                will be created. Values are of the form
+                ``projects/{project}/instances/{instance}/tables/{table}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            schema_bundle_id (:class:`str`):
+                Required. The unique ID to use for
+                the schema bundle, which will become the
+                final component of the schema bundle's
+                resource name.
+
+                This corresponds to the ``schema_bundle_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            schema_bundle (:class:`google.cloud.bigtable_admin_v2.types.SchemaBundle`):
+                Required. The schema bundle to
+                create.
+
+                This corresponds to the ``schema_bundle`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.bigtable_admin_v2.types.SchemaBundle`
+                A named collection of related schemas.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, schema_bundle_id, schema_bundle]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, bigtable_table_admin.CreateSchemaBundleRequest):
+            request = bigtable_table_admin.CreateSchemaBundleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if schema_bundle_id is not None:
+            request.schema_bundle_id = schema_bundle_id
+        if schema_bundle is not None:
+            request.schema_bundle = schema_bundle
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_schema_bundle
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            table.SchemaBundle,
+            metadata_type=bigtable_table_admin.CreateSchemaBundleMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_schema_bundle(
+        self,
+        request: Optional[
+            Union[bigtable_table_admin.UpdateSchemaBundleRequest, dict]
+        ] = None,
+        *,
+        schema_bundle: Optional[table.SchemaBundle] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates a schema bundle in the specified table.
+
+        Args:
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.UpdateSchemaBundleRequest, dict]]):
+                The request object. The request for
+                [UpdateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.UpdateSchemaBundle].
+            schema_bundle (:class:`google.cloud.bigtable_admin_v2.types.SchemaBundle`):
+                Required. The schema bundle to update.
+
+                The schema bundle's ``name`` field is used to identify
+                the schema bundle to update. Values are of the form
+                ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
+
+                This corresponds to the ``schema_bundle`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.bigtable_admin_v2.types.SchemaBundle`
+                A named collection of related schemas.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [schema_bundle, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, bigtable_table_admin.UpdateSchemaBundleRequest):
+            request = bigtable_table_admin.UpdateSchemaBundleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if schema_bundle is not None:
+            request.schema_bundle = schema_bundle
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_schema_bundle
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("schema_bundle.name", request.schema_bundle.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            table.SchemaBundle,
+            metadata_type=bigtable_table_admin.UpdateSchemaBundleMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_schema_bundle(
+        self,
+        request: Optional[
+            Union[bigtable_table_admin.GetSchemaBundleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> table.SchemaBundle:
+        r"""Gets metadata information about the specified schema
+        bundle.
+
+        Args:
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.GetSchemaBundleRequest, dict]]):
+                The request object. The request for
+                [GetSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.GetSchemaBundle].
+            name (:class:`str`):
+                Required. The unique name of the schema bundle to
+                retrieve. Values are of the form
+                ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.bigtable_admin_v2.types.SchemaBundle:
+                A named collection of related
+                schemas.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, bigtable_table_admin.GetSchemaBundleRequest):
+            request = bigtable_table_admin.GetSchemaBundleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_schema_bundle
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_schema_bundles(
+        self,
+        request: Optional[
+            Union[bigtable_table_admin.ListSchemaBundlesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListSchemaBundlesAsyncPager:
+        r"""Lists all schema bundles associated with the
+        specified table.
+
+        Args:
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.ListSchemaBundlesRequest, dict]]):
+                The request object. The request for
+                [ListSchemaBundles][google.bigtable.admin.v2.BigtableTableAdmin.ListSchemaBundles].
+            parent (:class:`str`):
+                Required. The parent, which owns this collection of
+                schema bundles. Values are of the form
+                ``projects/{project}/instances/{instance}/tables/{table}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.bigtable_admin_v2.services.bigtable_table_admin.pagers.ListSchemaBundlesAsyncPager:
+                The response for
+                   [ListSchemaBundles][google.bigtable.admin.v2.BigtableTableAdmin.ListSchemaBundles].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, bigtable_table_admin.ListSchemaBundlesRequest):
+            request = bigtable_table_admin.ListSchemaBundlesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_schema_bundles
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSchemaBundlesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_schema_bundle(
+        self,
+        request: Optional[
+            Union[bigtable_table_admin.DeleteSchemaBundleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes a schema bundle in the specified table.
+
+        Args:
+            request (Optional[Union[google.cloud.bigtable_admin_v2.types.DeleteSchemaBundleRequest, dict]]):
+                The request object. The request for
+                [DeleteSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSchemaBundle].
+            name (:class:`str`):
+                Required. The unique name of the schema bundle to
+                delete. Values are of the form
+                ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, bigtable_table_admin.DeleteSchemaBundleRequest):
+            request = bigtable_table_admin.DeleteSchemaBundleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_schema_bundle
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def __aenter__(self) -> "BigtableTableAdminAsyncClient":
         return self

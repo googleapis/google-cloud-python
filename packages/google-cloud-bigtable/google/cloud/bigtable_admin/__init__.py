@@ -178,6 +178,12 @@ from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     CreateBackupRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
+    CreateSchemaBundleMetadata,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
+    CreateSchemaBundleRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     CreateTableFromSnapshotMetadata,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
@@ -192,6 +198,9 @@ from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     DeleteBackupRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
+    DeleteSchemaBundleRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     DeleteSnapshotRequest,
@@ -210,6 +219,9 @@ from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     GetAuthorizedViewRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import GetBackupRequest
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
+    GetSchemaBundleRequest,
+)
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import GetSnapshotRequest
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import GetTableRequest
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
@@ -221,6 +233,12 @@ from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import ListBackupsRequest
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     ListBackupsResponse,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
+    ListSchemaBundlesRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
+    ListSchemaBundlesResponse,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     ListSnapshotsRequest,
@@ -267,6 +285,12 @@ from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     UpdateBackupRequest,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
+    UpdateSchemaBundleMetadata,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
+    UpdateSchemaBundleRequest,
+)
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     UpdateTableMetadata,
 )
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import UpdateTableRequest
@@ -287,7 +311,9 @@ from google.cloud.bigtable_admin_v2.types.table import ChangeStreamConfig
 from google.cloud.bigtable_admin_v2.types.table import ColumnFamily
 from google.cloud.bigtable_admin_v2.types.table import EncryptionInfo
 from google.cloud.bigtable_admin_v2.types.table import GcRule
+from google.cloud.bigtable_admin_v2.types.table import ProtoSchema
 from google.cloud.bigtable_admin_v2.types.table import RestoreInfo
+from google.cloud.bigtable_admin_v2.types.table import SchemaBundle
 from google.cloud.bigtable_admin_v2.types.table import Snapshot
 from google.cloud.bigtable_admin_v2.types.table import Table
 from google.cloud.bigtable_admin_v2.types.table import RestoreSourceType
@@ -348,12 +374,15 @@ __all__ = (
     "CreateAuthorizedViewRequest",
     "CreateBackupMetadata",
     "CreateBackupRequest",
+    "CreateSchemaBundleMetadata",
+    "CreateSchemaBundleRequest",
     "CreateTableFromSnapshotMetadata",
     "CreateTableFromSnapshotRequest",
     "CreateTableRequest",
     "DataBoostReadLocalWrites",
     "DeleteAuthorizedViewRequest",
     "DeleteBackupRequest",
+    "DeleteSchemaBundleRequest",
     "DeleteSnapshotRequest",
     "DeleteTableRequest",
     "DropRowRangeRequest",
@@ -361,12 +390,15 @@ __all__ = (
     "GenerateConsistencyTokenResponse",
     "GetAuthorizedViewRequest",
     "GetBackupRequest",
+    "GetSchemaBundleRequest",
     "GetSnapshotRequest",
     "GetTableRequest",
     "ListAuthorizedViewsRequest",
     "ListAuthorizedViewsResponse",
     "ListBackupsRequest",
     "ListBackupsResponse",
+    "ListSchemaBundlesRequest",
+    "ListSchemaBundlesResponse",
     "ListSnapshotsRequest",
     "ListSnapshotsResponse",
     "ListTablesRequest",
@@ -383,6 +415,8 @@ __all__ = (
     "UpdateAuthorizedViewMetadata",
     "UpdateAuthorizedViewRequest",
     "UpdateBackupRequest",
+    "UpdateSchemaBundleMetadata",
+    "UpdateSchemaBundleRequest",
     "UpdateTableMetadata",
     "UpdateTableRequest",
     "OperationProgress",
@@ -402,7 +436,9 @@ __all__ = (
     "ColumnFamily",
     "EncryptionInfo",
     "GcRule",
+    "ProtoSchema",
     "RestoreInfo",
+    "SchemaBundle",
     "Snapshot",
     "Table",
     "RestoreSourceType",
