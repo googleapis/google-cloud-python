@@ -18,7 +18,7 @@ import typing
 
 from sqlglot import expressions as sge
 
-from bigframes import operations as ops
+from bigframes.operations import aggregations as agg_ops
 
 # We should've been more specific about input types. Unfortunately,
 # MyPy doesn't support more rigorous checks.
@@ -30,25 +30,33 @@ class OpRegistration:
         self._registered_ops: dict[str, CompilationFunc] = {}
 
     def register(
-        self, op: ops.ScalarOp | type[ops.ScalarOp]
+        self, op: agg_ops.WindowOp | type[agg_ops.WindowOp]
     ) -> typing.Callable[[CompilationFunc], CompilationFunc]:
         def decorator(item: CompilationFunc):
             def arg_checker(*args, **kwargs):
-                if not isinstance(args[0], ops.ScalarOp):
+                if not isinstance(args[0], agg_ops.WindowOp):
                     raise ValueError(
-                        f"The first parameter must be an operator. Got {type(args[0])}"
+                        "The first parameter must be a window operator. "
+                        f"Got {type(args[0])}"
                     )
                 return item(*args, **kwargs)
 
-            key = typing.cast(str, op.name)
-            if key in self._registered_ops:
-                raise ValueError(f"{key} is already registered")
+            if hasattr(op, "name"):
+                key = typing.cast(str, op.name)
+                if key in self._registered_ops:
+                    raise ValueError(f"{key} is already registered")
+            else:
+                raise ValueError(f"The operator must have a 'name' attribute. Got {op}")
             self._registered_ops[key] = item
             return arg_checker
 
         return decorator
 
-    def __getitem__(self, op: str | ops.ScalarOp) -> CompilationFunc:
-        if isinstance(op, ops.ScalarOp):
-            return self._registered_ops[op.name]
+    def __getitem__(self, op: str | agg_ops.WindowOp) -> CompilationFunc:
+        if isinstance(op, agg_ops.WindowOp):
+            if not hasattr(op, "name"):
+                raise ValueError(f"The operator must have a 'name' attribute. Got {op}")
+            else:
+                key = typing.cast(str, op.name)
+                return self._registered_ops[key]
         return self._registered_ops[op]
