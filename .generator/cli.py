@@ -17,6 +17,7 @@ import json
 import logging
 import os
 import sys
+import subprocess
 
 logger = logging.getLogger()
 
@@ -66,7 +67,31 @@ def handle_generate():
             f"failed to read {LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}"
         ) from e
 
-    logger.info(json.dumps(request_data, indent=2))
+    library_id = request_data.get("id")
+    if not library_id:
+        raise ValueError("Request file is missing required 'id' field.")
+
+    for api in request_data.get("apis", []):
+        api_path = api.get("path")
+        if api_path:
+            try:
+                query = f'filter("-py$", kind("rule", //{api_path}/...:*))'
+                command = ["bazelisk", "query", query]
+                result = subprocess.run(
+                    command, capture_output=True, text=True, check=True
+                )
+
+                bazel_rule = result.stdout.strip()
+                if not bazel_rule:
+                    raise ValueError(
+                        f"Bazel query `{query}` returned an empty bazel rule."
+                    )
+
+                logger.info(f"Found Bazel rule: {bazel_rule}")
+            except Exception as e:
+                raise ValueError(f"Bazelisk query `{query}` failed") from e
+
+        logger.info(json.dumps(request_data, indent=2))
 
     # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command and update docstring.
     logger.info("'generate' command executed.")

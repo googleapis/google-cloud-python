@@ -17,7 +17,7 @@ import pytest
 import json
 import logging
 
-from unittest.mock import mock_open
+from unittest.mock import mock_open, MagicMock
 
 from cli import (
     _read_json_file,
@@ -60,16 +60,30 @@ def test_handle_configure_success(caplog, mock_generate_request_file):
     assert "'configure' command executed." in caplog.text
 
 
-def test_handle_generate_success(caplog, mock_generate_request_file):
+def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
     """
     Tests the successful execution path of handle_generate.
     """
     caplog.set_level(logging.INFO)
 
+    mock_query_result = MagicMock(
+        stdout="//google/cloud/language/v1:google-cloud-language-v1-py\n", returncode=0
+    )
+
+    mock_subprocess = mocker.patch(
+        "cli.subprocess.run", side_effect=[mock_query_result]
+    )
+
     handle_generate()
 
+    # captured = capsys.readouterr()
     assert "google-cloud-language" in caplog.text
+    assert (
+        "Found Bazel rule: //google/cloud/language/v1:google-cloud-language-v1-py"
+        in caplog.text
+    )
     assert "'generate' command executed." in caplog.text
+    assert mock_subprocess.call_count == 1
 
 
 def test_handle_generate_fail(caplog):
