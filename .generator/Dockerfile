@@ -34,11 +34,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Set up environment variables for tool versions to make updates easier.
-# TODO(): Downgrade to Python `3.11` if `3.13.5` is incompatible with googleapis. 
-ENV PYTHON_VERSION=3.13.5
+ENV PYTHON_VERSION=3.11.5
 
 # Create a symbolic link for `python3` to point to our specific version.
-ENV PATH /usr/local/bin/python3.13:$PATH
+ENV PATH /usr/local/bin/python3.11:$PATH
 
 # Install Python from source
 RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
@@ -64,8 +63,7 @@ WORKDIR /app
 # TODO(https://github.com/googleapis/librarian/issues/906): Clone googleapis and run bazelisk build.
 
 # Copy the CLI script into the container and set ownership.
-# No other files or dependencies are needed for this simple script.
-COPY cli.py .
+COPY .generator/cli.py .
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["python3.13", "./cli.py"]
+ENTRYPOINT ["python3.11", "./cli.py"]

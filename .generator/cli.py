@@ -13,32 +13,88 @@
 # limitations under the License.
 
 import argparse
+import json
+import logging
+import os
 import sys
 
-def handle_configure(dry_run=False):
-    # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command.
-    print("'configure' command executed.")
+logger = logging.getLogger()
 
-def handle_generate(dry_run=False):
-    # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command.
-    print("'generate' command executed.")
+LIBRARIAN_DIR = "librarian"
+GENERATE_REQUEST_FILE = "generate-request.json"
 
-def handle_build(dry_run=False):
-    # TODO(https://github.com/googleapis/librarian/issues/450): Implement build command.
-    print("'build' command executed.")
+
+def _read_json_file(path):
+    """Helper function that reads a json file path and returns the loaded json content.
+
+    Args:
+        path (str): The file path to read.
+
+    Returns:
+        dict: The parsed JSON content.
+
+    Raises:
+        FileNotFoundError: If the file is not found at the specified path.
+        json.JSONDecodeError: If the file does not contain valid JSON.
+        IOError: If there is an issue reading the file.
+    """
+    with open(path, "r") as f:
+        return json.load(f)
+
+
+def handle_configure():
+    # TODO(https://github.com/googleapis/librarian/issues/466): Implement configure command and update docstring.
+    logger.info("'configure' command executed.")
+
+
+def handle_generate():
+    """The main coordinator for the code generation process.
+
+    This function orchestrates the generation of a client library by reading a
+    `librarian/generate-request.json` file, determining the necessary Bazel rule for each API, and
+    (in future steps) executing the build.
+
+    Raises:
+        ValueError: If the `generate-request.json` file is not found or read.
+    """
+
+    # Read a generate-request.json file
+    try:
+        request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
+    except Exception as e:
+        raise ValueError(
+            f"failed to read {LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}"
+        ) from e
+
+    logger.info(json.dumps(request_data, indent=2))
+
+    # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command and update docstring.
+    logger.info("'generate' command executed.")
+
+
+def handle_build():
+    # TODO(https://github.com/googleapis/librarian/issues/450): Implement build command and update docstring.
+    logger.info("'build' command executed.")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
-    subparsers = parser.add_subparsers(dest="command", required=True, help="Available commands")
+    subparsers = parser.add_subparsers(
+        dest="command", required=True, help="Available commands"
+    )
 
     # Define commands
+    handler_map = {
+        "configure": handle_configure,
+        "generate": handle_generate,
+        "build": handle_build,
+    }
+
     for command_name, help_text in [
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
         ("generate", "generate a python client for an API."),
-        ("build", "Run unit tests via nox for the generated library.")
+        ("build", "Run unit tests via nox for the generated library."),
     ]:
-        handler_map = {"configure": handle_configure, "generate": handle_generate, "build": handle_build}
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
 
@@ -47,4 +103,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     args = parser.parse_args()
-    args.func(args)
+    args.func()
