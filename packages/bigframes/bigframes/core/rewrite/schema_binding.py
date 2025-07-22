@@ -65,6 +65,16 @@ def bind_schema_to_node(
             node,
             conditions=conditions,
         )
+    if isinstance(node, nodes.InNode):
+        return dataclasses.replace(
+            node,
+            left_col=ex.ResolvedDerefOp.from_field(
+                node.left_child.field_by_id[node.left_col.id]
+            ),
+            right_col=ex.ResolvedDerefOp.from_field(
+                node.right_child.field_by_id[node.right_col.id]
+            ),
+        )
 
     if isinstance(node, nodes.AggregateNode):
         aggregations = []

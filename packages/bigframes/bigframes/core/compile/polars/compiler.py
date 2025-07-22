@@ -513,6 +513,30 @@ class PolarsCompiler:
             left, right, node.type, left_on, right_on, node.joins_nulls
         )
 
+    @compile_node.register
+    def compile_isin(self, node: nodes.InNode):
+        left = self.compile_node(node.left_child)
+        right = self.compile_node(node.right_child).unique(node.right_col.id.sql)
+        right = right.with_columns(pl.lit(True).alias(node.indicator_col.sql))
+
+        left_ex, right_ex = lowering._coerce_comparables(node.left_col, node.right_col)
+
+        left_pl_ex = self.expr_compiler.compile_expression(left_ex)
+        right_pl_ex = self.expr_compiler.compile_expression(right_ex)
+
+        joined = left.join(
+            right,
+            how="left",
+            left_on=left_pl_ex,
+            right_on=right_pl_ex,
+            # Note: join_nulls renamed to nulls_equal for polars 1.24
+            join_nulls=node.joins_nulls,  # type: ignore
+            coalesce=False,
+        )
+        passthrough = [pl.col(id) for id in left.columns]
+        indicator = pl.col(node.indicator_col.sql).fill_null(False)
+        return joined.select((*passthrough, indicator))
+
     def _ordered_join(
         self,
         left_frame: pl.LazyFrame,
