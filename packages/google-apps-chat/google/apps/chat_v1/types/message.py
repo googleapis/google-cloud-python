@@ -161,8 +161,10 @@ class Message(proto.Message):
             `Card
             builder <https://addons.gsuite.google.com/uikit/builder>`__
         annotations (MutableSequence[google.apps.chat_v1.types.Annotation]):
-            Output only. Annotations associated with the ``text`` in
-            this message.
+            Output only. Annotations can be associated with the
+            plain-text body of the message or with chips that link to
+            Google Workspace resources like Google Docs or Sheets with
+            ``start_index`` and ``length`` of 0.
         thread (google.apps.chat_v1.types.Thread):
             The thread the message belongs to. For example usage, see
             `Start or reply to a message
