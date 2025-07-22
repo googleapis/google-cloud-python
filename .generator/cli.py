@@ -23,6 +23,7 @@ logger = logging.getLogger()
 
 LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
+SOURCE_DIR = "source"
 
 
 def _read_json_file(path):
@@ -64,8 +65,13 @@ def _determine_bazel_rule(api_path):
     try:
         query = f'filter("-py$", kind("rule", //{api_path}/...:*))'
         command = ["bazelisk", "query", query]
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
-
+        result = subprocess.run(
+            command,
+            cwd=f"{SOURCE_DIR}/googleapis",
+            capture_output=True,
+            text=True,
+            check=True,
+        )
         bazel_rule = result.stdout.strip()
         if not bazel_rule:
             raise ValueError(f"Bazel query `{query}` returned an empty bazel rule.")

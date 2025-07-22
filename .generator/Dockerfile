@@ -22,6 +22,8 @@ RUN apt-get update && \
     # For downloading secure files
     wget \
     ca-certificates \
+    # For running bazelisk commands
+    openjdk-17-jdk \
     # --- Critical libraries for a complete Python build ---
     libssl-dev \
     zlib1g-dev \
@@ -35,7 +37,7 @@ RUN apt-get update && \
 
 # Set up environment variables for tool versions to make updates easier.
 ENV PYTHON_VERSION=3.11.5
-ENV BAZELISK_VERSION=v1.19.0
+ENV BAZELISK_VERSION=v1.26.0
 
 # Create a symbolic link for `python3` to point to our specific version.
 ENV PATH /usr/local/bin/python3.11:$PATH
