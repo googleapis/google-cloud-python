@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.15.2...google-cloud-video-transcoder-v1.16.0) (2025-07-22)
+
+
+### Features
+
+* added support for converting the input video to a supported high dynamic range (HDR) formats ([dad1378](https://github.com/googleapis/google-cloud-python/commit/dad137832990f592fc9b90bbe387cee1a8973128))
+* added support for DROP_DUPLICATE frame rate conversion strategy to achieve the exact frame rate on the output video ([dad1378](https://github.com/googleapis/google-cloud-python/commit/dad137832990f592fc9b90bbe387cee1a8973128))
+* added support for fill_content_gaps field to allow processing inputs with significant number of missing frames ([dad1378](https://github.com/googleapis/google-cloud-python/commit/dad137832990f592fc9b90bbe387cee1a8973128))
+* added support for specifying HEVC codec tag ([dad1378](https://github.com/googleapis/google-cloud-python/commit/dad137832990f592fc9b90bbe387cee1a8973128))
+
+
+### Documentation
+
+* improve comment formatting, add links, add references ([dad1378](https://github.com/googleapis/google-cloud-python/commit/dad137832990f592fc9b90bbe387cee1a8973128))
+
 ## [1.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.15.1...google-cloud-video-transcoder-v1.15.2) (2025-06-11)
 
 

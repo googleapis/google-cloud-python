@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.8.1...google-cloud-network-connectivity-v2.9.0) (2025-07-22)
+
+
+### Features
+
+* add Network Connectivity Center APIs for Internal Range service ([62da15d](https://github.com/googleapis/google-cloud-python/commit/62da15d782de5294d641de8b562acefd99c025a4))
+
 ## [2.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.8.0...google-cloud-network-connectivity-v2.8.1) (2025-06-11)
 
 

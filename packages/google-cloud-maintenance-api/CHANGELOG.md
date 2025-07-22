@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-maintenance-api-v0.1.0...google-cloud-maintenance-api-v0.1.1) (2025-07-22)
+
+
+### Documentation
+
+* Add missing comments for messages ([f955689](https://github.com/googleapis/google-cloud-python/commit/f9556891d9224fefd09202539a7d5830f724e2c4))
+
 ## 0.1.0 (2025-06-23)
 
 

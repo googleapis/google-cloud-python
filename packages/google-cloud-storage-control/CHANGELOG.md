@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.6.0...google-cloud-storage-control-v1.6.1) (2025-07-22)
+
+
+### Documentation
+
+* Set API shortname storagecontrol to storage ([dd531aa](https://github.com/googleapis/google-cloud-python/commit/dd531aaf1a6afcfa5b6f4b02b6758e8c639ad72e))
+
 ## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.5.0...google-cloud-storage-control-v1.6.0) (2025-07-02)
 
 
