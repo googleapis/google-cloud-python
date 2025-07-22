@@ -17,22 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.backupdr_v1.types import backupvault
-from google.cloud.backupdr_v1.types import backupvault_cloudsql
-from google.protobuf import timestamp_pb2  # type: ignore
-
+from google.cloud.backupdr_v1.types import backupvault, backupvault_cloudsql
 
 __protobuf__ = proto.module(
-    package='google.cloud.backupdr.v1',
+    package="google.cloud.backupdr.v1",
     manifest={
-        'DataSourceReference',
-        'DataSourceBackupConfigInfo',
-        'DataSourceGcpResourceInfo',
-        'GetDataSourceReferenceRequest',
-        'FetchDataSourceReferencesForResourceTypeRequest',
-        'FetchDataSourceReferencesForResourceTypeResponse',
+        "DataSourceReference",
+        "DataSourceBackupConfigInfo",
+        "DataSourceGcpResourceInfo",
+        "GetDataSourceReferenceRequest",
+        "FetchDataSourceReferencesForResourceTypeRequest",
+        "FetchDataSourceReferencesForResourceTypeResponse",
     },
 )
 
@@ -89,15 +87,15 @@ class DataSourceReference(proto.Message):
         proto.INT64,
         number=5,
     )
-    data_source_backup_config_info: 'DataSourceBackupConfigInfo' = proto.Field(
+    data_source_backup_config_info: "DataSourceBackupConfigInfo" = proto.Field(
         proto.MESSAGE,
         number=6,
-        message='DataSourceBackupConfigInfo',
+        message="DataSourceBackupConfigInfo",
     )
-    data_source_gcp_resource_info: 'DataSourceGcpResourceInfo' = proto.Field(
+    data_source_gcp_resource_info: "DataSourceGcpResourceInfo" = proto.Field(
         proto.MESSAGE,
         number=7,
-        message='DataSourceGcpResourceInfo',
+        message="DataSourceGcpResourceInfo",
     )
 
 
@@ -164,7 +162,7 @@ class DataSourceGcpResourceInfo(proto.Message):
     cloud_sql_instance_properties: backupvault_cloudsql.CloudSqlInstanceDataSourceReferenceProperties = proto.Field(
         proto.MESSAGE,
         number=4,
-        oneof='resource_properties',
+        oneof="resource_properties",
         message=backupvault_cloudsql.CloudSqlInstanceDataSourceReferenceProperties,
     )
 
@@ -280,10 +278,12 @@ class FetchDataSourceReferencesForResourceTypeResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_source_references: MutableSequence['DataSourceReference'] = proto.RepeatedField(
+    data_source_references: MutableSequence[
+        "DataSourceReference"
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='DataSourceReference',
+        message="DataSourceReference",
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -23,7 +23,12 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.backupdr_v1.types import backupvault_ba, backupvault_gce
+from google.cloud.backupdr_v1.types import (
+    backupvault_ba,
+    backupvault_cloudsql,
+    backupvault_disk,
+    backupvault_gce,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.backupdr.v1",
@@ -229,12 +234,15 @@ class BackupVault(proto.Message):
             ERROR (4):
                 The backup vault is experiencing an issue and
                 might be unusable.
+            UPDATING (5):
+                The backup vault is being updated.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
         DELETING = 3
         ERROR = 4
+        UPDATING = 5
 
     class AccessRestriction(proto.Enum):
         r"""Holds the access restriction for the backup vault.
@@ -413,6 +421,9 @@ class DataSource(proto.Message):
             application.
 
             This field is a member of `oneof`_ ``source_resource``.
+        backup_blocked_by_vault_access_restriction (bool):
+            Output only. This field is set to true if the
+            backup is blocked by vault access restriction.
     """
 
     class State(proto.Enum):
@@ -502,6 +513,10 @@ class DataSource(proto.Message):
             oneof="source_resource",
             message="DataSourceBackupApplianceApplication",
         )
+    )
+    backup_blocked_by_vault_access_restriction: bool = proto.Field(
+        proto.BOOL,
+        number=28,
     )
 
 
@@ -606,6 +621,11 @@ class GcpBackupConfig(proto.Message):
         backup_plan_rules (MutableSequence[str]):
             The names of the backup plan rules which
             point to this backupvault
+        backup_plan_revision_name (str):
+            The name of the backup plan revision.
+        backup_plan_revision_id (str):
+            The user friendly id of the backup plan
+            revision. E.g. v0, v1 etc.
     """
 
     backup_plan: str = proto.Field(
@@ -623,6 +643,14 @@ class GcpBackupConfig(proto.Message):
     backup_plan_rules: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
+    )
+    backup_plan_revision_name: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    backup_plan_revision_id: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -685,6 +713,10 @@ class DataSourceGcpResource(proto.Message):
     are Google Cloud Resources. This name is easeier to understand
     than GcpResourceDataSource or GcpDataSourceResource
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -703,6 +735,19 @@ class DataSourceGcpResource(proto.Message):
             ComputeInstanceDataSourceProperties has a
             subset of Compute Instance properties that are
             useful at the Datasource level.
+
+            This field is a member of `oneof`_ ``gcp_resource_properties``.
+        cloud_sql_instance_datasource_properties (google.cloud.backupdr_v1.types.CloudSqlInstanceDataSourceProperties):
+            Output only.
+            CloudSqlInstanceDataSourceProperties has a
+            subset of Cloud SQL Instance properties that are
+            useful at the Datasource level.
+
+            This field is a member of `oneof`_ ``gcp_resource_properties``.
+        disk_datasource_properties (google.cloud.backupdr_v1.types.DiskDataSourceProperties):
+            DiskDataSourceProperties has a subset of Disk
+            properties that are useful at the Datasource
+            level.
 
             This field is a member of `oneof`_ ``gcp_resource_properties``.
     """
@@ -724,6 +769,18 @@ class DataSourceGcpResource(proto.Message):
         number=4,
         oneof="gcp_resource_properties",
         message=backupvault_gce.ComputeInstanceDataSourceProperties,
+    )
+    cloud_sql_instance_datasource_properties: backupvault_cloudsql.CloudSqlInstanceDataSourceProperties = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="gcp_resource_properties",
+        message=backupvault_cloudsql.CloudSqlInstanceDataSourceProperties,
+    )
+    disk_datasource_properties: backupvault_disk.DiskDataSourceProperties = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="gcp_resource_properties",
+        message=backupvault_disk.DiskDataSourceProperties,
     )
 
 
@@ -986,9 +1043,18 @@ class Backup(proto.Message):
             properties.
 
             This field is a member of `oneof`_ ``backup_properties``.
+        cloud_sql_instance_backup_properties (google.cloud.backupdr_v1.types.CloudSqlInstanceBackupProperties):
+            Output only. Cloud SQL specific backup
+            properties.
+
+            This field is a member of `oneof`_ ``backup_properties``.
         backup_appliance_backup_properties (google.cloud.backupdr_v1.types.BackupApplianceBackupProperties):
             Output only. Backup Appliance specific backup
             properties.
+
+            This field is a member of `oneof`_ ``backup_properties``.
+        disk_backup_properties (google.cloud.backupdr_v1.types.DiskBackupProperties):
+            Output only. Disk specific backup properties.
 
             This field is a member of `oneof`_ ``backup_properties``.
         backup_type (google.cloud.backupdr_v1.types.Backup.BackupType):
@@ -1002,6 +1068,16 @@ class Backup(proto.Message):
         resource_size_bytes (int):
             Output only. source resource size in bytes at
             the time of the backup.
+        satisfies_pzs (bool):
+            Optional. Output only. Reserved for future
+            use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        satisfies_pzi (bool):
+            Optional. Output only. Reserved for future
+            use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
     """
 
     class State(proto.Enum):
@@ -1020,12 +1096,15 @@ class Backup(proto.Message):
             ERROR (4):
                 The backup is experiencing an issue and might
                 be unusable.
+            UPLOADING (5):
+                The backup is being uploaded.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
         DELETING = 3
         ERROR = 4
+        UPLOADING = 5
 
     class BackupType(proto.Enum):
         r"""Type of the backup, scheduled or ondemand.
@@ -1037,10 +1116,13 @@ class Backup(proto.Message):
                 Scheduled backup.
             ON_DEMAND (2):
                 On demand backup.
+            ON_DEMAND_OPERATIONAL (3):
+                Operational backup.
         """
         BACKUP_TYPE_UNSPECIFIED = 0
         SCHEDULED = 1
         ON_DEMAND = 2
+        ON_DEMAND_OPERATIONAL = 3
 
     class GCPBackupPlanInfo(proto.Message):
         r"""GCPBackupPlanInfo captures the plan configuration details of
@@ -1057,6 +1139,16 @@ class Backup(proto.Message):
                 The rule id of the backup plan which
                 triggered this backup in case of scheduled
                 backup or used for
+            backup_plan_revision_name (str):
+                Resource name of the backup plan revision
+                which triggered this backup in case of scheduled
+                backup or used for on demand backup. Format:
+
+                projects/{project}/locations/{location}/backupPlans/{backupPlanId}/revisions/{revisionId}
+            backup_plan_revision_id (str):
+                The user friendly id of the backup plan
+                revision which triggered this backup in case of
+                scheduled backup or used for on demand backup.
         """
 
         backup_plan: str = proto.Field(
@@ -1066,6 +1158,14 @@ class Backup(proto.Message):
         backup_plan_rule_id: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        backup_plan_revision_name: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        backup_plan_revision_id: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     name: str = proto.Field(
@@ -1138,11 +1238,23 @@ class Backup(proto.Message):
         oneof="backup_properties",
         message=backupvault_gce.ComputeInstanceBackupProperties,
     )
+    cloud_sql_instance_backup_properties: backupvault_cloudsql.CloudSqlInstanceBackupProperties = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        oneof="backup_properties",
+        message=backupvault_cloudsql.CloudSqlInstanceBackupProperties,
+    )
     backup_appliance_backup_properties: backupvault_ba.BackupApplianceBackupProperties = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="backup_properties",
         message=backupvault_ba.BackupApplianceBackupProperties,
+    )
+    disk_backup_properties: backupvault_disk.DiskBackupProperties = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        oneof="backup_properties",
+        message=backupvault_disk.DiskBackupProperties,
     )
     backup_type: BackupType = proto.Field(
         proto.ENUM,
@@ -1158,6 +1270,16 @@ class Backup(proto.Message):
     resource_size_bytes: int = proto.Field(
         proto.INT64,
         number=23,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=24,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=25,
+        optional=True,
     )
 
 
@@ -1469,6 +1591,11 @@ class UpdateBackupVaultRequest(proto.Message):
             Optional. If set to true, will not check plan
             duration against backup vault enforcement
             duration.
+        force_update_access_restriction (bool):
+            Optional. If set to true, we will force
+            update access restriction even if some non
+            compliant data sources are present. The default
+            is 'false'.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -1492,6 +1619,10 @@ class UpdateBackupVaultRequest(proto.Message):
     force: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+    force_update_access_restriction: bool = proto.Field(
+        proto.BOOL,
+        number=6,
     )
 
 
@@ -1946,6 +2077,11 @@ class DeleteBackupRequest(proto.Message):
 class RestoreBackupRequest(proto.Message):
     r"""Request message for restoring from a Backup.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -1978,9 +2114,24 @@ class RestoreBackupRequest(proto.Message):
             during restore.
 
             This field is a member of `oneof`_ ``target_environment``.
+        disk_target_environment (google.cloud.backupdr_v1.types.DiskTargetEnvironment):
+            Disk target environment to be used during
+            restore.
+
+            This field is a member of `oneof`_ ``target_environment``.
+        region_disk_target_environment (google.cloud.backupdr_v1.types.RegionDiskTargetEnvironment):
+            Region disk target environment to be used
+            during restore.
+
+            This field is a member of `oneof`_ ``target_environment``.
         compute_instance_restore_properties (google.cloud.backupdr_v1.types.ComputeInstanceRestoreProperties):
             Compute Engine instance properties to be
             overridden during restore.
+
+            This field is a member of `oneof`_ ``instance_properties``.
+        disk_restore_properties (google.cloud.backupdr_v1.types.DiskRestoreProperties):
+            Disk properties to be overridden during
+            restore.
 
             This field is a member of `oneof`_ ``instance_properties``.
     """
@@ -1999,11 +2150,31 @@ class RestoreBackupRequest(proto.Message):
         oneof="target_environment",
         message=backupvault_gce.ComputeInstanceTargetEnvironment,
     )
+    disk_target_environment: backupvault_disk.DiskTargetEnvironment = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="target_environment",
+        message=backupvault_disk.DiskTargetEnvironment,
+    )
+    region_disk_target_environment: backupvault_disk.RegionDiskTargetEnvironment = (
+        proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="target_environment",
+            message=backupvault_disk.RegionDiskTargetEnvironment,
+        )
+    )
     compute_instance_restore_properties: backupvault_gce.ComputeInstanceRestoreProperties = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="instance_properties",
         message=backupvault_gce.ComputeInstanceRestoreProperties,
+    )
+    disk_restore_properties: backupvault_disk.DiskRestoreProperties = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="instance_properties",
+        message=backupvault_disk.DiskRestoreProperties,
     )
 
 

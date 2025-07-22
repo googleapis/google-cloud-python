@@ -17,19 +17,17 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.cloud.backupdr.v1',
+    package="google.cloud.backupdr.v1",
     manifest={
-        'CloudSqlInstanceDataSourceProperties',
-        'CloudSqlInstanceBackupProperties',
-        'CloudSqlInstanceDataSourceReferenceProperties',
-        'CloudSqlInstanceInitializationConfig',
-        'CloudSqlInstanceBackupPlanAssociationProperties',
+        "CloudSqlInstanceDataSourceProperties",
+        "CloudSqlInstanceBackupProperties",
+        "CloudSqlInstanceDataSourceReferenceProperties",
+        "CloudSqlInstanceInitializationConfig",
+        "CloudSqlInstanceBackupPlanAssociationProperties",
     },
 )
 
@@ -163,6 +161,7 @@ class CloudSqlInstanceInitializationConfig(proto.Message):
             Required. The edition of the Cloud SQL
             instance.
     """
+
     class Edition(proto.Enum):
         r"""The edition of the Cloud SQL instance. For details, see
         https://cloud.google.com/sql/docs/editions-intro.

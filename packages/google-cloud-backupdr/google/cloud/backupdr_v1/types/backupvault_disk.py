@@ -21,15 +21,14 @@ import proto  # type: ignore
 
 from google.cloud.backupdr_v1.types import backupvault_gce
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.backupdr.v1',
+    package="google.cloud.backupdr.v1",
     manifest={
-        'DiskTargetEnvironment',
-        'RegionDiskTargetEnvironment',
-        'DiskRestoreProperties',
-        'DiskBackupProperties',
-        'DiskDataSourceProperties',
+        "DiskTargetEnvironment",
+        "RegionDiskTargetEnvironment",
+        "DiskRestoreProperties",
+        "DiskBackupProperties",
+        "DiskDataSourceProperties",
     },
 )
 
@@ -181,6 +180,7 @@ class DiskRestoreProperties(proto.Message):
             Optional. Resource manager tags to be bound
             to the disk.
     """
+
     class AccessMode(proto.Enum):
         r"""The supported access modes of the disk.
 
@@ -233,7 +233,9 @@ class DiskRestoreProperties(proto.Message):
         proto.STRING,
         number=4,
     )
-    guest_os_feature: MutableSequence[backupvault_gce.GuestOsFeature] = proto.RepeatedField(
+    guest_os_feature: MutableSequence[
+        backupvault_gce.GuestOsFeature
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=backupvault_gce.GuestOsFeature,
@@ -353,6 +355,7 @@ class DiskBackupProperties(proto.Message):
 
             This field is a member of `oneof`_ ``_source_disk``.
     """
+
     class Architecture(proto.Enum):
         r"""Architecture of the source disk.
 
@@ -377,7 +380,9 @@ class DiskBackupProperties(proto.Message):
         proto.STRING,
         number=2,
     )
-    guest_os_feature: MutableSequence[backupvault_gce.GuestOsFeature] = proto.RepeatedField(
+    guest_os_feature: MutableSequence[
+        backupvault_gce.GuestOsFeature
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=backupvault_gce.GuestOsFeature,
