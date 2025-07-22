@@ -91,7 +91,7 @@ def handle_build():
         command = ["nox", "-s", nox_session]
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         logger.info(result)
-        logger.info("'build' command executed.")
+    logger.info("'build' command executed.")
 
 
 if __name__ == "__main__":
