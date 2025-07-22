@@ -73,12 +73,15 @@ from .types.bigtable_table_admin import CreateAuthorizedViewMetadata
 from .types.bigtable_table_admin import CreateAuthorizedViewRequest
 from .types.bigtable_table_admin import CreateBackupMetadata
 from .types.bigtable_table_admin import CreateBackupRequest
+from .types.bigtable_table_admin import CreateSchemaBundleMetadata
+from .types.bigtable_table_admin import CreateSchemaBundleRequest
 from .types.bigtable_table_admin import CreateTableFromSnapshotMetadata
 from .types.bigtable_table_admin import CreateTableFromSnapshotRequest
 from .types.bigtable_table_admin import CreateTableRequest
 from .types.bigtable_table_admin import DataBoostReadLocalWrites
 from .types.bigtable_table_admin import DeleteAuthorizedViewRequest
 from .types.bigtable_table_admin import DeleteBackupRequest
+from .types.bigtable_table_admin import DeleteSchemaBundleRequest
 from .types.bigtable_table_admin import DeleteSnapshotRequest
 from .types.bigtable_table_admin import DeleteTableRequest
 from .types.bigtable_table_admin import DropRowRangeRequest
@@ -86,12 +89,15 @@ from .types.bigtable_table_admin import GenerateConsistencyTokenRequest
 from .types.bigtable_table_admin import GenerateConsistencyTokenResponse
 from .types.bigtable_table_admin import GetAuthorizedViewRequest
 from .types.bigtable_table_admin import GetBackupRequest
+from .types.bigtable_table_admin import GetSchemaBundleRequest
 from .types.bigtable_table_admin import GetSnapshotRequest
 from .types.bigtable_table_admin import GetTableRequest
 from .types.bigtable_table_admin import ListAuthorizedViewsRequest
 from .types.bigtable_table_admin import ListAuthorizedViewsResponse
 from .types.bigtable_table_admin import ListBackupsRequest
 from .types.bigtable_table_admin import ListBackupsResponse
+from .types.bigtable_table_admin import ListSchemaBundlesRequest
+from .types.bigtable_table_admin import ListSchemaBundlesResponse
 from .types.bigtable_table_admin import ListSnapshotsRequest
 from .types.bigtable_table_admin import ListSnapshotsResponse
 from .types.bigtable_table_admin import ListTablesRequest
@@ -108,6 +114,8 @@ from .types.bigtable_table_admin import UndeleteTableRequest
 from .types.bigtable_table_admin import UpdateAuthorizedViewMetadata
 from .types.bigtable_table_admin import UpdateAuthorizedViewRequest
 from .types.bigtable_table_admin import UpdateBackupRequest
+from .types.bigtable_table_admin import UpdateSchemaBundleMetadata
+from .types.bigtable_table_admin import UpdateSchemaBundleRequest
 from .types.bigtable_table_admin import UpdateTableMetadata
 from .types.bigtable_table_admin import UpdateTableRequest
 from .types.common import OperationProgress
@@ -127,7 +135,9 @@ from .types.table import ChangeStreamConfig
 from .types.table import ColumnFamily
 from .types.table import EncryptionInfo
 from .types.table import GcRule
+from .types.table import ProtoSchema
 from .types.table import RestoreInfo
+from .types.table import SchemaBundle
 from .types.table import Snapshot
 from .types.table import Table
 from .types.table import RestoreSourceType
@@ -164,6 +174,8 @@ __all__ = (
     "CreateLogicalViewRequest",
     "CreateMaterializedViewMetadata",
     "CreateMaterializedViewRequest",
+    "CreateSchemaBundleMetadata",
+    "CreateSchemaBundleRequest",
     "CreateTableFromSnapshotMetadata",
     "CreateTableFromSnapshotRequest",
     "CreateTableRequest",
@@ -175,6 +187,7 @@ __all__ = (
     "DeleteInstanceRequest",
     "DeleteLogicalViewRequest",
     "DeleteMaterializedViewRequest",
+    "DeleteSchemaBundleRequest",
     "DeleteSnapshotRequest",
     "DeleteTableRequest",
     "DropRowRangeRequest",
@@ -189,6 +202,7 @@ __all__ = (
     "GetInstanceRequest",
     "GetLogicalViewRequest",
     "GetMaterializedViewRequest",
+    "GetSchemaBundleRequest",
     "GetSnapshotRequest",
     "GetTableRequest",
     "HotTablet",
@@ -209,6 +223,8 @@ __all__ = (
     "ListLogicalViewsResponse",
     "ListMaterializedViewsRequest",
     "ListMaterializedViewsResponse",
+    "ListSchemaBundlesRequest",
+    "ListSchemaBundlesResponse",
     "ListSnapshotsRequest",
     "ListSnapshotsResponse",
     "ListTablesRequest",
@@ -221,10 +237,12 @@ __all__ = (
     "PartialUpdateClusterMetadata",
     "PartialUpdateClusterRequest",
     "PartialUpdateInstanceRequest",
+    "ProtoSchema",
     "RestoreInfo",
     "RestoreSourceType",
     "RestoreTableMetadata",
     "RestoreTableRequest",
+    "SchemaBundle",
     "Snapshot",
     "SnapshotTableMetadata",
     "SnapshotTableRequest",
@@ -245,6 +263,8 @@ __all__ = (
     "UpdateLogicalViewRequest",
     "UpdateMaterializedViewMetadata",
     "UpdateMaterializedViewRequest",
+    "UpdateSchemaBundleMetadata",
+    "UpdateSchemaBundleRequest",
     "UpdateTableMetadata",
     "UpdateTableRequest",
 )

@@ -113,6 +113,14 @@ class Type(proto.Message):
             Map
 
             This field is a member of `oneof`_ ``kind``.
+        proto_type (google.cloud.bigtable_admin_v2.types.Type.Proto):
+            Proto
+
+            This field is a member of `oneof`_ ``kind``.
+        enum_type (google.cloud.bigtable_admin_v2.types.Type.Enum):
+            Enum
+
+            This field is a member of `oneof`_ ``kind``.
     """
 
     class Bytes(proto.Message):
@@ -548,6 +556,52 @@ class Type(proto.Message):
             message="Type.Struct.Encoding",
         )
 
+    class Proto(proto.Message):
+        r"""A protobuf message type. Values of type ``Proto`` are stored in
+        ``Value.bytes_value``.
+
+        Attributes:
+            schema_bundle_id (str):
+                The ID of the schema bundle that this proto
+                is defined in.
+            message_name (str):
+                The fully qualified name of the protobuf
+                message, including package. In the format of
+                "foo.bar.Message".
+        """
+
+        schema_bundle_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        message_name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class Enum(proto.Message):
+        r"""A protobuf enum type. Values of type ``Enum`` are stored in
+        ``Value.int_value``.
+
+        Attributes:
+            schema_bundle_id (str):
+                The ID of the schema bundle that this enum is
+                defined in.
+            enum_name (str):
+                The fully qualified name of the protobuf enum
+                message, including package. In the format of
+                "foo.bar.EnumMessage".
+        """
+
+        schema_bundle_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        enum_name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     class Array(proto.Message):
         r"""An ordered list of elements of a given type. Values of type
         ``Array`` are stored in ``Value.array_value``.
@@ -770,6 +824,18 @@ class Type(proto.Message):
         number=4,
         oneof="kind",
         message=Map,
+    )
+    proto_type: Proto = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="kind",
+        message=Proto,
+    )
+    enum_type: Enum = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="kind",
+        message=Enum,
     )
 
 

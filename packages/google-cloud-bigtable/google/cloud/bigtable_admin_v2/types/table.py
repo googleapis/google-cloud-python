@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "Snapshot",
         "Backup",
         "BackupInfo",
+        "ProtoSchema",
+        "SchemaBundle",
     },
 )
 
@@ -1022,6 +1024,74 @@ class BackupInfo(proto.Message):
     source_backup: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+
+
+class ProtoSchema(proto.Message):
+    r"""Represents a protobuf schema.
+
+    Attributes:
+        proto_descriptors (bytes):
+            Required. Contains a protobuf-serialized
+            `google.protobuf.FileDescriptorSet <https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto>`__,
+            which could include multiple proto files. To generate it,
+            `install <https://grpc.io/docs/protoc-installation/>`__ and
+            run ``protoc`` with ``--include_imports`` and
+            ``--descriptor_set_out``. For example, to generate for
+            moon/shot/app.proto, run
+
+            ::
+
+               $protoc  --proto_path=/app_path --proto_path=/lib_path \
+                        --include_imports \
+                        --descriptor_set_out=descriptors.pb \
+                        moon/shot/app.proto
+
+            For more details, see protobuffer `self
+            description <https://developers.google.com/protocol-buffers/docs/techniques#self-description>`__.
+    """
+
+    proto_descriptors: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+
+
+class SchemaBundle(proto.Message):
+    r"""A named collection of related schemas.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The unique name identifying this schema bundle.
+            Values are of the form
+            ``projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}``
+        proto_schema (google.cloud.bigtable_admin_v2.types.ProtoSchema):
+            Schema for Protobufs.
+
+            This field is a member of `oneof`_ ``type``.
+        etag (str):
+            Optional. The etag for this schema bundle.
+            This may be sent on update and delete requests
+            to ensure the client has an up-to-date value
+            before proceeding. The server returns an ABORTED
+            error on a mismatched etag.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    proto_schema: "ProtoSchema" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="type",
+        message="ProtoSchema",
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

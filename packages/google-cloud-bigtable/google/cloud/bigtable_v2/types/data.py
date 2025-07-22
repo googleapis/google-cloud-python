@@ -51,6 +51,7 @@ __protobuf__ = proto.module(
         "ProtoRows",
         "ProtoRowsBatch",
         "PartialResultSet",
+        "Idempotency",
     },
 )
 
@@ -240,7 +241,8 @@ class Value(proto.Message):
             This field is a member of `oneof`_ ``kind``.
         float_value (float):
             Represents a typed value transported as a
-            floating point number.
+            floating point number. Does not support NaN or
+            infinities.
 
             This field is a member of `oneof`_ ``kind``.
         timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
@@ -1606,6 +1608,38 @@ class PartialResultSet(proto.Message):
     estimated_batch_size: int = proto.Field(
         proto.INT32,
         number=4,
+    )
+
+
+class Idempotency(proto.Message):
+    r"""Parameters on mutations where clients want to ensure
+    idempotency (i.e. at-most-once semantics). This is currently
+    only needed for certain aggregate types.
+
+    Attributes:
+        token (bytes):
+            Unique token used to identify replays of this
+            mutation. Must be at least 8 bytes long.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Client-assigned timestamp when the mutation's
+            first attempt was sent. Used to reject mutations
+            that arrive after idempotency protection may
+            have expired. May cause spurious rejections if
+            clock skew is too high.
+
+            Leave unset or zero to always accept the
+            mutation, at the risk of double counting if the
+            protection for previous attempts has expired.
+    """
+
+    token: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 
