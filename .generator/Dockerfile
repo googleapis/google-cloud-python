@@ -34,19 +34,47 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Set up environment variables for tool versions to make updates easier.
-ENV PYTHON_VERSION=3.11.5
 
-# Create a symbolic link for `python3` to point to our specific version.
-ENV PATH /usr/local/bin/python3.11:$PATH
 
+RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
 # Install Python from source
-RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
+    wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
     tar -xvf Python-${PYTHON_VERSION}.tgz && \
     cd Python-${PYTHON_VERSION} && \
     ./configure --enable-optimizations && \
     make altinstall && \
     cd / && \
-    rm -rf Python-${PYTHON_VERSION}*
+    rm -rf Python-${PYTHON_VERSION}* \
+    ; done
+
+ENV PYTHON_PIP_VERSION 25.1.1
+RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
+    && python3.10 /tmp/get-pip.py "pip==$PYTHON_PIP_VERSION" \
+
+  # we use "--force-reinstall" for the case where the version of pip we're trying to install is the same as the version bundled with Python
+  # ("Requirement already up-to-date: pip==8.1.2 in /usr/local/lib/python3.6/site-packages")
+  # https://github.com/docker-library/python/pull/143#issuecomment-241032683
+    && pip3 install --no-cache-dir --upgrade --force-reinstall "pip==$PYTHON_PIP_VERSION" \
+
+  # then we use "pip list" to ensure we don't have more than one pip version installed
+  # https://github.com/docker-library/python/pull/100
+    && [ "$(pip list |tac|tac| awk -F '[ ()]+' '$1 == "pip" { print $2; exit }')" = "$PYTHON_PIP_VERSION" ]
+
+# Ensure Pip for all python3 versions
+RUN python3.9 /tmp/get-pip.py
+RUN python3.11 /tmp/get-pip.py
+RUN python3.12 /tmp/get-pip.py
+RUN python3.13 /tmp/get-pip.py
+
+RUN rm /tmp/get-pip.py
+
+# Test Pip
+RUN python3.9 -m pip
+RUN python3.10 -m pip
+RUN python3.11 -m pip
+RUN python3.12 -m pip
+RUN python3.13 -m pip
+
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 

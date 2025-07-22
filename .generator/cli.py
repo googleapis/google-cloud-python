@@ -15,7 +15,7 @@
 import argparse
 import json
 import logging
-import os
+import subprocess
 import sys
 
 logger = logging.getLogger()
@@ -73,8 +73,13 @@ def handle_generate():
 
 
 def handle_build():
-    # TODO(https://github.com/googleapis/librarian/issues/450): Implement build command and update docstring.
-    logger.info("'build' command executed.")
+    """The main coordinator for validating client library generation."""
+    sesssions = ["unit-3.9", "unit-3.10", "unit-3.11", "unit-3.12", "unit-3.13", "docs", "system", "lint", "lint_setup_py", "mypy", "check_lower_bounds"]
+    for nox_session in sesssions:
+        command = ["nox", "-s", nox_session]
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        logger.info(result)
+        logger.info("'build' command executed.")
 
 
 if __name__ == "__main__":
