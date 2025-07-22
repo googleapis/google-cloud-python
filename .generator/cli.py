@@ -72,6 +72,13 @@ if __name__ == "__main__":
         dest="command", required=True, help="Available commands"
     )
 
+    # This flag is needed for testing.
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Perform a dry run for testing purposes."
+    )
+
     # Define commands
     for command_name, help_text in [
         ("configure", "Onboard a new library or an api path to Librarian workflow."),
@@ -91,4 +98,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     args = parser.parse_args()
-    args.func(args)
+    args.func(dry_run=args.dry_run)
