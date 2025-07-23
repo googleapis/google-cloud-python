@@ -81,7 +81,23 @@ def _determine_bazel_rule(api_path: str) -> str:
         return bazel_rule
     except Exception as e:
         raise ValueError(f"Bazelisk query `{query}` failed") from e
+    
+def _get_library_id(request_data: Dict) -> str:
+    """Retrieve the library id from the given request dictionary
+    
+    Args:
+        request_data(Dict): The contents `generate-request.json`.
+    
+    Raises:
+        ValueError: If the key `id` does not exist in `request_data`.
 
+    Returns:
+        str: The id of the library in `generate-request.json`
+    """
+    library_id = request_data.get("id")
+    if not library_id:
+        raise ValueError("Request file is missing required 'id' field.")
+    return library_id
 
 def handle_generate():
     """The main coordinator for the code generation process.
@@ -97,9 +113,7 @@ def handle_generate():
     # Read a generate-request.json file
     try:
         request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
-        library_id = request_data.get("id")
-        if not library_id:
-            raise ValueError("Request file is missing required 'id' field.")
+        library_id = _get_library_id(request_data)
 
         for api in request_data.get("apis", []):
             api_path = api.get("path")
@@ -124,7 +138,7 @@ def _run_nox_sessions(sessions: List[str]):
     current_session = None
     try:
         request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
-        library_id = request_data.get("id")
+        library_id = _get_library_id(request_data)
         for nox_session in sessions:
             current_session = nox_session
             command = [
