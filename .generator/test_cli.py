@@ -23,6 +23,7 @@ from unittest.mock import mock_open, MagicMock
 from cli import (
     _read_json_file,
     _determine_bazel_rule,
+    _build_bazel_target,
     handle_generate,
     handle_build,
     handle_configure,
@@ -78,6 +79,29 @@ def test_determine_bazel_rule_success(mocker, caplog):
     assert "Found Bazel rule" in caplog.text
 
 
+def test_build_bazel_target_success(mocker, caplog):
+    """
+    Tests that the build helper logs success when the command runs correctly.
+    """
+    caplog.set_level(logging.INFO)
+    mocker.patch("cli.subprocess.run", return_value=MagicMock(returncode=0))
+    _build_bazel_target("mock/bazel:rule")
+    assert "Bazel build for mock/bazel:rule rule completed successfully" in caplog.text
+
+
+def test_build_bazel_target_fails(mocker, caplog):
+    """
+    Tests that ValueError is raised if the subprocess command fails.
+    """
+    caplog.set_level(logging.ERROR)
+    mocker.patch(
+        "cli.subprocess.run",
+        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Build failed"),
+    )
+    with pytest.raises(ValueError):
+        _build_bazel_target("mock/bazel:rule")
+
+
 def test_determine_bazel_rule_command_fails(mocker, caplog):
     """
     Tests that an exception is raised if the subprocess command fails.
@@ -103,6 +127,7 @@ def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
     mock_determine_rule = mocker.patch(
         "cli._determine_bazel_rule", return_value="mock-rule"
     )
+    mock_build_target = mocker.patch("cli._build_bazel_target")
 
     handle_generate()
 
