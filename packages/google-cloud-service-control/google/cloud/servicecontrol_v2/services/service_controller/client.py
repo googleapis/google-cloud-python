@@ -112,9 +112,6 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
     """`Service Control API
     v2 <https://cloud.google.com/service-infrastructure/docs/service-control/access-control>`__
 
-    Private Preview. This feature is only available for approved
-    services.
-
     This API provides admission control and telemetry reporting for
     services that are integrated with `Service
     Infrastructure <https://cloud.google.com/service-infrastructure>`__.
@@ -711,10 +708,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> service_controller.CheckResponse:
-        r"""Private Preview. This feature is only available for approved
-        services.
-
-        This method provides admission control for services that are
+        r"""This method provides admission control for services that are
         integrated with `Service
         Infrastructure <https://cloud.google.com/service-infrastructure>`__.
         It checks whether an operation should be allowed based on the
@@ -818,10 +812,7 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> service_controller.ReportResponse:
-        r"""Private Preview. This feature is only available for approved
-        services.
-
-        This method provides telemetry reporting for services that are
+        r"""This method provides telemetry reporting for services that are
         integrated with `Service
         Infrastructure <https://cloud.google.com/service-infrastructure>`__.
         It reports a list of operations that have occurred on a service.
@@ -829,9 +820,8 @@ class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
         more information, see `Telemetry
         Reporting <https://cloud.google.com/service-infrastructure/docs/telemetry-reporting>`__.
 
-        NOTE: The telemetry reporting has a hard limit of 1000
-        operations and 1MB per Report call. It is recommended to have no
-        more than 100 operations per call.
+        NOTE: The telemetry reporting has a hard limit of 100 operations
+        and 1MB per Report call.
 
         This method requires the ``servicemanagement.services.report``
         permission on the specified service. For more information, see

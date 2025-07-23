@@ -698,6 +698,8 @@
                 "google/cloud/bigquery_datapolicies/gapic_version.py",
                 "google/cloud/bigquery_datapolicies_v1/gapic_version.py",
                 "google/cloud/bigquery_datapolicies_v1beta1/gapic_version.py",
+                "google/cloud/bigquery_datapolicies_v2/gapic_version.py",
+                "google/cloud/bigquery_datapolicies_v2beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v1.json",
@@ -706,6 +708,16 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datapolicies.v2beta1.json",
                     "type": "json"
                 }
             ],
@@ -1974,6 +1986,21 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.managedkafka.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-managedkafka-schemaregistry": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-managedkafka-schemaregistry",
+            "extra-files": [
+                "google/cloud/managedkafka_schemaregistry/gapic_version.py",
+                "google/cloud/managedkafka_schemaregistry_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.managedkafka.schemaregistry.v1.json",
                     "type": "json"
                 }
             ],

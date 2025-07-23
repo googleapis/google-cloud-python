@@ -14,6 +14,13 @@
 # limitations under the License.
 #
 from .answer import Answer
+from .assist_answer import AssistAnswer, AssistantContent, AssistantGroundedContent
+from .assistant import Assistant
+from .assistant_service import (
+    AssistUserMetadata,
+    StreamAssistRequest,
+    StreamAssistResponse,
+)
 from .chunk import Chunk
 from .cmek_config_service import (
     CmekConfig,
@@ -266,6 +273,13 @@ from .user_license_service import (
 
 __all__ = (
     "Answer",
+    "AssistAnswer",
+    "AssistantContent",
+    "AssistantGroundedContent",
+    "Assistant",
+    "AssistUserMetadata",
+    "StreamAssistRequest",
+    "StreamAssistResponse",
     "Chunk",
     "CmekConfig",
     "DeleteCmekConfigMetadata",

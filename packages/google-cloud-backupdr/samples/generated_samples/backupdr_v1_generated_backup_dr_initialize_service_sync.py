@@ -39,7 +39,11 @@ def sample_initialize_service():
     client = backupdr_v1.BackupDRClient()
 
     # Initialize request argument(s)
+    cloud_sql_instance_initialization_config = backupdr_v1.CloudSqlInstanceInitializationConfig()
+    cloud_sql_instance_initialization_config.edition = "ENTERPRISE_PLUS"
+
     request = backupdr_v1.InitializeServiceRequest(
+        cloud_sql_instance_initialization_config=cloud_sql_instance_initialization_config,
         name="name_value",
         resource_type="resource_type_value",
     )

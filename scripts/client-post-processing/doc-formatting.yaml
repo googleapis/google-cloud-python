@@ -595,3 +595,12 @@ replacements:
                       IG/NEG will be set as drained.\n
                       - An IG/NEG is considered unhealthy if less than
     count: 1
+  - paths: [
+      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/types/schema_registry.py,
+      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/services/managed_schema_registry/client.py,
+      packages/google-cloud-managedkafka-schemaregistry/google/cloud/managedkafka_schemaregistry_v1/services/managed_schema_registry/async_client.py,
+    ]
+    before: |
+      -  projects/\{project\}/locations/\{location\}/schemaRegistries/\{schema_registry\}/compatibility/subjects/\*/versions:
+    after: "-  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions`:\n"
+    count: 3

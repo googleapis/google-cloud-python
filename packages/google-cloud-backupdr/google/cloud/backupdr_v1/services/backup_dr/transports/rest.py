@@ -37,6 +37,7 @@ from google.cloud.backupdr_v1.types import (
     backupplan,
     backupplanassociation,
     backupvault,
+    datasourcereference,
 )
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -153,6 +154,22 @@ class BackupDRRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_fetch_backup_plan_associations_for_resource_type(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_backup_plan_associations_for_resource_type(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_fetch_data_source_references_for_resource_type(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_data_source_references_for_resource_type(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_fetch_usable_backup_vaults(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -185,6 +202,14 @@ class BackupDRRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_backup_plan_revision(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_backup_plan_revision(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_backup_vault(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -198,6 +223,14 @@ class BackupDRRestInterceptor:
                 return request, metadata
 
             def post_get_data_source(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_data_source_reference(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_data_source_reference(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -222,6 +255,14 @@ class BackupDRRestInterceptor:
                 return request, metadata
 
             def post_list_backup_plan_associations(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_backup_plan_revisions(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_backup_plan_revisions(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -286,6 +327,22 @@ class BackupDRRestInterceptor:
                 return request, metadata
 
             def post_update_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_backup_plan(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_backup_plan(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_backup_plan_association(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_backup_plan_association(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -745,6 +802,112 @@ class BackupDRRestInterceptor:
         """
         return response, metadata
 
+    def pre_fetch_backup_plan_associations_for_resource_type(
+        self,
+        request: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for fetch_backup_plan_associations_for_resource_type
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_fetch_backup_plan_associations_for_resource_type(
+        self,
+        response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
+    ) -> backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse:
+        """Post-rpc interceptor for fetch_backup_plan_associations_for_resource_type
+
+        DEPRECATED. Please use the `post_fetch_backup_plan_associations_for_resource_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code. This `post_fetch_backup_plan_associations_for_resource_type` interceptor runs
+        before the `post_fetch_backup_plan_associations_for_resource_type_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_backup_plan_associations_for_resource_type_with_metadata(
+        self,
+        response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_backup_plan_associations_for_resource_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupDR server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_backup_plan_associations_for_resource_type_with_metadata`
+        interceptor in new development instead of the `post_fetch_backup_plan_associations_for_resource_type` interceptor.
+        When both interceptors are used, this `post_fetch_backup_plan_associations_for_resource_type_with_metadata` interceptor runs after the
+        `post_fetch_backup_plan_associations_for_resource_type` interceptor. The (possibly modified) response returned by
+        `post_fetch_backup_plan_associations_for_resource_type` will be passed to
+        `post_fetch_backup_plan_associations_for_resource_type_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_fetch_data_source_references_for_resource_type(
+        self,
+        request: datasourcereference.FetchDataSourceReferencesForResourceTypeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasourcereference.FetchDataSourceReferencesForResourceTypeRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for fetch_data_source_references_for_resource_type
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_fetch_data_source_references_for_resource_type(
+        self,
+        response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
+    ) -> datasourcereference.FetchDataSourceReferencesForResourceTypeResponse:
+        """Post-rpc interceptor for fetch_data_source_references_for_resource_type
+
+        DEPRECATED. Please use the `post_fetch_data_source_references_for_resource_type_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code. This `post_fetch_data_source_references_for_resource_type` interceptor runs
+        before the `post_fetch_data_source_references_for_resource_type_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_data_source_references_for_resource_type_with_metadata(
+        self,
+        response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_data_source_references_for_resource_type
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupDR server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_data_source_references_for_resource_type_with_metadata`
+        interceptor in new development instead of the `post_fetch_data_source_references_for_resource_type` interceptor.
+        When both interceptors are used, this `post_fetch_data_source_references_for_resource_type_with_metadata` interceptor runs after the
+        `post_fetch_data_source_references_for_resource_type` interceptor. The (possibly modified) response returned by
+        `post_fetch_data_source_references_for_resource_type` will be passed to
+        `post_fetch_data_source_references_for_resource_type_with_metadata`.
+        """
+        return response, metadata
+
     def pre_fetch_usable_backup_vaults(
         self,
         request: backupvault.FetchUsableBackupVaultsRequest,
@@ -941,6 +1104,54 @@ class BackupDRRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_backup_plan_revision(
+        self,
+        request: backupplan.GetBackupPlanRevisionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplan.GetBackupPlanRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_backup_plan_revision
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_get_backup_plan_revision(
+        self, response: backupplan.BackupPlanRevision
+    ) -> backupplan.BackupPlanRevision:
+        """Post-rpc interceptor for get_backup_plan_revision
+
+        DEPRECATED. Please use the `post_get_backup_plan_revision_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code. This `post_get_backup_plan_revision` interceptor runs
+        before the `post_get_backup_plan_revision_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_backup_plan_revision_with_metadata(
+        self,
+        response: backupplan.BackupPlanRevision,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backupplan.BackupPlanRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_backup_plan_revision
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupDR server but before it is returned to user code.
+
+        We recommend only using this `post_get_backup_plan_revision_with_metadata`
+        interceptor in new development instead of the `post_get_backup_plan_revision` interceptor.
+        When both interceptors are used, this `post_get_backup_plan_revision_with_metadata` interceptor runs after the
+        `post_get_backup_plan_revision` interceptor. The (possibly modified) response returned by
+        `post_get_backup_plan_revision` will be passed to
+        `post_get_backup_plan_revision_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_backup_vault(
         self,
         request: backupvault.GetBackupVaultRequest,
@@ -1034,6 +1245,57 @@ class BackupDRRestInterceptor:
         `post_get_data_source` interceptor. The (possibly modified) response returned by
         `post_get_data_source` will be passed to
         `post_get_data_source_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_data_source_reference(
+        self,
+        request: datasourcereference.GetDataSourceReferenceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasourcereference.GetDataSourceReferenceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_data_source_reference
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_get_data_source_reference(
+        self, response: datasourcereference.DataSourceReference
+    ) -> datasourcereference.DataSourceReference:
+        """Post-rpc interceptor for get_data_source_reference
+
+        DEPRECATED. Please use the `post_get_data_source_reference_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code. This `post_get_data_source_reference` interceptor runs
+        before the `post_get_data_source_reference_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_data_source_reference_with_metadata(
+        self,
+        response: datasourcereference.DataSourceReference,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datasourcereference.DataSourceReference, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_data_source_reference
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupDR server but before it is returned to user code.
+
+        We recommend only using this `post_get_data_source_reference_with_metadata`
+        interceptor in new development instead of the `post_get_data_source_reference` interceptor.
+        When both interceptors are used, this `post_get_data_source_reference_with_metadata` interceptor runs after the
+        `post_get_data_source_reference` interceptor. The (possibly modified) response returned by
+        `post_get_data_source_reference` will be passed to
+        `post_get_data_source_reference_with_metadata`.
         """
         return response, metadata
 
@@ -1182,6 +1444,58 @@ class BackupDRRestInterceptor:
         `post_list_backup_plan_associations` interceptor. The (possibly modified) response returned by
         `post_list_backup_plan_associations` will be passed to
         `post_list_backup_plan_associations_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_backup_plan_revisions(
+        self,
+        request: backupplan.ListBackupPlanRevisionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplan.ListBackupPlanRevisionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_backup_plan_revisions
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_list_backup_plan_revisions(
+        self, response: backupplan.ListBackupPlanRevisionsResponse
+    ) -> backupplan.ListBackupPlanRevisionsResponse:
+        """Post-rpc interceptor for list_backup_plan_revisions
+
+        DEPRECATED. Please use the `post_list_backup_plan_revisions_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code. This `post_list_backup_plan_revisions` interceptor runs
+        before the `post_list_backup_plan_revisions_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_backup_plan_revisions_with_metadata(
+        self,
+        response: backupplan.ListBackupPlanRevisionsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplan.ListBackupPlanRevisionsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_backup_plan_revisions
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupDR server but before it is returned to user code.
+
+        We recommend only using this `post_list_backup_plan_revisions_with_metadata`
+        interceptor in new development instead of the `post_list_backup_plan_revisions` interceptor.
+        When both interceptors are used, this `post_list_backup_plan_revisions_with_metadata` interceptor runs after the
+        `post_list_backup_plan_revisions` interceptor. The (possibly modified) response returned by
+        `post_list_backup_plan_revisions` will be passed to
+        `post_list_backup_plan_revisions_with_metadata`.
         """
         return response, metadata
 
@@ -1575,6 +1889,103 @@ class BackupDRRestInterceptor:
         `post_update_backup` interceptor. The (possibly modified) response returned by
         `post_update_backup` will be passed to
         `post_update_backup_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_backup_plan(
+        self,
+        request: backupplan.UpdateBackupPlanRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplan.UpdateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_backup_plan
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_update_backup_plan(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_backup_plan
+
+        DEPRECATED. Please use the `post_update_backup_plan_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code. This `post_update_backup_plan` interceptor runs
+        before the `post_update_backup_plan_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_backup_plan_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_backup_plan
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupDR server but before it is returned to user code.
+
+        We recommend only using this `post_update_backup_plan_with_metadata`
+        interceptor in new development instead of the `post_update_backup_plan` interceptor.
+        When both interceptors are used, this `post_update_backup_plan_with_metadata` interceptor runs after the
+        `post_update_backup_plan` interceptor. The (possibly modified) response returned by
+        `post_update_backup_plan` will be passed to
+        `post_update_backup_plan_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_backup_plan_association(
+        self,
+        request: backupplanassociation.UpdateBackupPlanAssociationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplanassociation.UpdateBackupPlanAssociationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_backup_plan_association
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BackupDR server.
+        """
+        return request, metadata
+
+    def post_update_backup_plan_association(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_backup_plan_association
+
+        DEPRECATED. Please use the `post_update_backup_plan_association_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the BackupDR server but before
+        it is returned to user code. This `post_update_backup_plan_association` interceptor runs
+        before the `post_update_backup_plan_association_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_backup_plan_association_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_backup_plan_association
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the BackupDR server but before it is returned to user code.
+
+        We recommend only using this `post_update_backup_plan_association_with_metadata`
+        interceptor in new development instead of the `post_update_backup_plan_association` interceptor.
+        When both interceptors are used, this `post_update_backup_plan_association_with_metadata` interceptor runs after the
+        `post_update_backup_plan_association` interceptor. The (possibly modified) response returned by
+        `post_update_backup_plan_association` will be passed to
+        `post_update_backup_plan_association_with_metadata`.
         """
         return response, metadata
 
@@ -3398,6 +3809,350 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
+    class _FetchBackupPlanAssociationsForResourceType(
+        _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType,
+        BackupDRRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "BackupDRRestTransport.FetchBackupPlanAssociationsForResourceType"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse:
+            r"""Call the fetch backup plan
+            associations for resource type method over HTTP.
+
+                Args:
+                    request (~.backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest):
+                        The request object. Request for the
+                    FetchBackupPlanAssociationsForResourceType
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse:
+                        Response for the
+                    FetchBackupPlanAssociationsForResourceType
+                    method.
+
+            """
+
+            http_options = (
+                _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_http_options()
+            )
+
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_fetch_backup_plan_associations_for_resource_type(
+                request, metadata
+            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.FetchBackupPlanAssociationsForResourceType",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "FetchBackupPlanAssociationsForResourceType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BackupDRRestTransport._FetchBackupPlanAssociationsForResourceType._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse()
+            )
+            pb_resp = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = (
+                self._interceptor.post_fetch_backup_plan_associations_for_resource_type(
+                    resp
+                )
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_fetch_backup_plan_associations_for_resource_type_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.fetch_backup_plan_associations_for_resource_type",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "FetchBackupPlanAssociationsForResourceType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _FetchDataSourceReferencesForResourceType(
+        _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType,
+        BackupDRRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "BackupDRRestTransport.FetchDataSourceReferencesForResourceType"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: datasourcereference.FetchDataSourceReferencesForResourceTypeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> datasourcereference.FetchDataSourceReferencesForResourceTypeResponse:
+            r"""Call the fetch data source
+            references for resource type method over HTTP.
+
+                Args:
+                    request (~.datasourcereference.FetchDataSourceReferencesForResourceTypeRequest):
+                        The request object. Request for the
+                    FetchDataSourceReferencesForResourceType
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.datasourcereference.FetchDataSourceReferencesForResourceTypeResponse:
+                        Response for the
+                    FetchDataSourceReferencesForResourceType
+                    method.
+
+            """
+
+            http_options = (
+                _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_http_options()
+            )
+
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_fetch_data_source_references_for_resource_type(
+                request, metadata
+            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.FetchDataSourceReferencesForResourceType",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "FetchDataSourceReferencesForResourceType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BackupDRRestTransport._FetchDataSourceReferencesForResourceType._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                datasourcereference.FetchDataSourceReferencesForResourceTypeResponse()
+            )
+            pb_resp = (
+                datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.pb(
+                    resp
+                )
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = (
+                self._interceptor.post_fetch_data_source_references_for_resource_type(
+                    resp
+                )
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_fetch_data_source_references_for_resource_type_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.fetch_data_source_references_for_resource_type",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "FetchDataSourceReferencesForResourceType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _FetchUsableBackupVaults(
         _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults, BackupDRRestStub
     ):
@@ -4001,6 +4756,155 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
+    class _GetBackupPlanRevision(
+        _BaseBackupDRRestTransport._BaseGetBackupPlanRevision, BackupDRRestStub
+    ):
+        def __hash__(self):
+            return hash("BackupDRRestTransport.GetBackupPlanRevision")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: backupplan.GetBackupPlanRevisionRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> backupplan.BackupPlanRevision:
+            r"""Call the get backup plan revision method over HTTP.
+
+            Args:
+                request (~.backupplan.GetBackupPlanRevisionRequest):
+                    The request object. The request message for getting a
+                ``BackupPlanRevision``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.backupplan.BackupPlanRevision:
+                    ``BackupPlanRevision`` represents a snapshot of a
+                ``BackupPlan`` at a point in time.
+
+            """
+
+            http_options = (
+                _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_backup_plan_revision(
+                request, metadata
+            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetBackupPlanRevision",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackupPlanRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BackupDRRestTransport._GetBackupPlanRevision._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backupplan.BackupPlanRevision()
+            pb_resp = backupplan.BackupPlanRevision.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_backup_plan_revision(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_backup_plan_revision_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupplan.BackupPlanRevision.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.get_backup_plan_revision",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackupPlanRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetBackupVault(
         _BaseBackupDRRestTransport._BaseGetBackupVault, BackupDRRestStub
     ):
@@ -4301,6 +5205,157 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     extra={
                         "serviceName": "google.cloud.backupdr.v1.BackupDR",
                         "rpcName": "GetDataSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetDataSourceReference(
+        _BaseBackupDRRestTransport._BaseGetDataSourceReference, BackupDRRestStub
+    ):
+        def __hash__(self):
+            return hash("BackupDRRestTransport.GetDataSourceReference")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: datasourcereference.GetDataSourceReferenceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> datasourcereference.DataSourceReference:
+            r"""Call the get data source reference method over HTTP.
+
+            Args:
+                request (~.datasourcereference.GetDataSourceReferenceRequest):
+                    The request object. Request for the
+                GetDataSourceReference method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.datasourcereference.DataSourceReference:
+                    DataSourceReference is a reference to
+                a DataSource resource.
+
+            """
+
+            http_options = (
+                _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_data_source_reference(
+                request, metadata
+            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetDataSourceReference",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetDataSourceReference",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BackupDRRestTransport._GetDataSourceReference._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = datasourcereference.DataSourceReference()
+            pb_resp = datasourcereference.DataSourceReference.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_data_source_reference(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_data_source_reference_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datasourcereference.DataSourceReference.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.get_data_source_reference",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetDataSourceReference",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -4759,6 +5814,158 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     extra={
                         "serviceName": "google.cloud.backupdr.v1.BackupDR",
                         "rpcName": "ListBackupPlanAssociations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListBackupPlanRevisions(
+        _BaseBackupDRRestTransport._BaseListBackupPlanRevisions, BackupDRRestStub
+    ):
+        def __hash__(self):
+            return hash("BackupDRRestTransport.ListBackupPlanRevisions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: backupplan.ListBackupPlanRevisionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> backupplan.ListBackupPlanRevisionsResponse:
+            r"""Call the list backup plan
+            revisions method over HTTP.
+
+                Args:
+                    request (~.backupplan.ListBackupPlanRevisionsRequest):
+                        The request object. The request message for getting a list of
+                    ``BackupPlanRevision``.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.backupplan.ListBackupPlanRevisionsResponse:
+                        The response message for getting a list of
+                    ``BackupPlanRevision``.
+
+            """
+
+            http_options = (
+                _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_backup_plan_revisions(
+                request, metadata
+            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListBackupPlanRevisions",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackupPlanRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BackupDRRestTransport._ListBackupPlanRevisions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = backupplan.ListBackupPlanRevisionsResponse()
+            pb_resp = backupplan.ListBackupPlanRevisionsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_backup_plan_revisions(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_backup_plan_revisions_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        backupplan.ListBackupPlanRevisionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.list_backup_plan_revisions",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackupPlanRevisions",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -5990,6 +7197,322 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
+    class _UpdateBackupPlan(
+        _BaseBackupDRRestTransport._BaseUpdateBackupPlan, BackupDRRestStub
+    ):
+        def __hash__(self):
+            return hash("BackupDRRestTransport.UpdateBackupPlan")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: backupplan.UpdateBackupPlanRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update backup plan method over HTTP.
+
+            Args:
+                request (~.backupplan.UpdateBackupPlanRequest):
+                    The request object. Request message for updating a backup
+                plan.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_backup_plan(
+                request, metadata
+            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.UpdateBackupPlan",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateBackupPlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BackupDRRestTransport._UpdateBackupPlan._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_backup_plan(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_backup_plan_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.update_backup_plan",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateBackupPlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateBackupPlanAssociation(
+        _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation, BackupDRRestStub
+    ):
+        def __hash__(self):
+            return hash("BackupDRRestTransport.UpdateBackupPlanAssociation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: backupplanassociation.UpdateBackupPlanAssociationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update backup plan
+            association method over HTTP.
+
+                Args:
+                    request (~.backupplanassociation.UpdateBackupPlanAssociationRequest):
+                        The request object. Request message for updating a backup
+                    plan association.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_backup_plan_association(
+                request, metadata
+            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.UpdateBackupPlanAssociation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateBackupPlanAssociation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = BackupDRRestTransport._UpdateBackupPlanAssociation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_backup_plan_association(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_update_backup_plan_association_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.update_backup_plan_association",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateBackupPlanAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateBackupVault(
         _BaseBackupDRRestTransport._BaseUpdateBackupVault, BackupDRRestStub
     ):
@@ -6381,6 +7904,28 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
         return self._DeleteManagementServer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def fetch_backup_plan_associations_for_resource_type(
+        self,
+    ) -> Callable[
+        [backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest],
+        backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchBackupPlanAssociationsForResourceType(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_data_source_references_for_resource_type(
+        self,
+    ) -> Callable[
+        [datasourcereference.FetchDataSourceReferencesForResourceTypeRequest],
+        datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchDataSourceReferencesForResourceType(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def fetch_usable_backup_vaults(
         self,
     ) -> Callable[
@@ -6419,6 +7964,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
         return self._GetBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_backup_plan_revision(
+        self,
+    ) -> Callable[
+        [backupplan.GetBackupPlanRevisionRequest], backupplan.BackupPlanRevision
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetBackupPlanRevision(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_backup_vault(
         self,
     ) -> Callable[[backupvault.GetBackupVaultRequest], backupvault.BackupVault]:
@@ -6433,6 +7988,17 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataSource(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_data_source_reference(
+        self,
+    ) -> Callable[
+        [datasourcereference.GetDataSourceReferenceRequest],
+        datasourcereference.DataSourceReference,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetDataSourceReference(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_management_server(
@@ -6460,6 +8026,17 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupPlanAssociations(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_backup_plan_revisions(
+        self,
+    ) -> Callable[
+        [backupplan.ListBackupPlanRevisionsRequest],
+        backupplan.ListBackupPlanRevisionsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListBackupPlanRevisions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_backup_plans(
@@ -6534,6 +8111,25 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_backup_plan(
+        self,
+    ) -> Callable[[backupplan.UpdateBackupPlanRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateBackupPlan(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_backup_plan_association(
+        self,
+    ) -> Callable[
+        [backupplanassociation.UpdateBackupPlanAssociationRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_backup_vault(

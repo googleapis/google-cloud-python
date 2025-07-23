@@ -3,6 +3,7 @@ Services for Google Cloud Discoveryengine v1 API
 .. toctree::
     :maxdepth: 2
 
+    assistant_service
     cmek_config_service
     completion_service
     control_service

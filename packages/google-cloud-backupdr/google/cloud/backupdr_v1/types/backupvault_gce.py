@@ -291,7 +291,9 @@ class ComputeInstanceRestoreProperties(proto.Message):
         disks (MutableSequence[google.cloud.backupdr_v1.types.AttachedDisk]):
             Optional. Array of disks associated with this
             instance. Persistent disks must be created
-            before you can assign them.
+            before you can assign them. Source regional
+            persistent disks will be restored with default
+            replica zones if not specified.
         display_device (google.cloud.backupdr_v1.types.DisplayDevice):
             Optional. Enables display device for the
             instance.
@@ -343,6 +345,8 @@ class ComputeInstanceRestoreProperties(proto.Message):
             are configured to interact with other network
             services, such as connecting to the internet.
             Multiple interfaces are supported per instance.
+            Required to restore in different project or
+            region.
         network_performance_config (google.cloud.backupdr_v1.types.NetworkPerformanceConfig):
             Optional. Configure network performance such
             as egress bandwidth tier.
@@ -366,7 +370,8 @@ class ComputeInstanceRestoreProperties(proto.Message):
             This field is a member of `oneof`_ ``_allocation_affinity``.
         resource_policies (MutableSequence[str]):
             Optional. Resource policies applied to this
-            instance.
+            instance. By default, no resource policies will
+            be applied.
         scheduling (google.cloud.backupdr_v1.types.Scheduling):
             Optional. Sets the scheduling options for
             this instance.

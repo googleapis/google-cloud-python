@@ -208,9 +208,6 @@ class ServiceControllerRestTransport(_BaseServiceControllerRestTransport):
     `Service Control API
     v2 <https://cloud.google.com/service-infrastructure/docs/service-control/access-control>`__
 
-    Private Preview. This feature is only available for approved
-    services.
-
     This API provides admission control and telemetry reporting for
     services that are integrated with `Service
     Infrastructure <https://cloud.google.com/service-infrastructure>`__.

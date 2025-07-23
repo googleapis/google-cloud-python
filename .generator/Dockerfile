@@ -22,6 +22,8 @@ RUN apt-get update && \
     # For downloading secure files
     wget \
     ca-certificates \
+    # For running bazelisk commands
+    openjdk-17-jdk \
     # --- Critical libraries for a complete Python build ---
     libssl-dev \
     zlib1g-dev \
@@ -34,6 +36,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Set up environment variables for tool versions to make updates easier.
+ENV BAZELISK_VERSION=v1.26.0
 
 
 RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
@@ -78,7 +81,9 @@ RUN python3.13 -m pip
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 
-# TODO(https://github.com/googleapis/librarian/issues/903): Install Bazelisk for building a client library.
+# Install Bazelisk
+RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VERSION}/bazelisk-linux-amd64 -O /usr/local/bin/bazelisk && \
+    chmod +x /usr/local/bin/bazelisk
 
 # TODO(https://github.com/googleapis/librarian/issues/902): Create a dedicate non-root user and 
 # switch to the non-root user to run subsequent commands.

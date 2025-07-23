@@ -22,6 +22,22 @@ API Reference
     bigquery_datapolicies_v1beta1/services_
     bigquery_datapolicies_v1beta1/types_
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    bigquery_datapolicies_v2/services_
+    bigquery_datapolicies_v2/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    bigquery_datapolicies_v2beta1/services_
+    bigquery_datapolicies_v2beta1/types_
+
 
 Changelog
 ---------

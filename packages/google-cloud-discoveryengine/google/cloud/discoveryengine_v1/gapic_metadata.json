@@ -5,6 +5,40 @@
   "protoPackage": "google.cloud.discoveryengine.v1",
   "schema": "1.0",
   "services": {
+    "AssistantService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AssistantServiceClient",
+          "rpcs": {
+            "StreamAssist": {
+              "methods": [
+                "stream_assist"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AssistantServiceAsyncClient",
+          "rpcs": {
+            "StreamAssist": {
+              "methods": [
+                "stream_assist"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AssistantServiceClient",
+          "rpcs": {
+            "StreamAssist": {
+              "methods": [
+                "stream_assist"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CmekConfigService": {
       "clients": {
         "grpc": {

@@ -420,6 +420,30 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                         "method": "get",
                         "uri": "/v1/{name=organizations/*/locations/*/replays/*/operations/**}",
                     },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/orgPolicyViolationsPreviews/*/operations/**}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=folders/*/locations/*/orgPolicyViolationsPreviews/*/operations/**}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=organizations/*/locations/*/orgPolicyViolationsPreviews/*/operations/**}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/accessPolicySimulations/*/operations/**}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=folders/*/locations/*/accessPolicySimulations/*/operations/**}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=organizations/*/locations/*/accessPolicySimulations/*/operations/**}",
+                    },
                 ],
                 "google.longrunning.Operations.ListOperations": [
                     {

@@ -17,9 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.backupdr_v1.types import backupvault_cloudsql
 
 __protobuf__ = proto.module(
     package="google.cloud.backupdr.v1",
@@ -29,8 +32,11 @@ __protobuf__ = proto.module(
         "CreateBackupPlanAssociationRequest",
         "ListBackupPlanAssociationsRequest",
         "ListBackupPlanAssociationsResponse",
+        "FetchBackupPlanAssociationsForResourceTypeRequest",
+        "FetchBackupPlanAssociationsForResourceTypeResponse",
         "GetBackupPlanAssociationRequest",
         "DeleteBackupPlanAssociationRequest",
+        "UpdateBackupPlanAssociationRequest",
         "TriggerBackupRequest",
     },
 )
@@ -40,6 +46,9 @@ class BackupPlanAssociation(proto.Message):
     r"""A BackupPlanAssociation represents a single
     BackupPlanAssociation which contains details like workload,
     backup plan etc
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -52,7 +61,13 @@ class BackupPlanAssociation(proto.Message):
             workload on which backupplan is applied
         resource (str):
             Required. Immutable. Resource name of
-            workload on which backupplan is applied
+            workload on which the backup plan is applied.
+
+            The format can either be the resource name
+            (e.g.,
+            "projects/my-project/zones/us-central1-a/instances/my-instance")
+            or the full resource URI (e.g.,
+            "https://www.googleapis.com/compute/v1/projects/my-project/zones/us-central1-a/instances/my-instance").
         backup_plan (str):
             Required. Resource name of backup plan which
             needs to be applied on workload. Format:
@@ -76,6 +91,21 @@ class BackupPlanAssociation(proto.Message):
             backups taken. Format :
 
             projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}
+        cloud_sql_instance_backup_plan_association_properties (google.cloud.backupdr_v1.types.CloudSqlInstanceBackupPlanAssociationProperties):
+            Output only. Cloud SQL instance's backup plan
+            association properties.
+
+            This field is a member of `oneof`_ ``resource_properties``.
+        backup_plan_revision_id (str):
+            Output only. The user friendly revision ID of the
+            ``BackupPlanRevision``.
+
+            Example: v0, v1, v2, etc.
+        backup_plan_revision_name (str):
+            Output only. The resource id of the ``BackupPlanRevision``.
+
+            Format:
+            ``projects/{project}/locations/{location}/backupPlans/{backup_plan}/revisions/{revision_id}``
     """
 
     class State(proto.Enum):
@@ -94,12 +124,15 @@ class BackupPlanAssociation(proto.Message):
             INACTIVE (4):
                 The resource has been created but is not
                 usable.
+            UPDATING (5):
+                The resource is being updated.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
         DELETING = 3
         INACTIVE = 4
+        UPDATING = 5
 
     name: str = proto.Field(
         proto.STRING,
@@ -140,6 +173,20 @@ class BackupPlanAssociation(proto.Message):
     data_source: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    cloud_sql_instance_backup_plan_association_properties: backupvault_cloudsql.CloudSqlInstanceBackupPlanAssociationProperties = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="resource_properties",
+        message=backupvault_cloudsql.CloudSqlInstanceBackupPlanAssociationProperties,
+    )
+    backup_plan_revision_id: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    backup_plan_revision_name: str = proto.Field(
+        proto.STRING,
+        number=12,
     )
 
 
@@ -343,6 +390,110 @@ class ListBackupPlanAssociationsResponse(proto.Message):
     )
 
 
+class FetchBackupPlanAssociationsForResourceTypeRequest(proto.Message):
+    r"""Request for the FetchBackupPlanAssociationsForResourceType
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource name.
+            Format: projects/{project}/locations/{location}
+        resource_type (str):
+            Required. The type of the GCP resource.
+            Ex: sql.googleapis.com/Instance
+        page_size (int):
+            Optional. The maximum number of
+            BackupPlanAssociations to return. The service
+            may return fewer than this value. If
+            unspecified, at most 50 BackupPlanAssociations
+            will be returned. The maximum value is 100;
+            values above 100 will be coerced to 100.
+        page_token (str):
+            Optional. A page token, received from a previous call of
+            ``FetchBackupPlanAssociationsForResourceType``. Provide this
+            to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``FetchBackupPlanAssociationsForResourceType`` must match
+            the call that provided the page token.
+        filter (str):
+            Optional. A filter expression that filters the results
+            fetched in the response. The expression must specify the
+            field name, a comparison operator, and the value that you
+            want to use for filtering. Supported fields:
+
+            -  resource
+            -  backup_plan
+            -  state
+            -  data_source
+            -  cloud_sql_instance_backup_plan_association_properties.instance_create_time
+        order_by (str):
+            Optional. A comma-separated list of fields to order by,
+            sorted in ascending order. Use "desc" after a field name for
+            descending.
+
+            Supported fields:
+
+            -  name
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class FetchBackupPlanAssociationsForResourceTypeResponse(proto.Message):
+    r"""Response for the FetchBackupPlanAssociationsForResourceType
+    method.
+
+    Attributes:
+        backup_plan_associations (MutableSequence[google.cloud.backupdr_v1.types.BackupPlanAssociation]):
+            Output only. The BackupPlanAssociations from
+            the specified parent.
+        next_page_token (str):
+            Output only. A token, which can be sent as ``page_token`` to
+            retrieve the next page. If this field is omitted, there are
+            no subsequent pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    backup_plan_associations: MutableSequence[
+        "BackupPlanAssociation"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="BackupPlanAssociation",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class GetBackupPlanAssociationRequest(proto.Message):
     r"""Request message for getting a BackupPlanAssociation resource.
 
@@ -396,6 +547,60 @@ class DeleteBackupPlanAssociationRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class UpdateBackupPlanAssociationRequest(proto.Message):
+    r"""Request message for updating a backup plan association.
+
+    Attributes:
+        backup_plan_association (google.cloud.backupdr_v1.types.BackupPlanAssociation):
+            Required. The resource being updated
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to update. Field mask is used
+            to specify the fields to be overwritten in the
+            BackupPlanAssociation resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then the
+            request will fail. Currently
+            backup_plan_association.backup_plan is the only supported
+            field.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and t he request times out.
+            If you make the request again with the same
+            request ID, the server can check if original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    backup_plan_association: "BackupPlanAssociation" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="BackupPlanAssociation",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

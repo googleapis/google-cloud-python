@@ -55,6 +55,16 @@
                 "delete_management_server"
               ]
             },
+            "FetchBackupPlanAssociationsForResourceType": {
+              "methods": [
+                "fetch_backup_plan_associations_for_resource_type"
+              ]
+            },
+            "FetchDataSourceReferencesForResourceType": {
+              "methods": [
+                "fetch_data_source_references_for_resource_type"
+              ]
+            },
             "FetchUsableBackupVaults": {
               "methods": [
                 "fetch_usable_backup_vaults"
@@ -75,6 +85,11 @@
                 "get_backup_plan_association"
               ]
             },
+            "GetBackupPlanRevision": {
+              "methods": [
+                "get_backup_plan_revision"
+              ]
+            },
             "GetBackupVault": {
               "methods": [
                 "get_backup_vault"
@@ -83,6 +98,11 @@
             "GetDataSource": {
               "methods": [
                 "get_data_source"
+              ]
+            },
+            "GetDataSourceReference": {
+              "methods": [
+                "get_data_source_reference"
               ]
             },
             "GetManagementServer": {
@@ -98,6 +118,11 @@
             "ListBackupPlanAssociations": {
               "methods": [
                 "list_backup_plan_associations"
+              ]
+            },
+            "ListBackupPlanRevisions": {
+              "methods": [
+                "list_backup_plan_revisions"
               ]
             },
             "ListBackupPlans": {
@@ -138,6 +163,16 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateBackupPlan": {
+              "methods": [
+                "update_backup_plan"
+              ]
+            },
+            "UpdateBackupPlanAssociation": {
+              "methods": [
+                "update_backup_plan_association"
               ]
             },
             "UpdateBackupVault": {
@@ -200,6 +235,16 @@
                 "delete_management_server"
               ]
             },
+            "FetchBackupPlanAssociationsForResourceType": {
+              "methods": [
+                "fetch_backup_plan_associations_for_resource_type"
+              ]
+            },
+            "FetchDataSourceReferencesForResourceType": {
+              "methods": [
+                "fetch_data_source_references_for_resource_type"
+              ]
+            },
             "FetchUsableBackupVaults": {
               "methods": [
                 "fetch_usable_backup_vaults"
@@ -220,6 +265,11 @@
                 "get_backup_plan_association"
               ]
             },
+            "GetBackupPlanRevision": {
+              "methods": [
+                "get_backup_plan_revision"
+              ]
+            },
             "GetBackupVault": {
               "methods": [
                 "get_backup_vault"
@@ -228,6 +278,11 @@
             "GetDataSource": {
               "methods": [
                 "get_data_source"
+              ]
+            },
+            "GetDataSourceReference": {
+              "methods": [
+                "get_data_source_reference"
               ]
             },
             "GetManagementServer": {
@@ -243,6 +298,11 @@
             "ListBackupPlanAssociations": {
               "methods": [
                 "list_backup_plan_associations"
+              ]
+            },
+            "ListBackupPlanRevisions": {
+              "methods": [
+                "list_backup_plan_revisions"
               ]
             },
             "ListBackupPlans": {
@@ -283,6 +343,16 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateBackupPlan": {
+              "methods": [
+                "update_backup_plan"
+              ]
+            },
+            "UpdateBackupPlanAssociation": {
+              "methods": [
+                "update_backup_plan_association"
               ]
             },
             "UpdateBackupVault": {
@@ -345,6 +415,16 @@
                 "delete_management_server"
               ]
             },
+            "FetchBackupPlanAssociationsForResourceType": {
+              "methods": [
+                "fetch_backup_plan_associations_for_resource_type"
+              ]
+            },
+            "FetchDataSourceReferencesForResourceType": {
+              "methods": [
+                "fetch_data_source_references_for_resource_type"
+              ]
+            },
             "FetchUsableBackupVaults": {
               "methods": [
                 "fetch_usable_backup_vaults"
@@ -365,6 +445,11 @@
                 "get_backup_plan_association"
               ]
             },
+            "GetBackupPlanRevision": {
+              "methods": [
+                "get_backup_plan_revision"
+              ]
+            },
             "GetBackupVault": {
               "methods": [
                 "get_backup_vault"
@@ -373,6 +458,11 @@
             "GetDataSource": {
               "methods": [
                 "get_data_source"
+              ]
+            },
+            "GetDataSourceReference": {
+              "methods": [
+                "get_data_source_reference"
               ]
             },
             "GetManagementServer": {
@@ -388,6 +478,11 @@
             "ListBackupPlanAssociations": {
               "methods": [
                 "list_backup_plan_associations"
+              ]
+            },
+            "ListBackupPlanRevisions": {
+              "methods": [
+                "list_backup_plan_revisions"
               ]
             },
             "ListBackupPlans": {
@@ -428,6 +523,16 @@
             "UpdateBackup": {
               "methods": [
                 "update_backup"
+              ]
+            },
+            "UpdateBackupPlan": {
+              "methods": [
+                "update_backup_plan"
+              ]
+            },
+            "UpdateBackupPlanAssociation": {
+              "methods": [
+                "update_backup_plan_association"
               ]
             },
             "UpdateBackupVault": {
