@@ -123,9 +123,7 @@ def test_handle_build_success(caplog, mocker):
     """
     caplog.set_level(logging.INFO)
 
-    mocker.patch(
-        "cli._run_nox_sessions", return_value="mock-result"
-    )
+    mocker.patch("cli._run_nox_sessions")
     handle_build()
 
     assert "'build' command executed." in caplog.text
