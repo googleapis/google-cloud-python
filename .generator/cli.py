@@ -81,13 +81,14 @@ def _determine_bazel_rule(api_path: str) -> str:
         return bazel_rule
     except Exception as e:
         raise ValueError(f"Bazelisk query `{query}` failed") from e
-    
+
+
 def _get_library_id(request_data: Dict) -> str:
     """Retrieve the library id from the given request dictionary
-    
+
     Args:
         request_data(Dict): The contents `generate-request.json`.
-    
+
     Raises:
         ValueError: If the key `id` does not exist in `request_data`.
 
@@ -98,6 +99,7 @@ def _get_library_id(request_data: Dict) -> str:
     if not library_id:
         raise ValueError("Request file is missing required 'id' field.")
     return library_id
+
 
 def handle_generate():
     """The main coordinator for the code generation process.
@@ -129,10 +131,10 @@ def handle_generate():
 
 
 def _run_nox_sessions(sessions: List[str]):
-    """Calls nox with the specified sessions.
+    """Calls nox for all specified sessions.
 
     Args:
-        path (List[str]): The list of nox sessions to run.
+        path(List[str]): The list of nox sessions to run.
     """
     # Read a generate-request.json file
     current_session = None
@@ -140,18 +142,28 @@ def _run_nox_sessions(sessions: List[str]):
         request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         for nox_session in sessions:
-            current_session = nox_session
-            command = [
-                "nox",
-                "-s",
-                current_session,
-                "-f",
-                f"{SOURCE_DIR}/packages/{library_id}",
-            ]
-            result = subprocess.run(command, text=True, check=True)
-            logger.info(result)
+            _run_individual_session(nox_session, library_id)
     except Exception as e:
         raise ValueError(f"Failed to run the nox session: {current_session}") from e
+
+
+def _run_individual_session(nox_session: str, library_id: str):
+    """
+    Calls nox with the specified sessions.
+
+    Args:
+        nox_session(str): The nox session to run
+        library_id(str): The library id under test
+    """
+    command = [
+        "nox",
+        "-s",
+        nox_session,
+        "-f",
+        f"{SOURCE_DIR}/packages/{library_id}",
+    ]
+    result = subprocess.run(command, text=True, check=True)
+    logger.info(result)
 
 
 def handle_build():
