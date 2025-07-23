@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .service import (
+    AiPlatformFloorSetting,
     ByteDataItem,
     CreateTemplateRequest,
     CsamFilterResult,
@@ -61,6 +62,7 @@ from .service import (
 )
 
 __all__ = (
+    "AiPlatformFloorSetting",
     "ByteDataItem",
     "CreateTemplateRequest",
     "CsamFilterResult",

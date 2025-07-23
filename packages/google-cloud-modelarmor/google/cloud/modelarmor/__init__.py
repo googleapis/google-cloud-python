@@ -23,6 +23,7 @@ from google.cloud.modelarmor_v1.services.model_armor.async_client import (
 )
 from google.cloud.modelarmor_v1.services.model_armor.client import ModelArmorClient
 from google.cloud.modelarmor_v1.types.service import (
+    AiPlatformFloorSetting,
     ByteDataItem,
     CreateTemplateRequest,
     CsamFilterResult,
@@ -72,6 +73,7 @@ from google.cloud.modelarmor_v1.types.service import (
 __all__ = (
     "ModelArmorClient",
     "ModelArmorAsyncClient",
+    "AiPlatformFloorSetting",
     "ByteDataItem",
     "CreateTemplateRequest",
     "CsamFilterResult",
