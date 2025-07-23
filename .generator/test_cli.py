@@ -86,12 +86,12 @@ def test_build_bazel_target_success(mocker, caplog):
     caplog.set_level(logging.INFO)
     mocker.patch("cli.subprocess.run", return_value=MagicMock(returncode=0))
     _build_bazel_target("mock/bazel:rule")
-    assert "Bazel build for mock/bazel:rule completed successfully" in caplog.text
+    assert "Bazel build for mock/bazel:rule rule completed successfully" in caplog.text
 
 
 def test_build_bazel_target_fails(mocker, caplog):
     """
-    Tests that an exception is raised if the subprocess command fails.
+    Tests that ValueError is raised if the subprocess command fails.
     """
     caplog.set_level(logging.ERROR)
     mocker.patch(
