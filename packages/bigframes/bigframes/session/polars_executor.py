@@ -40,6 +40,7 @@ _COMPATIBLE_NODES = (
     nodes.ConcatNode,
     nodes.JoinNode,
     nodes.InNode,
+    nodes.PromoteOffsetsNode,
 )
 
 _COMPATIBLE_SCALAR_OPS = (
