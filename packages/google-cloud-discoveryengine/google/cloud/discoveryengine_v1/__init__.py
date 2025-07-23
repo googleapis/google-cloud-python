@@ -18,6 +18,10 @@ from google.cloud.discoveryengine_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from .services.assistant_service import (
+    AssistantServiceAsyncClient,
+    AssistantServiceClient,
+)
 from .services.cmek_config_service import (
     CmekConfigServiceAsyncClient,
     CmekConfigServiceClient,
@@ -74,6 +78,17 @@ from .services.user_license_service import (
     UserLicenseServiceClient,
 )
 from .types.answer import Answer
+from .types.assist_answer import (
+    AssistAnswer,
+    AssistantContent,
+    AssistantGroundedContent,
+)
+from .types.assistant import Assistant
+from .types.assistant_service import (
+    AssistUserMetadata,
+    StreamAssistRequest,
+    StreamAssistResponse,
+)
 from .types.chunk import Chunk
 from .types.cmek_config_service import (
     CmekConfig,
@@ -325,6 +340,7 @@ from .types.user_license_service import (
 )
 
 __all__ = (
+    "AssistantServiceAsyncClient",
     "CmekConfigServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ControlServiceAsyncClient",
@@ -349,6 +365,12 @@ __all__ = (
     "Answer",
     "AnswerQueryRequest",
     "AnswerQueryResponse",
+    "AssistAnswer",
+    "AssistUserMetadata",
+    "Assistant",
+    "AssistantContent",
+    "AssistantGroundedContent",
+    "AssistantServiceClient",
     "BatchCreateTargetSiteMetadata",
     "BatchCreateTargetSitesRequest",
     "BatchCreateTargetSitesResponse",
@@ -565,6 +587,8 @@ __all__ = (
     "Sitemap",
     "SolutionType",
     "SpannerSource",
+    "StreamAssistRequest",
+    "StreamAssistResponse",
     "SuggestionDenyListEntry",
     "TargetSite",
     "TextInput",
