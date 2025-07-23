@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.2.4...google-cloud-backupdr-v0.2.5) (2025-07-23)
+
+
+### Features
+
+* Add BackupPlanRevision resource and associated RPCs ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* Add DataSourceReference resource and associated RPCs ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* Add FetchBackupPlanAssociationsForResourceType RPC ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* Add new states to resources (UPDATING, UPLOADING) ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* Add ON_DEMAND_OPERATIONAL backup type ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* Add support for Cloud SQL backup and restore ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* Add support for GCE Disk backup and restore ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* Add Update RPCs for BackupPlan and BackupPlanAssociation ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* Change BackupRule.standard_schedule to be OPTIONAL ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+
+
+### Documentation
+
+* A comment for field backup_retention_days in message .google.cloud.backupdr.v1.BackupRule is changed ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* A comment for field disks in message .google.cloud.backupdr.v1.ComputeInstanceRestoreProperties is changed ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* A comment for field hourly_frequency in message .google.cloud.backupdr.v1.StandardSchedule is changed ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* A comment for field network_interfaces in message .google.cloud.backupdr.v1.ComputeInstanceRestoreProperties is changed ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* A comment for field resource in message .google.cloud.backupdr.v1.BackupPlanAssociation is changed ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* A comment for field resource_policies in message .google.cloud.backupdr.v1.ComputeInstanceRestoreProperties is changed ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* A comment for field resource_type in message .google.cloud.backupdr.v1.BackupPlan is changed ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+* A comment for field resource_type in message .google.cloud.backupdr.v1.BackupPlanAssociation is changed ([0393818](https://github.com/googleapis/google-cloud-python/commit/03938180ed28d9f3f272a4fe7952ea9c0e31ec22))
+
 ## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.2.3...google-cloud-backupdr-v0.2.4) (2025-06-11)
 
 

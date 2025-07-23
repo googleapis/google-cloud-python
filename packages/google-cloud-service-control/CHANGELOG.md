@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.15.1...google-cloud-service-control-v1.16.0) (2025-07-23)
+
+
+### Features
+
+* [google-cloud-service-control] ServiceController V2 APIs are out of private preview ([#14123](https://github.com/googleapis/google-cloud-python/issues/14123)) ([2ce745c](https://github.com/googleapis/google-cloud-python/commit/2ce745c15d7483cd5e268abb58271c26258bdfe7))
+
 ## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-control-v1.15.0...google-cloud-service-control-v1.15.1) (2025-03-15)
 
 

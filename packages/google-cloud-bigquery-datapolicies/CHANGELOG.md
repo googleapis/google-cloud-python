@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.15...google-cloud-bigquery-datapolicies-v0.6.16) (2025-07-23)
+
+
+### Features
+
+* Add client libraries for V2 Data Policy api ([51f86b0](https://github.com/googleapis/google-cloud-python/commit/51f86b01827ecf35c5b76bbafe4d9d73083c29d5))
+* Release v2beta1 version containing Data Policy on Column ([51f86b0](https://github.com/googleapis/google-cloud-python/commit/51f86b01827ecf35c5b76bbafe4d9d73083c29d5))
+
 ## [0.6.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.14...google-cloud-bigquery-datapolicies-v0.6.15) (2025-06-11)
 
 

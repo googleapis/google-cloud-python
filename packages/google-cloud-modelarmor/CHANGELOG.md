@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.6...google-cloud-modelarmor-v0.2.7) (2025-07-23)
+
+
+### Features
+
+* Add support for EnforcementType ([5324195](https://github.com/googleapis/google-cloud-python/commit/5324195e74df117c50f3e615127f45b33967c192))
+* MultiLanguage Detection in Model Armor Floor Setting ([5324195](https://github.com/googleapis/google-cloud-python/commit/5324195e74df117c50f3e615127f45b33967c192))
+
+
+### Documentation
+
+* fix comment formatting ([5324195](https://github.com/googleapis/google-cloud-python/commit/5324195e74df117c50f3e615127f45b33967c192))
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.2.5...google-cloud-modelarmor-v0.2.6) (2025-07-02)
 
 
