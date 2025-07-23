@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.3.0...google-cloud-retail-v2.4.0) (2025-07-23)
+
+
+### Features
+
+* [google-cloud-retail] add experiment_id in the SearchRequest proto ([#14127](https://github.com/googleapis/google-cloud-python/issues/14127)) ([195684e](https://github.com/googleapis/google-cloud-python/commit/195684e739f0ec7480abd349a23b6122fbc02d61))
+
 ## [2.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.2.0...google-cloud-retail-v2.3.0) (2025-07-02)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.9...google-cloud-discoveryengine-v0.13.10) (2025-07-23)
+
+
+### Features
+
+* [google-cloud-discoveryengine] add AssistantService ([#14133](https://github.com/googleapis/google-cloud-python/issues/14133)) ([55b9528](https://github.com/googleapis/google-cloud-python/commit/55b9528e22bbb52403d02b6316dc1b38a897755f))
+
 ## [0.13.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.8...google-cloud-discoveryengine-v0.13.9) (2025-06-05)
 
 
