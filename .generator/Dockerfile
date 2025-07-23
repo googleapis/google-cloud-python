@@ -50,21 +50,11 @@ RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
     rm -rf Python-${PYTHON_VERSION}* \
     ; done
 
-ENV PYTHON_PIP_VERSION 25.1.1
-RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
-    && python3.10 /tmp/get-pip.py "pip==$PYTHON_PIP_VERSION" \
-
-  # we use "--force-reinstall" for the case where the version of pip we're trying to install is the same as the version bundled with Python
-  # ("Requirement already up-to-date: pip==8.1.2 in /usr/local/lib/python3.6/site-packages")
-  # https://github.com/docker-library/python/pull/143#issuecomment-241032683
-    && pip3 install --no-cache-dir --upgrade --force-reinstall "pip==$PYTHON_PIP_VERSION" \
-
-  # then we use "pip list" to ensure we don't have more than one pip version installed
-  # https://github.com/docker-library/python/pull/100
-    && [ "$(pip list |tac|tac| awk -F '[ ()]+' '$1 == "pip" { print $2; exit }')" = "$PYTHON_PIP_VERSION" ]
+RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py'
 
 # Ensure Pip for all python3 versions
 RUN python3.9 /tmp/get-pip.py
+RUN python3.10 /tmp/get-pip.py
 RUN python3.11 /tmp/get-pip.py
 RUN python3.12 /tmp/get-pip.py
 RUN python3.13 /tmp/get-pip.py

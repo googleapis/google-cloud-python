@@ -117,12 +117,15 @@ def test_handle_generate_fail(caplog):
         handle_generate()
 
 
-def test_handle_build_success(caplog, mock_generate_request_file):
+def test_handle_build_success(caplog, mocker):
     """
     Tests the successful execution path of handle_build.
     """
     caplog.set_level(logging.INFO)
 
+    mocker.patch(
+        "cli._run_nox_sessions", return_value="mock-result"
+    )
     handle_build()
 
     assert "'build' command executed." in caplog.text

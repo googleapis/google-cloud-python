@@ -18,6 +18,7 @@ import logging
 import subprocess
 import sys
 import subprocess
+from typing import List
 
 logger = logging.getLogger()
 
@@ -113,9 +114,21 @@ def handle_generate():
     logger.info("'generate' command executed.")
 
 
+def _run_nox_sessions(sessions:List[str]):
+    """Calls nox with the specified sessions.
+    
+    Args:
+        path (List[str]): The list of nox sessions to run.
+    """
+    for nox_session in sessions:
+        command = ["nox", "-s", nox_session]
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        logger.info(result)
+
+
 def handle_build():
     """The main coordinator for validating client library generation."""
-    sesssions = [
+    sessions = [
         "unit-3.9",
         "unit-3.10",
         "unit-3.11",
@@ -128,10 +141,8 @@ def handle_build():
         "mypy",
         "check_lower_bounds",
     ]
-    for nox_session in sesssions:
-        command = ["nox", "-s", nox_session]
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
-        logger.info(result)
+    _run_nox_sessions(sessions)
+
     logger.info("'build' command executed.")
 
 
