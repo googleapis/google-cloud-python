@@ -38,6 +38,8 @@ RUN apt-get update && \
 # Set up environment variables for tool versions to make updates easier.
 ENV BAZELISK_VERSION=v1.26.0
 
+# Create an alias for python3.13.5 so that it points to 3.13
+RUN alias python3.13.5='python3.13'
 
 RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
 # Install Python from source
