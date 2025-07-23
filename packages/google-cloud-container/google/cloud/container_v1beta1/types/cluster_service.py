@@ -39,6 +39,9 @@ __protobuf__ = proto.module(
         "NodeKubeletConfig",
         "TopologyManager",
         "MemoryManager",
+        "EvictionSignals",
+        "EvictionGracePeriod",
+        "EvictionMinimumReclaim",
         "NodeConfig",
         "AdvancedMachineFeatures",
         "NodeNetworkConfig",
@@ -76,6 +79,7 @@ __protobuf__ = proto.module(
         "GcsFuseCsiDriverConfig",
         "ParallelstoreCsiDriverConfig",
         "HighScaleCheckpointingConfig",
+        "LustreCsiDriverConfig",
         "RayOperatorConfig",
         "PrivateClusterMasterGlobalAccessConfig",
         "PrivateClusterConfig",
@@ -104,6 +108,9 @@ __protobuf__ = proto.module(
         "NodePoolAutoConfig",
         "ClusterUpdate",
         "AdditionalPodRangesConfig",
+        "AdditionalIPRangesConfig",
+        "DesiredAdditionalIPRangesConfig",
+        "AutoIpamConfig",
         "RangeInfo",
         "DesiredEnterpriseConfig",
         "Operation",
@@ -152,6 +159,7 @@ __protobuf__ = proto.module(
         "ClusterAutoscaling",
         "AutoprovisioningNodePoolDefaults",
         "ResourceLimit",
+        "DefaultComputeClassConfig",
         "NodePoolAutoscaling",
         "SetLabelsRequest",
         "SetLegacyAbacRequest",
@@ -228,6 +236,7 @@ __protobuf__ = proto.module(
         "ResourceManagerTags",
         "EnterpriseConfig",
         "SecretManagerConfig",
+        "BootDisk",
         "SecondaryBootDisk",
         "SecondaryBootDiskUpdateStrategy",
         "FetchClusterUpgradeInfoRequest",
@@ -235,6 +244,7 @@ __protobuf__ = proto.module(
         "UpgradeDetails",
         "FetchNodePoolUpgradeInfoRequest",
         "NodePoolUpgradeInfo",
+        "GkeAutoUpgradeConfig",
     },
 )
 
@@ -372,13 +382,20 @@ class LinuxNodeConfig(proto.Message):
             net.core.rmem_default net.core.wmem_default
             net.core.wmem_max net.core.optmem_max net.core.somaxconn
             net.ipv4.tcp_rmem net.ipv4.tcp_wmem net.ipv4.tcp_tw_reuse
-            net.netfilter.nf_conntrack_max
+            net.ipv4.tcp_max_orphans net.netfilter.nf_conntrack_max
             net.netfilter.nf_conntrack_buckets
             net.netfilter.nf_conntrack_tcp_timeout_close_wait
             net.netfilter.nf_conntrack_tcp_timeout_time_wait
             net.netfilter.nf_conntrack_tcp_timeout_established
             net.netfilter.nf_conntrack_acct kernel.shmmni kernel.shmmax
-            kernel.shmall vm.max_map_count
+            kernel.shmall fs.aio-max-nr fs.file-max
+            fs.inotify.max_user_instances fs.inotify.max_user_watches
+            fs.nr_open vm.dirty_background_ratio
+            vm.dirty_expire_centisecs vm.dirty_ratio
+            vm.dirty_writeback_centisecs vm.max_map_count
+            vm.overcommit_memory vm.overcommit_ratio
+            vm.vfs_cache_pressure vm.swappiness
+            vm.watermark_scale_factor vm.min_free_kbytes
         cgroup_mode (google.cloud.container_v1beta1.types.LinuxNodeConfig.CgroupMode):
             cgroup_mode specifies the cgroup mode to be used on the
             node.
@@ -386,6 +403,25 @@ class LinuxNodeConfig(proto.Message):
             Optional. Amounts for 2M and 1G hugepages
 
             This field is a member of `oneof`_ ``_hugepages``.
+        transparent_hugepage_enabled (google.cloud.container_v1beta1.types.LinuxNodeConfig.TransparentHugepageEnabled):
+            Optional. Transparent hugepage support for anonymous memory
+            can be entirely disabled (mostly for debugging purposes) or
+            only enabled inside MADV_HUGEPAGE regions (to avoid the risk
+            of consuming more memory resources) or enabled system wide.
+
+            See https://docs.kernel.org/admin-guide/mm/transhuge.html
+            for more details.
+        transparent_hugepage_defrag (google.cloud.container_v1beta1.types.LinuxNodeConfig.TransparentHugepageDefrag):
+            Optional. Defines the transparent hugepage
+            defrag configuration on the node. VM hugepage
+            allocation can be managed by either limiting
+            defragmentation for delayed allocation or
+            skipping it entirely for immediate allocation
+            only.
+
+            See
+            https://docs.kernel.org/admin-guide/mm/transhuge.html
+            for more details.
     """
 
     class CgroupMode(proto.Enum):
@@ -406,6 +442,70 @@ class LinuxNodeConfig(proto.Message):
         CGROUP_MODE_UNSPECIFIED = 0
         CGROUP_MODE_V1 = 1
         CGROUP_MODE_V2 = 2
+
+    class TransparentHugepageEnabled(proto.Enum):
+        r"""Possible values for transparent hugepage enabled support.
+
+        Values:
+            TRANSPARENT_HUGEPAGE_ENABLED_UNSPECIFIED (0):
+                Default value. GKE will not modify the kernel
+                configuration.
+            TRANSPARENT_HUGEPAGE_ENABLED_ALWAYS (1):
+                Transparent hugepage support for anonymous
+                memory is enabled system wide.
+            TRANSPARENT_HUGEPAGE_ENABLED_MADVISE (2):
+                Transparent hugepage support for anonymous memory is enabled
+                inside MADV_HUGEPAGE regions. This is the default kernel
+                configuration.
+            TRANSPARENT_HUGEPAGE_ENABLED_NEVER (3):
+                Transparent hugepage support for anonymous
+                memory is disabled.
+        """
+        TRANSPARENT_HUGEPAGE_ENABLED_UNSPECIFIED = 0
+        TRANSPARENT_HUGEPAGE_ENABLED_ALWAYS = 1
+        TRANSPARENT_HUGEPAGE_ENABLED_MADVISE = 2
+        TRANSPARENT_HUGEPAGE_ENABLED_NEVER = 3
+
+    class TransparentHugepageDefrag(proto.Enum):
+        r"""Possible values for transparent hugepage defrag support.
+
+        Values:
+            TRANSPARENT_HUGEPAGE_DEFRAG_UNSPECIFIED (0):
+                Default value. GKE will not modify the kernel
+                configuration.
+            TRANSPARENT_HUGEPAGE_DEFRAG_ALWAYS (1):
+                It means that an application requesting THP
+                will stall on allocation failure and directly
+                reclaim pages and compact memory in an effort to
+                allocate a THP immediately.
+            TRANSPARENT_HUGEPAGE_DEFRAG_DEFER (2):
+                It means that an application will wake kswapd
+                in the background to reclaim pages and wake
+                kcompactd to compact memory so that THP is
+                available in the near future. It’s the
+                responsibility of khugepaged to then install the
+                THP pages later.
+            TRANSPARENT_HUGEPAGE_DEFRAG_DEFER_WITH_MADVISE (3):
+                It means that an application will enter direct reclaim and
+                compaction like always, but only for regions that have used
+                madvise(MADV_HUGEPAGE); all other regions will wake kswapd
+                in the background to reclaim pages and wake kcompactd to
+                compact memory so that THP is available in the near future.
+            TRANSPARENT_HUGEPAGE_DEFRAG_MADVISE (4):
+                It means that an application will enter direct reclaim like
+                always but only for regions that are have used
+                madvise(MADV_HUGEPAGE). This is the default kernel
+                configuration.
+            TRANSPARENT_HUGEPAGE_DEFRAG_NEVER (5):
+                It means that an application will never enter
+                direct reclaim or compaction.
+        """
+        TRANSPARENT_HUGEPAGE_DEFRAG_UNSPECIFIED = 0
+        TRANSPARENT_HUGEPAGE_DEFRAG_ALWAYS = 1
+        TRANSPARENT_HUGEPAGE_DEFRAG_DEFER = 2
+        TRANSPARENT_HUGEPAGE_DEFRAG_DEFER_WITH_MADVISE = 3
+        TRANSPARENT_HUGEPAGE_DEFRAG_MADVISE = 4
+        TRANSPARENT_HUGEPAGE_DEFRAG_NEVER = 5
 
     class HugepagesConfig(proto.Message):
         r"""Hugepages amount in both 2m and 1g size
@@ -449,6 +549,16 @@ class LinuxNodeConfig(proto.Message):
         number=3,
         optional=True,
         message=HugepagesConfig,
+    )
+    transparent_hugepage_enabled: TransparentHugepageEnabled = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=TransparentHugepageEnabled,
+    )
+    transparent_hugepage_defrag: TransparentHugepageDefrag = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=TransparentHugepageDefrag,
     )
 
 
@@ -636,6 +746,47 @@ class NodeKubeletConfig(proto.Message):
             See
             https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/
             for more details.
+        eviction_soft (google.cloud.container_v1beta1.types.EvictionSignals):
+            Optional. eviction_soft is a map of signal names to
+            quantities that defines soft eviction thresholds. Each
+            signal is compared to its corresponding threshold to
+            determine if a pod eviction should occur.
+        eviction_soft_grace_period (google.cloud.container_v1beta1.types.EvictionGracePeriod):
+            Optional. eviction_soft_grace_period is a map of signal
+            names to quantities that defines grace periods for each soft
+            eviction signal. The grace period is the amount of time that
+            a pod must be under pressure before an eviction occurs.
+        eviction_minimum_reclaim (google.cloud.container_v1beta1.types.EvictionMinimumReclaim):
+            Optional. eviction_minimum_reclaim is a map of signal names
+            to quantities that defines minimum reclaims, which describe
+            the minimum amount of a given resource the kubelet will
+            reclaim when performing a pod eviction while that resource
+            is under pressure.
+        eviction_max_pod_grace_period_seconds (int):
+            Optional. eviction_max_pod_grace_period_seconds is the
+            maximum allowed grace period (in seconds) to use when
+            terminating pods in response to a soft eviction threshold
+            being met. This value effectively caps the Pod's
+            terminationGracePeriodSeconds value during soft evictions.
+            Default: 0. Range: [0, 300].
+        max_parallel_image_pulls (int):
+            Optional. Defines the maximum number of image
+            pulls in parallel. The range is 2 to 5,
+            inclusive. The default value is 2 or 3 depending
+            on the disk type.
+
+            See
+            https://kubernetes.io/docs/concepts/containers/images/#maximum-parallel-image-pulls
+            for more details.
+        single_process_oom_kill (bool):
+            Optional. Defines whether to enable single
+            process OOM killer. If true, will prevent the
+            memory.oom.group flag from being set for
+            container cgroups in cgroups v2. This causes
+            processes in the container to be OOM killed
+            individually instead of as a group.
+
+            This field is a member of `oneof`_ ``_single_process_oom_kill``.
     """
 
     cpu_manager_policy: str = proto.Field(
@@ -697,6 +848,34 @@ class NodeKubeletConfig(proto.Message):
     allowed_unsafe_sysctls: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=16,
+    )
+    eviction_soft: "EvictionSignals" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message="EvictionSignals",
+    )
+    eviction_soft_grace_period: "EvictionGracePeriod" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message="EvictionGracePeriod",
+    )
+    eviction_minimum_reclaim: "EvictionMinimumReclaim" = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message="EvictionMinimumReclaim",
+    )
+    eviction_max_pod_grace_period_seconds: int = proto.Field(
+        proto.INT32,
+        number=20,
+    )
+    max_parallel_image_pulls: int = proto.Field(
+        proto.INT32,
+        number=21,
+    )
+    single_process_oom_kill: bool = proto.Field(
+        proto.BOOL,
+        number=22,
+        optional=True,
     )
 
 
@@ -773,6 +952,229 @@ class MemoryManager(proto.Message):
     )
 
 
+class EvictionSignals(proto.Message):
+    r"""Eviction signals are the current state of a particular
+    resource at a specific point in time. The kubelet uses eviction
+    signals to make eviction decisions by comparing the signals to
+    eviction thresholds, which are the minimum amount of the
+    resource that should be available on the node.
+
+    Attributes:
+        memory_available (str):
+            Optional. Memory available (i.e. capacity -
+            workingSet), in bytes. Defines the amount of
+            "memory.available" signal in kubelet. Default is
+            unset, if not specified in the kubelet config.
+            Format: positive number + unit, e.g. 100Ki,
+            10Mi, 5Gi. Valid units are Ki, Mi, Gi. Must be
+            >= 100Mi and <= 50% of the node's memory. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        nodefs_available (str):
+            Optional. Amount of storage available on
+            filesystem that kubelet uses for volumes, daemon
+            logs, etc. Defines the amount of
+            "nodefs.available" signal in kubelet. Default is
+            unset, if not specified in the kubelet config.
+            Sample format: "30%". Must be >= 10%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        nodefs_inodes_free (str):
+            Optional. Amount of inodes available on
+            filesystem that kubelet uses for volumes, daemon
+            logs, etc. Defines the amount of
+            "nodefs.inodesFree" signal in kubelet. Default
+            is unset, if not specified in the kubelet
+            config. Linux only. It takses percentage value
+            for now. Sample format: "30%". Must be >= 5% and
+            <= 50%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        imagefs_available (str):
+            Optional. Amount of storage available on
+            filesystem that container runtime uses for
+            storing images layers. If the container
+            filesystem and image filesystem are not
+            separate, then imagefs can store both image
+            layers and writeable layers. Defines the amount
+            of "imagefs.available" signal in kubelet.
+            Default is unset, if not specified in the
+            kubelet config. Sample format: "30%". Must be >=
+            15%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        imagefs_inodes_free (str):
+            Optional. Amount of inodes available on
+            filesystem that container runtime uses for
+            storing images layers. Defines the amount of
+            "imagefs.inodesFree" signal in kubelet. Default
+            is unset, if not specified in the kubelet
+            config. Linux only. Sample format: "30%". Must
+            be >= 5%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        pid_available (str):
+            Optional. Amount of PID available for pod
+            allocation. Defines the amount of
+            "pid.available" signal in kubelet. Default is
+            unset, if not specified in the kubelet config.
+            Sample format: "30%". Must be >= 10%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+    """
+
+    memory_available: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    nodefs_available: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    nodefs_inodes_free: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    imagefs_available: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    imagefs_inodes_free: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    pid_available: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class EvictionGracePeriod(proto.Message):
+    r"""Eviction grace periods are grace periods for each eviction
+    signal.
+
+    Attributes:
+        memory_available (str):
+            Optional. Grace period for eviction due to
+            memory available signal. Sample format: "10s".
+            Must be >= 0. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        nodefs_available (str):
+            Optional. Grace period for eviction due to
+            nodefs available signal. Sample format: "10s".
+            Must be >= 0. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        nodefs_inodes_free (str):
+            Optional. Grace period for eviction due to
+            nodefs inodes free signal. Sample format: "10s".
+            Must be >= 0. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        imagefs_available (str):
+            Optional. Grace period for eviction due to
+            imagefs available signal. Sample format: "10s".
+            Must be >= 0. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        imagefs_inodes_free (str):
+            Optional. Grace period for eviction due to
+            imagefs inodes free signal. Sample format:
+            "10s". Must be >= 0. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        pid_available (str):
+            Optional. Grace period for eviction due to
+            pid available signal. Sample format: "10s". Must
+            be >= 0. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+    """
+
+    memory_available: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    nodefs_available: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    nodefs_inodes_free: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    imagefs_available: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    imagefs_inodes_free: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    pid_available: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class EvictionMinimumReclaim(proto.Message):
+    r"""Eviction minimum reclaims are the resource amounts of minimum
+    reclaims for each eviction signal.
+
+    Attributes:
+        memory_available (str):
+            Optional. Minimum reclaim for eviction due to
+            memory available signal. Only take percentage
+            value for now. Sample format: "10%". Must be
+            <=10%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        nodefs_available (str):
+            Optional. Minimum reclaim for eviction due to
+            nodefs available signal. Only take percentage
+            value for now. Sample format: "10%". Must be
+            <=10%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        nodefs_inodes_free (str):
+            Optional. Minimum reclaim for eviction due to
+            nodefs inodes free signal. Only take percentage
+            value for now. Sample format: "10%". Must be
+            <=10%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        imagefs_available (str):
+            Optional. Minimum reclaim for eviction due to
+            imagefs available signal. Only take percentage
+            value for now. Sample format: "10%". Must be
+            <=10%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        imagefs_inodes_free (str):
+            Optional. Minimum reclaim for eviction due to
+            imagefs inodes free signal. Only take percentage
+            value for now. Sample format: "10%". Must be
+            <=10%. See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+        pid_available (str):
+            Optional. Minimum reclaim for eviction due to
+            pid available signal. Only take percentage value
+            for now. Sample format: "10%". Must be <=10%.
+            See
+            https://kubernetes.io/docs/concepts/scheduling-eviction/node-pressure-eviction/#eviction-signals
+    """
+
+    memory_available: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    nodefs_available: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    nodefs_inodes_free: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    imagefs_available: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    imagefs_inodes_free: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    pid_available: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
 class NodeConfig(proto.Message):
     r"""Parameters that describe the nodes in a cluster.
 
@@ -793,8 +1195,9 @@ class NodeConfig(proto.Message):
         disk_size_gb (int):
             Size of the disk attached to each node,
             specified in GB. The smallest allowed disk size
-            is 10GB. If unspecified, the default disk size
-            is 100GB.
+            is 10GB.
+
+            If unspecified, the default disk size is 100GB.
         oauth_scopes (MutableSequence[str]):
             The set of Google API scopes to be made available on all of
             the node VMs under the "default" service account.
@@ -899,8 +1302,8 @@ class NodeConfig(proto.Message):
         accelerators (MutableSequence[google.cloud.container_v1beta1.types.AcceleratorConfig]):
             A list of hardware accelerators to be
             attached to each node. See
-            https://cloud.google.com/compute/docs/gpus for
-            more information about support for GPUs.
+            https://cloud.google.com/compute/docs/gpus
+            for more information about support for GPUs.
         sandbox_config (google.cloud.container_v1beta1.types.SandboxConfig):
             Sandbox configuration for this node.
         node_group (str):
@@ -1033,6 +1436,8 @@ class NodeConfig(proto.Message):
             Flex Start flag for enabling Flex Start VM.
 
             This field is a member of `oneof`_ ``_flex_start``.
+        boot_disk (google.cloud.container_v1beta1.types.BootDisk):
+            Boot disk configuration for the node pool.
     """
 
     class LocalSsdEncryptionMode(proto.Enum):
@@ -1297,6 +1702,11 @@ class NodeConfig(proto.Message):
         number=56,
         optional=True,
     )
+    boot_disk: "BootDisk" = proto.Field(
+        proto.MESSAGE,
+        number=57,
+        message="BootDisk",
+    )
 
 
 class AdvancedMachineFeatures(proto.Message):
@@ -1327,7 +1737,7 @@ class AdvancedMachineFeatures(proto.Message):
     """
 
     class PerformanceMonitoringUnit(proto.Enum):
-        r"""Level of PMU access
+        r"""Level of PMU access.
 
         Values:
             PERFORMANCE_MONITORING_UNIT_UNSPECIFIED (0):
@@ -1451,6 +1861,14 @@ class NodeNetworkConfig(proto.Message):
             Output only. The utilization of the IPv4 range for the pod.
             The ratio is Usage/[Total number of IPs in the secondary
             range], Usage=numNodes\ *numZones*\ podIPsPerNode.
+        subnetwork (str):
+            Output only. The subnetwork path for the node
+            pool. Format:
+            projects/{project}/regions/{region}/subnetworks/{subnetwork}
+            If the cluster is associated with multiple
+            subnetworks, the subnetwork for the node pool is
+            picked based on the IP utilization during node
+            pool creation and is immutable.
     """
 
     class NetworkPerformanceConfig(proto.Message):
@@ -1543,6 +1961,10 @@ class NodeNetworkConfig(proto.Message):
     pod_ipv4_range_utilization: float = proto.Field(
         proto.DOUBLE,
         number=16,
+    )
+    subnetwork: str = proto.Field(
+        proto.STRING,
+        number=19,
     )
 
 
@@ -1858,10 +2280,21 @@ class SoleTenantConfig(proto.Message):
     r"""SoleTenantConfig contains the NodeAffinities to specify what
     shared sole tenant node groups should back the node pool.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         node_affinities (MutableSequence[google.cloud.container_v1beta1.types.SoleTenantConfig.NodeAffinity]):
             NodeAffinities used to match to a shared sole
             tenant node group.
+        min_node_cpus (int):
+            Optional. The minimum number of virtual CPUs
+            this instance will consume when running on a
+            sole-tenant node. This field can only be set if
+            the node pool is created in a shared sole-tenant
+            node group.
+
+            This field is a member of `oneof`_ ``_min_node_cpus``.
     """
 
     class NodeAffinity(proto.Message):
@@ -1912,6 +2345,11 @@ class SoleTenantConfig(proto.Message):
         proto.MESSAGE,
         number=1,
         message=NodeAffinity,
+    )
+    min_node_cpus: int = proto.Field(
+        proto.INT32,
+        number=2,
+        optional=True,
     )
 
 
@@ -2396,6 +2834,8 @@ class AddonsConfig(proto.Message):
         high_scale_checkpointing_config (google.cloud.container_v1beta1.types.HighScaleCheckpointingConfig):
             Configuration for the High Scale
             Checkpointing add-on.
+        lustre_csi_driver_config (google.cloud.container_v1beta1.types.LustreCsiDriverConfig):
+            Configuration for the Lustre CSI driver.
     """
 
     http_load_balancing: "HttpLoadBalancing" = proto.Field(
@@ -2484,6 +2924,11 @@ class AddonsConfig(proto.Message):
         proto.MESSAGE,
         number=22,
         message="HighScaleCheckpointingConfig",
+    )
+    lustre_csi_driver_config: "LustreCsiDriverConfig" = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message="LustreCsiDriverConfig",
     )
 
 
@@ -2704,6 +3149,28 @@ class HighScaleCheckpointingConfig(proto.Message):
     enabled: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+
+
+class LustreCsiDriverConfig(proto.Message):
+    r"""Configuration for the Lustre CSI driver.
+
+    Attributes:
+        enabled (bool):
+            Whether the Lustre CSI driver is enabled for
+            this cluster.
+        enable_legacy_lustre_port (bool):
+            If set to true, the Lustre CSI driver will
+            install Lustre kernel modules using port 6988.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    enable_legacy_lustre_port: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -3235,6 +3702,17 @@ class IPAllocationPolicy(proto.Message):
             range for the pod. The ratio is Usage/[Total number of IPs
             in the secondary range],
             Usage=numNodes\ *numZones*\ podIPsPerNode.
+        additional_ip_ranges_configs (MutableSequence[google.cloud.container_v1beta1.types.AdditionalIPRangesConfig]):
+            Output only. The additional IP ranges that
+            are added to the cluster. These IP ranges can be
+            used by new node pools to allocate node and pod
+            IPs automatically.
+            Each AdditionalIPRangesConfig corresponds to a
+            single subnetwork. Once a range is removed it
+            will not show up in IPAllocationPolicy.
+        auto_ipam_config (google.cloud.container_v1beta1.types.AutoIpamConfig):
+            Optional. AutoIpamConfig contains all
+            information related to Auto IPAM
     """
 
     class StackType(proto.Enum):
@@ -3358,6 +3836,18 @@ class IPAllocationPolicy(proto.Message):
     default_pod_ipv4_range_utilization: float = proto.Field(
         proto.DOUBLE,
         number=25,
+    )
+    additional_ip_ranges_configs: MutableSequence[
+        "AdditionalIPRangesConfig"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=29,
+        message="AdditionalIPRangesConfig",
+    )
+    auto_ipam_config: "AutoIpamConfig" = proto.Field(
+        proto.MESSAGE,
+        number=30,
+        message="AutoIpamConfig",
     )
 
 
@@ -3925,6 +4415,8 @@ class Cluster(proto.Message):
             created.
 
             This field is a member of `oneof`_ ``_rbac_binding_config``.
+        gke_auto_upgrade_config (google.cloud.container_v1beta1.types.GkeAutoUpgradeConfig):
+            Configuration for GKE auto upgrades.
         anonymous_authentication_config (google.cloud.container_v1beta1.types.AnonymousAuthenticationConfig):
             Configuration for limiting anonymous access
             to all endpoints except the health checks.
@@ -4363,6 +4855,11 @@ class Cluster(proto.Message):
         optional=True,
         message="RBACBindingConfig",
     )
+    gke_auto_upgrade_config: "GkeAutoUpgradeConfig" = proto.Field(
+        proto.MESSAGE,
+        number=163,
+        message="GkeAutoUpgradeConfig",
+    )
     anonymous_authentication_config: "AnonymousAuthenticationConfig" = proto.Field(
         proto.MESSAGE,
         number=164,
@@ -4483,7 +4980,35 @@ class AnonymousAuthenticationConfig(proto.Message):
     r"""AnonymousAuthenticationConfig defines the settings needed to
     limit endpoints that allow anonymous authentication.
 
+    Attributes:
+        mode (google.cloud.container_v1beta1.types.AnonymousAuthenticationConfig.Mode):
+            Defines the mode of limiting anonymous access
+            in the cluster.
     """
+
+    class Mode(proto.Enum):
+        r"""Mode defines the mode of anonymous authentication
+        allowed in the cluster.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Default value not specified.
+            ENABLED (1):
+                Anonymous authentication is allowed for all
+                endpoints.
+            LIMITED (2):
+                Anonymous authentication is allowed for only
+                health check endpoints.
+        """
+        MODE_UNSPECIFIED = 0
+        ENABLED = 1
+        LIMITED = 2
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
+    )
 
 
 class CompliancePostureConfig(proto.Message):
@@ -5189,17 +5714,26 @@ class ClusterUpdate(proto.Message):
             clusters and node auto-provisioning enabled
             clusters.
         user_managed_keys_config (google.cloud.container_v1beta1.types.UserManagedKeysConfig):
-            The Custom keys configuration for the
-            cluster.
+            The Custom keys configuration for the cluster.
+
+            This field is deprecated. Use
+            [ClusterUpdate.desired_user_managed_keys_config][google.container.v1beta1.ClusterUpdate.desired_user_managed_keys_config]
+            instead.
         desired_rbac_binding_config (google.cloud.container_v1beta1.types.RBACBindingConfig):
             RBACBindingConfig allows user to restrict
             ClusterRoleBindings an RoleBindings that can be
             created.
 
             This field is a member of `oneof`_ ``_desired_rbac_binding_config``.
+        desired_additional_ip_ranges_config (google.cloud.container_v1beta1.types.DesiredAdditionalIPRangesConfig):
+            The desired config for additional subnetworks
+            attached to the cluster.
         desired_enterprise_config (google.cloud.container_v1beta1.types.DesiredEnterpriseConfig):
             The desired enterprise configuration for the
             cluster.
+        desired_auto_ipam_config (google.cloud.container_v1beta1.types.AutoIpamConfig):
+            AutoIpamConfig contains all information
+            related to Auto IPAM
         desired_disable_l4_lb_firewall_reconciliation (bool):
             Enable/Disable L4 LB VPC firewall
             reconciliation for the cluster.
@@ -5211,9 +5745,14 @@ class ClusterUpdate(proto.Message):
             enabled clusters.
 
             Currently only ``cgroup_mode`` can be set here.
+        desired_user_managed_keys_config (google.cloud.container_v1beta1.types.UserManagedKeysConfig):
+            The desired user managed keys config for the
+            cluster.
         desired_anonymous_authentication_config (google.cloud.container_v1beta1.types.AnonymousAuthenticationConfig):
             Configuration for limiting anonymous access
             to all endpoints except the health checks.
+        gke_auto_upgrade_config (google.cloud.container_v1beta1.types.GkeAutoUpgradeConfig):
+            Configuration for GKE auto upgrade.
     """
 
     desired_node_version: str = proto.Field(
@@ -5577,10 +6116,22 @@ class ClusterUpdate(proto.Message):
         optional=True,
         message="RBACBindingConfig",
     )
+    desired_additional_ip_ranges_config: "DesiredAdditionalIPRangesConfig" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=145,
+            message="DesiredAdditionalIPRangesConfig",
+        )
+    )
     desired_enterprise_config: "DesiredEnterpriseConfig" = proto.Field(
         proto.MESSAGE,
         number=147,
         message="DesiredEnterpriseConfig",
+    )
+    desired_auto_ipam_config: "AutoIpamConfig" = proto.Field(
+        proto.MESSAGE,
+        number=148,
+        message="AutoIpamConfig",
     )
     desired_disable_l4_lb_firewall_reconciliation: bool = proto.Field(
         proto.BOOL,
@@ -5592,12 +6143,22 @@ class ClusterUpdate(proto.Message):
         number=150,
         message="LinuxNodeConfig",
     )
+    desired_user_managed_keys_config: "UserManagedKeysConfig" = proto.Field(
+        proto.MESSAGE,
+        number=152,
+        message="UserManagedKeysConfig",
+    )
     desired_anonymous_authentication_config: "AnonymousAuthenticationConfig" = (
         proto.Field(
             proto.MESSAGE,
             number=156,
             message="AnonymousAuthenticationConfig",
         )
+    )
+    gke_auto_upgrade_config: "GkeAutoUpgradeConfig" = proto.Field(
+        proto.MESSAGE,
+        number=154,
+        message="GkeAutoUpgradeConfig",
     )
 
 
@@ -5623,6 +6184,59 @@ class AdditionalPodRangesConfig(proto.Message):
         number=2,
         message="RangeInfo",
     )
+
+
+class AdditionalIPRangesConfig(proto.Message):
+    r"""AdditionalIPRangesConfig is the configuration for individual
+    additional subnetwork attached to the cluster
+
+    Attributes:
+        subnetwork (str):
+            Name of the subnetwork. This can be the full
+            path of the subnetwork or just the name.
+            Example1: my-subnet
+            Example2:
+            projects/gke-project/regions/us-central1/subnetworks/my-subnet
+        pod_ipv4_range_names (MutableSequence[str]):
+            List of secondary ranges names within this
+            subnetwork that can be used for pod IPs.
+            Example1: gke-pod-range1
+            Example2: gke-pod-range1,gke-pod-range2
+    """
+
+    subnetwork: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    pod_ipv4_range_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DesiredAdditionalIPRangesConfig(proto.Message):
+    r"""DesiredAdditionalIPRangesConfig is a wrapper used for cluster
+    update operation and contains multiple
+    AdditionalIPRangesConfigs.
+
+    Attributes:
+        additional_ip_ranges_configs (MutableSequence[google.cloud.container_v1beta1.types.AdditionalIPRangesConfig]):
+            List of additional IP ranges configs where
+            each AdditionalIPRangesConfig corresponds to one
+            subnetwork's IP ranges
+    """
+
+    additional_ip_ranges_configs: MutableSequence[
+        "AdditionalIPRangesConfig"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AdditionalIPRangesConfig",
+    )
+
+
+class AutoIpamConfig(proto.Message):
+    r"""AutoIpamConfig contains all information related to Auto IPAM"""
 
 
 class RangeInfo(proto.Message):
@@ -6305,8 +6919,8 @@ class UpdateNodePoolRequest(proto.Message):
         accelerators (MutableSequence[google.cloud.container_v1beta1.types.AcceleratorConfig]):
             A list of hardware accelerators to be
             attached to each node. See
-            https://cloud.google.com/compute/docs/gpus for
-            more information about support for GPUs.
+            https://cloud.google.com/compute/docs/gpus
+            for more information about support for GPUs.
         machine_type (str):
             Optional. The desired machine type for nodes
             in the node pool. Initiates an upgrade operation
@@ -6347,6 +6961,11 @@ class UpdateNodePoolRequest(proto.Message):
             Flex Start flag for enabling Flex Start VM.
 
             This field is a member of `oneof`_ ``_flex_start``.
+        boot_disk (google.cloud.container_v1beta1.types.BootDisk):
+            The desired boot disk config for nodes in the
+            node pool. Initiates an upgrade operation that
+            migrates the nodes in the node pool to the
+            specified boot disk config.
     """
 
     project_id: str = proto.Field(
@@ -6505,6 +7124,11 @@ class UpdateNodePoolRequest(proto.Message):
         proto.BOOL,
         number=46,
         optional=True,
+    )
+    boot_disk: "BootDisk" = proto.Field(
+        proto.MESSAGE,
+        number=47,
+        message="BootDisk",
     )
 
 
@@ -8717,6 +9341,9 @@ class ClusterAutoscaling(proto.Message):
             The list of Google Compute Engine
             `zones <https://cloud.google.com/compute/docs/zones#available>`__
             in which the NodePool's nodes can be created by NAP.
+        default_compute_class_config (google.cloud.container_v1beta1.types.DefaultComputeClassConfig):
+            Default compute class is a configuration for
+            default compute class.
     """
 
     class AutoscalingProfile(proto.Enum):
@@ -8760,6 +9387,11 @@ class ClusterAutoscaling(proto.Message):
     autoprovisioning_locations: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
+    )
+    default_compute_class_config: "DefaultComputeClassConfig" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="DefaultComputeClassConfig",
     )
 
 
@@ -8924,6 +9556,21 @@ class ResourceLimit(proto.Message):
     maximum: int = proto.Field(
         proto.INT64,
         number=3,
+    )
+
+
+class DefaultComputeClassConfig(proto.Message):
+    r"""DefaultComputeClassConfig defines default compute class
+    configuration.
+
+    Attributes:
+        enabled (bool):
+            Enables default compute class.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 
@@ -9741,6 +10388,10 @@ class StatusCondition(proto.Message):
                 Cluster CA is expiring soon.
             NODE_SERVICE_ACCOUNT_MISSING_PERMISSIONS (10):
                 Node service account is missing permissions.
+            CLOUD_KMS_KEY_DESTROYED (11):
+                Cloud KMS key version used for etcd level
+                encryption has been destroyed. This is a
+                permanent error.
         """
         _pb_options = {"deprecated": True}
         UNKNOWN = 0
@@ -9751,6 +10402,7 @@ class StatusCondition(proto.Message):
         CLOUD_KMS_KEY_ERROR = 7
         CA_EXPIRING = 9
         NODE_SERVICE_ACCOUNT_MISSING_PERMISSIONS = 10
+        CLOUD_KMS_KEY_DESTROYED = 11
 
     code: Code = proto.Field(
         proto.ENUM,
@@ -12293,6 +12945,41 @@ class SecretManagerConfig(proto.Message):
     )
 
 
+class BootDisk(proto.Message):
+    r"""BootDisk specifies the boot disk configuration for nodepools.
+
+    Attributes:
+        disk_type (str):
+            Disk type of the boot disk.
+            (i.e. Hyperdisk-Balanced, PD-Balanced, etc.)
+        size_gb (int):
+            Disk size in GB. Replaces NodeConfig.disk_size_gb
+        provisioned_iops (int):
+            For Hyperdisk-Balanced only, the provisioned
+            IOPS config value.
+        provisioned_throughput (int):
+            For Hyperdisk-Balanced only, the provisioned
+            throughput config value.
+    """
+
+    disk_type: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    size_gb: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    provisioned_throughput: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+
+
 class SecondaryBootDisk(proto.Message):
     r"""SecondaryBootDisk represents a persistent disk attached to a
     node with special configurations based on its mode.
@@ -12728,6 +13415,40 @@ class NodePoolUpgradeInfo(proto.Message):
         proto.STRING,
         number=7,
         optional=True,
+    )
+
+
+class GkeAutoUpgradeConfig(proto.Message):
+    r"""GkeAutoUpgradeConfig is the configuration for GKE auto
+    upgrades.
+
+    Attributes:
+        patch_mode (google.cloud.container_v1beta1.types.GkeAutoUpgradeConfig.PatchMode):
+            PatchMode specifies how auto upgrade patch
+            builds should be selected.
+    """
+
+    class PatchMode(proto.Enum):
+        r"""PatchMode specifies how auto upgrade patch builds should be
+        selected.
+
+        Values:
+            PATCH_MODE_UNSPECIFIED (0):
+                PATCH_MODE_UNSPECIFIED defaults to using the upgrade target
+                from the channel's patch upgrade targets as the upgrade
+                target for the version.
+            ACCELERATED (1):
+                ACCELERATED denotes that the latest patch
+                build in the channel should be used as the
+                upgrade target for the version.
+        """
+        PATCH_MODE_UNSPECIFIED = 0
+        ACCELERATED = 1
+
+    patch_mode: PatchMode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=PatchMode,
     )
 
 
