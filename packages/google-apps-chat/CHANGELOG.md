@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.6...google-apps-chat-v0.2.7) (2025-07-23)
+
+
+### Features
+
+* Exposing 1p integration message content (drive, calendar, huddle, meet chips) ([b74ec0e](https://github.com/googleapis/google-cloud-python/commit/b74ec0ef9d46f96219dbdd9ff4937597a7486f28))
+
+
+### Documentation
+
+* Update reference documentation for annotations. Introduce new richlink metadata types ([b74ec0e](https://github.com/googleapis/google-cloud-python/commit/b74ec0ef9d46f96219dbdd9ff4937597a7486f28))
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.5...google-apps-chat-v0.2.6) (2025-05-08)
 
 

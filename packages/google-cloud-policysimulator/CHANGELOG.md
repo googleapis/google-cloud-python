@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policysimulator-v0.1.14...google-cloud-policysimulator-v0.1.15) (2025-07-23)
+
+
+### Features
+
+* added OrgPolicyViolationsPreviewService v1 API to simulate Org Policy changes ([6c02b3b](https://github.com/googleapis/google-cloud-python/commit/6c02b3b6c5ed34286fa8ce7a8a115e1773f9f8a8))
+
+
+### Documentation
+
+* fix proto reference links in comments ([6c02b3b](https://github.com/googleapis/google-cloud-python/commit/6c02b3b6c5ed34286fa8ce7a8a115e1773f9f8a8))
+
 ## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policysimulator-v0.1.13...google-cloud-policysimulator-v0.1.14) (2025-06-11)
 
 

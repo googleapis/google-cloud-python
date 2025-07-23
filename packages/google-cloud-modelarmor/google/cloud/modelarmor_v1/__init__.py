@@ -20,6 +20,7 @@ __version__ = package_version.__version__
 
 from .services.model_armor import ModelArmorAsyncClient, ModelArmorClient
 from .types.service import (
+    AiPlatformFloorSetting,
     ByteDataItem,
     CreateTemplateRequest,
     CsamFilterResult,
@@ -68,6 +69,7 @@ from .types.service import (
 
 __all__ = (
     "ModelArmorAsyncClient",
+    "AiPlatformFloorSetting",
     "ByteDataItem",
     "CreateTemplateRequest",
     "CsamFilterResult",

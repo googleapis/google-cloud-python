@@ -60,7 +60,7 @@ def _determine_bazel_rule(api_path: str) -> str:
         str: The discovered Bazel rule.
 
     Raises:
-        Exception: If the subprocess call fails or returns an empty result.
+        ValueError: If the subprocess call fails or returns an empty result.
     """
     logger.info(f"Determining Bazel rule for api_path: '{api_path}'")
     try:
@@ -100,6 +100,30 @@ def _get_library_id(request_data: Dict) -> str:
         raise ValueError("Request file is missing required 'id' field.")
     return library_id
 
+  
+def _build_bazel_target(bazel_rule):
+    """Executes `bazelisk build` on a given Bazel rule.
+
+    Args:
+        bazel_rule (str): The Bazel rule to build.
+
+    Raises:
+        ValueError: If the subprocess call fails.
+    """
+    logger.info(f"Executing build for rule: {bazel_rule}")
+    try:
+        command = ["bazelisk", "build", bazel_rule]
+        subprocess.run(
+            command,
+            cwd=f"{SOURCE_DIR}/googleapis",
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        logger.info(f"Bazel build for {bazel_rule} rule completed successfully.")
+    except Exception as e:
+        raise ValueError(f"Bazel build for {bazel_rule} rule failed.") from e
+
 
 def handle_generate():
     """The main coordinator for the code generation process.
@@ -121,6 +145,7 @@ def handle_generate():
             api_path = api.get("path")
             if api_path:
                 bazel_rule = _determine_bazel_rule(api_path)
+                _build_bazel_target(bazel_rule)
 
             logger.info(json.dumps(request_data, indent=2))
     except Exception as e:
