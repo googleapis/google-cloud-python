@@ -24,7 +24,6 @@ if TYPE_CHECKING:
 @functools.cache
 def _from_pyarrow_types():
     import pyarrow as pa
-    import pyarrow_hotfix  # noqa: F401
 
     return {
         pa.int8(): dt.Int8,
@@ -87,7 +86,6 @@ class PyArrowType(TypeMapper):
     def to_ibis(cls, typ: pa.DataType, nullable=True) -> dt.DataType:
         """Convert a pyarrow type to an ibis type."""
         import pyarrow as pa
-        import pyarrow_hotfix  # noqa: F401
 
         if pa.types.is_null(typ):
             return dt.null

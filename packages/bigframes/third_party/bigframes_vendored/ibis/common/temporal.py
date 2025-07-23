@@ -260,3 +260,8 @@ def _from_numpy_datetime64(value):
         raise TypeError("Unable to convert np.datetime64 without pandas")
     else:
         return pd.Timestamp(value).to_pydatetime()
+
+
+@normalize_datetime.register("pyarrow.Scalar")
+def _from_pyarrow_scalar(value):
+    return value.as_py()

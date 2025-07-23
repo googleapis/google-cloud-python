@@ -906,15 +906,53 @@ def test_df_to_pandas_batches(scalars_dfs):
     assert_pandas_df_equal(pd.concat(filtered_batches), pd_result)
 
 
-def test_assign_new_column(scalars_dfs):
+@pytest.mark.parametrize(
+    ("literal", "expected_dtype"),
+    (
+        pytest.param(
+            2,
+            dtypes.INT_DTYPE,
+            id="INT64",
+        ),
+        # ====================================================================
+        # NULL values
+        #
+        # These are regression tests for b/428999884. It needs to be possible to
+        # set a column to NULL with a desired type (not just the pandas default
+        # of float64).
+        # ====================================================================
+        pytest.param(None, dtypes.FLOAT_DTYPE, id="NULL-None"),
+        pytest.param(
+            pa.scalar(None, type=pa.int64()),
+            dtypes.INT_DTYPE,
+            id="NULL-pyarrow-TIMESTAMP",
+        ),
+        pytest.param(
+            pa.scalar(None, type=pa.timestamp("us", tz="UTC")),
+            dtypes.TIMESTAMP_DTYPE,
+            id="NULL-pyarrow-TIMESTAMP",
+        ),
+        pytest.param(
+            pa.scalar(None, type=pa.timestamp("us")),
+            dtypes.DATETIME_DTYPE,
+            id="NULL-pyarrow-DATETIME",
+        ),
+    ),
+)
+def test_assign_new_column_w_literal(scalars_dfs, literal, expected_dtype):
     scalars_df, scalars_pandas_df = scalars_dfs
-    kwargs = {"new_col": 2}
-    df = scalars_df.assign(**kwargs)
+    df = scalars_df.assign(new_col=literal)
     bf_result = df.to_pandas()
-    pd_result = scalars_pandas_df.assign(**kwargs)
 
-    # Convert default pandas dtypes `int64` to match BigQuery DataFrames dtypes.
-    pd_result["new_col"] = pd_result["new_col"].astype("Int64")
+    new_col_pd = literal
+    if isinstance(literal, pa.Scalar):
+        # PyArrow integer scalars aren't yet supported in pandas Int64Dtype.
+        new_col_pd = literal.as_py()
+
+    # Pandas might not pick the same dtype as BigFrames, but it should at least
+    # be castable to it.
+    pd_result = scalars_pandas_df.assign(new_col=new_col_pd)
+    pd_result["new_col"] = pd_result["new_col"].astype(expected_dtype)
 
     assert_pandas_df_equal(bf_result, pd_result)
 

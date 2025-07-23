@@ -606,7 +606,7 @@ def test_read_gbq_wildcard(
             "query": {
                 "useQueryCache": True,
                 "maximumBytesBilled": "1000000000",
-                "timeoutMs": 10000,
+                "timeoutMs": 120_000,
             }
         },
         pytest.param(

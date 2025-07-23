@@ -27,6 +27,7 @@ from bigframes_vendored.ibis.common.temporal import (
 import bigframes_vendored.ibis.expr.datatypes as dt
 from bigframes_vendored.ibis.expr.datatypes.cast import highest_precedence
 from public import public
+import pyarrow as pa
 import toolz
 
 
@@ -69,6 +70,14 @@ def infer_list(values: Sequence[Any]) -> dt.Array:
     if not values:
         return dt.Array(dt.null)
     return dt.Array(highest_precedence(map(infer, values)))
+
+
+@infer.register("pyarrow.Scalar")
+def infer_pyarrow_scalar(value: "pa.Scalar"):
+    """Infert the type of a PyArrow Scalar value."""
+    import bigframes_vendored.ibis.formats.pyarrow
+
+    return bigframes_vendored.ibis.formats.pyarrow.PyArrowType.to_ibis(value.type)
 
 
 @infer.register(datetime.time)
@@ -252,6 +261,9 @@ del infer.register
 # TODO(kszucs): should raise ValueError instead of TypeError
 def normalize(typ, value):
     """Ensure that the Python type underlying a literal resolves to a single type."""
+
+    if pa is not None and isinstance(value, pa.Scalar):
+        value = value.as_py()
 
     dtype = dt.dtype(typ)
     if value is None:

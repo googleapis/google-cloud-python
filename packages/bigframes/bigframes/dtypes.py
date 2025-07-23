@@ -659,6 +659,8 @@ def _dtype_from_string(dtype_string: str) -> typing.Optional[Dtype]:
 
 def infer_literal_type(literal) -> typing.Optional[Dtype]:
     # Maybe also normalize literal to canonical python representation to remove this burden from compilers?
+    if isinstance(literal, pa.Scalar):
+        return arrow_dtype_to_bigframes_dtype(literal.type)
     if pd.api.types.is_list_like(literal):
         element_types = [infer_literal_type(i) for i in literal]
         common_type = lcd_type(*element_types)
