@@ -98,7 +98,7 @@ class retailCallTransformer(cst.CSTTransformer):
         'remove_local_inventories': ('product', 'place_ids', 'remove_time', 'allow_missing', ),
         'replace_catalog_attribute': ('attributes_config', 'catalog_attribute', 'update_mask', ),
         'resume_model': ('name', ),
-        'search': ('placement', 'visitor_id', 'branch', 'query', 'user_info', 'page_size', 'page_token', 'offset', 'filter', 'canonical_filter', 'order_by', 'facet_specs', 'dynamic_facet_spec', 'boost_spec', 'query_expansion_spec', 'relevance_threshold', 'variant_rollup_keys', 'page_categories', 'search_mode', 'personalization_spec', 'labels', 'spell_correction_spec', 'entity', 'conversational_search_spec', 'tile_navigation_spec', 'language_code', 'region_code', 'place_id', 'user_attributes', ),
+        'search': ('placement', 'visitor_id', 'branch', 'query', 'user_info', 'page_size', 'page_token', 'offset', 'filter', 'canonical_filter', 'order_by', 'facet_specs', 'dynamic_facet_spec', 'boost_spec', 'query_expansion_spec', 'relevance_threshold', 'variant_rollup_keys', 'experiment_id', 'page_categories', 'search_mode', 'personalization_spec', 'labels', 'spell_correction_spec', 'entity', 'conversational_search_spec', 'tile_navigation_spec', 'language_code', 'region_code', 'place_id', 'user_attributes', ),
         'set_default_branch': ('catalog', 'branch_id', 'note', 'force', ),
         'set_inventory': ('inventory', 'set_mask', 'set_time', 'allow_missing', ),
         'tune_model': ('name', ),

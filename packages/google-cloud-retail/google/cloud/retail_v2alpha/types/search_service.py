@@ -359,6 +359,9 @@ class SearchRequest(proto.Message):
 
             If this field is set to an invalid value other than these,
             an INVALID_ARGUMENT error is returned.
+        experiment_id (str):
+            Optional. An ID for the experiment group this
+            search belongs to.
         page_categories (MutableSequence[str]):
             The categories associated with a category page. Must be set
             for category navigation queries to achieve good search
@@ -459,7 +462,7 @@ class SearchRequest(proto.Message):
 
             -  Populate at most 100 key-value pairs per query.
             -  Only supports string keys and repeated string values.
-            -  Duplcate keys are not allowed within a single query.
+            -  Duplicate keys are not allowed within a single query.
 
             Example: user_attributes: [ { key: "pets" value { values:
             "dog" values: "cat" } }, { key: "state" value { values: "CA"
@@ -961,10 +964,11 @@ class SearchRequest(proto.Message):
                 Default to
                 [Condition.DISABLED][google.cloud.retail.v2alpha.SearchRequest.QueryExpansionSpec.Condition.DISABLED].
             pin_unexpanded_results (bool):
-                Whether to pin unexpanded results. If this
-                field is set to true, unexpanded products are
-                always at the top of the search results,
-                followed by the expanded results.
+                Whether to pin unexpanded results. The
+                default value is false. If this field is set to
+                true, unexpanded products are always at the top
+                of the search results, followed by the expanded
+                results.
         """
 
         class Condition(proto.Enum):
@@ -1278,6 +1282,10 @@ class SearchRequest(proto.Message):
     variant_rollup_keys: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=17,
+    )
+    experiment_id: str = proto.Field(
+        proto.STRING,
+        number=18,
     )
     page_categories: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
