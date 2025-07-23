@@ -29,10 +29,10 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.policysimulator_v1.types import simulator
+from google.cloud.policysimulator_v1.types import orgpolicy as gcp_orgpolicy
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .rest_base import _BaseSimulatorRestTransport
+from .rest_base import _BaseOrgPolicyViolationsPreviewServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -58,8 +58,8 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-class SimulatorRestInterceptor:
-    """Interceptor for Simulator.
+class OrgPolicyViolationsPreviewServiceRestInterceptor:
+    """Interceptor for OrgPolicyViolationsPreviewService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -69,177 +69,250 @@ class SimulatorRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the SimulatorRestTransport.
+    instance of a custom subclass when constructing the OrgPolicyViolationsPreviewServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomSimulatorInterceptor(SimulatorRestInterceptor):
-            def pre_create_replay(self, request, metadata):
+        class MyCustomOrgPolicyViolationsPreviewServiceInterceptor(OrgPolicyViolationsPreviewServiceRestInterceptor):
+            def pre_create_org_policy_violations_preview(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_replay(self, response):
+            def post_create_org_policy_violations_preview(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_get_replay(self, request, metadata):
+            def pre_get_org_policy_violations_preview(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_replay(self, response):
+            def post_get_org_policy_violations_preview(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_replay_results(self, request, metadata):
+            def pre_list_org_policy_violations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_replay_results(self, response):
+            def post_list_org_policy_violations(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-        transport = SimulatorRestTransport(interceptor=MyCustomSimulatorInterceptor())
-        client = SimulatorClient(transport=transport)
+            def pre_list_org_policy_violations_previews(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_org_policy_violations_previews(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+        transport = OrgPolicyViolationsPreviewServiceRestTransport(interceptor=MyCustomOrgPolicyViolationsPreviewServiceInterceptor())
+        client = OrgPolicyViolationsPreviewServiceClient(transport=transport)
 
 
     """
 
-    def pre_create_replay(
+    def pre_create_org_policy_violations_preview(
         self,
-        request: simulator.CreateReplayRequest,
+        request: gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[simulator.CreateReplayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for create_replay
+    ) -> Tuple[
+        gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_org_policy_violations_preview
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Simulator server.
+        before they are sent to the OrgPolicyViolationsPreviewService server.
         """
         return request, metadata
 
-    def post_create_replay(
+    def post_create_org_policy_violations_preview(
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for create_replay
+        """Post-rpc interceptor for create_org_policy_violations_preview
 
-        DEPRECATED. Please use the `post_create_replay_with_metadata`
+        DEPRECATED. Please use the `post_create_org_policy_violations_preview_with_metadata`
         interceptor instead.
 
         Override in a subclass to read or manipulate the response
-        after it is returned by the Simulator server but before
-        it is returned to user code. This `post_create_replay` interceptor runs
-        before the `post_create_replay_with_metadata` interceptor.
+        after it is returned by the OrgPolicyViolationsPreviewService server but before
+        it is returned to user code. This `post_create_org_policy_violations_preview` interceptor runs
+        before the `post_create_org_policy_violations_preview_with_metadata` interceptor.
         """
         return response
 
-    def post_create_replay_with_metadata(
+    def post_create_org_policy_violations_preview_with_metadata(
         self,
         response: operations_pb2.Operation,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for create_replay
+        """Post-rpc interceptor for create_org_policy_violations_preview
 
         Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the Simulator server but before it is returned to user code.
+        is returned by the OrgPolicyViolationsPreviewService server but before it is returned to user code.
 
-        We recommend only using this `post_create_replay_with_metadata`
-        interceptor in new development instead of the `post_create_replay` interceptor.
-        When both interceptors are used, this `post_create_replay_with_metadata` interceptor runs after the
-        `post_create_replay` interceptor. The (possibly modified) response returned by
-        `post_create_replay` will be passed to
-        `post_create_replay_with_metadata`.
+        We recommend only using this `post_create_org_policy_violations_preview_with_metadata`
+        interceptor in new development instead of the `post_create_org_policy_violations_preview` interceptor.
+        When both interceptors are used, this `post_create_org_policy_violations_preview_with_metadata` interceptor runs after the
+        `post_create_org_policy_violations_preview` interceptor. The (possibly modified) response returned by
+        `post_create_org_policy_violations_preview` will be passed to
+        `post_create_org_policy_violations_preview_with_metadata`.
         """
         return response, metadata
 
-    def pre_get_replay(
+    def pre_get_org_policy_violations_preview(
         self,
-        request: simulator.GetReplayRequest,
+        request: gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[simulator.GetReplayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Pre-rpc interceptor for get_replay
+    ) -> Tuple[
+        gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_org_policy_violations_preview
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Simulator server.
+        before they are sent to the OrgPolicyViolationsPreviewService server.
         """
         return request, metadata
 
-    def post_get_replay(self, response: simulator.Replay) -> simulator.Replay:
-        """Post-rpc interceptor for get_replay
+    def post_get_org_policy_violations_preview(
+        self, response: gcp_orgpolicy.OrgPolicyViolationsPreview
+    ) -> gcp_orgpolicy.OrgPolicyViolationsPreview:
+        """Post-rpc interceptor for get_org_policy_violations_preview
 
-        DEPRECATED. Please use the `post_get_replay_with_metadata`
+        DEPRECATED. Please use the `post_get_org_policy_violations_preview_with_metadata`
         interceptor instead.
 
         Override in a subclass to read or manipulate the response
-        after it is returned by the Simulator server but before
-        it is returned to user code. This `post_get_replay` interceptor runs
-        before the `post_get_replay_with_metadata` interceptor.
+        after it is returned by the OrgPolicyViolationsPreviewService server but before
+        it is returned to user code. This `post_get_org_policy_violations_preview` interceptor runs
+        before the `post_get_org_policy_violations_preview_with_metadata` interceptor.
         """
         return response
 
-    def post_get_replay_with_metadata(
+    def post_get_org_policy_violations_preview_with_metadata(
         self,
-        response: simulator.Replay,
+        response: gcp_orgpolicy.OrgPolicyViolationsPreview,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[simulator.Replay, Sequence[Tuple[str, Union[str, bytes]]]]:
-        """Post-rpc interceptor for get_replay
+    ) -> Tuple[
+        gcp_orgpolicy.OrgPolicyViolationsPreview,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_org_policy_violations_preview
 
         Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the Simulator server but before it is returned to user code.
+        is returned by the OrgPolicyViolationsPreviewService server but before it is returned to user code.
 
-        We recommend only using this `post_get_replay_with_metadata`
-        interceptor in new development instead of the `post_get_replay` interceptor.
-        When both interceptors are used, this `post_get_replay_with_metadata` interceptor runs after the
-        `post_get_replay` interceptor. The (possibly modified) response returned by
-        `post_get_replay` will be passed to
-        `post_get_replay_with_metadata`.
+        We recommend only using this `post_get_org_policy_violations_preview_with_metadata`
+        interceptor in new development instead of the `post_get_org_policy_violations_preview` interceptor.
+        When both interceptors are used, this `post_get_org_policy_violations_preview_with_metadata` interceptor runs after the
+        `post_get_org_policy_violations_preview` interceptor. The (possibly modified) response returned by
+        `post_get_org_policy_violations_preview` will be passed to
+        `post_get_org_policy_violations_preview_with_metadata`.
         """
         return response, metadata
 
-    def pre_list_replay_results(
+    def pre_list_org_policy_violations(
         self,
-        request: simulator.ListReplayResultsRequest,
+        request: gcp_orgpolicy.ListOrgPolicyViolationsRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        simulator.ListReplayResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+        gcp_orgpolicy.ListOrgPolicyViolationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
-        """Pre-rpc interceptor for list_replay_results
+        """Pre-rpc interceptor for list_org_policy_violations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Simulator server.
+        before they are sent to the OrgPolicyViolationsPreviewService server.
         """
         return request, metadata
 
-    def post_list_replay_results(
-        self, response: simulator.ListReplayResultsResponse
-    ) -> simulator.ListReplayResultsResponse:
-        """Post-rpc interceptor for list_replay_results
+    def post_list_org_policy_violations(
+        self, response: gcp_orgpolicy.ListOrgPolicyViolationsResponse
+    ) -> gcp_orgpolicy.ListOrgPolicyViolationsResponse:
+        """Post-rpc interceptor for list_org_policy_violations
 
-        DEPRECATED. Please use the `post_list_replay_results_with_metadata`
+        DEPRECATED. Please use the `post_list_org_policy_violations_with_metadata`
         interceptor instead.
 
         Override in a subclass to read or manipulate the response
-        after it is returned by the Simulator server but before
-        it is returned to user code. This `post_list_replay_results` interceptor runs
-        before the `post_list_replay_results_with_metadata` interceptor.
+        after it is returned by the OrgPolicyViolationsPreviewService server but before
+        it is returned to user code. This `post_list_org_policy_violations` interceptor runs
+        before the `post_list_org_policy_violations_with_metadata` interceptor.
         """
         return response
 
-    def post_list_replay_results_with_metadata(
+    def post_list_org_policy_violations_with_metadata(
         self,
-        response: simulator.ListReplayResultsResponse,
+        response: gcp_orgpolicy.ListOrgPolicyViolationsResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        simulator.ListReplayResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+        gcp_orgpolicy.ListOrgPolicyViolationsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
-        """Post-rpc interceptor for list_replay_results
+        """Post-rpc interceptor for list_org_policy_violations
 
         Override in a subclass to read or manipulate the response or metadata after it
-        is returned by the Simulator server but before it is returned to user code.
+        is returned by the OrgPolicyViolationsPreviewService server but before it is returned to user code.
 
-        We recommend only using this `post_list_replay_results_with_metadata`
-        interceptor in new development instead of the `post_list_replay_results` interceptor.
-        When both interceptors are used, this `post_list_replay_results_with_metadata` interceptor runs after the
-        `post_list_replay_results` interceptor. The (possibly modified) response returned by
-        `post_list_replay_results` will be passed to
-        `post_list_replay_results_with_metadata`.
+        We recommend only using this `post_list_org_policy_violations_with_metadata`
+        interceptor in new development instead of the `post_list_org_policy_violations` interceptor.
+        When both interceptors are used, this `post_list_org_policy_violations_with_metadata` interceptor runs after the
+        `post_list_org_policy_violations` interceptor. The (possibly modified) response returned by
+        `post_list_org_policy_violations` will be passed to
+        `post_list_org_policy_violations_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_org_policy_violations_previews(
+        self,
+        request: gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_org_policy_violations_previews
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the OrgPolicyViolationsPreviewService server.
+        """
+        return request, metadata
+
+    def post_list_org_policy_violations_previews(
+        self, response: gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse
+    ) -> gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse:
+        """Post-rpc interceptor for list_org_policy_violations_previews
+
+        DEPRECATED. Please use the `post_list_org_policy_violations_previews_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the OrgPolicyViolationsPreviewService server but before
+        it is returned to user code. This `post_list_org_policy_violations_previews` interceptor runs
+        before the `post_list_org_policy_violations_previews_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_org_policy_violations_previews_with_metadata(
+        self,
+        response: gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_org_policy_violations_previews
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the OrgPolicyViolationsPreviewService server but before it is returned to user code.
+
+        We recommend only using this `post_list_org_policy_violations_previews_with_metadata`
+        interceptor in new development instead of the `post_list_org_policy_violations_previews` interceptor.
+        When both interceptors are used, this `post_list_org_policy_violations_previews_with_metadata` interceptor runs after the
+        `post_list_org_policy_violations_previews` interceptor. The (possibly modified) response returned by
+        `post_list_org_policy_violations_previews` will be passed to
+        `post_list_org_policy_violations_previews_with_metadata`.
         """
         return response, metadata
 
@@ -253,7 +326,7 @@ class SimulatorRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Simulator server.
+        before they are sent to the OrgPolicyViolationsPreviewService server.
         """
         return request, metadata
 
@@ -263,7 +336,7 @@ class SimulatorRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the Simulator server but before
+        after it is returned by the OrgPolicyViolationsPreviewService server but before
         it is returned to user code.
         """
         return response
@@ -278,7 +351,7 @@ class SimulatorRestInterceptor:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the Simulator server.
+        before they are sent to the OrgPolicyViolationsPreviewService server.
         """
         return request, metadata
 
@@ -288,35 +361,36 @@ class SimulatorRestInterceptor:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
-        after it is returned by the Simulator server but before
+        after it is returned by the OrgPolicyViolationsPreviewService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class SimulatorRestStub:
+class OrgPolicyViolationsPreviewServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: SimulatorRestInterceptor
+    _interceptor: OrgPolicyViolationsPreviewServiceRestInterceptor
 
 
-class SimulatorRestTransport(_BaseSimulatorRestTransport):
-    """REST backend synchronous transport for Simulator.
+class OrgPolicyViolationsPreviewServiceRestTransport(
+    _BaseOrgPolicyViolationsPreviewServiceRestTransport
+):
+    """REST backend synchronous transport for OrgPolicyViolationsPreviewService.
 
-    Policy Simulator API service.
+    Violations Preview API service for OrgPolicy.
 
-    Policy Simulator is a collection of endpoints for creating, running,
-    and viewing a [Replay][google.cloud.policysimulator.v1.Replay]. A
-    [Replay][google.cloud.policysimulator.v1.Replay] is a type of
-    simulation that lets you see how your principals' access to
-    resources might change if you changed your IAM policy.
-
-    During a [Replay][google.cloud.policysimulator.v1.Replay], Policy
-    Simulator re-evaluates, or replays, past access attempts under both
-    the current policy and your proposed policy, and compares those
-    results to determine how your principals' access might change under
-    the proposed policy.
+    An
+    [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+    is a preview of the violations that will exist as soon as a proposed
+    OrgPolicy change is submitted. To create an
+    [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview],
+    the API user specifies the changes they wish to make and requests
+    the generation of a preview via [GenerateViolationsPreview][]. the
+    OrgPolicy Simulator service then scans the API user's currently
+    existing resources to determine these resources violate the newly
+    set OrgPolicy.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -337,7 +411,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[SimulatorRestInterceptor] = None,
+        interceptor: Optional[OrgPolicyViolationsPreviewServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -390,7 +464,9 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or SimulatorRestInterceptor()
+        self._interceptor = (
+            interceptor or OrgPolicyViolationsPreviewServiceRestInterceptor()
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -481,11 +557,14 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateReplay(
-        _BaseSimulatorRestTransport._BaseCreateReplay, SimulatorRestStub
+    class _CreateOrgPolicyViolationsPreview(
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview,
+        OrgPolicyViolationsPreviewServiceRestStub,
     ):
         def __hash__(self):
-            return hash("SimulatorRestTransport.CreateReplay")
+            return hash(
+                "OrgPolicyViolationsPreviewServiceRestTransport.CreateOrgPolicyViolationsPreview"
+            )
 
         @staticmethod
         def _get_response(
@@ -512,54 +591,57 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
         def __call__(
             self,
-            request: simulator.CreateReplayRequest,
+            request: gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
-            r"""Call the create replay method over HTTP.
+            r"""Call the create org policy
+            violations preview method over HTTP.
 
-            Args:
-                request (~.simulator.CreateReplayRequest):
-                    The request object. Request message for
-                [Simulator.CreateReplay][google.cloud.policysimulator.v1.Simulator.CreateReplay].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
+                Args:
+                    request (~.gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest):
+                        The request object. CreateOrgPolicyViolationsPreviewRequest is the request
+                    message for
+                    [OrgPolicyViolationsPreviewService.CreateOrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.CreateOrgPolicyViolationsPreview].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
 
             """
 
             http_options = (
-                _BaseSimulatorRestTransport._BaseCreateReplay._get_http_options()
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_create_replay(request, metadata)
-            transcoded_request = (
-                _BaseSimulatorRestTransport._BaseCreateReplay._get_transcoded_request(
-                    http_options, request
-                )
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_create_org_policy_violations_preview(
+                request, metadata
+            )
+            transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_transcoded_request(
+                http_options, request
             )
 
-            body = _BaseSimulatorRestTransport._BaseCreateReplay._get_request_body_json(
+            body = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_request_body_json(
                 transcoded_request
             )
 
             # Jsonify the query params
-            query_params = (
-                _BaseSimulatorRestTransport._BaseCreateReplay._get_query_params_json(
-                    transcoded_request
-                )
+            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_query_params_json(
+                transcoded_request
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -580,17 +662,17 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.policysimulator_v1.SimulatorClient.CreateReplay",
+                    f"Sending request for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.CreateOrgPolicyViolationsPreview",
                     extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
-                        "rpcName": "CreateReplay",
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "rpcName": "CreateOrgPolicyViolationsPreview",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = SimulatorRestTransport._CreateReplay._get_response(
+            response = OrgPolicyViolationsPreviewServiceRestTransport._CreateOrgPolicyViolationsPreview._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -609,9 +691,12 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_create_replay(resp)
+            resp = self._interceptor.post_create_org_policy_violations_preview(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_replay_with_metadata(
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_create_org_policy_violations_preview_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -627,168 +712,24 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.policysimulator_v1.SimulatorClient.create_replay",
+                    "Received response for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.create_org_policy_violations_preview",
                     extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
-                        "rpcName": "CreateReplay",
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "rpcName": "CreateOrgPolicyViolationsPreview",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
                 )
             return resp
 
-    class _GetReplay(_BaseSimulatorRestTransport._BaseGetReplay, SimulatorRestStub):
-        def __hash__(self):
-            return hash("SimulatorRestTransport.GetReplay")
-
-        @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(session, method)(
-                "{host}{uri}".format(host=host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-            return response
-
-        def __call__(
-            self,
-            request: simulator.GetReplayRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> simulator.Replay:
-            r"""Call the get replay method over HTTP.
-
-            Args:
-                request (~.simulator.GetReplayRequest):
-                    The request object. Request message for
-                [Simulator.GetReplay][google.cloud.policysimulator.v1.Simulator.GetReplay].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
-
-            Returns:
-                ~.simulator.Replay:
-                    A resource describing a ``Replay``, or simulation.
-            """
-
-            http_options = (
-                _BaseSimulatorRestTransport._BaseGetReplay._get_http_options()
-            )
-
-            request, metadata = self._interceptor.pre_get_replay(request, metadata)
-            transcoded_request = (
-                _BaseSimulatorRestTransport._BaseGetReplay._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseSimulatorRestTransport._BaseGetReplay._get_query_params_json(
-                    transcoded_request
-                )
-            )
-
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
-                try:
-                    request_payload = type(request).to_json(request)
-                except:
-                    request_payload = None
-                http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
-                }
-                _LOGGER.debug(
-                    f"Sending request for google.cloud.policysimulator_v1.SimulatorClient.GetReplay",
-                    extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
-                        "rpcName": "GetReplay",
-                        "httpRequest": http_request,
-                        "metadata": http_request["headers"],
-                    },
-                )
-
-            # Send the request
-            response = SimulatorRestTransport._GetReplay._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = simulator.Replay()
-            pb_resp = simulator.Replay.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-
-            resp = self._interceptor.post_get_replay(resp)
-            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_replay_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                try:
-                    response_payload = simulator.Replay.to_json(response)
-                except:
-                    response_payload = None
-                http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
-                }
-                _LOGGER.debug(
-                    "Received response for google.cloud.policysimulator_v1.SimulatorClient.get_replay",
-                    extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
-                        "rpcName": "GetReplay",
-                        "metadata": http_response["headers"],
-                        "httpResponse": http_response,
-                    },
-                )
-            return resp
-
-    class _ListReplayResults(
-        _BaseSimulatorRestTransport._BaseListReplayResults, SimulatorRestStub
+    class _GetOrgPolicyViolationsPreview(
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview,
+        OrgPolicyViolationsPreviewServiceRestStub,
     ):
         def __hash__(self):
-            return hash("SimulatorRestTransport.ListReplayResults")
+            return hash(
+                "OrgPolicyViolationsPreviewServiceRestTransport.GetOrgPolicyViolationsPreview"
+            )
 
         @staticmethod
         def _get_response(
@@ -814,46 +755,55 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
 
         def __call__(
             self,
-            request: simulator.ListReplayResultsRequest,
+            request: gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> simulator.ListReplayResultsResponse:
-            r"""Call the list replay results method over HTTP.
+        ) -> gcp_orgpolicy.OrgPolicyViolationsPreview:
+            r"""Call the get org policy violations
+            preview method over HTTP.
 
-            Args:
-                request (~.simulator.ListReplayResultsRequest):
-                    The request object. Request message for
-                [Simulator.ListReplayResults][google.cloud.policysimulator.v1.Simulator.ListReplayResults].
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                    sent along with the request as metadata. Normally, each value must be of type `str`,
-                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                    be of type `bytes`.
+                Args:
+                    request (~.gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest):
+                        The request object. GetOrgPolicyViolationsPreviewRequest is the request
+                    message for
+                    [OrgPolicyViolationsPreviewService.GetOrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.GetOrgPolicyViolationsPreview].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
-            Returns:
-                ~.simulator.ListReplayResultsResponse:
-                    Response message for
-                [Simulator.ListReplayResults][google.cloud.policysimulator.v1.Simulator.ListReplayResults].
+                Returns:
+                    ~.gcp_orgpolicy.OrgPolicyViolationsPreview:
+                        OrgPolicyViolationsPreview is a resource providing a
+                    preview of the violations that will exist if an
+                    OrgPolicy change is made.
+
+                    The list of violations are modeled as child resources
+                    and retrieved via a [ListOrgPolicyViolations][] API
+                    call. There are potentially more [OrgPolicyViolations][]
+                    than could fit in an embedded field. Thus, the use of a
+                    child resource instead of a field.
 
             """
 
             http_options = (
-                _BaseSimulatorRestTransport._BaseListReplayResults._get_http_options()
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_http_options()
             )
 
-            request, metadata = self._interceptor.pre_list_replay_results(
+            request, metadata = self._interceptor.pre_get_org_policy_violations_preview(
                 request, metadata
             )
-            transcoded_request = _BaseSimulatorRestTransport._BaseListReplayResults._get_transcoded_request(
+            transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseSimulatorRestTransport._BaseListReplayResults._get_query_params_json(
+            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_query_params_json(
                 transcoded_request
             )
 
@@ -875,17 +825,17 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.policysimulator_v1.SimulatorClient.ListReplayResults",
+                    f"Sending request for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.GetOrgPolicyViolationsPreview",
                     extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
-                        "rpcName": "ListReplayResults",
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "rpcName": "GetOrgPolicyViolationsPreview",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
                     },
                 )
 
             # Send the request
-            response = SimulatorRestTransport._ListReplayResults._get_response(
+            response = OrgPolicyViolationsPreviewServiceRestTransport._GetOrgPolicyViolationsPreview._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -900,21 +850,24 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = simulator.ListReplayResultsResponse()
-            pb_resp = simulator.ListReplayResultsResponse.pb(resp)
+            resp = gcp_orgpolicy.OrgPolicyViolationsPreview()
+            pb_resp = gcp_orgpolicy.OrgPolicyViolationsPreview.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_replay_results(resp)
+            resp = self._interceptor.post_get_org_policy_violations_preview(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_replay_results_with_metadata(
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_org_policy_violations_preview_with_metadata(
                 resp, response_metadata
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
             ):  # pragma: NO COVER
                 try:
-                    response_payload = simulator.ListReplayResultsResponse.to_json(
+                    response_payload = gcp_orgpolicy.OrgPolicyViolationsPreview.to_json(
                         response
                     )
                 except:
@@ -925,10 +878,332 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.policysimulator_v1.SimulatorClient.list_replay_results",
+                    "Received response for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.get_org_policy_violations_preview",
                     extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
-                        "rpcName": "ListReplayResults",
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "rpcName": "GetOrgPolicyViolationsPreview",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListOrgPolicyViolations(
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations,
+        OrgPolicyViolationsPreviewServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "OrgPolicyViolationsPreviewServiceRestTransport.ListOrgPolicyViolations"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcp_orgpolicy.ListOrgPolicyViolationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gcp_orgpolicy.ListOrgPolicyViolationsResponse:
+            r"""Call the list org policy
+            violations method over HTTP.
+
+                Args:
+                    request (~.gcp_orgpolicy.ListOrgPolicyViolationsRequest):
+                        The request object. ListOrgPolicyViolationsRequest is the request message
+                    for
+                    [OrgPolicyViolationsPreviewService.ListOrgPolicyViolations][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.ListOrgPolicyViolations].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.gcp_orgpolicy.ListOrgPolicyViolationsResponse:
+                        ListOrgPolicyViolationsResponse is the response message
+                    for
+                    [OrgPolicyViolationsPreviewService.ListOrgPolicyViolations][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.ListOrgPolicyViolations]
+
+            """
+
+            http_options = (
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_org_policy_violations(
+                request, metadata
+            )
+            transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.ListOrgPolicyViolations",
+                    extra={
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "rpcName": "ListOrgPolicyViolations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = OrgPolicyViolationsPreviewServiceRestTransport._ListOrgPolicyViolations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcp_orgpolicy.ListOrgPolicyViolationsResponse()
+            pb_resp = gcp_orgpolicy.ListOrgPolicyViolationsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_org_policy_violations(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_org_policy_violations_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gcp_orgpolicy.ListOrgPolicyViolationsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.list_org_policy_violations",
+                    extra={
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "rpcName": "ListOrgPolicyViolations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListOrgPolicyViolationsPreviews(
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews,
+        OrgPolicyViolationsPreviewServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "OrgPolicyViolationsPreviewServiceRestTransport.ListOrgPolicyViolationsPreviews"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse:
+            r"""Call the list org policy
+            violations previews method over HTTP.
+
+                Args:
+                    request (~.gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest):
+                        The request object. ListOrgPolicyViolationsPreviewsRequest is the request
+                    message for
+                    [OrgPolicyViolationsPreviewService.ListOrgPolicyViolationsPreviews][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.ListOrgPolicyViolationsPreviews].
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse:
+                        ListOrgPolicyViolationsPreviewsResponse is the response
+                    message for
+                    [OrgPolicyViolationsPreviewService.ListOrgPolicyViolationsPreviews][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.ListOrgPolicyViolationsPreviews].
+
+            """
+
+            http_options = (
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_http_options()
+            )
+
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_list_org_policy_violations_previews(
+                request, metadata
+            )
+            transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.ListOrgPolicyViolationsPreviews",
+                    extra={
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "rpcName": "ListOrgPolicyViolationsPreviews",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = OrgPolicyViolationsPreviewServiceRestTransport._ListOrgPolicyViolationsPreviews._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse()
+            pb_resp = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_org_policy_violations_previews(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_list_org_policy_violations_previews_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.list_org_policy_violations_previews",
+                    extra={
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "rpcName": "ListOrgPolicyViolationsPreviews",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -936,38 +1211,59 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             return resp
 
     @property
-    def create_replay(
-        self,
-    ) -> Callable[[simulator.CreateReplayRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._CreateReplay(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_replay(self) -> Callable[[simulator.GetReplayRequest], simulator.Replay]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetReplay(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_replay_results(
+    def create_org_policy_violations_preview(
         self,
     ) -> Callable[
-        [simulator.ListReplayResultsRequest], simulator.ListReplayResultsResponse
+        [gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest],
+        operations_pb2.Operation,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListReplayResults(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateOrgPolicyViolationsPreview(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_org_policy_violations_preview(
+        self,
+    ) -> Callable[
+        [gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest],
+        gcp_orgpolicy.OrgPolicyViolationsPreview,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetOrgPolicyViolationsPreview(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_org_policy_violations(
+        self,
+    ) -> Callable[
+        [gcp_orgpolicy.ListOrgPolicyViolationsRequest],
+        gcp_orgpolicy.ListOrgPolicyViolationsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListOrgPolicyViolations(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_org_policy_violations_previews(
+        self,
+    ) -> Callable[
+        [gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest],
+        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListOrgPolicyViolationsPreviews(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _GetOperation(
-        _BaseSimulatorRestTransport._BaseGetOperation, SimulatorRestStub
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation,
+        OrgPolicyViolationsPreviewServiceRestStub,
     ):
         def __hash__(self):
-            return hash("SimulatorRestTransport.GetOperation")
+            return hash("OrgPolicyViolationsPreviewServiceRestTransport.GetOperation")
 
         @staticmethod
         def _get_response(
@@ -1017,21 +1313,17 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             """
 
             http_options = (
-                _BaseSimulatorRestTransport._BaseGetOperation._get_http_options()
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_http_options()
             )
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseSimulatorRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
+            transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
             )
 
             # Jsonify the query params
-            query_params = (
-                _BaseSimulatorRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1052,9 +1344,9 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.policysimulator_v1.SimulatorClient.GetOperation",
+                    f"Sending request for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.GetOperation",
                     extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
                         "rpcName": "GetOperation",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -1062,7 +1354,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                 )
 
             # Send the request
-            response = SimulatorRestTransport._GetOperation._get_response(
+            response = OrgPolicyViolationsPreviewServiceRestTransport._GetOperation._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -1093,9 +1385,9 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.policysimulator_v1.SimulatorAsyncClient.GetOperation",
+                    "Received response for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceAsyncClient.GetOperation",
                     extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
                         "rpcName": "GetOperation",
                         "httpResponse": http_response,
                         "metadata": http_response["headers"],
@@ -1108,10 +1400,11 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
     class _ListOperations(
-        _BaseSimulatorRestTransport._BaseListOperations, SimulatorRestStub
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations,
+        OrgPolicyViolationsPreviewServiceRestStub,
     ):
         def __hash__(self):
-            return hash("SimulatorRestTransport.ListOperations")
+            return hash("OrgPolicyViolationsPreviewServiceRestTransport.ListOperations")
 
         @staticmethod
         def _get_response(
@@ -1161,21 +1454,17 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
             """
 
             http_options = (
-                _BaseSimulatorRestTransport._BaseListOperations._get_http_options()
+                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_http_options()
             )
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseSimulatorRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
+            transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
             )
 
             # Jsonify the query params
-            query_params = (
-                _BaseSimulatorRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
+            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1196,9 +1485,9 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.policysimulator_v1.SimulatorClient.ListOperations",
+                    f"Sending request for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceClient.ListOperations",
                     extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
                         "rpcName": "ListOperations",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -1206,7 +1495,7 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                 )
 
             # Send the request
-            response = SimulatorRestTransport._ListOperations._get_response(
+            response = OrgPolicyViolationsPreviewServiceRestTransport._ListOperations._get_response(
                 self._host,
                 metadata,
                 query_params,
@@ -1237,9 +1526,9 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.policysimulator_v1.SimulatorAsyncClient.ListOperations",
+                    "Received response for google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceAsyncClient.ListOperations",
                     extra={
-                        "serviceName": "google.cloud.policysimulator.v1.Simulator",
+                        "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
                         "rpcName": "ListOperations",
                         "httpResponse": http_response,
                         "metadata": http_response["headers"],
@@ -1255,4 +1544,4 @@ class SimulatorRestTransport(_BaseSimulatorRestTransport):
         self._session.close()
 
 
-__all__ = ("SimulatorRestTransport",)
+__all__ = ("OrgPolicyViolationsPreviewServiceRestTransport",)
