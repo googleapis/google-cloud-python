@@ -4,6 +4,32 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.12.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.11.0...v2.12.0) (2025-07-23)
+
+
+### Features
+
+* Add code samples for dbt bigframes integration ([#1898](https://github.com/googleapis/python-bigquery-dataframes/issues/1898)) ([7e03252](https://github.com/googleapis/python-bigquery-dataframes/commit/7e03252d31e505731db113eb38af77842bf29b9b))
+* Add isin local execution to hybrid engine ([#1915](https://github.com/googleapis/python-bigquery-dataframes/issues/1915)) ([c0cefd3](https://github.com/googleapis/python-bigquery-dataframes/commit/c0cefd36cfd55962b86178d2a612d625ed17f79c))
+* Add ml.metrics.mean_absolute_error method ([#1910](https://github.com/googleapis/python-bigquery-dataframes/issues/1910)) ([15b8449](https://github.com/googleapis/python-bigquery-dataframes/commit/15b8449dc5ad0c8190a5cbf47894436de18c8e88))
+* Allow local arithmetic execution in hybrid engine ([#1906](https://github.com/googleapis/python-bigquery-dataframes/issues/1906)) ([ebdcd02](https://github.com/googleapis/python-bigquery-dataframes/commit/ebdcd0240f0d8edaef3094b3a4e664b4a84d4a25))
+* Provide day_of_year and day_of_week for dt accessor ([#1911](https://github.com/googleapis/python-bigquery-dataframes/issues/1911)) ([40e7638](https://github.com/googleapis/python-bigquery-dataframes/commit/40e76383948a79bde48108f6180fd6ae2b3d0875))
+* Support params `max_batching_rows`, `container_cpu`, and `container_memory` for `udf` ([#1897](https://github.com/googleapis/python-bigquery-dataframes/issues/1897)) ([8baa912](https://github.com/googleapis/python-bigquery-dataframes/commit/8baa9126e595ae682469a6bb462244240699f57f))
+* Support typed pyarrow.Scalar in assignment  ([#1930](https://github.com/googleapis/python-bigquery-dataframes/issues/1930)) ([cd28e12](https://github.com/googleapis/python-bigquery-dataframes/commit/cd28e12b3f70a6934a68963a7f25dbd5e3c67335))
+
+
+### Bug Fixes
+
+* Correct min field from max() to min() in remote function tests ([#1917](https://github.com/googleapis/python-bigquery-dataframes/issues/1917)) ([d5c54fc](https://github.com/googleapis/python-bigquery-dataframes/commit/d5c54fca32ed75c1aef52c99781db7f8ac7426e1))
+* Resolve location reset issue in bigquery options ([#1914](https://github.com/googleapis/python-bigquery-dataframes/issues/1914)) ([c15cb8a](https://github.com/googleapis/python-bigquery-dataframes/commit/c15cb8a1a9c834c2c1c2984930415b246f3f948b))
+* Series.str.isdigit in unicode superscripts and fractions ([#1924](https://github.com/googleapis/python-bigquery-dataframes/issues/1924)) ([8d46c36](https://github.com/googleapis/python-bigquery-dataframes/commit/8d46c36da7881a99861166c03a0831beff8ee0dd))
+
+
+### Documentation
+
+* Add code snippets for session and IO public docs ([#1919](https://github.com/googleapis/python-bigquery-dataframes/issues/1919)) ([6e01cbe](https://github.com/googleapis/python-bigquery-dataframes/commit/6e01cbec0dcf40e528b4a96e944681df18773c11))
+* Add snippets for performance optimization doc ([#1923](https://github.com/googleapis/python-bigquery-dataframes/issues/1923)) ([4da309e](https://github.com/googleapis/python-bigquery-dataframes/commit/4da309e27bd58a685e8aca953717da75d4ba5305))
+
 ## [2.11.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.10.0...v2.11.0) (2025-07-15)
 
 
