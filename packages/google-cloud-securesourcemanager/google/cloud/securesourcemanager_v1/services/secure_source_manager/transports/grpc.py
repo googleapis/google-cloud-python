@@ -116,29 +116,8 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
 
     Secure Source Manager API
 
-    Access Secure Source Manager instances, resources, and repositories.
-
-    This API is split across two servers: the Control Plane and the Data
-    Plane.
-
-    Data Plane endpoints are hosted directly by your Secure Source
-    Manager instance, so you must connect to your instance's API
-    hostname to access them. The API hostname looks like the following:
-
-    ::
-
-       https://[instance-id]-[project-number]-api.[location].sourcemanager.dev
-
-    For example,
-
-    ::
-
-       https://my-instance-702770452863-api.us-central1.sourcemanager.dev
-
-    Data Plane endpoints are denoted with **Host: Data Plane**.
-
-    All other endpoints are found in the normal Cloud API location,
-    namely, ``securcesourcemanager.googleapis.com``.
+    Access Secure Source Manager instances, resources, and
+    repositories.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -489,7 +468,9 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
 
         Lists Repositories in a given project and location.
 
-        **Host: Data Plane**
+        The instance field is required in the query parameter
+        for requests using the
+        securesourcemanager.googleapis.com endpoint.
 
         Returns:
             Callable[[~.ListRepositoriesRequest],
@@ -519,8 +500,6 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
 
         Gets metadata of a repository.
 
-        **Host: Data Plane**
-
         Returns:
             Callable[[~.GetRepositoryRequest],
                     ~.Repository]:
@@ -547,9 +526,11 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
     ]:
         r"""Return a callable for the create repository method over gRPC.
 
-        Creates a new repository in a given project and location.
-
-        **Host: Data Plane**
+        Creates a new repository in a given project and
+        location.
+        The Repository.Instance field is required in the request
+        body for requests using the
+        securesourcemanager.googleapis.com endpoint.
 
         Returns:
             Callable[[~.CreateRepositoryRequest],
@@ -570,6 +551,34 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         return self._stubs["create_repository"]
 
     @property
+    def update_repository(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateRepositoryRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update repository method over gRPC.
+
+        Updates the metadata of a repository.
+
+        Returns:
+            Callable[[~.UpdateRepositoryRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_repository" not in self._stubs:
+            self._stubs["update_repository"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateRepository",
+                request_serializer=secure_source_manager.UpdateRepositoryRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_repository"]
+
+    @property
     def delete_repository(
         self,
     ) -> Callable[
@@ -578,8 +587,6 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         r"""Return a callable for the delete repository method over gRPC.
 
         Deletes a Repository.
-
-        **Host: Data Plane**
 
         Returns:
             Callable[[~.DeleteRepositoryRequest],
@@ -598,6 +605,139 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_repository"]
+
+    @property
+    def list_hooks(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListHooksRequest],
+        secure_source_manager.ListHooksResponse,
+    ]:
+        r"""Return a callable for the list hooks method over gRPC.
+
+        Lists hooks in a given repository.
+
+        Returns:
+            Callable[[~.ListHooksRequest],
+                    ~.ListHooksResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_hooks" not in self._stubs:
+            self._stubs["list_hooks"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListHooks",
+                request_serializer=secure_source_manager.ListHooksRequest.serialize,
+                response_deserializer=secure_source_manager.ListHooksResponse.deserialize,
+            )
+        return self._stubs["list_hooks"]
+
+    @property
+    def get_hook(
+        self,
+    ) -> Callable[[secure_source_manager.GetHookRequest], secure_source_manager.Hook]:
+        r"""Return a callable for the get hook method over gRPC.
+
+        Gets metadata of a hook.
+
+        Returns:
+            Callable[[~.GetHookRequest],
+                    ~.Hook]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_hook" not in self._stubs:
+            self._stubs["get_hook"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetHook",
+                request_serializer=secure_source_manager.GetHookRequest.serialize,
+                response_deserializer=secure_source_manager.Hook.deserialize,
+            )
+        return self._stubs["get_hook"]
+
+    @property
+    def create_hook(
+        self,
+    ) -> Callable[[secure_source_manager.CreateHookRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create hook method over gRPC.
+
+        Creates a new hook in a given repository.
+
+        Returns:
+            Callable[[~.CreateHookRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_hook" not in self._stubs:
+            self._stubs["create_hook"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreateHook",
+                request_serializer=secure_source_manager.CreateHookRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_hook"]
+
+    @property
+    def update_hook(
+        self,
+    ) -> Callable[[secure_source_manager.UpdateHookRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update hook method over gRPC.
+
+        Updates the metadata of a hook.
+
+        Returns:
+            Callable[[~.UpdateHookRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_hook" not in self._stubs:
+            self._stubs["update_hook"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateHook",
+                request_serializer=secure_source_manager.UpdateHookRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_hook"]
+
+    @property
+    def delete_hook(
+        self,
+    ) -> Callable[[secure_source_manager.DeleteHookRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete hook method over gRPC.
+
+        Deletes a Hook.
+
+        Returns:
+            Callable[[~.DeleteHookRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_hook" not in self._stubs:
+            self._stubs["delete_hook"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeleteHook",
+                request_serializer=secure_source_manager.DeleteHookRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_hook"]
 
     @property
     def get_iam_policy_repo(
@@ -823,6 +963,867 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_branch_rule"]
+
+    @property
+    def create_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreatePullRequestRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create pull request method over gRPC.
+
+        Creates a pull request.
+
+        Returns:
+            Callable[[~.CreatePullRequestRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_pull_request" not in self._stubs:
+            self._stubs["create_pull_request"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreatePullRequest",
+                request_serializer=secure_source_manager.CreatePullRequestRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_pull_request"]
+
+    @property
+    def get_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetPullRequestRequest], secure_source_manager.PullRequest
+    ]:
+        r"""Return a callable for the get pull request method over gRPC.
+
+        Gets a pull request.
+
+        Returns:
+            Callable[[~.GetPullRequestRequest],
+                    ~.PullRequest]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_pull_request" not in self._stubs:
+            self._stubs["get_pull_request"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetPullRequest",
+                request_serializer=secure_source_manager.GetPullRequestRequest.serialize,
+                response_deserializer=secure_source_manager.PullRequest.deserialize,
+            )
+        return self._stubs["get_pull_request"]
+
+    @property
+    def list_pull_requests(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListPullRequestsRequest],
+        secure_source_manager.ListPullRequestsResponse,
+    ]:
+        r"""Return a callable for the list pull requests method over gRPC.
+
+        Lists pull requests in a repository.
+
+        Returns:
+            Callable[[~.ListPullRequestsRequest],
+                    ~.ListPullRequestsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_pull_requests" not in self._stubs:
+            self._stubs["list_pull_requests"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequests",
+                request_serializer=secure_source_manager.ListPullRequestsRequest.serialize,
+                response_deserializer=secure_source_manager.ListPullRequestsResponse.deserialize,
+            )
+        return self._stubs["list_pull_requests"]
+
+    @property
+    def update_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdatePullRequestRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update pull request method over gRPC.
+
+        Updates a pull request.
+
+        Returns:
+            Callable[[~.UpdatePullRequestRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_pull_request" not in self._stubs:
+            self._stubs["update_pull_request"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdatePullRequest",
+                request_serializer=secure_source_manager.UpdatePullRequestRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_pull_request"]
+
+    @property
+    def merge_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.MergePullRequestRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the merge pull request method over gRPC.
+
+        Merges a pull request.
+
+        Returns:
+            Callable[[~.MergePullRequestRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "merge_pull_request" not in self._stubs:
+            self._stubs["merge_pull_request"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/MergePullRequest",
+                request_serializer=secure_source_manager.MergePullRequestRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["merge_pull_request"]
+
+    @property
+    def open_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.OpenPullRequestRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the open pull request method over gRPC.
+
+        Opens a pull request.
+
+        Returns:
+            Callable[[~.OpenPullRequestRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "open_pull_request" not in self._stubs:
+            self._stubs["open_pull_request"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/OpenPullRequest",
+                request_serializer=secure_source_manager.OpenPullRequestRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["open_pull_request"]
+
+    @property
+    def close_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ClosePullRequestRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the close pull request method over gRPC.
+
+        Closes a pull request without merging.
+
+        Returns:
+            Callable[[~.ClosePullRequestRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "close_pull_request" not in self._stubs:
+            self._stubs["close_pull_request"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ClosePullRequest",
+                request_serializer=secure_source_manager.ClosePullRequestRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["close_pull_request"]
+
+    @property
+    def list_pull_request_file_diffs(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListPullRequestFileDiffsRequest],
+        secure_source_manager.ListPullRequestFileDiffsResponse,
+    ]:
+        r"""Return a callable for the list pull request file diffs method over gRPC.
+
+        Lists a pull request's file diffs.
+
+        Returns:
+            Callable[[~.ListPullRequestFileDiffsRequest],
+                    ~.ListPullRequestFileDiffsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_pull_request_file_diffs" not in self._stubs:
+            self._stubs[
+                "list_pull_request_file_diffs"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestFileDiffs",
+                request_serializer=secure_source_manager.ListPullRequestFileDiffsRequest.serialize,
+                response_deserializer=secure_source_manager.ListPullRequestFileDiffsResponse.deserialize,
+            )
+        return self._stubs["list_pull_request_file_diffs"]
+
+    @property
+    def fetch_tree(
+        self,
+    ) -> Callable[
+        [secure_source_manager.FetchTreeRequest],
+        secure_source_manager.FetchTreeResponse,
+    ]:
+        r"""Return a callable for the fetch tree method over gRPC.
+
+        Fetches a tree from a repository.
+
+        Returns:
+            Callable[[~.FetchTreeRequest],
+                    ~.FetchTreeResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_tree" not in self._stubs:
+            self._stubs["fetch_tree"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/FetchTree",
+                request_serializer=secure_source_manager.FetchTreeRequest.serialize,
+                response_deserializer=secure_source_manager.FetchTreeResponse.deserialize,
+            )
+        return self._stubs["fetch_tree"]
+
+    @property
+    def fetch_blob(
+        self,
+    ) -> Callable[
+        [secure_source_manager.FetchBlobRequest],
+        secure_source_manager.FetchBlobResponse,
+    ]:
+        r"""Return a callable for the fetch blob method over gRPC.
+
+        Fetches a blob from a repository.
+
+        Returns:
+            Callable[[~.FetchBlobRequest],
+                    ~.FetchBlobResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_blob" not in self._stubs:
+            self._stubs["fetch_blob"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/FetchBlob",
+                request_serializer=secure_source_manager.FetchBlobRequest.serialize,
+                response_deserializer=secure_source_manager.FetchBlobResponse.deserialize,
+            )
+        return self._stubs["fetch_blob"]
+
+    @property
+    def create_issue(
+        self,
+    ) -> Callable[[secure_source_manager.CreateIssueRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create issue method over gRPC.
+
+        Creates an issue.
+
+        Returns:
+            Callable[[~.CreateIssueRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_issue" not in self._stubs:
+            self._stubs["create_issue"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreateIssue",
+                request_serializer=secure_source_manager.CreateIssueRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_issue"]
+
+    @property
+    def get_issue(
+        self,
+    ) -> Callable[[secure_source_manager.GetIssueRequest], secure_source_manager.Issue]:
+        r"""Return a callable for the get issue method over gRPC.
+
+        Gets an issue.
+
+        Returns:
+            Callable[[~.GetIssueRequest],
+                    ~.Issue]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_issue" not in self._stubs:
+            self._stubs["get_issue"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetIssue",
+                request_serializer=secure_source_manager.GetIssueRequest.serialize,
+                response_deserializer=secure_source_manager.Issue.deserialize,
+            )
+        return self._stubs["get_issue"]
+
+    @property
+    def list_issues(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListIssuesRequest],
+        secure_source_manager.ListIssuesResponse,
+    ]:
+        r"""Return a callable for the list issues method over gRPC.
+
+        Lists issues in a repository.
+
+        Returns:
+            Callable[[~.ListIssuesRequest],
+                    ~.ListIssuesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_issues" not in self._stubs:
+            self._stubs["list_issues"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListIssues",
+                request_serializer=secure_source_manager.ListIssuesRequest.serialize,
+                response_deserializer=secure_source_manager.ListIssuesResponse.deserialize,
+            )
+        return self._stubs["list_issues"]
+
+    @property
+    def update_issue(
+        self,
+    ) -> Callable[[secure_source_manager.UpdateIssueRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update issue method over gRPC.
+
+        Updates a issue.
+
+        Returns:
+            Callable[[~.UpdateIssueRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_issue" not in self._stubs:
+            self._stubs["update_issue"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateIssue",
+                request_serializer=secure_source_manager.UpdateIssueRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_issue"]
+
+    @property
+    def delete_issue(
+        self,
+    ) -> Callable[[secure_source_manager.DeleteIssueRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete issue method over gRPC.
+
+        Deletes an issue.
+
+        Returns:
+            Callable[[~.DeleteIssueRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_issue" not in self._stubs:
+            self._stubs["delete_issue"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeleteIssue",
+                request_serializer=secure_source_manager.DeleteIssueRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_issue"]
+
+    @property
+    def open_issue(
+        self,
+    ) -> Callable[[secure_source_manager.OpenIssueRequest], operations_pb2.Operation]:
+        r"""Return a callable for the open issue method over gRPC.
+
+        Opens an issue.
+
+        Returns:
+            Callable[[~.OpenIssueRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "open_issue" not in self._stubs:
+            self._stubs["open_issue"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/OpenIssue",
+                request_serializer=secure_source_manager.OpenIssueRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["open_issue"]
+
+    @property
+    def close_issue(
+        self,
+    ) -> Callable[[secure_source_manager.CloseIssueRequest], operations_pb2.Operation]:
+        r"""Return a callable for the close issue method over gRPC.
+
+        Closes an issue.
+
+        Returns:
+            Callable[[~.CloseIssueRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "close_issue" not in self._stubs:
+            self._stubs["close_issue"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CloseIssue",
+                request_serializer=secure_source_manager.CloseIssueRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["close_issue"]
+
+    @property
+    def get_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetPullRequestCommentRequest],
+        secure_source_manager.PullRequestComment,
+    ]:
+        r"""Return a callable for the get pull request comment method over gRPC.
+
+        Gets a pull request comment.
+
+        Returns:
+            Callable[[~.GetPullRequestCommentRequest],
+                    ~.PullRequestComment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_pull_request_comment" not in self._stubs:
+            self._stubs["get_pull_request_comment"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetPullRequestComment",
+                request_serializer=secure_source_manager.GetPullRequestCommentRequest.serialize,
+                response_deserializer=secure_source_manager.PullRequestComment.deserialize,
+            )
+        return self._stubs["get_pull_request_comment"]
+
+    @property
+    def list_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListPullRequestCommentsRequest],
+        secure_source_manager.ListPullRequestCommentsResponse,
+    ]:
+        r"""Return a callable for the list pull request comments method over gRPC.
+
+        Lists pull request comments.
+
+        Returns:
+            Callable[[~.ListPullRequestCommentsRequest],
+                    ~.ListPullRequestCommentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_pull_request_comments" not in self._stubs:
+            self._stubs[
+                "list_pull_request_comments"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestComments",
+                request_serializer=secure_source_manager.ListPullRequestCommentsRequest.serialize,
+                response_deserializer=secure_source_manager.ListPullRequestCommentsResponse.deserialize,
+            )
+        return self._stubs["list_pull_request_comments"]
+
+    @property
+    def create_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreatePullRequestCommentRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the create pull request comment method over gRPC.
+
+        Creates a pull request comment.
+
+        Returns:
+            Callable[[~.CreatePullRequestCommentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_pull_request_comment" not in self._stubs:
+            self._stubs[
+                "create_pull_request_comment"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreatePullRequestComment",
+                request_serializer=secure_source_manager.CreatePullRequestCommentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_pull_request_comment"]
+
+    @property
+    def update_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdatePullRequestCommentRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the update pull request comment method over gRPC.
+
+        Updates a pull request comment.
+
+        Returns:
+            Callable[[~.UpdatePullRequestCommentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_pull_request_comment" not in self._stubs:
+            self._stubs[
+                "update_pull_request_comment"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdatePullRequestComment",
+                request_serializer=secure_source_manager.UpdatePullRequestCommentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_pull_request_comment"]
+
+    @property
+    def delete_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeletePullRequestCommentRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the delete pull request comment method over gRPC.
+
+        Deletes a pull request comment.
+
+        Returns:
+            Callable[[~.DeletePullRequestCommentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_pull_request_comment" not in self._stubs:
+            self._stubs[
+                "delete_pull_request_comment"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeletePullRequestComment",
+                request_serializer=secure_source_manager.DeletePullRequestCommentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_pull_request_comment"]
+
+    @property
+    def batch_create_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.BatchCreatePullRequestCommentsRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the batch create pull request
+        comments method over gRPC.
+
+        Batch creates pull request comments.
+
+        Returns:
+            Callable[[~.BatchCreatePullRequestCommentsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_create_pull_request_comments" not in self._stubs:
+            self._stubs[
+                "batch_create_pull_request_comments"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/BatchCreatePullRequestComments",
+                request_serializer=secure_source_manager.BatchCreatePullRequestCommentsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["batch_create_pull_request_comments"]
+
+    @property
+    def resolve_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ResolvePullRequestCommentsRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the resolve pull request comments method over gRPC.
+
+        Resolves pull request comments.
+
+        Returns:
+            Callable[[~.ResolvePullRequestCommentsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "resolve_pull_request_comments" not in self._stubs:
+            self._stubs[
+                "resolve_pull_request_comments"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ResolvePullRequestComments",
+                request_serializer=secure_source_manager.ResolvePullRequestCommentsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["resolve_pull_request_comments"]
+
+    @property
+    def unresolve_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UnresolvePullRequestCommentsRequest],
+        operations_pb2.Operation,
+    ]:
+        r"""Return a callable for the unresolve pull request
+        comments method over gRPC.
+
+        Unresolves pull request comment.
+
+        Returns:
+            Callable[[~.UnresolvePullRequestCommentsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "unresolve_pull_request_comments" not in self._stubs:
+            self._stubs[
+                "unresolve_pull_request_comments"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UnresolvePullRequestComments",
+                request_serializer=secure_source_manager.UnresolvePullRequestCommentsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["unresolve_pull_request_comments"]
+
+    @property
+    def create_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreateIssueCommentRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create issue comment method over gRPC.
+
+        Creates an issue comment.
+
+        Returns:
+            Callable[[~.CreateIssueCommentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_issue_comment" not in self._stubs:
+            self._stubs["create_issue_comment"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreateIssueComment",
+                request_serializer=secure_source_manager.CreateIssueCommentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_issue_comment"]
+
+    @property
+    def get_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetIssueCommentRequest],
+        secure_source_manager.IssueComment,
+    ]:
+        r"""Return a callable for the get issue comment method over gRPC.
+
+        Gets an issue comment.
+
+        Returns:
+            Callable[[~.GetIssueCommentRequest],
+                    ~.IssueComment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_issue_comment" not in self._stubs:
+            self._stubs["get_issue_comment"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetIssueComment",
+                request_serializer=secure_source_manager.GetIssueCommentRequest.serialize,
+                response_deserializer=secure_source_manager.IssueComment.deserialize,
+            )
+        return self._stubs["get_issue_comment"]
+
+    @property
+    def list_issue_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListIssueCommentsRequest],
+        secure_source_manager.ListIssueCommentsResponse,
+    ]:
+        r"""Return a callable for the list issue comments method over gRPC.
+
+        Lists comments in an issue.
+
+        Returns:
+            Callable[[~.ListIssueCommentsRequest],
+                    ~.ListIssueCommentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_issue_comments" not in self._stubs:
+            self._stubs["list_issue_comments"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListIssueComments",
+                request_serializer=secure_source_manager.ListIssueCommentsRequest.serialize,
+                response_deserializer=secure_source_manager.ListIssueCommentsResponse.deserialize,
+            )
+        return self._stubs["list_issue_comments"]
+
+    @property
+    def update_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateIssueCommentRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update issue comment method over gRPC.
+
+        Updates an issue comment.
+
+        Returns:
+            Callable[[~.UpdateIssueCommentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_issue_comment" not in self._stubs:
+            self._stubs["update_issue_comment"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateIssueComment",
+                request_serializer=secure_source_manager.UpdateIssueCommentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_issue_comment"]
+
+    @property
+    def delete_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeleteIssueCommentRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete issue comment method over gRPC.
+
+        Deletes an issue comment.
+
+        Returns:
+            Callable[[~.DeleteIssueCommentRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_issue_comment" not in self._stubs:
+            self._stubs["delete_issue_comment"] = self._logged_channel.unary_unary(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeleteIssueComment",
+                request_serializer=secure_source_manager.DeleteIssueCommentRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_issue_comment"]
 
     def close(self):
         self._logged_channel.close()

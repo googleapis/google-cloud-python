@@ -76,6 +76,30 @@ class SecureSourceManagerRestInterceptor:
 
     .. code-block:: python
         class MyCustomSecureSourceManagerInterceptor(SecureSourceManagerRestInterceptor):
+            def pre_batch_create_pull_request_comments(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_pull_request_comments(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_close_issue(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_close_issue(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_close_pull_request(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_close_pull_request(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_branch_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -84,11 +108,51 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_hook(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_hook(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_create_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_issue(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_issue(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_issue_comment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_issue_comment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_pull_request(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_pull_request(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_pull_request_comment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_pull_request_comment(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -108,11 +172,43 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_hook(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_hook(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_delete_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_issue(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_issue(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_issue_comment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_issue_comment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_pull_request_comment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_pull_request_comment(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -124,11 +220,35 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_fetch_blob(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_blob(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_fetch_tree(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_tree(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_branch_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_branch_rule(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_hook(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_hook(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -148,6 +268,38 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_issue(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_issue(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_issue_comment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_issue_comment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_pull_request(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_pull_request(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_pull_request_comment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_pull_request_comment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_repository(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -164,6 +316,14 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_hooks(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_hooks(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_instances(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -172,11 +332,83 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_issue_comments(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_issue_comments(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_issues(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_issues(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_pull_request_comments(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_pull_request_comments(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_pull_request_file_diffs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_pull_request_file_diffs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_pull_requests(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_pull_requests(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_repositories(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_repositories(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_merge_pull_request(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_merge_pull_request(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_open_issue(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_open_issue(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_open_pull_request(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_open_pull_request(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_resolve_pull_request_comments(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_resolve_pull_request_comments(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -196,6 +428,14 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_unresolve_pull_request_comments(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_unresolve_pull_request_comments(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_branch_rule(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -204,11 +444,205 @@ class SecureSourceManagerRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_hook(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_hook(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_issue(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_issue(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_issue_comment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_issue_comment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_pull_request(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_pull_request(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_pull_request_comment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_pull_request_comment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_repository(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_repository(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = SecureSourceManagerRestTransport(interceptor=MyCustomSecureSourceManagerInterceptor())
         client = SecureSourceManagerClient(transport=transport)
 
 
     """
+
+    def pre_batch_create_pull_request_comments(
+        self,
+        request: secure_source_manager.BatchCreatePullRequestCommentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.BatchCreatePullRequestCommentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_create_pull_request_comments
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_batch_create_pull_request_comments(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for batch_create_pull_request_comments
+
+        DEPRECATED. Please use the `post_batch_create_pull_request_comments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_batch_create_pull_request_comments` interceptor runs
+        before the `post_batch_create_pull_request_comments_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_create_pull_request_comments_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for batch_create_pull_request_comments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_pull_request_comments_with_metadata`
+        interceptor in new development instead of the `post_batch_create_pull_request_comments` interceptor.
+        When both interceptors are used, this `post_batch_create_pull_request_comments_with_metadata` interceptor runs after the
+        `post_batch_create_pull_request_comments` interceptor. The (possibly modified) response returned by
+        `post_batch_create_pull_request_comments` will be passed to
+        `post_batch_create_pull_request_comments_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_close_issue(
+        self,
+        request: secure_source_manager.CloseIssueRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.CloseIssueRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for close_issue
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_close_issue(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for close_issue
+
+        DEPRECATED. Please use the `post_close_issue_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_close_issue` interceptor runs
+        before the `post_close_issue_with_metadata` interceptor.
+        """
+        return response
+
+    def post_close_issue_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for close_issue
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_close_issue_with_metadata`
+        interceptor in new development instead of the `post_close_issue` interceptor.
+        When both interceptors are used, this `post_close_issue_with_metadata` interceptor runs after the
+        `post_close_issue` interceptor. The (possibly modified) response returned by
+        `post_close_issue` will be passed to
+        `post_close_issue_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_close_pull_request(
+        self,
+        request: secure_source_manager.ClosePullRequestRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ClosePullRequestRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for close_pull_request
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_close_pull_request(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for close_pull_request
+
+        DEPRECATED. Please use the `post_close_pull_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_close_pull_request` interceptor runs
+        before the `post_close_pull_request_with_metadata` interceptor.
+        """
+        return response
+
+    def post_close_pull_request_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for close_pull_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_close_pull_request_with_metadata`
+        interceptor in new development instead of the `post_close_pull_request` interceptor.
+        When both interceptors are used, this `post_close_pull_request_with_metadata` interceptor runs after the
+        `post_close_pull_request` interceptor. The (possibly modified) response returned by
+        `post_close_pull_request` will be passed to
+        `post_close_pull_request_with_metadata`.
+        """
+        return response, metadata
 
     def pre_create_branch_rule(
         self,
@@ -259,6 +693,54 @@ class SecureSourceManagerRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_hook(
+        self,
+        request: secure_source_manager.CreateHookRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.CreateHookRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_hook
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_create_hook(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_hook
+
+        DEPRECATED. Please use the `post_create_hook_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_create_hook` interceptor runs
+        before the `post_create_hook_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_hook_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_hook
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_hook_with_metadata`
+        interceptor in new development instead of the `post_create_hook` interceptor.
+        When both interceptors are used, this `post_create_hook_with_metadata` interceptor runs after the
+        `post_create_hook` interceptor. The (possibly modified) response returned by
+        `post_create_hook` will be passed to
+        `post_create_hook_with_metadata`.
+        """
+        return response, metadata
+
     def pre_create_instance(
         self,
         request: secure_source_manager.CreateInstanceRequest,
@@ -305,6 +787,202 @@ class SecureSourceManagerRestInterceptor:
         `post_create_instance` interceptor. The (possibly modified) response returned by
         `post_create_instance` will be passed to
         `post_create_instance_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_issue(
+        self,
+        request: secure_source_manager.CreateIssueRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.CreateIssueRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_issue
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_create_issue(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_issue
+
+        DEPRECATED. Please use the `post_create_issue_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_create_issue` interceptor runs
+        before the `post_create_issue_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_issue_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_issue
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_issue_with_metadata`
+        interceptor in new development instead of the `post_create_issue` interceptor.
+        When both interceptors are used, this `post_create_issue_with_metadata` interceptor runs after the
+        `post_create_issue` interceptor. The (possibly modified) response returned by
+        `post_create_issue` will be passed to
+        `post_create_issue_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_issue_comment(
+        self,
+        request: secure_source_manager.CreateIssueCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.CreateIssueCommentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_issue_comment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_create_issue_comment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_issue_comment
+
+        DEPRECATED. Please use the `post_create_issue_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_create_issue_comment` interceptor runs
+        before the `post_create_issue_comment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_issue_comment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_issue_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_issue_comment_with_metadata`
+        interceptor in new development instead of the `post_create_issue_comment` interceptor.
+        When both interceptors are used, this `post_create_issue_comment_with_metadata` interceptor runs after the
+        `post_create_issue_comment` interceptor. The (possibly modified) response returned by
+        `post_create_issue_comment` will be passed to
+        `post_create_issue_comment_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_pull_request(
+        self,
+        request: secure_source_manager.CreatePullRequestRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.CreatePullRequestRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_pull_request
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_create_pull_request(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_pull_request
+
+        DEPRECATED. Please use the `post_create_pull_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_create_pull_request` interceptor runs
+        before the `post_create_pull_request_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_pull_request_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_pull_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_pull_request_with_metadata`
+        interceptor in new development instead of the `post_create_pull_request` interceptor.
+        When both interceptors are used, this `post_create_pull_request_with_metadata` interceptor runs after the
+        `post_create_pull_request` interceptor. The (possibly modified) response returned by
+        `post_create_pull_request` will be passed to
+        `post_create_pull_request_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_pull_request_comment(
+        self,
+        request: secure_source_manager.CreatePullRequestCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.CreatePullRequestCommentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_pull_request_comment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_create_pull_request_comment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_pull_request_comment
+
+        DEPRECATED. Please use the `post_create_pull_request_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_create_pull_request_comment` interceptor runs
+        before the `post_create_pull_request_comment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_pull_request_comment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_pull_request_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_create_pull_request_comment_with_metadata`
+        interceptor in new development instead of the `post_create_pull_request_comment` interceptor.
+        When both interceptors are used, this `post_create_pull_request_comment_with_metadata` interceptor runs after the
+        `post_create_pull_request_comment` interceptor. The (possibly modified) response returned by
+        `post_create_pull_request_comment` will be passed to
+        `post_create_pull_request_comment_with_metadata`.
         """
         return response, metadata
 
@@ -406,6 +1084,54 @@ class SecureSourceManagerRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_hook(
+        self,
+        request: secure_source_manager.DeleteHookRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.DeleteHookRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_hook
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_delete_hook(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_hook
+
+        DEPRECATED. Please use the `post_delete_hook_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_delete_hook` interceptor runs
+        before the `post_delete_hook_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_hook_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_hook
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_hook_with_metadata`
+        interceptor in new development instead of the `post_delete_hook` interceptor.
+        When both interceptors are used, this `post_delete_hook_with_metadata` interceptor runs after the
+        `post_delete_hook` interceptor. The (possibly modified) response returned by
+        `post_delete_hook` will be passed to
+        `post_delete_hook_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_instance(
         self,
         request: secure_source_manager.DeleteInstanceRequest,
@@ -452,6 +1178,153 @@ class SecureSourceManagerRestInterceptor:
         `post_delete_instance` interceptor. The (possibly modified) response returned by
         `post_delete_instance` will be passed to
         `post_delete_instance_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_issue(
+        self,
+        request: secure_source_manager.DeleteIssueRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.DeleteIssueRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_issue
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_delete_issue(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_issue
+
+        DEPRECATED. Please use the `post_delete_issue_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_delete_issue` interceptor runs
+        before the `post_delete_issue_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_issue_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_issue
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_issue_with_metadata`
+        interceptor in new development instead of the `post_delete_issue` interceptor.
+        When both interceptors are used, this `post_delete_issue_with_metadata` interceptor runs after the
+        `post_delete_issue` interceptor. The (possibly modified) response returned by
+        `post_delete_issue` will be passed to
+        `post_delete_issue_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_issue_comment(
+        self,
+        request: secure_source_manager.DeleteIssueCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.DeleteIssueCommentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_issue_comment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_delete_issue_comment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_issue_comment
+
+        DEPRECATED. Please use the `post_delete_issue_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_delete_issue_comment` interceptor runs
+        before the `post_delete_issue_comment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_issue_comment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_issue_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_issue_comment_with_metadata`
+        interceptor in new development instead of the `post_delete_issue_comment` interceptor.
+        When both interceptors are used, this `post_delete_issue_comment_with_metadata` interceptor runs after the
+        `post_delete_issue_comment` interceptor. The (possibly modified) response returned by
+        `post_delete_issue_comment` will be passed to
+        `post_delete_issue_comment_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_pull_request_comment(
+        self,
+        request: secure_source_manager.DeletePullRequestCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.DeletePullRequestCommentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_pull_request_comment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_delete_pull_request_comment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_pull_request_comment
+
+        DEPRECATED. Please use the `post_delete_pull_request_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_delete_pull_request_comment` interceptor runs
+        before the `post_delete_pull_request_comment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_pull_request_comment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_pull_request_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_delete_pull_request_comment_with_metadata`
+        interceptor in new development instead of the `post_delete_pull_request_comment` interceptor.
+        When both interceptors are used, this `post_delete_pull_request_comment_with_metadata` interceptor runs after the
+        `post_delete_pull_request_comment` interceptor. The (possibly modified) response returned by
+        `post_delete_pull_request_comment` will be passed to
+        `post_delete_pull_request_comment_with_metadata`.
         """
         return response, metadata
 
@@ -504,6 +1377,106 @@ class SecureSourceManagerRestInterceptor:
         """
         return response, metadata
 
+    def pre_fetch_blob(
+        self,
+        request: secure_source_manager.FetchBlobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.FetchBlobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for fetch_blob
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_fetch_blob(
+        self, response: secure_source_manager.FetchBlobResponse
+    ) -> secure_source_manager.FetchBlobResponse:
+        """Post-rpc interceptor for fetch_blob
+
+        DEPRECATED. Please use the `post_fetch_blob_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_fetch_blob` interceptor runs
+        before the `post_fetch_blob_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_blob_with_metadata(
+        self,
+        response: secure_source_manager.FetchBlobResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.FetchBlobResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_blob
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_blob_with_metadata`
+        interceptor in new development instead of the `post_fetch_blob` interceptor.
+        When both interceptors are used, this `post_fetch_blob_with_metadata` interceptor runs after the
+        `post_fetch_blob` interceptor. The (possibly modified) response returned by
+        `post_fetch_blob` will be passed to
+        `post_fetch_blob_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_fetch_tree(
+        self,
+        request: secure_source_manager.FetchTreeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.FetchTreeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for fetch_tree
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_fetch_tree(
+        self, response: secure_source_manager.FetchTreeResponse
+    ) -> secure_source_manager.FetchTreeResponse:
+        """Post-rpc interceptor for fetch_tree
+
+        DEPRECATED. Please use the `post_fetch_tree_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_fetch_tree` interceptor runs
+        before the `post_fetch_tree_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_tree_with_metadata(
+        self,
+        response: secure_source_manager.FetchTreeResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.FetchTreeResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_tree
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_tree_with_metadata`
+        interceptor in new development instead of the `post_fetch_tree` interceptor.
+        When both interceptors are used, this `post_fetch_tree_with_metadata` interceptor runs after the
+        `post_fetch_tree` interceptor. The (possibly modified) response returned by
+        `post_fetch_tree` will be passed to
+        `post_fetch_tree_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_branch_rule(
         self,
         request: secure_source_manager.GetBranchRuleRequest,
@@ -552,6 +1525,54 @@ class SecureSourceManagerRestInterceptor:
         `post_get_branch_rule` interceptor. The (possibly modified) response returned by
         `post_get_branch_rule` will be passed to
         `post_get_branch_rule_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_hook(
+        self,
+        request: secure_source_manager.GetHookRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.GetHookRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_hook
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_get_hook(
+        self, response: secure_source_manager.Hook
+    ) -> secure_source_manager.Hook:
+        """Post-rpc interceptor for get_hook
+
+        DEPRECATED. Please use the `post_get_hook_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_get_hook` interceptor runs
+        before the `post_get_hook_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_hook_with_metadata(
+        self,
+        response: secure_source_manager.Hook,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[secure_source_manager.Hook, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_hook
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_hook_with_metadata`
+        interceptor in new development instead of the `post_get_hook` interceptor.
+        When both interceptors are used, this `post_get_hook_with_metadata` interceptor runs after the
+        `post_get_hook` interceptor. The (possibly modified) response returned by
+        `post_get_hook` will be passed to
+        `post_get_hook_with_metadata`.
         """
         return response, metadata
 
@@ -649,6 +1670,208 @@ class SecureSourceManagerRestInterceptor:
         `post_get_instance` interceptor. The (possibly modified) response returned by
         `post_get_instance` will be passed to
         `post_get_instance_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_issue(
+        self,
+        request: secure_source_manager.GetIssueRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.GetIssueRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_issue
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_get_issue(
+        self, response: secure_source_manager.Issue
+    ) -> secure_source_manager.Issue:
+        """Post-rpc interceptor for get_issue
+
+        DEPRECATED. Please use the `post_get_issue_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_get_issue` interceptor runs
+        before the `post_get_issue_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_issue_with_metadata(
+        self,
+        response: secure_source_manager.Issue,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[secure_source_manager.Issue, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_issue
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_issue_with_metadata`
+        interceptor in new development instead of the `post_get_issue` interceptor.
+        When both interceptors are used, this `post_get_issue_with_metadata` interceptor runs after the
+        `post_get_issue` interceptor. The (possibly modified) response returned by
+        `post_get_issue` will be passed to
+        `post_get_issue_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_issue_comment(
+        self,
+        request: secure_source_manager.GetIssueCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.GetIssueCommentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_issue_comment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_get_issue_comment(
+        self, response: secure_source_manager.IssueComment
+    ) -> secure_source_manager.IssueComment:
+        """Post-rpc interceptor for get_issue_comment
+
+        DEPRECATED. Please use the `post_get_issue_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_get_issue_comment` interceptor runs
+        before the `post_get_issue_comment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_issue_comment_with_metadata(
+        self,
+        response: secure_source_manager.IssueComment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.IssueComment, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_issue_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_issue_comment_with_metadata`
+        interceptor in new development instead of the `post_get_issue_comment` interceptor.
+        When both interceptors are used, this `post_get_issue_comment_with_metadata` interceptor runs after the
+        `post_get_issue_comment` interceptor. The (possibly modified) response returned by
+        `post_get_issue_comment` will be passed to
+        `post_get_issue_comment_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_pull_request(
+        self,
+        request: secure_source_manager.GetPullRequestRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.GetPullRequestRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_pull_request
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_get_pull_request(
+        self, response: secure_source_manager.PullRequest
+    ) -> secure_source_manager.PullRequest:
+        """Post-rpc interceptor for get_pull_request
+
+        DEPRECATED. Please use the `post_get_pull_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_get_pull_request` interceptor runs
+        before the `post_get_pull_request_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_pull_request_with_metadata(
+        self,
+        response: secure_source_manager.PullRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.PullRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for get_pull_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_pull_request_with_metadata`
+        interceptor in new development instead of the `post_get_pull_request` interceptor.
+        When both interceptors are used, this `post_get_pull_request_with_metadata` interceptor runs after the
+        `post_get_pull_request` interceptor. The (possibly modified) response returned by
+        `post_get_pull_request` will be passed to
+        `post_get_pull_request_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_pull_request_comment(
+        self,
+        request: secure_source_manager.GetPullRequestCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.GetPullRequestCommentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_pull_request_comment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_get_pull_request_comment(
+        self, response: secure_source_manager.PullRequestComment
+    ) -> secure_source_manager.PullRequestComment:
+        """Post-rpc interceptor for get_pull_request_comment
+
+        DEPRECATED. Please use the `post_get_pull_request_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_get_pull_request_comment` interceptor runs
+        before the `post_get_pull_request_comment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_pull_request_comment_with_metadata(
+        self,
+        response: secure_source_manager.PullRequestComment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.PullRequestComment,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_pull_request_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_get_pull_request_comment_with_metadata`
+        interceptor in new development instead of the `post_get_pull_request_comment` interceptor.
+        When both interceptors are used, this `post_get_pull_request_comment_with_metadata` interceptor runs after the
+        `post_get_pull_request_comment` interceptor. The (possibly modified) response returned by
+        `post_get_pull_request_comment` will be passed to
+        `post_get_pull_request_comment_with_metadata`.
         """
         return response, metadata
 
@@ -755,6 +1978,56 @@ class SecureSourceManagerRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_hooks(
+        self,
+        request: secure_source_manager.ListHooksRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListHooksRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_hooks
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_list_hooks(
+        self, response: secure_source_manager.ListHooksResponse
+    ) -> secure_source_manager.ListHooksResponse:
+        """Post-rpc interceptor for list_hooks
+
+        DEPRECATED. Please use the `post_list_hooks_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_list_hooks` interceptor runs
+        before the `post_list_hooks_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_hooks_with_metadata(
+        self,
+        response: secure_source_manager.ListHooksResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListHooksResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_hooks
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_hooks_with_metadata`
+        interceptor in new development instead of the `post_list_hooks` interceptor.
+        When both interceptors are used, this `post_list_hooks_with_metadata` interceptor runs after the
+        `post_list_hooks` interceptor. The (possibly modified) response returned by
+        `post_list_hooks` will be passed to
+        `post_list_hooks_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_instances(
         self,
         request: secure_source_manager.ListInstancesRequest,
@@ -807,6 +2080,265 @@ class SecureSourceManagerRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_issue_comments(
+        self,
+        request: secure_source_manager.ListIssueCommentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListIssueCommentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_issue_comments
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_list_issue_comments(
+        self, response: secure_source_manager.ListIssueCommentsResponse
+    ) -> secure_source_manager.ListIssueCommentsResponse:
+        """Post-rpc interceptor for list_issue_comments
+
+        DEPRECATED. Please use the `post_list_issue_comments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_list_issue_comments` interceptor runs
+        before the `post_list_issue_comments_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_issue_comments_with_metadata(
+        self,
+        response: secure_source_manager.ListIssueCommentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListIssueCommentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_issue_comments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_issue_comments_with_metadata`
+        interceptor in new development instead of the `post_list_issue_comments` interceptor.
+        When both interceptors are used, this `post_list_issue_comments_with_metadata` interceptor runs after the
+        `post_list_issue_comments` interceptor. The (possibly modified) response returned by
+        `post_list_issue_comments` will be passed to
+        `post_list_issue_comments_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_issues(
+        self,
+        request: secure_source_manager.ListIssuesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListIssuesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_issues
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_list_issues(
+        self, response: secure_source_manager.ListIssuesResponse
+    ) -> secure_source_manager.ListIssuesResponse:
+        """Post-rpc interceptor for list_issues
+
+        DEPRECATED. Please use the `post_list_issues_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_list_issues` interceptor runs
+        before the `post_list_issues_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_issues_with_metadata(
+        self,
+        response: secure_source_manager.ListIssuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListIssuesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_issues
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_issues_with_metadata`
+        interceptor in new development instead of the `post_list_issues` interceptor.
+        When both interceptors are used, this `post_list_issues_with_metadata` interceptor runs after the
+        `post_list_issues` interceptor. The (possibly modified) response returned by
+        `post_list_issues` will be passed to
+        `post_list_issues_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_pull_request_comments(
+        self,
+        request: secure_source_manager.ListPullRequestCommentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListPullRequestCommentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_pull_request_comments
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_list_pull_request_comments(
+        self, response: secure_source_manager.ListPullRequestCommentsResponse
+    ) -> secure_source_manager.ListPullRequestCommentsResponse:
+        """Post-rpc interceptor for list_pull_request_comments
+
+        DEPRECATED. Please use the `post_list_pull_request_comments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_list_pull_request_comments` interceptor runs
+        before the `post_list_pull_request_comments_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_pull_request_comments_with_metadata(
+        self,
+        response: secure_source_manager.ListPullRequestCommentsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListPullRequestCommentsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_pull_request_comments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_pull_request_comments_with_metadata`
+        interceptor in new development instead of the `post_list_pull_request_comments` interceptor.
+        When both interceptors are used, this `post_list_pull_request_comments_with_metadata` interceptor runs after the
+        `post_list_pull_request_comments` interceptor. The (possibly modified) response returned by
+        `post_list_pull_request_comments` will be passed to
+        `post_list_pull_request_comments_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_pull_request_file_diffs(
+        self,
+        request: secure_source_manager.ListPullRequestFileDiffsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListPullRequestFileDiffsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_pull_request_file_diffs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_list_pull_request_file_diffs(
+        self, response: secure_source_manager.ListPullRequestFileDiffsResponse
+    ) -> secure_source_manager.ListPullRequestFileDiffsResponse:
+        """Post-rpc interceptor for list_pull_request_file_diffs
+
+        DEPRECATED. Please use the `post_list_pull_request_file_diffs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_list_pull_request_file_diffs` interceptor runs
+        before the `post_list_pull_request_file_diffs_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_pull_request_file_diffs_with_metadata(
+        self,
+        response: secure_source_manager.ListPullRequestFileDiffsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListPullRequestFileDiffsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_pull_request_file_diffs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_pull_request_file_diffs_with_metadata`
+        interceptor in new development instead of the `post_list_pull_request_file_diffs` interceptor.
+        When both interceptors are used, this `post_list_pull_request_file_diffs_with_metadata` interceptor runs after the
+        `post_list_pull_request_file_diffs` interceptor. The (possibly modified) response returned by
+        `post_list_pull_request_file_diffs` will be passed to
+        `post_list_pull_request_file_diffs_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_pull_requests(
+        self,
+        request: secure_source_manager.ListPullRequestsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListPullRequestsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for list_pull_requests
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_list_pull_requests(
+        self, response: secure_source_manager.ListPullRequestsResponse
+    ) -> secure_source_manager.ListPullRequestsResponse:
+        """Post-rpc interceptor for list_pull_requests
+
+        DEPRECATED. Please use the `post_list_pull_requests_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_list_pull_requests` interceptor runs
+        before the `post_list_pull_requests_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_pull_requests_with_metadata(
+        self,
+        response: secure_source_manager.ListPullRequestsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListPullRequestsResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for list_pull_requests
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_list_pull_requests_with_metadata`
+        interceptor in new development instead of the `post_list_pull_requests` interceptor.
+        When both interceptors are used, this `post_list_pull_requests_with_metadata` interceptor runs after the
+        `post_list_pull_requests` interceptor. The (possibly modified) response returned by
+        `post_list_pull_requests` will be passed to
+        `post_list_pull_requests_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_repositories(
         self,
         request: secure_source_manager.ListRepositoriesRequest,
@@ -856,6 +2388,201 @@ class SecureSourceManagerRestInterceptor:
         `post_list_repositories` interceptor. The (possibly modified) response returned by
         `post_list_repositories` will be passed to
         `post_list_repositories_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_merge_pull_request(
+        self,
+        request: secure_source_manager.MergePullRequestRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.MergePullRequestRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for merge_pull_request
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_merge_pull_request(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for merge_pull_request
+
+        DEPRECATED. Please use the `post_merge_pull_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_merge_pull_request` interceptor runs
+        before the `post_merge_pull_request_with_metadata` interceptor.
+        """
+        return response
+
+    def post_merge_pull_request_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for merge_pull_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_merge_pull_request_with_metadata`
+        interceptor in new development instead of the `post_merge_pull_request` interceptor.
+        When both interceptors are used, this `post_merge_pull_request_with_metadata` interceptor runs after the
+        `post_merge_pull_request` interceptor. The (possibly modified) response returned by
+        `post_merge_pull_request` will be passed to
+        `post_merge_pull_request_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_open_issue(
+        self,
+        request: secure_source_manager.OpenIssueRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.OpenIssueRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for open_issue
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_open_issue(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for open_issue
+
+        DEPRECATED. Please use the `post_open_issue_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_open_issue` interceptor runs
+        before the `post_open_issue_with_metadata` interceptor.
+        """
+        return response
+
+    def post_open_issue_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for open_issue
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_open_issue_with_metadata`
+        interceptor in new development instead of the `post_open_issue` interceptor.
+        When both interceptors are used, this `post_open_issue_with_metadata` interceptor runs after the
+        `post_open_issue` interceptor. The (possibly modified) response returned by
+        `post_open_issue` will be passed to
+        `post_open_issue_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_open_pull_request(
+        self,
+        request: secure_source_manager.OpenPullRequestRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.OpenPullRequestRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for open_pull_request
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_open_pull_request(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for open_pull_request
+
+        DEPRECATED. Please use the `post_open_pull_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_open_pull_request` interceptor runs
+        before the `post_open_pull_request_with_metadata` interceptor.
+        """
+        return response
+
+    def post_open_pull_request_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for open_pull_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_open_pull_request_with_metadata`
+        interceptor in new development instead of the `post_open_pull_request` interceptor.
+        When both interceptors are used, this `post_open_pull_request_with_metadata` interceptor runs after the
+        `post_open_pull_request` interceptor. The (possibly modified) response returned by
+        `post_open_pull_request` will be passed to
+        `post_open_pull_request_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_resolve_pull_request_comments(
+        self,
+        request: secure_source_manager.ResolvePullRequestCommentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ResolvePullRequestCommentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for resolve_pull_request_comments
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_resolve_pull_request_comments(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for resolve_pull_request_comments
+
+        DEPRECATED. Please use the `post_resolve_pull_request_comments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_resolve_pull_request_comments` interceptor runs
+        before the `post_resolve_pull_request_comments_with_metadata` interceptor.
+        """
+        return response
+
+    def post_resolve_pull_request_comments_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for resolve_pull_request_comments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_resolve_pull_request_comments_with_metadata`
+        interceptor in new development instead of the `post_resolve_pull_request_comments` interceptor.
+        When both interceptors are used, this `post_resolve_pull_request_comments_with_metadata` interceptor runs after the
+        `post_resolve_pull_request_comments` interceptor. The (possibly modified) response returned by
+        `post_resolve_pull_request_comments` will be passed to
+        `post_resolve_pull_request_comments_with_metadata`.
         """
         return response, metadata
 
@@ -959,6 +2686,55 @@ class SecureSourceManagerRestInterceptor:
         """
         return response, metadata
 
+    def pre_unresolve_pull_request_comments(
+        self,
+        request: secure_source_manager.UnresolvePullRequestCommentsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.UnresolvePullRequestCommentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for unresolve_pull_request_comments
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_unresolve_pull_request_comments(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for unresolve_pull_request_comments
+
+        DEPRECATED. Please use the `post_unresolve_pull_request_comments_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_unresolve_pull_request_comments` interceptor runs
+        before the `post_unresolve_pull_request_comments_with_metadata` interceptor.
+        """
+        return response
+
+    def post_unresolve_pull_request_comments_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for unresolve_pull_request_comments
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_unresolve_pull_request_comments_with_metadata`
+        interceptor in new development instead of the `post_unresolve_pull_request_comments` interceptor.
+        When both interceptors are used, this `post_unresolve_pull_request_comments_with_metadata` interceptor runs after the
+        `post_unresolve_pull_request_comments` interceptor. The (possibly modified) response returned by
+        `post_unresolve_pull_request_comments` will be passed to
+        `post_unresolve_pull_request_comments_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_branch_rule(
         self,
         request: secure_source_manager.UpdateBranchRuleRequest,
@@ -1005,6 +2781,299 @@ class SecureSourceManagerRestInterceptor:
         `post_update_branch_rule` interceptor. The (possibly modified) response returned by
         `post_update_branch_rule` will be passed to
         `post_update_branch_rule_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_hook(
+        self,
+        request: secure_source_manager.UpdateHookRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.UpdateHookRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_hook
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_update_hook(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_hook
+
+        DEPRECATED. Please use the `post_update_hook_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_update_hook` interceptor runs
+        before the `post_update_hook_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_hook_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_hook
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_hook_with_metadata`
+        interceptor in new development instead of the `post_update_hook` interceptor.
+        When both interceptors are used, this `post_update_hook_with_metadata` interceptor runs after the
+        `post_update_hook` interceptor. The (possibly modified) response returned by
+        `post_update_hook` will be passed to
+        `post_update_hook_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_issue(
+        self,
+        request: secure_source_manager.UpdateIssueRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.UpdateIssueRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_issue
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_update_issue(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_issue
+
+        DEPRECATED. Please use the `post_update_issue_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_update_issue` interceptor runs
+        before the `post_update_issue_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_issue_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_issue
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_issue_with_metadata`
+        interceptor in new development instead of the `post_update_issue` interceptor.
+        When both interceptors are used, this `post_update_issue_with_metadata` interceptor runs after the
+        `post_update_issue` interceptor. The (possibly modified) response returned by
+        `post_update_issue` will be passed to
+        `post_update_issue_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_issue_comment(
+        self,
+        request: secure_source_manager.UpdateIssueCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.UpdateIssueCommentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_issue_comment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_update_issue_comment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_issue_comment
+
+        DEPRECATED. Please use the `post_update_issue_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_update_issue_comment` interceptor runs
+        before the `post_update_issue_comment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_issue_comment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_issue_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_issue_comment_with_metadata`
+        interceptor in new development instead of the `post_update_issue_comment` interceptor.
+        When both interceptors are used, this `post_update_issue_comment_with_metadata` interceptor runs after the
+        `post_update_issue_comment` interceptor. The (possibly modified) response returned by
+        `post_update_issue_comment` will be passed to
+        `post_update_issue_comment_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_pull_request(
+        self,
+        request: secure_source_manager.UpdatePullRequestRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.UpdatePullRequestRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_pull_request
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_update_pull_request(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_pull_request
+
+        DEPRECATED. Please use the `post_update_pull_request_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_update_pull_request` interceptor runs
+        before the `post_update_pull_request_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_pull_request_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_pull_request
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_pull_request_with_metadata`
+        interceptor in new development instead of the `post_update_pull_request` interceptor.
+        When both interceptors are used, this `post_update_pull_request_with_metadata` interceptor runs after the
+        `post_update_pull_request` interceptor. The (possibly modified) response returned by
+        `post_update_pull_request` will be passed to
+        `post_update_pull_request_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_pull_request_comment(
+        self,
+        request: secure_source_manager.UpdatePullRequestCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.UpdatePullRequestCommentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_pull_request_comment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_update_pull_request_comment(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_pull_request_comment
+
+        DEPRECATED. Please use the `post_update_pull_request_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_update_pull_request_comment` interceptor runs
+        before the `post_update_pull_request_comment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_pull_request_comment_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_pull_request_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_pull_request_comment_with_metadata`
+        interceptor in new development instead of the `post_update_pull_request_comment` interceptor.
+        When both interceptors are used, this `post_update_pull_request_comment_with_metadata` interceptor runs after the
+        `post_update_pull_request_comment` interceptor. The (possibly modified) response returned by
+        `post_update_pull_request_comment` will be passed to
+        `post_update_pull_request_comment_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_repository(
+        self,
+        request: secure_source_manager.UpdateRepositoryRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.UpdateRepositoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_repository
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the SecureSourceManager server.
+        """
+        return request, metadata
+
+    def post_update_repository(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_repository
+
+        DEPRECATED. Please use the `post_update_repository_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the SecureSourceManager server but before
+        it is returned to user code. This `post_update_repository` interceptor runs
+        before the `post_update_repository_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_repository_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_repository
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the SecureSourceManager server but before it is returned to user code.
+
+        We recommend only using this `post_update_repository_with_metadata`
+        interceptor in new development instead of the `post_update_repository` interceptor.
+        When both interceptors are used, this `post_update_repository_with_metadata` interceptor runs after the
+        `post_update_repository` interceptor. The (possibly modified) response returned by
+        `post_update_repository` will be passed to
+        `post_update_repository_with_metadata`.
         """
         return response, metadata
 
@@ -1239,29 +3308,8 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
     Secure Source Manager API
 
-    Access Secure Source Manager instances, resources, and repositories.
-
-    This API is split across two servers: the Control Plane and the Data
-    Plane.
-
-    Data Plane endpoints are hosted directly by your Secure Source
-    Manager instance, so you must connect to your instance's API
-    hostname to access them. The API hostname looks like the following:
-
-    ::
-
-       https://[instance-id]-[project-number]-api.[location].sourcemanager.dev
-
-    For example,
-
-    ::
-
-       https://my-instance-702770452863-api.us-central1.sourcemanager.dev
-
-    Data Plane endpoints are denoted with **Host: Data Plane**.
-
-    All other endpoints are found in the normal Cloud API location,
-    namely, ``securcesourcemanager.googleapis.com``.
+    Access Secure Source Manager instances, resources, and
+    repositories.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -1390,6 +3438,477 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
         # Return the client from cache.
         return self._operations_client
+
+    class _BatchCreatePullRequestComments(
+        _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "SecureSourceManagerRestTransport.BatchCreatePullRequestComments"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.BatchCreatePullRequestCommentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the batch create pull request
+            comments method over HTTP.
+
+                Args:
+                    request (~.secure_source_manager.BatchCreatePullRequestCommentsRequest):
+                        The request object. The request to batch create pull
+                    request comments.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_http_options()
+            )
+
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_batch_create_pull_request_comments(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.BatchCreatePullRequestComments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "BatchCreatePullRequestComments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._BatchCreatePullRequestComments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_create_pull_request_comments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_batch_create_pull_request_comments_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.batch_create_pull_request_comments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "BatchCreatePullRequestComments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CloseIssue(
+        _BaseSecureSourceManagerRestTransport._BaseCloseIssue,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.CloseIssue")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.CloseIssueRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the close issue method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.CloseIssueRequest):
+                    The request object. The request to close an issue.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_close_issue(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CloseIssue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CloseIssue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._CloseIssue._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_close_issue(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_close_issue_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.close_issue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CloseIssue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ClosePullRequest(
+        _BaseSecureSourceManagerRestTransport._BaseClosePullRequest,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.ClosePullRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.ClosePullRequestRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the close pull request method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.ClosePullRequestRequest):
+                    The request object. ClosePullRequestRequest is the
+                request to close a pull request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_close_pull_request(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ClosePullRequest",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ClosePullRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._ClosePullRequest._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_close_pull_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_close_pull_request_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.close_pull_request",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ClosePullRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _CreateBranchRule(
         _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule,
@@ -1546,6 +4065,159 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
             return resp
 
+    class _CreateHook(
+        _BaseSecureSourceManagerRestTransport._BaseCreateHook,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.CreateHook")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.CreateHookRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create hook method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.CreateHookRequest):
+                    The request object. CreateHookRequest is the request for
+                creating a hook.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_hook(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CreateHook",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateHook",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._CreateHook._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_hook(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_hook_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.create_hook",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateHook",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _CreateInstance(
         _BaseSecureSourceManagerRestTransport._BaseCreateInstance,
         SecureSourceManagerRestStub,
@@ -1693,6 +4365,628 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     extra={
                         "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "rpcName": "CreateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateIssue(
+        _BaseSecureSourceManagerRestTransport._BaseCreateIssue,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.CreateIssue")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.CreateIssueRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create issue method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.CreateIssueRequest):
+                    The request object. The request to create an issue.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_issue(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CreateIssue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateIssue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._CreateIssue._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_issue(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_issue_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.create_issue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateIssue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateIssueComment(
+        _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.CreateIssueComment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.CreateIssueCommentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create issue comment method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.CreateIssueCommentRequest):
+                    The request object. The request to create an issue
+                comment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_issue_comment(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CreateIssueComment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateIssueComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                SecureSourceManagerRestTransport._CreateIssueComment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_issue_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_issue_comment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.create_issue_comment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateIssueComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreatePullRequest(
+        _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.CreatePullRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.CreatePullRequestRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create pull request method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.CreatePullRequestRequest):
+                    The request object. CreatePullRequestRequest is the
+                request to create a pull request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_pull_request(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CreatePullRequest",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreatePullRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                SecureSourceManagerRestTransport._CreatePullRequest._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_pull_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_pull_request_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.create_pull_request",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreatePullRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreatePullRequestComment(
+        _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.CreatePullRequestComment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.CreatePullRequestCommentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create pull request
+            comment method over HTTP.
+
+                Args:
+                    request (~.secure_source_manager.CreatePullRequestCommentRequest):
+                        The request object. The request to create a pull request
+                    comment.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_pull_request_comment(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CreatePullRequestComment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreatePullRequestComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._CreatePullRequestComment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_pull_request_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_pull_request_comment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.create_pull_request_comment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreatePullRequestComment",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2003,6 +5297,153 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
             return resp
 
+    class _DeleteHook(
+        _BaseSecureSourceManagerRestTransport._BaseDeleteHook,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.DeleteHook")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.DeleteHookRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete hook method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.DeleteHookRequest):
+                    The request object. DeleteHookRequest is the request to
+                delete a hook.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseDeleteHook._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_hook(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteHook._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteHook._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.DeleteHook",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteHook",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._DeleteHook._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_hook(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_hook_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.delete_hook",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteHook",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteInstance(
         _BaseSecureSourceManagerRestTransport._BaseDeleteInstance,
         SecureSourceManagerRestStub,
@@ -2144,6 +5585,454 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     extra={
                         "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "rpcName": "DeleteInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteIssue(
+        _BaseSecureSourceManagerRestTransport._BaseDeleteIssue,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.DeleteIssue")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.DeleteIssueRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete issue method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.DeleteIssueRequest):
+                    The request object. The request to delete an issue.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseDeleteIssue._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_issue(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteIssue._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteIssue._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.DeleteIssue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteIssue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._DeleteIssue._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_issue(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_issue_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.delete_issue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteIssue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteIssueComment(
+        _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.DeleteIssueComment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.DeleteIssueCommentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete issue comment method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.DeleteIssueCommentRequest):
+                    The request object. The request to delete an issue
+                comment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_issue_comment(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.DeleteIssueComment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteIssueComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                SecureSourceManagerRestTransport._DeleteIssueComment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_issue_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_issue_comment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.delete_issue_comment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteIssueComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeletePullRequestComment(
+        _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.DeletePullRequestComment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.DeletePullRequestCommentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete pull request
+            comment method over HTTP.
+
+                Args:
+                    request (~.secure_source_manager.DeletePullRequestCommentRequest):
+                        The request object. The request to delete a pull request
+                    comment. A Review PullRequestComment
+                    cannot be deleted.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_pull_request_comment(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.DeletePullRequestComment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeletePullRequestComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._DeletePullRequestComment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_pull_request_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_pull_request_comment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.delete_pull_request_comment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeletePullRequestComment",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2299,6 +6188,306 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
             return resp
 
+    class _FetchBlob(
+        _BaseSecureSourceManagerRestTransport._BaseFetchBlob,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.FetchBlob")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.FetchBlobRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.FetchBlobResponse:
+            r"""Call the fetch blob method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.FetchBlobRequest):
+                    The request object. Request message for fetching a blob
+                (file content) from a repository.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.FetchBlobResponse:
+                    Response message containing the
+                content of a blob.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseFetchBlob._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_fetch_blob(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseFetchBlob._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseFetchBlob._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.FetchBlob",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "FetchBlob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._FetchBlob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.FetchBlobResponse()
+            pb_resp = secure_source_manager.FetchBlobResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_blob(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_blob_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.FetchBlobResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.fetch_blob",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "FetchBlob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _FetchTree(
+        _BaseSecureSourceManagerRestTransport._BaseFetchTree,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.FetchTree")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.FetchTreeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.FetchTreeResponse:
+            r"""Call the fetch tree method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.FetchTreeRequest):
+                    The request object. Request message for fetching a tree
+                structure from a repository.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.FetchTreeResponse:
+                    Response message containing a list of
+                TreeEntry objects.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseFetchTree._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_fetch_tree(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseFetchTree._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseFetchTree._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.FetchTree",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "FetchTree",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._FetchTree._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.FetchTreeResponse()
+            pb_resp = secure_source_manager.FetchTreeResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_tree(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_tree_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.FetchTreeResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.fetch_tree",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "FetchTree",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetBranchRule(
         _BaseSecureSourceManagerRestTransport._BaseGetBranchRule,
         SecureSourceManagerRestStub,
@@ -2354,7 +6543,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 ~.secure_source_manager.BranchRule:
                     Metadata of a BranchRule. BranchRule
                 is the protection rule to enforce
-                pre-defined rules on desginated branches
+                pre-defined rules on designated branches
                 within a repository.
 
             """
@@ -2445,6 +6634,153 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     extra={
                         "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "rpcName": "GetBranchRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetHook(
+        _BaseSecureSourceManagerRestTransport._BaseGetHook, SecureSourceManagerRestStub
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.GetHook")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.GetHookRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.Hook:
+            r"""Call the get hook method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.GetHookRequest):
+                    The request object. GetHookRequest is the request for
+                getting a hook.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.Hook:
+                    Metadata of a Secure Source Manager
+                Hook.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseGetHook._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_hook(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetHook._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseGetHook._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetHook",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetHook",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._GetHook._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.Hook()
+            pb_resp = secure_source_manager.Hook.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_hook(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_hook_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.Hook.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.get_hook",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetHook",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -2821,6 +7157,609 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
             return resp
 
+    class _GetIssue(
+        _BaseSecureSourceManagerRestTransport._BaseGetIssue, SecureSourceManagerRestStub
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.GetIssue")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.GetIssueRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.Issue:
+            r"""Call the get issue method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.GetIssueRequest):
+                    The request object. The request to get an issue.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.Issue:
+                    Metadata of an Issue.
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseGetIssue._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_issue(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetIssue._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseGetIssue._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetIssue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetIssue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._GetIssue._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.Issue()
+            pb_resp = secure_source_manager.Issue.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_issue(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_issue_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.Issue.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.get_issue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetIssue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetIssueComment(
+        _BaseSecureSourceManagerRestTransport._BaseGetIssueComment,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.GetIssueComment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.GetIssueCommentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.IssueComment:
+            r"""Call the get issue comment method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.GetIssueCommentRequest):
+                    The request object. The request to get an issue comment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.IssueComment:
+                    IssueComment represents a comment on
+                an issue.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseGetIssueComment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_issue_comment(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetIssueComment._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseGetIssueComment._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetIssueComment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetIssueComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._GetIssueComment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.IssueComment()
+            pb_resp = secure_source_manager.IssueComment.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_issue_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_issue_comment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.IssueComment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.get_issue_comment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetIssueComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetPullRequest(
+        _BaseSecureSourceManagerRestTransport._BaseGetPullRequest,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.GetPullRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.GetPullRequestRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.PullRequest:
+            r"""Call the get pull request method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.GetPullRequestRequest):
+                    The request object. GetPullRequestRequest is the request
+                to get a pull request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.PullRequest:
+                    Metadata of a PullRequest.
+                PullRequest is the request from a user
+                to merge a branch (head) into another
+                branch (base).
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseGetPullRequest._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_pull_request(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetPullRequest._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseGetPullRequest._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetPullRequest",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetPullRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._GetPullRequest._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.PullRequest()
+            pb_resp = secure_source_manager.PullRequest.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_pull_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_pull_request_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.PullRequest.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.get_pull_request",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetPullRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetPullRequestComment(
+        _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.GetPullRequestComment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.GetPullRequestCommentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.PullRequestComment:
+            r"""Call the get pull request comment method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.GetPullRequestCommentRequest):
+                    The request object. The request to get a pull request
+                comment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.PullRequestComment:
+                    PullRequestComment represents a
+                comment on a pull request.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_pull_request_comment(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetPullRequestComment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetPullRequestComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                SecureSourceManagerRestTransport._GetPullRequestComment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.PullRequestComment()
+            pb_resp = secure_source_manager.PullRequestComment.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_pull_request_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_pull_request_comment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.PullRequestComment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.get_pull_request_comment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetPullRequestComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetRepository(
         _BaseSecureSourceManagerRestTransport._BaseGetRepository,
         SecureSourceManagerRestStub,
@@ -3123,6 +8062,156 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
             return resp
 
+    class _ListHooks(
+        _BaseSecureSourceManagerRestTransport._BaseListHooks,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.ListHooks")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.ListHooksRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.ListHooksResponse:
+            r"""Call the list hooks method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.ListHooksRequest):
+                    The request object. ListHooksRequest is request to list
+                hooks.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.ListHooksResponse:
+                    ListHooksResponse is response to list
+                hooks.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseListHooks._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_hooks(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListHooks._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseListHooks._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListHooks",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListHooks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._ListHooks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.ListHooksResponse()
+            pb_resp = secure_source_manager.ListHooksResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_hooks(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_hooks_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.ListHooksResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.list_hooks",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListHooks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListInstances(
         _BaseSecureSourceManagerRestTransport._BaseListInstances,
         SecureSourceManagerRestStub,
@@ -3265,6 +8354,772 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     extra={
                         "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListIssueComments(
+        _BaseSecureSourceManagerRestTransport._BaseListIssueComments,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.ListIssueComments")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.ListIssueCommentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.ListIssueCommentsResponse:
+            r"""Call the list issue comments method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.ListIssueCommentsRequest):
+                    The request object. The request to list issue comments.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.ListIssueCommentsResponse:
+                    The response to list issue comments.
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseListIssueComments._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_issue_comments(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListIssueComments._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseListIssueComments._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListIssueComments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListIssueComments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                SecureSourceManagerRestTransport._ListIssueComments._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.ListIssueCommentsResponse()
+            pb_resp = secure_source_manager.ListIssueCommentsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_issue_comments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_issue_comments_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        secure_source_manager.ListIssueCommentsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.list_issue_comments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListIssueComments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListIssues(
+        _BaseSecureSourceManagerRestTransport._BaseListIssues,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.ListIssues")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.ListIssuesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.ListIssuesResponse:
+            r"""Call the list issues method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.ListIssuesRequest):
+                    The request object. The request to list issues.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.ListIssuesResponse:
+                    The response to list issues.
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseListIssues._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_issues(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListIssues._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseListIssues._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListIssues",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListIssues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._ListIssues._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.ListIssuesResponse()
+            pb_resp = secure_source_manager.ListIssuesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_issues(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_issues_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.ListIssuesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.list_issues",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListIssues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListPullRequestComments(
+        _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.ListPullRequestComments")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.ListPullRequestCommentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.ListPullRequestCommentsResponse:
+            r"""Call the list pull request
+            comments method over HTTP.
+
+                Args:
+                    request (~.secure_source_manager.ListPullRequestCommentsRequest):
+                        The request object. The request to list pull request
+                    comments.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.secure_source_manager.ListPullRequestCommentsResponse:
+                        The response to list pull request
+                    comments.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_pull_request_comments(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListPullRequestComments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListPullRequestComments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                SecureSourceManagerRestTransport._ListPullRequestComments._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.ListPullRequestCommentsResponse()
+            pb_resp = secure_source_manager.ListPullRequestCommentsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_pull_request_comments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_pull_request_comments_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        secure_source_manager.ListPullRequestCommentsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.list_pull_request_comments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListPullRequestComments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListPullRequestFileDiffs(
+        _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.ListPullRequestFileDiffs")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.ListPullRequestFileDiffsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.ListPullRequestFileDiffsResponse:
+            r"""Call the list pull request file
+            diffs method over HTTP.
+
+                Args:
+                    request (~.secure_source_manager.ListPullRequestFileDiffsRequest):
+                        The request object. ListPullRequestFileDiffsRequest is
+                    the request to list pull request file
+                    diffs.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.secure_source_manager.ListPullRequestFileDiffsResponse:
+                        ListPullRequestFileDiffsResponse is
+                    the response containing file diffs
+                    returned from ListPullRequestFileDiffs.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_pull_request_file_diffs(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListPullRequestFileDiffs",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListPullRequestFileDiffs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._ListPullRequestFileDiffs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.ListPullRequestFileDiffsResponse()
+            pb_resp = secure_source_manager.ListPullRequestFileDiffsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_pull_request_file_diffs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_pull_request_file_diffs_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        secure_source_manager.ListPullRequestFileDiffsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.list_pull_request_file_diffs",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListPullRequestFileDiffs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListPullRequests(
+        _BaseSecureSourceManagerRestTransport._BaseListPullRequests,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.ListPullRequests")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.ListPullRequestsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> secure_source_manager.ListPullRequestsResponse:
+            r"""Call the list pull requests method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.ListPullRequestsRequest):
+                    The request object. ListPullRequestsRequest is the
+                request to list pull requests.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.secure_source_manager.ListPullRequestsResponse:
+                    ListPullRequestsResponse is the
+                response to list pull requests.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseListPullRequests._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_pull_requests(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListPullRequests._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseListPullRequests._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListPullRequests",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListPullRequests",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._ListPullRequests._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = secure_source_manager.ListPullRequestsResponse()
+            pb_resp = secure_source_manager.ListPullRequestsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_pull_requests(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_pull_requests_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        secure_source_manager.ListPullRequestsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.list_pull_requests",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListPullRequests",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3415,6 +9270,627 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     extra={
                         "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "rpcName": "ListRepositories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _MergePullRequest(
+        _BaseSecureSourceManagerRestTransport._BaseMergePullRequest,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.MergePullRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.MergePullRequestRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the merge pull request method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.MergePullRequestRequest):
+                    The request object. MergePullRequestRequest is the
+                request to merge a pull request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_merge_pull_request(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.MergePullRequest",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "MergePullRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._MergePullRequest._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_merge_pull_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_merge_pull_request_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.merge_pull_request",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "MergePullRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _OpenIssue(
+        _BaseSecureSourceManagerRestTransport._BaseOpenIssue,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.OpenIssue")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.OpenIssueRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the open issue method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.OpenIssueRequest):
+                    The request object. The request to open an issue.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseOpenIssue._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_open_issue(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseOpenIssue._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseOpenIssue._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseOpenIssue._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.OpenIssue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "OpenIssue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._OpenIssue._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_open_issue(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_open_issue_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.open_issue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "OpenIssue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _OpenPullRequest(
+        _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.OpenPullRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.OpenPullRequestRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the open pull request method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.OpenPullRequestRequest):
+                    The request object. OpenPullRequestRequest is the request
+                to open a pull request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_open_pull_request(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.OpenPullRequest",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "OpenPullRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._OpenPullRequest._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_open_pull_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_open_pull_request_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.open_pull_request",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "OpenPullRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ResolvePullRequestComments(
+        _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.ResolvePullRequestComments")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.ResolvePullRequestCommentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the resolve pull request
+            comments method over HTTP.
+
+                Args:
+                    request (~.secure_source_manager.ResolvePullRequestCommentsRequest):
+                        The request object. The request to resolve multiple pull
+                    request comments.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_resolve_pull_request_comments(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ResolvePullRequestComments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ResolvePullRequestComments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._ResolvePullRequestComments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_resolve_pull_request_comments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_resolve_pull_request_comments_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.resolve_pull_request_comments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ResolvePullRequestComments",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3804,6 +10280,165 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
             return resp
 
+    class _UnresolvePullRequestComments(
+        _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.UnresolvePullRequestComments")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.UnresolvePullRequestCommentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the unresolve pull request
+            comments method over HTTP.
+
+                Args:
+                    request (~.secure_source_manager.UnresolvePullRequestCommentsRequest):
+                        The request object. The request to unresolve multiple
+                    pull request comments.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_unresolve_pull_request_comments(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.UnresolvePullRequestComments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UnresolvePullRequestComments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._UnresolvePullRequestComments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_unresolve_pull_request_comments(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_unresolve_pull_request_comments_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.unresolve_pull_request_comments",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UnresolvePullRequestComments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateBranchRule(
         _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule,
         SecureSourceManagerRestStub,
@@ -3959,6 +10594,965 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
             return resp
 
+    class _UpdateHook(
+        _BaseSecureSourceManagerRestTransport._BaseUpdateHook,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.UpdateHook")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.UpdateHookRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update hook method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.UpdateHookRequest):
+                    The request object. UpdateHookRequest is the request to
+                update a hook.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_hook(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.UpdateHook",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateHook",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._UpdateHook._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_hook(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_hook_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.update_hook",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateHook",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateIssue(
+        _BaseSecureSourceManagerRestTransport._BaseUpdateIssue,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.UpdateIssue")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.UpdateIssueRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update issue method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.UpdateIssueRequest):
+                    The request object. The request to update an issue.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_issue(request, metadata)
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.UpdateIssue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateIssue",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._UpdateIssue._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_issue(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_issue_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.update_issue",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateIssue",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateIssueComment(
+        _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.UpdateIssueComment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.UpdateIssueCommentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update issue comment method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.UpdateIssueCommentRequest):
+                    The request object. The request to update an issue
+                comment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_issue_comment(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.UpdateIssueComment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateIssueComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                SecureSourceManagerRestTransport._UpdateIssueComment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_issue_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_issue_comment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.update_issue_comment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateIssueComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdatePullRequest(
+        _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.UpdatePullRequest")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.UpdatePullRequestRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update pull request method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.UpdatePullRequestRequest):
+                    The request object. UpdatePullRequestRequest is the
+                request to update a pull request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_pull_request(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.UpdatePullRequest",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdatePullRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = (
+                SecureSourceManagerRestTransport._UpdatePullRequest._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_pull_request(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_pull_request_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.update_pull_request",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdatePullRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdatePullRequestComment(
+        _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.UpdatePullRequestComment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.UpdatePullRequestCommentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update pull request
+            comment method over HTTP.
+
+                Args:
+                    request (~.secure_source_manager.UpdatePullRequestCommentRequest):
+                        The request object. The request to update a pull request
+                    comment.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_pull_request_comment(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.UpdatePullRequestComment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdatePullRequestComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._UpdatePullRequestComment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_pull_request_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_pull_request_comment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.update_pull_request_comment",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdatePullRequestComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _UpdateRepository(
+        _BaseSecureSourceManagerRestTransport._BaseUpdateRepository,
+        SecureSourceManagerRestStub,
+    ):
+        def __hash__(self):
+            return hash("SecureSourceManagerRestTransport.UpdateRepository")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: secure_source_manager.UpdateRepositoryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update repository method over HTTP.
+
+            Args:
+                request (~.secure_source_manager.UpdateRepositoryRequest):
+                    The request object. UpdateRepositoryRequest is the
+                request to update a repository.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_repository(
+                request, metadata
+            )
+            transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.UpdateRepository",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateRepository",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = SecureSourceManagerRestTransport._UpdateRepository._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_repository(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_repository_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.update_repository",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    @property
+    def batch_create_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.BatchCreatePullRequestCommentsRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreatePullRequestComments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def close_issue(
+        self,
+    ) -> Callable[[secure_source_manager.CloseIssueRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CloseIssue(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def close_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ClosePullRequestRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ClosePullRequest(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def create_branch_rule(
         self,
@@ -3970,6 +11564,14 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         return self._CreateBranchRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_hook(
+        self,
+    ) -> Callable[[secure_source_manager.CreateHookRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateHook(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_instance(
         self,
     ) -> Callable[
@@ -3978,6 +11580,45 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_issue(
+        self,
+    ) -> Callable[[secure_source_manager.CreateIssueRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateIssue(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreateIssueCommentRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateIssueComment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreatePullRequestRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreatePullRequest(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreatePullRequestCommentRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreatePullRequestComment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def create_repository(
@@ -4000,6 +11641,14 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         return self._DeleteBranchRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_hook(
+        self,
+    ) -> Callable[[secure_source_manager.DeleteHookRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteHook(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_instance(
         self,
     ) -> Callable[
@@ -4008,6 +11657,35 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_issue(
+        self,
+    ) -> Callable[[secure_source_manager.DeleteIssueRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteIssue(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeleteIssueCommentRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteIssueComment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeletePullRequestCommentRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeletePullRequestComment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_repository(
@@ -4020,6 +11698,28 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         return self._DeleteRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def fetch_blob(
+        self,
+    ) -> Callable[
+        [secure_source_manager.FetchBlobRequest],
+        secure_source_manager.FetchBlobResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchBlob(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def fetch_tree(
+        self,
+    ) -> Callable[
+        [secure_source_manager.FetchTreeRequest],
+        secure_source_manager.FetchTreeResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchTree(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_branch_rule(
         self,
     ) -> Callable[
@@ -4028,6 +11728,14 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBranchRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_hook(
+        self,
+    ) -> Callable[[secure_source_manager.GetHookRequest], secure_source_manager.Hook]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetHook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_iam_policy_repo(
@@ -4046,6 +11754,46 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_issue(
+        self,
+    ) -> Callable[[secure_source_manager.GetIssueRequest], secure_source_manager.Issue]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetIssue(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetIssueCommentRequest],
+        secure_source_manager.IssueComment,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetIssueComment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetPullRequestRequest], secure_source_manager.PullRequest
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPullRequest(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetPullRequestCommentRequest],
+        secure_source_manager.PullRequestComment,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPullRequestComment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_repository(
@@ -4069,6 +11817,17 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         return self._ListBranchRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_hooks(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListHooksRequest],
+        secure_source_manager.ListHooksResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListHooks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_instances(
         self,
     ) -> Callable[
@@ -4080,6 +11839,61 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_issue_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListIssueCommentsRequest],
+        secure_source_manager.ListIssueCommentsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListIssueComments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_issues(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListIssuesRequest],
+        secure_source_manager.ListIssuesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListIssues(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListPullRequestCommentsRequest],
+        secure_source_manager.ListPullRequestCommentsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListPullRequestComments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_pull_request_file_diffs(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListPullRequestFileDiffsRequest],
+        secure_source_manager.ListPullRequestFileDiffsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListPullRequestFileDiffs(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_pull_requests(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListPullRequestsRequest],
+        secure_source_manager.ListPullRequestsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListPullRequests(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_repositories(
         self,
     ) -> Callable[
@@ -4089,6 +11903,45 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRepositories(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def merge_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.MergePullRequestRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._MergePullRequest(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def open_issue(
+        self,
+    ) -> Callable[[secure_source_manager.OpenIssueRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._OpenIssue(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def open_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.OpenPullRequestRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._OpenPullRequest(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def resolve_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ResolvePullRequestCommentsRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ResolvePullRequestComments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def set_iam_policy_repo(
@@ -4110,6 +11963,17 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         return self._TestIamPermissionsRepo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def unresolve_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UnresolvePullRequestCommentsRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UnresolvePullRequestComments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def update_branch_rule(
         self,
     ) -> Callable[
@@ -4118,6 +11982,63 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBranchRule(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_hook(
+        self,
+    ) -> Callable[[secure_source_manager.UpdateHookRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateHook(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_issue(
+        self,
+    ) -> Callable[[secure_source_manager.UpdateIssueRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateIssue(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateIssueCommentRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateIssueComment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdatePullRequestRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdatePullRequest(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdatePullRequestCommentRequest],
+        operations_pb2.Operation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdatePullRequestComment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_repository(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateRepositoryRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):

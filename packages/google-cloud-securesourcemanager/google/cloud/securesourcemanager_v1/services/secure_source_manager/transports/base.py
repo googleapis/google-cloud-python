@@ -207,8 +207,38 @@ class SecureSourceManagerTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_repository: gapic_v1.method.wrap_method(
+                self.update_repository,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_repository: gapic_v1.method.wrap_method(
                 self.delete_repository,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_hooks: gapic_v1.method.wrap_method(
+                self.list_hooks,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_hook: gapic_v1.method.wrap_method(
+                self.get_hook,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_hook: gapic_v1.method.wrap_method(
+                self.create_hook,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_hook: gapic_v1.method.wrap_method(
+                self.update_hook,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_hook: gapic_v1.method.wrap_method(
+                self.delete_hook,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -258,6 +288,156 @@ class SecureSourceManagerTransport(abc.ABC):
             ),
             self.delete_branch_rule: gapic_v1.method.wrap_method(
                 self.delete_branch_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_pull_request: gapic_v1.method.wrap_method(
+                self.create_pull_request,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_pull_request: gapic_v1.method.wrap_method(
+                self.get_pull_request,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_pull_requests: gapic_v1.method.wrap_method(
+                self.list_pull_requests,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_pull_request: gapic_v1.method.wrap_method(
+                self.update_pull_request,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.merge_pull_request: gapic_v1.method.wrap_method(
+                self.merge_pull_request,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.open_pull_request: gapic_v1.method.wrap_method(
+                self.open_pull_request,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.close_pull_request: gapic_v1.method.wrap_method(
+                self.close_pull_request,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_pull_request_file_diffs: gapic_v1.method.wrap_method(
+                self.list_pull_request_file_diffs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_tree: gapic_v1.method.wrap_method(
+                self.fetch_tree,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.fetch_blob: gapic_v1.method.wrap_method(
+                self.fetch_blob,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_issue: gapic_v1.method.wrap_method(
+                self.create_issue,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_issue: gapic_v1.method.wrap_method(
+                self.get_issue,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_issues: gapic_v1.method.wrap_method(
+                self.list_issues,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_issue: gapic_v1.method.wrap_method(
+                self.update_issue,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_issue: gapic_v1.method.wrap_method(
+                self.delete_issue,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.open_issue: gapic_v1.method.wrap_method(
+                self.open_issue,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.close_issue: gapic_v1.method.wrap_method(
+                self.close_issue,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_pull_request_comment: gapic_v1.method.wrap_method(
+                self.get_pull_request_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_pull_request_comments: gapic_v1.method.wrap_method(
+                self.list_pull_request_comments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_pull_request_comment: gapic_v1.method.wrap_method(
+                self.create_pull_request_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_pull_request_comment: gapic_v1.method.wrap_method(
+                self.update_pull_request_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_pull_request_comment: gapic_v1.method.wrap_method(
+                self.delete_pull_request_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_pull_request_comments: gapic_v1.method.wrap_method(
+                self.batch_create_pull_request_comments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.resolve_pull_request_comments: gapic_v1.method.wrap_method(
+                self.resolve_pull_request_comments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.unresolve_pull_request_comments: gapic_v1.method.wrap_method(
+                self.unresolve_pull_request_comments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_issue_comment: gapic_v1.method.wrap_method(
+                self.create_issue_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_issue_comment: gapic_v1.method.wrap_method(
+                self.get_issue_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_issue_comments: gapic_v1.method.wrap_method(
+                self.list_issue_comments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_issue_comment: gapic_v1.method.wrap_method(
+                self.update_issue_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_issue_comment: gapic_v1.method.wrap_method(
+                self.delete_issue_comment,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -397,10 +577,67 @@ class SecureSourceManagerTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def update_repository(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateRepositoryRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_repository(
         self,
     ) -> Callable[
         [secure_source_manager.DeleteRepositoryRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_hooks(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListHooksRequest],
+        Union[
+            secure_source_manager.ListHooksResponse,
+            Awaitable[secure_source_manager.ListHooksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_hook(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetHookRequest],
+        Union[secure_source_manager.Hook, Awaitable[secure_source_manager.Hook]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_hook(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreateHookRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_hook(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateHookRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_hook(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeleteHookRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -482,6 +719,306 @@ class SecureSourceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [secure_source_manager.DeleteBranchRuleRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreatePullRequestRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetPullRequestRequest],
+        Union[
+            secure_source_manager.PullRequest,
+            Awaitable[secure_source_manager.PullRequest],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_pull_requests(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListPullRequestsRequest],
+        Union[
+            secure_source_manager.ListPullRequestsResponse,
+            Awaitable[secure_source_manager.ListPullRequestsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdatePullRequestRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def merge_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.MergePullRequestRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def open_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.OpenPullRequestRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def close_pull_request(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ClosePullRequestRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_pull_request_file_diffs(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListPullRequestFileDiffsRequest],
+        Union[
+            secure_source_manager.ListPullRequestFileDiffsResponse,
+            Awaitable[secure_source_manager.ListPullRequestFileDiffsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_tree(
+        self,
+    ) -> Callable[
+        [secure_source_manager.FetchTreeRequest],
+        Union[
+            secure_source_manager.FetchTreeResponse,
+            Awaitable[secure_source_manager.FetchTreeResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_blob(
+        self,
+    ) -> Callable[
+        [secure_source_manager.FetchBlobRequest],
+        Union[
+            secure_source_manager.FetchBlobResponse,
+            Awaitable[secure_source_manager.FetchBlobResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_issue(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreateIssueRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_issue(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetIssueRequest],
+        Union[secure_source_manager.Issue, Awaitable[secure_source_manager.Issue]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_issues(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListIssuesRequest],
+        Union[
+            secure_source_manager.ListIssuesResponse,
+            Awaitable[secure_source_manager.ListIssuesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_issue(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateIssueRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_issue(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeleteIssueRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def open_issue(
+        self,
+    ) -> Callable[
+        [secure_source_manager.OpenIssueRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def close_issue(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CloseIssueRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetPullRequestCommentRequest],
+        Union[
+            secure_source_manager.PullRequestComment,
+            Awaitable[secure_source_manager.PullRequestComment],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListPullRequestCommentsRequest],
+        Union[
+            secure_source_manager.ListPullRequestCommentsResponse,
+            Awaitable[secure_source_manager.ListPullRequestCommentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreatePullRequestCommentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdatePullRequestCommentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_pull_request_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeletePullRequestCommentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.BatchCreatePullRequestCommentsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def resolve_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ResolvePullRequestCommentsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def unresolve_pull_request_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UnresolvePullRequestCommentsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.CreateIssueCommentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.GetIssueCommentRequest],
+        Union[
+            secure_source_manager.IssueComment,
+            Awaitable[secure_source_manager.IssueComment],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_issue_comments(
+        self,
+    ) -> Callable[
+        [secure_source_manager.ListIssueCommentsRequest],
+        Union[
+            secure_source_manager.ListIssueCommentsResponse,
+            Awaitable[secure_source_manager.ListIssueCommentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.UpdateIssueCommentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_issue_comment(
+        self,
+    ) -> Callable[
+        [secure_source_manager.DeleteIssueCommentRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
