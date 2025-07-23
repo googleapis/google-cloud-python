@@ -18,7 +18,7 @@ import logging
 import subprocess
 import sys
 import subprocess
-from typing import List
+from typing import Dict, List
 
 logger = logging.getLogger()
 
@@ -27,7 +27,7 @@ GENERATE_REQUEST_FILE = "generate-request.json"
 SOURCE_DIR = "source"
 
 
-def _read_json_file(path):
+def _read_json_file(path: str) -> Dict:
     """Helper function that reads a json file path and returns the loaded json content.
 
     Args:
@@ -50,7 +50,7 @@ def handle_configure():
     logger.info("'configure' command executed.")
 
 
-def _determine_bazel_rule(api_path):
+def _determine_bazel_rule(api_path: str) -> str:
     """Executes a `bazelisk query` to find a Bazel rule.
 
     Args:
