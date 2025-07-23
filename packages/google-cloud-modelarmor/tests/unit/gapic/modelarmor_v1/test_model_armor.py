@@ -2920,6 +2920,7 @@ def test_get_floor_setting(request_type, transport: str = "grpc"):
         call.return_value = service.FloorSetting(
             name="name_value",
             enable_floor_setting_enforcement=True,
+            integrated_services=[service.FloorSetting.IntegratedService.AI_PLATFORM],
         )
         response = client.get_floor_setting(request)
 
@@ -2933,6 +2934,9 @@ def test_get_floor_setting(request_type, transport: str = "grpc"):
     assert isinstance(response, service.FloorSetting)
     assert response.name == "name_value"
     assert response.enable_floor_setting_enforcement is True
+    assert response.integrated_services == [
+        service.FloorSetting.IntegratedService.AI_PLATFORM
+    ]
 
 
 def test_get_floor_setting_non_empty_request_with_auto_populated_field():
@@ -3066,6 +3070,9 @@ async def test_get_floor_setting_async(
             service.FloorSetting(
                 name="name_value",
                 enable_floor_setting_enforcement=True,
+                integrated_services=[
+                    service.FloorSetting.IntegratedService.AI_PLATFORM
+                ],
             )
         )
         response = await client.get_floor_setting(request)
@@ -3080,6 +3087,9 @@ async def test_get_floor_setting_async(
     assert isinstance(response, service.FloorSetting)
     assert response.name == "name_value"
     assert response.enable_floor_setting_enforcement is True
+    assert response.integrated_services == [
+        service.FloorSetting.IntegratedService.AI_PLATFORM
+    ]
 
 
 @pytest.mark.asyncio
@@ -3263,6 +3273,7 @@ def test_update_floor_setting(request_type, transport: str = "grpc"):
         call.return_value = service.FloorSetting(
             name="name_value",
             enable_floor_setting_enforcement=True,
+            integrated_services=[service.FloorSetting.IntegratedService.AI_PLATFORM],
         )
         response = client.update_floor_setting(request)
 
@@ -3276,6 +3287,9 @@ def test_update_floor_setting(request_type, transport: str = "grpc"):
     assert isinstance(response, service.FloorSetting)
     assert response.name == "name_value"
     assert response.enable_floor_setting_enforcement is True
+    assert response.integrated_services == [
+        service.FloorSetting.IntegratedService.AI_PLATFORM
+    ]
 
 
 def test_update_floor_setting_non_empty_request_with_auto_populated_field():
@@ -3407,6 +3421,9 @@ async def test_update_floor_setting_async(
             service.FloorSetting(
                 name="name_value",
                 enable_floor_setting_enforcement=True,
+                integrated_services=[
+                    service.FloorSetting.IntegratedService.AI_PLATFORM
+                ],
             )
         )
         response = await client.update_floor_setting(request)
@@ -3421,6 +3438,9 @@ async def test_update_floor_setting_async(
     assert isinstance(response, service.FloorSetting)
     assert response.name == "name_value"
     assert response.enable_floor_setting_enforcement is True
+    assert response.integrated_services == [
+        service.FloorSetting.IntegratedService.AI_PLATFORM
+    ]
 
 
 @pytest.mark.asyncio
@@ -6209,6 +6229,9 @@ async def test_get_floor_setting_empty_call_grpc_asyncio():
             service.FloorSetting(
                 name="name_value",
                 enable_floor_setting_enforcement=True,
+                integrated_services=[
+                    service.FloorSetting.IntegratedService.AI_PLATFORM
+                ],
             )
         )
         await client.get_floor_setting(request=None)
@@ -6239,6 +6262,9 @@ async def test_update_floor_setting_empty_call_grpc_asyncio():
             service.FloorSetting(
                 name="name_value",
                 enable_floor_setting_enforcement=True,
+                integrated_services=[
+                    service.FloorSetting.IntegratedService.AI_PLATFORM
+                ],
             )
         )
         await client.update_floor_setting(request=None)
@@ -6629,6 +6655,7 @@ def test_create_template_rest_call_success(request_type):
             "custom_llm_response_safety_error_message": "custom_llm_response_safety_error_message_value",
             "log_template_operations": True,
             "log_sanitize_operations": True,
+            "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
         },
     }
@@ -6856,6 +6883,7 @@ def test_update_template_rest_call_success(request_type):
             "custom_llm_response_safety_error_message": "custom_llm_response_safety_error_message_value",
             "log_template_operations": True,
             "log_sanitize_operations": True,
+            "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
         },
     }
@@ -7164,6 +7192,7 @@ def test_get_floor_setting_rest_call_success(request_type):
         return_value = service.FloorSetting(
             name="name_value",
             enable_floor_setting_enforcement=True,
+            integrated_services=[service.FloorSetting.IntegratedService.AI_PLATFORM],
         )
 
         # Wrap the value into a proper Response obj
@@ -7182,6 +7211,9 @@ def test_get_floor_setting_rest_call_success(request_type):
     assert isinstance(response, service.FloorSetting)
     assert response.name == "name_value"
     assert response.enable_floor_setting_enforcement is True
+    assert response.integrated_services == [
+        service.FloorSetting.IntegratedService.AI_PLATFORM
+    ]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7309,6 +7341,13 @@ def test_update_floor_setting_rest_call_success(request_type):
             "malicious_uri_filter_settings": {"filter_enforcement": 1},
         },
         "enable_floor_setting_enforcement": True,
+        "integrated_services": [1],
+        "ai_platform_floor_setting": {
+            "inspect_only": True,
+            "inspect_and_block": True,
+            "enable_cloud_logging": True,
+        },
+        "floor_setting_metadata": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7385,6 +7424,7 @@ def test_update_floor_setting_rest_call_success(request_type):
         return_value = service.FloorSetting(
             name="name_value",
             enable_floor_setting_enforcement=True,
+            integrated_services=[service.FloorSetting.IntegratedService.AI_PLATFORM],
         )
 
         # Wrap the value into a proper Response obj
@@ -7403,6 +7443,9 @@ def test_update_floor_setting_rest_call_success(request_type):
     assert isinstance(response, service.FloorSetting)
     assert response.name == "name_value"
     assert response.enable_floor_setting_enforcement is True
+    assert response.integrated_services == [
+        service.FloorSetting.IntegratedService.AI_PLATFORM
+    ]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "InvocationResult",
         "Template",
         "FloorSetting",
+        "AiPlatformFloorSetting",
         "ListTemplatesRequest",
         "ListTemplatesResponse",
         "GetTemplateRequest",
@@ -246,10 +247,31 @@ class Template(proto.Message):
                 operations.
             log_sanitize_operations (bool):
                 Optional. If true, log sanitize operations.
+            enforcement_type (google.cloud.modelarmor_v1.types.Template.TemplateMetadata.EnforcementType):
+                Optional. Enforcement type for Model Armor
+                filters.
             multi_language_detection (google.cloud.modelarmor_v1.types.Template.TemplateMetadata.MultiLanguageDetection):
                 Optional. Metadata for multi language
                 detection.
         """
+
+        class EnforcementType(proto.Enum):
+            r"""Enforcement type for Model Armor filters.
+
+            Values:
+                ENFORCEMENT_TYPE_UNSPECIFIED (0):
+                    Default value. Same as INSPECT_AND_BLOCK.
+                INSPECT_ONLY (1):
+                    Model Armor filters will run in inspect only
+                    mode. No action will be taken on the request.
+                INSPECT_AND_BLOCK (2):
+                    Model Armor filters will run in inspect and
+                    block mode. Requests that trip Model Armor
+                    filters will be blocked.
+            """
+            ENFORCEMENT_TYPE_UNSPECIFIED = 0
+            INSPECT_ONLY = 1
+            INSPECT_AND_BLOCK = 2
 
         class MultiLanguageDetection(proto.Message):
             r"""Metadata to enable multi language detection via template.
@@ -292,6 +314,11 @@ class Template(proto.Message):
         log_sanitize_operations: bool = proto.Field(
             proto.BOOL,
             number=7,
+        )
+        enforcement_type: "Template.TemplateMetadata.EnforcementType" = proto.Field(
+            proto.ENUM,
+            number=8,
+            enum="Template.TemplateMetadata.EnforcementType",
         )
         multi_language_detection: "Template.TemplateMetadata.MultiLanguageDetection" = (
             proto.Field(
@@ -350,7 +377,31 @@ class FloorSetting(proto.Message):
             Optional. Floor Settings enforcement status.
 
             This field is a member of `oneof`_ ``_enable_floor_setting_enforcement``.
+        integrated_services (MutableSequence[google.cloud.modelarmor_v1.types.FloorSetting.IntegratedService]):
+            Optional. List of integrated services for
+            which the floor setting is applicable.
+        ai_platform_floor_setting (google.cloud.modelarmor_v1.types.AiPlatformFloorSetting):
+            Optional. AI Platform floor setting.
+
+            This field is a member of `oneof`_ ``_ai_platform_floor_setting``.
+        floor_setting_metadata (google.cloud.modelarmor_v1.types.FloorSetting.FloorSettingMetadata):
+            Optional. Metadata for FloorSetting
     """
+
+    class IntegratedService(proto.Enum):
+        r"""Integrated service for which the floor setting is applicable.
+
+        Values:
+            INTEGRATED_SERVICE_UNSPECIFIED (0):
+                Unspecified integrated service.
+            AI_PLATFORM (1):
+                AI Platform.
+        """
+        INTEGRATED_SERVICE_UNSPECIFIED = 0
+        AI_PLATFORM = 1
+
+    class FloorSettingMetadata(proto.Message):
+        r"""message describing FloorSetting Metadata"""
 
     name: str = proto.Field(
         proto.STRING,
@@ -375,6 +426,66 @@ class FloorSetting(proto.Message):
         proto.BOOL,
         number=5,
         optional=True,
+    )
+    integrated_services: MutableSequence[IntegratedService] = proto.RepeatedField(
+        proto.ENUM,
+        number=6,
+        enum=IntegratedService,
+    )
+    ai_platform_floor_setting: "AiPlatformFloorSetting" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        optional=True,
+        message="AiPlatformFloorSetting",
+    )
+    floor_setting_metadata: FloorSettingMetadata = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=FloorSettingMetadata,
+    )
+
+
+class AiPlatformFloorSetting(proto.Message):
+    r"""message describing AiPlatformFloorSetting
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        inspect_only (bool):
+            Optional. If true, Model Armor filters will
+            be run in inspect only mode. No action will be
+            taken on the request.
+
+            This field is a member of `oneof`_ ``enforcement_type``.
+        inspect_and_block (bool):
+            Optional. If true, Model Armor filters will
+            be run in inspect and block mode. Requests that
+            trip Model Armor filters will be blocked.
+
+            This field is a member of `oneof`_ ``enforcement_type``.
+        enable_cloud_logging (bool):
+            Optional. If true, log Model Armor filter
+            results to Cloud Logging.
+    """
+
+    inspect_only: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        oneof="enforcement_type",
+    )
+    inspect_and_block: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+        oneof="enforcement_type",
+    )
+    enable_cloud_logging: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
