@@ -120,11 +120,16 @@ def _run_nox_sessions(sessions:List[str]):
     Args:
         path (List[str]): The list of nox sessions to run.
     """
-    for nox_session in sessions:
-        command = ["nox", "-s", nox_session]
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
-        logger.info(result)
-
+    # Read a generate-request.json file
+    try:
+        request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
+        library_id = request_data.get("id")
+        for nox_session in sessions:
+            command = ["nox", "-s", nox_session, "-f", f"{SOURCE_DIR}/packages/{library_id}"]
+            result = subprocess.run(command, capture_output=True, text=True, check=True)
+            logger.info(result)
+    except Exception as e:
+        raise ValueError("Generation failed.") from e
 
 def handle_build():
     """The main coordinator for validating client library generation."""
