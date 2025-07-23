@@ -2956,10 +2956,10 @@ def test_opentelemetry_subscriber_concurrency_control_span_end(span_exporter):
     streaming_pull_manager._wrap_callback_errors(mock.Mock(), mock.Mock(), msg)
 
     spans = span_exporter.get_finished_spans()
-    assert len(spans) == 1
+    assert len(spans) == 2
 
     concurrency_control_span = spans[0]
-    concurrency_control_span.name == "subscriber concurrency control"
+    assert concurrency_control_span.name == "subscriber concurrency control"
 
 
 def test_opentelemetry_wrap_callback_error(span_exporter):

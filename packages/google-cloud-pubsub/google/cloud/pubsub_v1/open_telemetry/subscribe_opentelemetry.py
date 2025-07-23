@@ -160,7 +160,7 @@ class SubscribeOpenTelemetry:
         assert self._scheduler_span is not None
         self._scheduler_span.end()
 
-    def start_process_span(self) -> None:
+    def start_process_span(self) -> trace.Span:
         assert self._subscribe_span is not None
         tracer = trace.get_tracer(_OPEN_TELEMETRY_TRACER_NAME)
         publish_create_span_link: Optional[trace.Link] = None
@@ -186,6 +186,7 @@ class SubscribeOpenTelemetry:
             end_on_exit=False,
         ) as process_span:
             self._process_span = process_span
+            return process_span
 
     def end_process_span(self) -> None:
         assert self._process_span is not None
@@ -199,6 +200,13 @@ class SubscribeOpenTelemetry:
                 "timestamp": str(datetime.now()),
             },
         )
+
+    def __enter__(self) -> trace.Span:
+        return self.start_process_span()
+
+    def __exit__(self, exc_type, exc_val, traceback):
+        if self._process_span:
+            self.end_process_span()
 
 
 def start_modack_span(
