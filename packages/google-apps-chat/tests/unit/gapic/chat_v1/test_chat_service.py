@@ -22186,6 +22186,15 @@ def test_create_message_rest_call_success(request_type):
                         "thread": "thread_value",
                         "message": "message_value",
                     },
+                    "meet_space_link_data": {
+                        "meeting_code": "meeting_code_value",
+                        "type_": 1,
+                        "huddle_status": 1,
+                    },
+                    "calendar_event_link_data": {
+                        "calendar_id": "calendar_id_value",
+                        "event_id": "event_id_value",
+                    },
                 },
                 "custom_emoji_metadata": {
                     "custom_emoji": {
@@ -23301,6 +23310,15 @@ def test_update_message_rest_call_success(request_type):
                         "space": "space_value",
                         "thread": "thread_value",
                         "message": "message_value",
+                    },
+                    "meet_space_link_data": {
+                        "meeting_code": "meeting_code_value",
+                        "type_": 1,
+                        "huddle_status": 1,
+                    },
+                    "calendar_event_link_data": {
+                        "calendar_id": "calendar_id_value",
+                        "event_id": "event_id_value",
                     },
                 },
                 "custom_emoji_metadata": {
