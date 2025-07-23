@@ -17,11 +17,13 @@ import json
 import logging
 import os
 import sys
+import subprocess
 
 logger = logging.getLogger()
 
 LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
+SOURCE_DIR = "source"
 
 
 def _read_json_file(path):
@@ -47,6 +49,39 @@ def handle_configure():
     logger.info("'configure' command executed.")
 
 
+def _determine_bazel_rule(api_path):
+    """Executes a `bazelisk query` to find a Bazel rule.
+
+    Args:
+        api_path (str): The API path to query for.
+
+    Returns:
+        str: The discovered Bazel rule.
+
+    Raises:
+        Exception: If the subprocess call fails or returns an empty result.
+    """
+    logger.info(f"Determining Bazel rule for api_path: '{api_path}'")
+    try:
+        query = f'filter("-py$", kind("rule", //{api_path}/...:*))'
+        command = ["bazelisk", "query", query]
+        result = subprocess.run(
+            command,
+            cwd=f"{SOURCE_DIR}/googleapis",
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        bazel_rule = result.stdout.strip()
+        if not bazel_rule:
+            raise ValueError(f"Bazelisk query `{query}` returned an empty bazel rule.")
+
+        logger.info(f"Found Bazel rule: {bazel_rule}")
+        return bazel_rule
+    except Exception as e:
+        raise ValueError(f"Bazelisk query `{query}` failed") from e
+
+
 def handle_generate():
     """The main coordinator for the code generation process.
 
@@ -61,12 +96,18 @@ def handle_generate():
     # Read a generate-request.json file
     try:
         request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
-    except Exception as e:
-        raise ValueError(
-            f"failed to read {LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}"
-        ) from e
+        library_id = request_data.get("id")
+        if not library_id:
+            raise ValueError("Request file is missing required 'id' field.")
 
-    logger.info(json.dumps(request_data, indent=2))
+        for api in request_data.get("apis", []):
+            api_path = api.get("path")
+            if api_path:
+                bazel_rule = _determine_bazel_rule(api_path)
+
+            logger.info(json.dumps(request_data, indent=2))
+    except Exception as e:
+        raise ValueError("Generation failed.") from e
 
     # TODO(https://github.com/googleapis/librarian/issues/448): Implement generate command and update docstring.
     logger.info("'generate' command executed.")
