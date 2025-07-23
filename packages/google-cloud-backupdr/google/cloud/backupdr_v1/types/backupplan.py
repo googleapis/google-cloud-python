@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
 from google.type import month_pb2  # type: ignore
@@ -35,6 +36,11 @@ __protobuf__ = proto.module(
         "ListBackupPlansResponse",
         "GetBackupPlanRequest",
         "DeleteBackupPlanRequest",
+        "UpdateBackupPlanRequest",
+        "BackupPlanRevision",
+        "GetBackupPlanRevisionRequest",
+        "ListBackupPlanRevisionsRequest",
+        "ListBackupPlanRevisionsResponse",
     },
 )
 
@@ -77,8 +83,9 @@ class BackupPlan(proto.Message):
             Required. The resource type to which the ``BackupPlan`` will
             be applied. Examples include,
             "compute.googleapis.com/Instance",
-            "sqladmin.googleapis.com/Instance", or
-            "alloydb.googleapis.com/Cluster".
+            "sqladmin.googleapis.com/Instance",
+            "alloydb.googleapis.com/Cluster",
+            "compute.googleapis.com/Disk".
         etag (str):
             Optional. ``etag`` is returned from the service in the
             response. As a user of the service, you may provide an etag
@@ -94,6 +101,25 @@ class BackupPlan(proto.Message):
             Service Account to be used by the BackupVault
             for taking backups. Specify the email address of
             the Backup Vault Service Account.
+        log_retention_days (int):
+            Optional. Applicable only for CloudSQL resource_type.
+
+            Configures how long logs will be stored. It is defined in
+            “days”. This value should be greater than or equal to
+            minimum enforced log retention duration of the backup vault.
+        supported_resource_types (MutableSequence[str]):
+            Output only. All resource types to which
+            backupPlan can be applied.
+        revision_id (str):
+            Output only. The user friendly revision ID of the
+            ``BackupPlanRevision``.
+
+            Example: v0, v1, v2, etc.
+        revision_name (str):
+            Output only. The resource id of the ``BackupPlanRevision``.
+
+            Format:
+            ``projects/{project}/locations/{location}/backupPlans/{backup_plan}/revisions/{revision_id}``
     """
 
     class State(proto.Enum):
@@ -112,12 +138,15 @@ class BackupPlan(proto.Message):
             INACTIVE (4):
                 The resource has been created but is not
                 usable.
+            UPDATING (5):
+                The resource is being updated.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
         DELETING = 3
         INACTIVE = 4
+        UPDATING = 5
 
     name: str = proto.Field(
         proto.STRING,
@@ -168,6 +197,22 @@ class BackupPlan(proto.Message):
         proto.STRING,
         number=11,
     )
+    log_retention_days: int = proto.Field(
+        proto.INT64,
+        number=12,
+    )
+    supported_resource_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
+    revision_id: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    revision_name: str = proto.Field(
+        proto.STRING,
+        number=15,
+    )
 
 
 class BackupRule(proto.Message):
@@ -189,15 +234,12 @@ class BackupRule(proto.Message):
             equal to minimum enforced retention of the
             backup vault.
 
-            Minimum value is 1 and maximum value is 90 for
-            hourly backups. Minimum value is 1 and maximum
-            value is 90 for daily backups. Minimum value is
-            7 and maximum value is 186 for weekly backups.
-            Minimum value is 30 and maximum value is 732 for
-            monthly backups. Minimum value is 365 and
-            maximum value is 36159 for yearly backups.
+            Minimum value is 1 and maximum value is 36159
+            for custom retention on-demand backup.
+            Minimum and maximum values are workload specific
+            for all other rules.
         standard_schedule (google.cloud.backupdr_v1.types.StandardSchedule):
-            Required. Defines a schedule that runs within
+            Optional. Defines a schedule that runs within
             the confines of a defined window of time.
 
             This field is a member of `oneof`_ ``backup_schedule_oneof``.
@@ -236,7 +278,7 @@ class StandardSchedule(proto.Message):
             not applicable otherwise. A validation error will occur if a
             value is supplied and ``recurrence_type`` is not ``HOURLY``.
 
-            Value of hourly frequency should be between 6 and 23.
+            Value of hourly frequency should be between 4 and 23.
 
             Reason for limit : We found that there is bandwidth
             limitation of 3GB/S for GMI while taking a backup and 5GB/S
@@ -647,6 +689,236 @@ class DeleteBackupPlanRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class UpdateBackupPlanRequest(proto.Message):
+    r"""Request message for updating a backup plan.
+
+    Attributes:
+        backup_plan (google.cloud.backupdr_v1.types.BackupPlan):
+            Required. The resource being updated
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to update. Field mask is used
+            to specify the fields to be overwritten in the BackupPlan
+            resource by the update. The fields specified in the
+            update_mask are relative to the resource, not the full
+            request. A field will be overwritten if it is in the mask.
+            If the user does not provide a mask then the request will
+            fail. Currently, these fields are supported in update:
+            description, schedules, retention period, adding and
+            removing Backup Rules.
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes since the first request.
+
+            For example, consider a situation where you make
+            an initial request and t he request times out.
+            If you make the request again with the same
+            request ID, the server can check if original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    backup_plan: "BackupPlan" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="BackupPlan",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class BackupPlanRevision(proto.Message):
+    r"""``BackupPlanRevision`` represents a snapshot of a ``BackupPlan`` at
+    a point in time.
+
+    Attributes:
+        name (str):
+            Output only. Identifier. The resource name of the
+            ``BackupPlanRevision``.
+
+            Format:
+            ``projects/{project}/locations/{location}/backupPlans/{backup_plan}/revisions/{revision}``
+        revision_id (str):
+            Output only. The user friendly revision ID of the
+            ``BackupPlanRevision``.
+
+            Example: v0, v1, v2, etc.
+        state (google.cloud.backupdr_v1.types.BackupPlanRevision.State):
+            Output only. Resource State
+        backup_plan_snapshot (google.cloud.backupdr_v1.types.BackupPlan):
+            The Backup Plan being encompassed by this
+            revision.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp that the revision
+            was created.
+    """
+
+    class State(proto.Enum):
+        r"""The state of the ``BackupPlanRevision``.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State not set.
+            CREATING (1):
+                The resource is being created.
+            ACTIVE (2):
+                The resource has been created and is fully
+                usable.
+            DELETING (3):
+                The resource is being deleted.
+            INACTIVE (4):
+                The resource has been created but is not
+                usable.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        ACTIVE = 2
+        DELETING = 3
+        INACTIVE = 4
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    revision_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    backup_plan_snapshot: "BackupPlan" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="BackupPlan",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class GetBackupPlanRevisionRequest(proto.Message):
+    r"""The request message for getting a ``BackupPlanRevision``.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the ``BackupPlanRevision`` to
+            retrieve.
+
+            Format:
+            ``projects/{project}/locations/{location}/backupPlans/{backup_plan}/revisions/{revision}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListBackupPlanRevisionsRequest(proto.Message):
+    r"""The request message for getting a list of ``BackupPlanRevision``.
+
+    Attributes:
+        parent (str):
+            Required. The project and location for which to retrieve
+            ``BackupPlanRevisions`` information. Format:
+            ``projects/{project}/locations/{location}/backupPlans/{backup_plan}``.
+            In Cloud BackupDR, locations map to GCP regions, for e.g.
+            **us-central1**.
+        page_size (int):
+            Optional. The maximum number of ``BackupPlans`` to return in
+            a single response. If not specified, a default value will be
+            chosen by the service. Note that the response may include a
+            partial list and a caller should only rely on the response's
+            [next_page_token][google.cloud.backupdr.v1.ListBackupPlansResponse.next_page_token]
+            to determine if there are more instances left to be queried.
+        page_token (str):
+            Optional. The value of
+            [next_page_token][google.cloud.backupdr.v1.ListBackupPlansResponse.next_page_token]
+            received from a previous ``ListBackupPlans`` call. Provide
+            this to retrieve the subsequent page in a multi-page list of
+            results. When paginating, all other parameters provided to
+            ``ListBackupPlans`` must match the call that provided the
+            page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListBackupPlanRevisionsResponse(proto.Message):
+    r"""The response message for getting a list of ``BackupPlanRevision``.
+
+    Attributes:
+        backup_plan_revisions (MutableSequence[google.cloud.backupdr_v1.types.BackupPlanRevision]):
+            The list of ``BackupPlanRevisions`` in the project for the
+            specified location.
+
+            If the ``{location}`` value in the request is "-", the
+            response contains a list of resources from all locations. In
+            case any location is unreachable, the response will only
+            return backup plans in reachable locations and the
+            'unreachable' field will be populated with a list of
+            unreachable locations.
+        next_page_token (str):
+            A token which may be sent as
+            [page_token][google.cloud.backupdr.v1.ListBackupPlanRevisionsRequest.page_token]
+            in a subsequent ``ListBackupPlanRevisions`` call to retrieve
+            the next page of results. If this field is omitted or empty,
+            then there are no more results to return.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    backup_plan_revisions: MutableSequence["BackupPlanRevision"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="BackupPlanRevision",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

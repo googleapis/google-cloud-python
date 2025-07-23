@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for InitializeService
+# Snippet for UpdateBackupPlan
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-backupdr
 
 
-# [START backupdr_v1_generated_BackupDR_InitializeService_async]
+# [START backupdr_v1_generated_BackupDR_UpdateBackupPlan_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,22 +34,27 @@
 from google.cloud import backupdr_v1
 
 
-async def sample_initialize_service():
+async def sample_update_backup_plan():
     # Create a client
     client = backupdr_v1.BackupDRAsyncClient()
 
     # Initialize request argument(s)
-    cloud_sql_instance_initialization_config = backupdr_v1.CloudSqlInstanceInitializationConfig()
-    cloud_sql_instance_initialization_config.edition = "ENTERPRISE_PLUS"
+    backup_plan = backupdr_v1.BackupPlan()
+    backup_plan.backup_rules.standard_schedule.recurrence_type = "YEARLY"
+    backup_plan.backup_rules.standard_schedule.backup_window.start_hour_of_day = 1820
+    backup_plan.backup_rules.standard_schedule.backup_window.end_hour_of_day = 1573
+    backup_plan.backup_rules.standard_schedule.time_zone = "time_zone_value"
+    backup_plan.backup_rules.rule_id = "rule_id_value"
+    backup_plan.backup_rules.backup_retention_days = 2237
+    backup_plan.resource_type = "resource_type_value"
+    backup_plan.backup_vault = "backup_vault_value"
 
-    request = backupdr_v1.InitializeServiceRequest(
-        cloud_sql_instance_initialization_config=cloud_sql_instance_initialization_config,
-        name="name_value",
-        resource_type="resource_type_value",
+    request = backupdr_v1.UpdateBackupPlanRequest(
+        backup_plan=backup_plan,
     )
 
     # Make the request
-    operation = client.initialize_service(request=request)
+    operation = client.update_backup_plan(request=request)
 
     print("Waiting for operation to complete...")
 
@@ -58,4 +63,4 @@ async def sample_initialize_service():
     # Handle the response
     print(response)
 
-# [END backupdr_v1_generated_BackupDR_InitializeService_async]
+# [END backupdr_v1_generated_BackupDR_UpdateBackupPlan_async]

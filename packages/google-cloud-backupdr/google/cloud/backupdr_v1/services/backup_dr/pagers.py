@@ -43,6 +43,7 @@ from google.cloud.backupdr_v1.types import (
     backupplan,
     backupplanassociation,
     backupvault,
+    datasourcereference,
 )
 
 
@@ -982,6 +983,162 @@ class ListBackupPlansAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListBackupPlanRevisionsPager:
+    """A pager for iterating through ``list_backup_plan_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.backupdr_v1.types.ListBackupPlanRevisionsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backup_plan_revisions`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListBackupPlanRevisions`` requests and continue to iterate
+    through the ``backup_plan_revisions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.backupdr_v1.types.ListBackupPlanRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., backupplan.ListBackupPlanRevisionsResponse],
+        request: backupplan.ListBackupPlanRevisionsRequest,
+        response: backupplan.ListBackupPlanRevisionsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.backupdr_v1.types.ListBackupPlanRevisionsRequest):
+                The initial request object.
+            response (google.cloud.backupdr_v1.types.ListBackupPlanRevisionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = backupplan.ListBackupPlanRevisionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[backupplan.ListBackupPlanRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[backupplan.BackupPlanRevision]:
+        for page in self.pages:
+            yield from page.backup_plan_revisions
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListBackupPlanRevisionsAsyncPager:
+    """A pager for iterating through ``list_backup_plan_revisions`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.backupdr_v1.types.ListBackupPlanRevisionsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backup_plan_revisions`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListBackupPlanRevisions`` requests and continue to iterate
+    through the ``backup_plan_revisions`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.backupdr_v1.types.ListBackupPlanRevisionsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[backupplan.ListBackupPlanRevisionsResponse]],
+        request: backupplan.ListBackupPlanRevisionsRequest,
+        response: backupplan.ListBackupPlanRevisionsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.backupdr_v1.types.ListBackupPlanRevisionsRequest):
+                The initial request object.
+            response (google.cloud.backupdr_v1.types.ListBackupPlanRevisionsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = backupplan.ListBackupPlanRevisionsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[backupplan.ListBackupPlanRevisionsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[backupplan.BackupPlanRevision]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backup_plan_revisions:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListBackupPlanAssociationsPager:
     """A pager for iterating through ``list_backup_plan_associations`` requests.
 
@@ -1136,6 +1293,359 @@ class ListBackupPlanAssociationsAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.backup_plan_associations:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class FetchBackupPlanAssociationsForResourceTypePager:
+    """A pager for iterating through ``fetch_backup_plan_associations_for_resource_type`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.backupdr_v1.types.FetchBackupPlanAssociationsForResourceTypeResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``backup_plan_associations`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``FetchBackupPlanAssociationsForResourceType`` requests and continue to iterate
+    through the ``backup_plan_associations`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.backupdr_v1.types.FetchBackupPlanAssociationsForResourceTypeResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
+        ],
+        request: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest,
+        response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.backupdr_v1.types.FetchBackupPlanAssociationsForResourceTypeRequest):
+                The initial request object.
+            response (google.cloud.backupdr_v1.types.FetchBackupPlanAssociationsForResourceTypeResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = (
+            backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest(
+                request
+            )
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[
+        backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[backupplanassociation.BackupPlanAssociation]:
+        for page in self.pages:
+            yield from page.backup_plan_associations
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class FetchBackupPlanAssociationsForResourceTypeAsyncPager:
+    """A pager for iterating through ``fetch_backup_plan_associations_for_resource_type`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.backupdr_v1.types.FetchBackupPlanAssociationsForResourceTypeResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``backup_plan_associations`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``FetchBackupPlanAssociationsForResourceType`` requests and continue to iterate
+    through the ``backup_plan_associations`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.backupdr_v1.types.FetchBackupPlanAssociationsForResourceTypeResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse
+            ],
+        ],
+        request: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest,
+        response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.backupdr_v1.types.FetchBackupPlanAssociationsForResourceTypeRequest):
+                The initial request object.
+            response (google.cloud.backupdr_v1.types.FetchBackupPlanAssociationsForResourceTypeResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = (
+            backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest(
+                request
+            )
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[backupplanassociation.BackupPlanAssociation]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.backup_plan_associations:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class FetchDataSourceReferencesForResourceTypePager:
+    """A pager for iterating through ``fetch_data_source_references_for_resource_type`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.backupdr_v1.types.FetchDataSourceReferencesForResourceTypeResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``data_source_references`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``FetchDataSourceReferencesForResourceType`` requests and continue to iterate
+    through the ``data_source_references`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.backupdr_v1.types.FetchDataSourceReferencesForResourceTypeResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., datasourcereference.FetchDataSourceReferencesForResourceTypeResponse
+        ],
+        request: datasourcereference.FetchDataSourceReferencesForResourceTypeRequest,
+        response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.backupdr_v1.types.FetchDataSourceReferencesForResourceTypeRequest):
+                The initial request object.
+            response (google.cloud.backupdr_v1.types.FetchDataSourceReferencesForResourceTypeResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = (
+            datasourcereference.FetchDataSourceReferencesForResourceTypeRequest(request)
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[datasourcereference.FetchDataSourceReferencesForResourceTypeResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(self) -> Iterator[datasourcereference.DataSourceReference]:
+        for page in self.pages:
+            yield from page.data_source_references
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class FetchDataSourceReferencesForResourceTypeAsyncPager:
+    """A pager for iterating through ``fetch_data_source_references_for_resource_type`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.backupdr_v1.types.FetchDataSourceReferencesForResourceTypeResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``data_source_references`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``FetchDataSourceReferencesForResourceType`` requests and continue to iterate
+    through the ``data_source_references`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.backupdr_v1.types.FetchDataSourceReferencesForResourceTypeResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ...,
+            Awaitable[
+                datasourcereference.FetchDataSourceReferencesForResourceTypeResponse
+            ],
+        ],
+        request: datasourcereference.FetchDataSourceReferencesForResourceTypeRequest,
+        response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.backupdr_v1.types.FetchDataSourceReferencesForResourceTypeRequest):
+                The initial request object.
+            response (google.cloud.backupdr_v1.types.FetchDataSourceReferencesForResourceTypeResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = (
+            datasourcereference.FetchDataSourceReferencesForResourceTypeRequest(request)
+        )
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[
+        datasourcereference.FetchDataSourceReferencesForResourceTypeResponse
+    ]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[datasourcereference.DataSourceReference]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.data_source_references:
                     yield response
 
         return async_generator()

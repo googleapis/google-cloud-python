@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for InitializeService
+# Snippet for UpdateBackupPlanAssociation
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-backupdr
 
 
-# [START backupdr_v1_generated_BackupDR_InitializeService_async]
+# [START backupdr_v1_generated_BackupDR_UpdateBackupPlanAssociation_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,28 +34,28 @@
 from google.cloud import backupdr_v1
 
 
-async def sample_initialize_service():
+def sample_update_backup_plan_association():
     # Create a client
-    client = backupdr_v1.BackupDRAsyncClient()
+    client = backupdr_v1.BackupDRClient()
 
     # Initialize request argument(s)
-    cloud_sql_instance_initialization_config = backupdr_v1.CloudSqlInstanceInitializationConfig()
-    cloud_sql_instance_initialization_config.edition = "ENTERPRISE_PLUS"
+    backup_plan_association = backupdr_v1.BackupPlanAssociation()
+    backup_plan_association.resource_type = "resource_type_value"
+    backup_plan_association.resource = "resource_value"
+    backup_plan_association.backup_plan = "backup_plan_value"
 
-    request = backupdr_v1.InitializeServiceRequest(
-        cloud_sql_instance_initialization_config=cloud_sql_instance_initialization_config,
-        name="name_value",
-        resource_type="resource_type_value",
+    request = backupdr_v1.UpdateBackupPlanAssociationRequest(
+        backup_plan_association=backup_plan_association,
     )
 
     # Make the request
-    operation = client.initialize_service(request=request)
+    operation = client.update_backup_plan_association(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = operation.result()
 
     # Handle the response
     print(response)
 
-# [END backupdr_v1_generated_BackupDR_InitializeService_async]
+# [END backupdr_v1_generated_BackupDR_UpdateBackupPlanAssociation_sync]

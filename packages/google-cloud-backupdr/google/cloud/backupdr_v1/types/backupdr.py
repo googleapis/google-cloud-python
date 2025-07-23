@@ -21,6 +21,8 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.backupdr_v1.types import backupvault_cloudsql
+
 __protobuf__ = proto.module(
     package="google.cloud.backupdr.v1",
     manifest={
@@ -555,6 +557,8 @@ class DeleteManagementServerRequest(proto.Message):
 class InitializeServiceRequest(proto.Message):
     r"""Request message for initializing the service.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The resource name of the serviceConfig used to
@@ -585,6 +589,11 @@ class InitializeServiceRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        cloud_sql_instance_initialization_config (google.cloud.backupdr_v1.types.CloudSqlInstanceInitializationConfig):
+            Optional. The configuration for initializing
+            a Cloud SQL instance.
+
+            This field is a member of `oneof`_ ``initialization_config``.
     """
 
     name: str = proto.Field(
@@ -598,6 +607,12 @@ class InitializeServiceRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    cloud_sql_instance_initialization_config: backupvault_cloudsql.CloudSqlInstanceInitializationConfig = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="initialization_config",
+        message=backupvault_cloudsql.CloudSqlInstanceInitializationConfig,
     )
 
 
