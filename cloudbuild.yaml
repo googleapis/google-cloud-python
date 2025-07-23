@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO(https://github.com/googleapis/google-cloud-python/issues/14142):
+# Reduce this timeout by moving the installation of Python runtimes to a separate base image
 timeout: 7200s  # 2 hours
 steps:
   # This step builds the Docker image.
