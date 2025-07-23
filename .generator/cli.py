@@ -148,7 +148,7 @@ def _run_nox_sessions(sessions: List[str]):
                 "-f",
                 f"{SOURCE_DIR}/packages/{library_id}",
             ]
-            result = subprocess.run(command, capture_output=True, text=True, check=True)
+            result = subprocess.run(command, text=True, check=True)
             logger.info(result)
     except Exception as e:
         raise ValueError(f"Failed to run the nox session: {current_session}") from e
