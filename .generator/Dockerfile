@@ -52,7 +52,7 @@ RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
     python${PYTHON_VERSION} -m ensurepip --upgrade && \
     PYTHON_VERSION_TRIMMED=$(echo ${PYTHON_VERSION} | cut -d . -f -2) && \
     # Create an alias for python${PYTHON_VERSION} so that it points to python${PYTHON_VERSION_TRIMMED}
-    alias python${PYTHON_VERSION}=${PYTHON_VERSION_TRIMMED} \
+    alias python${PYTHON_VERSION}=python${PYTHON_VERSION_TRIMMED} \
     ; done
 
 # Test Pip
