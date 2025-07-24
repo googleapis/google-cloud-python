@@ -38,14 +38,10 @@ RUN apt-get update && \
 # Set up environment variables for tool versions to make updates easier.
 ENV BAZELISK_VERSION=v1.26.0
 
-# Get the pip installation script using the instructions below
-# https://pip.pypa.io/en/stable/installation/#get-pip-py
-# Attempts to use `ensurepip` instead of `get-pip.py` resulted in errors like `python3.13.5 not found`
-RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py'
-
-
-RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
-# Install Python from source
+# temporarily comment out all python versions except 3.13 for a faster feedback loop
+#RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
+RUN for PYTHON_VERSION in 3.13.5; do \
+    # Install Python from source
     wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
     tar -xvf Python-${PYTHON_VERSION}.tgz && \
     cd Python-${PYTHON_VERSION} && \
@@ -53,18 +49,29 @@ RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
     make altinstall && \
     cd / && \
     rm -rf Python-${PYTHON_VERSION}* && \
-    python${PYTHON_VERSION} /tmp/get-pip.py \
     ; done
 
+# Get the pip installation script using the instructions below
+# https://pip.pypa.io/en/stable/installation/#get-pip-py
+# Attempts to use `ensurepip` instead of `get-pip.py` resulted in errors like `python3.13.5 not found`
+RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py'
+
+# temporarily comment out all python versions except 3.13 for a faster feedback loop
+#RUN for PYTHON_VERSION in 3.9 3.10 3.11 3.12 3.13; do \
+RUN for PYTHON_VERSION in 3.13; do \
+    python${PYTHON_VERSION} /tmp/get-pip.py \
+    ; done
+    
 # Remove the pip installation script
 RUN rm /tmp/get-pip.py
 
+# temporarily comment out all python versions except 3.13 for a faster feedback loop
+#RUN for PYTHON_VERSION in 3.9 3.10 3.11 3.12 3.13; do \
+RUN for PYTHON_VERSION in 3.13; do \
+    python${PYTHON_VERSION} -m pip
+    ; done
+    
 # Test Pip
-RUN python3.9 -m pip
-RUN python3.10 -m pip
-RUN python3.11 -m pip
-RUN python3.12 -m pip
-RUN python3.13 -m pip
 
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
