@@ -27,6 +27,7 @@ from cli import (
     _locate_and_extract_artifact,
     _read_json_file,
     _run_individual_session,
+    _run_nox_sessions,
     handle_generate,
     handle_build,
     handle_configure,
@@ -54,6 +55,17 @@ def mock_generate_request_file(tmp_path, monkeypatch):
     # Change the current working directory to the temp path for the test.
     monkeypatch.chdir(tmp_path)
     return request_file
+
+
+@pytest.fixture
+def mock_generate_request_data_for_nox():
+    """Returns mock data for generate-request.json for nox tests."""
+    return {
+        "id": "mock-library",
+        "apis": [
+            {"path": "google/mock/v1"},
+        ],
+    }
 
 
 def test_get_library_id_success():
@@ -252,6 +264,63 @@ def test_run_individual_session_failure(mocker):
 
     with pytest.raises(subprocess.CalledProcessError):
         _run_individual_session("lint", "another-library")
+
+
+def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
+    """Tests that _run_nox_sessions successfully runs all specified sessions."""
+    mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
+    mocker.patch("cli._get_library_id", return_value="mock-library")
+    mock_run_individual_session = mocker.patch("cli._run_individual_session")
+
+    sessions_to_run = ["unit-3.9", "lint"]
+    _run_nox_sessions(sessions_to_run)
+
+    assert mock_run_individual_session.call_count == len(sessions_to_run)
+    mock_run_individual_session.assert_has_calls(
+        [
+            mocker.call("unit-3.9", "mock-library"),
+            mocker.call("lint", "mock-library"),
+        ]
+    )
+
+
+def test_run_nox_sessions_read_file_failure(mocker):
+    """Tests that _run_nox_sessions raises ValueError if _read_json_file fails."""
+    mocker.patch("cli._read_json_file", side_effect=FileNotFoundError("file not found"))
+
+    with pytest.raises(ValueError, match="Failed to run the nox session"):
+        _run_nox_sessions(["unit-3.9"])
+
+
+def test_run_nox_sessions_get_library_id_failure(mocker):
+    """Tests that _run_nox_sessions raises ValueError if _get_library_id fails."""
+    mocker.patch("cli._read_json_file", return_value={"apis": []})  # Missing 'id'
+    mocker.patch(
+        "cli._get_library_id",
+        side_effect=ValueError("Request file is missing required 'id' field."),
+    )
+
+    with pytest.raises(ValueError, match="Failed to run the nox session"):
+        _run_nox_sessions(["unit-3.9"])
+
+
+def test_run_nox_sessions_individual_session_failure(
+    mocker, mock_generate_request_data_for_nox
+):
+    """Tests that _run_nox_sessions raises ValueError if _run_individual_session fails."""
+    mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
+    mocker.patch("cli._get_library_id", return_value="mock-library")
+    mock_run_individual_session = mocker.patch(
+        "cli._run_individual_session",
+        side_effect=[None, subprocess.CalledProcessError(1, "nox", "session failed")],
+    )
+
+    sessions_to_run = ["unit-3.9", "lint"]
+    with pytest.raises(ValueError, match="Failed to run the nox session"):
+        _run_nox_sessions(sessions_to_run)
+
+    # Check that _run_individual_session was called at least once
+    assert mock_run_individual_session.call_count > 0
 
 
 def test_handle_build_success(caplog, mocker):
