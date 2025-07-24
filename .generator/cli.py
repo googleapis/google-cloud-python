@@ -26,6 +26,7 @@ try:
     from synthtool import gcp
 
     SYNTHTOOL_INSTALLED = True
+    SYNTHTOOL_IMPORT_ERROR = None
 except ImportError as e:
     SYNTHTOOL_IMPORT_ERROR = e
     SYNTHTOOL_INSTALLED = False
@@ -189,18 +190,13 @@ def _run_post_processor():
     Raises:
         ValueError: If the subprocess call fails.
     """
-    try:
-        logger.info("Running Python post-processor...")
-        if SYNTHTOOL_INSTALLED:
-            command = ["python3", "-m", "synthtool.languages.python_mono_repo"]
-            os.chdir(OUTPUT_DIR)
-            subprocess.run(command, cwd=OUTPUT_DIR, text=True, check=True)
-        else:
-            raise SYNTHTOOL_IMPORT_ERROR
-        logger.info("Python post-processor ran successfully.")
-
-    except Exception as e:
-        raise ValueError("Python post-processor failed...") from e
+    logger.info("Running Python post-processor...")
+    if SYNTHTOOL_INSTALLED:
+        command = ["python3", "-m", "synthtool.languages.python_mono_repo"]
+        subprocess.run(command, cwd=OUTPUT_DIR, text=True, check=True)
+    else:
+        raise SYNTHTOOL_IMPORT_ERROR
+    logger.info("Python post-processor ran successfully.")
 
 
 def handle_generate():

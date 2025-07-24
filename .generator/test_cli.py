@@ -212,7 +212,6 @@ def test_run_post_processor_success(mocker, caplog):
     """
     caplog.set_level(logging.INFO)
     mocker.patch("cli.SYNTHTOOL_INSTALLED", return_value=True)
-    mock_chdir = mocker.patch("cli.os.chdir")
     mock_subprocess = mocker.patch("cli.subprocess.run")
 
     _run_post_processor()
@@ -228,12 +227,9 @@ def test_locate_and_extract_artifact_fails(mocker, caplog):
     Tests that an exception is raised if the subprocess command fails.
     """
     caplog.set_level(logging.INFO)
-    mocker.patch(
-        "cli.subprocess.run",
-        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Python error"),
-    )
+    mocker.patch("cli.SYNTHTOOL_INSTALLED", return_value=True)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(FileNotFoundError):
         _run_post_processor()
 
 
