@@ -38,6 +38,12 @@ RUN apt-get update && \
 # Set up environment variables for tool versions to make updates easier.
 ENV BAZELISK_VERSION=v1.26.0
 
+# Get the pip installation script using the instructions below
+# https://pip.pypa.io/en/stable/installation/#get-pip-py
+# Attempts to use `ensurepip` instead of `get-pip.py` resulted in errors like `python3.13.5 not found`
+RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py'
+
+
 RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
 # Install Python from source
     wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
@@ -47,14 +53,11 @@ RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
     make altinstall && \
     cd / && \
     rm -rf Python-${PYTHON_VERSION}* && \
-    # Install pip using the instructions below
-    # https://pip.pypa.io/en/stable/installation/#ensurepip
-    PYTHON_VERSION_TRIMMED=$(echo ${PYTHON_VERSION} | cut -d . -f -2) && \
-    # Create an alias for python${PYTHON_VERSION} so that it points to python${PYTHON_VERSION_TRIMMED}
-    # to resolve error `python3.13.5: command not found` while `python3.13` works
-    alias python${PYTHON_VERSION}=python${PYTHON_VERSION_TRIMMED} && \
-    python${PYTHON_VERSION} -m ensurepip --upgrade \
+    python${PYTHON_VERSION} /tmp/get-pip.py \
     ; done
+
+# Remove the pip installation script
+RUN rm /tmp/get-pip.py
 
 # Test Pip
 RUN python3.9 -m pip
