@@ -32,6 +32,110 @@ def test_index_construct_from_list():
     pd.testing.assert_index_equal(bf_result, pd_result)
 
 
+@pytest.mark.parametrize("key, expected_loc", [("a", 0), ("b", 1), ("c", 2)])
+def test_get_loc_should_return_int_for_unique_index(key, expected_loc):
+    """Behavior: get_loc on a unique index returns an integer position."""
+    # The pandas result is used as the known-correct value.
+    # We assert our implementation matches it and the expected type.
+    bf_index = bpd.Index(["a", "b", "c"])
+
+    result = bf_index.get_loc(key)
+
+    assert result == expected_loc
+    assert isinstance(result, int)
+
+
+def test_get_loc_should_return_slice_for_monotonic_duplicates():
+    """Behavior: get_loc on a monotonic string index with duplicates returns a slice."""
+    bf_index = bpd.Index(["a", "b", "b", "c"])
+    pd_index = pd.Index(["a", "b", "b", "c"])
+
+    bf_result = bf_index.get_loc("b")
+    pd_result = pd_index.get_loc("b")
+
+    assert isinstance(bf_result, slice)
+    assert bf_result == pd_result  # Should be slice(1, 3, None)
+
+
+def test_get_loc_should_return_slice_for_monotonic_numeric_duplicates():
+    """Behavior: get_loc on a monotonic numeric index with duplicates returns a slice."""
+    bf_index = bpd.Index([1, 2, 2, 3])
+    pd_index = pd.Index([1, 2, 2, 3])
+
+    bf_result = bf_index.get_loc(2)
+    pd_result = pd_index.get_loc(2)
+
+    assert isinstance(bf_result, slice)
+    assert bf_result == pd_result  # Should be slice(1, 3, None)
+
+
+def test_get_loc_should_return_mask_for_non_monotonic_duplicates():
+    """Behavior: get_loc on a non-monotonic string index returns a boolean array."""
+    bf_index = bpd.Index(["a", "b", "c", "b"])
+    pd_index = pd.Index(["a", "b", "c", "b"])
+
+    pd_result = pd_index.get_loc("b")
+    bf_result = bf_index.get_loc("b")
+
+    assert not isinstance(bf_result, (int, slice))
+
+    if hasattr(bf_result, "to_numpy"):
+        bf_array = bf_result.to_numpy()
+    else:
+        bf_array = bf_result.to_pandas().to_numpy()
+    numpy.testing.assert_array_equal(bf_array, pd_result)
+
+
+def test_get_loc_should_return_mask_for_non_monotonic_numeric_duplicates():
+    """Behavior: get_loc on a non-monotonic numeric index returns a boolean array."""
+    bf_index = bpd.Index([1, 2, 3, 2])
+    pd_index = pd.Index([1, 2, 3, 2])
+
+    pd_result = pd_index.get_loc(2)
+    bf_result = bf_index.get_loc(2)
+
+    assert not isinstance(bf_result, (int, slice))
+
+    if hasattr(bf_result, "to_numpy"):
+        bf_array = bf_result.to_numpy()
+    else:
+        bf_array = bf_result.to_pandas().to_numpy()
+    numpy.testing.assert_array_equal(bf_array, pd_result)
+
+
+def test_get_loc_should_raise_error_for_missing_key():
+    """Behavior: get_loc raises KeyError when a string key is not found."""
+    bf_index = bpd.Index(["a", "b", "c"])
+
+    with pytest.raises(KeyError):
+        bf_index.get_loc("d")
+
+
+def test_get_loc_should_raise_error_for_missing_numeric_key():
+    """Behavior: get_loc raises KeyError when a numeric key is not found."""
+    bf_index = bpd.Index([1, 2, 3])
+
+    with pytest.raises(KeyError):
+        bf_index.get_loc(4)
+
+
+def test_get_loc_should_work_for_single_element_index():
+    """Behavior: get_loc on a single-element index returns 0."""
+    assert bpd.Index(["a"]).get_loc("a") == pd.Index(["a"]).get_loc("a")
+
+
+def test_get_loc_should_return_slice_when_all_elements_are_duplicates():
+    """Behavior: get_loc returns a full slice if all elements match the key."""
+    bf_index = bpd.Index(["a", "a", "a"])
+    pd_index = pd.Index(["a", "a", "a"])
+
+    bf_result = bf_index.get_loc("a")
+    pd_result = pd_index.get_loc("a")
+
+    assert isinstance(bf_result, slice)
+    assert bf_result == pd_result  # Should be slice(0, 3, None)
+
+
 def test_index_construct_from_series():
     bf_result = bpd.Index(
         bpd.Series([3, 14, 159], dtype=pd.Float64Dtype(), name="series_name"),

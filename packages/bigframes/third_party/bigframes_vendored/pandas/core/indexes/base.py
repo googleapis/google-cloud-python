@@ -4,6 +4,7 @@ from __future__ import annotations
 from collections.abc import Hashable
 import typing
 
+import bigframes
 from bigframes import constants
 
 
@@ -738,6 +739,47 @@ class Index:
         Returns:
             int:
                 Row position of the minimum value.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def get_loc(
+        self, key: typing.Any
+    ) -> typing.Union[int, slice, bigframes.series.Series]:
+        """
+        Get integer location, slice or boolean mask for requested label.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> unique_index = bpd.Index(list('abc'))
+            >>> unique_index.get_loc('b')
+            1
+
+            >>> monotonic_index = bpd.Index(list('abbc'))
+            >>> monotonic_index.get_loc('b')
+            slice(1, 3, None)
+
+            >>> non_monotonic_index = bpd.Index(list('abcb'))
+            >>> non_monotonic_index.get_loc('b')
+            0    False
+            1     True
+            2    False
+            3     True
+            Name: nan, dtype: boolean
+
+        Args:
+            key: Label to get the location for.
+
+        Returns:
+            Union[int, slice, bigframes.pandas.Series]:
+                Integer position of the label for unique indexes.
+                Slice object for monotonic indexes with duplicates.
+                Boolean Series mask for non-monotonic indexes with duplicates.
+
+        Raises:
+            KeyError: If the key is not found in the index.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
