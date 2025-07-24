@@ -345,6 +345,8 @@ def _read_gbq_colab(
             dry_run=True,
         )
         _set_default_session_location_if_possible_deferred_query(create_query)
+        if not config.options.bigquery._session_started:
+            config.options.bigquery.enable_polars_execution = True
 
     return global_session.with_default_session(
         bigframes.session.Session._read_gbq_colab,

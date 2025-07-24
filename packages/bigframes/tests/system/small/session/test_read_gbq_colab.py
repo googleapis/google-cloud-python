@@ -19,6 +19,11 @@ import pandas
 import pandas.testing
 import pytest
 
+import bigframes
+import bigframes.pandas
+
+pytest.importorskip("polars")
+
 
 def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_session):
     # This query should return enough results to be too big to fit in a single
@@ -57,6 +62,31 @@ def test_read_gbq_colab_to_pandas_batches_preserves_order_by(maybe_ordered_sessi
             break
 
     assert executions_after == executions_before_python == executions_before_sql + 1
+
+
+def test_read_gbq_colab_fresh_session_is_hybrid():
+    bigframes.close_session()
+    df = bigframes.pandas._read_gbq_colab(
+        """
+        SELECT
+            name,
+            SUM(number) AS total
+        FROM
+            `bigquery-public-data.usa_names.usa_1910_2013`
+        WHERE state LIKE 'W%'
+        GROUP BY name
+        ORDER BY total DESC
+        LIMIT 300
+        """
+    )
+    session = df._session
+    executions_before_python = session._metrics.execution_count
+    result = df.sort_values("name").peek(100)
+    executions_after = session._metrics.execution_count
+
+    assert len(result) == 100
+    assert session._executor._enable_polars_execution is True  # type: ignore
+    assert executions_after == executions_before_python == 1
 
 
 def test_read_gbq_colab_peek_avoids_requery(maybe_ordered_session):
