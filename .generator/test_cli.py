@@ -12,15 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import pytest
 import json
 import logging
+import os
 import subprocess
+from unittest.mock import MagicMock, mock_open
 
-from unittest.mock import mock_open, MagicMock
+import pytest
 
 from cli import (
+    GENERATE_REQUEST_FILE,
+    LIBRARIAN_DIR,
+    REPO_DIR,
     _build_bazel_target,
     _determine_bazel_rule,
     _get_library_id,
@@ -28,12 +31,9 @@ from cli import (
     _read_json_file,
     _run_individual_session,
     _run_nox_sessions,
-    handle_generate,
     handle_build,
     handle_configure,
-    GENERATE_REQUEST_FILE,
-    LIBRARIAN_DIR,
-    REPO_DIR,
+    handle_generate,
 )
 
 
