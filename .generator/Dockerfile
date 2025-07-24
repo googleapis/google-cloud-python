@@ -36,20 +36,37 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Set up environment variables for tool versions to make updates easier.
-ENV PYTHON_VERSION=3.11.5
 ENV BAZELISK_VERSION=v1.26.0
 
-# Create a symbolic link for `python3` to point to our specific version.
-ENV PATH /usr/local/bin/python3.11:$PATH
-
-# Install Python from source
-RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
+RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
+    # Install Python from source
+    wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
     tar -xvf Python-${PYTHON_VERSION}.tgz && \
     cd Python-${PYTHON_VERSION} && \
     ./configure --enable-optimizations && \
     make altinstall && \
     cd / && \
-    rm -rf Python-${PYTHON_VERSION}*
+    rm -rf Python-${PYTHON_VERSION}* \
+    ; done
+
+# Get the pip installation script using the instructions below
+# https://pip.pypa.io/en/stable/installation/#get-pip-py
+# Attempts to use `ensurepip` instead of `get-pip.py` resulted in errors like `python3.13.5 not found`
+RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py'
+
+# Install pip for each python version
+RUN for PYTHON_VERSION in 3.9 3.10 3.11 3.12 3.13; do \
+    python${PYTHON_VERSION} /tmp/get-pip.py \
+    ; done
+    
+# Remove the pip installation script
+RUN rm /tmp/get-pip.py
+
+# Test Pip
+RUN for PYTHON_VERSION in 3.9 3.10 3.11 3.12 3.13; do \
+    python${PYTHON_VERSION} -m pip \
+    ; done
+
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 

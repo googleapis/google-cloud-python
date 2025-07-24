@@ -12,24 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import pytest
 import json
 import logging
+import os
 import subprocess
+from unittest.mock import MagicMock, mock_open
 
-from unittest.mock import mock_open, MagicMock
+import pytest
 
 from cli import (
-    _read_json_file,
-    _determine_bazel_rule,
+    GENERATE_REQUEST_FILE,
+    LIBRARIAN_DIR,
+    REPO_DIR,
     _build_bazel_target,
+    _determine_bazel_rule,
+    _get_library_id,
     _locate_and_extract_artifact,
-    handle_generate,
+    _read_json_file,
+    _run_individual_session,
+    _run_nox_sessions,
     handle_build,
     handle_configure,
-    LIBRARIAN_DIR,
-    GENERATE_REQUEST_FILE,
+    handle_generate,
 )
 
 
@@ -51,6 +55,42 @@ def mock_generate_request_file(tmp_path, monkeypatch):
     # Change the current working directory to the temp path for the test.
     monkeypatch.chdir(tmp_path)
     return request_file
+
+
+@pytest.fixture
+def mock_generate_request_data_for_nox():
+    """Returns mock data for generate-request.json for nox tests."""
+    return {
+        "id": "mock-library",
+        "apis": [
+            {"path": "google/mock/v1"},
+        ],
+    }
+
+
+def test_get_library_id_success():
+    """Tests that _get_library_id returns the correct ID when present."""
+    request_data = {"id": "test-library", "name": "Test Library"}
+    library_id = _get_library_id(request_data)
+    assert library_id == "test-library"
+
+
+def test_get_library_id_missing_id():
+    """Tests that _get_library_id raises ValueError when 'id' is missing."""
+    request_data = {"name": "Test Library"}
+    with pytest.raises(
+        ValueError, match="Request file is missing required 'id' field."
+    ):
+        _get_library_id(request_data)
+
+
+def test_get_library_id_empty_id():
+    """Tests that _get_library_id raises ValueError when 'id' is an empty string."""
+    request_data = {"id": "", "name": "Test Library"}
+    with pytest.raises(
+        ValueError, match="Request file is missing required 'id' field."
+    ):
+        _get_library_id(request_data)
 
 
 def test_handle_configure_success(caplog, mock_generate_request_file):
@@ -191,12 +231,105 @@ def test_handle_generate_fail(caplog):
         handle_generate()
 
 
-def test_handle_build_success(caplog, mock_generate_request_file):
+def test_run_individual_session_success(mocker, caplog):
+    """Tests that _run_individual_session calls nox with correct arguments and logs success."""
+    caplog.set_level(logging.INFO)
+
+    mock_subprocess_run = mocker.patch(
+        "cli.subprocess.run", return_value=MagicMock(returncode=0)
+    )
+
+    test_session = "unit-3.9"
+    test_library_id = "test-library"
+    _run_individual_session(test_session, test_library_id)
+
+    expected_command = [
+        "nox",
+        "-s",
+        test_session,
+        "-f",
+        f"{REPO_DIR}/packages/{test_library_id}",
+    ]
+    mock_subprocess_run.assert_called_once_with(expected_command, text=True, check=True)
+
+
+def test_run_individual_session_failure(mocker):
+    """Tests that _run_individual_session raises CalledProcessError if nox command fails."""
+    mocker.patch(
+        "cli.subprocess.run",
+        side_effect=subprocess.CalledProcessError(
+            1, "nox", stderr="Nox session failed"
+        ),
+    )
+
+    with pytest.raises(subprocess.CalledProcessError):
+        _run_individual_session("lint", "another-library")
+
+
+def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
+    """Tests that _run_nox_sessions successfully runs all specified sessions."""
+    mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
+    mocker.patch("cli._get_library_id", return_value="mock-library")
+    mock_run_individual_session = mocker.patch("cli._run_individual_session")
+
+    sessions_to_run = ["unit-3.9", "lint"]
+    _run_nox_sessions(sessions_to_run)
+
+    assert mock_run_individual_session.call_count == len(sessions_to_run)
+    mock_run_individual_session.assert_has_calls(
+        [
+            mocker.call("unit-3.9", "mock-library"),
+            mocker.call("lint", "mock-library"),
+        ]
+    )
+
+
+def test_run_nox_sessions_read_file_failure(mocker):
+    """Tests that _run_nox_sessions raises ValueError if _read_json_file fails."""
+    mocker.patch("cli._read_json_file", side_effect=FileNotFoundError("file not found"))
+
+    with pytest.raises(ValueError, match="Failed to run the nox session"):
+        _run_nox_sessions(["unit-3.9"])
+
+
+def test_run_nox_sessions_get_library_id_failure(mocker):
+    """Tests that _run_nox_sessions raises ValueError if _get_library_id fails."""
+    mocker.patch("cli._read_json_file", return_value={"apis": []})  # Missing 'id'
+    mocker.patch(
+        "cli._get_library_id",
+        side_effect=ValueError("Request file is missing required 'id' field."),
+    )
+
+    with pytest.raises(ValueError, match="Failed to run the nox session"):
+        _run_nox_sessions(["unit-3.9"])
+
+
+def test_run_nox_sessions_individual_session_failure(
+    mocker, mock_generate_request_data_for_nox
+):
+    """Tests that _run_nox_sessions raises ValueError if _run_individual_session fails."""
+    mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
+    mocker.patch("cli._get_library_id", return_value="mock-library")
+    mock_run_individual_session = mocker.patch(
+        "cli._run_individual_session",
+        side_effect=[None, subprocess.CalledProcessError(1, "nox", "session failed")],
+    )
+
+    sessions_to_run = ["unit-3.9", "lint"]
+    with pytest.raises(ValueError, match="Failed to run the nox session"):
+        _run_nox_sessions(sessions_to_run)
+
+    # Check that _run_individual_session was called at least once
+    assert mock_run_individual_session.call_count > 0
+
+
+def test_handle_build_success(caplog, mocker):
     """
     Tests the successful execution path of handle_build.
     """
     caplog.set_level(logging.INFO)
 
+    mocker.patch("cli._run_nox_sessions")
     handle_build()
 
     assert "'build' command executed." in caplog.text

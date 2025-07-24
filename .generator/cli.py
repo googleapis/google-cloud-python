@@ -16,8 +16,10 @@ import argparse
 import json
 import logging
 import os
+import subprocess
 import sys
 import subprocess
+from typing import Dict, List
 
 logger = logging.getLogger()
 
@@ -25,9 +27,10 @@ LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
 SOURCE_DIR = "source"
 OUTPUT_DIR = "output"
+REPO_DIR = "repo"
 
 
-def _read_json_file(path):
+def _read_json_file(path: str) -> Dict:
     """Helper function that reads a json file path and returns the loaded json content.
 
     Args:
@@ -50,7 +53,7 @@ def handle_configure():
     logger.info("'configure' command executed.")
 
 
-def _determine_bazel_rule(api_path):
+def _determine_bazel_rule(api_path: str) -> str:
     """Executes a `bazelisk query` to find a Bazel rule.
 
     Args:
@@ -83,7 +86,25 @@ def _determine_bazel_rule(api_path):
         raise ValueError(f"Bazelisk query `{query}` failed") from e
 
 
-def _build_bazel_target(bazel_rule):
+def _get_library_id(request_data: Dict) -> str:
+    """Retrieve the library id from the given request dictionary
+
+    Args:
+        request_data(Dict): The contents `generate-request.json`.
+
+    Raises:
+        ValueError: If the key `id` does not exist in `request_data`.
+
+    Returns:
+        str: The id of the library in `generate-request.json`
+    """
+    library_id = request_data.get("id")
+    if not library_id:
+        raise ValueError("Request file is missing required 'id' field.")
+    return library_id
+
+
+def _build_bazel_target(bazel_rule: str):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
@@ -167,9 +188,7 @@ def handle_generate():
     # Read a generate-request.json file
     try:
         request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
-        library_id = request_data.get("id")
-        if not library_id:
-            raise ValueError("Request file is missing required 'id' field.")
+        library_id = _get_library_id(request_data)
 
         for api in request_data.get("apis", []):
             api_path = api.get("path")
@@ -186,8 +205,59 @@ def handle_generate():
     logger.info("'generate' command executed.")
 
 
+def _run_nox_sessions(sessions: List[str]):
+    """Calls nox for all specified sessions.
+
+    Args:
+        path(List[str]): The list of nox sessions to run.
+    """
+    # Read a generate-request.json file
+    current_session = None
+    try:
+        request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
+        library_id = _get_library_id(request_data)
+        for nox_session in sessions:
+            _run_individual_session(nox_session, library_id)
+    except Exception as e:
+        raise ValueError(f"Failed to run the nox session: {current_session}") from e
+
+
+def _run_individual_session(nox_session: str, library_id: str):
+    """
+    Calls nox with the specified sessions.
+
+    Args:
+        nox_session(str): The nox session to run
+        library_id(str): The library id under test
+    """
+    command = [
+        "nox",
+        "-s",
+        nox_session,
+        "-f",
+        f"{REPO_DIR}/packages/{library_id}",
+    ]
+    result = subprocess.run(command, text=True, check=True)
+    logger.info(result)
+
+
 def handle_build():
-    # TODO(https://github.com/googleapis/librarian/issues/450): Implement build command and update docstring.
+    """The main coordinator for validating client library generation."""
+    sessions = [
+        "unit-3.9",
+        "unit-3.10",
+        "unit-3.11",
+        "unit-3.12",
+        "unit-3.13",
+        "docs",
+        "system",
+        "lint",
+        "lint_setup_py",
+        "mypy",
+        "check_lower_bounds",
+    ]
+    _run_nox_sessions(sessions)
+
     logger.info("'build' command executed.")
 
 
