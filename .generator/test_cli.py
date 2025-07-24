@@ -31,6 +31,7 @@ from cli import (
     _read_json_file,
     _run_individual_session,
     _run_nox_sessions,
+    _run_post_processor,
     handle_build,
     handle_configure,
     handle_generate,
@@ -205,6 +206,33 @@ def test_locate_and_extract_artifact_fails(mocker, caplog):
         )
 
 
+def test_run_post_processor_success(mocker, caplog):
+    """
+    Tests that the post-processor helper calls the correct command.
+    """
+    caplog.set_level(logging.INFO)
+    mocker.patch("cli.SYNTHTOOL_INSTALLED", return_value=True)
+    mock_subprocess = mocker.patch("cli.subprocess.run")
+
+    _run_post_processor()
+
+    mock_subprocess.assert_called_once()
+
+    assert mock_subprocess.call_args.kwargs["cwd"] == "output"
+    assert "Python post-processor ran successfully." in caplog.text
+
+
+def test_locate_and_extract_artifact_fails(mocker, caplog):
+    """
+    Tests that an exception is raised if the subprocess command fails.
+    """
+    caplog.set_level(logging.INFO)
+    mocker.patch("cli.SYNTHTOOL_INSTALLED", return_value=True)
+
+    with pytest.raises(FileNotFoundError):
+        _run_post_processor()
+
+
 def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
     """
     Tests the successful execution path of handle_generate.
@@ -215,8 +243,8 @@ def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
         "cli._determine_bazel_rule", return_value="mock-rule"
     )
     mock_build_target = mocker.patch("cli._build_bazel_target")
-
     mock_locate_and_extract_artifact = mocker.patch("cli._locate_and_extract_artifact")
+    mock_run_post_processor = mocker.patch("cli._run_post_processor")
 
     handle_generate()
 
