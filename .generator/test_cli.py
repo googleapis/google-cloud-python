@@ -21,10 +21,11 @@ import subprocess
 from unittest.mock import mock_open, MagicMock
 
 from cli import (
-    _read_json_file,
-    _determine_bazel_rule,
     _build_bazel_target,
+    _determine_bazel_rule,
+    _get_library_id,
     _locate_and_extract_artifact,
+    _read_json_file,
     handle_generate,
     handle_build,
     handle_configure,
@@ -51,6 +52,27 @@ def mock_generate_request_file(tmp_path, monkeypatch):
     # Change the current working directory to the temp path for the test.
     monkeypatch.chdir(tmp_path)
     return request_file
+
+
+def test_get_library_id_success():
+    """Tests that _get_library_id returns the correct ID when present."""
+    request_data = {"id": "test-library", "name": "Test Library"}
+    library_id = _get_library_id(request_data)
+    assert library_id == "test-library"
+
+
+def test_get_library_id_missing_id():
+    """Tests that _get_library_id raises ValueError when 'id' is missing."""
+    request_data = {"name": "Test Library"}
+    with pytest.raises(ValueError, match="Request file is missing required 'id' field."):
+        _get_library_id(request_data)
+
+
+def test_get_library_id_empty_id():
+    """Tests that _get_library_id raises ValueError when 'id' is an empty string."""
+    request_data = {"id": "", "name": "Test Library"}
+    with pytest.raises(ValueError, match="Request file is missing required 'id' field."):
+        _get_library_id(request_data)
 
 
 def test_handle_configure_success(caplog, mock_generate_request_file):
