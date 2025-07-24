@@ -19,6 +19,15 @@ import os
 import sys
 import subprocess
 
+try:
+    import synthtool
+    from synthtool import gcp
+
+    SYNTHTOOL_INSTALLED = True
+except ImportError as e:
+    SYNTHTOOL_IMPORT_ERROR = e
+    SYNTHTOOL_INSTALLED = False
+
 logger = logging.getLogger()
 
 LIBRARIAN_DIR = "librarian"
@@ -153,6 +162,26 @@ def _locate_and_extract_artifact(bazel_rule: str, library_id: str):
         ) from e
 
 
+def _run_post_processor():
+    """Runs the synthtool post-processor on the output directory.
+
+    Raises:
+        ValueError: If the subprocess call fails.
+    """
+    try:
+        logger.info("Running Python post-processor...")
+        if SYNTHTOOL_INSTALLED:
+            command = ["python3", "-m", "synthtool.languages.python_mono_repo"]
+            os.chdir(OUTPUT_DIR)
+            subprocess.run(command, cwd=OUTPUT_DIR, text=True, check=True)
+        else:
+            raise SYNTHTOOL_IMPORT_ERROR
+        logger.info("Python post-processor ran successfully.")
+
+    except Exception as e:
+        raise ValueError("Python post-processor failed...") from e
+
+
 def handle_generate():
     """The main coordinator for the code generation process.
 
@@ -164,8 +193,8 @@ def handle_generate():
         ValueError: If the `generate-request.json` file is not found or read.
     """
 
-    # Read a generate-request.json file
     try:
+        # Read a generate-request.json file
         request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
         library_id = request_data.get("id")
         if not library_id:
@@ -177,8 +206,8 @@ def handle_generate():
                 bazel_rule = _determine_bazel_rule(api_path)
                 _build_bazel_target(bazel_rule)
                 _locate_and_extract_artifact(bazel_rule, library_id)
+                _run_post_processor()
 
-            logger.info(json.dumps(request_data, indent=2))
     except Exception as e:
         raise ValueError("Generation failed.") from e
 
