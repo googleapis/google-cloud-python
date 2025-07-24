@@ -103,7 +103,7 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
   
-def _build_bazel_target(bazel_rule):
+def _build_bazel_target(bazel_rule:str):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
