@@ -14,18 +14,30 @@
 
 # TODO(https://github.com/googleapis/google-cloud-python/issues/14142):
 # Reduce this timeout by moving the installation of Python runtimes to a separate base image
-timeout: 7200s  # 2 hours
+timeout: 7200s  # 2 hours for the first uncached run, can be lowered later.
 steps:
-  # This step builds the Docker image.
+  # STEP 1: Pull the latest version of the image to use as a cache.
+  # The '|| exit 0' part ensures the build doesn't fail if the image
+  # doesn't exist yet (e.g., on the very first run).
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker pull gcr.io/$PROJECT_ID/python-librarian-generator:latest || exit 0']
+
+  # STEP 2: Build the new image, using the pulled image as a cache source.
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/python-librarian-generator:latest'
-      - '-f'
-      - '.generator/Dockerfile'
+      - '--tag=gcr.io/$PROJECT_ID/python-librarian-generator:latest'
+      - '--cache-from=gcr.io/$PROJECT_ID/python-librarian-generator:latest'
+      - '--file=.generator/Dockerfile'
       - '.'
 
-# This section automatically create a storage bucket for storing docker build logs.
+# STEP 3: Push the newly built image to the registry so it can be used
+# as the cache for the next run. Cloud Build does this automatically if
+# the image is listed in the 'images' section.
+images:
+  - 'gcr.io/$PROJECT_ID/python-librarian-generator:latest'
+
+# This section automatically creates a storage bucket for storing docker build logs.
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
