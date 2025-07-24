@@ -24,6 +24,7 @@ from cli import (
     _read_json_file,
     _determine_bazel_rule,
     _build_bazel_target,
+    _locate_and_extract_artifact,
     handle_generate,
     handle_build,
     handle_configure,
@@ -118,6 +119,52 @@ def test_determine_bazel_rule_command_fails(mocker, caplog):
     assert "Found Bazel rule" not in caplog.text
 
 
+def test_locate_and_extract_artifact_success(mocker, caplog):
+    """
+    Tests that the artifact helper calls the correct sequence of commands.
+    """
+    caplog.set_level(logging.INFO)
+    mock_info_result = MagicMock(stdout="/path/to/bazel-bin\n")
+    mock_tar_result = MagicMock(returncode=0)
+    mocker.patch("cli.subprocess.run", side_effect=[mock_info_result, mock_tar_result])
+    mock_makedirs = mocker.patch("cli.os.makedirs")
+    _locate_and_extract_artifact(
+        "//google/cloud/language/v1:rule-py",
+        "google-cloud-language",
+    )
+
+    assert (
+        "Found artifact at: /path/to/bazel-bin/google/cloud/language/v1/rule-py.tar.gz"
+        in caplog.text
+    )
+    assert (
+        "Preparing staging directory: output/owl-bot-staging/google-cloud-language"
+        in caplog.text
+    )
+    assert (
+        "Artifact /path/to/bazel-bin/google/cloud/language/v1/rule-py.tar.gz extracted successfully"
+        in caplog.text
+    )
+    mock_makedirs.assert_called_once()
+
+
+def test_locate_and_extract_artifact_fails(mocker, caplog):
+    """
+    Tests that an exception is raised if the subprocess command fails.
+    """
+    caplog.set_level(logging.INFO)
+    mocker.patch(
+        "cli.subprocess.run",
+        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Bazel error"),
+    )
+
+    with pytest.raises(ValueError):
+        _locate_and_extract_artifact(
+            "//google/cloud/language/v1:rule-py",
+            "google-cloud-language",
+        )
+
+
 def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
     """
     Tests the successful execution path of handle_generate.
@@ -128,6 +175,8 @@ def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
         "cli._determine_bazel_rule", return_value="mock-rule"
     )
     mock_build_target = mocker.patch("cli._build_bazel_target")
+
+    mock_locate_and_extract_artifact = mocker.patch("cli._locate_and_extract_artifact")
 
     handle_generate()
 
