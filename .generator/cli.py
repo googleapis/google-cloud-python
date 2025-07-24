@@ -27,6 +27,7 @@ LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
 SOURCE_DIR = "source"
 OUTPUT_DIR = "output"
+REPO_DIR = "repo"
 
 
 def _read_json_file(path: str) -> Dict:
@@ -102,8 +103,8 @@ def _get_library_id(request_data: Dict) -> str:
         raise ValueError("Request file is missing required 'id' field.")
     return library_id
 
-  
-def _build_bazel_target(bazel_rule:str):
+
+def _build_bazel_target(bazel_rule: str):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
@@ -234,7 +235,7 @@ def _run_individual_session(nox_session: str, library_id: str):
         "-s",
         nox_session,
         "-f",
-        f"{SOURCE_DIR}/packages/{library_id}",
+        f"{REPO_DIR}/packages/{library_id}",
     ]
     result = subprocess.run(command, text=True, check=True)
     logger.info(result)
