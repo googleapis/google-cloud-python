@@ -181,6 +181,14 @@ class DatabaseAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_internal_update_graph_operation(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_internal_update_graph_operation(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_backup_operations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -3678,6 +3686,25 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
                 )
             return resp
 
+    class _InternalUpdateGraphOperation(
+        _BaseDatabaseAdminRestTransport._BaseInternalUpdateGraphOperation,
+        DatabaseAdminRestStub,
+    ):
+        def __hash__(self):
+            return hash("DatabaseAdminRestTransport.InternalUpdateGraphOperation")
+
+        def __call__(
+            self,
+            request: spanner_database_admin.InternalUpdateGraphOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> spanner_database_admin.InternalUpdateGraphOperationResponse:
+            raise NotImplementedError(
+                "Method InternalUpdateGraphOperation is not available over REST transport"
+            )
+
     class _ListBackupOperations(
         _BaseDatabaseAdminRestTransport._BaseListBackupOperations, DatabaseAdminRestStub
     ):
@@ -5862,6 +5889,17 @@ class DatabaseAdminRestTransport(_BaseDatabaseAdminRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def internal_update_graph_operation(
+        self,
+    ) -> Callable[
+        [spanner_database_admin.InternalUpdateGraphOperationRequest],
+        spanner_database_admin.InternalUpdateGraphOperationResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._InternalUpdateGraphOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_backup_operations(

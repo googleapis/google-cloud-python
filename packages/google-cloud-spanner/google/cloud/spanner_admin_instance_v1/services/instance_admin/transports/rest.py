@@ -1191,6 +1191,102 @@ class InstanceAdminRestInterceptor:
         """
         return response, metadata
 
+    def pre_cancel_operation(
+        self,
+        request: operations_pb2.CancelOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_cancel_operation(self, response: None) -> None:
+        """Post-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_operation(
+        self,
+        request: operations_pb2.DeleteOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_delete_operation(self, response: None) -> None:
+        """Post-rpc interceptor for delete_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_operation(
+        self,
+        request: operations_pb2.GetOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_get_operation(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for get_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_operations(
+        self,
+        request: operations_pb2.ListOperationsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_operations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceAdmin server.
+        """
+        return request, metadata
+
+    def post_list_operations(
+        self, response: operations_pb2.ListOperationsResponse
+    ) -> operations_pb2.ListOperationsResponse:
+        """Post-rpc interceptor for list_operations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the InstanceAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
 
 @dataclasses.dataclass
 class InstanceAdminRestStub:
@@ -1311,6 +1407,58 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
         # Only create a new client if we do not already have one.
         if self._operations_client is None:
             http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.CancelOperation": [
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/instances/*/databases/*/operations/*}:cancel",
+                    },
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/instances/*/operations/*}:cancel",
+                    },
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/instances/*/backups/*/operations/*}:cancel",
+                    },
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*/operations/*}:cancel",
+                    },
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/instanceConfigs/*/operations/*}:cancel",
+                    },
+                    {
+                        "method": "post",
+                        "uri": "/v1/{name=projects/*/instanceConfigs/*/ssdCaches/*/operations/*}:cancel",
+                    },
+                ],
+                "google.longrunning.Operations.DeleteOperation": [
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/instances/*/databases/*/operations/*}",
+                    },
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/instances/*/operations/*}",
+                    },
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/instances/*/backups/*/operations/*}",
+                    },
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*/operations/*}",
+                    },
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/instanceConfigs/*/operations/*}",
+                    },
+                    {
+                        "method": "delete",
+                        "uri": "/v1/{name=projects/*/instanceConfigs/*/ssdCaches/*/operations/*}",
+                    },
+                ],
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
@@ -1319,6 +1467,22 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                     {
                         "method": "get",
                         "uri": "/v1/{name=projects/*/instances/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/instances/*/backups/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/instanceConfigs/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/instanceConfigs/*/ssdCaches/*/operations/*}",
                     },
                 ],
                 "google.longrunning.Operations.ListOperations": [
@@ -1330,25 +1494,21 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
                         "method": "get",
                         "uri": "/v1/{name=projects/*/instances/*/operations}",
                     },
-                ],
-                "google.longrunning.Operations.CancelOperation": [
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/instances/*/databases/*/operations/*}:cancel",
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/instances/*/backups/*/operations}",
                     },
                     {
-                        "method": "post",
-                        "uri": "/v1/{name=projects/*/instances/*/operations/*}:cancel",
-                    },
-                ],
-                "google.longrunning.Operations.DeleteOperation": [
-                    {
-                        "method": "delete",
-                        "uri": "/v1/{name=projects/*/instances/*/databases/*/operations/*}",
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*/operations}",
                     },
                     {
-                        "method": "delete",
-                        "uri": "/v1/{name=projects/*/instances/*/operations/*}",
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/instanceConfigs/*/operations}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/instanceConfigs/*/ssdCaches/*/operations}",
                     },
                 ],
             }
@@ -4822,6 +4982,514 @@ class InstanceAdminRestTransport(_BaseInstanceAdminRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstancePartition(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def cancel_operation(self):
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _CancelOperation(
+        _BaseInstanceAdminRestTransport._BaseCancelOperation, InstanceAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("InstanceAdminRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.CancelOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
+            r"""Call the cancel operation method over HTTP.
+
+            Args:
+                request (operations_pb2.CancelOperationRequest):
+                    The request object for CancelOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseInstanceAdminRestTransport._BaseCancelOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_cancel_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseInstanceAdminRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstanceAdminRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = InstanceAdminRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_cancel_operation(None)
+
+    @property
+    def delete_operation(self):
+        return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _DeleteOperation(
+        _BaseInstanceAdminRestTransport._BaseDeleteOperation, InstanceAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("InstanceAdminRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.DeleteOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
+            r"""Call the delete operation method over HTTP.
+
+            Args:
+                request (operations_pb2.DeleteOperationRequest):
+                    The request object for DeleteOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseInstanceAdminRestTransport._BaseDeleteOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseInstanceAdminRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstanceAdminRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = InstanceAdminRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_delete_operation(None)
+
+    @property
+    def get_operation(self):
+        return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetOperation(
+        _BaseInstanceAdminRestTransport._BaseGetOperation, InstanceAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("InstanceAdminRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.GetOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the get operation method over HTTP.
+
+            Args:
+                request (operations_pb2.GetOperationRequest):
+                    The request object for GetOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                operations_pb2.Operation: Response from GetOperation method.
+            """
+
+            http_options = (
+                _BaseInstanceAdminRestTransport._BaseGetOperation._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_operation(request, metadata)
+            transcoded_request = _BaseInstanceAdminRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstanceAdminRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.GetOperation",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = InstanceAdminRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = operations_pb2.Operation()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
+
+    @property
+    def list_operations(self):
+        return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _ListOperations(
+        _BaseInstanceAdminRestTransport._BaseListOperations, InstanceAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("InstanceAdminRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.ListOperationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.ListOperationsResponse:
+            r"""Call the list operations method over HTTP.
+
+            Args:
+                request (operations_pb2.ListOperationsRequest):
+                    The request object for ListOperations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                operations_pb2.ListOperationsResponse: Response from ListOperations method.
+            """
+
+            http_options = (
+                _BaseInstanceAdminRestTransport._BaseListOperations._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_operations(request, metadata)
+            transcoded_request = _BaseInstanceAdminRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstanceAdminRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.spanner.admin.instance_v1.InstanceAdminClient.ListOperations",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = InstanceAdminRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            content = response.content.decode("utf-8")
+            resp = operations_pb2.ListOperationsResponse()
+            resp = json_format.Parse(content, resp)
+            resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.spanner.admin.instance_v1.InstanceAdminAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.spanner.admin.instance.v1.InstanceAdmin",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
+            return resp
 
     @property
     def kind(self) -> str:

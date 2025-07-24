@@ -1247,6 +1247,39 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
             )
         return self._stubs["list_backup_schedules"]
 
+    @property
+    def internal_update_graph_operation(
+        self,
+    ) -> Callable[
+        [spanner_database_admin.InternalUpdateGraphOperationRequest],
+        Awaitable[spanner_database_admin.InternalUpdateGraphOperationResponse],
+    ]:
+        r"""Return a callable for the internal update graph
+        operation method over gRPC.
+
+        This is an internal API called by Spanner Graph jobs.
+        You should never need to call this API directly.
+
+        Returns:
+            Callable[[~.InternalUpdateGraphOperationRequest],
+                    Awaitable[~.InternalUpdateGraphOperationResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "internal_update_graph_operation" not in self._stubs:
+            self._stubs[
+                "internal_update_graph_operation"
+            ] = self._logged_channel.unary_unary(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/InternalUpdateGraphOperation",
+                request_serializer=spanner_database_admin.InternalUpdateGraphOperationRequest.serialize,
+                response_deserializer=spanner_database_admin.InternalUpdateGraphOperationResponse.deserialize,
+            )
+        return self._stubs["internal_update_graph_operation"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1578,6 +1611,11 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
                     deadline=3600.0,
                 ),
                 default_timeout=3600.0,
+                client_info=client_info,
+            ),
+            self.internal_update_graph_operation: self._wrap_method(
+                self.internal_update_graph_operation,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.cancel_operation: self._wrap_method(

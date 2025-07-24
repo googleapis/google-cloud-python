@@ -63,6 +63,8 @@ from .types.spanner_database_admin import DropDatabaseRequest
 from .types.spanner_database_admin import GetDatabaseDdlRequest
 from .types.spanner_database_admin import GetDatabaseDdlResponse
 from .types.spanner_database_admin import GetDatabaseRequest
+from .types.spanner_database_admin import InternalUpdateGraphOperationRequest
+from .types.spanner_database_admin import InternalUpdateGraphOperationResponse
 from .types.spanner_database_admin import ListDatabaseOperationsRequest
 from .types.spanner_database_admin import ListDatabaseOperationsResponse
 from .types.spanner_database_admin import ListDatabaseRolesRequest
@@ -117,6 +119,8 @@ __all__ = (
     "GetDatabaseDdlResponse",
     "GetDatabaseRequest",
     "IncrementalBackupSpec",
+    "InternalUpdateGraphOperationRequest",
+    "InternalUpdateGraphOperationResponse",
     "ListBackupOperationsRequest",
     "ListBackupOperationsResponse",
     "ListBackupSchedulesRequest",

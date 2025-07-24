@@ -28,6 +28,7 @@ from typing import (
     Type,
     Union,
 )
+import uuid
 
 from google.cloud.spanner_admin_database_v1 import gapic_version as package_version
 
@@ -3850,6 +3851,126 @@ class DatabaseAdminAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def internal_update_graph_operation(
+        self,
+        request: Optional[
+            Union[spanner_database_admin.InternalUpdateGraphOperationRequest, dict]
+        ] = None,
+        *,
+        database: Optional[str] = None,
+        operation_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> spanner_database_admin.InternalUpdateGraphOperationResponse:
+        r"""This is an internal API called by Spanner Graph jobs.
+        You should never need to call this API directly.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import spanner_admin_database_v1
+
+            async def sample_internal_update_graph_operation():
+                # Create a client
+                client = spanner_admin_database_v1.DatabaseAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = spanner_admin_database_v1.InternalUpdateGraphOperationRequest(
+                    database="database_value",
+                    operation_id="operation_id_value",
+                    vm_identity_token="vm_identity_token_value",
+                )
+
+                # Make the request
+                response = await client.internal_update_graph_operation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.spanner_admin_database_v1.types.InternalUpdateGraphOperationRequest, dict]]):
+                The request object. Internal request proto, do not use
+                directly.
+            database (:class:`str`):
+                Internal field, do not use directly.
+                This corresponds to the ``database`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            operation_id (:class:`str`):
+                Internal field, do not use directly.
+                This corresponds to the ``operation_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.spanner_admin_database_v1.types.InternalUpdateGraphOperationResponse:
+                Internal response proto, do not use
+                directly.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [database, operation_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, spanner_database_admin.InternalUpdateGraphOperationRequest
+        ):
+            request = spanner_database_admin.InternalUpdateGraphOperationRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if database is not None:
+            request.database = database
+        if operation_id is not None:
+            request.operation_id = operation_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.internal_update_graph_operation
+        ]
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

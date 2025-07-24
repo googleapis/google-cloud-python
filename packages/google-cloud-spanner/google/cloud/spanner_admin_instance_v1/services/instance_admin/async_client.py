@@ -28,6 +28,7 @@ from typing import (
     Type,
     Union,
 )
+import uuid
 
 from google.cloud.spanner_admin_instance_v1 import gapic_version as package_version
 
@@ -51,6 +52,7 @@ from google.cloud.spanner_admin_instance_v1.services.instance_admin import pager
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -3447,6 +3449,227 @@ class InstanceAdminAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def list_operations(
+        self,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_operation(
+        self,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes a long-running operation.
+
+        This method indicates that the client is no longer interested
+        in the operation result. It does not cancel the operation.
+        If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.DeleteOperationRequest`):
+                The request object. Request message for
+                `DeleteOperation` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.DeleteOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self.transport._wrapped_methods[self._client._transport.delete_operation]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self.transport._wrapped_methods[self._client._transport.cancel_operation]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def __aenter__(self) -> "InstanceAdminAsyncClient":
         return self

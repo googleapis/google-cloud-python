@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import re
 
 # try/except added for compatibility with python < 3.8
 try:
@@ -11260,6 +11261,302 @@ async def test_list_backup_schedules_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        spanner_database_admin.InternalUpdateGraphOperationRequest,
+        dict,
+    ],
+)
+def test_internal_update_graph_operation(request_type, transport: str = "grpc"):
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.internal_update_graph_operation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            spanner_database_admin.InternalUpdateGraphOperationResponse()
+        )
+        response = client.internal_update_graph_operation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = spanner_database_admin.InternalUpdateGraphOperationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, spanner_database_admin.InternalUpdateGraphOperationResponse
+    )
+
+
+def test_internal_update_graph_operation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = spanner_database_admin.InternalUpdateGraphOperationRequest(
+        database="database_value",
+        operation_id="operation_id_value",
+        vm_identity_token="vm_identity_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.internal_update_graph_operation), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.internal_update_graph_operation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == spanner_database_admin.InternalUpdateGraphOperationRequest(
+            database="database_value",
+            operation_id="operation_id_value",
+            vm_identity_token="vm_identity_token_value",
+        )
+
+
+def test_internal_update_graph_operation_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DatabaseAdminClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.internal_update_graph_operation
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.internal_update_graph_operation
+        ] = mock_rpc
+        request = {}
+        client.internal_update_graph_operation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.internal_update_graph_operation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_internal_update_graph_operation_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DatabaseAdminAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.internal_update_graph_operation
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.internal_update_graph_operation
+        ] = mock_rpc
+
+        request = {}
+        await client.internal_update_graph_operation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.internal_update_graph_operation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_internal_update_graph_operation_async(
+    transport: str = "grpc_asyncio",
+    request_type=spanner_database_admin.InternalUpdateGraphOperationRequest,
+):
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.internal_update_graph_operation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.InternalUpdateGraphOperationResponse()
+        )
+        response = await client.internal_update_graph_operation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = spanner_database_admin.InternalUpdateGraphOperationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, spanner_database_admin.InternalUpdateGraphOperationResponse
+    )
+
+
+@pytest.mark.asyncio
+async def test_internal_update_graph_operation_async_from_dict():
+    await test_internal_update_graph_operation_async(request_type=dict)
+
+
+def test_internal_update_graph_operation_flattened():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.internal_update_graph_operation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            spanner_database_admin.InternalUpdateGraphOperationResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.internal_update_graph_operation(
+            database="database_value",
+            operation_id="operation_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].database
+        mock_val = "database_value"
+        assert arg == mock_val
+        arg = args[0].operation_id
+        mock_val = "operation_id_value"
+        assert arg == mock_val
+
+
+def test_internal_update_graph_operation_flattened_error():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.internal_update_graph_operation(
+            spanner_database_admin.InternalUpdateGraphOperationRequest(),
+            database="database_value",
+            operation_id="operation_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_internal_update_graph_operation_flattened_async():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.internal_update_graph_operation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            spanner_database_admin.InternalUpdateGraphOperationResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.InternalUpdateGraphOperationResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.internal_update_graph_operation(
+            database="database_value",
+            operation_id="operation_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].database
+        mock_val = "database_value"
+        assert arg == mock_val
+        arg = args[0].operation_id
+        mock_val = "operation_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_internal_update_graph_operation_flattened_error_async():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.internal_update_graph_operation(
+            spanner_database_admin.InternalUpdateGraphOperationRequest(),
+            database="database_value",
+            operation_id="operation_id_value",
+        )
+
+
 def test_list_databases_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -16613,6 +16910,30 @@ def test_list_backup_schedules_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+def test_internal_update_graph_operation_rest_no_http_options():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = spanner_database_admin.InternalUpdateGraphOperationRequest()
+    with pytest.raises(RuntimeError):
+        client.internal_update_graph_operation(request)
+
+
+def test_internal_update_graph_operation_rest_error():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.internal_update_graph_operation({})
+    assert (
+        "Method InternalUpdateGraphOperation is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DatabaseAdminGrpcTransport(
@@ -17281,6 +17602,31 @@ def test_list_backup_schedules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.ListBackupSchedulesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_internal_update_graph_operation_empty_call_grpc():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.internal_update_graph_operation), "__call__"
+    ) as call:
+        call.return_value = (
+            spanner_database_admin.InternalUpdateGraphOperationResponse()
+        )
+        client.internal_update_graph_operation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.InternalUpdateGraphOperationRequest()
 
         assert args[0] == request_msg
 
@@ -18020,6 +18366,33 @@ async def test_list_backup_schedules_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = backup_schedule.ListBackupSchedulesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_internal_update_graph_operation_empty_call_grpc_asyncio():
+    client = DatabaseAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.internal_update_graph_operation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            spanner_database_admin.InternalUpdateGraphOperationResponse()
+        )
+        await client.internal_update_graph_operation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.InternalUpdateGraphOperationRequest()
 
         assert args[0] == request_msg
 
@@ -21861,6 +22234,19 @@ def test_list_backup_schedules_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_internal_update_graph_operation_rest_error():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.internal_update_graph_operation({})
+    assert (
+        "Method InternalUpdateGraphOperation is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
 def test_cancel_operation_rest_bad_request(
     request_type=operations_pb2.CancelOperationRequest,
 ):
@@ -22674,6 +23060,28 @@ def test_list_backup_schedules_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_internal_update_graph_operation_empty_call_rest():
+    client = DatabaseAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.internal_update_graph_operation), "__call__"
+    ) as call:
+        client.internal_update_graph_operation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = spanner_database_admin.InternalUpdateGraphOperationRequest()
+
+        assert args[0] == request_msg
+
+
 def test_database_admin_rest_lro_client():
     client = DatabaseAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22750,6 +23158,7 @@ def test_database_admin_base_transport():
         "update_backup_schedule",
         "delete_backup_schedule",
         "list_backup_schedules",
+        "internal_update_graph_operation",
         "get_operation",
         "cancel_operation",
         "delete_operation",
@@ -23106,6 +23515,9 @@ def test_database_admin_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.list_backup_schedules._session
     session2 = client2.transport.list_backup_schedules._session
+    assert session1 != session2
+    session1 = client1.transport.internal_update_graph_operation._session
+    session2 = client2.transport.internal_update_graph_operation._session
     assert session1 != session2
 
 

@@ -477,6 +477,11 @@ class DatabaseAdminTransport(abc.ABC):
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
+            self.internal_update_graph_operation: gapic_v1.method.wrap_method(
+                self.internal_update_graph_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.cancel_operation: gapic_v1.method.wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -775,6 +780,18 @@ class DatabaseAdminTransport(abc.ABC):
         Union[
             backup_schedule.ListBackupSchedulesResponse,
             Awaitable[backup_schedule.ListBackupSchedulesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def internal_update_graph_operation(
+        self,
+    ) -> Callable[
+        [spanner_database_admin.InternalUpdateGraphOperationRequest],
+        Union[
+            spanner_database_admin.InternalUpdateGraphOperationResponse,
+            Awaitable[spanner_database_admin.InternalUpdateGraphOperationResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -41,15 +41,20 @@ class CommitResponse(proto.Message):
             The Cloud Spanner timestamp at which the
             transaction committed.
         commit_stats (google.cloud.spanner_v1.types.CommitResponse.CommitStats):
-            The statistics about this Commit. Not returned by default.
-            For more information, see
+            The statistics about this ``Commit``. Not returned by
+            default. For more information, see
             [CommitRequest.return_commit_stats][google.spanner.v1.CommitRequest.return_commit_stats].
         precommit_token (google.cloud.spanner_v1.types.MultiplexedSessionPrecommitToken):
             If specified, transaction has not committed
-            yet. Clients must retry the commit with the new
+            yet. You must retry the commit with the new
             precommit token.
 
             This field is a member of `oneof`_ ``MultiplexedSessionRetry``.
+        snapshot_timestamp (google.protobuf.timestamp_pb2.Timestamp):
+            If ``TransactionOptions.isolation_level`` is set to
+            ``IsolationLevel.REPEATABLE_READ``, then the snapshot
+            timestamp is the timestamp at which all reads in the
+            transaction ran. This timestamp is never returned.
     """
 
     class CommitStats(proto.Message):
@@ -88,6 +93,11 @@ class CommitResponse(proto.Message):
         number=4,
         oneof="MultiplexedSessionRetry",
         message=transaction.MultiplexedSessionPrecommitToken,
+    )
+    snapshot_timestamp: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 

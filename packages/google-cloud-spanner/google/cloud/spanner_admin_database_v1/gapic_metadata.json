@@ -75,6 +75,11 @@
                 "get_iam_policy"
               ]
             },
+            "InternalUpdateGraphOperation": {
+              "methods": [
+                "internal_update_graph_operation"
+              ]
+            },
             "ListBackupOperations": {
               "methods": [
                 "list_backup_operations"
@@ -210,6 +215,11 @@
                 "get_iam_policy"
               ]
             },
+            "InternalUpdateGraphOperation": {
+              "methods": [
+                "internal_update_graph_operation"
+              ]
+            },
             "ListBackupOperations": {
               "methods": [
                 "list_backup_operations"
@@ -343,6 +353,11 @@
             "GetIamPolicy": {
               "methods": [
                 "get_iam_policy"
+              ]
+            },
+            "InternalUpdateGraphOperation": {
+              "methods": [
+                "internal_update_graph_operation"
               ]
             },
             "ListBackupOperations": {

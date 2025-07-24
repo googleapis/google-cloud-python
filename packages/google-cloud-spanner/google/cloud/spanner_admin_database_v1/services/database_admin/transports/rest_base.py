@@ -784,6 +784,10 @@ class _BaseDatabaseAdminRestTransport(DatabaseAdminTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseInternalUpdateGraphOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
     class _BaseListBackupOperations:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")

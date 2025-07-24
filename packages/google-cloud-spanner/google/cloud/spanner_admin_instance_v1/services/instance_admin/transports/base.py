@@ -306,6 +306,26 @@ class InstanceAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: gapic_v1.method.wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: gapic_v1.method.wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: gapic_v1.method.wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -535,6 +555,39 @@ class InstanceAdminTransport(abc.ABC):
         [spanner_instance_admin.MoveInstanceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
         raise NotImplementedError()
 
     @property

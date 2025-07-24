@@ -52,6 +52,7 @@ class spanner_admin_databaseCallTransformer(cst.CSTTransformer):
         'get_database': ('name', ),
         'get_database_ddl': ('database', ),
         'get_iam_policy': ('resource', 'options', ),
+        'internal_update_graph_operation': ('database', 'operation_id', 'vm_identity_token', 'progress', 'status', ),
         'list_backup_operations': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_backups': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_backup_schedules': ('parent', 'page_size', 'page_token', ),

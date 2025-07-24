@@ -25,6 +25,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -58,6 +59,8 @@ __protobuf__ = proto.module(
         "AddSplitPointsRequest",
         "AddSplitPointsResponse",
         "SplitPoints",
+        "InternalUpdateGraphOperationRequest",
+        "InternalUpdateGraphOperationResponse",
     },
 )
 
@@ -1298,6 +1301,49 @@ class SplitPoints(proto.Message):
         number=5,
         message=timestamp_pb2.Timestamp,
     )
+
+
+class InternalUpdateGraphOperationRequest(proto.Message):
+    r"""Internal request proto, do not use directly.
+
+    Attributes:
+        database (str):
+            Internal field, do not use directly.
+        operation_id (str):
+            Internal field, do not use directly.
+        vm_identity_token (str):
+            Internal field, do not use directly.
+        progress (float):
+            Internal field, do not use directly.
+        status (google.rpc.status_pb2.Status):
+            Internal field, do not use directly.
+    """
+
+    database: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    operation_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    vm_identity_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    progress: float = proto.Field(
+        proto.DOUBLE,
+        number=3,
+    )
+    status: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=status_pb2.Status,
+    )
+
+
+class InternalUpdateGraphOperationResponse(proto.Message):
+    r"""Internal response proto, do not use directly."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

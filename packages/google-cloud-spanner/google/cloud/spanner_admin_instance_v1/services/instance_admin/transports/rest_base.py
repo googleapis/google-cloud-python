@@ -1194,5 +1194,185 @@ class _BaseInstanceAdminRestTransport(InstanceAdminTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseCancelOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/instances/*/databases/*/operations/*}:cancel",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/instances/*/operations/*}:cancel",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/instances/*/backups/*/operations/*}:cancel",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*/operations/*}:cancel",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/instanceConfigs/*/operations/*}:cancel",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/instanceConfigs/*/ssdCaches/*/operations/*}:cancel",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            return query_params
+
+    class _BaseDeleteOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/instances/*/databases/*/operations/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/instances/*/operations/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/instances/*/backups/*/operations/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*/operations/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/instanceConfigs/*/operations/*}",
+                },
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/instanceConfigs/*/ssdCaches/*/operations/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            return query_params
+
+    class _BaseGetOperation:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/databases/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/backups/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instanceConfigs/*/operations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instanceConfigs/*/ssdCaches/*/operations/*}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            return query_params
+
+    class _BaseListOperations:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/databases/*/operations}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/operations}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/backups/*/operations}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instances/*/instancePartitions/*/operations}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instanceConfigs/*/operations}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/instanceConfigs/*/ssdCaches/*/operations}",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            return transcoded_request
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            return query_params
+
 
 __all__ = ("_BaseInstanceAdminRestTransport",)
