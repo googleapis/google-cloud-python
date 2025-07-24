@@ -106,7 +106,7 @@ def _build_bazel_target(bazel_rule):
         raise ValueError(f"Bazel build for {bazel_rule} rule failed.") from e
 
 
-def _locate_and_extract_artifact(bazel_rule, library_id):
+def _locate_and_extract_artifact(bazel_rule: str, library_id: str):
     """Finds and extracts the tarball artifact from a Bazel build.
 
     Args:
