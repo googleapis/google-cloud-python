@@ -172,7 +172,7 @@ class ProductReview(proto.Message):
             Required. The permanent, unique identifier
             for the product review in the publisher’s
             system.
-        attributes (google.shopping.merchant_reviews_v1beta.types.ProductReviewAttributes):
+        product_review_attributes (google.shopping.merchant_reviews_v1beta.types.ProductReviewAttributes):
             Optional. A list of product review
             attributes.
         custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
@@ -195,10 +195,12 @@ class ProductReview(proto.Message):
         proto.STRING,
         number=2,
     )
-    attributes: productreviews_common.ProductReviewAttributes = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=productreviews_common.ProductReviewAttributes,
+    product_review_attributes: productreviews_common.ProductReviewAttributes = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=productreviews_common.ProductReviewAttributes,
+        )
     )
     custom_attributes: MutableSequence[types.CustomAttribute] = proto.RepeatedField(
         proto.MESSAGE,
