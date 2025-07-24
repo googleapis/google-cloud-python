@@ -49,10 +49,11 @@ RUN for PYTHON_VERSION in 3.9.23 3.10.18 3.11.13 3.12.11 3.13.5; do \
     rm -rf Python-${PYTHON_VERSION}* && \
     # Install pip using the instructions below
     # https://pip.pypa.io/en/stable/installation/#ensurepip
-    python${PYTHON_VERSION} -m ensurepip --upgrade && \
     PYTHON_VERSION_TRIMMED=$(echo ${PYTHON_VERSION} | cut -d . -f -2) && \
     # Create an alias for python${PYTHON_VERSION} so that it points to python${PYTHON_VERSION_TRIMMED}
-    alias python${PYTHON_VERSION}=python${PYTHON_VERSION_TRIMMED} \
+    # to resolve error `python3.13.5: command not found` while `python3.13` works
+    alias python${PYTHON_VERSION}=python${PYTHON_VERSION_TRIMMED} && \
+    python${PYTHON_VERSION} -m ensurepip --upgrade \
     ; done
 
 # Test Pip
