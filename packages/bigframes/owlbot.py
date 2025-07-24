@@ -107,6 +107,13 @@ assert 1 == s.replace(  # MANIFEST.in
     "recursive-include bigframes *.json *.proto *.js py.typed",
 )
 
+# Include JavaScript and CSS files for display widgets
+assert 1 == s.replace(  # MANIFEST.in
+    ["MANIFEST.in"],
+    re.escape("recursive-include bigframes *.json *.proto *.js py.typed"),
+    "recursive-include bigframes *.json *.proto *.js *.css py.typed",
+)
+
 # Fixup the documentation.
 assert 1 == s.replace(  # docs/conf.py
     ["docs/conf.py"],

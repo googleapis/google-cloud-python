@@ -46,4 +46,4 @@ repos:
     rev: v2.0.2
     hooks:
     -   id: biome-check
-        files: '\.js$'
+        files: '\.(js|css)$'

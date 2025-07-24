@@ -167,35 +167,31 @@ def test_widget_display_should_show_first_page_on_load(
     _assert_html_matches_pandas_slice(html, expected_slice, paginated_pandas_df)
 
 
-def test_widget_navigation_should_display_second_page(
-    table_widget, paginated_pandas_df: pd.DataFrame
+@pytest.mark.parametrize(
+    "page_number, start_row, end_row",
+    [
+        (1, 2, 4),  # Second page
+        (2, 4, 6),  # Last page
+    ],
+    ids=["second_page", "last_page"],
+)
+def test_widget_navigation_should_display_correct_page(
+    table_widget,
+    paginated_pandas_df: pd.DataFrame,
+    page_number: int,
+    start_row: int,
+    end_row: int,
 ):
     """
-    Given a widget, when the page is set to 1, then it should display
-    the second page of data.
+    Given a widget, when the page is set, then it should display the correct
+    slice of data.
     """
-    expected_slice = paginated_pandas_df.iloc[2:4]
+    expected_slice = paginated_pandas_df.iloc[start_row:end_row]
 
-    table_widget.page = 1
+    table_widget.page = page_number
     html = table_widget.table_html
 
-    assert table_widget.page == 1
-    _assert_html_matches_pandas_slice(html, expected_slice, paginated_pandas_df)
-
-
-def test_widget_navigation_should_display_last_page(
-    table_widget, paginated_pandas_df: pd.DataFrame
-):
-    """
-    Given a widget, when the page is set to the last page (2),
-    then it should display the final page of data.
-    """
-    expected_slice = paginated_pandas_df.iloc[4:6]
-
-    table_widget.page = 2
-    html = table_widget.table_html
-
-    assert table_widget.page == 2
+    assert table_widget.page == page_number
     _assert_html_matches_pandas_slice(html, expected_slice, paginated_pandas_df)
 
 
@@ -336,6 +332,108 @@ def test_empty_widget_should_render_table_headers(empty_bf_df: bf.dataframe.Data
 
         assert "<table" in html
         assert "id" in html
+
+
+def test_page_size_change_should_reset_current_page_to_zero(table_widget):
+    """
+    Given a widget on a non-default page, When the page_size is changed,
+    Then the current page attribute should reset to 0.
+    """
+    # Start on page 1 with an initial page size of 2.
+    table_widget.page = 1
+    assert table_widget.page == 1
+
+    # Change the page size.
+    table_widget.page_size = 3
+
+    # The page number is reset to 0.
+    assert table_widget.page == 0
+
+
+def test_page_size_change_should_render_html_with_new_size(
+    table_widget, paginated_pandas_df: pd.DataFrame
+):
+    """
+    Given a widget, when the page_size is changed,
+    the rendered HTML should immediately reflect the new page size.
+    """
+    # The widget is in its initial state with page_size=2.
+    # We expect the first 3 rows after the change.
+    expected_slice = paginated_pandas_df.iloc[0:3]
+
+    # Change the page size.
+    table_widget.page_size = 3
+
+    # The HTML now contains the first 3 rows.
+    html = table_widget.table_html
+    _assert_html_matches_pandas_slice(html, expected_slice, paginated_pandas_df)
+
+
+def test_navigation_after_page_size_change_should_use_new_size(
+    table_widget, paginated_pandas_df: pd.DataFrame
+):
+    """
+    Given a widget whose page size has been changed, When we navigate to the
+    next page, Then the pagination should use the new page size.
+    """
+    # Change the page size to 3.
+    table_widget.page_size = 3
+    # We expect the second page to contain rows 4-6 (indices 3-6).
+    expected_slice = paginated_pandas_df.iloc[3:6]
+
+    # Navigate to the next page.
+    table_widget.page = 1
+
+    # The second page's HTML correctly reflects the new page size.
+    html = table_widget.table_html
+    _assert_html_matches_pandas_slice(html, expected_slice, paginated_pandas_df)
+
+
+@pytest.mark.parametrize("invalid_size", [0, -5], ids=["zero", "negative"])
+def test_setting_invalid_page_size_should_be_ignored(table_widget, invalid_size: int):
+    """When the page size is set to an invalid number (<=0), the change should
+    be ignored."""
+    # Set the initial page to 2.
+    initial_size = table_widget.page_size
+    assert initial_size == 2
+
+    # Attempt to set the page size to a invlaid size.
+    table_widget.page_size = invalid_size
+
+    # The page size remains unchanged.
+    assert table_widget.page_size == initial_size
+
+
+def test_setting_page_size_above_max_should_be_clamped(table_widget):
+    """
+    Given a widget, when the page size is set to a value greater than the
+    allowed maximum, the page size should be clamped to the maximum value.
+    """
+    # The maximum is hardcoded to 1000 in the implementation.
+    expected_clamped_size = 1000
+
+    # Attempt to set a very large page size.
+    table_widget.page_size = 9001
+
+    # The page size is clamped to the maximum.
+    assert table_widget.page_size == expected_clamped_size
+
+
+def test_widget_creation_should_load_css_for_rendering(table_widget):
+    """
+    Given a TableWidget is created, when its resources are accessed,
+    it should contain the CSS content required for styling.
+    """
+    # The table_widget fixture creates the widget.
+    # No additional setup is needed.
+
+    # Access the CSS content.
+    css_content = table_widget._css
+
+    # The content is a non-empty string containing a known selector.
+    assert isinstance(css_content, str)
+    assert len(css_content) > 0
+    assert ".bigframes-widget .footer" in css_content
 
 
 # TODO(shuowei): Add tests for custom index and multiindex
