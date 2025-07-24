@@ -30,14 +30,14 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 extras = ["tests"]
 extras_by_python = {
-    "3.8": ["tests", "alembic", "bqstorage"],
+    "3.9": ["tests", "alembic", "bqstorage"],
     "3.11": ["tests", "geography", "bqstorage"],
     "3.12": ["tests", "geography", "bqstorage"],
     "3.13": ["tests", "geography", "bqstorage"],
 }
 templated_files = common.py_library(
-    unit_test_python_versions=["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"],
-    system_test_python_versions=["3.8", "3.12", "3.13"],
+    unit_test_python_versions=["3.9", "3.10", "3.11", "3.12", "3.13"],
+    system_test_python_versions=["3.9", "3.12", "3.13"],
     cov_level=100,
     unit_test_extras=extras,
     unit_test_extras_by_python=extras_by_python,

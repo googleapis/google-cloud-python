@@ -62,7 +62,7 @@ extras = {
         # https://github.com/grpc/grpc/pull/15254
         "grpcio >= 1.47.0, < 2.0.0",
         "grpcio >= 1.49.1, < 2.0.0; python_version>='3.11'",
-        "pyarrow >= 3.0.0",
+        "pyarrow >= 5.0.0",
     ],
 }
 

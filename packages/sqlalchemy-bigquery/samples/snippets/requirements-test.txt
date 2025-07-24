@@ -5,16 +5,13 @@ google-auth==2.40.3
 google-cloud-testutils==1.6.4
 iniconfig==2.1.0
 packaging==25.0
-pluggy===1.5.0; python_version == '3.8'
 pluggy==1.6.0; python_version >= '3.9'
 py==1.11.0
 pyasn1==0.6.1
 pyasn1-modules==0.4.2
-pyparsing===3.1.4; python_version == '3.8'
 pyparsing==3.2.3; python_version >= '3.9'
 pytest===6.2.5
 rsa==4.9.1
 six==1.17.0
 toml==0.10.2
-typing-extensions===4.13.0; python_version == '3.8'
 typing-extensions==4.14.1; python_version >= '3.9'

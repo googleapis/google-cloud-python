@@ -39,9 +39,9 @@ LINT_PATHS = [
     "setup.py",
 ]
 
-DEFAULT_PYTHON_VERSION = "3.8"
+DEFAULT_PYTHON_VERSION = "3.10"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.10", "3.11", "3.12", "3.13"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -56,11 +56,6 @@ UNIT_TEST_EXTRAS: List[str] = [
     "tests",
 ]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
-    "3.8": [
-        "tests",
-        "alembic",
-        "bqstorage",
-    ],
     "3.11": [
         "tests",
         "geography",
@@ -78,7 +73,7 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     ],
 }
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.8", "3.12", "3.13"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.12", "3.13"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -91,11 +86,6 @@ SYSTEM_TEST_EXTRAS: List[str] = [
     "tests",
 ]
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
-    "3.8": [
-        "tests",
-        "alembic",
-        "bqstorage",
-    ],
     "3.12": [
         "tests",
         "geography",
@@ -398,10 +388,8 @@ def compliance(session):
         "-c",
         constraints_path,
     )
-    if session.python == "3.8":
-        extras = "[tests,alembic]"
-    elif session.python in ["3.12", "3.13"]:
-        extras = "[tests,geography]"
+    if session.python in ["3.12", "3.13"]:
+        extras = "[tests,geography,alembic]"
     else:
         extras = "[tests]"
     session.install("-e", f".{extras}", "-c", constraints_path)
