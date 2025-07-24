@@ -24,6 +24,7 @@ logger = logging.getLogger()
 LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
 SOURCE_DIR = "source"
+OUTPUT_DIR = "output"
 
 
 def _read_json_file(path):
@@ -97,13 +98,59 @@ def _build_bazel_target(bazel_rule):
         subprocess.run(
             command,
             cwd=f"{SOURCE_DIR}/googleapis",
-            capture_output=True,
             text=True,
             check=True,
         )
         logger.info(f"Bazel build for {bazel_rule} rule completed successfully.")
     except Exception as e:
         raise ValueError(f"Bazel build for {bazel_rule} rule failed.") from e
+
+
+def _locate_and_extract_artifact(bazel_rule, library_id):
+    """Finds and extracts the tarball artifact from a Bazel build.
+
+    Args:
+        bazel_rule (str): The Bazel rule that was built.
+        library_id (str): The ID of the library being generated.
+
+    Raises:
+        ValueError: If failed to locate or extract artifact.
+    """
+    try:
+        # 1. Find the bazel-bin output directory.
+        logger.info("Locating Bazel output directory...")
+        info_command = ["bazelisk", "info", "bazel-bin"]
+        result = subprocess.run(
+            info_command,
+            cwd=f"{SOURCE_DIR}/googleapis",
+            text=True,
+            check=True,
+            capture_output=True,
+        )
+        bazel_bin_path = result.stdout.strip()
+
+        # 2. Construct the path to the generated tarball.
+        rule_path, rule_name = bazel_rule.split(":")
+        tarball_name = f"{rule_name}.tar.gz"
+        tarball_path = os.path.join(bazel_bin_path, rule_path.strip("/"), tarball_name)
+        logger.info(f"Found artifact at: {tarball_path}")
+
+        # 3. Create a staging directory.
+        staging_dir = os.path.join(OUTPUT_DIR, "owl-bot-staging", library_id)
+        os.makedirs(staging_dir, exist_ok=True)
+        logger.info(f"Preparing staging directory: {staging_dir}")
+
+        # 4. Extract the artifact.
+        extract_command = ["tar", "-xvf", tarball_path, "--strip-components=1"]
+        subprocess.run(
+            extract_command, cwd=staging_dir, capture_output=True, text=True, check=True
+        )
+        logger.info(f"Artifact {tarball_path} extracted successfully.")
+
+    except Exception as e:
+        raise ValueError(
+            f"Failed to locate or extract artifact for {bazel_rule} rule"
+        ) from e
 
 
 def handle_generate():
@@ -129,6 +176,7 @@ def handle_generate():
             if api_path:
                 bazel_rule = _determine_bazel_rule(api_path)
                 _build_bazel_target(bazel_rule)
+                _locate_and_extract_artifact(bazel_rule, library_id)
 
             logger.info(json.dumps(request_data, indent=2))
     except Exception as e:
