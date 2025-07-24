@@ -186,9 +186,6 @@ def _locate_and_extract_artifact(bazel_rule: str, library_id: str):
 
 def _run_post_processor():
     """Runs the synthtool post-processor on the output directory.
-
-    Raises:
-        ValueError: If the subprocess call fails.
     """
     logger.info("Running Python post-processor...")
     if SYNTHTOOL_INSTALLED:
