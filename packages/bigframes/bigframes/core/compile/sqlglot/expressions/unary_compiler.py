@@ -175,6 +175,16 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     )
 
 
+@UNARY_OP_REGISTRATION.register(ops.StrContainsRegexOp)
+def _(op: ops.StrContainsRegexOp, expr: TypedExpr) -> sge.Expression:
+    return sge.RegexpLike(this=expr.expr, expression=sge.convert(op.pat))
+
+
+@UNARY_OP_REGISTRATION.register(ops.StrContainsOp)
+def _(op: ops.StrContainsOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Like(this=expr.expr, expression=sge.convert(f"%{op.pat}%"))
+
+
 @UNARY_OP_REGISTRATION.register(ops.date_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Date(this=expr.expr)
@@ -302,6 +312,98 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     )
 
 
+@UNARY_OP_REGISTRATION.register(ops.len_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Length(this=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.ln_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=expr.expr < sge.convert(0),
+                true=_NAN,
+            )
+        ],
+        default=sge.Ln(this=expr.expr),
+    )
+
+
+@UNARY_OP_REGISTRATION.register(ops.log10_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=expr.expr < sge.convert(0),
+                true=_NAN,
+            )
+        ],
+        default=sge.Log(this=expr.expr, expression=sge.convert(10)),
+    )
+
+
+@UNARY_OP_REGISTRATION.register(ops.log1p_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=expr.expr < sge.convert(-1),
+                true=_NAN,
+            )
+        ],
+        default=sge.Ln(this=sge.convert(1) + expr.expr),
+    )
+
+
+@UNARY_OP_REGISTRATION.register(ops.lower_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Lower(this=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.StrLstripOp)
+def _(op: ops.StrLstripOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Trim(this=expr.expr, expression=sge.convert(op.to_strip), side="LEFT")
+
+
+@UNARY_OP_REGISTRATION.register(ops.neg_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Neg(this=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.pos_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return expr.expr
+
+
+@UNARY_OP_REGISTRATION.register(ops.reverse_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("REVERSE", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.StrRstripOp)
+def _(op: ops.StrRstripOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Trim(this=expr.expr, expression=sge.convert(op.to_strip), side="RIGHT")
+
+
+@UNARY_OP_REGISTRATION.register(ops.sqrt_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Case(
+        ifs=[
+            sge.If(
+                this=expr.expr < sge.convert(0),
+                true=_NAN,
+            )
+        ],
+        default=sge.Sqrt(this=expr.expr),
+    )
+
+
+@UNARY_OP_REGISTRATION.register(ops.StrStripOp)
+def _(op: ops.StrStripOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Trim(this=sge.convert(op.to_strip), expression=expr.expr)
+
+
 @UNARY_OP_REGISTRATION.register(ops.iso_day_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Extract(this=sge.Identifier(this="DAYOFWEEK"), expression=expr.expr)
@@ -394,3 +496,8 @@ def _(op: ops.ParseJSON, expr: TypedExpr) -> sge.Expression:
 @UNARY_OP_REGISTRATION.register(ops.ToJSONString)
 def _(op: ops.ToJSONString, expr: TypedExpr) -> sge.Expression:
     return sge.func("TO_JSON_STRING", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.upper_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Upper(this=expr.expr)
