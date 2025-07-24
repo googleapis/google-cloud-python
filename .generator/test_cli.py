@@ -26,11 +26,13 @@ from cli import (
     _get_library_id,
     _locate_and_extract_artifact,
     _read_json_file,
+    _run_individual_session,
     handle_generate,
     handle_build,
     handle_configure,
-    LIBRARIAN_DIR,
     GENERATE_REQUEST_FILE,
+    LIBRARIAN_DIR,
+    REPO_DIR,
 )
 
 
@@ -64,14 +66,18 @@ def test_get_library_id_success():
 def test_get_library_id_missing_id():
     """Tests that _get_library_id raises ValueError when 'id' is missing."""
     request_data = {"name": "Test Library"}
-    with pytest.raises(ValueError, match="Request file is missing required 'id' field."):
+    with pytest.raises(
+        ValueError, match="Request file is missing required 'id' field."
+    ):
         _get_library_id(request_data)
 
 
 def test_get_library_id_empty_id():
     """Tests that _get_library_id raises ValueError when 'id' is an empty string."""
     request_data = {"id": "", "name": "Test Library"}
-    with pytest.raises(ValueError, match="Request file is missing required 'id' field."):
+    with pytest.raises(
+        ValueError, match="Request file is missing required 'id' field."
+    ):
         _get_library_id(request_data)
 
 
@@ -211,6 +217,41 @@ def test_handle_generate_fail(caplog):
     """
     with pytest.raises(ValueError):
         handle_generate()
+
+
+def test_run_individual_session_success(mocker, caplog):
+    """Tests that _run_individual_session calls nox with correct arguments and logs success."""
+    caplog.set_level(logging.INFO)
+
+    mock_subprocess_run = mocker.patch(
+        "cli.subprocess.run", return_value=MagicMock(returncode=0)
+    )
+
+    test_session = "unit-3.9"
+    test_library_id = "test-library"
+    _run_individual_session(test_session, test_library_id)
+
+    expected_command = [
+        "nox",
+        "-s",
+        test_session,
+        "-f",
+        f"{REPO_DIR}/packages/{test_library_id}",
+    ]
+    mock_subprocess_run.assert_called_once_with(expected_command, text=True, check=True)
+
+
+def test_run_individual_session_failure(mocker):
+    """Tests that _run_individual_session raises CalledProcessError if nox command fails."""
+    mocker.patch(
+        "cli.subprocess.run",
+        side_effect=subprocess.CalledProcessError(
+            1, "nox", stderr="Nox session failed"
+        ),
+    )
+
+    with pytest.raises(subprocess.CalledProcessError):
+        _run_individual_session("lint", "another-library")
 
 
 def test_handle_build_success(caplog, mocker):
