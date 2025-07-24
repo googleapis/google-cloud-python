@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.56.0](https://github.com/googleapis/python-spanner/compare/v3.55.0...v3.56.0) (2025-07-24)
+
+
+### Features
+
+* Add support for multiplexed sessions - read/write ([#1389](https://github.com/googleapis/python-spanner/issues/1389)) ([ce3f230](https://github.com/googleapis/python-spanner/commit/ce3f2305cd5589e904daa18142fbfeb180f3656a))
+* Add support for multiplexed sessions ([#1383](https://github.com/googleapis/python-spanner/issues/1383)) ([21f5028](https://github.com/googleapis/python-spanner/commit/21f5028c3fdf8b8632c1564efbd973b96711d03b))
+* Default enable multiplex session for all operations unless explicitly set to false ([#1394](https://github.com/googleapis/python-spanner/issues/1394)) ([651ca9c](https://github.com/googleapis/python-spanner/commit/651ca9cd65c713ac59a7d8f55b52b9df5b4b6923))
+* **spanner:** Add new change_stream.proto ([#1382](https://github.com/googleapis/python-spanner/issues/1382)) ([ca6255e](https://github.com/googleapis/python-spanner/commit/ca6255e075944d863ab4be31a681fc7c27817e34))
+
+
+### Performance Improvements
+
+* Skip gRPC trailers for StreamingRead & ExecuteStreamingSql ([#1385](https://github.com/googleapis/python-spanner/issues/1385)) ([cb25de4](https://github.com/googleapis/python-spanner/commit/cb25de40b86baf83d0fb1b8ca015f798671319ee))
+
 ## [3.55.0](https://github.com/googleapis/python-spanner/compare/v3.54.0...v3.55.0) (2025-05-28)
 
 
