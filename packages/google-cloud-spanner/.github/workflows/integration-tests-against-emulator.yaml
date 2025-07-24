@@ -10,7 +10,7 @@ jobs:
 
     services:
       emulator:
-        image: gcr.io/cloud-spanner-emulator/emulator:latest
+        image: gcr.io/cloud-spanner-emulator/emulator:1.5.37
         ports:
           - 9010:9010
           - 9020:9020
@@ -21,7 +21,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.8
+          python-version: 3.12
       - name: Install nox
         run: python -m pip install nox
       - name: Run system tests

@@ -848,7 +848,14 @@ class Database(object):
         # If role is specified in param, then that role is used
         # instead.
         role = database_role or self._database_role
-        return Session(self, labels=labels, database_role=role)
+        is_multiplexed = False
+        if self.sessions_manager._use_multiplexed(
+            transaction_type=TransactionType.READ_ONLY
+        ):
+            is_multiplexed = True
+        return Session(
+            self, labels=labels, database_role=role, is_multiplexed=is_multiplexed
+        )
 
     def snapshot(self, **kw):
         """Return an object which wraps a snapshot.

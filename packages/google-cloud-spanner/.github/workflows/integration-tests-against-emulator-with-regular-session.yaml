@@ -3,7 +3,7 @@ on:
     branches:
       - main
   pull_request:
-name: Run Spanner integration tests against emulator with multiplexed sessions
+name: Run Spanner integration tests against emulator with regular sessions
 jobs:
   system-tests:
     runs-on: ubuntu-latest
@@ -21,7 +21,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.8
+          python-version: 3.12
       - name: Install nox
         run: python -m pip install nox
       - name: Run system tests
@@ -30,5 +30,6 @@ jobs:
           SPANNER_EMULATOR_HOST: localhost:9010
           GOOGLE_CLOUD_PROJECT: emulator-test-project
           GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE: true
-          GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS: true
-          GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_PARTITIONED_OPS: true
+          GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS: false
+          GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_PARTITIONED_OPS: false
+          GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_FOR_RW: false

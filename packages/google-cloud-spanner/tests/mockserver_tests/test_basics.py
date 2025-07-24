@@ -16,7 +16,6 @@ from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from google.cloud.spanner_v1 import (
-    BatchCreateSessionsRequest,
     BeginTransactionRequest,
     ExecuteBatchDmlRequest,
     ExecuteSqlRequest,
@@ -25,6 +24,7 @@ from google.cloud.spanner_v1 import (
 )
 from google.cloud.spanner_v1.testing.mock_spanner import SpannerServicer
 from google.cloud.spanner_v1.transaction import Transaction
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
@@ -36,6 +36,7 @@ from tests.mockserver_tests.mock_server_test_base import (
     unavailable_status,
     add_execute_streaming_sql_results,
 )
+from tests._helpers import is_multiplexed_enabled
 
 
 class TestBasics(MockServerTestBase):
@@ -49,9 +50,11 @@ class TestBasics(MockServerTestBase):
                 self.assertEqual(1, row[0])
             self.assertEqual(1, len(result_list))
         requests = self.spanner_service.requests
-        self.assertEqual(2, len(requests), msg=requests)
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[1], ExecuteSqlRequest))
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest],
+            TransactionType.READ_ONLY,
+        )
 
     def test_create_table(self):
         database_admin_api = self.client.database_admin_api
@@ -84,13 +87,31 @@ class TestBasics(MockServerTestBase):
             # with no parameters.
             cursor.execute(sql, [])
             self.assertEqual(100, cursor.rowcount)
-
         requests = self.spanner_service.requests
-        self.assertEqual(3, len(requests), msg=requests)
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[1], BeginTransactionRequest))
-        self.assertTrue(isinstance(requests[2], ExecuteSqlRequest))
-        begin_request: BeginTransactionRequest = requests[1]
+        self.assert_requests_sequence(
+            requests,
+            [BeginTransactionRequest, ExecuteSqlRequest],
+            TransactionType.PARTITIONED,
+            allow_multiple_batch_create=True,
+        )
+        # Find the first BeginTransactionRequest after session creation
+        idx = 0
+        from google.cloud.spanner_v1 import (
+            BatchCreateSessionsRequest,
+            CreateSessionRequest,
+        )
+
+        while idx < len(requests) and isinstance(
+            requests[idx], BatchCreateSessionsRequest
+        ):
+            idx += 1
+        if (
+            is_multiplexed_enabled(TransactionType.PARTITIONED)
+            and idx < len(requests)
+            and isinstance(requests[idx], CreateSessionRequest)
+        ):
+            idx += 1
+        begin_request: BeginTransactionRequest = requests[idx]
         self.assertEqual(
             TransactionOptions(dict(partitioned_dml={})), begin_request.options
         )
@@ -106,11 +127,12 @@ class TestBasics(MockServerTestBase):
                 self.assertEqual(1, row[0])
             self.assertEqual(1, len(result_list))
         requests = self.spanner_service.requests
-        self.assertEqual(3, len(requests), msg=requests)
-        # The BatchCreateSessions call should be retried.
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[1], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[2], ExecuteSqlRequest))
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest],
+            TransactionType.READ_ONLY,
+            allow_multiple_batch_create=True,
+        )
 
     def test_execute_streaming_sql_unavailable(self):
         add_select1_result()
@@ -125,11 +147,11 @@ class TestBasics(MockServerTestBase):
                 self.assertEqual(1, row[0])
             self.assertEqual(1, len(result_list))
         requests = self.spanner_service.requests
-        self.assertEqual(3, len(requests), msg=requests)
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        # The ExecuteStreamingSql call should be retried.
-        self.assertTrue(isinstance(requests[1], ExecuteSqlRequest))
-        self.assertTrue(isinstance(requests[2], ExecuteSqlRequest))
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest, ExecuteSqlRequest],
+            TransactionType.READ_ONLY,
+        )
 
     def test_last_statement_update(self):
         sql = "update my_table set my_col=1 where id=2"
@@ -199,9 +221,11 @@ class TestBasics(MockServerTestBase):
                 count += 1
             self.assertEqual(3, len(result_list))
         requests = self.spanner_service.requests
-        self.assertEqual(2, len(requests), msg=requests)
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[1], ExecuteSqlRequest))
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest],
+            TransactionType.READ_ONLY,
+        )
 
 
 def _execute_query(transaction: Transaction, sql: str):

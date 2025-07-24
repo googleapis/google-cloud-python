@@ -493,11 +493,15 @@ class TestTransaction(OpenTelemetryBase):
             "request_options": expected_request_options,
         }
 
-        expected_commit_request = CommitRequest(
-            mutations=transaction._mutations,
-            precommit_token=transaction._precommit_token,
+        # Only include precommit_token if the session is multiplexed and token exists
+        commit_request_args = {
+            "mutations": transaction._mutations,
             **common_expected_commit_response_args,
-        )
+        }
+        if session.is_multiplexed and transaction._precommit_token is not None:
+            commit_request_args["precommit_token"] = transaction._precommit_token
+
+        expected_commit_request = CommitRequest(**commit_request_args)
 
         expected_commit_metadata = base_metadata.copy()
         expected_commit_metadata.append(

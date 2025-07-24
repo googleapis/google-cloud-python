@@ -133,6 +133,8 @@ def _restart_on_unavailable(
                 # Update the transaction from the response.
                 if transaction is not None:
                     transaction._update_for_result_set_pb(item)
+                if item.precommit_token is not None and transaction is not None:
+                    transaction._update_for_precommit_token_pb(item.precommit_token)
 
                 if item.resume_token:
                     resume_token = item.resume_token
@@ -1013,9 +1015,6 @@ class _SnapshotBase(_SessionWrapper):
         if result_set_pb.metadata and result_set_pb.metadata.transaction:
             self._update_for_transaction_pb(result_set_pb.metadata.transaction)
 
-        if result_set_pb.precommit_token:
-            self._update_for_precommit_token_pb(result_set_pb.precommit_token)
-
     def _update_for_transaction_pb(self, transaction_pb: Transaction) -> None:
         """Updates the snapshot for the given transaction.
 
@@ -1031,7 +1030,7 @@ class _SnapshotBase(_SessionWrapper):
             self._transaction_id = transaction_pb.id
 
         if transaction_pb.precommit_token:
-            self._update_for_precommit_token_pb(transaction_pb.precommit_token)
+            self._update_for_precommit_token_pb_unsafe(transaction_pb.precommit_token)
 
     def _update_for_precommit_token_pb(
         self, precommit_token_pb: MultiplexedSessionPrecommitToken
@@ -1044,10 +1043,22 @@ class _SnapshotBase(_SessionWrapper):
         # Because multiple threads can be used to perform operations within a
         # transaction, we need to use a lock when updating the precommit token.
         with self._lock:
-            if self._precommit_token is None or (
-                precommit_token_pb.seq_num > self._precommit_token.seq_num
-            ):
-                self._precommit_token = precommit_token_pb
+            self._update_for_precommit_token_pb_unsafe(precommit_token_pb)
+
+    def _update_for_precommit_token_pb_unsafe(
+        self, precommit_token_pb: MultiplexedSessionPrecommitToken
+    ) -> None:
+        """Updates the snapshot for the given multiplexed session precommit token.
+        This method is unsafe because it does not acquire a lock before updating
+        the precommit token. It should only be used when the caller has already
+        acquired the lock.
+        :type precommit_token_pb: :class:`~google.cloud.spanner_v1.MultiplexedSessionPrecommitToken`
+        :param precommit_token_pb: The multiplexed session precommit token to update the snapshot with.
+        """
+        if self._precommit_token is None or (
+            precommit_token_pb.seq_num > self._precommit_token.seq_num
+        ):
+            self._precommit_token = precommit_token_pb
 
 
 class Snapshot(_SnapshotBase):

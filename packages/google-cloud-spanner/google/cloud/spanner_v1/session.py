@@ -275,7 +275,13 @@ class Session(object):
                 current_span, "Deleting Session failed due to unset session_id"
             )
             raise ValueError("Session ID not set by back-end")
-
+        if self._is_multiplexed:
+            add_span_event(
+                current_span,
+                "Skipped deleting Multiplexed Session",
+                {"session.id": self._session_id},
+            )
+            return
         add_span_event(
             current_span, "Deleting Session", {"session.id": self._session_id}
         )

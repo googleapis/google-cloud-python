@@ -14,7 +14,6 @@
 import random
 
 from google.cloud.spanner_v1 import (
-    BatchCreateSessionsRequest,
     BeginTransactionRequest,
     CommitRequest,
     ExecuteSqlRequest,
@@ -32,6 +31,7 @@ from tests.mockserver_tests.mock_server_test_base import (
 )
 from google.api_core import exceptions
 from test_utils import retry
+from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 
 retry_maybe_aborted_txn = retry.RetryErrors(
     exceptions.Aborted, max_tries=5, delay=0, backoff=1
@@ -46,29 +46,28 @@ class TestAbortedTransaction(MockServerTestBase):
         # time that the transaction tries to commit. It will then be retried
         # and succeed.
         self.database.run_in_transaction(_insert_mutations)
-
-        # Verify that the transaction was retried.
         requests = self.spanner_service.requests
-        self.assertEqual(5, len(requests), msg=requests)
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[1], BeginTransactionRequest))
-        self.assertTrue(isinstance(requests[2], CommitRequest))
-        # The transaction is aborted and retried.
-        self.assertTrue(isinstance(requests[3], BeginTransactionRequest))
-        self.assertTrue(isinstance(requests[4], CommitRequest))
+        self.assert_requests_sequence(
+            requests,
+            [
+                BeginTransactionRequest,
+                CommitRequest,
+                BeginTransactionRequest,
+                CommitRequest,
+            ],
+            TransactionType.READ_WRITE,
+        )
 
     def test_run_in_transaction_update_aborted(self):
         add_update_count("update my_table set my_col=1 where id=2", 1)
         add_error(SpannerServicer.ExecuteSql.__name__, aborted_status())
         self.database.run_in_transaction(_execute_update)
-
-        # Verify that the transaction was retried.
         requests = self.spanner_service.requests
-        self.assertEqual(4, len(requests), msg=requests)
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[1], ExecuteSqlRequest))
-        self.assertTrue(isinstance(requests[2], ExecuteSqlRequest))
-        self.assertTrue(isinstance(requests[3], CommitRequest))
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest, ExecuteSqlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
 
     def test_run_in_transaction_query_aborted(self):
         add_single_result(
@@ -79,28 +78,24 @@ class TestAbortedTransaction(MockServerTestBase):
         )
         add_error(SpannerServicer.ExecuteStreamingSql.__name__, aborted_status())
         self.database.run_in_transaction(_execute_query)
-
-        # Verify that the transaction was retried.
         requests = self.spanner_service.requests
-        self.assertEqual(4, len(requests), msg=requests)
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[1], ExecuteSqlRequest))
-        self.assertTrue(isinstance(requests[2], ExecuteSqlRequest))
-        self.assertTrue(isinstance(requests[3], CommitRequest))
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteSqlRequest, ExecuteSqlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
 
     def test_run_in_transaction_batch_dml_aborted(self):
         add_update_count("update my_table set my_col=1 where id=1", 1)
         add_update_count("update my_table set my_col=1 where id=2", 1)
         add_error(SpannerServicer.ExecuteBatchDml.__name__, aborted_status())
         self.database.run_in_transaction(_execute_batch_dml)
-
-        # Verify that the transaction was retried.
         requests = self.spanner_service.requests
-        self.assertEqual(4, len(requests), msg=requests)
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[1], ExecuteBatchDmlRequest))
-        self.assertTrue(isinstance(requests[2], ExecuteBatchDmlRequest))
-        self.assertTrue(isinstance(requests[3], CommitRequest))
+        self.assert_requests_sequence(
+            requests,
+            [ExecuteBatchDmlRequest, ExecuteBatchDmlRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
 
     def test_batch_commit_aborted(self):
         # Add an Aborted error for the Commit method on the mock server.
@@ -117,14 +112,12 @@ class TestAbortedTransaction(MockServerTestBase):
                     (5, "David", "Lomond"),
                 ],
             )
-
-        # Verify that the transaction was retried.
         requests = self.spanner_service.requests
-        self.assertEqual(3, len(requests), msg=requests)
-        self.assertTrue(isinstance(requests[0], BatchCreateSessionsRequest))
-        self.assertTrue(isinstance(requests[1], CommitRequest))
-        # The transaction is aborted and retried.
-        self.assertTrue(isinstance(requests[2], CommitRequest))
+        self.assert_requests_sequence(
+            requests,
+            [CommitRequest, CommitRequest],
+            TransactionType.READ_WRITE,
+        )
 
     @retry_maybe_aborted_txn
     def test_retry_helper(self):

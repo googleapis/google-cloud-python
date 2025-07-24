@@ -1260,9 +1260,9 @@ class TestDatabase(_BaseTest):
 
         multiplexed_partitioned_enabled = (
             os.environ.get(
-                "GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_PARTITIONED_OPS", "false"
+                "GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_PARTITIONED_OPS", "true"
             ).lower()
-            == "true"
+            != "false"
         )
 
         if multiplexed_partitioned_enabled:
@@ -1536,6 +1536,8 @@ class TestDatabase(_BaseTest):
         session = _Session()
         pool.put(session)
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        # Mock the spanner_api to avoid creating a real SpannerClient
+        database._spanner_api = instance._client._spanner_api
 
         # Check if multiplexed sessions are enabled for read operations
         multiplexed_enabled = is_multiplexed_enabled(TransactionType.READ_ONLY)
@@ -1695,13 +1697,19 @@ class TestDatabase(_BaseTest):
         pool.put(session)
         session._committed = NOW
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        # Mock the spanner_api to avoid creating a real SpannerClient
+        database._spanner_api = instance._client._spanner_api
 
-        _unit_of_work = object()
+        def _unit_of_work(txn):
+            return NOW
 
-        committed = database.run_in_transaction(_unit_of_work)
+        # Mock the transaction commit method to return NOW
+        with mock.patch(
+            "google.cloud.spanner_v1.transaction.Transaction.commit", return_value=NOW
+        ):
+            committed = database.run_in_transaction(_unit_of_work)
 
-        self.assertEqual(committed, NOW)
-        self.assertEqual(session._retried, (_unit_of_work, (), {}))
+            self.assertEqual(committed, NOW)
 
     def test_run_in_transaction_w_args(self):
         import datetime
@@ -1716,13 +1724,19 @@ class TestDatabase(_BaseTest):
         pool.put(session)
         session._committed = NOW
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        # Mock the spanner_api to avoid creating a real SpannerClient
+        database._spanner_api = instance._client._spanner_api
 
-        _unit_of_work = object()
+        def _unit_of_work(txn, *args, **kwargs):
+            return NOW
 
-        committed = database.run_in_transaction(_unit_of_work, SINCE, until=UNTIL)
+        # Mock the transaction commit method to return NOW
+        with mock.patch(
+            "google.cloud.spanner_v1.transaction.Transaction.commit", return_value=NOW
+        ):
+            committed = database.run_in_transaction(_unit_of_work, SINCE, until=UNTIL)
 
-        self.assertEqual(committed, NOW)
-        self.assertEqual(session._retried, (_unit_of_work, (SINCE,), {"until": UNTIL}))
+            self.assertEqual(committed, NOW)
 
     def test_run_in_transaction_nested(self):
         from datetime import datetime
@@ -1734,12 +1748,14 @@ class TestDatabase(_BaseTest):
         session._committed = datetime.now()
         pool.put(session)
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        # Mock the spanner_api to avoid creating a real SpannerClient
+        database._spanner_api = instance._client._spanner_api
 
         # Define the inner function.
         inner = mock.Mock(spec=())
 
         # Define the nested transaction.
-        def nested_unit_of_work():
+        def nested_unit_of_work(txn):
             return database.run_in_transaction(inner)
 
         # Attempting to run this transaction should raise RuntimeError.
@@ -3490,6 +3506,14 @@ class _Client(object):
         self.instance_admin_api = _make_instance_api()
         self._client_info = mock.Mock()
         self._client_options = mock.Mock()
+        self._client_options.universe_domain = "googleapis.com"
+        self._client_options.api_key = None
+        self._client_options.client_cert_source = None
+        self._client_options.credentials_file = None
+        self._client_options.scopes = None
+        self._client_options.quota_project_id = None
+        self._client_options.api_audience = None
+        self._client_options.api_endpoint = "spanner.googleapis.com"
         self._query_options = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
         self.route_to_leader_enabled = route_to_leader_enabled
         self.directed_read_options = directed_read_options
@@ -3497,6 +3521,23 @@ class _Client(object):
         self.observability_options = observability_options
         self._nth_client_id = _Client.NTH_CLIENT.increment()
         self._nth_request = AtomicCounter()
+
+        # Mock credentials with proper attributes
+        self.credentials = mock.Mock()
+        self.credentials.token = "mock_token"
+        self.credentials.expiry = None
+        self.credentials.valid = True
+
+        # Mock the spanner API to return proper session names
+        self._spanner_api = mock.Mock()
+
+        # Configure create_session to return a proper session with string name
+        def mock_create_session(request, **kwargs):
+            session_response = mock.Mock()
+            session_response.name = f"projects/{self.project}/instances/instance-id/databases/database-id/sessions/session-{self._nth_request.increment()}"
+            return session_response
+
+        self._spanner_api.create_session = mock_create_session
 
     @property
     def _next_nth_request(self):
@@ -3607,7 +3648,9 @@ class _Session(object):
 
     def run_in_transaction(self, func, *args, **kw):
         if self._run_transaction_function:
-            func(*args, **kw)
+            mock_txn = mock.Mock()
+            mock_txn._transaction_id = b"mock_transaction_id"
+            func(mock_txn, *args, **kw)
         self._retried = (func, args, kw)
         return self._committed
 

@@ -43,7 +43,7 @@ def is_multiplexed_enabled(transaction_type: TransactionType) -> bool:
     env_var_read_write = "GOOGLE_CLOUD_SPANNER_MULTIPLEXED_SESSIONS_FOR_RW"
 
     def _getenv(val: str) -> bool:
-        return getenv(val, "false").lower() == "true"
+        return getenv(val, "true").lower().strip() != "false"
 
     if transaction_type is TransactionType.READ_ONLY:
         return _getenv(env_var)

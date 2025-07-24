@@ -230,15 +230,13 @@ class DatabaseSessionsManager(object):
         """Returns whether to use multiplexed sessions for the given transaction type.
 
         Multiplexed sessions are enabled for read-only transactions if:
-            * _ENV_VAR_MULTIPLEXED is set to true.
+            * _ENV_VAR_MULTIPLEXED != 'false'.
 
         Multiplexed sessions are enabled for partitioned transactions if:
-            * _ENV_VAR_MULTIPLEXED is set to true; and
-            * _ENV_VAR_MULTIPLEXED_PARTITIONED is set to true.
+            * _ENV_VAR_MULTIPLEXED_PARTITIONED != 'false'.
 
         Multiplexed sessions are enabled for read/write transactions if:
-            * _ENV_VAR_MULTIPLEXED is set to true; and
-            * _ENV_VAR_MULTIPLEXED_READ_WRITE is set to true.
+            * _ENV_VAR_MULTIPLEXED_READ_WRITE != 'false'.
 
         :type transaction_type: :class:`TransactionType`
         :param transaction_type: the type of transaction
@@ -254,14 +252,10 @@ class DatabaseSessionsManager(object):
             return cls._getenv(cls._ENV_VAR_MULTIPLEXED)
 
         elif transaction_type is TransactionType.PARTITIONED:
-            return cls._getenv(cls._ENV_VAR_MULTIPLEXED) and cls._getenv(
-                cls._ENV_VAR_MULTIPLEXED_PARTITIONED
-            )
+            return cls._getenv(cls._ENV_VAR_MULTIPLEXED_PARTITIONED)
 
         elif transaction_type is TransactionType.READ_WRITE:
-            return cls._getenv(cls._ENV_VAR_MULTIPLEXED) and cls._getenv(
-                cls._ENV_VAR_MULTIPLEXED_READ_WRITE
-            )
+            return cls._getenv(cls._ENV_VAR_MULTIPLEXED_READ_WRITE)
 
         raise ValueError(f"Transaction type {transaction_type} is not supported.")
 
@@ -269,15 +263,15 @@ class DatabaseSessionsManager(object):
     def _getenv(cls, env_var_name: str) -> bool:
         """Returns the value of the given environment variable as a boolean.
 
-        True values are '1' and 'true' (case-insensitive).
-        All other values are considered false.
+        True unless explicitly 'false' (case-insensitive).
+        All other values (including unset) are considered true.
 
         :type env_var_name: str
         :param env_var_name: the name of the boolean environment variable
 
         :rtype: bool
-        :returns: True if the environment variable is set to a true value, False otherwise.
+        :returns: True unless the environment variable is set to 'false', False otherwise.
         """
 
-        env_var_value = getenv(env_var_name, "").lower().strip()
-        return env_var_value in ["1", "true"]
+        env_var_value = getenv(env_var_name, "true").lower().strip()
+        return env_var_value != "false"

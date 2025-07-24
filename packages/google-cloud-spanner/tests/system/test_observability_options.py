@@ -239,32 +239,59 @@ def test_transaction_abort_then_retry_spans(mock_session_id):
     got_statuses, got_events = finished_spans_statuses(trace_exporter)
 
     # Check for the series of events
-    want_events = [
-        ("Acquiring session", {"kind": "BurstyPool"}),
-        ("Waiting for a session to become available", {"kind": "BurstyPool"}),
-        ("No sessions available in pool. Creating session", {"kind": "BurstyPool"}),
-        ("Creating Session", {}),
-        ("Using session", {"id": session_id, "multiplexed": multiplexed}),
-        ("Returning session", {"id": session_id, "multiplexed": multiplexed}),
-        (
-            "Transaction was aborted in user operation, retrying",
-            {"delay_seconds": "EPHEMERAL", "cause": "EPHEMERAL", "attempt": 1},
-        ),
-        ("Starting Commit", {}),
-        ("Commit Done", {}),
-    ]
+    if multiplexed:
+        # With multiplexed sessions, there are no pool-related events
+        want_events = [
+            ("Creating Session", {}),
+            ("Using session", {"id": session_id, "multiplexed": multiplexed}),
+            ("Returning session", {"id": session_id, "multiplexed": multiplexed}),
+            (
+                "Transaction was aborted in user operation, retrying",
+                {"delay_seconds": "EPHEMERAL", "cause": "EPHEMERAL", "attempt": 1},
+            ),
+            ("Starting Commit", {}),
+            ("Commit Done", {}),
+        ]
+    else:
+        # With regular sessions, include pool-related events
+        want_events = [
+            ("Acquiring session", {"kind": "BurstyPool"}),
+            ("Waiting for a session to become available", {"kind": "BurstyPool"}),
+            ("No sessions available in pool. Creating session", {"kind": "BurstyPool"}),
+            ("Creating Session", {}),
+            ("Using session", {"id": session_id, "multiplexed": multiplexed}),
+            ("Returning session", {"id": session_id, "multiplexed": multiplexed}),
+            (
+                "Transaction was aborted in user operation, retrying",
+                {"delay_seconds": "EPHEMERAL", "cause": "EPHEMERAL", "attempt": 1},
+            ),
+            ("Starting Commit", {}),
+            ("Commit Done", {}),
+        ]
     assert got_events == want_events
 
     # Check for the statues.
     codes = StatusCode
-    want_statuses = [
-        ("CloudSpanner.Database.run_in_transaction", codes.OK, None),
-        ("CloudSpanner.CreateSession", codes.OK, None),
-        ("CloudSpanner.Session.run_in_transaction", codes.OK, None),
-        ("CloudSpanner.Transaction.execute_sql", codes.OK, None),
-        ("CloudSpanner.Transaction.execute_sql", codes.OK, None),
-        ("CloudSpanner.Transaction.commit", codes.OK, None),
-    ]
+    if multiplexed:
+        # With multiplexed sessions, the session span name is different
+        want_statuses = [
+            ("CloudSpanner.Database.run_in_transaction", codes.OK, None),
+            ("CloudSpanner.CreateMultiplexedSession", codes.OK, None),
+            ("CloudSpanner.Session.run_in_transaction", codes.OK, None),
+            ("CloudSpanner.Transaction.execute_sql", codes.OK, None),
+            ("CloudSpanner.Transaction.execute_sql", codes.OK, None),
+            ("CloudSpanner.Transaction.commit", codes.OK, None),
+        ]
+    else:
+        # With regular sessions
+        want_statuses = [
+            ("CloudSpanner.Database.run_in_transaction", codes.OK, None),
+            ("CloudSpanner.CreateSession", codes.OK, None),
+            ("CloudSpanner.Session.run_in_transaction", codes.OK, None),
+            ("CloudSpanner.Transaction.execute_sql", codes.OK, None),
+            ("CloudSpanner.Transaction.execute_sql", codes.OK, None),
+            ("CloudSpanner.Transaction.commit", codes.OK, None),
+        ]
     assert got_statuses == want_statuses
 
 
@@ -389,9 +416,20 @@ def test_transaction_update_implicit_begin_nested_inside_commit():
     # Sort the spans by their start time in the hierarchy.
     span_list = sorted(span_list, key=lambda span: span.start_time)
     got_span_names = [span.name for span in span_list]
+
+    # Check if multiplexed sessions are enabled for read-write transactions
+    multiplexed_enabled = is_multiplexed_enabled(TransactionType.READ_WRITE)
+
+    # Determine expected session span name based on multiplexed sessions
+    expected_session_span_name = (
+        "CloudSpanner.CreateMultiplexedSession"
+        if multiplexed_enabled
+        else "CloudSpanner.CreateSession"
+    )
+
     want_span_names = [
         "CloudSpanner.Database.run_in_transaction",
-        "CloudSpanner.CreateSession",
+        expected_session_span_name,
         "CloudSpanner.Session.run_in_transaction",
         "CloudSpanner.Transaction.commit",
         "CloudSpanner.Transaction.begin",

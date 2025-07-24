@@ -231,27 +231,27 @@ class TestDatabaseSessionManager(TestCase):
     def test__use_multiplexed_partitioned(self):
         transaction_type = TransactionType.PARTITIONED
 
-        environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED] = "false"
-        self.assertFalse(DatabaseSessionsManager._use_multiplexed(transaction_type))
-
-        environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED] = "true"
         environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED_PARTITIONED] = "false"
         self.assertFalse(DatabaseSessionsManager._use_multiplexed(transaction_type))
 
         environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED_PARTITIONED] = "true"
         self.assertTrue(DatabaseSessionsManager._use_multiplexed(transaction_type))
 
+        # Test default behavior (should be enabled)
+        del environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED_PARTITIONED]
+        self.assertTrue(DatabaseSessionsManager._use_multiplexed(transaction_type))
+
     def test__use_multiplexed_read_write(self):
         transaction_type = TransactionType.READ_WRITE
 
-        environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED] = "false"
-        self.assertFalse(DatabaseSessionsManager._use_multiplexed(transaction_type))
-
-        environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED] = "true"
         environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED_READ_WRITE] = "false"
         self.assertFalse(DatabaseSessionsManager._use_multiplexed(transaction_type))
 
         environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED_READ_WRITE] = "true"
+        self.assertTrue(DatabaseSessionsManager._use_multiplexed(transaction_type))
+
+        # Test default behavior (should be enabled)
+        del environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED_READ_WRITE]
         self.assertTrue(DatabaseSessionsManager._use_multiplexed(transaction_type))
 
     def test__use_multiplexed_unsupported_transaction_type(self):
@@ -268,15 +268,23 @@ class TestDatabaseSessionManager(TestCase):
                 DatabaseSessionsManager._use_multiplexed(TransactionType.READ_ONLY)
             )
 
-        false_values = ["", "0", "false", "False", "FALSE", " false "]
+        false_values = ["false", "False", "FALSE", " false "]
         for value in false_values:
             environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED] = value
             self.assertFalse(
                 DatabaseSessionsManager._use_multiplexed(TransactionType.READ_ONLY)
             )
 
+        # Test that empty string and "0" are now treated as true (default enabled)
+        default_true_values = ["", "0", "anything", "random"]
+        for value in default_true_values:
+            environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED] = value
+            self.assertTrue(
+                DatabaseSessionsManager._use_multiplexed(TransactionType.READ_ONLY)
+            )
+
         del environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED]
-        self.assertFalse(
+        self.assertTrue(
             DatabaseSessionsManager._use_multiplexed(TransactionType.READ_ONLY)
         )
 
@@ -301,6 +309,8 @@ class TestDatabaseSessionManager(TestCase):
         """Sets environment variables to disable multiplexed sessions for all transactions types."""
 
         environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED] = "false"
+        environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED_PARTITIONED] = "false"
+        environ[DatabaseSessionsManager._ENV_VAR_MULTIPLEXED_READ_WRITE] = "false"
 
     @staticmethod
     def _enable_multiplexed_sessions() -> None:

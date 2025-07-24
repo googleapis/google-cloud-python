@@ -285,13 +285,18 @@ class Transaction(_SnapshotBase, _BatchBase):
 
             def wrapped_method(*args, **kwargs):
                 attempt.increment()
+                commit_request_args = {
+                    "mutations": mutations,
+                    **common_commit_request_args,
+                }
+                # Check if session is multiplexed (safely handle mock sessions)
+                is_multiplexed = getattr(self._session, "is_multiplexed", False)
+                if is_multiplexed and self._precommit_token is not None:
+                    commit_request_args["precommit_token"] = self._precommit_token
+
                 commit_method = functools.partial(
                     api.commit,
-                    request=CommitRequest(
-                        mutations=mutations,
-                        precommit_token=self._precommit_token,
-                        **common_commit_request_args,
-                    ),
+                    request=CommitRequest(**commit_request_args),
                     metadata=database.metadata_with_request_id(
                         nth_request,
                         attempt.value,
@@ -516,6 +521,9 @@ class Transaction(_SnapshotBase, _BatchBase):
         if is_inline_begin:
             self._lock.release()
 
+        if result_set_pb.precommit_token is not None:
+            self._update_for_precommit_token_pb(result_set_pb.precommit_token)
+
         return result_set_pb.stats.row_count_exact
 
     def batch_update(
@@ -660,6 +668,14 @@ class Transaction(_SnapshotBase, _BatchBase):
         if is_inline_begin:
             self._lock.release()
 
+        if (
+            len(response_pb.result_sets) > 0
+            and response_pb.result_sets[0].precommit_token
+        ):
+            self._update_for_precommit_token_pb(
+                response_pb.result_sets[0].precommit_token
+            )
+
         row_counts = [
             result_set.stats.row_count_exact for result_set in response_pb.result_sets
         ]
@@ -736,9 +752,6 @@ class Transaction(_SnapshotBase, _BatchBase):
         :type response_pb: :class:`~google.cloud.spanner_v1.types.ExecuteBatchDmlResponse`
         :param response_pb: The execute batch DML response to update the transaction with.
         """
-        if response_pb.precommit_token:
-            self._update_for_precommit_token_pb(response_pb.precommit_token)
-
         # Only the first result set contains the result set metadata.
         if len(response_pb.result_sets) > 0:
             self._update_for_result_set_pb(response_pb.result_sets[0])
