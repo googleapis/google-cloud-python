@@ -11,36 +11,60 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
+# Stage 1: The "builder" stage, used to compile and install tools.
 FROM marketplace.gcr.io/google/ubuntu2404 AS builder
 
-# TODO(https://github.com/googleapis/librarian/issues/901): Install the necssary dependencies and build tools.
+# Install all build dependencies and necessary tools.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    # Essential for compiling C code
     build-essential \
-    # For downloading secure files
-    wget \
-    ca-certificates \
-    # For running bazelisk commands
-    openjdk-17-jdk \
-    # --- Critical libraries for a complete Python build ---
-    libssl-dev \
-    zlib1g-dev \
+    curl \
+    xz-utils \
+    bzip2 \
+    gdb \
+    lcov \
+    pkg-config \
+    # the below two lines are copied from googleapis dockerfile:
+    python-dev-is-python3 \
     libbz2-dev \
     libffi-dev \
-    libsqlite3-dev \
+    libgdbm-dev \
+    libgdbm-compat-dev \
+    liblzma-dev \
+    libncurses5-dev \
     libreadline-dev \
-    # ------------------------------------------------------
-    && apt-get clean && \
+    libsqlite3-dev \
+    libssl-dev \
+    lzma \
+    lzma-dev \
+    tk-dev \
+    uuid-dev \
+    zlib1g-dev \
+    wget \
+    zip \
+    unzip \
+    git \
+    ca-certificates \
+    openjdk-17-jdk && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Set up environment variables for tool versions to make updates easier.
 ENV PYTHON_VERSION=3.11.5
+ENV PROTOC_VERSION=25.3
 ENV BAZELISK_VERSION=v1.26.0
 
-# Create a symbolic link for `python3` to point to our specific version.
-ENV PATH /usr/local/bin/python3.11:$PATH
+# Install protoc
+RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip -O protoc.zip && \
+    unzip protoc.zip -d /usr/local && \
+    chmod +x /usr/local/bin/protoc && \
+    rm protoc.zip
+
+# Install Bazelisk
+RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VERSION}/bazelisk-linux-amd64 -O /usr/local/bin/bazelisk && \
+    chmod +x /usr/local/bin/bazelisk
 
 # Install Python from source
 RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
@@ -51,24 +75,67 @@ RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VER
     cd / && \
     rm -rf Python-${PYTHON_VERSION}*
 
-# TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
+# Create a symbolic link for `python3` to point to our specific version.
+# RUN ln -s /usr/local/bin/python3.11 /usr/local/bin/python3
+ENV PATH /usr/local/bin/python3.11:$PATH
 
-# Install Bazelisk
-RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VERSION}/bazelisk-linux-amd64 -O /usr/local/bin/bazelisk && \
-    chmod +x /usr/local/bin/bazelisk
+# Install only necessary runtime dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    openjdk-17-jdk \
+    git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# TODO(https://github.com/googleapis/librarian/issues/902): Create a dedicate non-root user and 
-# switch to the non-root user to run subsequent commands.
+# --- Create a dedicated non-root user ---
+# Use arguments to make the user and group IDs configurable from the build command.
+ARG UID=1000
+ARG GID=1000
 
-# Set the working directory in the container.
+# Create the group and user, but only if they don't already exist.
+RUN if ! getent group $GID > /dev/null; then \
+        groupadd -g $GID myuser; \
+    fi && \
+    if ! getent passwd $UID > /dev/null; then \
+        useradd -u $UID -g $GID -ms /bin/bash myuser; \
+    fi
+
+# Set ownership of the app directory now, before we copy files into it.
+RUN mkdir -p /app && chown $UID:$GID /app
+
+# Switch to the non-root user. All subsequent commands will run as this user.
+USER $UID
+
+# Set the working directory.
 WORKDIR /app
 
-# TODO(https://github.com/googleapis/librarian/issues/907): Install Python dependencies from requirements.in.
-# TODO(https://github.com/googleapis/librarian/issues/905): Install Synthtool by cloning its repo.
-# TODO(https://github.com/googleapis/librarian/issues/906): Clone googleapis and run bazelisk build.
+# Disable Python's output buffering so logs appear in real-time.
+ENV PYTHONUNBUFFERED=1
 
-# Copy the CLI script into the container and set ownership.
-COPY .generator/cli.py .
+#  Install Python dependencies from requirements.in
+COPY --chown=$UID:$GID .generator/requirements.in .
+RUN python3.11 -m pip install --no-cache-dir -r requirements.in
 
-# Set the entrypoint for the container to run the script.
+# # Install synthtool by cloning its repo, as it's not on PyPI.
+RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
+    python3.11 -m pip install /tmp/synthtool && \
+    rm -rf /tmp/synthtool
+
+# Copy your CLI script into the container and make it executable.
+COPY --chown=$UID:$GID .generator/cli.py .
+RUN chmod a+rx ./cli.py
+
+# Run Bazel build:
+RUN git clone --depth 1 https://github.com/googleapis/googleapis.git /tmp/googleapis
+
+# target=/root/.cache/bazel
+RUN --mount=type=cache,target=$HOME/.cache/bazel \
+    cd /tmp/googleapis && \
+    bazelisk build //google/cloud/language/v1:language-v1-py
+
+RUN rm -rf /tmp/googleapis
+
+# Set the entrypoint for the container.
+# NOTE: 3.13 does not work.
 ENTRYPOINT ["python3.11", "./cli.py"]
