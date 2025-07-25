@@ -239,6 +239,26 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Floor(this=expr.expr)
 
 
+@UNARY_OP_REGISTRATION.register(ops.geo_area_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("ST_AREA", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.geo_st_astext_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("ST_ASTEXT", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.geo_x_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("SAFE.ST_X", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.geo_y_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("SAFE.ST_Y", expr.expr)
+
+
 @UNARY_OP_REGISTRATION.register(ops.hash_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.func("FARM_FINGERPRINT", expr.expr)
@@ -361,6 +381,16 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Lower(this=expr.expr)
 
 
+@UNARY_OP_REGISTRATION.register(ops.minute_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Extract(this=sge.Identifier(this="MINUTE"), expression=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.month_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Extract(this=sge.Identifier(this="MONTH"), expression=expr.expr)
+
+
 @UNARY_OP_REGISTRATION.register(ops.StrLstripOp)
 def _(op: ops.StrLstripOp, expr: TypedExpr) -> sge.Expression:
     return sge.Trim(this=expr.expr, expression=sge.convert(op.to_strip), side="LEFT")
@@ -371,14 +401,29 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Neg(this=expr.expr)
 
 
+@UNARY_OP_REGISTRATION.register(ops.normalize_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.TimestampTrunc(this=expr.expr, unit=sge.Identifier(this="DAY"))
+
+
 @UNARY_OP_REGISTRATION.register(ops.pos_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return expr.expr
 
 
+@UNARY_OP_REGISTRATION.register(ops.quarter_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Extract(this=sge.Identifier(this="QUARTER"), expression=expr.expr)
+
+
 @UNARY_OP_REGISTRATION.register(ops.reverse_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.func("REVERSE", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.second_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Extract(this=sge.Identifier(this="SECOND"), expression=expr.expr)
 
 
 @UNARY_OP_REGISTRATION.register(ops.StrRstripOp)
@@ -414,6 +459,11 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Extract(this=sge.Identifier(this="ISOWEEK"), expression=expr.expr)
 
 
+@UNARY_OP_REGISTRATION.register(ops.iso_year_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Extract(this=sge.Identifier(this="ISOYEAR"), expression=expr.expr)
+
+
 @UNARY_OP_REGISTRATION.register(ops.isnull_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Is(this=expr.expr, expression=sge.Null())
@@ -442,6 +492,31 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     )
 
 
+@UNARY_OP_REGISTRATION.register(ops.StrGetOp)
+def _(op: ops.StrGetOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Substring(
+        this=expr.expr,
+        start=sge.convert(op.i + 1),
+        length=sge.convert(1),
+    )
+
+
+@UNARY_OP_REGISTRATION.register(ops.StrSliceOp)
+def _(op: ops.StrSliceOp, expr: TypedExpr) -> sge.Expression:
+    start = op.start + 1 if op.start is not None else None
+    if op.end is None:
+        length = None
+    elif op.start is None:
+        length = op.end
+    else:
+        length = op.end - op.start
+    return sge.Substring(
+        this=expr.expr,
+        start=sge.convert(start) if start is not None else None,
+        length=sge.convert(length) if length is not None else None,
+    )
+
+
 @UNARY_OP_REGISTRATION.register(ops.tan_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.func("TAN", expr.expr)
@@ -450,6 +525,16 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
 @UNARY_OP_REGISTRATION.register(ops.tanh_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.func("TANH", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.time_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("TIME", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.timedelta_floor_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Floor(this=expr.expr)
 
 
 # JSON Ops
@@ -501,3 +586,8 @@ def _(op: ops.ToJSONString, expr: TypedExpr) -> sge.Expression:
 @UNARY_OP_REGISTRATION.register(ops.upper_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Upper(this=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.year_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Extract(this=sge.Identifier(this="YEAR"), expression=expr.expr)

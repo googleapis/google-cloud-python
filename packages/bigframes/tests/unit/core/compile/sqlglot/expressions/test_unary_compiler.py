@@ -146,6 +146,34 @@ def test_floor(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_geo_area(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.geo_area_op, "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_geo_st_astext(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.geo_st_astext_op, "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_geo_x(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.geo_x_op, "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_geo_y(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.geo_y_op, "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_array_to_string(repeated_types_df: bpd.DataFrame, snapshot):
     bf_df = repeated_types_df[["string_list_col"]]
     sql = _apply_unary_op(bf_df, ops.ArrayToStringOp(delimiter="."), "string_list_col")
@@ -307,9 +335,30 @@ def test_lstrip(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_minute(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.minute_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_month(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.month_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_neg(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.neg_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_normalize(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.normalize_op, "timestamp_col")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -321,9 +370,23 @@ def test_pos(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_quarter(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.quarter_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_reverse(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["string_col"]]
     sql = _apply_unary_op(bf_df, ops.reverse_op, "string_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_second(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.second_op, "timestamp_col")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -338,6 +401,20 @@ def test_rstrip(scalar_types_df: bpd.DataFrame, snapshot):
 def test_sqrt(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.sqrt_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_str_get(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(bf_df, ops.StrGetOp(1), "string_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_str_slice(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(bf_df, ops.StrSliceOp(1, 3), "string_col")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -373,6 +450,13 @@ def test_iso_day(scalar_types_df: bpd.DataFrame, snapshot):
 def test_iso_week(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["timestamp_col"]]
     sql = _apply_unary_op(bf_df, ops.iso_week_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_iso_year(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.iso_year_op, "timestamp_col")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -415,6 +499,20 @@ def test_tan(scalar_types_df: bpd.DataFrame, snapshot):
 def test_tanh(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.tanh_op, "float64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_time(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.time_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_timedelta_floor(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]]
+    sql = _apply_unary_op(bf_df, ops.timedelta_floor_op, "int64_col")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -478,5 +576,12 @@ def test_to_json_string(json_types_df: bpd.DataFrame, snapshot):
 def test_upper(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["string_col"]]
     sql = _apply_unary_op(bf_df, ops.upper_op, "string_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_year(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.year_op, "timestamp_col")
 
     snapshot.assert_match(sql, "out.sql")
