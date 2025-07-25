@@ -4089,7 +4089,7 @@ def test_insert_merchant_review_rest_call_success(request_type):
     request_init["merchant_review"] = {
         "name": "name_value",
         "merchant_review_id": "merchant_review_id_value",
-        "attributes": {
+        "merchant_review_attributes": {
             "merchant_id": "merchant_id_value",
             "merchant_display_name": "merchant_display_name_value",
             "merchant_link": "merchant_link_value",

@@ -174,7 +174,7 @@ class MerchantReview(proto.Message):
         merchant_review_id (str):
             Required. The user provided merchant review
             ID to uniquely identify the merchant review.
-        attributes (google.shopping.merchant_reviews_v1beta.types.MerchantReviewAttributes):
+        merchant_review_attributes (google.shopping.merchant_reviews_v1beta.types.MerchantReviewAttributes):
             Optional. A list of merchant review
             attributes.
         custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):
@@ -206,10 +206,12 @@ class MerchantReview(proto.Message):
         proto.STRING,
         number=2,
     )
-    attributes: merchantreviews_common.MerchantReviewAttributes = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=merchantreviews_common.MerchantReviewAttributes,
+    merchant_review_attributes: merchantreviews_common.MerchantReviewAttributes = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message=merchantreviews_common.MerchantReviewAttributes,
+        )
     )
     custom_attributes: MutableSequence[types.CustomAttribute] = proto.RepeatedField(
         proto.MESSAGE,

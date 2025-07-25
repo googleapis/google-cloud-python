@@ -4084,7 +4084,7 @@ def test_insert_product_review_rest_call_success(request_type):
     request_init["product_review"] = {
         "name": "name_value",
         "product_review_id": "product_review_id_value",
-        "attributes": {
+        "product_review_attributes": {
             "aggregator_name": "aggregator_name_value",
             "subclient_name": "subclient_name_value",
             "publisher_name": "publisher_name_value",
