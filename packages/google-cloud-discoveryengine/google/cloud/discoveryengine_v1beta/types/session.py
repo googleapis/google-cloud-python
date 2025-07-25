@@ -20,6 +20,8 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1beta.types import answer as gcd_answer
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
     manifest={
@@ -36,6 +38,12 @@ class Session(proto.Message):
         name (str):
             Immutable. Fully qualified name
             ``projects/{project}/locations/global/collections/{collection}/engines/{engine}/sessions/*``
+        display_name (str):
+            Optional. The display name of the session.
+
+            This field is used to identify the session in
+            the UI. By default, the display name is the
+            first turn query text in the session.
         state (google.cloud.discoveryengine_v1beta.types.Session.State):
             The state of the session.
         user_pseudo_id (str):
@@ -46,6 +54,10 @@ class Session(proto.Message):
             Output only. The time the session started.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the session finished.
+        is_pinned (bool):
+            Optional. Whether the session is pinned,
+            pinned session will be displayed on the top of
+            the session list.
     """
 
     class State(proto.Enum):
@@ -66,12 +78,27 @@ class Session(proto.Message):
 
         Attributes:
             query (google.cloud.discoveryengine_v1beta.types.Query):
-                The user query.
+                Optional. The user query. May not be set if
+                this turn is merely regenerating an answer to a
+                different turn
             answer (str):
-                The resource name of the answer to the user
-                query.
+                Optional. The resource name of the answer to
+                the user query.
                 Only set if the answer generation (/answer API
                 call) happened in this turn.
+            detailed_answer (google.cloud.discoveryengine_v1beta.types.Answer):
+                Output only. In
+                [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1beta.ConversationalSearchService.GetSession]
+                API, if
+                [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1beta.GetSessionRequest.include_answer_details]
+                is set to true, this field will be populated when getting
+                answer query session.
+            query_config (MutableMapping[str, str]):
+                Optional. Represents metadata related to the
+                query config, for example LLM model and version
+                used, model parameters (temperature, grounding
+                parameters, etc.). The prefix "google." is
+                reserved for Google-developed functionality.
         """
 
         query: "Query" = proto.Field(
@@ -83,10 +110,24 @@ class Session(proto.Message):
             proto.STRING,
             number=2,
         )
+        detailed_answer: gcd_answer.Answer = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=gcd_answer.Answer,
+        )
+        query_config: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=16,
+        )
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -112,6 +153,10 @@ class Session(proto.Message):
         number=6,
         message=timestamp_pb2.Timestamp,
     )
+    is_pinned: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
 
 
 class Query(proto.Message):
@@ -125,7 +170,7 @@ class Query(proto.Message):
 
             This field is a member of `oneof`_ ``content``.
         query_id (str):
-            Unique Id for the query.
+            Output only. Unique Id for the query.
     """
 
     text: str = proto.Field(

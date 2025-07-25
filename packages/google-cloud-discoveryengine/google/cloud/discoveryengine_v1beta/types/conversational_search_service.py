@@ -1274,11 +1274,18 @@ class GetSessionRequest(proto.Message):
         name (str):
             Required. The resource name of the Session to get. Format:
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}``
+        include_answer_details (bool):
+            Optional. If set to true, the full session
+            including all answer details will be returned.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    include_answer_details: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -1297,10 +1304,21 @@ class ListSessionsRequest(proto.Message):
             A page token, received from a previous ``ListSessions``
             call. Provide this to retrieve the subsequent page.
         filter (str):
-            A filter to apply on the list results. The supported
-            features are: user_pseudo_id, state.
+            A comma-separated list of fields to filter by, in EBNF
+            grammar. The supported fields are:
 
-            Example: "user_pseudo_id = some_id".
+            -  ``user_pseudo_id``
+            -  ``state``
+            -  ``display_name``
+            -  ``starred``
+            -  ``is_pinned``
+            -  ``labels``
+            -  ``create_time``
+            -  ``update_time``
+
+            Examples: "user_pseudo_id = some_id" "display_name =
+            "some_name"" "starred = true" "is_pinned=true AND (NOT
+            labels:hidden)" "create_time > "1970-01-01T12:00:00Z"".
         order_by (str):
             A comma-separated list of fields to order by, sorted in
             ascending order. Use "desc" after a field name for
@@ -1309,8 +1327,14 @@ class ListSessionsRequest(proto.Message):
             -  ``update_time``
             -  ``create_time``
             -  ``session_name``
+            -  ``is_pinned``
 
-            Example: "update_time desc" "create_time".
+            Example:
+
+            -  "update_time desc"
+            -  "create_time"
+            -  "is_pinned desc,update_time desc": list sessions by
+               is_pinned first, then by update_time.
     """
 
     parent: str = proto.Field(

@@ -604,3 +604,42 @@ replacements:
       -  projects/\{project\}/locations/\{location\}/schemaRegistries/\{schema_registry\}/compatibility/subjects/\*/versions:
     after: "-  `projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/compatibility/subjects/*/versions`:\n"
     count: 3
+  - paths: [
+      packages/google-cloud-discoveryengine/google/cloud/discoveryengine_v1/types/search_service.py,
+      packages/google-cloud-discoveryengine/google/cloud/discoveryengine_v1alpha/types/search_service.py,
+      packages/google-cloud-discoveryengine/google/cloud/discoveryengine_v1beta/types/search_service.py,
+    ]
+    before: |
+      Example #1 \(multi-turn /search API calls\):
+      \
+      \              Call /search API with the session ID generated
+      \            in the first call.   Here, the previous search
+      \            query gets considered in query   standing. I.e.,
+      \            if the first query is "How did Alphabet do in
+      \            2022\?"   and the current query is "How about
+      \            2023\?", the current query will   be interpreted
+      \            as "How did Alphabet do in 2023\?".
+      \
+      \            Example #2 \(coordination between /search API
+      \            calls and /answer API calls\):
+      \
+      \              Call /answer API with the session ID generated
+      \            in the first call.   Here, the answer generation
+      \            happens in the context of the search   results
+      \            from the first search call.
+    after: |
+      Example #1 (multi-turn /search API calls):\n
+                  - Call /search API with the session ID generated
+                    in the first call.   Here, the previous search
+                    query gets considered in query   standing. I.e.,
+                    if the first query is "How did Alphabet do in
+                    2022?"   and the current query is "How about
+                    2023?", the current query will   be interpreted
+                    as "How did Alphabet do in 2023?".\n
+                  Example #2 (coordination between /search API
+                  calls and /answer API calls):\n
+                  - Call /answer API with the session ID generated
+                    in the first call.   Here, the answer generation
+                    happens in the context of the search   results
+                    from the first search call.
+    count: 3

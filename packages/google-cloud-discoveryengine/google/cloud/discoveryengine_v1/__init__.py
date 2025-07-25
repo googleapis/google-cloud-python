@@ -65,6 +65,7 @@ from .services.serving_config_service import (
     ServingConfigServiceAsyncClient,
     ServingConfigServiceClient,
 )
+from .services.session_service import SessionServiceAsyncClient, SessionServiceClient
 from .services.site_search_engine_service import (
     SiteSearchEngineServiceAsyncClient,
     SiteSearchEngineServiceClient,
@@ -357,6 +358,7 @@ __all__ = (
     "SearchServiceAsyncClient",
     "SearchTuningServiceAsyncClient",
     "ServingConfigServiceAsyncClient",
+    "SessionServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
     "UserLicenseServiceAsyncClient",
@@ -580,6 +582,7 @@ __all__ = (
     "ServingConfig",
     "ServingConfigServiceClient",
     "Session",
+    "SessionServiceClient",
     "SingleRegionKey",
     "SiteSearchEngine",
     "SiteSearchEngineServiceClient",
