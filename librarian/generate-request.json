@@ -1,0 +1,18 @@
+{
+  "id": "google-cloud-language",
+  "apis": [
+    {
+      "path": "google/cloud/language/v1",
+      "service_config": "language.yaml"
+    }
+  ],
+  "source_paths": [
+    "packages/google-cloud-languages"
+  ],
+  "preserve_regex": [
+    ""
+  ],
+  "remove_regex": [
+    ""
+  ]
+}

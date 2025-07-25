@@ -121,4 +121,5 @@ WORKDIR /app
 COPY .generator/cli.py .
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["python3.11", "./cli.py"]
+# test
+ENTRYPOINT ["python3.11", "cli.py"]

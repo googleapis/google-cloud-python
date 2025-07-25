@@ -40,6 +40,18 @@ OUTPUT_DIR = "output"
 REPO_DIR = "repo"
 
 
+def _get_librarian_dir(args=None):
+    if hasattr(args, 'librarian') and args.librarian:
+        return args.librarian
+    else:
+        return LIBRARIAN_DIR
+
+def _get_source_dir(args=None):
+    if hasattr(args, 'source') and args.source:
+        return args.source
+    else:
+        return SOURCE_DIR
+
 def _read_json_file(path: str) -> Dict:
     """Helper function that reads a json file path and returns the loaded json content.
 
@@ -63,7 +75,7 @@ def handle_configure():
     logger.info("'configure' command executed.")
 
 
-def _determine_bazel_rule(api_path: str) -> str:
+def _determine_bazel_rule(api_path: str, args=None) -> str:
     """Executes a `bazelisk query` to find a Bazel rule.
 
     Args:
@@ -81,7 +93,7 @@ def _determine_bazel_rule(api_path: str) -> str:
         command = ["bazelisk", "query", query]
         result = subprocess.run(
             command,
-            cwd=f"{SOURCE_DIR}/googleapis",
+            cwd=f"{_get_source_dir(args)}",
             capture_output=True,
             text=True,
             check=True,
@@ -128,7 +140,7 @@ def _build_bazel_target(bazel_rule: str):
         command = ["bazelisk", "build", bazel_rule]
         subprocess.run(
             command,
-            cwd=f"{SOURCE_DIR}/googleapis",
+            cwd=f"{_get_source_dir(args)}/googleapis",
             text=True,
             check=True,
         )
@@ -153,7 +165,7 @@ def _locate_and_extract_artifact(bazel_rule: str, library_id: str):
         info_command = ["bazelisk", "info", "bazel-bin"]
         result = subprocess.run(
             info_command,
-            cwd=f"{SOURCE_DIR}/googleapis",
+            cwd=f"{_get_source_dir(args)}/googleapis",
             text=True,
             check=True,
             capture_output=True,
@@ -196,7 +208,7 @@ def _run_post_processor():
     logger.info("Python post-processor ran successfully.")
 
 
-def handle_generate():
+def handle_generate(args=None):
     """The main coordinator for the code generation process.
 
     This function orchestrates the generation of a client library by reading a
@@ -209,13 +221,13 @@ def handle_generate():
 
     try:
         # Read a generate-request.json file
-        request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
+        request_data = _read_json_file(f"{_get_librarian_dir(args)}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
 
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
-                bazel_rule = _determine_bazel_rule(api_path)
+                bazel_rule = _determine_bazel_rule(api_path, args)
                 _build_bazel_target(bazel_rule)
                 _locate_and_extract_artifact(bazel_rule, library_id)
                 _run_post_processor()
@@ -236,7 +248,7 @@ def _run_nox_sessions(sessions: List[str]):
     # Read a generate-request.json file
     current_session = None
     try:
-        request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
+        request_data = _read_json_file(f"{_get_librarian_dir(args)}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         for nox_session in sessions:
             _run_individual_session(nox_session, library_id)
@@ -303,10 +315,35 @@ if __name__ == "__main__":
     ]:
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
+        parser_cmd.add_argument(
+            "--librarian",
+            type=str,
+            help="Path to the directory in the container which contains the librarian configuration",
+            default=LIBRARIAN_DIR
+        )
+        parser_cmd.add_argument(
+            "--input",
+            type=str,
+            help="Path to the directory in the container which contains additional generator input",
+            default="/input"
+        )
+        parser_cmd.add_argument(
+            "--output",
+            type=str,
+            help="Path to the directory in the container where code should be generated",
+            default=OUTPUT_DIR
+        )
+        parser_cmd.add_argument(
+            "--source",
+            type=str,
+            help="Path to the directory in the container which contains API protos",
+            default=SOURCE_DIR
+        )
+
 
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
 
     args = parser.parse_args()
-    args.func()
+    args.func(args)
