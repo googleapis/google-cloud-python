@@ -18,21 +18,15 @@ import benchmark.utils as utils
 import bigframes_vendored.db_benchmark.groupby_queries as vendored_dbbenchmark_groupby_queries
 
 if __name__ == "__main__":
-    (
-        project_id,
-        dataset_id,
-        table_id,
-        session,
-        suffix,
-    ) = utils.get_configuration(include_table_id=True)
+    config = utils.get_configuration(include_table_id=True)
     current_path = pathlib.Path(__file__).absolute()
 
     utils.get_execution_time(
         vendored_dbbenchmark_groupby_queries.q2,
         current_path,
-        suffix,
-        project_id,
-        dataset_id,
-        table_id,
-        session,
+        config.benchmark_suffix,
+        config.project_id,
+        config.dataset_id,
+        config.table_id,
+        config.session,
     )

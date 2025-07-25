@@ -33,21 +33,15 @@ def first_page(*, project_id, dataset_id, table_id, session: bigframes.session.S
 
 
 if __name__ == "__main__":
-    (
-        project_id,
-        dataset_id,
-        table_id,
-        session,
-        suffix,
-    ) = utils.get_configuration(include_table_id=True)
+    config = utils.get_configuration(include_table_id=True)
     current_path = pathlib.Path(__file__).absolute()
 
     utils.get_execution_time(
         first_page,
         current_path,
-        suffix,
-        project_id=project_id,
-        dataset_id=dataset_id,
-        table_id=table_id,
-        session=session,
+        config.benchmark_suffix,
+        project_id=config.project_id,
+        dataset_id=config.dataset_id,
+        table_id=config.table_id,
+        session=config.session,
     )

@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import argparse
+import dataclasses
 import time
 
 import bigframes
@@ -20,7 +21,16 @@ import bigframes
 READ_GBQ_COLAB_PAGE_SIZE = 100
 
 
-def get_configuration(include_table_id=False):
+@dataclasses.dataclass(frozen=True)
+class BenchmarkConfig:
+    project_id: str
+    dataset_id: str
+    session: bigframes.Session
+    benchmark_suffix: str | None
+    table_id: str | None = None
+
+
+def get_configuration(include_table_id=False) -> BenchmarkConfig:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--project_id",
@@ -57,21 +67,13 @@ def get_configuration(include_table_id=False):
     args = parser.parse_args()
     session = _initialize_session(_str_to_bool(args.ordered))
 
-    if include_table_id:
-        return (
-            args.project_id,
-            args.dataset_id,
-            args.table_id,
-            session,
-            args.benchmark_suffix,
-        )
-    else:
-        return (
-            args.project_id,
-            args.dataset_id,
-            session,
-            args.benchmark_suffix,
-        )
+    return BenchmarkConfig(
+        project_id=args.project_id,
+        dataset_id=args.dataset_id,
+        table_id=args.table_id if include_table_id else None,
+        session=session,
+        benchmark_suffix=args.benchmark_suffix,
+    )
 
 
 def get_execution_time(func, current_path, suffix, *args, **kwargs):
