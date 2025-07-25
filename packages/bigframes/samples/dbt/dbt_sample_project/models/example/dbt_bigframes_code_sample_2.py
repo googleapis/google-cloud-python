@@ -1,6 +1,20 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # This example demonstrates how to build an **incremental dbt Python model**
 # using BigFrames.
-# 
+#
 # Incremental models are essential for efficiently processing large datasets by
 # only transforming new or changed data, rather than reprocessing the entire
 # dataset every time. If the target table already exists, dbt will perform a
@@ -13,8 +27,6 @@
 # directly within BigQuery, leveraging BigQuery's scalability.
 
 
-import bigframes.pandas as bpd
-
 def model(dbt, session):
     # Optional: override settings from dbt_project.yml.
     # When both are set, dbt.config takes precedence over dbt_project.yml.
@@ -24,9 +36,9 @@ def model(dbt, session):
         submission_method="bigframes",
         # Materialize this model as an 'incremental' table. This tells dbt to
         # only process new or updated data on subsequent runs.
-        materialized='incremental',
+        materialized="incremental",
         # Use MERGE strategy to update rows during incremental runs.
-        incremental_strategy='merge',
+        incremental_strategy="merge",
         # Define the composite key that uniquely identifies a row in the
         # target table. This key is used by the 'merge' strategy to match
         # existing rows for updates during incremental runs.
@@ -41,7 +53,7 @@ def model(dbt, session):
     # Define a BigFrames UDF to generate a temperature description.
     # BigFrames UDFs allow you to define custom Python logic that executes
     # directly within BigQuery. This is powerful for complex transformations.
-    @bpd.udf(dataset='dbt_sample_dataset', name='describe_udf')
+    @session.udf(dataset="dbt_sample_dataset", name="describe_udf")
     def describe(
         max_temperature: float,
         min_temperature: float,

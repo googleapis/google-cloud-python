@@ -1,3 +1,17 @@
+# Copyright 2019 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # This example demonstrates one of the most general usages of transforming raw
 # BigQuery data into a processed table using a dbt Python model with BigFrames.
 # See more from: https://cloud.google.com/bigquery/docs/dataframes-dbt.
@@ -32,7 +46,13 @@ def model(dbt, session):
     table = "bigquery-public-data.epa_historical_air_quality.temperature_hourly_summary"
 
     # Define the specific columns to select from the BigQuery table.
-    columns = ["state_name", "county_name", "date_local", "time_local", "sample_measurement"]
+    columns = [
+        "state_name",
+        "county_name",
+        "date_local",
+        "time_local",
+        "sample_measurement",
+    ]
 
     # Read data from the specified BigQuery table into a BigFrames DataFrame.
     df = session.read_gbq(table, columns=columns)
@@ -44,14 +64,16 @@ def model(dbt, session):
     # Group the DataFrame by 'state_name', 'county_name', and 'date_local'. For
     # each group, calculate the minimum and maximum of the 'sample_measurement'
     # column. The result will be a BigFrames DataFrame with a MultiIndex.
-    result = df.groupby(["state_name", "county_name", "date_local"])["sample_measurement"]\
-        .agg(["min", "max"])
+    result = df.groupby(["state_name", "county_name", "date_local"])[
+        "sample_measurement"
+    ].agg(["min", "max"])
 
     # Rename some columns and convert the MultiIndex of the 'result' DataFrame
     # into regular columns. This flattens the DataFrame so 'state_name',
     # 'county_name', and 'date_local' become regular columns again.
-    result = result.rename(columns={'min': 'min_temperature', 'max': 'max_temperature'})\
-        .reset_index()
+    result = result.rename(
+        columns={"min": "min_temperature", "max": "max_temperature"}
+    ).reset_index()
 
     # Return the processed BigFrames DataFrame.
     # In a dbt Python model, this DataFrame will be materialized as a table
