@@ -78,10 +78,12 @@ class Session(proto.Message):
 
         Attributes:
             query (google.cloud.discoveryengine_v1.types.Query):
-                The user query.
+                Optional. The user query. May not be set if
+                this turn is merely regenerating an answer to a
+                different turn
             answer (str):
-                The resource name of the answer to the user
-                query.
+                Optional. The resource name of the answer to
+                the user query.
                 Only set if the answer generation (/answer API
                 call) happened in this turn.
             detailed_answer (google.cloud.discoveryengine_v1.types.Answer):
@@ -91,6 +93,12 @@ class Session(proto.Message):
                 [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1.GetSessionRequest.include_answer_details]
                 is set to true, this field will be populated when getting
                 answer query session.
+            query_config (MutableMapping[str, str]):
+                Optional. Represents metadata related to the
+                query config, for example LLM model and version
+                used, model parameters (temperature, grounding
+                parameters, etc.). The prefix "google." is
+                reserved for Google-developed functionality.
         """
 
         query: "Query" = proto.Field(
@@ -106,6 +114,11 @@ class Session(proto.Message):
             proto.MESSAGE,
             number=7,
             message=gcd_answer.Answer,
+        )
+        query_config: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=16,
         )
 
     name: str = proto.Field(
@@ -157,7 +170,7 @@ class Query(proto.Message):
 
             This field is a member of `oneof`_ ``content``.
         query_id (str):
-            Unique Id for the query.
+            Output only. Unique Id for the query.
     """
 
     text: str = proto.Field(

@@ -74,6 +74,7 @@ from .services.serving_config_service import (
     ServingConfigServiceAsyncClient,
     ServingConfigServiceClient,
 )
+from .services.session_service import SessionServiceAsyncClient, SessionServiceClient
 from .services.site_search_engine_service import (
     SiteSearchEngineServiceAsyncClient,
     SiteSearchEngineServiceClient,
@@ -92,6 +93,7 @@ from .types.common import (
     CustomFineTuningSpec,
     DoubleList,
     EmbeddingConfig,
+    FileOriginType,
     GuidedSearchSpec,
     IdpConfig,
     IndustryVertical,
@@ -300,7 +302,17 @@ from .types.serving_config_service import (
     ListServingConfigsResponse,
     UpdateServingConfigRequest,
 )
-from .types.session import Query, Session
+from .types.session import (
+    FileCharacteristics,
+    FileMetadata,
+    FileSource,
+    FileView,
+    ImageCharacteristics,
+    Query,
+    Session,
+    VideoCharacteristics,
+)
+from .types.session_service import ListFilesRequest, ListFilesResponse
 from .types.site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .types.site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
@@ -369,6 +381,7 @@ __all__ = (
     "SearchServiceAsyncClient",
     "SearchTuningServiceAsyncClient",
     "ServingConfigServiceAsyncClient",
+    "SessionServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
     "AclConfig",
@@ -469,6 +482,11 @@ __all__ = (
     "FetchDomainVerificationStatusResponse",
     "FhirStoreSource",
     "FieldConfig",
+    "FileCharacteristics",
+    "FileMetadata",
+    "FileOriginType",
+    "FileSource",
+    "FileView",
     "FirestoreSource",
     "GcsSource",
     "GetAclConfigRequest",
@@ -496,6 +514,7 @@ __all__ = (
     "GroundingFact",
     "GuidedSearchSpec",
     "IdpConfig",
+    "ImageCharacteristics",
     "ImportCompletionSuggestionsMetadata",
     "ImportCompletionSuggestionsRequest",
     "ImportCompletionSuggestionsResponse",
@@ -533,6 +552,8 @@ __all__ = (
     "ListEvaluationResultsResponse",
     "ListEvaluationsRequest",
     "ListEvaluationsResponse",
+    "ListFilesRequest",
+    "ListFilesResponse",
     "ListSampleQueriesRequest",
     "ListSampleQueriesResponse",
     "ListSampleQuerySetsRequest",
@@ -600,6 +621,7 @@ __all__ = (
     "ServingConfig",
     "ServingConfigServiceClient",
     "Session",
+    "SessionServiceClient",
     "SetUriPatternDocumentDataMetadata",
     "SetUriPatternDocumentDataRequest",
     "SetUriPatternDocumentDataResponse",
@@ -636,6 +658,7 @@ __all__ = (
     "UserEvent",
     "UserEventServiceClient",
     "UserInfo",
+    "VideoCharacteristics",
     "WorkspaceConfig",
     "WriteUserEventRequest",
 )

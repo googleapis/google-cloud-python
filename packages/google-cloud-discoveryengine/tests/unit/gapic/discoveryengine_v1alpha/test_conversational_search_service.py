@@ -54,6 +54,7 @@ from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.services.conversational_search_service import (
@@ -4103,8 +4104,10 @@ def test_create_session(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = gcd_session.Session(
             name="name_value",
+            display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            is_pinned=True,
         )
         response = client.create_session(request)
 
@@ -4117,8 +4120,10 @@ def test_create_session(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_session.Session)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.is_pinned is True
 
 
 def test_create_session_non_empty_request_with_auto_populated_field():
@@ -4246,8 +4251,10 @@ async def test_create_session_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcd_session.Session(
                 name="name_value",
+                display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                is_pinned=True,
             )
         )
         response = await client.create_session(request)
@@ -4261,8 +4268,10 @@ async def test_create_session_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_session.Session)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.is_pinned is True
 
 
 @pytest.mark.asyncio
@@ -4753,8 +4762,10 @@ def test_update_session(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = gcd_session.Session(
             name="name_value",
+            display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            is_pinned=True,
         )
         response = client.update_session(request)
 
@@ -4767,8 +4778,10 @@ def test_update_session(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_session.Session)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.is_pinned is True
 
 
 def test_update_session_non_empty_request_with_auto_populated_field():
@@ -4892,8 +4905,10 @@ async def test_update_session_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcd_session.Session(
                 name="name_value",
+                display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                is_pinned=True,
             )
         )
         response = await client.update_session(request)
@@ -4907,8 +4922,10 @@ async def test_update_session_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_session.Session)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.is_pinned is True
 
 
 @pytest.mark.asyncio
@@ -5087,8 +5104,10 @@ def test_get_session(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = session.Session(
             name="name_value",
+            display_name="display_name_value",
             state=session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            is_pinned=True,
         )
         response = client.get_session(request)
 
@@ -5101,8 +5120,10 @@ def test_get_session(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, session.Session)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
     assert response.state == session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.is_pinned is True
 
 
 def test_get_session_non_empty_request_with_auto_populated_field():
@@ -5230,8 +5251,10 @@ async def test_get_session_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             session.Session(
                 name="name_value",
+                display_name="display_name_value",
                 state=session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                is_pinned=True,
             )
         )
         response = await client.get_session(request)
@@ -5245,8 +5268,10 @@ async def test_get_session_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, session.Session)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
     assert response.state == session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.is_pinned is True
 
 
 @pytest.mark.asyncio
@@ -8056,6 +8081,8 @@ def test_get_session_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_session._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("include_answer_details",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -8110,7 +8137,7 @@ def test_get_session_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_session._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("includeAnswerDetails",)) & set(("name",)))
 
 
 def test_get_session_rest_flattened():
@@ -9094,8 +9121,10 @@ async def test_create_session_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcd_session.Session(
                 name="name_value",
+                display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                is_pinned=True,
             )
         )
         await client.create_session(request=None)
@@ -9146,8 +9175,10 @@ async def test_update_session_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcd_session.Session(
                 name="name_value",
+                display_name="display_name_value",
                 state=gcd_session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                is_pinned=True,
             )
         )
         await client.update_session(request=None)
@@ -9175,8 +9206,10 @@ async def test_get_session_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             session.Session(
                 name="name_value",
+                display_name="display_name_value",
                 state=session.Session.State.IN_PROGRESS,
                 user_pseudo_id="user_pseudo_id_value",
+                is_pinned=True,
             )
         )
         await client.get_session(request=None)
@@ -10624,16 +10657,109 @@ def test_create_session_rest_call_success(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2/dataStores/sample3"}
     request_init["session"] = {
         "name": "name_value",
+        "display_name": "display_name_value",
         "state": 1,
         "user_pseudo_id": "user_pseudo_id_value",
         "turns": [
             {
                 "query": {"text": "text_value", "query_id": "query_id_value"},
                 "answer": "answer_value",
+                "detailed_answer": {
+                    "name": "name_value",
+                    "state": 1,
+                    "answer_text": "answer_text_value",
+                    "citations": [
+                        {
+                            "start_index": 1189,
+                            "end_index": 942,
+                            "sources": [{"reference_id": "reference_id_value"}],
+                        }
+                    ],
+                    "references": [
+                        {
+                            "unstructured_document_info": {
+                                "document": "document_value",
+                                "uri": "uri_value",
+                                "title": "title_value",
+                                "chunk_contents": [
+                                    {
+                                        "content": "content_value",
+                                        "page_identifier": "page_identifier_value",
+                                        "relevance_score": 0.1584,
+                                    }
+                                ],
+                                "struct_data": {"fields": {}},
+                            },
+                            "chunk_info": {
+                                "chunk": "chunk_value",
+                                "content": "content_value",
+                                "relevance_score": 0.1584,
+                                "document_metadata": {
+                                    "document": "document_value",
+                                    "uri": "uri_value",
+                                    "title": "title_value",
+                                    "page_identifier": "page_identifier_value",
+                                    "struct_data": {},
+                                },
+                            },
+                            "structured_document_info": {
+                                "document": "document_value",
+                                "struct_data": {},
+                            },
+                        }
+                    ],
+                    "related_questions": [
+                        "related_questions_value1",
+                        "related_questions_value2",
+                    ],
+                    "steps": [
+                        {
+                            "state": 1,
+                            "description": "description_value",
+                            "thought": "thought_value",
+                            "actions": [
+                                {
+                                    "search_action": {"query": "query_value"},
+                                    "observation": {
+                                        "search_results": [
+                                            {
+                                                "document": "document_value",
+                                                "uri": "uri_value",
+                                                "title": "title_value",
+                                                "snippet_info": [
+                                                    {
+                                                        "snippet": "snippet_value",
+                                                        "snippet_status": "snippet_status_value",
+                                                    }
+                                                ],
+                                                "chunk_info": [
+                                                    {
+                                                        "chunk": "chunk_value",
+                                                        "content": "content_value",
+                                                        "relevance_score": 0.1584,
+                                                    }
+                                                ],
+                                                "struct_data": {},
+                                            }
+                                        ]
+                                    },
+                                }
+                            ],
+                        }
+                    ],
+                    "query_understanding_info": {
+                        "query_classification_info": [{"type_": 1, "positive": True}]
+                    },
+                    "answer_skipped_reasons": [1],
+                    "create_time": {"seconds": 751, "nanos": 543},
+                    "complete_time": {},
+                },
+                "query_config": {},
             }
         ],
-        "start_time": {"seconds": 751, "nanos": 543},
+        "start_time": {},
         "end_time": {},
+        "is_pinned": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10711,8 +10837,10 @@ def test_create_session_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = gcd_session.Session(
             name="name_value",
+            display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            is_pinned=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -10730,8 +10858,10 @@ def test_create_session_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_session.Session)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.is_pinned is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10959,16 +11089,109 @@ def test_update_session_rest_call_success(request_type):
     }
     request_init["session"] = {
         "name": "projects/sample1/locations/sample2/dataStores/sample3/sessions/sample4",
+        "display_name": "display_name_value",
         "state": 1,
         "user_pseudo_id": "user_pseudo_id_value",
         "turns": [
             {
                 "query": {"text": "text_value", "query_id": "query_id_value"},
                 "answer": "answer_value",
+                "detailed_answer": {
+                    "name": "name_value",
+                    "state": 1,
+                    "answer_text": "answer_text_value",
+                    "citations": [
+                        {
+                            "start_index": 1189,
+                            "end_index": 942,
+                            "sources": [{"reference_id": "reference_id_value"}],
+                        }
+                    ],
+                    "references": [
+                        {
+                            "unstructured_document_info": {
+                                "document": "document_value",
+                                "uri": "uri_value",
+                                "title": "title_value",
+                                "chunk_contents": [
+                                    {
+                                        "content": "content_value",
+                                        "page_identifier": "page_identifier_value",
+                                        "relevance_score": 0.1584,
+                                    }
+                                ],
+                                "struct_data": {"fields": {}},
+                            },
+                            "chunk_info": {
+                                "chunk": "chunk_value",
+                                "content": "content_value",
+                                "relevance_score": 0.1584,
+                                "document_metadata": {
+                                    "document": "document_value",
+                                    "uri": "uri_value",
+                                    "title": "title_value",
+                                    "page_identifier": "page_identifier_value",
+                                    "struct_data": {},
+                                },
+                            },
+                            "structured_document_info": {
+                                "document": "document_value",
+                                "struct_data": {},
+                            },
+                        }
+                    ],
+                    "related_questions": [
+                        "related_questions_value1",
+                        "related_questions_value2",
+                    ],
+                    "steps": [
+                        {
+                            "state": 1,
+                            "description": "description_value",
+                            "thought": "thought_value",
+                            "actions": [
+                                {
+                                    "search_action": {"query": "query_value"},
+                                    "observation": {
+                                        "search_results": [
+                                            {
+                                                "document": "document_value",
+                                                "uri": "uri_value",
+                                                "title": "title_value",
+                                                "snippet_info": [
+                                                    {
+                                                        "snippet": "snippet_value",
+                                                        "snippet_status": "snippet_status_value",
+                                                    }
+                                                ],
+                                                "chunk_info": [
+                                                    {
+                                                        "chunk": "chunk_value",
+                                                        "content": "content_value",
+                                                        "relevance_score": 0.1584,
+                                                    }
+                                                ],
+                                                "struct_data": {},
+                                            }
+                                        ]
+                                    },
+                                }
+                            ],
+                        }
+                    ],
+                    "query_understanding_info": {
+                        "query_classification_info": [{"type_": 1, "positive": True}]
+                    },
+                    "answer_skipped_reasons": [1],
+                    "create_time": {"seconds": 751, "nanos": 543},
+                    "complete_time": {},
+                },
+                "query_config": {},
             }
         ],
-        "start_time": {"seconds": 751, "nanos": 543},
+        "start_time": {},
         "end_time": {},
+        "is_pinned": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11046,8 +11269,10 @@ def test_update_session_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = gcd_session.Session(
             name="name_value",
+            display_name="display_name_value",
             state=gcd_session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            is_pinned=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -11065,8 +11290,10 @@ def test_update_session_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_session.Session)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
     assert response.state == gcd_session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.is_pinned is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -11182,8 +11409,10 @@ def test_get_session_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = session.Session(
             name="name_value",
+            display_name="display_name_value",
             state=session.Session.State.IN_PROGRESS,
             user_pseudo_id="user_pseudo_id_value",
+            is_pinned=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -11201,8 +11430,10 @@ def test_get_session_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, session.Session)
     assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
     assert response.state == session.Session.State.IN_PROGRESS
     assert response.user_pseudo_id == "user_pseudo_id_value"
+    assert response.is_pinned is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

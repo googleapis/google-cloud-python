@@ -87,7 +87,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'get_sample_query_set': ('name', ),
         'get_schema': ('name', ),
         'get_serving_config': ('name', ),
-        'get_session': ('name', ),
+        'get_session': ('name', 'include_answer_details', ),
         'get_site_search_engine': ('name', ),
         'get_target_site': ('name', ),
         'import_completion_suggestions': ('parent', 'inline_source', 'gcs_source', 'bigquery_source', 'error_config', ),

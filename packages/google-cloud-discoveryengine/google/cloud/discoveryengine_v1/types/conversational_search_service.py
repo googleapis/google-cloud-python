@@ -1482,10 +1482,21 @@ class ListSessionsRequest(proto.Message):
             A page token, received from a previous ``ListSessions``
             call. Provide this to retrieve the subsequent page.
         filter (str):
-            A filter to apply on the list results. The supported
-            features are: user_pseudo_id, state.
+            A comma-separated list of fields to filter by, in EBNF
+            grammar. The supported fields are:
 
-            Example: "user_pseudo_id = some_id".
+            -  ``user_pseudo_id``
+            -  ``state``
+            -  ``display_name``
+            -  ``starred``
+            -  ``is_pinned``
+            -  ``labels``
+            -  ``create_time``
+            -  ``update_time``
+
+            Examples: "user_pseudo_id = some_id" "display_name =
+            "some_name"" "starred = true" "is_pinned=true AND (NOT
+            labels:hidden)" "create_time > "1970-01-01T12:00:00Z"".
         order_by (str):
             A comma-separated list of fields to order by, sorted in
             ascending order. Use "desc" after a field name for

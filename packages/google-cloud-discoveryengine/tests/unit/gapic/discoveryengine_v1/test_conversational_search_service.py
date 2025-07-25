@@ -11346,6 +11346,7 @@ def test_create_session_rest_call_success(request_type):
                         }
                     ],
                 },
+                "query_config": {},
             }
         ],
         "start_time": {},
@@ -11799,6 +11800,7 @@ def test_update_session_rest_call_success(request_type):
                         }
                     ],
                 },
+                "query_config": {},
             }
         ],
         "start_time": {},

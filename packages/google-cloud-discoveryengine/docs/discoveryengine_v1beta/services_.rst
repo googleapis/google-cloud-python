@@ -20,5 +20,6 @@ Services for Google Cloud Discoveryengine v1beta API
     search_service
     search_tuning_service
     serving_config_service
+    session_service
     site_search_engine_service
     user_event_service
