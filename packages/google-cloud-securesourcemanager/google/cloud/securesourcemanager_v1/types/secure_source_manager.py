@@ -26,7 +26,13 @@ __protobuf__ = proto.module(
     manifest={
         "Instance",
         "Repository",
+        "Hook",
         "BranchRule",
+        "PullRequest",
+        "FileDiff",
+        "Issue",
+        "IssueComment",
+        "PullRequestComment",
         "ListInstancesRequest",
         "ListInstancesResponse",
         "GetInstanceRequest",
@@ -37,13 +43,61 @@ __protobuf__ = proto.module(
         "ListRepositoriesResponse",
         "GetRepositoryRequest",
         "CreateRepositoryRequest",
+        "UpdateRepositoryRequest",
         "DeleteRepositoryRequest",
+        "ListHooksRequest",
+        "ListHooksResponse",
+        "GetHookRequest",
+        "CreateHookRequest",
+        "UpdateHookRequest",
+        "DeleteHookRequest",
         "GetBranchRuleRequest",
         "CreateBranchRuleRequest",
         "ListBranchRulesRequest",
         "DeleteBranchRuleRequest",
         "UpdateBranchRuleRequest",
         "ListBranchRulesResponse",
+        "CreatePullRequestRequest",
+        "GetPullRequestRequest",
+        "ListPullRequestsRequest",
+        "ListPullRequestsResponse",
+        "UpdatePullRequestRequest",
+        "MergePullRequestRequest",
+        "OpenPullRequestRequest",
+        "ClosePullRequestRequest",
+        "ListPullRequestFileDiffsRequest",
+        "ListPullRequestFileDiffsResponse",
+        "CreateIssueRequest",
+        "GetIssueRequest",
+        "ListIssuesRequest",
+        "ListIssuesResponse",
+        "UpdateIssueRequest",
+        "DeleteIssueRequest",
+        "CloseIssueRequest",
+        "OpenIssueRequest",
+        "TreeEntry",
+        "FetchTreeRequest",
+        "FetchTreeResponse",
+        "FetchBlobRequest",
+        "FetchBlobResponse",
+        "ListPullRequestCommentsRequest",
+        "ListPullRequestCommentsResponse",
+        "CreatePullRequestCommentRequest",
+        "BatchCreatePullRequestCommentsRequest",
+        "BatchCreatePullRequestCommentsResponse",
+        "UpdatePullRequestCommentRequest",
+        "DeletePullRequestCommentRequest",
+        "GetPullRequestCommentRequest",
+        "ResolvePullRequestCommentsRequest",
+        "ResolvePullRequestCommentsResponse",
+        "UnresolvePullRequestCommentsRequest",
+        "UnresolvePullRequestCommentsResponse",
+        "CreateIssueCommentRequest",
+        "GetIssueCommentRequest",
+        "ListIssueCommentsRequest",
+        "ListIssueCommentsResponse",
+        "UpdateIssueCommentRequest",
+        "DeleteIssueCommentRequest",
     },
 )
 
@@ -87,6 +141,11 @@ class Instance(proto.Message):
         host_config (google.cloud.securesourcemanager_v1.types.Instance.HostConfig):
             Output only. A list of hostnames for this
             instance.
+        workforce_identity_federation_config (google.cloud.securesourcemanager_v1.types.Instance.WorkforceIdentityFederationConfig):
+            Optional. Configuration for Workforce
+            Identity Federation to support third party
+            identity provider. If unset, defaults to the
+            Google OIDC IdP.
     """
 
     class State(proto.Enum):
@@ -138,8 +197,7 @@ class Instance(proto.Message):
             html (str):
                 Output only. HTML hostname.
             api (str):
-                Output only. API hostname. This is the hostname to use for
-                **Host: Data Plane** endpoints.
+                Output only. API hostname.
             git_http (str):
                 Output only. Git HTTP hostname.
             git_ssh (str):
@@ -171,7 +229,7 @@ class Instance(proto.Message):
                 Required. Immutable. Indicate if it's private
                 instance.
             ca_pool (str):
-                Required. Immutable. CA pool resource, resource must in the
+                Optional. Immutable. CA pool resource, resource must in the
                 format of
                 ``projects/{project}/locations/{location}/caPools/{ca_pool}``.
             http_service_attachment (str):
@@ -208,6 +266,21 @@ class Instance(proto.Message):
         psc_allowed_projects: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=6,
+        )
+
+    class WorkforceIdentityFederationConfig(proto.Message):
+        r"""WorkforceIdentityFederationConfig allows this instance to
+        support users from external identity providers.
+
+        Attributes:
+            enabled (bool):
+                Optional. Immutable. Whether Workforce
+                Identity Federation is enabled.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
         )
 
     name: str = proto.Field(
@@ -253,6 +326,13 @@ class Instance(proto.Message):
         number=9,
         message=HostConfig,
     )
+    workforce_identity_federation_config: WorkforceIdentityFederationConfig = (
+        proto.Field(
+            proto.MESSAGE,
+            number=14,
+            message=WorkforceIdentityFederationConfig,
+        )
+    )
 
 
 class Repository(proto.Message):
@@ -271,10 +351,9 @@ class Repository(proto.Message):
             is hosted, formatted as
             ``projects/{project_number}/locations/{location_id}/instances/{instance_id}``
             When creating repository via
-            securesourcemanager.googleapis.com (Control Plane API), this
-            field is used as input. When creating repository via
-            \*.sourcemanager.dev (Data Plane API), this field is output
-            only.
+            securesourcemanager.googleapis.com, this field is used as
+            input. When creating repository via \*.sourcemanager.dev,
+            this field is output only.
         uid (str):
             Output only. Unique identifier of the
             repository.
@@ -594,9 +673,113 @@ class Repository(proto.Message):
     )
 
 
+class Hook(proto.Message):
+    r"""Metadata of a Secure Source Manager Hook.
+
+    Attributes:
+        name (str):
+            Identifier. A unique identifier for a Hook. The name should
+            be of the format:
+            ``projects/{project}/locations/{location_id}/repositories/{repository_id}/hooks/{hook_id}``
+        target_uri (str):
+            Required. The target URI to which the
+            payloads will be delivered.
+        disabled (bool):
+            Optional. Determines if the hook disabled or
+            not. Set to true to stop sending traffic.
+        events (MutableSequence[google.cloud.securesourcemanager_v1.types.Hook.HookEventType]):
+            Optional. The events that trigger hook on.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Create timestamp.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Update timestamp.
+        uid (str):
+            Output only. Unique identifier of the hook.
+        push_option (google.cloud.securesourcemanager_v1.types.Hook.PushOption):
+            Optional. The trigger option for push events.
+        sensitive_query_string (str):
+            Optional. The sensitive query string to be
+            appended to the target URI.
+    """
+
+    class HookEventType(proto.Enum):
+        r"""
+
+        Values:
+            UNSPECIFIED (0):
+                Unspecified.
+            PUSH (1):
+                Push events are triggered when pushing to the
+                repository.
+            PULL_REQUEST (2):
+                Pull request events are triggered when a pull
+                request is opened, closed, reopened, or edited.
+        """
+        UNSPECIFIED = 0
+        PUSH = 1
+        PULL_REQUEST = 2
+
+    class PushOption(proto.Message):
+        r"""
+
+        Attributes:
+            branch_filter (str):
+                Optional. Trigger hook for matching branches only. Specified
+                as glob pattern. If empty or *, events for all branches are
+                reported. Examples: main, {main,release*}. See
+                https://pkg.go.dev/github.com/gobwas/glob documentation.
+        """
+
+        branch_filter: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    disabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    events: MutableSequence[HookEventType] = proto.RepeatedField(
+        proto.ENUM,
+        number=4,
+        enum=HookEventType,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    push_option: PushOption = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=PushOption,
+    )
+    sensitive_query_string: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+
+
 class BranchRule(proto.Message):
     r"""Metadata of a BranchRule. BranchRule is the protection rule
-    to enforce pre-defined rules on desginated branches within a
+    to enforce pre-defined rules on designated branches within a
     repository.
 
     Attributes:
@@ -729,6 +912,488 @@ class BranchRule(proto.Message):
         proto.MESSAGE,
         number=14,
         message=Check,
+    )
+
+
+class PullRequest(proto.Message):
+    r"""Metadata of a PullRequest. PullRequest is the request
+    from a user to merge a branch (head) into another branch (base).
+
+    Attributes:
+        name (str):
+            Output only. A unique identifier for a PullRequest. The
+            number appended at the end is generated by the server.
+            Format:
+            ``projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request_id}``
+        title (str):
+            Required. The pull request title.
+        body (str):
+            Optional. The pull request body. Provides a
+            detailed description of the changes.
+        base (google.cloud.securesourcemanager_v1.types.PullRequest.Branch):
+            Required. The branch to merge changes in.
+        head (google.cloud.securesourcemanager_v1.types.PullRequest.Branch):
+            Immutable. The branch containing the changes
+            to be merged.
+        state (google.cloud.securesourcemanager_v1.types.PullRequest.State):
+            Output only. State of the pull request (open,
+            closed or merged).
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation timestamp.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last updated timestamp.
+        close_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Close timestamp (if closed or
+            merged). Cleared when pull request is re-opened.
+    """
+
+    class State(proto.Enum):
+        r"""State of the pull request.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified.
+            OPEN (1):
+                An open pull request.
+            CLOSED (2):
+                A closed pull request.
+            MERGED (3):
+                A merged pull request.
+        """
+        STATE_UNSPECIFIED = 0
+        OPEN = 1
+        CLOSED = 2
+        MERGED = 3
+
+    class Branch(proto.Message):
+        r"""Branch represents a branch involved in a pull request.
+
+        Attributes:
+            ref (str):
+                Required. Name of the branch.
+            sha (str):
+                Output only. The commit at the tip of the
+                branch.
+        """
+
+        ref: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        sha: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    title: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    body: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    base: Branch = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=Branch,
+    )
+    head: Branch = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=Branch,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    close_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class FileDiff(proto.Message):
+    r"""Metadata of a FileDiff. FileDiff represents a single file
+    diff in a pull request.
+
+    Attributes:
+        name (str):
+            Output only. The name of the file.
+        action (google.cloud.securesourcemanager_v1.types.FileDiff.Action):
+            Output only. The action taken on the file
+            (eg. added, modified, deleted).
+        sha (str):
+            Output only. The commit pointing to the file
+            changes.
+        patch (str):
+            Output only. The git patch containing the
+            file changes.
+    """
+
+    class Action(proto.Enum):
+        r"""Action taken on the file.
+
+        Values:
+            ACTION_UNSPECIFIED (0):
+                Unspecified.
+            ADDED (1):
+                The file was added.
+            MODIFIED (2):
+                The file was modified.
+            DELETED (3):
+                The file was deleted.
+        """
+        ACTION_UNSPECIFIED = 0
+        ADDED = 1
+        MODIFIED = 2
+        DELETED = 3
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    action: Action = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Action,
+    )
+    sha: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    patch: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class Issue(proto.Message):
+    r"""Metadata of an Issue.
+
+    Attributes:
+        name (str):
+            Identifier. Unique identifier for an issue. The issue id is
+            generated by the server. Format:
+            ``projects/{project}/locations/{location}/repositories/{repository}/issues/{issue_id}``
+        title (str):
+            Required. Issue title.
+        body (str):
+            Optional. Issue body. Provides a detailed
+            description of the issue.
+        state (google.cloud.securesourcemanager_v1.types.Issue.State):
+            Output only. State of the issue.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation timestamp.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last updated timestamp.
+        close_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Close timestamp (if closed).
+            Cleared when is re-opened.
+        etag (str):
+            Optional. This checksum is computed by the
+            server based on the value of other fields, and
+            may be sent on update and delete requests to
+            ensure the client has an up-to-date value before
+            proceeding.
+    """
+
+    class State(proto.Enum):
+        r"""Possible states of an issue.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified.
+            OPEN (1):
+                An open issue.
+            CLOSED (2):
+                A closed issue.
+        """
+        STATE_UNSPECIFIED = 0
+        OPEN = 1
+        CLOSED = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    title: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    body: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    close_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+
+
+class IssueComment(proto.Message):
+    r"""IssueComment represents a comment on an issue.
+
+    Attributes:
+        name (str):
+            Identifier. Unique identifier for an issue comment. The
+            comment id is generated by the server. Format:
+            ``projects/{project}/locations/{location}/repositories/{repository}/issues/{issue}/issueComments/{comment_id}``
+        body (str):
+            Required. The comment body.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation timestamp.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last updated timestamp.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    body: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class PullRequestComment(proto.Message):
+    r"""PullRequestComment represents a comment on a pull request.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. Unique identifier for the pull request comment.
+            The comment id is generated by the server. Format:
+            ``projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}/pullRequestComments/{comment_id}``
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation timestamp.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last updated timestamp.
+        review (google.cloud.securesourcemanager_v1.types.PullRequestComment.Review):
+            Optional. The review summary comment.
+
+            This field is a member of `oneof`_ ``comment_detail``.
+        comment (google.cloud.securesourcemanager_v1.types.PullRequestComment.Comment):
+            Optional. The general pull request comment.
+
+            This field is a member of `oneof`_ ``comment_detail``.
+        code (google.cloud.securesourcemanager_v1.types.PullRequestComment.Code):
+            Optional. The comment on a code line.
+
+            This field is a member of `oneof`_ ``comment_detail``.
+    """
+
+    class Review(proto.Message):
+        r"""The review summary comment.
+
+        Attributes:
+            action_type (google.cloud.securesourcemanager_v1.types.PullRequestComment.Review.ActionType):
+                Required. The review action type.
+            body (str):
+                Optional. The comment body.
+            effective_commit_sha (str):
+                Output only. The effective commit sha this
+                review is pointing to.
+        """
+
+        class ActionType(proto.Enum):
+            r"""The review action type.
+
+            Values:
+                ACTION_TYPE_UNSPECIFIED (0):
+                    Unspecified.
+                COMMENT (1):
+                    A general review comment.
+                CHANGE_REQUESTED (2):
+                    Change required from this review.
+                APPROVED (3):
+                    Change approved from this review.
+            """
+            ACTION_TYPE_UNSPECIFIED = 0
+            COMMENT = 1
+            CHANGE_REQUESTED = 2
+            APPROVED = 3
+
+        action_type: "PullRequestComment.Review.ActionType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="PullRequestComment.Review.ActionType",
+        )
+        body: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        effective_commit_sha: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    class Comment(proto.Message):
+        r"""The general pull request comment.
+
+        Attributes:
+            body (str):
+                Required. The comment body.
+        """
+
+        body: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class Code(proto.Message):
+        r"""The comment on a code line.
+
+        Attributes:
+            body (str):
+                Required. The comment body.
+            reply (str):
+                Optional. Input only. The PullRequestComment
+                resource name that this comment is replying to.
+            position (google.cloud.securesourcemanager_v1.types.PullRequestComment.Position):
+                Optional. The position of the comment.
+            effective_root_comment (str):
+                Output only. The root comment of the
+                conversation, derived from the reply field.
+            resolved (bool):
+                Output only. Boolean indicator if the comment
+                is resolved.
+            effective_commit_sha (str):
+                Output only. The effective commit sha this
+                code comment is pointing to.
+        """
+
+        body: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        reply: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        position: "PullRequestComment.Position" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="PullRequestComment.Position",
+        )
+        effective_root_comment: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        resolved: bool = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
+        effective_commit_sha: str = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+
+    class Position(proto.Message):
+        r"""The position of the code comment.
+
+        Attributes:
+            path (str):
+                Required. The path of the file.
+            line (int):
+                Required. The line number of the comment.
+                Positive value means it's on the new side of the
+                diff, negative value means it's on the old side.
+        """
+
+        path: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        line: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    review: Review = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="comment_detail",
+        message=Review,
+    )
+    comment: Comment = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="comment_detail",
+        message=Comment,
+    )
+    code: Code = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="comment_detail",
+        message=Code,
     )
 
 
@@ -933,7 +1598,8 @@ class OperationMetadata(proto.Message):
         requested_cancellation (bool):
             Output only. Identifies whether the user has requested
             cancellation of the operation. Operations that have
-            successfully been cancelled have [Operation.error][] value
+            successfully been cancelled have
+            [Operation.error][google.longrunning.Operation.error] value
             with a [google.rpc.Status.code][google.rpc.Status.code] of
             1, corresponding to ``Code.CANCELLED``.
         api_version (str):
@@ -995,10 +1661,9 @@ class ListRepositoriesRequest(proto.Message):
             is hosted, formatted as
             ``projects/{project_number}/locations/{location_id}/instances/{instance_id}``.
             When listing repositories via
-            securesourcemanager.googleapis.com (Control Plane API), this
-            field is required. When listing repositories via
-            \*.sourcemanager.dev (Data Plane API), this field is
-            ignored.
+            securesourcemanager.googleapis.com, this field is required.
+            When listing repositories via \*.sourcemanager.dev, this
+            field is ignored.
     """
 
     parent: str = proto.Field(
@@ -1097,6 +1762,43 @@ class CreateRepositoryRequest(proto.Message):
     )
 
 
+class UpdateRepositoryRequest(proto.Message):
+    r"""UpdateRepositoryRequest is the request to update a
+    repository.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the repository resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
+        repository (google.cloud.securesourcemanager_v1.types.Repository):
+            Required. The repository being updated.
+        validate_only (bool):
+            Optional. False by default. If set to true,
+            the request is validated and the user is
+            provided with an expected result, but no actual
+            change is made.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    repository: "Repository" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Repository",
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
 class DeleteRepositoryRequest(proto.Message):
     r"""DeleteRepositoryRequest is the request to delete a
     repository.
@@ -1104,7 +1806,7 @@ class DeleteRepositoryRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the repository to delete. The format is
-            projects/{project_number}/locations/{location_id}/repositories/{repository_id}.
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``.
         allow_missing (bool):
             Optional. If set to true, and the repository
             is not found, the request will succeed but no
@@ -1118,6 +1820,152 @@ class DeleteRepositoryRequest(proto.Message):
     allow_missing: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class ListHooksRequest(proto.Message):
+    r"""ListHooksRequest is request to list hooks.
+
+    Attributes:
+        parent (str):
+            Required. Parent value for ListHooksRequest.
+        page_size (int):
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListHooksResponse(proto.Message):
+    r"""ListHooksResponse is response to list hooks.
+
+    Attributes:
+        hooks (MutableSequence[google.cloud.securesourcemanager_v1.types.Hook]):
+            The list of hooks.
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    hooks: MutableSequence["Hook"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Hook",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetHookRequest(proto.Message):
+    r"""GetHookRequest is the request for getting a hook.
+
+    Attributes:
+        name (str):
+            Required. Name of the hook to retrieve. The format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/hooks/{hook_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateHookRequest(proto.Message):
+    r"""CreateHookRequest is the request for creating a hook.
+
+    Attributes:
+        parent (str):
+            Required. The repository in which to create the hook. Values
+            are of the form
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``
+        hook (google.cloud.securesourcemanager_v1.types.Hook):
+            Required. The resource being created.
+        hook_id (str):
+            Required. The ID to use for the hook, which
+            will become the final component of the hook's
+            resource name. This value restricts to
+            lower-case letters, numbers, and hyphen, with
+            the first character a letter, the last a letter
+            or a number, and a 63 character maximum.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    hook: "Hook" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Hook",
+    )
+    hook_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateHookRequest(proto.Message):
+    r"""UpdateHookRequest is the request to update a hook.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the hook resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. The special value "*" means full replacement.
+        hook (google.cloud.securesourcemanager_v1.types.Hook):
+            Required. The hook being updated.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    hook: "Hook" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Hook",
+    )
+
+
+class DeleteHookRequest(proto.Message):
+    r"""DeleteHookRequest is the request to delete a hook.
+
+    Attributes:
+        name (str):
+            Required. Name of the hook to delete. The format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/hooks/{hook_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -1275,6 +2123,1045 @@ class ListBranchRulesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class CreatePullRequestRequest(proto.Message):
+    r"""CreatePullRequestRequest is the request to create a pull
+    request.
+
+    Attributes:
+        parent (str):
+            Required. The repository that the pull request is created
+            from. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``
+        pull_request (google.cloud.securesourcemanager_v1.types.PullRequest):
+            Required. The pull request to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    pull_request: "PullRequest" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="PullRequest",
+    )
+
+
+class GetPullRequestRequest(proto.Message):
+    r"""GetPullRequestRequest is the request to get a pull request.
+
+    Attributes:
+        name (str):
+            Required. Name of the pull request to retrieve. The format
+            is
+            ``projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListPullRequestsRequest(proto.Message):
+    r"""ListPullRequestsRequest is the request to list pull requests.
+
+    Attributes:
+        parent (str):
+            Required. The repository in which to list pull requests.
+            Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``
+        page_size (int):
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListPullRequestsResponse(proto.Message):
+    r"""ListPullRequestsResponse is the response to list pull
+    requests.
+
+    Attributes:
+        pull_requests (MutableSequence[google.cloud.securesourcemanager_v1.types.PullRequest]):
+            The list of pull requests.
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    pull_requests: MutableSequence["PullRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PullRequest",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdatePullRequestRequest(proto.Message):
+    r"""UpdatePullRequestRequest is the request to update a pull
+    request.
+
+    Attributes:
+        pull_request (google.cloud.securesourcemanager_v1.types.PullRequest):
+            Required. The pull request to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the pull request resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. The special value "*" means full
+            replacement.
+    """
+
+    pull_request: "PullRequest" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="PullRequest",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class MergePullRequestRequest(proto.Message):
+    r"""MergePullRequestRequest is the request to merge a pull
+    request.
+
+    Attributes:
+        name (str):
+            Required. The pull request to merge. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class OpenPullRequestRequest(proto.Message):
+    r"""OpenPullRequestRequest is the request to open a pull request.
+
+    Attributes:
+        name (str):
+            Required. The pull request to open. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ClosePullRequestRequest(proto.Message):
+    r"""ClosePullRequestRequest is the request to close a pull
+    request.
+
+    Attributes:
+        name (str):
+            Required. The pull request to close. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListPullRequestFileDiffsRequest(proto.Message):
+    r"""ListPullRequestFileDiffsRequest is the request to list pull
+    request file diffs.
+
+    Attributes:
+        name (str):
+            Required. The pull request to list file diffs for. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
+        page_size (int):
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListPullRequestFileDiffsResponse(proto.Message):
+    r"""ListPullRequestFileDiffsResponse is the response containing
+    file diffs returned from ListPullRequestFileDiffs.
+
+    Attributes:
+        file_diffs (MutableSequence[google.cloud.securesourcemanager_v1.types.FileDiff]):
+            The list of pull request file diffs.
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    file_diffs: MutableSequence["FileDiff"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="FileDiff",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateIssueRequest(proto.Message):
+    r"""The request to create an issue.
+
+    Attributes:
+        parent (str):
+            Required. The repository in which to create the issue.
+            Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``
+        issue (google.cloud.securesourcemanager_v1.types.Issue):
+            Required. The issue to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    issue: "Issue" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Issue",
+    )
+
+
+class GetIssueRequest(proto.Message):
+    r"""The request to get an issue.
+
+    Attributes:
+        name (str):
+            Required. Name of the issue to retrieve. The format is
+            ``projects/{project}/locations/{location}/repositories/{repository}/issues/{issue_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListIssuesRequest(proto.Message):
+    r"""The request to list issues.
+
+    Attributes:
+        parent (str):
+            Required. The repository in which to list issues. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``
+        page_size (int):
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+        filter (str):
+            Optional. Used to filter the resulting issues
+            list.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListIssuesResponse(proto.Message):
+    r"""The response to list issues.
+
+    Attributes:
+        issues (MutableSequence[google.cloud.securesourcemanager_v1.types.Issue]):
+            The list of issues.
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    issues: MutableSequence["Issue"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Issue",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateIssueRequest(proto.Message):
+    r"""The request to update an issue.
+
+    Attributes:
+        issue (google.cloud.securesourcemanager_v1.types.Issue):
+            Required. The issue to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the issue resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. The special value "*" means full replacement.
+    """
+
+    issue: "Issue" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Issue",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteIssueRequest(proto.Message):
+    r"""The request to delete an issue.
+
+    Attributes:
+        name (str):
+            Required. Name of the issue to delete. The format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}``.
+        etag (str):
+            Optional. The current etag of the issue.
+            If the etag is provided and does not match the
+            current etag of the issue, deletion will be
+            blocked and an ABORTED error will be returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CloseIssueRequest(proto.Message):
+    r"""The request to close an issue.
+
+    Attributes:
+        name (str):
+            Required. Name of the issue to close. The format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}``.
+        etag (str):
+            Optional. The current etag of the issue.
+            If the etag is provided and does not match the
+            current etag of the issue, closing will be
+            blocked and an ABORTED error will be returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class OpenIssueRequest(proto.Message):
+    r"""The request to open an issue.
+
+    Attributes:
+        name (str):
+            Required. Name of the issue to open. The format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}``.
+        etag (str):
+            Optional. The current etag of the issue.
+            If the etag is provided and does not match the
+            current etag of the issue, opening will be
+            blocked and an ABORTED error will be returned.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class TreeEntry(proto.Message):
+    r"""Represents an entry within a tree structure (like a Git
+    tree).
+
+    Attributes:
+        type_ (google.cloud.securesourcemanager_v1.types.TreeEntry.ObjectType):
+            Output only. The type of the object (TREE,
+            BLOB, COMMIT).  Output-only.
+        sha (str):
+            Output only. The SHA-1 hash of the object
+            (unique identifier). Output-only.
+        path (str):
+            Output only. The path of the file or
+            directory within the tree (e.g.,
+            "src/main/java/MyClass.java"). Output-only.
+        mode (str):
+            Output only. The file mode as a string (e.g.,
+            "100644"). Indicates file type. Output-only.
+        size (int):
+            Output only. The size of the object in bytes
+            (only for blobs). Output-only.
+    """
+
+    class ObjectType(proto.Enum):
+        r"""Defines the type of object the TreeEntry represents.
+
+        Values:
+            OBJECT_TYPE_UNSPECIFIED (0):
+                Default value, indicating the object type is
+                unspecified.
+            TREE (1):
+                Represents a directory (folder).
+            BLOB (2):
+                Represents a file (contains file data).
+            COMMIT (3):
+                Represents a pointer to another repository
+                (submodule).
+        """
+        OBJECT_TYPE_UNSPECIFIED = 0
+        TREE = 1
+        BLOB = 2
+        COMMIT = 3
+
+    type_: ObjectType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ObjectType,
+    )
+    sha: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    path: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    mode: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    size: int = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+
+
+class FetchTreeRequest(proto.Message):
+    r"""Request message for fetching a tree structure from a
+    repository.
+
+    Attributes:
+        repository (str):
+            Required. The format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``.
+            Specifies the repository to fetch the tree from.
+        ref (str):
+            Optional. ``ref`` can be a SHA-1 hash, a branch name, or a
+            tag. Specifies which tree to fetch. If not specified, the
+            default branch will be used.
+        recursive (bool):
+            Optional. If true, include all subfolders and
+            their files in the response. If false, only the
+            immediate children are returned.
+        page_size (int):
+            Optional. Requested page size.  Server may
+            return fewer items than requested. If
+            unspecified, at most 10,000 items will be
+            returned.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+    """
+
+    repository: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ref: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    recursive: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class FetchTreeResponse(proto.Message):
+    r"""Response message containing a list of TreeEntry objects.
+
+    Attributes:
+        tree_entries (MutableSequence[google.cloud.securesourcemanager_v1.types.TreeEntry]):
+            The list of TreeEntry objects.
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    tree_entries: MutableSequence["TreeEntry"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TreeEntry",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class FetchBlobRequest(proto.Message):
+    r"""Request message for fetching a blob (file content) from a
+    repository.
+
+    Attributes:
+        repository (str):
+            Required. The format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}``.
+            Specifies the repository containing the blob.
+        sha (str):
+            Required. The SHA-1 hash of the blob to
+            retrieve.
+    """
+
+    repository: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    sha: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class FetchBlobResponse(proto.Message):
+    r"""Response message containing the content of a blob.
+
+    Attributes:
+        sha (str):
+            The SHA-1 hash of the blob.
+        content (str):
+            The content of the blob, encoded as base64.
+    """
+
+    sha: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    content: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListPullRequestCommentsRequest(proto.Message):
+    r"""The request to list pull request comments.
+
+    Attributes:
+        parent (str):
+            Required. The pull request in which to list pull request
+            comments. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
+        page_size (int):
+            Optional. Requested page size. If
+            unspecified, at most 100 pull request comments
+            will be returned. The maximum value is 100;
+            values above 100 will be coerced to 100.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListPullRequestCommentsResponse(proto.Message):
+    r"""The response to list pull request comments.
+
+    Attributes:
+        pull_request_comments (MutableSequence[google.cloud.securesourcemanager_v1.types.PullRequestComment]):
+            The list of pull request comments.
+        next_page_token (str):
+            A token to set as page_token to retrieve the next page. If
+            this field is omitted, there are no subsequent pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    pull_request_comments: MutableSequence["PullRequestComment"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PullRequestComment",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreatePullRequestCommentRequest(proto.Message):
+    r"""The request to create a pull request comment.
+
+    Attributes:
+        parent (str):
+            Required. The pull request in which to create the pull
+            request comment. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
+        pull_request_comment (google.cloud.securesourcemanager_v1.types.PullRequestComment):
+            Required. The pull request comment to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    pull_request_comment: "PullRequestComment" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="PullRequestComment",
+    )
+
+
+class BatchCreatePullRequestCommentsRequest(proto.Message):
+    r"""The request to batch create pull request comments.
+
+    Attributes:
+        parent (str):
+            Required. The pull request in which to create the pull
+            request comments. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
+        requests (MutableSequence[google.cloud.securesourcemanager_v1.types.CreatePullRequestCommentRequest]):
+            Required. The request message specifying the
+            resources to create. There should be exactly one
+            CreatePullRequestCommentRequest with
+            CommentDetail being REVIEW in the list, and no
+            more than 100 CreatePullRequestCommentRequests
+            with CommentDetail being CODE in the list
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreatePullRequestCommentRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreatePullRequestCommentRequest",
+    )
+
+
+class BatchCreatePullRequestCommentsResponse(proto.Message):
+    r"""The response to batch create pull request comments.
+
+    Attributes:
+        pull_request_comments (MutableSequence[google.cloud.securesourcemanager_v1.types.PullRequestComment]):
+            The list of pull request comments created.
+    """
+
+    pull_request_comments: MutableSequence["PullRequestComment"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PullRequestComment",
+    )
+
+
+class UpdatePullRequestCommentRequest(proto.Message):
+    r"""The request to update a pull request comment.
+
+    Attributes:
+        pull_request_comment (google.cloud.securesourcemanager_v1.types.PullRequestComment):
+            Required. The pull request comment to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the pull request comment resource by the
+            update. Updatable fields are ``body``.
+    """
+
+    pull_request_comment: "PullRequestComment" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="PullRequestComment",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeletePullRequestCommentRequest(proto.Message):
+    r"""The request to delete a pull request comment. A Review
+    PullRequestComment cannot be deleted.
+
+    Attributes:
+        name (str):
+            Required. Name of the pull request comment to delete. The
+            format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}/pullRequestComments/{comment_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetPullRequestCommentRequest(proto.Message):
+    r"""The request to get a pull request comment.
+
+    Attributes:
+        name (str):
+            Required. Name of the pull request comment to retrieve. The
+            format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}/pullRequestComments/{comment_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ResolvePullRequestCommentsRequest(proto.Message):
+    r"""The request to resolve multiple pull request comments.
+
+    Attributes:
+        parent (str):
+            Required. The pull request in which to resolve the pull
+            request comments. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
+        names (MutableSequence[str]):
+            Required. The names of the pull request comments to resolve.
+            Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}/pullRequestComments/{comment_id}``
+            Only comments from the same threads are allowed in the same
+            request.
+        auto_fill (bool):
+            Optional. If set, at least one comment in a
+            thread is required, rest of the comments in the
+            same thread will be automatically updated to
+            resolved. If unset, all comments in the same
+            thread need be present.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    auto_fill: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class ResolvePullRequestCommentsResponse(proto.Message):
+    r"""The response to resolve multiple pull request comments.
+
+    Attributes:
+        pull_request_comments (MutableSequence[google.cloud.securesourcemanager_v1.types.PullRequestComment]):
+            The list of pull request comments resolved.
+    """
+
+    pull_request_comments: MutableSequence["PullRequestComment"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PullRequestComment",
+    )
+
+
+class UnresolvePullRequestCommentsRequest(proto.Message):
+    r"""The request to unresolve multiple pull request comments.
+
+    Attributes:
+        parent (str):
+            Required. The pull request in which to resolve the pull
+            request comments. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}``
+        names (MutableSequence[str]):
+            Required. The names of the pull request comments to
+            unresolve. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}/pullRequestComments/{comment_id}``
+            Only comments from the same threads are allowed in the same
+            request.
+        auto_fill (bool):
+            Optional. If set, at least one comment in a
+            thread is required, rest of the comments in the
+            same thread will be automatically updated to
+            unresolved. If unset, all comments in the same
+            thread need be present.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    auto_fill: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class UnresolvePullRequestCommentsResponse(proto.Message):
+    r"""The response to unresolve multiple pull request comments.
+
+    Attributes:
+        pull_request_comments (MutableSequence[google.cloud.securesourcemanager_v1.types.PullRequestComment]):
+            The list of pull request comments unresolved.
+    """
+
+    pull_request_comments: MutableSequence["PullRequestComment"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PullRequestComment",
+    )
+
+
+class CreateIssueCommentRequest(proto.Message):
+    r"""The request to create an issue comment.
+
+    Attributes:
+        parent (str):
+            Required. The issue in which to create the issue comment.
+            Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}``
+        issue_comment (google.cloud.securesourcemanager_v1.types.IssueComment):
+            Required. The issue comment to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    issue_comment: "IssueComment" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="IssueComment",
+    )
+
+
+class GetIssueCommentRequest(proto.Message):
+    r"""The request to get an issue comment.
+
+    Attributes:
+        name (str):
+            Required. Name of the issue comment to retrieve. The format
+            is
+            ``projects/{project}/locations/{location}/repositories/{repository}/issues/{issue_id}/issueComments/{comment_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListIssueCommentsRequest(proto.Message):
+    r"""The request to list issue comments.
+
+    Attributes:
+        parent (str):
+            Required. The issue in which to list the comments. Format:
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}``
+        page_size (int):
+            Optional. Requested page size. Server may
+            return fewer items than requested. If
+            unspecified, server will pick an appropriate
+            default.
+        page_token (str):
+            Optional. A token identifying a page of
+            results the server should return.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListIssueCommentsResponse(proto.Message):
+    r"""The response to list issue comments.
+
+    Attributes:
+        issue_comments (MutableSequence[google.cloud.securesourcemanager_v1.types.IssueComment]):
+            The list of issue comments.
+        next_page_token (str):
+            A token identifying a page of results the
+            server should return.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    issue_comments: MutableSequence["IssueComment"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="IssueComment",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateIssueCommentRequest(proto.Message):
+    r"""The request to update an issue comment.
+
+    Attributes:
+        issue_comment (google.cloud.securesourcemanager_v1.types.IssueComment):
+            Required. The issue comment to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the issue comment resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. The special value "*" means full
+            replacement.
+    """
+
+    issue_comment: "IssueComment" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="IssueComment",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteIssueCommentRequest(proto.Message):
+    r"""The request to delete an issue comment.
+
+    Attributes:
+        name (str):
+            Required. Name of the issue comment to delete. The format is
+            ``projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}/issueComments/{comment_id}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
