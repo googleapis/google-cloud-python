@@ -90,6 +90,12 @@ RUN apt-get update && \
     libreadline8 \
     # For running bazelisk commands
     openjdk-17-jdk \
+    # To avoid bazel error
+    # "python interpreter `python3` not found in PATH"
+    python3-dev \
+    # To avoid bazel error
+    # "Cannot find gcc or CC; either correct your path or set the CC environment variable"
+    build-essential \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -118,15 +124,22 @@ COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
 COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
 
+# Configure user to avoid running as root
+env USER myuser
+
 # Set the working directory in the container.
 WORKDIR /app
 
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
 
-# To avoid bazel error
-# `python interpreter `python3` not found in PATH`
-RUN alias python3='python3.11'
+RUN find /app -exec chmod a+rw {} \;
+RUN find /app -type d -exec chmod a+x {} \;
+
+# For bazel
+RUN mkdir -p /.cache
+RUN find /.cache -exec chmod a+rw {} \;
+RUN find /.cache -type d -exec chmod a+x {} \;
+
 # Set the entrypoint for the container to run the script.
-# test
 ENTRYPOINT ["python3.11", "cli.py"]
