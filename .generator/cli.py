@@ -83,7 +83,7 @@ def _determine_bazel_rule(api_path: str, source_path: str = SOURCE_DIR) -> str:
         command = ["bazelisk", "query", query]
         result = subprocess.run(
             command,
-            cwd=f"{source_path}",
+            cwd=source_path,
             capture_output=True,
             text=True,
             check=True,
