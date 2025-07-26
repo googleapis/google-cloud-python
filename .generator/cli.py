@@ -210,7 +210,9 @@ def _run_post_processor(output_path: str = OUTPUT_DIR):
     logger.info("Python post-processor ran successfully.")
 
 
-def handle_generate(**kwargs):
+def handle_generate(
+    librarian: str = LIBRARIAN_DIR, source: str = SOURCE_DIR, output: str = OUTPUT_DIR
+):
     """The main coordinator for the code generation process.
 
     This function orchestrates the generation of a client library by reading a
@@ -223,19 +225,16 @@ def handle_generate(**kwargs):
 
     try:
         # Read a generate-request.json file
-        librarian_path = kwargs.get("librarian") or LIBRARIAN_DIR
-        request_data = _read_json_file(f"{librarian_path}/{GENERATE_REQUEST_FILE}")
+        request_data = _read_json_file(f"{librarian}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
 
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
-                source_path = kwargs.get("source") or SOURCE_DIR
-                bazel_rule = _determine_bazel_rule(api_path, source_path)
+                bazel_rule = _determine_bazel_rule(api_path, source)
                 _build_bazel_target(bazel_rule)
                 _locate_and_extract_artifact(bazel_rule, library_id)
-                output_path = kwargs.get("output") or OUTPUT_DIR
-                _run_post_processor(output_path)
+                _run_post_processor(output)
 
     except Exception as e:
         raise ValueError("Generation failed.") from e
@@ -281,7 +280,7 @@ def _run_individual_session(nox_session: str, library_id: str):
     logger.info(result)
 
 
-def handle_build(**kwargs):
+def handle_build(librarian: str = LIBRARIAN_DIR):
     """The main coordinator for validating client library generation."""
     sessions = [
         "unit-3.9",
@@ -296,9 +295,7 @@ def handle_build(**kwargs):
         "mypy",
         "check_lower_bounds",
     ]
-    librarian_path = kwargs.get("librarian") or LIBRARIAN_DIR
-
-    _run_nox_sessions(sessions, librarian_path)
+    _run_nox_sessions(sessions, librarian)
 
     logger.info("'build' command executed.")
 
