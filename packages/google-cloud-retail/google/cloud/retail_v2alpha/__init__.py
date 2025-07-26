@@ -244,6 +244,7 @@ from .types.purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
+from .types.safety import HarmCategory, SafetySetting
 from .types.search_service import (
     ExperimentInfo,
     ProductAttributeInterval,
@@ -378,6 +379,7 @@ __all__ = (
     "GetProductRequest",
     "GetProjectRequest",
     "GetServingConfigRequest",
+    "HarmCategory",
     "Image",
     "ImportCompletionDataRequest",
     "ImportCompletionDataResponse",
@@ -457,6 +459,7 @@ __all__ = (
     "ReplaceCatalogAttributeRequest",
     "ResumeModelRequest",
     "Rule",
+    "SafetySetting",
     "SearchRequest",
     "SearchResponse",
     "SearchServiceClient",

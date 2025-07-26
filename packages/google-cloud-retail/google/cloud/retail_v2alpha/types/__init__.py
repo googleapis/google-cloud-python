@@ -196,6 +196,7 @@ from .purge_config import (
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
+from .safety import HarmCategory, SafetySetting
 from .search_service import (
     ExperimentInfo,
     ProductAttributeInterval,
@@ -385,6 +386,8 @@ __all__ = (
     "PurgeProductsResponse",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
+    "SafetySetting",
+    "HarmCategory",
     "ExperimentInfo",
     "ProductAttributeInterval",
     "ProductAttributeValue",
