@@ -35,6 +35,7 @@ logger = logging.getLogger()
 
 LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
+BUILD_REQUEST_FILE = "build-request.json"
 SOURCE_DIR = "source"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
@@ -243,11 +244,12 @@ def _run_nox_sessions(sessions: List[str], librarian_path: str = LIBRARIAN_DIR):
 
     Args:
         path(List[str]): The list of nox sessions to run.
+        librarian_path(str): The path to the librarian build configuration directory
     """
-    # Read a generate-request.json file
+    # Read a build-request.json file
     current_session = None
     try:
-        request_data = _read_json_file(f"{librarian_path}/{GENERATE_REQUEST_FILE}")
+        request_data = _read_json_file(f"{librarian_path}/{BUILD_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         for nox_session in sessions:
             _run_individual_session(nox_session, library_id)
