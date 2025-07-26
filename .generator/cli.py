@@ -196,7 +196,11 @@ def _locate_and_extract_artifact(
 
 
 def _run_post_processor(output_path=OUTPUT_DIR):
-    """Runs the synthtool post-processor on the output directory."""
+    """Runs the synthtool post-processor on the output directory.
+    
+    Args:
+        output_path(str): path to the output directory
+    """
     logger.info("Running Python post-processor...")
     if SYNTHTOOL_INSTALLED:
         command = ["python3", "-m", "synthtool.languages.python_mono_repo"]
@@ -230,7 +234,8 @@ def handle_generate(**kwargs):
                 bazel_rule = _determine_bazel_rule(api_path, source_path)
                 _build_bazel_target(bazel_rule)
                 _locate_and_extract_artifact(bazel_rule, library_id)
-                _run_post_processor()
+                output_path = kwargs.get("output") or OUTPUT_DIR
+                _run_post_processor(output_path)
 
     except Exception as e:
         raise ValueError("Generation failed.") from e
