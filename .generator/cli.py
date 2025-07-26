@@ -63,7 +63,7 @@ def handle_configure():
     logger.info("'configure' command executed.")
 
 
-def _determine_bazel_rule(api_path: str, source_path: str=SOURCE_DIR) -> str:
+def _determine_bazel_rule(api_path: str, source_path: str = SOURCE_DIR) -> str:
     """Executes a `bazelisk query` to find a Bazel rule.
 
     Args:
@@ -138,7 +138,12 @@ def _build_bazel_target(bazel_rule: str, source_path=SOURCE_DIR):
         raise ValueError(f"Bazel build for {bazel_rule} rule failed.") from e
 
 
-def _locate_and_extract_artifact(bazel_rule: str, library_id: str, source_path: str=SOURCE_DIR, output_path: str=OUTPUT_DIR):
+def _locate_and_extract_artifact(
+    bazel_rule: str,
+    library_id: str,
+    source_path: str = SOURCE_DIR,
+    output_path: str = OUTPUT_DIR,
+):
     """Finds and extracts the tarball artifact from a Bazel build.
 
     Args:
@@ -186,8 +191,7 @@ def _locate_and_extract_artifact(bazel_rule: str, library_id: str, source_path: 
 
 
 def _run_post_processor(output_path=OUTPUT_DIR):
-    """Runs the synthtool post-processor on the output directory.
-    """
+    """Runs the synthtool post-processor on the output directory."""
     logger.info("Running Python post-processor...")
     if SYNTHTOOL_INSTALLED:
         command = ["python3", "-m", "synthtool.languages.python_mono_repo"]
@@ -210,14 +214,14 @@ def handle_generate(**kwargs):
 
     try:
         # Read a generate-request.json file
-        librarian_path = kwargs.get('librarian') or LIBRARIAN_DIR
+        librarian_path = kwargs.get("librarian") or LIBRARIAN_DIR
         request_data = _read_json_file(f"{librarian_path}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
 
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
-                source_path = kwargs.get('source') or SOURCE_DIR
+                source_path = kwargs.get("source") or SOURCE_DIR
                 bazel_rule = _determine_bazel_rule(api_path, source_path)
                 _build_bazel_target(bazel_rule)
                 _locate_and_extract_artifact(bazel_rule, library_id)
@@ -230,7 +234,7 @@ def handle_generate(**kwargs):
     logger.info("'generate' command executed.")
 
 
-def _run_nox_sessions(sessions: List[str], librarian_path: str=LIBRARIAN_DIR):
+def _run_nox_sessions(sessions: List[str], librarian_path: str = LIBRARIAN_DIR):
     """Calls nox for all specified sessions.
 
     Args:
@@ -281,7 +285,7 @@ def handle_build(**kwargs):
         "mypy",
         "check_lower_bounds",
     ]
-    librarian_path = kwargs.get('librarian') or LIBRARIAN_DIR
+    librarian_path = kwargs.get("librarian") or LIBRARIAN_DIR
 
     _run_nox_sessions(sessions, librarian_path)
 
@@ -312,27 +316,26 @@ if __name__ == "__main__":
             "--librarian",
             type=str,
             help="Path to the directory in the container which contains the librarian configuration",
-            default=LIBRARIAN_DIR
+            default=LIBRARIAN_DIR,
         )
         parser_cmd.add_argument(
             "--input",
             type=str,
             help="Path to the directory in the container which contains additional generator input",
-            default="/input"
+            default="/input",
         )
         parser_cmd.add_argument(
             "--output",
             type=str,
             help="Path to the directory in the container where code should be generated",
-            default=OUTPUT_DIR
+            default=OUTPUT_DIR,
         )
         parser_cmd.add_argument(
             "--source",
             type=str,
             help="Path to the directory in the container which contains API protos",
-            default=SOURCE_DIR
+            default=SOURCE_DIR,
         )
-
 
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)

@@ -248,7 +248,7 @@ def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
 
     handle_generate()
 
-    mock_determine_rule.assert_called_once_with("google/cloud/language/v1", 'source')
+    mock_determine_rule.assert_called_once_with("google/cloud/language/v1", "source")
 
 
 def test_handle_generate_fail(caplog):
