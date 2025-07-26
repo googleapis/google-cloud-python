@@ -88,6 +88,8 @@ RUN apt-get update && \
     libffi8 \
     libsqlite3-0 \
     libreadline8 \
+    # For running bazelisk commands
+    openjdk-17-jdk \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -114,12 +116,17 @@ COPY --from=builder /usr/local/lib/python3.12 /usr/local/lib/python3.12
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
+COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
+
 # Set the working directory in the container.
 WORKDIR /app
 
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
 
+# To avoid bazel error
+# `python interpreter `python3` not found in PATH`
+RUN alias python3='python3.11'
 # Set the entrypoint for the container to run the script.
 # test
 ENTRYPOINT ["python3.11", "cli.py"]

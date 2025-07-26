@@ -140,7 +140,7 @@ def _build_bazel_target(bazel_rule: str):
         command = ["bazelisk", "build", bazel_rule]
         subprocess.run(
             command,
-            cwd=f"{_get_source_dir(args)}/googleapis",
+            cwd=f"{_get_source_dir(args)}",
             text=True,
             check=True,
         )
@@ -165,7 +165,7 @@ def _locate_and_extract_artifact(bazel_rule: str, library_id: str):
         info_command = ["bazelisk", "info", "bazel-bin"]
         result = subprocess.run(
             info_command,
-            cwd=f"{_get_source_dir(args)}/googleapis",
+            cwd=f"{_get_source_dir(args)}",
             text=True,
             check=True,
             capture_output=True,
