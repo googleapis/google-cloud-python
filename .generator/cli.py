@@ -116,7 +116,7 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
-def _build_bazel_target(bazel_rule: str, source_path: str=SOURCE_DIR):
+def _build_bazel_target(bazel_rule: str, source_path: str = SOURCE_DIR):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
@@ -195,9 +195,9 @@ def _locate_and_extract_artifact(
         ) from e
 
 
-def _run_post_processor(output_path=OUTPUT_DIR):
+def _run_post_processor(output_path: str = OUTPUT_DIR):
     """Runs the synthtool post-processor on the output directory.
-    
+
     Args:
         output_path(str): path to the output directory
     """
