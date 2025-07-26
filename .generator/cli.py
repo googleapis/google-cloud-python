@@ -68,7 +68,7 @@ def _determine_bazel_rule(api_path: str, source_path: str = SOURCE_DIR) -> str:
 
     Args:
         api_path (str): The API path to query for.
-        source (path): The path to the bazel workspace
+        source_path (str): The path to the bazel workspace
 
     Returns:
         str: The discovered Bazel rule.
@@ -115,11 +115,12 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
-def _build_bazel_target(bazel_rule: str, source_path=SOURCE_DIR):
+def _build_bazel_target(bazel_rule: str, source_path: str=SOURCE_DIR):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
         bazel_rule (str): The Bazel rule to build.
+        source_path (str): The path to the Bazel workspace.
 
     Raises:
         ValueError: If the subprocess call fails.
@@ -149,6 +150,9 @@ def _locate_and_extract_artifact(
     Args:
         bazel_rule (str): The Bazel rule that was built.
         library_id (str): The ID of the library being generated.
+        source_path (str): The path to the Bazel workspace.
+        output_path (str): The path to the location where generated output
+            should be stored.
 
     Raises:
         ValueError: If failed to locate or extract artifact.
