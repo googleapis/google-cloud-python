@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.4.0...google-cloud-retail-v2.5.0) (2025-07-26)
+
+
+### Features
+
+* **v2alpha:** add new fields in conversational search public SDK ([#14156](https://github.com/googleapis/google-cloud-python/issues/14156)) ([848d823](https://github.com/googleapis/google-cloud-python/commit/848d82340281340679bb68979db799d2583a4a12))
+
 ## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.3.0...google-cloud-retail-v2.4.0) (2025-07-23)
 
 

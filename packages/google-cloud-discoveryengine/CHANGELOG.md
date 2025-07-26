@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.11](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.10...google-cloud-discoveryengine-v0.13.11) (2025-07-26)
+
+
+### Features
+
+* add SessionService ([1a37e18](https://github.com/googleapis/google-cloud-python/commit/1a37e183ba189d92b83b180e26816e2498b9fe06))
+
 ## [0.13.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.13.9...google-cloud-discoveryengine-v0.13.10) (2025-07-23)
 
 

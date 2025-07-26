@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.31.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.31.2...google-cloud-build-v3.31.3) (2025-07-26)
+
+
+### Documentation
+
+* [google-cloud-build] Updated Private Service Connect IP ranges when route_all_traffic is false ([#14149](https://github.com/googleapis/google-cloud-python/issues/14149)) ([7bbeba4](https://github.com/googleapis/google-cloud-python/commit/7bbeba477ed32257509f155c25d87631beaf4519))
+
 ## [3.31.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.31.1...google-cloud-build-v3.31.2) (2025-06-11)
 
 
