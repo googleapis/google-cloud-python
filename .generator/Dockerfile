@@ -142,4 +142,4 @@ RUN find /.cache -exec chmod a+rw {} \;
 RUN find /.cache -type d -exec chmod a+x {} \;
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["python3.11", "cli.py"]
+ENTRYPOINT ["python3.11", "./cli.py"]
