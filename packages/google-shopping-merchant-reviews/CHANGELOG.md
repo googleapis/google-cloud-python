@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reviews-v0.1.4...google-shopping-merchant-reviews-v0.2.0) (2025-07-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* An existing field `attributes` is renamed to `merchant_review_attributes` in message `.google.shopping.merchant.reviews.v1beta.MerchantReview`
+* An existing field `attributes` is renamed to `product_review_attributes` in message `.google.shopping.merchant.reviews.v1beta.ProductReview`
+
+### Bug Fixes
+
+* An existing field `attributes` is renamed to `merchant_review_attributes` in message `.google.shopping.merchant.reviews.v1beta.MerchantReview` ([2273ea0](https://github.com/googleapis/google-cloud-python/commit/2273ea09476b80f7927e9eb54af85cd0ab431438))
+* An existing field `attributes` is renamed to `product_review_attributes` in message `.google.shopping.merchant.reviews.v1beta.ProductReview` ([2273ea0](https://github.com/googleapis/google-cloud-python/commit/2273ea09476b80f7927e9eb54af85cd0ab431438))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reviews-v0.1.3...google-shopping-merchant-reviews-v0.1.4) (2025-07-10)
 
 
