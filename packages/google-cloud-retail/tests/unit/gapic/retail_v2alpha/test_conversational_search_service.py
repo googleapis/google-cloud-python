@@ -62,6 +62,7 @@ from google.cloud.retail_v2alpha.services.conversational_search_service import (
 from google.cloud.retail_v2alpha.types import (
     common,
     conversational_search_service,
+    safety,
     search_service,
 )
 
@@ -1845,7 +1846,10 @@ def test_conversational_search_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = conversational_search_service.ConversationalSearchResponse(
+            user_query_types=["user_query_types_value"],
+            conversational_text_response="conversational_text_response_value",
             conversation_id="conversation_id_value",
+            state=conversational_search_service.ConversationalSearchResponse.State.STREAMING,
         )
 
         # Wrap the value into a proper Response obj
@@ -1870,7 +1874,13 @@ def test_conversational_search_rest_call_success(request_type):
     assert isinstance(
         response, conversational_search_service.ConversationalSearchResponse
     )
+    assert response.user_query_types == ["user_query_types_value"]
+    assert response.conversational_text_response == "conversational_text_response_value"
     assert response.conversation_id == "conversation_id_value"
+    assert (
+        response.state
+        == conversational_search_service.ConversationalSearchResponse.State.STREAMING
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
