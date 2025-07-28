@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.13.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.12.0...v2.13.0) (2025-07-25)
+
+
+### Features
+
+* _read_gbq_colab creates hybrid session ([#1901](https://github.com/googleapis/python-bigquery-dataframes/issues/1901)) ([31b17b0](https://github.com/googleapis/python-bigquery-dataframes/commit/31b17b01706ccfcee9a2d838c43a9609ec4dc218))
+* Add CSS styling for TableWidget pagination interface ([#1934](https://github.com/googleapis/python-bigquery-dataframes/issues/1934)) ([5b232d7](https://github.com/googleapis/python-bigquery-dataframes/commit/5b232d7e33563196316f5dbb50b28c6be388d440))
+* Add row numbering local pushdown in hybrid execution ([#1932](https://github.com/googleapis/python-bigquery-dataframes/issues/1932)) ([92a2377](https://github.com/googleapis/python-bigquery-dataframes/commit/92a237712aa4ce516b1a44748127b34d7780fff6))
+* Implement Index.get_loc ([#1921](https://github.com/googleapis/python-bigquery-dataframes/issues/1921)) ([bbbcaf3](https://github.com/googleapis/python-bigquery-dataframes/commit/bbbcaf35df113617fd6bb8ae36468cf3f7ab493b))
+
+
+### Bug Fixes
+
+* Add license header and correct issues in dbt sample ([#1931](https://github.com/googleapis/python-bigquery-dataframes/issues/1931)) ([ab01b0a](https://github.com/googleapis/python-bigquery-dataframes/commit/ab01b0a236ffc7b667f258e0497105ea5c3d3aab))
+
+
+### Dependencies
+
+* Replace `google-cloud-iam` with `grpc-google-iam-v1` ([#1864](https://github.com/googleapis/python-bigquery-dataframes/issues/1864)) ([e5ff8f7](https://github.com/googleapis/python-bigquery-dataframes/commit/e5ff8f7d9fdac3ea47dabcc80a2598d601f39e64))
+
 ## [2.12.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.11.0...v2.12.0) (2025-07-23)
 
 
