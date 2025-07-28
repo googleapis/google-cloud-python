@@ -1281,7 +1281,7 @@ class StreamingPullManager(object):
         Called whenever `self.consumer` receives a non-retryable exception.
         We close the manager on such non-retryable cases.
         """
-        _LOGGER.exception(
+        _LOGGER.info(
             "Streaming pull terminating after receiving non-recoverable error: %s",
             exception,
         )
@@ -1326,7 +1326,7 @@ class StreamingPullManager(object):
         is_api_error = isinstance(exception, exceptions.GoogleAPICallError)
         # Terminate any non-API errors, or non-retryable errors (permission denied, unauthorized, etc.)
         if not is_api_error or isinstance(exception, _TERMINATING_STREAM_ERRORS):
-            _LOGGER.error("Observed terminating stream error %s", exception)
+            _LOGGER.debug("Observed terminating stream error %s", exception)
             return True
         _LOGGER.debug("Observed non-terminating stream error %s", exception)
         return False
