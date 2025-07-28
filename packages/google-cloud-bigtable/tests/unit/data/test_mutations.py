@@ -117,6 +117,17 @@ class TestBaseMutation:
                 {"delete_from_family": {"family_name": "foo"}},
             ),
             (mutations.DeleteAllFromRow, {"delete_from_row": {}}),
+            (
+                mutations.AddToCell,
+                {
+                    "add_to_cell": {
+                        "family_name": "foo",
+                        "column_qualifier": {"raw_value": b"bar"},
+                        "timestamp": {"raw_timestamp_micros": 12345},
+                        "input": {"int_value": 123},
+                    }
+                },
+            ),
         ],
     )
     def test__from_dict(self, expected_class, input_dict):
@@ -162,6 +173,7 @@ class TestBaseMutation:
             mutations.DeleteRangeFromColumn("foo", b"bar"),
             mutations.DeleteAllFromFamily("foo"),
             mutations.DeleteAllFromRow(),
+            mutations.AddToCell("foo", b"bar", 123, 456),
         ]
         for instance in subclasses:
             others = [other for other in subclasses if other != instance]
@@ -706,3 +718,105 @@ class TestRowMutationEntry:
         assert len(instance.mutations) == 1
         assert isinstance(instance.mutations[0], mutations.DeleteAllFromFamily)
         assert instance.mutations[0].family_to_delete == "test_family"
+
+
+class TestAddToCell:
+    def _target_class(self):
+        from google.cloud.bigtable.data.mutations import AddToCell
+
+        return AddToCell
+
+    def _make_one(self, *args, **kwargs):
+        return self._target_class()(*args, **kwargs)
+
+    @pytest.mark.parametrize("input_val", [2**64, -(2**64)])
+    def test_ctor_large_int(self, input_val):
+        with pytest.raises(ValueError) as e:
+            self._make_one(
+                family="f", qualifier=b"b", value=input_val, timestamp_micros=123
+            )
+        assert "int values must be between" in str(e.value)
+
+    @pytest.mark.parametrize("input_val", ["", "a", "abc", "hello world!"])
+    def test_ctor_str_value(self, input_val):
+        with pytest.raises(TypeError) as e:
+            self._make_one(
+                family="f", qualifier=b"b", value=input_val, timestamp_micros=123
+            )
+        assert "value must be int" in str(e.value)
+
+    def test_ctor(self):
+        """Ensure constructor sets expected values"""
+        expected_family = "test-family"
+        expected_qualifier = b"test-qualifier"
+        expected_value = 1234
+        expected_timestamp = 1234567890
+        instance = self._make_one(
+            expected_family, expected_qualifier, expected_value, expected_timestamp
+        )
+        assert instance.family == expected_family
+        assert instance.qualifier == expected_qualifier
+        assert instance.value == expected_value
+        assert instance.timestamp == expected_timestamp
+
+    def test_ctor_negative_timestamp(self):
+        """Only non-negative timestamps are valid"""
+        with pytest.raises(ValueError) as e:
+            self._make_one("test-family", b"test-qualifier", 1234, -2)
+        assert "timestamp must be non-negative" in str(e.value)
+
+    def test__to_dict(self):
+        """ensure dict representation is as expected"""
+        expected_family = "test-family"
+        expected_qualifier = b"test-qualifier"
+        expected_value = 1234
+        expected_timestamp = 123456789
+        instance = self._make_one(
+            expected_family, expected_qualifier, expected_value, expected_timestamp
+        )
+        got_dict = instance._to_dict()
+        assert list(got_dict.keys()) == ["add_to_cell"]
+        got_inner_dict = got_dict["add_to_cell"]
+        assert got_inner_dict["family_name"] == expected_family
+        assert got_inner_dict["column_qualifier"]["raw_value"] == expected_qualifier
+        assert got_inner_dict["timestamp"]["raw_timestamp_micros"] == expected_timestamp
+        assert got_inner_dict["input"]["int_value"] == expected_value
+        assert len(got_inner_dict.keys()) == 4
+
+    def test__to_pb(self):
+        """ensure proto representation is as expected"""
+        import google.cloud.bigtable_v2.types.data as data_pb
+
+        expected_family = "test-family"
+        expected_qualifier = b"test-qualifier"
+        expected_value = 1234
+        expected_timestamp = 123456789
+        instance = self._make_one(
+            expected_family, expected_qualifier, expected_value, expected_timestamp
+        )
+        got_pb = instance._to_pb()
+        assert isinstance(got_pb, data_pb.Mutation)
+        assert got_pb.add_to_cell.family_name == expected_family
+        assert got_pb.add_to_cell.column_qualifier.raw_value == expected_qualifier
+        assert got_pb.add_to_cell.timestamp.raw_timestamp_micros == expected_timestamp
+        assert got_pb.add_to_cell.input.int_value == expected_value
+
+    @pytest.mark.parametrize(
+        "timestamp",
+        [
+            (1234567890),
+            (1),
+            (0),
+        ],
+    )
+    def test_is_idempotent(self, timestamp):
+        """is_idempotent is not based on the timestamp"""
+        instance = self._make_one("test-family", b"test-qualifier", 1234, timestamp)
+        assert not instance.is_idempotent()
+
+    def test___str__(self):
+        """Str representation of mutations should be to_dict"""
+        instance = self._make_one("test-family", b"test-qualifier", 1234, 1234567890)
+        str_value = instance.__str__()
+        dict_value = instance._to_dict()
+        assert str_value == str(dict_value)

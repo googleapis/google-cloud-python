@@ -20,7 +20,7 @@ import pytest
 import os
 import uuid
 
-from . import TEST_FAMILY, TEST_FAMILY_2
+from . import TEST_FAMILY, TEST_FAMILY_2, TEST_AGGREGATE_FAMILY
 
 # authorized view subset to allow all qualifiers
 ALLOW_ALL = ""
@@ -183,6 +183,7 @@ def authorized_view_id(
                         "family_subsets": {
                             TEST_FAMILY: ALL_QUALIFIERS,
                             TEST_FAMILY_2: ALL_QUALIFIERS,
+                            TEST_AGGREGATE_FAMILY: ALL_QUALIFIERS,
                         },
                     },
                 },
