@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.15...google-cloud-securesourcemanager-v0.1.16) (2025-07-26)
+
+
+### Features
+
+* add new UpdateRepository API ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+* add support for new API resources - Issues, IssueComments, PullRequests, PullRequestComments, Blobs ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+* add support for workforce identity federation in instance ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+
+
+### Documentation
+
+* `ca_pool` in message `.google.cloud.securesourcemanager.v1.Instance` is Optional ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+* A comment for field `requested_cancellation` in message `.google.cloud.securesourcemanager.v1.OperationMetadata` is changed ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+* fix typo in `BranchRule` comment ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+* remove mention of DataPlane from `CreateRepository` endpoint ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+* remove mention of DataPlane from `DeleteRepository` endpoint ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+* remove mention of DataPlane from `GetRepository` endpont ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+* remove mention of DataPlane from `ListRepositories` endpoint ([1569c8d](https://github.com/googleapis/google-cloud-python/commit/1569c8d0ef4a7005416d03ec5ad0a85fe17ed8cd))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.14...google-cloud-securesourcemanager-v0.1.15) (2025-03-15)
 
 
