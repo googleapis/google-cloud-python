@@ -159,7 +159,9 @@ RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
 
-RUN chmod +x /app/cli.py
+# Copy your CLI script into the container and make it executable.
+COPY --chown=$UID:$GID cli.py .
+RUN chmod a+rx ./cli.py
 
 # Switch to the non-root user. All subsequent commands will run as this user.
 USER $UID
