@@ -120,7 +120,7 @@ WORKDIR /app
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
 
-# Test comment
+# Test cloud build
 
 # Set the entrypoint for the container to run the script.
 ENTRYPOINT ["python3.11", "./cli.py"]
