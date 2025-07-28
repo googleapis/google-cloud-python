@@ -18,7 +18,6 @@ import logging
 import os
 import subprocess
 import sys
-import subprocess
 from typing import Dict, List
 
 try:
@@ -222,8 +221,6 @@ def handle_generate(
     Raises:
         ValueError: If the `generate-request.json` file is not found or read.
     """
-    subprocess.run("/usr/local/bin/python3.9", "-m", "venv", "bazel_env")
-    subprocess.run("bazel_env/bin/activate", "-m", "venv", "bazel_env")
 
     try:
         # Read a generate-request.json file
