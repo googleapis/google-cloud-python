@@ -123,6 +123,14 @@ class Mutation(ABC):
                 instance = DeleteAllFromFamily(details["family_name"])
             elif "delete_from_row" in input_dict:
                 instance = DeleteAllFromRow()
+            elif "add_to_cell" in input_dict:
+                details = input_dict["add_to_cell"]
+                instance = AddToCell(
+                    details["family_name"],
+                    details["column_qualifier"]["raw_value"],
+                    details["input"]["int_value"],
+                    details["timestamp"]["raw_timestamp_micros"],
+                )
         except KeyError as e:
             raise ValueError("Invalid mutation dictionary") from e
         if instance is None:
@@ -274,6 +282,75 @@ class DeleteAllFromRow(Mutation):
         return {
             "delete_from_row": {},
         }
+
+
+@dataclass
+class AddToCell(Mutation):
+    """
+    Adds an int64 value to an aggregate cell. The column family must be an
+    aggregate family and have an "int64" input type or this mutation will be
+    rejected.
+
+    Note: The timestamp values are in microseconds but must match the
+    granularity of the table (defaults to `MILLIS`). Therefore, the given value
+    must be a multiple of 1000 (millisecond granularity). For example:
+    `1571902339435000`.
+
+    Args:
+        family: The name of the column family to which the cell belongs.
+        qualifier: The column qualifier of the cell.
+        value: The value to be accumulated into the cell.
+        timestamp_micros: The timestamp of the cell. Must be provided for
+          cell aggregation to work correctly.
+
+
+    Raises:
+        TypeError: If `qualifier` is not `bytes` or `str`.
+        TypeError: If `value` is not `int`.
+        TypeError: If `timestamp_micros` is not `int`.
+        ValueError: If `value` is out of bounds for a 64-bit signed int.
+        ValueError: If `timestamp_micros` is less than 0.
+    """
+
+    def __init__(
+        self,
+        family: str,
+        qualifier: bytes | str,
+        value: int,
+        timestamp_micros: int,
+    ):
+        qualifier = qualifier.encode() if isinstance(qualifier, str) else qualifier
+        if not isinstance(qualifier, bytes):
+            raise TypeError("qualifier must be bytes or str")
+        if not isinstance(value, int):
+            raise TypeError("value must be int")
+        if not isinstance(timestamp_micros, int):
+            raise TypeError("timestamp_micros must be int")
+        if abs(value) > _MAX_INCREMENT_VALUE:
+            raise ValueError(
+                "int values must be between -2**63 and 2**63 (64-bit signed int)"
+            )
+
+        if timestamp_micros < 0:
+            raise ValueError("timestamp must be non-negative")
+
+        self.family = family
+        self.qualifier = qualifier
+        self.value = value
+        self.timestamp = timestamp_micros
+
+    def _to_dict(self) -> dict[str, Any]:
+        return {
+            "add_to_cell": {
+                "family_name": self.family,
+                "column_qualifier": {"raw_value": self.qualifier},
+                "timestamp": {"raw_timestamp_micros": self.timestamp},
+                "input": {"int_value": self.value},
+            }
+        }
+
+    def is_idempotent(self) -> bool:
+        return False
 
 
 class RowMutationEntry:

@@ -16,3 +16,4 @@
 
 TEST_FAMILY = "test-family"
 TEST_FAMILY_2 = "test-family-2"
+TEST_AGGREGATE_FAMILY = "test-aggregate-family"
