@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.31.1](https://github.com/googleapis/python-pubsub/compare/v2.31.0...v2.31.1) (2025-07-28)
+
+
+### Bug Fixes
+
+* Change Log Severities for Terminated Streams ([#1433](https://github.com/googleapis/python-pubsub/issues/1433)) ([3a3aa79](https://github.com/googleapis/python-pubsub/commit/3a3aa79040d656a3391a153386ec662d002f9368))
+* Propagate Otel Context to Subscriber Callback if Provided ([#1429](https://github.com/googleapis/python-pubsub/issues/1429)) ([b0f6f49](https://github.com/googleapis/python-pubsub/commit/b0f6f49f65752e88523f9c4209366d2a18140416))
+
 ## [2.31.0](https://github.com/googleapis/python-pubsub/compare/v2.30.0...v2.31.0) (2025-06-26)
 
 
