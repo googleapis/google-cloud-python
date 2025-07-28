@@ -156,11 +156,8 @@ RUN if ! getent group $GID > /dev/null; then \
 # Set ownership of the app and cache directory now, before we copy files into it.
 RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
 
-# Copy the CLI script into the container.
-COPY .generator/cli.py .
-
 # Copy your CLI script into the container and make it executable.
-COPY --chown=$UID:$GID cli.py .
+COPY --chown=$UID:$GID /.generator/cli.py .
 RUN chmod a+rx ./cli.py
 
 # Switch to the non-root user. All subsequent commands will run as this user.
