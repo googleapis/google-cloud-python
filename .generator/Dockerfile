@@ -82,6 +82,7 @@ FROM marketplace.gcr.io/google/ubuntu2404
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
+    git \
     libssl3 \
     zlib1g \
     libbz2-1.0 \
@@ -96,6 +97,9 @@ RUN apt-get update && \
     # To avoid bazel error
     # "Cannot find gcc or CC; either correct your path or set the CC environment variable"
     build-essential \
+    # To avoid bazel error
+    # unzip command not found
+    unzip \ 
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -124,22 +128,51 @@ COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
 COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
 
-# Configure user to avoid running as root
-env USER myuser
-
 # Set the working directory in the container.
 WORKDIR /app
+
+
+# RUN find /app -exec chmod a+rw {} \;
+# RUN find /app -type d -exec chmod a+x {} \;
+
+# # For bazel
+# RUN mkdir -p /.cache
+# RUN find /.cache -exec chmod a+rw {} \;
+# RUN find /.cache -type d -exec chmod a+x {} \;
+
+# --- Create a dedicated non-root user ---
+# Use arguments to make the user and group IDs configurable from the build command.
+ARG UID=1000
+ARG GID=1000
+
+# Create the group and user, but only if they don't already exist.
+RUN if ! getent group $GID > /dev/null; then \
+        groupadd -g $GID myuser; \
+    fi && \
+    if ! getent passwd $UID > /dev/null; then \
+        useradd -u $UID -g $GID -ms /bin/bash myuser; \
+    fi
+
+# Set ownership of the app and cache directory now, before we copy files into it.
+RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
 
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
 
-RUN find /app -exec chmod a+rw {} \;
-RUN find /app -type d -exec chmod a+x {} \;
+RUN chmod +x /app/cli.py
 
-# For bazel
-RUN mkdir -p /.cache
-RUN find /.cache -exec chmod a+rw {} \;
-RUN find /.cache -type d -exec chmod a+x {} \;
+# Switch to the non-root user. All subsequent commands will run as this user.
+USER $UID
+
+# Disable Python's output buffering so logs appear in real-time.
+ENV PYTHONUNBUFFERED=1
+
+RUN /usr/local/bin/python3.9 -m venv bazel_env
+RUN . bazel_env/bin/activate
+
+RUN git clone https://github.com/googleapis/googleapis.git \
+    && cd googleapis \
+    && bazelisk build //google/cloud/language/v1:language-v1-py
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["python3.11", "./cli.py"]
+ENTRYPOINT ["python3.9", "./cli.py"]

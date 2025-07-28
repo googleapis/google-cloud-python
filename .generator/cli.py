@@ -116,12 +116,12 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
-def _build_bazel_target(bazel_rule: str, source_path: str = SOURCE_DIR):
+def _build_bazel_target(bazel_rule: str, source: str = SOURCE_DIR):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
         bazel_rule (str): The Bazel rule to build.
-        source_path (str): The path to the root of the Bazel workspace.
+        source (str): The path to the root of the Bazel workspace.
 
     Raises:
         ValueError: If the subprocess call fails.
@@ -131,7 +131,7 @@ def _build_bazel_target(bazel_rule: str, source_path: str = SOURCE_DIR):
         command = ["bazelisk", "build", bazel_rule]
         subprocess.run(
             command,
-            cwd=source_path,
+            cwd=source,
             text=True,
             check=True,
         )
@@ -222,17 +222,18 @@ def handle_generate(
     Raises:
         ValueError: If the `generate-request.json` file is not found or read.
     """
+    subprocess.run("/usr/local/bin/python3.9", "-m", "venv", "bazel_env")
+    subprocess.run("bazel_env/bin/activate", "-m", "venv", "bazel_env")
 
     try:
         # Read a generate-request.json file
         request_data = _read_json_file(f"{librarian}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
-
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
                 bazel_rule = _determine_bazel_rule(api_path, source)
-                _build_bazel_target(bazel_rule)
+                _build_bazel_target(bazel_rule, source)
                 _locate_and_extract_artifact(bazel_rule, library_id)
                 _run_post_processor(output)
 
@@ -350,4 +351,13 @@ if __name__ == "__main__":
         sys.exit(1)
 
     args = parser.parse_args()
-    args.func(args)
+
+    # Pass specific arguments to the handler functions for generate/build
+    if args.command == "generate":
+        args.func(
+            librarian=args.librarian, source=args.source, output=args.output
+        )
+    elif args.command == "build":
+        args.func(librarian=args.librarian)
+    else:
+        args.func()
