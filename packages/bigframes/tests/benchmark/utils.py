@@ -25,12 +25,12 @@ READ_GBQ_COLAB_PAGE_SIZE = 100
 class BenchmarkConfig:
     project_id: str
     dataset_id: str
-    session: bigframes.Session
+    session: bigframes.Session | None
     benchmark_suffix: str | None
     table_id: str | None = None
 
 
-def get_configuration(include_table_id=False) -> BenchmarkConfig:
+def get_configuration(include_table_id=False, start_session=True) -> BenchmarkConfig:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--project_id",
@@ -65,7 +65,7 @@ def get_configuration(include_table_id=False) -> BenchmarkConfig:
     )
 
     args = parser.parse_args()
-    session = _initialize_session(_str_to_bool(args.ordered))
+    session = _initialize_session(_str_to_bool(args.ordered)) if start_session else None
 
     return BenchmarkConfig(
         project_id=args.project_id,
