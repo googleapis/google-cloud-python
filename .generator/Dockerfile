@@ -149,6 +149,9 @@ USER $UID
 # Set the working directory in the container.
 WORKDIR /app
 
+#  Install Python dependencies from requirements.in
+COPY --chown=$UID:$GID .generator/requirements.in .
+RUN python3.11 -m pip install --no-cache-dir -r requirements.in
 
 # Copy the CLI script into the container.
 COPY --chown=$UID:$GID .generator/cli.py .
