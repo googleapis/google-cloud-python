@@ -69,7 +69,8 @@ WORKDIR /app
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 # TODO(https://github.com/googleapis/librarian/issues/907): Install Python dependencies from requirements.in.
-# TODO(https://github.com/googleapis/librarian/issues/905): Install Synthtool by cloning its repo.
+
+
 # TODO(https://github.com/googleapis/librarian/issues/906): Clone googleapis and run bazelisk build.
 
 # --- Final Stage ---
@@ -82,12 +83,24 @@ FROM marketplace.gcr.io/google/ubuntu2404
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
+    git \
     libssl3 \
     zlib1g \
     libbz2-1.0 \
     libffi8 \
     libsqlite3-0 \
     libreadline8 \
+    # For running bazelisk commands
+    openjdk-17-jdk \
+    # To avoid bazel error
+    # "python interpreter `python3` not found in PATH"
+    python3-dev \
+    # To avoid bazel error
+    # "Cannot find gcc or CC; either correct your path or set the CC environment variable"
+    build-essential \
+    # To avoid bazel error
+    # unzip command not found
+    unzip \ 
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -114,11 +127,44 @@ COPY --from=builder /usr/local/lib/python3.12 /usr/local/lib/python3.12
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
+COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
+
+ARG UID=1000
+ARG GID=1000
+
+# Create the group and user, but only if they don't already exist.
+RUN if ! getent group $GID > /dev/null; then \
+        groupadd -g $GID myuser; \
+    fi && \
+    if ! getent passwd $UID > /dev/null; then \
+        useradd -u $UID -g $GID -ms /bin/bash myuser; \
+    fi
+
+# Set ownership of the app directory now, before we copy files into it.
+RUN mkdir -p /app && chown $UID:$GID /app
+
+# Switch to the non-root user. All subsequent commands will run as this user.
+USER $UID
+
 # Set the working directory in the container.
 WORKDIR /app
 
+
 # Copy the CLI script into the container.
-COPY .generator/cli.py .
+COPY --chown=$UID:$GID .generator/cli.py .
+RUN chmod a+rx ./cli.py
+
+RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
+    python3.11 -m pip install /tmp/synthtool && \
+    rm -rf /tmp/synthtool
+
+RUN git clone --depth 1 https://github.com/googleapis/googleapis.git /tmp/googleapis
+
+RUN --mount=type=cache,target=$HOME/.cache/bazel \
+    cd /tmp/googleapis && \
+    bazelisk build //google/cloud/language/v1:language-v1-py
+
+RUN rm -rf /tmp/googleapis
 
 # Test cloud build
 

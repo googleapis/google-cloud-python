@@ -31,6 +31,8 @@ steps:
       - '--cache-from=gcr.io/$PROJECT_ID/python-librarian-generator:latest'
       - '--file=.generator/Dockerfile'
       - '.'
+    env:
+      - 'DOCKER_BUILDKIT=1'
 
 # STEP 3: Push the newly built image to the registry so it can be used
 # as the cache for the next run. Cloud Build does this automatically if
