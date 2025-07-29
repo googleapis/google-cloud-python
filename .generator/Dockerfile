@@ -169,7 +169,7 @@ RUN target=$HOME/.cache/bazel \
 
 RUN rm -rf /tmp/googleapis
 
-# Test cloud build
+# Test cloud build kaniko
 
 # Set the entrypoint for the container to run the script.
 ENTRYPOINT ["python3.11", "./cli.py"]
