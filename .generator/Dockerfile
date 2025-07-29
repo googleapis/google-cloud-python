@@ -67,6 +67,12 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VER
 # Set the working directory for build-related tasks.
 WORKDIR /app
 
+RUN git clone --depth 1 https://github.com/googleapis/googleapis.git /tmp/googleapis
+
+RUN target=$HOME/.cache/bazel \
+    cd /tmp/googleapis && \
+    bazelisk build //google/cloud/language/v1:language-v1-py
+
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 # TODO(https://github.com/googleapis/librarian/issues/907): Install Python dependencies from requirements.in.
 
@@ -161,13 +167,7 @@ RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthto
     python3.11 -m pip install /tmp/synthtool && \
     rm -rf /tmp/synthtool
 
-RUN git clone --depth 1 https://github.com/googleapis/googleapis.git /tmp/googleapis
-
-RUN target=$HOME/.cache/bazel \
-    cd /tmp/googleapis && \
-    bazelisk build //google/cloud/language/v1:language-v1-py
-
-RUN rm -rf /tmp/googleapis
+COPY --from=builder /tmp/googleapis/bazel-bin/google/cloud/language/v1/language-v1-py_gapic.py .
 
 # Test cloud build kaniko
 
