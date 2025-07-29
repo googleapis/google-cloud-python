@@ -163,7 +163,7 @@ RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthto
 
 RUN git clone --depth 1 https://github.com/googleapis/googleapis.git /tmp/googleapis
 
-RUN --mount=type=cache,target=$HOME/.cache/bazel \
+RUN target=$HOME/.cache/bazel \
     cd /tmp/googleapis && \
     bazelisk build //google/cloud/language/v1:language-v1-py
 
