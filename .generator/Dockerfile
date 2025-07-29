@@ -22,6 +22,7 @@ RUN apt-get update && \
     # Essential for compiling C code
     build-essential \
     # For downloading secure files
+    git \
     wget \
     ca-certificates \
     # For running bazelisk commands
