@@ -18,10 +18,12 @@
 
 from __future__ import absolute_import
 
+from functools import wraps
 import os
 import pathlib
 import re
 import shutil
+import time
 from typing import Dict, List
 import warnings
 
@@ -100,6 +102,27 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
+
+def _calculate_duration(func):
+    """This decorator prints the execution time for the decorated function."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.monotonic()
+        result = func(*args, **kwargs)
+        end = time.monotonic()
+        total_seconds = round(end - start)
+        hours = total_seconds // 3600  # Integer division to get hours
+        remaining_seconds = total_seconds % 3600  # Modulo to find remaining seconds
+        minutes = remaining_seconds // 60
+        seconds = remaining_seconds % 60
+        human_time = f"{hours:}:{minutes:0>2}:{seconds:0>2}"
+        print(f"Session ran in {total_seconds} seconds ({human_time})")
+        return result
+
+    return wrapper
+
+
 nox.options.sessions = [
     "unit",
     "system",
@@ -118,6 +141,7 @@ nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def lint(session):
     """Run linters.
 
@@ -134,6 +158,7 @@ def lint(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def blacken(session):
     """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
@@ -144,6 +169,7 @@ def blacken(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def format(session):
     """
     Run isort to sort imports. Then run black
@@ -164,6 +190,7 @@ def format(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments")
@@ -203,6 +230,7 @@ def install_unittest_dependencies(session, *constraints):
     "protobuf_implementation",
     ["python", "upb", "cpp"],
 )
+@_calculate_duration
 def unit(session, protobuf_implementation, install_extras=True):
     # Install all test dependencies, then install this package in-place.
 
@@ -278,6 +306,7 @@ def install_systemtest_dependencies(session, *constraints):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@_calculate_duration
 def system(session):
     """Run the system test suite."""
     constraints_path = str(
@@ -321,6 +350,7 @@ def system(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+@_calculate_duration
 def system_noextras(session):
     """Run the system test suite."""
     constraints_path = str(
@@ -366,6 +396,7 @@ def system_noextras(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
+@_calculate_duration
 def compliance(session):
     """Run the SQLAlchemy dialect-compliance system tests"""
     constraints_path = str(
@@ -418,6 +449,7 @@ def compliance(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def cover(session):
     """Run the final coverage report.
 
@@ -431,6 +463,7 @@ def cover(session):
 
 
 @nox.session(python="3.10")
+@_calculate_duration
 def docs(session):
     """Build the docs for this library."""
 
@@ -468,6 +501,7 @@ def docs(session):
 
 
 @nox.session(python="3.10")
+@_calculate_duration
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
@@ -520,6 +554,7 @@ def docfx(session):
     "protobuf_implementation",
     ["python", "upb", "cpp"],
 )
+@_calculate_duration
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
 
