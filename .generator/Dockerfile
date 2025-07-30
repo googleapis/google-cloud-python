@@ -76,7 +76,12 @@ WORKDIR /app
 # Clone the repo and run the build with sandboxing disabled
 RUN git clone --depth 1 https://github.com/googleapis/googleapis.git /tmp/googleapis && \
     cd /tmp/googleapis && \
-    bazelisk build --spawn_strategy=standalone //google/cloud/language/v1:language-v1-py
+    bazelisk build --spawn_strategy=standalone //google/cloud/language/v1:language-v1-py && \
+    # Add this command to find and print the real path of the output file
+    bazelisk cquery --output=files //google/cloud/language/v1:language-v1-py_gapic.py > /tmp/real_path.txt
+
+# This is just for debugging; you can remove it after you find the path
+RUN cat /tmp/real_path.txt
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 # TODO(https://github.com/googleapis/librarian/issues/907): Install Python dependencies from requirements.in.
