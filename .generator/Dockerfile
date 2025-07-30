@@ -71,10 +71,10 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VER
 # Set the working directory for build-related tasks.
 WORKDIR /app
 
-# Clone the repository and immediately run the build from the correct directory.
+# Clone the repo and run the build with sandboxing disabled
 RUN git clone --depth 1 https://github.com/googleapis/googleapis.git /tmp/googleapis && \
     cd /tmp/googleapis && \
-    bazelisk build //google/cloud/language/v1:language-v1-py
+    bazelisk build --spawn_strategy=standalone //google/cloud/language/v1:language-v1-py
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 # TODO(https://github.com/googleapis/librarian/issues/907): Install Python dependencies from requirements.in.
