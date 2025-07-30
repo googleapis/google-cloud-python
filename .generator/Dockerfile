@@ -174,7 +174,7 @@ RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthto
 
 COPY --from=builder /tmp/googleapis/bazel-bin/google/cloud/language/v1/language-v1-py_gapic.py .
 
-# Test cloud build kaniko
+# Test cloud build kaniko 2
 
 # Set the entrypoint for the container to run the script.
 ENTRYPOINT ["python3.11", "./cli.py"]
