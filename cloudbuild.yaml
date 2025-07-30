@@ -34,3 +34,4 @@ steps:
 
 options:
   default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
+  machineType: 'E2_HIGHCPU_8
