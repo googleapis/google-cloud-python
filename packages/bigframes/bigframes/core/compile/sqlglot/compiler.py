@@ -23,6 +23,7 @@ import sqlglot.expressions as sge
 from bigframes.core import expression, guid, identifiers, nodes, pyarrow_utils, rewrite
 from bigframes.core.compile import configs
 import bigframes.core.compile.sqlglot.aggregate_compiler as aggregate_compiler
+from bigframes.core.compile.sqlglot.aggregations import windows
 from bigframes.core.compile.sqlglot.expressions import typed_expr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 import bigframes.core.compile.sqlglot.sqlglot_ir as ir
@@ -272,18 +273,16 @@ class SQLGlotCompiler:
     def compile_aggregate(
         self, node: nodes.AggregateNode, child: ir.SQLGlotIR
     ) -> ir.SQLGlotIR:
-        ordering_cols = tuple(
-            sge.Ordered(
-                this=scalar_compiler.compile_scalar_expression(
-                    ordering.scalar_expression
-                ),
-                desc=ordering.direction.is_ascending is False,
-                nulls_first=ordering.na_last is False,
-            )
-            for ordering in node.order_by
+        ordering_cols = windows.get_window_order_by(
+            node.order_by, override_null_order=True
         )
         aggregations: tuple[tuple[str, sge.Expression], ...] = tuple(
-            (id.sql, aggregate_compiler.compile_aggregate(agg, order_by=ordering_cols))
+            (
+                id.sql,
+                aggregate_compiler.compile_aggregate(
+                    agg, order_by=ordering_cols if ordering_cols else ()
+                ),
+            )
             for agg, id in node.aggregations
         )
         by_cols: tuple[sge.Expression, ...] = tuple(

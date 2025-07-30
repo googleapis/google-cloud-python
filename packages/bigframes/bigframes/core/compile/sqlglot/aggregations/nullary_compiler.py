@@ -20,7 +20,7 @@ import sqlglot.expressions as sge
 
 from bigframes.core import window_spec
 import bigframes.core.compile.sqlglot.aggregations.op_registration as reg
-from bigframes.core.compile.sqlglot.aggregations.utils import apply_window_if_present
+from bigframes.core.compile.sqlglot.aggregations.windows import apply_window_if_present
 from bigframes.operations import aggregations as agg_ops
 
 NULLARY_OP_REGISTRATION = reg.OpRegistration()
