@@ -28,13 +28,13 @@ __protobuf__ = proto.module(
 
 
 class SlashCommand(proto.Message):
-    r"""A `slash
+    r"""Metadata about a `slash
     command <https://developers.google.com/workspace/chat/commands>`__
     in Google Chat.
 
     Attributes:
         command_id (int):
-            The ID of the slash command invoked.
+            The ID of the slash command.
     """
 
     command_id: int = proto.Field(
