@@ -53,6 +53,7 @@ s.move(
         # exclude gh actions as credentials are needed for tests
         ".github/workflows",
         "README.rst",
+        "renovate.json",
     ],
 )
 

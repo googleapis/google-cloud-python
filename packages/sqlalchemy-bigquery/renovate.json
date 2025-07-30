@@ -8,5 +8,12 @@
   "ignorePaths": [".pre-commit-config.yaml", ".kokoro/requirements.txt", "setup.py", ".github/workflows/unittest.yml"],
   "pip_requirements": {
     "fileMatch": ["requirements-test.txt", "samples/[\\S/]*constraints.txt", "samples/[\\S/]*constraints-test.txt"]
-  }
+  },
+  "packageRules": [
+    {
+      "matchFileNames": ["requirements.txt"],
+      "matchStrings": ["geoalchemy2(.*); python_version == '3.9'"],
+      "allowedVersions": ">= 0.17.1, < 0.18.0"
+    }
+  ]
 }

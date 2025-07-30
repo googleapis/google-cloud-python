@@ -55,8 +55,9 @@ from sqlalchemy.testing.suite.test_types import (
 )
 
 from sqlalchemy.testing.suite.test_reflection import (
-    BizarroCharacterFKResolutionTest,
+    BizarroCharacterTest,
     ComponentReflectionTest,
+    ComponentReflectionTestExtra,
     HasTableTest,
 )
 
@@ -615,6 +616,7 @@ class InsertBehaviorTest(_InsertBehaviorTest):
         pass
 
 
+del ComponentReflectionTestExtra  # Multiple tests re: CHECK CONSTRAINTS, etc which
 del ComponentReflectionTest  # Multiple tests re: CHECK CONSTRAINTS, etc which
 # BQ does not support
 # class ComponentReflectionTest(_ComponentReflectionTest):
@@ -629,7 +631,7 @@ del ComponentReflectionTest  # Multiple tests re: CHECK CONSTRAINTS, etc which
 #         pass
 
 del ArrayTest  # only appears to apply to postgresql
-del BizarroCharacterFKResolutionTest
+del BizarroCharacterTest
 del HasTableTest.test_has_table_cache  # TODO confirm whether BQ has table caching
 del DistinctOnTest  # expects unquoted table names.
 del HasIndexTest  # BQ doesn't do the indexes that SQLA is loooking for.
