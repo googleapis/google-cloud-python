@@ -226,17 +226,17 @@ class ReportRow(proto.Message):
     )
     youtube_creator_performance_view: "YoutubeCreatorPerformanceView" = proto.Field(
         proto.MESSAGE,
-        number=11,
+        number=13,
         message="YoutubeCreatorPerformanceView",
     )
     youtube_content_performance_view: "YoutubeContentPerformanceView" = proto.Field(
         proto.MESSAGE,
-        number=12,
+        number=14,
         message="YoutubeContentPerformanceView",
     )
     youtube_product_performance_view: "YoutubeProductPerformanceView" = proto.Field(
         proto.MESSAGE,
-        number=13,
+        number=15,
         message="YoutubeProductPerformanceView",
     )
 
@@ -2739,6 +2739,11 @@ class YoutubeContentPerformanceView(proto.Message):
             and refunds).
 
             This field is a member of `oneof`_ ``_net_sales``.
+        tagged_product_ids (MutableSequence[str]):
+            Set of unique `product
+            IDs <https://support.google.com/merchants/answer/188494#id>`__
+            tagged on the YouTube video. These IDs correspond to the
+            'offerId' in the Products API.
     """
 
     date: date_pb2.Date = proto.Field(
@@ -2798,6 +2803,10 @@ class YoutubeContentPerformanceView(proto.Message):
         number=11,
         optional=True,
         message=types.Price,
+    )
+    tagged_product_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
     )
 
 
@@ -2866,6 +2875,16 @@ class YoutubeProductPerformanceView(proto.Message):
             and refunds).
 
             This field is a member of `oneof`_ ``_net_sales``.
+        tagged_creator_count (int):
+            The number of distinct creators that tagged
+            the product.
+
+            This field is a member of `oneof`_ ``_tagged_creator_count``.
+        tagged_video_count (int):
+            The number of distinct videos that tagged the
+            product.
+
+            This field is a member of `oneof`_ ``_tagged_video_count``.
     """
 
     date: date_pb2.Date = proto.Field(
@@ -2925,6 +2944,16 @@ class YoutubeProductPerformanceView(proto.Message):
         number=11,
         optional=True,
         message=types.Price,
+    )
+    tagged_creator_count: int = proto.Field(
+        proto.INT64,
+        number=12,
+        optional=True,
+    )
+    tagged_video_count: int = proto.Field(
+        proto.INT64,
+        number=13,
+        optional=True,
     )
 
 
