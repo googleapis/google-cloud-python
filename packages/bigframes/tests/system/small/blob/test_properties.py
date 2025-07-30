@@ -40,7 +40,7 @@ def test_blob_authorizer(images_mm_df: bpd.DataFrame, bq_connection: str):
 
 def test_blob_version(images_mm_df: bpd.DataFrame):
     actual = images_mm_df["blob_col"].blob.version().to_pandas()
-    expected = pd.Series(["1739574332294150", "1739574332271343"], name="version")
+    expected = pd.Series(["1753907851152593", "1753907851111538"], name="version")
 
     pd.testing.assert_series_equal(
         actual, expected, check_dtype=False, check_index_type=False
@@ -55,13 +55,13 @@ def test_blob_metadata(images_mm_df: bpd.DataFrame):
                 '{"content_type":"image/jpeg",'
                 '"md5_hash":"e130ad042261a1883cd2cc06831cf748",'
                 '"size":338390,'
-                '"updated":1739574332000000}'
+                '"updated":1753907851000000}'
             ),
             (
                 '{"content_type":"image/jpeg",'
                 '"md5_hash":"e2ae3191ff2b809fd0935f01a537c650",'
                 '"size":43333,'
-                '"updated":1739574332000000}'
+                '"updated":1753907851000000}'
             ),
         ],
         name="metadata",
@@ -105,8 +105,8 @@ def test_blob_updated(images_mm_df: bpd.DataFrame):
     actual = images_mm_df["blob_col"].blob.updated().to_pandas()
     expected = pd.Series(
         [
-            pd.Timestamp("2025-02-14 23:05:32", tz="UTC"),
-            pd.Timestamp("2025-02-14 23:05:32", tz="UTC"),
+            pd.Timestamp("2025-07-30 20:37:31", tz="UTC"),
+            pd.Timestamp("2025-07-30 20:37:31", tz="UTC"),
         ],
         name="updated",
     )
