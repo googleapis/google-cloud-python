@@ -13,10 +13,11 @@
 # limitations under the License.
 
 
-def test_sessions_and_io(project_id: str, dataset_id: str) -> None:
+def test_sessions_and_io(project_id: str, dataset_id: str, gcs_bucket: str) -> None:
     YOUR_PROJECT_ID = project_id
     YOUR_DATASET_ID = dataset_id
     YOUR_LOCATION = "us"
+    YOUR_BUCKET = gcs_bucket
 
     # [START bigquery_dataframes_create_and_use_session_instance]
     import bigframes
@@ -137,6 +138,15 @@ def test_sessions_and_io(project_id: str, dataset_id: str) -> None:
     # Read a CSV file from GCS
     df = bpd.read_csv("gs://cloud-samples-data/bigquery/us-states/us-states.csv")
     # [END bigquery_dataframes_read_data_from_csv]
+    assert df is not None
+
+    # [START bigquery_dataframes_write_data_to_csv]
+    import bigframes.pandas as bpd
+
+    df = bpd.DataFrame({"my_col": [1, 2, 3]})
+    # Write a dataframe to a CSV file in GCS
+    df.to_csv(f"gs://{YOUR_BUCKET}/myfile*.csv")
+    # [END bigquery_dataframes_write_data_to_csv]
     assert df is not None
 
     # [START bigquery_dataframes_read_data_from_bigquery_table]
