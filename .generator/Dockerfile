@@ -27,6 +27,8 @@ RUN apt-get update && \
     ca-certificates \
     # For running bazelisk commands
     openjdk-17-jdk \
+    zip \
+    unzip \ 
     # To avoid bazel error
     # "python interpreter `python3` not found in PATH"
     python3-dev \
