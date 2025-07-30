@@ -401,7 +401,34 @@ class FloorSetting(proto.Message):
         AI_PLATFORM = 1
 
     class FloorSettingMetadata(proto.Message):
-        r"""message describing FloorSetting Metadata"""
+        r"""message describing FloorSetting Metadata
+
+        Attributes:
+            multi_language_detection (google.cloud.modelarmor_v1.types.FloorSetting.FloorSettingMetadata.MultiLanguageDetection):
+                Optional. Metadata for multi language
+                detection.
+        """
+
+        class MultiLanguageDetection(proto.Message):
+            r"""Metadata to enable multi language detection via floor
+            setting.
+
+            Attributes:
+                enable_multi_language_detection (bool):
+                    Required. If true, multi language detection
+                    will be enabled.
+            """
+
+            enable_multi_language_detection: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+
+        multi_language_detection: "FloorSetting.FloorSettingMetadata.MultiLanguageDetection" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="FloorSetting.FloorSettingMetadata.MultiLanguageDetection",
+        )
 
     name: str = proto.Field(
         proto.STRING,
