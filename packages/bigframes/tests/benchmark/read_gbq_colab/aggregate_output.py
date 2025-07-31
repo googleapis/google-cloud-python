@@ -48,7 +48,7 @@ def aggregate_output(*, project_id, dataset_id, table_id):
 
 
 if __name__ == "__main__":
-    config = utils.get_configuration(include_table_id=True)
+    config = utils.get_configuration(include_table_id=True, start_session=False)
     current_path = pathlib.Path(__file__).absolute()
 
     utils.get_execution_time(
@@ -58,5 +58,4 @@ if __name__ == "__main__":
         project_id=config.project_id,
         dataset_id=config.dataset_id,
         table_id=config.table_id,
-        session=config.session,
     )

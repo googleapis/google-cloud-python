@@ -40,31 +40,53 @@ class ExecutionMetrics:
     ):
         if query_job is None:
             assert row_iterator is not None
-            total_bytes_processed = getattr(row_iterator, "total_bytes_processed", None)
-            query = getattr(row_iterator, "query", None)
-            if total_bytes_processed is None or query is None:
-                return
 
-            self.execution_count += 1
-            self.query_char_count += len(query)
-            self.bytes_processed += total_bytes_processed
-            write_stats_to_disk(len(query), total_bytes_processed)
-            return
+            # TODO(tswast): Pass None after making benchmark publishing robust to missing data.
+            bytes_processed = getattr(row_iterator, "total_bytes_processed", 0)
+            query_char_count = len(getattr(row_iterator, "query", ""))
+            slot_millis = getattr(row_iterator, "slot_millis", 0)
+            exec_seconds = 0.0
 
-        if query_job.configuration.dry_run:
-            write_stats_to_disk(len(query_job.query), 0, 0, 0)
-
-        stats = get_performance_stats(query_job)
-        if stats is not None:
-            query_char_count, bytes_processed, slot_millis, execution_secs = stats
             self.execution_count += 1
             self.query_char_count += query_char_count
             self.bytes_processed += bytes_processed
             self.slot_millis += slot_millis
-            self.execution_secs += execution_secs
+
+        elif query_job.configuration.dry_run:
+            query_char_count = len(query_job.query)
+
+            # TODO(tswast): Pass None after making benchmark publishing robust to missing data.
+            bytes_processed = 0
+            slot_millis = 0
+            exec_seconds = 0.0
+
+        elif (stats := get_performance_stats(query_job)) is not None:
+            query_char_count, bytes_processed, slot_millis, exec_seconds = stats
+            self.execution_count += 1
+            self.query_char_count += query_char_count
+            self.bytes_processed += bytes_processed
+            self.slot_millis += slot_millis
+            self.execution_secs += exec_seconds
             write_stats_to_disk(
-                query_char_count, bytes_processed, slot_millis, execution_secs
+                query_char_count=query_char_count,
+                bytes_processed=bytes_processed,
+                slot_millis=slot_millis,
+                exec_seconds=exec_seconds,
             )
+
+        else:
+            # TODO(tswast): Pass None after making benchmark publishing robust to missing data.
+            bytes_processed = 0
+            query_char_count = 0
+            slot_millis = 0
+            exec_seconds = 0
+
+        write_stats_to_disk(
+            query_char_count=query_char_count,
+            bytes_processed=bytes_processed,
+            slot_millis=slot_millis,
+            exec_seconds=exec_seconds,
+        )
 
 
 def get_performance_stats(
@@ -103,10 +125,11 @@ def get_performance_stats(
 
 
 def write_stats_to_disk(
+    *,
     query_char_count: int,
     bytes_processed: int,
-    slot_millis: Optional[int] = None,
-    exec_seconds: Optional[float] = None,
+    slot_millis: int,
+    exec_seconds: float,
 ):
     """For pytest runs only, log information about the query job
     to a file in order to create a performance report.
@@ -118,18 +141,17 @@ def write_stats_to_disk(
     test_name = os.environ[LOGGING_NAME_ENV_VAR]
     current_directory = os.getcwd()
 
-    if (slot_millis is not None) and (exec_seconds is not None):
-        # store slot milliseconds
-        slot_file = os.path.join(current_directory, test_name + ".slotmillis")
-        with open(slot_file, "a") as f:
-            f.write(str(slot_millis) + "\n")
+    # store slot milliseconds
+    slot_file = os.path.join(current_directory, test_name + ".slotmillis")
+    with open(slot_file, "a") as f:
+        f.write(str(slot_millis) + "\n")
 
-        # store execution time seconds
-        exec_time_file = os.path.join(
-            current_directory, test_name + ".bq_exec_time_seconds"
-        )
-        with open(exec_time_file, "a") as f:
-            f.write(str(exec_seconds) + "\n")
+    # store execution time seconds
+    exec_time_file = os.path.join(
+        current_directory, test_name + ".bq_exec_time_seconds"
+    )
+    with open(exec_time_file, "a") as f:
+        f.write(str(exec_seconds) + "\n")
 
     # store length of query
     query_char_count_file = os.path.join(
