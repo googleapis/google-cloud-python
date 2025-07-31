@@ -73,15 +73,41 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VER
 # Set the working directory for build-related tasks.
 WORKDIR /app
 
-# Clone the repo and run the build with sandboxing disabled
-RUN git clone --depth 1 https://github.com/googleapis/googleapis.git /tmp/googleapis && \
-    cd /tmp/googleapis && \
-    bazelisk build --spawn_strategy=standalone //google/cloud/language/v1:language-v1-py && \
-    # Add this command to find and print the real path of the output file
-    bazelisk cquery --output=files //google/cloud/language/v1:language-v1-py_gapic.py > /tmp/real_path.txt
+ARG UID=1000
+ARG GID=1000
 
-# This is just for debugging; you can remove it after you find the path
-RUN cat /tmp/real_path.txt
+# Create the group and user, but only if they don't already exist.
+RUN if ! getent group $GID > /dev/null; then \
+        groupadd -g $GID myuser; \
+    fi && \
+    if ! getent passwd $UID > /dev/null; then \
+        useradd -u $UID -g $GID -ms /bin/bash myuser; \
+    fi
+
+# Set ownership of the app directory now, before we copy files into it.
+RUN mkdir -p /app && chown $UID:$GID /app
+
+# Switch to the non-root user. All subsequent commands will run as this user.
+USER $UID
+
+# We'll point both to the /bazel_cache directory which will be mounted as a volume.
+ENV BAZELISK_HOME="/bazel_cache/bazelisk"
+ENV BAZEL_HOME="/bazel_cache/bazel"
+ENV XDG_CACHE_HOME="/bazel_cache"
+
+# Ensure the cache directories within the non-root user's context exist and are writable.
+# This is crucial as Bazel creates subdirectories under BAZEL_HOME.
+RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
+             ${BAZEL_HOME}/_bazel_ubuntu/output_base \
+             ${BAZELISK_HOME} && \
+    chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
+
+RUN /usr/local/bin/python3.9 -m venv bazel_env
+RUN . bazel_env/bin/activate
+
+RUN git clone https://github.com/googleapis/googleapis.git \
+    && cd googleapis \
+    && bazelisk build --spawn_strategy=standalone //google/cloud/language/v1:language-v1-py
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 # TODO(https://github.com/googleapis/librarian/issues/907): Install Python dependencies from requirements.in.
@@ -177,7 +203,10 @@ RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthto
     python3.11 -m pip install /tmp/synthtool && \
     rm -rf /tmp/synthtool
 
-COPY --from=builder /tmp/googleapis/bazel-bin/google/cloud/language/v1/language-v1-py_gapic.py .
+ENV BAZELISK_HOME="/bazel_cache/bazelisk"
+ENV BAZEL_HOME="/bazel_cache/bazel"
+ENV XDG_CACHE_HOME="/bazel_cache"
+COPY --from=cacher --chown=$UID:$GID /bazel_cache /bazel_cache
 
 # Test cloud build kaniko 2
 
