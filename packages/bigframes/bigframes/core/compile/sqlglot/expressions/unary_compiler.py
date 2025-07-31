@@ -16,6 +16,8 @@ from __future__ import annotations
 
 import typing
 
+import pandas as pd
+import pyarrow as pa
 import sqlglot
 import sqlglot.expressions as sge
 
@@ -103,6 +105,12 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
         ],
         default=sge.func("ATANH", expr.expr),
     )
+
+
+@UNARY_OP_REGISTRATION.register(ops.AsTypeOp)
+def _(op: ops.AsTypeOp, expr: TypedExpr) -> sge.Expression:
+    # TODO: Support more types for casting, such as JSON, etc.
+    return sge.Cast(this=expr.expr, to=op.to_type)
 
 
 @UNARY_OP_REGISTRATION.register(ops.ArrayToStringOp)
@@ -234,6 +242,12 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     ) - sge.convert(1)
 
 
+@UNARY_OP_REGISTRATION.register(ops.FloorDtOp)
+def _(op: ops.FloorDtOp, expr: TypedExpr) -> sge.Expression:
+    # TODO: Remove this method when it is covered by ops.FloorOp
+    return sge.TimestampTrunc(this=expr.expr, unit=sge.Identifier(this=op.freq))
+
+
 @UNARY_OP_REGISTRATION.register(ops.floor_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Floor(this=expr.expr)
@@ -247,6 +261,26 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
 @UNARY_OP_REGISTRATION.register(ops.geo_st_astext_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.func("ST_ASTEXT", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.geo_st_boundary_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("ST_BOUNDARY", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.geo_st_geogfromtext_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("SAFE.ST_GEOGFROMTEXT", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.geo_st_isclosed_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("ST_ISCLOSED", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.GeoStLengthOp)
+def _(op: ops.GeoStLengthOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("ST_LENGTH", expr.expr)
 
 
 @UNARY_OP_REGISTRATION.register(ops.geo_x_op)
@@ -272,6 +306,11 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
 @UNARY_OP_REGISTRATION.register(ops.invert_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.BitwiseNot(this=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.IsInOp)
+def _(op: ops.IsInOp, expr: TypedExpr) -> sge.Expression:
+    return sge.In(this=expr.expr, expressions=[sge.convert(v) for v in op.values])
 
 
 @UNARY_OP_REGISTRATION.register(ops.isalnum_op)
@@ -517,6 +556,26 @@ def _(op: ops.StrSliceOp, expr: TypedExpr) -> sge.Expression:
     )
 
 
+@UNARY_OP_REGISTRATION.register(ops.StrftimeOp)
+def _(op: ops.StrftimeOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("FORMAT_TIMESTAMP", sge.convert(op.date_format), expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.StructFieldOp)
+def _(op: ops.StructFieldOp, expr: TypedExpr) -> sge.Expression:
+    if isinstance(op.name_or_index, str):
+        name = op.name_or_index
+    else:
+        pa_type = typing.cast(pd.ArrowDtype, expr.dtype)
+        pa_struct_type = typing.cast(pa.StructType, pa_type.pyarrow_dtype)
+        name = pa_struct_type.field(op.name_or_index).name
+
+    return sge.Column(
+        this=sge.to_identifier(name, quoted=True),
+        catalog=expr.expr,
+    )
+
+
 @UNARY_OP_REGISTRATION.register(ops.tan_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.func("TAN", expr.expr)
@@ -535,6 +594,36 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
 @UNARY_OP_REGISTRATION.register(ops.timedelta_floor_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.Floor(this=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.ToDatetimeOp)
+def _(op: ops.ToDatetimeOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Cast(this=sge.func("TIMESTAMP_SECONDS", expr.expr), to="DATETIME")
+
+
+@UNARY_OP_REGISTRATION.register(ops.ToTimestampOp)
+def _(op: ops.ToTimestampOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("TIMESTAMP_SECONDS", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.ToTimedeltaOp)
+def _(op: ops.ToTimedeltaOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Interval(this=expr.expr, unit=sge.Identifier(this="SECOND"))
+
+
+@UNARY_OP_REGISTRATION.register(ops.UnixMicros)
+def _(op: ops.UnixMicros, expr: TypedExpr) -> sge.Expression:
+    return sge.func("UNIX_MICROS", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.UnixMillis)
+def _(op: ops.UnixMillis, expr: TypedExpr) -> sge.Expression:
+    return sge.func("UNIX_MILLIS", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.UnixSeconds)
+def _(op: ops.UnixSeconds, expr: TypedExpr) -> sge.Expression:
+    return sge.func("UNIX_SECONDS", expr.expr)
 
 
 # JSON Ops

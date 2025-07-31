@@ -139,6 +139,13 @@ def test_expm1(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_floor_dt(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.FloorDtOp("DAY"), "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_floor(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.floor_op, "float64_col")
@@ -156,6 +163,34 @@ def test_geo_area(scalar_types_df: bpd.DataFrame, snapshot):
 def test_geo_st_astext(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["geography_col"]]
     sql = _apply_unary_op(bf_df, ops.geo_st_astext_op, "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_geo_st_boundary(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.geo_st_boundary_op, "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_geo_st_geogfromtext(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["string_col"]]
+    sql = _apply_unary_op(bf_df, ops.geo_st_geogfromtext_op, "string_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_geo_st_isclosed(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.geo_st_isclosed_op, "geography_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_geo_st_length(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["geography_col"]]
+    sql = _apply_unary_op(bf_df, ops.GeoStLengthOp(True), "geography_col")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -233,6 +268,13 @@ def test_hour(scalar_types_df: bpd.DataFrame, snapshot):
 def test_invert(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col"]]
     sql = _apply_unary_op(bf_df, ops.invert_op, "int64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_is_in(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]]
+    sql = _apply_unary_op(bf_df, ops.IsInOp(values=(1, 2, 3)), "int64_col")
 
     snapshot.assert_match(sql, "out.sql")
 
@@ -419,6 +461,25 @@ def test_str_slice(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_strftime(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.StrftimeOp("%Y-%m-%d"), "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_struct_field(nested_structs_types_df: bpd.DataFrame, snapshot):
+    bf_df = nested_structs_types_df[["people"]]
+
+    # When a name string is provided.
+    sql = _apply_unary_op(bf_df, ops.StructFieldOp("name"), "people")
+    snapshot.assert_match(sql, "out.sql")
+
+    # When an index integer is provided.
+    sql = _apply_unary_op(bf_df, ops.StructFieldOp(0), "people")
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_str_contains(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["string_col"]]
     sql = _apply_unary_op(bf_df, ops.StrContainsOp("e"), "string_col")
@@ -506,6 +567,48 @@ def test_tanh(scalar_types_df: bpd.DataFrame, snapshot):
 def test_time(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["timestamp_col"]]
     sql = _apply_unary_op(bf_df, ops.time_op, "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_to_datetime(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]]
+    sql = _apply_unary_op(bf_df, ops.ToDatetimeOp(), "int64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_to_timestamp(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]]
+    sql = _apply_unary_op(bf_df, ops.ToTimestampOp(), "int64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_to_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]]
+    sql = _apply_unary_op(bf_df, ops.ToTimedeltaOp("s"), "int64_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_unix_micros(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.UnixMicros(), "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_unix_millis(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.UnixMillis(), "timestamp_col")
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_unix_seconds(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col"]]
+    sql = _apply_unary_op(bf_df, ops.UnixSeconds(), "timestamp_col")
 
     snapshot.assert_match(sql, "out.sql")
 
