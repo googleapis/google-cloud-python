@@ -967,6 +967,11 @@ class Grant(proto.Message):
             ENDED (11):
                 System took back access as the requested
                 duration was over. This is a terminal state.
+            WITHDRAWING (12):
+                Access is being withdrawn.
+            WITHDRAWN (13):
+                Grant was withdrawn by the grant owner. This
+                is a terminal state.
         """
         STATE_UNSPECIFIED = 0
         APPROVAL_AWAITED = 1
@@ -979,6 +984,8 @@ class Grant(proto.Message):
         REVOKING = 9
         REVOKED = 10
         ENDED = 11
+        WITHDRAWING = 12
+        WITHDRAWN = 13
 
     class Timeline(proto.Message):
         r"""Timeline of a grant describing what happened to it and when.
@@ -1045,6 +1052,10 @@ class Grant(proto.Message):
                 externally_modified (google.cloud.privilegedaccessmanager_v1.types.Grant.Timeline.Event.ExternallyModified):
                     The policy bindings made by grant have been
                     modified outside of PAM.
+
+                    This field is a member of `oneof`_ ``event``.
+                withdrawn (google.cloud.privilegedaccessmanager_v1.types.Grant.Timeline.Event.Withdrawn):
+                    The grant was withdrawn.
 
                     This field is a member of `oneof`_ ``event``.
                 event_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1130,6 +1141,9 @@ class Grant(proto.Message):
                     proto.STRING,
                     number=2,
                 )
+
+            class Withdrawn(proto.Message):
+                r"""An event representing that the grant was withdrawn."""
 
             class Scheduled(proto.Message):
                 r"""An event representing that the grant has been scheduled to be
@@ -1241,6 +1255,12 @@ class Grant(proto.Message):
                     oneof="event",
                     message="Grant.Timeline.Event.ExternallyModified",
                 )
+            )
+            withdrawn: "Grant.Timeline.Event.Withdrawn" = proto.Field(
+                proto.MESSAGE,
+                number=13,
+                oneof="event",
+                message="Grant.Timeline.Event.Withdrawn",
             )
             event_time: timestamp_pb2.Timestamp = proto.Field(
                 proto.MESSAGE,

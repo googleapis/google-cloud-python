@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import os
+import re
 
 # try/except added for compatibility with python < 3.8
 try:
@@ -11371,6 +11372,7 @@ def test_create_grant_rest_call_success(request_type):
                     "expired": {},
                     "ended": {},
                     "externally_modified": {},
+                    "withdrawn": {},
                     "event_time": {},
                 }
             ]
