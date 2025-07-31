@@ -4193,6 +4193,7 @@ def test_df_to_pickle(scalars_df_index, scalars_pandas_df_index):
 
 
 def test_df_to_orc(scalars_df_index, scalars_pandas_df_index):
+    pytest.importorskip("pyarrow.orc")
     unsupported = [
         "numeric_col",
         "bytes_col",
