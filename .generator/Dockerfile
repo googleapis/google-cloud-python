@@ -71,29 +71,24 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VER
     chmod +x /usr/local/bin/bazelisk
 
 # Set the working directory for build-related tasks.
-WORKDIR /app
-
 ARG UID=1000
 ARG GID=1000
-
-# Create the group and user, but only if they don't already exist.
-RUN if ! getent group $GID > /dev/null; then \
-        groupadd -g $GID myuser; \
-    fi && \
-    if ! getent passwd $UID > /dev/null; then \
-        useradd -u $UID -g $GID -ms /bin/bash myuser; \
-    fi
-
-USER $UID
-
-# Set ownership of the app directory now, before we copy files into it.
-RUN mkdir -p /app && chown $UID:$GID /app
-RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
-RUN mkdir -p /app /bazel_cache && \
+RUN mkdir -p /bazel_cache && \
+    groupadd -g $GID myuser && \
+    useradd -u $UID -g $GID -ms /bin/bash myuser && \
+    # Recursively give the new user ownership of BOTH the workspace and the cache
     chown -R $UID:$GID /app /bazel_cache
 
-    # --- TEMPORARY HACK: Add this line to fix old cache permissions ---
-RUN chown -R 1000:1000 /bazel_cache
+# Switch to the non-root user
+USER $UID
+
+# Set environment variables to control Bazel's cache locations
+ENV XDG_CACHE_HOME="/bazel_cache"
+
+# CORRECTED: Combine the clone and build steps into a single RUN command.
+# This is critical because 'cd' does not persist between separate RUN commands.
+RUN git clone --depth 1 https://github.com/googleapis/googleapis.git . && \
+    bazelisk build --spawn_strategy=standalone //google/cloud/language/v1:language-v1-py
 
 # Switch to the non-root user. All subsequent commands will run as this user.
 
