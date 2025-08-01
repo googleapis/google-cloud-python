@@ -182,17 +182,18 @@ ARG GID=1000
 
 # Create the group and user, but only if they don't already exist.
 RUN if ! getent group $GID > /dev/null; then \
-        groupadd -g $GID myuser; \
-    fi && \
-    if ! getent passwd $UID > /dev/null; then \
-        useradd -u $UID -g $GID -ms /bin/bash myuser; \
-    fi
+groupadd -g $GID myuser; \
+fi && \
+if ! getent passwd $UID > /dev/null; then \
+useradd -u $UID -g $GID -ms /bin/bash myuser; \
+fi
+
+# Switch to the non-root user. All subsequent commands will run as this user.
+USER $UID
 
 # Set ownership of the app directory now, before we copy files into it.
 RUN mkdir -p /app && chown $UID:$GID /app
 
-# Switch to the non-root user. All subsequent commands will run as this user.
-USER $UID
 
 # Set the working directory in the container.
 WORKDIR /app
