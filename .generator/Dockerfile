@@ -87,14 +87,6 @@ RUN if ! getent group $GID > /dev/null; then \
     
 # Set ownership of the app directory now, before we copy files into it.
 RUN mkdir -p /app && chown $UID:$GID /app
-# RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
-# RUN mkdir -p /app /bazel_cache && \
-#     chown -R $UID:$GID /app /bazel_cache
-
-# --- TEMPORARY HACK: Add this line to fix old cache permissions ---
-    # RUN chown -R 1000:1000 /bazel_cache
-    
-    # Switch to the non-root user. All subsequent commands will run as this user.
 
 # We'll point both to the /bazel_cache directory which will be mounted as a volume.
 ENV BAZELISK_HOME="/bazel_cache/bazelisk"
@@ -113,7 +105,7 @@ RUN . bazel_env/bin/activate
 
 RUN git clone https://github.com/googleapis/googleapis.git \
     && cd googleapis \
-    && bazelisk build --spawn_strategy=standalone //google/cloud/language/v1:language-v1-py
+    && bazelisk --output_base=/bazel_cache/_bazel_ubuntu/output_base build --disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos  --incompatible_strict_action_env //google/cloud/language/v1:language-v1-py
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
 # TODO(https://github.com/googleapis/librarian/issues/907): Install Python dependencies from requirements.in.
