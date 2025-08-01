@@ -61,7 +61,8 @@ class UnsupportedTypeError(ValueError):
         self.type = type_
         self.supported_types = supported_types
         super().__init__(
-            f"'{type_}' is not one of the supported types {supported_types}"
+            f"'{type_}' must be one of the supported types ({supported_types}) "
+            "or a list of one of those types."
         )
 
 

@@ -15,6 +15,7 @@
 import inspect
 import re
 import textwrap
+from typing import Sequence
 
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions
@@ -1642,3 +1643,29 @@ def test_remote_function_nary_partial_ordering_mode_assign(
     df = scalars_df_index[["int64_col", "int64_too", "float64_col", "string_col"]]
     df1 = df.assign(combined=df.apply(processor, axis=1))
     repr(df1)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_unsupported_type(
+    session,
+    dataset_id_permanent,
+    bq_cf_connection,
+):
+    # Remote functions do not support tuple return types.
+    def func_tuple(x):
+        return (x, x, x)
+
+    with pytest.raises(
+        ValueError,
+        match=r"'typing\.Sequence\[int\]' must be one of the supported types",
+    ):
+        bff.remote_function(
+            input_types=int,
+            output_type=Sequence[int],
+            session=session,
+            dataset=dataset_id_permanent,
+            bigquery_connection=bq_cf_connection,
+            reuse=True,
+            name=get_function_name(func_tuple),
+            cloud_function_service_account="default",
+        )(func_tuple)
