@@ -125,7 +125,7 @@ def _build_bazel_target(bazel_rule: str):
     """
     logger.info(f"Executing build for rule: {bazel_rule}")
     try:
-        command = ["bazelisk", "build", bazel_rule]
+        command = ["bazelisk",  "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "build", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", "--incompatible_strict_action_env", bazel_rule]
         subprocess.run(
             command,
             cwd=f"{SOURCE_DIR}/googleapis",
@@ -150,7 +150,7 @@ def _locate_and_extract_artifact(bazel_rule: str, library_id: str):
     try:
         # 1. Find the bazel-bin output directory.
         logger.info("Locating Bazel output directory...")
-        info_command = ["bazelisk", "info", "bazel-bin"]
+        info_command = ["bazelisk", "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "info", "bazel-bin"]
         result = subprocess.run(
             info_command,
             cwd=f"{SOURCE_DIR}/googleapis",
