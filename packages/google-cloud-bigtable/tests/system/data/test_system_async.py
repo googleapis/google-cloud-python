@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import pytest
-import asyncio
 import datetime
 import uuid
 import os
@@ -137,14 +136,6 @@ class TestSystemAsync:
                 yield view
         else:
             raise ValueError(f"unknown target type: {request.param}")
-
-    @CrossSync.drop
-    @pytest.fixture(scope="session")
-    def event_loop(self):
-        loop = asyncio.get_event_loop()
-        yield loop
-        loop.stop()
-        loop.close()
 
     @pytest.fixture(scope="session")
     def column_family_config(self):

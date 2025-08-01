@@ -9,7 +9,7 @@ Client Types
 
    data_client/data_client_usage
    classic_client/usage
-
+   admin_client/admin_client_usage
 
 Changelog
 ---------

@@ -349,7 +349,7 @@ def _make_table_api():
         client as bigtable_table_admin,
     )
 
-    return mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
+    return mock.create_autospec(bigtable_table_admin.BaseBigtableTableAdminClient)
 
 
 def _create_table_helper(split_keys=[], column_families={}):
@@ -1482,7 +1482,7 @@ def _table_restore_helper(backup_name=None):
     table = _make_table(TABLE_ID, instance)
 
     table_api = client._table_admin_client = _make_table_api()
-    table_api.restore_table.return_value = op_future
+    table_api._restore_table.return_value = op_future
 
     if backup_name:
         future = table.restore(TABLE_ID, backup_name=BACKUP_NAME)
@@ -1496,7 +1496,7 @@ def _table_restore_helper(backup_name=None):
         "table_id": TABLE_ID,
         "backup": BACKUP_NAME,
     }
-    table_api.restore_table.assert_called_once_with(request=expected_request)
+    table_api._restore_table.assert_called_once_with(request=expected_request)
 
 
 def test_table_restore_table_w_backup_id():

@@ -58,7 +58,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import BigtableTableAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import BigtableTableAdminGrpcAsyncIOTransport
-from .client import BigtableTableAdminClient
+from .client import BaseBigtableTableAdminClient
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -70,7 +70,7 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class BigtableTableAdminAsyncClient:
+class BaseBigtableTableAdminAsyncClient:
     """Service for creating, configuring, and deleting Cloud
     Bigtable tables.
 
@@ -78,62 +78,66 @@ class BigtableTableAdminAsyncClient:
     within the tables.
     """
 
-    _client: BigtableTableAdminClient
+    _client: BaseBigtableTableAdminClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = BigtableTableAdminClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = BigtableTableAdminClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = BigtableTableAdminClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = BigtableTableAdminClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = BaseBigtableTableAdminClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = BaseBigtableTableAdminClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = BaseBigtableTableAdminClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = BaseBigtableTableAdminClient._DEFAULT_UNIVERSE
 
-    authorized_view_path = staticmethod(BigtableTableAdminClient.authorized_view_path)
-    parse_authorized_view_path = staticmethod(
-        BigtableTableAdminClient.parse_authorized_view_path
+    authorized_view_path = staticmethod(
+        BaseBigtableTableAdminClient.authorized_view_path
     )
-    backup_path = staticmethod(BigtableTableAdminClient.backup_path)
-    parse_backup_path = staticmethod(BigtableTableAdminClient.parse_backup_path)
-    cluster_path = staticmethod(BigtableTableAdminClient.cluster_path)
-    parse_cluster_path = staticmethod(BigtableTableAdminClient.parse_cluster_path)
+    parse_authorized_view_path = staticmethod(
+        BaseBigtableTableAdminClient.parse_authorized_view_path
+    )
+    backup_path = staticmethod(BaseBigtableTableAdminClient.backup_path)
+    parse_backup_path = staticmethod(BaseBigtableTableAdminClient.parse_backup_path)
+    cluster_path = staticmethod(BaseBigtableTableAdminClient.cluster_path)
+    parse_cluster_path = staticmethod(BaseBigtableTableAdminClient.parse_cluster_path)
     crypto_key_version_path = staticmethod(
-        BigtableTableAdminClient.crypto_key_version_path
+        BaseBigtableTableAdminClient.crypto_key_version_path
     )
     parse_crypto_key_version_path = staticmethod(
-        BigtableTableAdminClient.parse_crypto_key_version_path
+        BaseBigtableTableAdminClient.parse_crypto_key_version_path
     )
-    instance_path = staticmethod(BigtableTableAdminClient.instance_path)
-    parse_instance_path = staticmethod(BigtableTableAdminClient.parse_instance_path)
-    schema_bundle_path = staticmethod(BigtableTableAdminClient.schema_bundle_path)
+    instance_path = staticmethod(BaseBigtableTableAdminClient.instance_path)
+    parse_instance_path = staticmethod(BaseBigtableTableAdminClient.parse_instance_path)
+    schema_bundle_path = staticmethod(BaseBigtableTableAdminClient.schema_bundle_path)
     parse_schema_bundle_path = staticmethod(
-        BigtableTableAdminClient.parse_schema_bundle_path
+        BaseBigtableTableAdminClient.parse_schema_bundle_path
     )
-    snapshot_path = staticmethod(BigtableTableAdminClient.snapshot_path)
-    parse_snapshot_path = staticmethod(BigtableTableAdminClient.parse_snapshot_path)
-    table_path = staticmethod(BigtableTableAdminClient.table_path)
-    parse_table_path = staticmethod(BigtableTableAdminClient.parse_table_path)
+    snapshot_path = staticmethod(BaseBigtableTableAdminClient.snapshot_path)
+    parse_snapshot_path = staticmethod(BaseBigtableTableAdminClient.parse_snapshot_path)
+    table_path = staticmethod(BaseBigtableTableAdminClient.table_path)
+    parse_table_path = staticmethod(BaseBigtableTableAdminClient.parse_table_path)
     common_billing_account_path = staticmethod(
-        BigtableTableAdminClient.common_billing_account_path
+        BaseBigtableTableAdminClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        BigtableTableAdminClient.parse_common_billing_account_path
+        BaseBigtableTableAdminClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(BigtableTableAdminClient.common_folder_path)
+    common_folder_path = staticmethod(BaseBigtableTableAdminClient.common_folder_path)
     parse_common_folder_path = staticmethod(
-        BigtableTableAdminClient.parse_common_folder_path
+        BaseBigtableTableAdminClient.parse_common_folder_path
     )
     common_organization_path = staticmethod(
-        BigtableTableAdminClient.common_organization_path
+        BaseBigtableTableAdminClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
-        BigtableTableAdminClient.parse_common_organization_path
+        BaseBigtableTableAdminClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(BigtableTableAdminClient.common_project_path)
+    common_project_path = staticmethod(BaseBigtableTableAdminClient.common_project_path)
     parse_common_project_path = staticmethod(
-        BigtableTableAdminClient.parse_common_project_path
+        BaseBigtableTableAdminClient.parse_common_project_path
     )
-    common_location_path = staticmethod(BigtableTableAdminClient.common_location_path)
+    common_location_path = staticmethod(
+        BaseBigtableTableAdminClient.common_location_path
+    )
     parse_common_location_path = staticmethod(
-        BigtableTableAdminClient.parse_common_location_path
+        BaseBigtableTableAdminClient.parse_common_location_path
     )
 
     @classmethod
@@ -147,9 +151,9 @@ class BigtableTableAdminAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            BigtableTableAdminAsyncClient: The constructed client.
+            BaseBigtableTableAdminAsyncClient: The constructed client.
         """
-        return BigtableTableAdminClient.from_service_account_info.__func__(BigtableTableAdminAsyncClient, info, *args, **kwargs)  # type: ignore
+        return BaseBigtableTableAdminClient.from_service_account_info.__func__(BaseBigtableTableAdminAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -163,9 +167,9 @@ class BigtableTableAdminAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            BigtableTableAdminAsyncClient: The constructed client.
+            BaseBigtableTableAdminAsyncClient: The constructed client.
         """
-        return BigtableTableAdminClient.from_service_account_file.__func__(BigtableTableAdminAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return BaseBigtableTableAdminClient.from_service_account_file.__func__(BaseBigtableTableAdminAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -203,7 +207,7 @@ class BigtableTableAdminAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return BigtableTableAdminClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return BaseBigtableTableAdminClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
     def transport(self) -> BigtableTableAdminTransport:
@@ -233,7 +237,7 @@ class BigtableTableAdminAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = BigtableTableAdminClient.get_transport_class
+    get_transport_class = BaseBigtableTableAdminClient.get_transport_class
 
     def __init__(
         self,
@@ -249,7 +253,7 @@ class BigtableTableAdminAsyncClient:
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the bigtable table admin async client.
+        """Instantiates the base bigtable table admin async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -298,7 +302,7 @@ class BigtableTableAdminAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = BigtableTableAdminClient(
+        self._client = BaseBigtableTableAdminClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
@@ -309,7 +313,7 @@ class BigtableTableAdminAsyncClient:
             std_logging.DEBUG
         ):  # pragma: NO COVER
             _LOGGER.debug(
-                "Created client `google.bigtable.admin_v2.BigtableTableAdminAsyncClient`.",
+                "Created client `google.bigtable.admin_v2.BaseBigtableTableAdminAsyncClient`.",
                 extra={
                     "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                     "universeDomain": getattr(
@@ -2921,7 +2925,7 @@ class BigtableTableAdminAsyncClient:
         # Done; return the response.
         return response
 
-    async def restore_table(
+    async def _restore_table(
         self,
         request: Optional[Union[bigtable_table_admin.RestoreTableRequest, dict]] = None,
         *,
@@ -3967,7 +3971,7 @@ class BigtableTableAdminAsyncClient:
             metadata=metadata,
         )
 
-    async def __aenter__(self) -> "BigtableTableAdminAsyncClient":
+    async def __aenter__(self) -> "BaseBigtableTableAdminAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -3982,4 +3986,4 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("BigtableTableAdminAsyncClient",)
+__all__ = ("BaseBigtableTableAdminAsyncClient",)

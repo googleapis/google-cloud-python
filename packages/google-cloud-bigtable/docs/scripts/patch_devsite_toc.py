@@ -20,6 +20,7 @@ This script will patch file to create subfolders for each of the clients
 """
 
 
+import glob
 import yaml
 import os
 import shutil
@@ -153,6 +154,81 @@ class TocSection:
                 f"_build/html/docfx_yaml",
             )
 
+    def validate_section(self, toc):
+        # Make sure each rst file is listed in the toc.
+        items_in_toc = [
+            d["items"] for d in toc[0]["items"] if d["name"] == self.title and ".rst"
+        ][0]
+        items_in_dir = [f for f in os.listdir(self.dir_name) if f.endswith(".rst")]
+        # subtract 1 for index
+        assert len(items_in_toc) == len(items_in_dir) - 1
+        for file in items_in_dir:
+            if file != self.index_file_name:
+                base_name, _ = os.path.splitext(file)
+                assert any(d["href"] == f"{base_name}.md" for d in items_in_toc)
+        # make sure the markdown files are present in the docfx_yaml directory
+        md_files = [d["href"] for d in items_in_toc]
+        for file in md_files:
+            assert os.path.exists(f"_build/html/docfx_yaml/{file}")
+
+
+class UIDFilteredTocSection(TocSection):
+    def __init__(self, toc_file_path, section_name, title, uid_prefix):
+        """Creates a filtered section denoted by section_name in the toc_file_path to items with the given UID prefix.
+
+        The section is then renamed to the title.
+        """
+        current_toc = yaml.safe_load(open(toc_file_path, "r"))
+        self.uid_prefix = uid_prefix
+
+        # Since we are looking for a specific section_name there should only
+        # be one match.
+        section_items = [
+            d for d in current_toc[0]["items"] if d["name"] == section_name
+        ][0]["items"]
+        filtered_items = [d for d in section_items if d["uid"].startswith(uid_prefix)]
+        self.items = filtered_items
+        self.title = title
+
+    def copy_markdown(self):
+        """
+        No-op because we are filtering on UIDs, not markdown files.
+        """
+        pass
+
+    def validate_section(self, toc):
+        uids_in_toc = set()
+
+        # A UID-filtered TOC tree looks like the following:
+        # - items:
+        #   <optional> items: <more stuff>
+        #   name: <name>
+        #   uid: <fully qualified path to a class>
+        #
+        # Walk through the TOC tree to find all UIDs recursively.
+        def find_uids_in_items(items):
+            uids_in_toc.add(items["uid"])
+            for subitem in items.get("items", []):
+                find_uids_in_items(subitem)
+
+        items_in_toc = [d["items"] for d in toc[0]["items"] if d["name"] == self.title][
+            0
+        ]
+        for item in items_in_toc:
+            find_uids_in_items(item)
+
+        # Now that we have all the UIDs, first match all of them
+        # with corresponding .yml files.
+        for uid in uids_in_toc:
+            assert os.path.exists(f"_build/html/docfx_yaml/{uid}.yml")
+
+        # Also validate that every uid yml file that starts with the uid_prefix
+        # exists in the section.
+        for filename in glob.glob(
+            f"{self.uid_prefix}*.yml", root_dir="_build/html/docfx_yaml"
+        ):
+            assert filename[:-4] in uids_in_toc
+
 
 def validate_toc(toc_file_path, expected_section_list, added_sections):
     current_toc = yaml.safe_load(open(toc_file_path, "r"))
@@ -164,43 +240,27 @@ def validate_toc(toc_file_path, expected_section_list, added_sections):
     # make sure each customs ection is in the toc
     for section in added_sections:
         assert section.title in found_sections
-    # make sure each rst file in each custom section dir is listed in the toc
-    for section in added_sections:
-        items_in_toc = [
-            d["items"]
-            for d in current_toc[0]["items"]
-            if d["name"] == section.title and ".rst"
-        ][0]
-        items_in_dir = [f for f in os.listdir(section.dir_name) if f.endswith(".rst")]
-        # subtract 1 for index
-        assert len(items_in_toc) == len(items_in_dir) - 1
-        for file in items_in_dir:
-            if file != section.index_file_name:
-                base_name, _ = os.path.splitext(file)
-                assert any(d["href"] == f"{base_name}.md" for d in items_in_toc)
-    # make sure the markdown files are present in the docfx_yaml directory
-    for section in added_sections:
-        items_in_toc = [
-            d["items"]
-            for d in current_toc[0]["items"]
-            if d["name"] == section.title and ".rst"
-        ][0]
-        md_files = [d["href"] for d in items_in_toc]
-        for file in md_files:
-            assert os.path.exists(f"_build/html/docfx_yaml/{file}")
+        section.validate_section(current_toc)
     print("Toc validation passed")
 
 
 if __name__ == "__main__":
     # Add secrtions for the async_data_client and classic_client directories
     toc_path = "_build/html/docfx_yaml/toc.yml"
+
     custom_sections = [
         TocSection(dir_name="data_client", index_file_name="data_client_usage.rst"),
+        UIDFilteredTocSection(
+            toc_file_path=toc_path,
+            section_name="Bigtable Admin V2",
+            title="Admin Client",
+            uid_prefix="google.cloud.bigtable_admin_v2",
+        ),
         TocSection(dir_name="classic_client", index_file_name="usage.rst"),
     ]
     add_sections(toc_path, custom_sections)
     # Remove the Bigtable section, since it has duplicated data
-    remove_sections(toc_path, ["Bigtable"])
+    remove_sections(toc_path, ["Bigtable", "Bigtable Admin V2"])
     # run validation to make sure yaml is structured as we expect
     validate_toc(
         toc_file_path=toc_path,
@@ -210,6 +270,7 @@ if __name__ == "__main__":
             "Changelog",
             "Multiprocessing",
             "Data Client",
+            "Admin Client",
             "Classic Client",
         ],
         added_sections=custom_sections,

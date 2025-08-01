@@ -338,7 +338,7 @@ def _create_test_helper(gc_rule=None):
     )
     from ._testing import _FakeStub
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-        BigtableTableAdminClient,
+        BaseBigtableTableAdminClient,
     )
 
     project_id = "project-id"
@@ -357,7 +357,7 @@ def _create_test_helper(gc_rule=None):
         + table_id
     )
 
-    api = mock.create_autospec(BigtableTableAdminClient)
+    api = mock.create_autospec(BaseBigtableTableAdminClient)
 
     credentials = _make_credentials()
     client = _make_client(project=project_id, credentials=credentials, admin=True)
@@ -409,7 +409,7 @@ def _update_test_helper(gc_rule=None):
         bigtable_table_admin as table_admin_v2_pb2,
     )
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-        BigtableTableAdminClient,
+        BaseBigtableTableAdminClient,
     )
 
     project_id = "project-id"
@@ -428,7 +428,7 @@ def _update_test_helper(gc_rule=None):
         + table_id
     )
 
-    api = mock.create_autospec(BigtableTableAdminClient)
+    api = mock.create_autospec(BaseBigtableTableAdminClient)
     credentials = _make_credentials()
     client = _make_client(project=project_id, credentials=credentials, admin=True)
     table = _Table(table_name, client=client)
@@ -480,7 +480,7 @@ def test_column_family_delete():
     )
     from ._testing import _FakeStub
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-        BigtableTableAdminClient,
+        BaseBigtableTableAdminClient,
     )
 
     project_id = "project-id"
@@ -499,7 +499,7 @@ def test_column_family_delete():
         + table_id
     )
 
-    api = mock.create_autospec(BigtableTableAdminClient)
+    api = mock.create_autospec(BaseBigtableTableAdminClient)
     credentials = _make_credentials()
     client = _make_client(project=project_id, credentials=credentials, admin=True)
     table = _Table(table_name, client=client)

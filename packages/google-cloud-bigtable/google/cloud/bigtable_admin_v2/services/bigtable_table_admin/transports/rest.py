@@ -342,7 +342,7 @@ class BigtableTableAdminRestInterceptor:
                 return response
 
         transport = BigtableTableAdminRestTransport(interceptor=MyCustomBigtableTableAdminInterceptor())
-        client = BigtableTableAdminClient(transport=transport)
+        client = BaseBigtableTableAdminClient(transport=transport)
 
 
     """
@@ -2087,7 +2087,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.CheckConsistency",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.CheckConsistency",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CheckConsistency",
@@ -2138,7 +2138,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.check_consistency",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.check_consistency",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CheckConsistency",
@@ -2243,7 +2243,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.CopyBackup",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.CopyBackup",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CopyBackup",
@@ -2290,7 +2290,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.copy_backup",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.copy_backup",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CopyBackup",
@@ -2398,7 +2398,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.CreateAuthorizedView",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.CreateAuthorizedView",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateAuthorizedView",
@@ -2447,7 +2447,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.create_authorized_view",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.create_authorized_view",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateAuthorizedView",
@@ -2553,7 +2553,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.CreateBackup",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.CreateBackup",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateBackup",
@@ -2600,7 +2600,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.create_backup",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.create_backup",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateBackup",
@@ -2708,7 +2708,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.CreateSchemaBundle",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.CreateSchemaBundle",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateSchemaBundle",
@@ -2757,7 +2757,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.create_schema_bundle",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.create_schema_bundle",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateSchemaBundle",
@@ -2864,7 +2864,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.CreateTable",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.CreateTable",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateTable",
@@ -2913,7 +2913,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.create_table",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.create_table",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateTable",
@@ -3029,7 +3029,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.CreateTableFromSnapshot",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.CreateTableFromSnapshot",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateTableFromSnapshot",
@@ -3078,7 +3078,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.create_table_from_snapshot",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.create_table_from_snapshot",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "CreateTableFromSnapshot",
@@ -3174,7 +3174,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.DeleteAuthorizedView",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.DeleteAuthorizedView",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "DeleteAuthorizedView",
@@ -3284,7 +3284,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.DeleteBackup",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.DeleteBackup",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "DeleteBackup",
@@ -3394,7 +3394,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.DeleteSchemaBundle",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.DeleteSchemaBundle",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "DeleteSchemaBundle",
@@ -3511,7 +3511,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.DeleteSnapshot",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.DeleteSnapshot",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "DeleteSnapshot",
@@ -3619,7 +3619,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.DeleteTable",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.DeleteTable",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "DeleteTable",
@@ -3732,7 +3732,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.DropRowRange",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.DropRowRange",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "DropRowRange",
@@ -3855,7 +3855,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.GenerateConsistencyToken",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.GenerateConsistencyToken",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GenerateConsistencyToken",
@@ -3910,7 +3910,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.generate_consistency_token",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.generate_consistency_token",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GenerateConsistencyToken",
@@ -4016,7 +4016,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.GetAuthorizedView",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.GetAuthorizedView",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetAuthorizedView",
@@ -4064,7 +4064,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.get_authorized_view",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.get_authorized_view",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetAuthorizedView",
@@ -4161,7 +4161,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.GetBackup",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.GetBackup",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetBackup",
@@ -4209,7 +4209,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.get_backup",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.get_backup",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetBackup",
@@ -4386,7 +4386,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.GetIamPolicy",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.GetIamPolicy",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetIamPolicy",
@@ -4435,7 +4435,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.get_iam_policy",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.get_iam_policy",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetIamPolicy",
@@ -4537,7 +4537,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.GetSchemaBundle",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.GetSchemaBundle",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetSchemaBundle",
@@ -4585,7 +4585,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.get_schema_bundle",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.get_schema_bundle",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetSchemaBundle",
@@ -4703,7 +4703,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.GetSnapshot",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.GetSnapshot",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetSnapshot",
@@ -4751,7 +4751,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.get_snapshot",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.get_snapshot",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetSnapshot",
@@ -4852,7 +4852,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.GetTable",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.GetTable",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetTable",
@@ -4900,7 +4900,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.get_table",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.get_table",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "GetTable",
@@ -5002,7 +5002,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.ListAuthorizedViews",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.ListAuthorizedViews",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListAuthorizedViews",
@@ -5056,7 +5056,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.list_authorized_views",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.list_authorized_views",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListAuthorizedViews",
@@ -5156,7 +5156,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.ListBackups",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.ListBackups",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListBackups",
@@ -5206,7 +5206,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.list_backups",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.list_backups",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListBackups",
@@ -5308,7 +5308,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.ListSchemaBundles",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.ListSchemaBundles",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListSchemaBundles",
@@ -5358,7 +5358,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.list_schema_bundles",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.list_schema_bundles",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListSchemaBundles",
@@ -5472,7 +5472,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.ListSnapshots",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.ListSnapshots",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListSnapshots",
@@ -5522,7 +5522,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.list_snapshots",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.list_snapshots",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListSnapshots",
@@ -5621,7 +5621,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.ListTables",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.ListTables",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListTables",
@@ -5671,7 +5671,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.list_tables",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.list_tables",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ListTables",
@@ -5780,7 +5780,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.ModifyColumnFamilies",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.ModifyColumnFamilies",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ModifyColumnFamilies",
@@ -5831,7 +5831,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.modify_column_families",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.modify_column_families",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "ModifyColumnFamilies",
@@ -5937,7 +5937,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.RestoreTable",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.RestoreTable",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "RestoreTable",
@@ -5984,7 +5984,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.restore_table",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.restore_table",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "RestoreTable",
@@ -6161,7 +6161,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.SetIamPolicy",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.SetIamPolicy",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "SetIamPolicy",
@@ -6210,7 +6210,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.set_iam_policy",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.set_iam_policy",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "SetIamPolicy",
@@ -6323,7 +6323,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.SnapshotTable",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.SnapshotTable",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "SnapshotTable",
@@ -6370,7 +6370,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.snapshot_table",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.snapshot_table",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "SnapshotTable",
@@ -6474,7 +6474,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.TestIamPermissions",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.TestIamPermissions",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "TestIamPermissions",
@@ -6525,7 +6525,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.test_iam_permissions",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.test_iam_permissions",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "TestIamPermissions",
@@ -6631,7 +6631,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.UndeleteTable",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.UndeleteTable",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UndeleteTable",
@@ -6678,7 +6678,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.undelete_table",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.undelete_table",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UndeleteTable",
@@ -6786,7 +6786,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.UpdateAuthorizedView",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.UpdateAuthorizedView",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UpdateAuthorizedView",
@@ -6835,7 +6835,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.update_authorized_view",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.update_authorized_view",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UpdateAuthorizedView",
@@ -6938,7 +6938,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.UpdateBackup",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.UpdateBackup",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UpdateBackup",
@@ -6987,7 +6987,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.update_backup",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.update_backup",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UpdateBackup",
@@ -7095,7 +7095,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.UpdateSchemaBundle",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.UpdateSchemaBundle",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UpdateSchemaBundle",
@@ -7144,7 +7144,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.update_schema_bundle",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.update_schema_bundle",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UpdateSchemaBundle",
@@ -7250,7 +7250,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.bigtable.admin_v2.BigtableTableAdminClient.UpdateTable",
+                    f"Sending request for google.bigtable.admin_v2.BaseBigtableTableAdminClient.UpdateTable",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UpdateTable",
@@ -7297,7 +7297,7 @@ class BigtableTableAdminRestTransport(_BaseBigtableTableAdminRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.bigtable.admin_v2.BigtableTableAdminClient.update_table",
+                    "Received response for google.bigtable.admin_v2.BaseBigtableTableAdminClient.update_table",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "rpcName": "UpdateTable",

@@ -17,7 +17,7 @@
 import re
 
 from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
-from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
 from google.cloud.bigtable_admin_v2.types import table
 from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
@@ -106,7 +106,7 @@ class Backup(object):
         if not self._cluster:
             raise ValueError('"cluster" parameter must be set')
 
-        return BigtableTableAdminClient.backup_path(
+        return BaseBigtableTableAdminClient.backup_path(
             project=self._instance._client.project,
             instance=self._instance.instance_id,
             cluster=self._cluster,
@@ -141,7 +141,7 @@ class Backup(object):
         :returns: A full path to the parent cluster.
         """
         if not self._parent and self._cluster:
-            self._parent = BigtableTableAdminClient.cluster_path(
+            self._parent = BaseBigtableTableAdminClient.cluster_path(
                 project=self._instance._client.project,
                 instance=self._instance.instance_id,
                 cluster=self._cluster,
@@ -163,7 +163,7 @@ class Backup(object):
         :returns: The Table name.
         """
         if not self._source_table and self.table_id:
-            self._source_table = BigtableTableAdminClient.table_path(
+            self._source_table = BaseBigtableTableAdminClient.table_path(
                 project=self._instance._client.project,
                 instance=self._instance.instance_id,
                 table=self.table_id,
@@ -226,7 +226,7 @@ class Backup(object):
     def state(self):
         """The current state of this Backup.
 
-        :rtype: :class:`~google.cloud.bigtable_admin_v2.gapic.enums.Backup.State`
+        :rtype: :class:`~google.cloud.bigtable_admin_v2.types.table.Backup.State`
         :returns: The current state of this Backup.
         """
         return self._state
@@ -305,8 +305,7 @@ class Backup(object):
                            created Backup.
 
         :rtype: :class:`~google.api_core.operation.Operation`
-        :returns: :class:`~google.cloud.bigtable_admin_v2.types._OperationFuture`
-                  instance, to be used to poll the status of the 'create' request
+        :returns: A future to be used to poll the status of the 'create' request
         :raises Conflict: if the Backup already exists
         :raises NotFound: if the Instance owning the Backup does not exist
         :raises BadRequest: if the `table` or `expire_time` values are invalid,
@@ -412,7 +411,7 @@ class Backup(object):
         :param instance_id: (Optional) The ID of the Instance to restore the
                             backup into, if different from the current one.
 
-        :rtype: :class:`~google.cloud.bigtable_admin_v2.types._OperationFuture`
+        :rtype: :class:`~google.api_core.operation.Operation`
         :returns: A future to be used to poll the status of the 'restore'
                   request.
 
@@ -426,14 +425,14 @@ class Backup(object):
         """
         api = self._instance._client.table_admin_client
         if instance_id:
-            parent = BigtableTableAdminClient.instance_path(
+            parent = BaseBigtableTableAdminClient.instance_path(
                 project=self._instance._client.project,
                 instance=instance_id,
             )
         else:
             parent = self._instance.name
 
-        return api.restore_table(
+        return api._restore_table(
             request={"parent": parent, "table_id": table_id, "backup": self.name}
         )
 

@@ -492,7 +492,7 @@
     "BigtableTableAdmin": {
       "clients": {
         "grpc": {
-          "libraryClient": "BigtableTableAdminClient",
+          "libraryClient": "BaseBigtableTableAdminClient",
           "rpcs": {
             "CheckConsistency": {
               "methods": [
@@ -626,7 +626,7 @@
             },
             "RestoreTable": {
               "methods": [
-                "restore_table"
+                "_restore_table"
               ]
             },
             "SetIamPolicy": {
@@ -672,7 +672,7 @@
           }
         },
         "grpc-async": {
-          "libraryClient": "BigtableTableAdminAsyncClient",
+          "libraryClient": "BaseBigtableTableAdminAsyncClient",
           "rpcs": {
             "CheckConsistency": {
               "methods": [
@@ -806,7 +806,7 @@
             },
             "RestoreTable": {
               "methods": [
-                "restore_table"
+                "_restore_table"
               ]
             },
             "SetIamPolicy": {
@@ -852,7 +852,7 @@
           }
         },
         "rest": {
-          "libraryClient": "BigtableTableAdminClient",
+          "libraryClient": "BaseBigtableTableAdminClient",
           "rpcs": {
             "CheckConsistency": {
               "methods": [
@@ -986,7 +986,7 @@
             },
             "RestoreTable": {
               "methods": [
-                "restore_table"
+                "_restore_table"
               ]
             },
             "SetIamPolicy": {
