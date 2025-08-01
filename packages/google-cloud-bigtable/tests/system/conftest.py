@@ -17,9 +17,20 @@ Import pytest fixtures for setting up table for data client system tests
 import sys
 import os
 
+import pytest
+import asyncio
+
 script_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(script_path)
 
 pytest_plugins = [
     "data.setup_fixtures",
 ]
+
+
+@pytest.fixture(scope="session")
+def event_loop():
+    loop = asyncio.get_event_loop()
+    yield loop
+    loop.stop()
+    loop.close()

@@ -325,11 +325,11 @@ class Client(ClientWithProject):
                 raise ValueError("Client is not an admin client.")
 
             transport = self._create_gapic_client_channel(
-                bigtable_admin_v2.BigtableTableAdminClient,
+                bigtable_admin_v2.BaseBigtableTableAdminClient,
                 BigtableTableAdminGrpcTransport,
             )
             klass = _create_gapic_client(
-                bigtable_admin_v2.BigtableTableAdminClient,
+                bigtable_admin_v2.BaseBigtableTableAdminClient,
                 client_options=self._admin_client_options,
                 transport=transport,
             )

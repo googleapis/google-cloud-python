@@ -449,18 +449,18 @@ def test_client_table_admin_client_not_initialized_no_admin_flag():
 
 
 def test_client_table_admin_client_not_initialized_w_admin_flag():
-    from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+    from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
 
     credentials = _make_credentials()
     client = _make_client(project=PROJECT, credentials=credentials, admin=True)
 
     table_admin_client = client.table_admin_client
-    assert isinstance(table_admin_client, BigtableTableAdminClient)
+    assert isinstance(table_admin_client, BaseBigtableTableAdminClient)
     assert client._table_admin_client is table_admin_client
 
 
 def test_client_table_admin_client_not_initialized_w_client_info():
-    from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+    from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
 
     credentials = _make_credentials()
     client_info = mock.Mock()
@@ -472,7 +472,7 @@ def test_client_table_admin_client_not_initialized_w_client_info():
     )
 
     table_admin_client = client.table_admin_client
-    assert isinstance(table_admin_client, BigtableTableAdminClient)
+    assert isinstance(table_admin_client, BaseBigtableTableAdminClient)
     assert client._client_info is client_info
     assert client._table_admin_client is table_admin_client
 
@@ -488,7 +488,7 @@ def test_client_table_admin_client_not_initialized_w_client_options():
     )
 
     client._create_gapic_client_channel = mock.Mock()
-    patch = mock.patch("google.cloud.bigtable_admin_v2.BigtableTableAdminClient")
+    patch = mock.patch("google.cloud.bigtable_admin_v2.BaseBigtableTableAdminClient")
     with patch as mocked:
         table_admin_client = client.table_admin_client
 

@@ -42,9 +42,9 @@ def _make_timestamp():
 
 
 def _make_table_admin_client():
-    from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+    from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
 
-    return mock.create_autospec(BigtableTableAdminClient, instance=True)
+    return mock.create_autospec(BaseBigtableTableAdminClient, instance=True)
 
 
 def _make_backup(*args, **kwargs):
@@ -735,7 +735,7 @@ def test_backup_restore_w_grpc_error():
 
     client = _Client()
     api = client.table_admin_client = _make_table_admin_client()
-    api.restore_table.side_effect = Unknown("testing")
+    api._restore_table.side_effect = Unknown("testing")
 
     timestamp = _make_timestamp()
     backup = _make_backup(
@@ -749,7 +749,7 @@ def test_backup_restore_w_grpc_error():
     with pytest.raises(GoogleAPICallError):
         backup.restore(TABLE_ID)
 
-    api.restore_table.assert_called_once_with(
+    api._restore_table.assert_called_once_with(
         request={"parent": INSTANCE_NAME, "table_id": TABLE_ID, "backup": BACKUP_NAME}
     )
 
@@ -772,7 +772,7 @@ def _restore_helper(instance_id=None, instance_name=None):
     op_future = object()
     client = _Client()
     api = client.table_admin_client = _make_table_admin_client()
-    api.restore_table.return_value = op_future
+    api._restore_table.return_value = op_future
 
     timestamp = _make_timestamp()
     backup = _make_backup(
@@ -787,14 +787,14 @@ def _restore_helper(instance_id=None, instance_name=None):
     assert backup._cluster == CLUSTER_ID
     assert future is op_future
 
-    api.restore_table.assert_called_once_with(
+    api._restore_table.assert_called_once_with(
         request={
             "parent": instance_name or INSTANCE_NAME,
             "table_id": TABLE_ID,
             "backup": BACKUP_NAME,
         }
     )
-    api.restore_table.reset_mock()
+    api._restore_table.reset_mock()
 
 
 def test_backup_restore_default():
@@ -808,7 +808,7 @@ def test_backup_restore_to_another_instance():
 def test_backup_get_iam_policy():
     from google.cloud.bigtable.client import Client
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-        BigtableTableAdminClient,
+        BaseBigtableTableAdminClient,
     )
     from google.iam.v1 import policy_pb2
     from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
@@ -825,7 +825,7 @@ def test_backup_get_iam_policy():
     bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": members}]
     iam_policy = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
 
-    table_api = mock.create_autospec(BigtableTableAdminClient)
+    table_api = mock.create_autospec(BaseBigtableTableAdminClient)
     client._table_admin_client = table_api
     table_api.get_iam_policy.return_value = iam_policy
 
@@ -844,7 +844,7 @@ def test_backup_get_iam_policy():
 def test_backup_set_iam_policy():
     from google.cloud.bigtable.client import Client
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-        BigtableTableAdminClient,
+        BaseBigtableTableAdminClient,
     )
     from google.iam.v1 import policy_pb2
     from google.cloud.bigtable.policy import Policy
@@ -862,7 +862,7 @@ def test_backup_set_iam_policy():
     bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": sorted(members)}]
     iam_policy_pb = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
 
-    table_api = mock.create_autospec(BigtableTableAdminClient)
+    table_api = mock.create_autospec(BaseBigtableTableAdminClient)
     client._table_admin_client = table_api
     table_api.set_iam_policy.return_value = iam_policy_pb
 
@@ -889,7 +889,7 @@ def test_backup_set_iam_policy():
 def test_backup_test_iam_permissions():
     from google.cloud.bigtable.client import Client
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
-        BigtableTableAdminClient,
+        BaseBigtableTableAdminClient,
     )
     from google.iam.v1 import iam_policy_pb2
 
@@ -903,7 +903,7 @@ def test_backup_test_iam_permissions():
 
     response = iam_policy_pb2.TestIamPermissionsResponse(permissions=permissions)
 
-    table_api = mock.create_autospec(BigtableTableAdminClient)
+    table_api = mock.create_autospec(BaseBigtableTableAdminClient)
     table_api.test_iam_permissions.return_value = response
     client._table_admin_client = table_api
 

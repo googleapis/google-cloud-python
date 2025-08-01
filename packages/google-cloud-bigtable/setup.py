@@ -37,7 +37,7 @@ version = version["__version__"]
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 2.16.0, <3.0.0",
+    "google-api-core[grpc] >= 2.17.0, <3.0.0",
     "google-cloud-core >= 1.4.4, <3.0.0",
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
     "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
@@ -94,7 +94,7 @@ setuptools.setup(
     extras_require=extras,
     scripts=[
         "scripts/fixup_bigtable_v2_keywords.py",
-        "scripts/fixup_bigtable_admin_v2_keywords.py",
+        "scripts/fixup_admin_v2_keywords.py",
     ],
     python_requires=">=3.7",
     include_package_data=True,

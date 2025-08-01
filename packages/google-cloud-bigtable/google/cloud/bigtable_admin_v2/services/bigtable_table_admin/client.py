@@ -78,7 +78,7 @@ from .transports.grpc_asyncio import BigtableTableAdminGrpcAsyncIOTransport
 from .transports.rest import BigtableTableAdminRestTransport
 
 
-class BigtableTableAdminClientMeta(type):
+class BaseBigtableTableAdminClientMeta(type):
     """Metaclass for the BigtableTableAdmin client.
 
     This provides class-level methods for building and retrieving
@@ -115,7 +115,7 @@ class BigtableTableAdminClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
+class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     """Service for creating, configuring, and deleting Cloud
     Bigtable tables.
 
@@ -173,7 +173,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            BigtableTableAdminClient: The constructed client.
+            BaseBigtableTableAdminClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -191,7 +191,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            BigtableTableAdminClient: The constructed client.
+            BaseBigtableTableAdminClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -611,15 +611,17 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = BigtableTableAdminClient._DEFAULT_UNIVERSE
+            _default_universe = BaseBigtableTableAdminClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = BigtableTableAdminClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = BaseBigtableTableAdminClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = BigtableTableAdminClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
+            api_endpoint = (
+                BaseBigtableTableAdminClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=universe_domain
+                )
             )
         return api_endpoint
 
@@ -639,7 +641,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = BigtableTableAdminClient._DEFAULT_UNIVERSE
+        universe_domain = BaseBigtableTableAdminClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -720,7 +722,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the bigtable table admin client.
+        """Instantiates the base bigtable table admin client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -784,11 +786,11 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = BigtableTableAdminClient._read_environment_variables()
-        self._client_cert_source = BigtableTableAdminClient._get_client_cert_source(
+        ) = BaseBigtableTableAdminClient._read_environment_variables()
+        self._client_cert_source = BaseBigtableTableAdminClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = BigtableTableAdminClient._get_universe_domain(
+        self._universe_domain = BaseBigtableTableAdminClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -827,7 +829,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         self._api_endpoint = (
             self._api_endpoint
-            or BigtableTableAdminClient._get_api_endpoint(
+            or BaseBigtableTableAdminClient._get_api_endpoint(
                 self._client_options.api_endpoint,
                 self._client_cert_source,
                 self._universe_domain,
@@ -849,7 +851,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 Type[BigtableTableAdminTransport],
                 Callable[..., BigtableTableAdminTransport],
             ] = (
-                BigtableTableAdminClient.get_transport_class(transport)
+                BaseBigtableTableAdminClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., BigtableTableAdminTransport], transport)
             )
@@ -871,7 +873,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 std_logging.DEBUG
             ):  # pragma: NO COVER
                 _LOGGER.debug(
-                    "Created client `google.bigtable.admin_v2.BigtableTableAdminClient`.",
+                    "Created client `google.bigtable.admin_v2.BaseBigtableTableAdminClient`.",
                     extra={
                         "serviceName": "google.bigtable.admin.v2.BigtableTableAdmin",
                         "universeDomain": getattr(
@@ -3413,7 +3415,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # Done; return the response.
         return response
 
-    def restore_table(
+    def _restore_table(
         self,
         request: Optional[Union[bigtable_table_admin.RestoreTableRequest, dict]] = None,
         *,
@@ -4442,7 +4444,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             metadata=metadata,
         )
 
-    def __enter__(self) -> "BigtableTableAdminClient":
+    def __enter__(self) -> "BaseBigtableTableAdminClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -4463,4 +4465,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = ("BigtableTableAdminClient",)
+__all__ = ("BaseBigtableTableAdminClient",)

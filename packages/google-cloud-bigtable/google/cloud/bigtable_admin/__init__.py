@@ -25,10 +25,10 @@ from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin.async_clien
     BigtableInstanceAdminAsyncClient,
 )
 from google.cloud.bigtable_admin_v2.services.bigtable_table_admin.client import (
-    BigtableTableAdminClient,
+    BaseBigtableTableAdminClient,
 )
 from google.cloud.bigtable_admin_v2.services.bigtable_table_admin.async_client import (
-    BigtableTableAdminAsyncClient,
+    BaseBigtableTableAdminAsyncClient,
 )
 
 from google.cloud.bigtable_admin_v2.types.bigtable_instance_admin import (
@@ -322,8 +322,8 @@ from google.cloud.bigtable_admin_v2.types.types import Type
 __all__ = (
     "BigtableInstanceAdminClient",
     "BigtableInstanceAdminAsyncClient",
-    "BigtableTableAdminClient",
-    "BigtableTableAdminAsyncClient",
+    "BaseBigtableTableAdminClient",
+    "BaseBigtableTableAdminAsyncClient",
     "CreateAppProfileRequest",
     "CreateClusterMetadata",
     "CreateClusterRequest",
@@ -444,3 +444,8 @@ __all__ = (
     "RestoreSourceType",
     "Type",
 )
+
+import google.cloud.bigtable_admin_v2.overlay  # noqa: F401
+from google.cloud.bigtable_admin_v2.overlay import *  # noqa: F401, F403
+
+__all__ += google.cloud.bigtable_admin_v2.overlay.__all__

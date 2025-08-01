@@ -20,8 +20,8 @@ __version__ = package_version.__version__
 
 from .services.bigtable_instance_admin import BigtableInstanceAdminClient
 from .services.bigtable_instance_admin import BigtableInstanceAdminAsyncClient
-from .services.bigtable_table_admin import BigtableTableAdminClient
-from .services.bigtable_table_admin import BigtableTableAdminAsyncClient
+from .services.bigtable_table_admin import BaseBigtableTableAdminClient
+from .services.bigtable_table_admin import BaseBigtableTableAdminAsyncClient
 
 from .types.bigtable_instance_admin import CreateAppProfileRequest
 from .types.bigtable_instance_admin import CreateClusterMetadata
@@ -144,16 +144,16 @@ from .types.table import RestoreSourceType
 from .types.types import Type
 
 __all__ = (
+    "BaseBigtableTableAdminAsyncClient",
     "BigtableInstanceAdminAsyncClient",
-    "BigtableTableAdminAsyncClient",
     "AppProfile",
     "AuthorizedView",
     "AutoscalingLimits",
     "AutoscalingTargets",
     "Backup",
     "BackupInfo",
+    "BaseBigtableTableAdminClient",
     "BigtableInstanceAdminClient",
-    "BigtableTableAdminClient",
     "ChangeStreamConfig",
     "CheckConsistencyRequest",
     "CheckConsistencyResponse",
@@ -268,3 +268,7 @@ __all__ = (
     "UpdateTableMetadata",
     "UpdateTableRequest",
 )
+
+from .overlay import *  # noqa: F403
+
+__all__ += overlay.__all__  # noqa: F405
