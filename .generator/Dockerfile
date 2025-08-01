@@ -90,6 +90,9 @@ RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
 RUN mkdir -p /app /bazel_cache && \
     chown -R $UID:$GID /app /bazel_cache
 
+# --- TEMPORARY HACK: Add this line to fix old cache permissions ---
+RUN chown -R 1000:1000 /bazel_cache
+
 # Switch to the non-root user. All subsequent commands will run as this user.
 USER $UID
 
