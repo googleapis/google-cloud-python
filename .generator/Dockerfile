@@ -86,6 +86,9 @@ RUN if ! getent group $GID > /dev/null; then \
 
 # Set ownership of the app directory now, before we copy files into it.
 RUN mkdir -p /app && chown $UID:$GID /app
+RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
+RUN mkdir -p /app /bazel_cache && \
+    chown -R $UID:$GID /app /bazel_cache
 
 # Switch to the non-root user. All subsequent commands will run as this user.
 USER $UID
@@ -95,8 +98,8 @@ ENV BAZELISK_HOME="/bazel_cache/bazelisk"
 ENV BAZEL_HOME="/bazel_cache/bazel"
 ENV XDG_CACHE_HOME="/bazel_cache"
 
-# Ensure the cache directories within the non-root user's context exist and are writable.
-# This is crucial as Bazel creates subdirectories under BAZEL_HOME.
+# # Ensure the cache directories within the non-root user's context exist and are writable.
+# # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
 RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
              ${BAZEL_HOME}/_bazel_ubuntu/output_base \
              ${BAZELISK_HOME} && \
@@ -206,7 +209,7 @@ RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthto
 ENV BAZELISK_HOME="/bazel_cache/bazelisk"
 ENV BAZEL_HOME="/bazel_cache/bazel"
 ENV XDG_CACHE_HOME="/bazel_cache"
-COPY --from=cacher --chown=$UID:$GID /bazel_cache /bazel_cache
+COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
 
 # Test cloud build kaniko 2
 
