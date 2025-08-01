@@ -197,12 +197,13 @@ RUN python3.9 -m pip install --no-cache-dir -r requirements.in
 COPY --chown=$UID:$GID .generator/cli.py .
 RUN chmod a+rx ./cli.py
 
-RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
-    python3.9 -m pip install /tmp/synthtool && \
-    rm -rf /tmp/synthtool
-
 RUN /usr/local/bin/python3.9 -m venv bazel_env
 RUN . bazel_env/bin/activate
+ENV PATH=bazel_env/bin:$PATH
+
+RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
+    /app/bazel_env/bin/python3.9 -m pip install /tmp/synthtool && \
+    rm -rf /tmp/synthtool
 
 ENV BAZELISK_HOME="/bazel_cache/bazelisk"
 ENV BAZEL_HOME="/bazel_cache/bazel"
@@ -212,4 +213,4 @@ COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
 # Test cloud build kaniko 2
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["python3.9", "./cli.py"]
+ENTRYPOINT ["/app/bazel_env/bin/python3.9", "./cli.py"]
