@@ -139,7 +139,7 @@ templated_files = gcp.CommonTemplates().py_library(
 )
 s.move(
     templated_files,
-    excludes=[".coveragerc", ".github/release-please.yml", "docs/index.rst"],
+    excludes=[".coveragerc", ".github/release-please.yml", "docs/index.rst", "renovate.json",],
 )
 
 python.py_samples(skip_readmes=True)

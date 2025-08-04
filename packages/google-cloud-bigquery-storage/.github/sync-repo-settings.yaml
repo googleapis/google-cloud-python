@@ -16,3 +16,4 @@ branchProtectionRules:
     - 'Samples - Python 3.10'
     - 'Samples - Python 3.11'
     - 'Samples - Python 3.12'
+    - 'Samples - Python 3.13'
