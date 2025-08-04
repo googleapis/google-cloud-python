@@ -690,6 +690,7 @@ def _add_graph_widget(query_result):
         # TODO: Clean this up when the Javascript is fixed on the spanner-graph-notebook side.
         port = 0
     except ImportError:
+        # In this code path, we are running on Jupyter, rather than colab.
         global singleton_server_thread
         alive = singleton_server_thread and singleton_server_thread.is_alive()
         if not alive:

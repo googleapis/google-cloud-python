@@ -57,7 +57,7 @@ extras = {
     "bigframes": ["bigframes >= 1.17.0"],
     "geopandas": ["geopandas >= 1.0.1"],
     "spanner-graph-notebook": [
-        "spanner-graph-notebook >= 1.1.5, <= 1.1.6",
+        "spanner-graph-notebook >= 1.1.7",
         "portpicker",
     ],
 }

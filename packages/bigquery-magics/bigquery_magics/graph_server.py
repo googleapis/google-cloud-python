@@ -52,11 +52,11 @@ def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
     # Note that these imports do not need to be in a try/except, as this function
     # does not even get called unless spanner_graphs has already been confirmed
     # to exist upstream.
-    from google.cloud.spanner_v1.types import StructType, Type, TypeCode
     from spanner_graphs.conversion import get_nodes_edges
+    from spanner_graphs.database import SpannerFieldInfo
 
     try:
-        fields: List[StructType.Field] = []
+        fields: List[SpannerFieldInfo] = []
         data = {}
         tabular_data = {}
         for key, value in query_results.items():
@@ -69,9 +69,7 @@ def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
             column_name = key
             column_value = value
 
-            fields.append(
-                StructType.Field(name=column_name, type=Type(code=TypeCode.JSON))
-            )
+            fields.append(SpannerFieldInfo(name=column_name, typename="JSON"))
             data[column_name] = []
             tabular_data[column_name] = []
             for value_key, value_value in column_value.items():
