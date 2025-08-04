@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.10.2](https://github.com/googleapis/python-bigquery-magics/compare/v0.10.1...v0.10.2) (2025-08-04)
+
+
+### Dependencies
+
+* Drop support for Python 3.7 and 3.8 ([#127](https://github.com/googleapis/python-bigquery-magics/issues/127)) ([2a8e9de](https://github.com/googleapis/python-bigquery-magics/commit/2a8e9debe32f4f406e41072ee56bb954656af3de))
+* Make graph features compatible with `spanner-graph-notebook >= 1.1.7` ([#131](https://github.com/googleapis/python-bigquery-magics/issues/131)) ([f6f6d70](https://github.com/googleapis/python-bigquery-magics/commit/f6f6d70f575113e192107dce13a0f93b853b0ad3))
+
 ## [0.10.1](https://github.com/googleapis/python-bigquery-magics/compare/v0.10.0...v0.10.1) (2025-07-07)
 
 
