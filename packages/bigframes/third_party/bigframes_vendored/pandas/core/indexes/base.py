@@ -767,7 +767,7 @@ class Index:
             1     True
             2    False
             3     True
-            Name: nan, dtype: boolean
+            dtype: boolean
 
         Args:
             key: Label to get the location for.
