@@ -183,7 +183,17 @@ ENV PATH=bazel_env/bin:$PATH
 #   File "/usr/local/lib/python3.9/subprocess.py", line 528, in run
 #     raise CalledProcessError(retcode, process.args,
 # subprocess.CalledProcessError: Command '['bazelisk', '--output_base=/bazel_cache/_bazel_ubuntu/output_base', 'build', '--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos', '--incompatible_strict_action_env', '//google/cloud/language/v1beta2:language-v1beta2-py']' returned non-zero exit status 1
-RUN mkdir /.cache
+# We'll point both to the /bazel_cache directory which will be mounted as a volume.
+ENV BAZELISK_HOME="/bazel_cache/bazelisk"
+ENV BAZEL_HOME="/bazel_cache/bazel"
+ENV XDG_CACHE_HOME="/bazel_cache"
+
+# # Ensure the cache directories within the non-root user's context exist and are writable.
+# # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
+RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
+             ${BAZEL_HOME}/_bazel_ubuntu/output_base \
+             ${BAZELISK_HOME} && \
+    chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
 
 # RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
