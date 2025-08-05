@@ -24,8 +24,10 @@ import types
 import typing
 from typing import Dict, Iterable, Literal, Mapping, Optional, overload, Tuple, Union
 
+import bigframes_vendored.google_cloud_bigquery.retry as third_party_gcb_retry
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import google.api_core.exceptions
+import google.api_core.retry
 import google.cloud.bigquery as bigquery
 
 from bigframes.core import log_adapter
@@ -245,7 +247,7 @@ def start_query_with_client(
     location: Optional[str],
     project: Optional[str],
     timeout: Optional[float],
-    metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
+    metrics: Optional[bigframes.session.metrics.ExecutionMetrics],
     query_with_job: Literal[True],
 ) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
     ...
@@ -260,8 +262,40 @@ def start_query_with_client(
     location: Optional[str],
     project: Optional[str],
     timeout: Optional[float],
-    metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
+    metrics: Optional[bigframes.session.metrics.ExecutionMetrics],
     query_with_job: Literal[False],
+) -> Tuple[bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
+    ...
+
+
+@overload
+def start_query_with_client(
+    bq_client: bigquery.Client,
+    sql: str,
+    *,
+    job_config: bigquery.QueryJobConfig,
+    location: Optional[str],
+    project: Optional[str],
+    timeout: Optional[float],
+    metrics: Optional[bigframes.session.metrics.ExecutionMetrics],
+    query_with_job: Literal[True],
+    job_retry: google.api_core.retry.Retry,
+) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
+    ...
+
+
+@overload
+def start_query_with_client(
+    bq_client: bigquery.Client,
+    sql: str,
+    *,
+    job_config: bigquery.QueryJobConfig,
+    location: Optional[str],
+    project: Optional[str],
+    timeout: Optional[float],
+    metrics: Optional[bigframes.session.metrics.ExecutionMetrics],
+    query_with_job: Literal[False],
+    job_retry: google.api_core.retry.Retry,
 ) -> Tuple[bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
     ...
 
@@ -276,6 +310,11 @@ def start_query_with_client(
     timeout: Optional[float] = None,
     metrics: Optional[bigframes.session.metrics.ExecutionMetrics] = None,
     query_with_job: bool = True,
+    # TODO(tswast): We can stop providing our own default once we use a
+    # google-cloud-bigquery version with
+    # https://github.com/googleapis/python-bigquery/pull/2256 merged, likely
+    # version 3.36.0 or later.
+    job_retry: google.api_core.retry.Retry = third_party_gcb_retry.DEFAULT_JOB_RETRY,
 ) -> Tuple[bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
     """
     Starts query job and waits for results.
@@ -292,6 +331,7 @@ def start_query_with_client(
                 location=location,
                 project=project,
                 api_timeout=timeout,
+                job_retry=job_retry,
             )
             if metrics is not None:
                 metrics.count_job_stats(row_iterator=results_iterator)
@@ -303,6 +343,7 @@ def start_query_with_client(
             location=location,
             project=project,
             timeout=timeout,
+            job_retry=job_retry,
         )
     except google.api_core.exceptions.Forbidden as ex:
         if "Drive credentials" in ex.message:

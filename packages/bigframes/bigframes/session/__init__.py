@@ -40,6 +40,7 @@ import warnings
 import weakref
 
 import bigframes_vendored.constants as constants
+import bigframes_vendored.google_cloud_bigquery.retry as third_party_gcb_retry
 import bigframes_vendored.ibis.backends.bigquery as ibis_bigquery  # noqa
 import bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import bigframes_vendored.pandas.io.parquet as third_party_pandas_parquet
@@ -2051,6 +2052,7 @@ class Session(
             project=None,
             timeout=None,
             query_with_job=True,
+            job_retry=third_party_gcb_retry.DEFAULT_ML_JOB_RETRY,
         )
         return iterator, query_job
 
