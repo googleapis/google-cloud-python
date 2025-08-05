@@ -131,7 +131,7 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
-def _build_bazel_target(bazel_rule: str, source: str = f"{SOURCE_DIR}/googleapis"):
+def _build_bazel_target(bazel_rule: str, source: str = SOURCE_DIR):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
@@ -159,7 +159,7 @@ def _locate_and_extract_artifact(
     bazel_rule: str,
     library_id: str,
     output: str,
-    source: str = f"{SOURCE_DIR}/googleapis",
+    source: str = SOURCE_DIR,
 ):
     """Finds and extracts the tarball artifact from a Bazel build.
 
