@@ -87,7 +87,7 @@ def _determine_bazel_rule(api_path: str) -> str:
     logger.info(f"Determining Bazel rule for api_path: '{api_path}' by parsing file.")
     try:
         build_file_path = os.path.join(
-            SOURCE_DIR, "googleapis", api_path, "BUILD.bazel"
+            SOURCE_DIR, api_path, "BUILD.bazel"
         )
         
         with open(build_file_path, "r") as f:
