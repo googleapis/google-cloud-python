@@ -103,6 +103,13 @@ class FunctionAxisOnePreviewWarning(PreviewWarning):
     """Remote Function and Managed UDF with axis=1 preview."""
 
 
+class FunctionPackageVersionWarning(PreviewWarning):
+    """
+    Managed UDF package versions for Numpy, Pandas, and Pyarrow may not
+    precisely match users' local environment or the exact versions specified.
+    """
+
+
 def format_message(message: str, fill: bool = True):
     """Formats a warning message with ANSI color codes for the warning color.
 

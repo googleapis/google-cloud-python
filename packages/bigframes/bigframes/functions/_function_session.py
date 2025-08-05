@@ -847,14 +847,14 @@ class FunctionSession:
             if output_type:
                 py_sig = py_sig.replace(return_annotation=output_type)
 
-            udf_sig = udf_def.UdfSignature.from_py_signature(py_sig)
-
             # The function will actually be receiving a pandas Series, but allow
             # both BigQuery DataFrames and pandas object types for compatibility.
             is_row_processor = False
             if new_sig := _convert_row_processor_sig(py_sig):
                 py_sig = new_sig
                 is_row_processor = True
+
+            udf_sig = udf_def.UdfSignature.from_py_signature(py_sig)
 
             managed_function_client = _function_client.FunctionClient(
                 dataset_ref.project,

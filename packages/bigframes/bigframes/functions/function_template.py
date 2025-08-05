@@ -17,6 +17,7 @@ from __future__ import annotations
 import inspect
 import logging
 import os
+import re
 import textwrap
 from typing import Tuple
 
@@ -291,3 +292,55 @@ output_type = {repr(output_type)}
     logger.debug(f"Wrote {os.path.abspath(main_py)}:\n{open(main_py).read()}")
 
     return handler_func_name
+
+
+def generate_managed_function_code(
+    def_,
+    udf_name: str,
+    is_row_processor: bool,
+    capture_references: bool,
+) -> str:
+    """Generates the Python code block for managed Python UDF."""
+
+    if capture_references:
+        # This code path ensures that if the udf body contains any
+        # references to variables and/or imports outside the body, they are
+        # captured as well.
+        import cloudpickle
+
+        pickled = cloudpickle.dumps(def_)
+        func_code = textwrap.dedent(
+            f"""
+            import cloudpickle
+            {udf_name} = cloudpickle.loads({pickled})
+        """
+        )
+    else:
+        # This code path ensures that if the udf body is self contained,
+        # i.e. there are no references to variables or imports outside the
+        # body.
+        func_code = textwrap.dedent(inspect.getsource(def_))
+        match = re.search(r"^def ", func_code, flags=re.MULTILINE)
+        if match is None:
+            raise ValueError("The UDF is not defined correctly.")
+        func_code = func_code[match.start() :]
+
+    if is_row_processor:
+        udf_code = textwrap.dedent(inspect.getsource(get_pd_series))
+        udf_code = udf_code[udf_code.index("def") :]
+        bigframes_handler_code = textwrap.dedent(
+            f"""def bigframes_handler(str_arg):
+                return {udf_name}({get_pd_series.__name__}(str_arg))"""
+        )
+    else:
+        udf_code = ""
+        bigframes_handler_code = textwrap.dedent(
+            f"""def bigframes_handler(*args):
+                return {udf_name}(*args)"""
+        )
+
+    udf_code_block = textwrap.dedent(
+        f"{udf_code}\n{func_code}\n{bigframes_handler_code}"
+    )
+
+    return udf_code_block

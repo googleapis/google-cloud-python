@@ -647,3 +647,295 @@ def test_managed_function_options_errors(session, dataset_id):
             container_cpu=2,
             container_memory="64Mi",
         )(foo)
+
+
+def test_managed_function_df_apply_axis_1(session, dataset_id, scalars_dfs):
+    columns = ["bool_col", "int64_col", "int64_too", "float64_col", "string_col"]
+    scalars_df, scalars_pandas_df = scalars_dfs
+    try:
+
+        def serialize_row(row):
+            # TODO(b/435021126): Remove explicit type conversion of the field
+            # "name" after the issue has been addressed. It is added only to
+            # accept partial pandas parity for the time being.
+            custom = {
+                "name": int(row.name),
+                "index": [idx for idx in row.index],
+                "values": [
+                    val.item() if hasattr(val, "item") else val for val in row.values
+                ],
+            }
+
+            return str(
+                {
+                    "default": row.to_json(),
+                    "split": row.to_json(orient="split"),
+                    "records": row.to_json(orient="records"),
+                    "index": row.to_json(orient="index"),
+                    "table": row.to_json(orient="table"),
+                    "custom": custom,
+                }
+            )
+
+        serialize_row_mf = session.udf(
+            input_types=bigframes.series.Series,
+            output_type=str,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
+        )(serialize_row)
+
+        assert getattr(serialize_row_mf, "is_row_processor")
+
+        bf_result = scalars_df[columns].apply(serialize_row_mf, axis=1).to_pandas()
+        pd_result = scalars_pandas_df[columns].apply(serialize_row, axis=1)
+
+        # bf_result.dtype is 'string[pyarrow]' while pd_result.dtype is 'object'
+        # , ignore this mismatch by using check_dtype=False.
+        pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+        # Let's make sure the read_gbq_function path works for this function.
+        serialize_row_reuse = session.read_gbq_function(
+            serialize_row_mf.bigframes_bigquery_function, is_row_processor=True
+        )
+        bf_result = scalars_df[columns].apply(serialize_row_reuse, axis=1).to_pandas()
+        pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+    finally:
+        # clean up the gcp assets created for the managed function.
+        cleanup_function_assets(
+            serialize_row_mf, session.bqclient, ignore_failures=False
+        )
+
+
+def test_managed_function_df_apply_axis_1_aggregates(session, dataset_id, scalars_dfs):
+    columns = ["int64_col", "int64_too", "float64_col"]
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    try:
+
+        def analyze(row):
+            # TODO(b/435021126): Remove explicit type conversion of the fields
+            # after the issue has been addressed. It is added only to accept
+            # partial pandas parity for the time being.
+            return str(
+                {
+                    "dtype": row.dtype,
+                    "count": int(row.count()),
+                    "min": int(row.min()),
+                    "max": int(row.max()),
+                    "mean": float(row.mean()),
+                    "std": float(row.std()),
+                    "var": float(row.var()),
+                }
+            )
+
+        with pytest.warns(
+            bfe.FunctionPackageVersionWarning,
+            match=(
+                "numpy, pandas, and pyarrow versions in the function execution"
+                "\nenvironment may not precisely match your local environment."
+            ),
+        ):
+
+            analyze_mf = session.udf(
+                input_types=bigframes.series.Series,
+                output_type=str,
+                dataset=dataset_id,
+                name=prefixer.create_prefix(),
+            )(analyze)
+
+        assert getattr(analyze_mf, "is_row_processor")
+
+        bf_result = scalars_df[columns].dropna().apply(analyze_mf, axis=1).to_pandas()
+        pd_result = scalars_pandas_df[columns].dropna().apply(analyze, axis=1)
+
+        # bf_result.dtype is 'string[pyarrow]' while pd_result.dtype is 'object'
+        # , ignore this mismatch by using check_dtype=False.
+        pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+    finally:
+        # clean up the gcp assets created for the managed function.
+        cleanup_function_assets(analyze_mf, session.bqclient, ignore_failures=False)
+
+
+@pytest.mark.parametrize(
+    ("pd_df",),
+    [
+        pytest.param(
+            pandas.DataFrame(
+                {
+                    "2": [1, 2, 3],
+                    2: [1.5, 3.75, 5],
+                    "name, [with. special'- chars\")/\\": [10, 20, 30],
+                    (3, 4): ["pq", "rs", "tu"],
+                    (5.0, "six", 7): [8, 9, 10],
+                    'raise Exception("hacked!")': [11, 12, 13],
+                },
+                # Default pandas index has non-numpy type, whereas bigframes is
+                # always numpy-based type, so let's use the index compatible
+                # with bigframes. See more details in b/369689696.
+                index=pandas.Index([0, 1, 2], dtype=pandas.Int64Dtype()),
+            ),
+            id="all-kinds-of-column-names",
+        ),
+        pytest.param(
+            pandas.DataFrame(
+                {
+                    "x": [1, 2, 3],
+                    "y": [1.5, 3.75, 5],
+                    "z": ["pq", "rs", "tu"],
+                },
+                index=pandas.MultiIndex.from_frame(
+                    pandas.DataFrame(
+                        {
+                            "idx0": pandas.Series(
+                                ["a", "a", "b"], dtype=pandas.StringDtype()
+                            ),
+                            "idx1": pandas.Series(
+                                [100, 200, 300], dtype=pandas.Int64Dtype()
+                            ),
+                        }
+                    )
+                ),
+            ),
+            id="multiindex",
+            marks=pytest.mark.skip(
+                reason="TODO: revert this skip after this pandas bug is fixed: https://github.com/pandas-dev/pandas/issues/59908"
+            ),
+        ),
+        pytest.param(
+            pandas.DataFrame(
+                [
+                    [10, 1.5, "pq"],
+                    [20, 3.75, "rs"],
+                    [30, 8.0, "tu"],
+                ],
+                # Default pandas index has non-numpy type, whereas bigframes is
+                # always numpy-based type, so let's use the index compatible
+                # with bigframes. See more details in b/369689696.
+                index=pandas.Index([0, 1, 2], dtype=pandas.Int64Dtype()),
+                columns=pandas.MultiIndex.from_arrays(
+                    [
+                        ["first", "last_two", "last_two"],
+                        [1, 2, 3],
+                    ]
+                ),
+            ),
+            id="column-multiindex",
+        ),
+    ],
+)
+def test_managed_function_df_apply_axis_1_complex(session, dataset_id, pd_df):
+    bf_df = session.read_pandas(pd_df)
+
+    try:
+
+        def serialize_row(row):
+            # TODO(b/435021126): Remove explicit type conversion of the field
+            # "name" after the issue has been addressed. It is added only to
+            # accept partial pandas parity for the time being.
+            custom = {
+                "name": int(row.name),
+                "index": [idx for idx in row.index],
+                "values": [
+                    val.item() if hasattr(val, "item") else val for val in row.values
+                ],
+            }
+            return str(
+                {
+                    "default": row.to_json(),
+                    "split": row.to_json(orient="split"),
+                    "records": row.to_json(orient="records"),
+                    "index": row.to_json(orient="index"),
+                    "custom": custom,
+                }
+            )
+
+        serialize_row_mf = session.udf(
+            input_types=bigframes.series.Series,
+            output_type=str,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
+        )(serialize_row)
+
+        assert getattr(serialize_row_mf, "is_row_processor")
+
+        bf_result = bf_df.apply(serialize_row_mf, axis=1).to_pandas()
+        pd_result = pd_df.apply(serialize_row, axis=1)
+
+        # ignore known dtype difference between pandas and bigframes.
+        pandas.testing.assert_series_equal(
+            pd_result, bf_result, check_dtype=False, check_index_type=False
+        )
+
+    finally:
+        # clean up the gcp assets created for the managed function.
+        cleanup_function_assets(
+            serialize_row_mf, session.bqclient, ignore_failures=False
+        )
+
+
+@pytest.mark.skip(reason="Revert after this bug b/435018880 is fixed.")
+def test_managed_function_df_apply_axis_1_na_nan_inf(dataset_id, session):
+    """This test is for special cases of float values, to make sure any (nan,
+    inf, -inf) produced by user code is honored.
+    """
+    bf_df = session.read_gbq(
+        """\
+SELECT "1" AS text, 1 AS num
+UNION ALL
+SELECT "2.5" AS text, 2.5 AS num
+UNION ALL
+SELECT "nan" AS text, IEEE_DIVIDE(0, 0) AS num
+UNION ALL
+SELECT "inf" AS text, IEEE_DIVIDE(1, 0) AS num
+UNION ALL
+SELECT "-inf" AS text, IEEE_DIVIDE(-1, 0) AS num
+UNION ALL
+SELECT "numpy nan" AS text, IEEE_DIVIDE(0, 0) AS num
+UNION ALL
+SELECT "pandas na" AS text, NULL AS num
+                             """
+    )
+
+    pd_df = bf_df.to_pandas()
+
+    try:
+
+        def float_parser(row):
+            import numpy as mynp
+            import pandas as mypd
+
+            if row["text"] == "pandas na":
+                return mypd.NA
+            if row["text"] == "numpy nan":
+                return mynp.nan
+            return float(row["text"])
+
+        float_parser_mf = session.udf(
+            input_types=bigframes.series.Series,
+            output_type=float,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
+        )(float_parser)
+
+        assert getattr(float_parser_mf, "is_row_processor")
+
+        pd_result = pd_df.apply(float_parser, axis=1)
+        bf_result = bf_df.apply(float_parser_mf, axis=1).to_pandas()
+
+        # bf_result.dtype is 'Float64' while pd_result.dtype is 'object'
+        # , ignore this mismatch by using check_dtype=False.
+        pandas.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+        # Let's also assert that the data is consistent in this round trip
+        # (BQ -> BigFrames -> BQ -> GCF -> BQ -> BigFrames) w.r.t. their
+        # expected values in BQ.
+        bq_result = bf_df["num"].to_pandas()
+        bq_result.name = None
+        pandas.testing.assert_series_equal(bq_result, bf_result)
+    finally:
+        # clean up the gcp assets created for the managed function.
+        cleanup_function_assets(
+            float_parser_mf, session.bqclient, ignore_failures=False
+        )
