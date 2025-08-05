@@ -176,5 +176,16 @@ RUN chmod a+rx ./cli.py
 
 ENV PATH=bazel_env/bin:$PATH
 
+# 2025/08/05 08:27:44 could not create directory /.cache/bazelisk: mkdir /.cache: permission denied
+# Traceback (most recent call last):
+#   File "/app/./cli.py", line 147, in _build_bazel_target
+#     subprocess.run(
+#   File "/usr/local/lib/python3.9/subprocess.py", line 528, in run
+#     raise CalledProcessError(retcode, process.args,
+# subprocess.CalledProcessError: Command '['bazelisk', '--output_base=/bazel_cache/_bazel_ubuntu/output_base', 'build', '--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos', '--incompatible_strict_action_env', '//google/cloud/language/v1beta2:language-v1beta2-py']' returned non-zero exit status 1
+RUN mkdir /.cache /source
+
+# RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
+
 # Set the entrypoint for the container to run the script.
 ENTRYPOINT ["python3.9", "./cli.py"]
