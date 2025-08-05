@@ -1,9 +1,0 @@
-{
-    "id": "google-cloud-language",
-    "apis": [
-        {
-        "path": "google/cloud/language/v1",
-        "service_config": "language.yaml"
-        }
-    ]
-}
