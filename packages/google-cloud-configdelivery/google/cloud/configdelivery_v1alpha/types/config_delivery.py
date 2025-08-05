@@ -1524,9 +1524,9 @@ class Variant(proto.Message):
             Optional. labels to represent any metadata
             associated with the variant.
         resources (MutableSequence[str]):
-            Required. Unordered list. resources contain
-            the kubernetes manifests (YAMLs) for this
-            variant.
+            Required. Input only. Unordered list.
+            resources contain the kubernetes manifests
+            (YAMLs) for this variant.
         name (str):
             Identifier. Name follows format of
             projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}/variants/{variant}
