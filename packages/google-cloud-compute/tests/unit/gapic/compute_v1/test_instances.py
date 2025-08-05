@@ -23027,6 +23027,11 @@ def test_insert_rest_call_success(request_type):
             "upcoming_maintenance": {
                 "can_reschedule": True,
                 "latest_window_start_time": "latest_window_start_time_value",
+                "maintenance_on_shutdown": True,
+                "maintenance_reasons": [
+                    "maintenance_reasons_value1",
+                    "maintenance_reasons_value2",
+                ],
                 "maintenance_status": "maintenance_status_value",
                 "type_": "type__value",
                 "window_end_time": "window_end_time_value",
@@ -29300,6 +29305,11 @@ def test_update_rest_call_success(request_type):
             "upcoming_maintenance": {
                 "can_reschedule": True,
                 "latest_window_start_time": "latest_window_start_time_value",
+                "maintenance_on_shutdown": True,
+                "maintenance_reasons": [
+                    "maintenance_reasons_value1",
+                    "maintenance_reasons_value2",
+                ],
                 "maintenance_status": "maintenance_status_value",
                 "type_": "type__value",
                 "window_end_time": "window_end_time_value",
