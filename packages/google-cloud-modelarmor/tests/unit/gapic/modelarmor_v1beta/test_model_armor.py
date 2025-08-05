@@ -7352,7 +7352,9 @@ def test_update_floor_setting_rest_call_success(request_type):
             "inspect_and_block": True,
             "enable_cloud_logging": True,
         },
-        "floor_setting_metadata": {},
+        "floor_setting_metadata": {
+            "multi_language_detection": {"enable_multi_language_detection": True}
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
