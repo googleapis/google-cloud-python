@@ -183,7 +183,7 @@ ENV PATH=bazel_env/bin:$PATH
 #   File "/usr/local/lib/python3.9/subprocess.py", line 528, in run
 #     raise CalledProcessError(retcode, process.args,
 # subprocess.CalledProcessError: Command '['bazelisk', '--output_base=/bazel_cache/_bazel_ubuntu/output_base', 'build', '--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos', '--incompatible_strict_action_env', '//google/cloud/language/v1beta2:language-v1beta2-py']' returned non-zero exit status 1
-RUN mkdir /.cache
+# RUN mkdir /.cache
 
 # RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
