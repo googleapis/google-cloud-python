@@ -17,6 +17,11 @@ import pytest
 
 from google.api_core import exceptions
 from . import _helpers
+from google.cloud.storage.ip_filter import (
+    IPFilter,
+    PublicNetworkSource,
+    VpcNetworkSource,
+)
 
 
 def test_bucket_create_w_alt_storage_class(storage_client, buckets_to_delete):
@@ -1299,3 +1304,66 @@ def test_new_bucket_with_hierarchical_namespace(
     bucket = storage_client.create_bucket(bucket_obj)
     buckets_to_delete.append(bucket)
     assert bucket.hierarchical_namespace_enabled is True
+
+
+def test_bucket_ip_filter_patch(storage_client, buckets_to_delete):
+    """Test setting and clearing IP filter configuration without enabling enforcement."""
+    bucket_name = _helpers.unique_name("ip-filter-control")
+    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
+    buckets_to_delete.append(bucket)
+
+    ip_filter = IPFilter()
+    ip_filter.mode = "Disabled"
+    ip_filter.allow_all_service_agent_access = True
+    ip_filter.public_network_source = PublicNetworkSource(
+        allowed_ip_cidr_ranges=["203.0.113.10/32"]
+    )
+    ip_filter.vpc_network_sources.append(
+        VpcNetworkSource(
+            network=f"projects/{storage_client.project}/global/networks/default",
+            allowed_ip_cidr_ranges=["10.0.0.0/8"],
+        )
+    )
+    bucket.ip_filter = ip_filter
+    bucket.patch()
+
+    # Reload and verify the full configuration was set correctly.
+    bucket.reload()
+    reloaded_filter = bucket.ip_filter
+    assert reloaded_filter is not None
+    assert reloaded_filter.mode == "Disabled"
+    assert reloaded_filter.allow_all_service_agent_access is True
+    assert reloaded_filter.public_network_source.allowed_ip_cidr_ranges == [
+        "203.0.113.10/32"
+    ]
+    assert len(reloaded_filter.vpc_network_sources) == 1
+
+def test_list_buckets_with_ip_filter(storage_client, buckets_to_delete):
+    """Test that listing buckets returns a summarized IP filter."""
+    bucket_name = _helpers.unique_name("ip-filter-list")
+    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
+    buckets_to_delete.append(bucket)
+
+    ip_filter = IPFilter()
+    ip_filter.mode = "Disabled"
+    ip_filter.allow_all_service_agent_access = True
+    ip_filter.public_network_source = PublicNetworkSource(
+        allowed_ip_cidr_ranges=["203.0.113.10/32"]
+    )
+    bucket.ip_filter = ip_filter
+    bucket.patch()
+
+    buckets_list = list(storage_client.list_buckets(prefix=bucket_name))
+    found_bucket = next((b for b in buckets_list if b.name == bucket_name), None)
+
+    assert found_bucket is not None
+    summarized_filter = found_bucket.ip_filter
+
+    assert summarized_filter is not None
+    assert summarized_filter.mode == "Disabled"
+    assert summarized_filter.allow_all_service_agent_access is True
+
+    # Check that the summarized filter does not include full details.
+    assert summarized_filter.public_network_source is None
+    assert summarized_filter.vpc_network_sources == []
+

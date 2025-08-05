@@ -4612,6 +4612,54 @@ class Test_Bucket(unittest.TestCase):
                 virtual_hosted_style=True, bucket_bound_hostname="cdn.example.com"
             )
 
+    def test_ip_filter_getter_unset(self):
+        """Test that ip_filter is None when not set."""
+        bucket = self._make_one()
+        self.assertIsNone(bucket.ip_filter)
+
+    def test_ip_filter_getter_w_value(self):
+        """Test getting an existing ip_filter configuration."""
+        from google.cloud.storage.ip_filter import IPFilter
+
+        ipf_property = {"mode": "Enabled"}
+        properties = {"ipFilter": ipf_property}
+        bucket = self._make_one(properties=properties)
+
+        ip_filter = bucket.ip_filter
+        self.assertIsInstance(ip_filter, IPFilter)
+        self.assertEqual(ip_filter.mode, "Enabled")
+
+    def test_ip_filter_setter(self):
+        """Test setting the ip_filter with a helper class."""
+        from google.cloud.storage.ip_filter import IPFilter
+        from google.cloud.storage.bucket import _IP_FILTER_PROPERTY
+
+        bucket = self._make_one()
+        ip_filter = IPFilter()
+        ip_filter.mode = "Enabled"
+
+        bucket.ip_filter = ip_filter
+
+        self.assertIn(_IP_FILTER_PROPERTY, bucket._changes)
+        self.assertEqual(
+            bucket._properties[_IP_FILTER_PROPERTY],
+            {
+                "mode": "Enabled",
+                "vpcNetworkSources": [],
+                "allowAllServiceAgentAccess": None,
+            },
+        )
+
+    def test_ip_filter_setter_w_none(self):
+        """Test clearing the ip_filter by setting it to None."""
+        from google.cloud.storage.bucket import _IP_FILTER_PROPERTY
+
+        bucket = self._make_one(properties={"ipFilter": {"mode": "Enabled"}})
+        bucket.ip_filter = None
+
+        self.assertIn(_IP_FILTER_PROPERTY, bucket._changes)
+        self.assertIsNone(bucket._properties.get(_IP_FILTER_PROPERTY))
+
 
 class Test__item_to_notification(unittest.TestCase):
     def _call_fut(self, iterator, item):

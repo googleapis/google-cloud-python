@@ -56,6 +56,7 @@ from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_INHERITED
 from google.cloud.storage.constants import REGIONAL_LEGACY_STORAGE_CLASS
 from google.cloud.storage.constants import REGION_LOCATION_TYPE
 from google.cloud.storage.constants import STANDARD_STORAGE_CLASS
+from google.cloud.storage.ip_filter import IPFilter
 from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 from google.cloud.storage.retry import DEFAULT_RETRY
@@ -88,6 +89,7 @@ _LOCATION_SETTER_MESSAGE = (
 _FROM_STRING_MESSAGE = (
     "Bucket.from_string() is deprecated. " "Use Bucket.from_uri() instead."
 )
+_IP_FILTER_PROPERTY = "ipFilter"
 
 
 def _blobs_page_start(iterator, page, response):
@@ -3886,6 +3888,59 @@ class Bucket(_PropertyMixin):
             headers=headers,
             query_parameters=query_parameters,
         )
+
+    @property
+    def ip_filter(self):
+        """Retrieve or set the IP Filter configuration for this bucket.
+
+        See https://cloud.google.com/storage/docs/ip-filtering-overview and
+        https://cloud.google.com/storage/docs/json_api/v1/buckets#ipFilter
+
+        .. note::
+            The getter for this property returns an
+            :class:`~google.cloud.storage.ip_filter.IPFilter` object, which is a
+            structured representation of the bucket's IP filter configuration.
+            Modifying the returned object has no effect. To update the bucket's
+            IP filter, create and assign a new ``IPFilter`` object to this
+            property and then call
+            :meth:`~google.cloud.storage.bucket.Bucket.patch`.
+
+            .. code-block:: python
+
+                from google.cloud.storage.ip_filter import (
+                    IPFilter,
+                    PublicNetworkSource,
+                )
+
+                ip_filter = IPFilter()
+                ip_filter.mode = "Enabled"
+                ip_filter.public_network_source = PublicNetworkSource(
+                    allowed_ip_cidr_ranges=["203.0.113.5/32"]
+                )
+                bucket.ip_filter = ip_filter
+                bucket.patch()
+
+        :setter: Set the IP Filter configuration for this bucket.
+        :getter: Gets the IP Filter configuration for this bucket.
+
+        :rtype: :class:`~google.cloud.storage.ip_filter.IPFilter` or ``NoneType``
+        :returns:
+            An ``IPFilter`` object representing the configuration, or ``None``
+            if no filter is configured.
+        """
+        resource = self._properties.get(_IP_FILTER_PROPERTY)
+        if resource:
+            return IPFilter._from_api_resource(resource)
+        return None
+
+    @ip_filter.setter
+    def ip_filter(self, value):
+        if value is None:
+            self._patch_property(_IP_FILTER_PROPERTY, None)
+        elif isinstance(value, IPFilter):
+            self._patch_property(_IP_FILTER_PROPERTY, value._to_api_resource())
+        else:
+            self._patch_property(_IP_FILTER_PROPERTY, value)
 
 
 class SoftDeletePolicy(dict):
