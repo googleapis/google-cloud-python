@@ -153,6 +153,22 @@ class Space(proto.Message):
             setting <https://support.google.com/chat/answer/11971020>`__
             of the space. Only populated when the ``space_type`` is
             ``SPACE``.
+        customer (str):
+            Optional. Immutable. The customer id of the domain of the
+            space. Required only when creating a space with `app
+            authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+            and ``SpaceType`` is ``SPACE``, otherwise should not be set.
+
+            In the format ``customers/{customer}``, where ``customer``
+            is the ``id`` from the `Admin SDK customer
+            resource <https://developers.google.com/admin-sdk/directory/reference/rest/v1/customers>`__.
+            Private apps can also use the ``customers/my_customer``
+            alias to create the space in the same Google Workspace
+            organization as the app.
+
+            For DMs, this field isn't populated.
+
+            This field is a member of `oneof`_ ``_customer``.
         space_uri (str):
             Output only. The URI for a user to access the
             space.
@@ -162,13 +178,36 @@ class Space(proto.Message):
             collaboration space is created. After you create the space,
             settings are populated in the ``PermissionSettings`` field.
 
+            Setting predefined permission settings supports:
+
+            -  `App
+               authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+               with `administrator
+               approval <https://support.google.com/a?p=chat-app-auth>`__
+               with the ``chat.app.spaces`` or
+               ``chat.app.spaces.create`` scopes.
+
+            -  `User
+               authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+
             This field is a member of `oneof`_ ``space_permission_settings``.
         permission_settings (google.apps.chat_v1.types.Space.PermissionSettings):
-            Optional. Space permission settings for
-            existing spaces. Input for updating exact space
-            permission settings, where existing permission
-            settings are replaced. Output lists current
-            permission settings.
+            Optional. Space permission settings for existing spaces.
+            Input for updating exact space permission settings, where
+            existing permission settings are replaced. Output lists
+            current permission settings.
+
+            Reading and updating permission settings supports:
+
+            -  `App
+               authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
+               with `administrator
+               approval <https://support.google.com/a?p=chat-app-auth>`__
+               with the ``chat.app.spaces`` scope. Only populated and
+               settable when the Chat app created the space.
+
+            -  `User
+               authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
 
             This field is a member of `oneof`_ ``space_permission_settings``.
         import_mode_expire_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -348,8 +387,7 @@ class Space(proto.Message):
                    authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
                    with `administrator
                    approval <https://support.google.com/a?p=chat-app-auth>`__
-                   with the ``chat.app.spaces`` scope in `Developer
-                   Preview <https://developers.google.com/workspace/preview>`__.
+                   with the ``chat.app.spaces`` scope.
 
                 This field is not populated when using the ``chat.bot``
                 scope with `app
@@ -591,6 +629,11 @@ class Space(proto.Message):
         proto.MESSAGE,
         number=23,
         message=AccessSettings,
+    )
+    customer: str = proto.Field(
+        proto.STRING,
+        number=24,
+        optional=True,
     )
     space_uri: str = proto.Field(
         proto.STRING,

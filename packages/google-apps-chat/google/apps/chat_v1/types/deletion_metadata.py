@@ -37,8 +37,10 @@ class DeletionMetadata(proto.Message):
     """
 
     class DeletionType(proto.Enum):
-        r"""Who deleted the message and how it was deleted. More values
-        may be added in the future.
+        r"""Who deleted the message and how it was deleted. More values may be
+        added in the future. See `Edit or delete a message in Google
+        Chat <https://support.google.com/chat/answer/7653281>`__ for details
+        on when messages can be deleted.
 
         Values:
             DELETION_TYPE_UNSPECIFIED (0):
@@ -46,21 +48,24 @@ class DeletionMetadata(proto.Message):
             CREATOR (1):
                 User deleted their own message.
             SPACE_OWNER (2):
-                The space owner deleted the message.
+                A space manager deleted the message.
             ADMIN (3):
-                A Google Workspace admin deleted the message.
+                A Google Workspace administrator deleted the
+                message. Administrators can delete any message
+                in the space, including messages sent by any
+                space member or Chat app.
             APP_MESSAGE_EXPIRY (4):
                 A Chat app deleted its own message when it
                 expired.
             CREATOR_VIA_APP (5):
                 A Chat app deleted the message on behalf of
-                the user.
+                the creator (using user authentication).
             SPACE_OWNER_VIA_APP (6):
-                A Chat app deleted the message on behalf of
-                the space owner.
+                A Chat app deleted the message on behalf of a
+                space manager (using user authentication).
             SPACE_MEMBER (7):
                 A member of the space deleted the message.
-                Human users can delete messages sent by apps.
+                Users can delete messages sent by apps.
         """
         DELETION_TYPE_UNSPECIFIED = 0
         CREATOR = 1

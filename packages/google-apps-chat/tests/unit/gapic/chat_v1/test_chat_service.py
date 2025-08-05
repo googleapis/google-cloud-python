@@ -1101,6 +1101,10 @@ def test_chat_service_client_create_channel_credentials_file(
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.delete",
+                "https://www.googleapis.com/auth/chat.app.memberships",
+                "https://www.googleapis.com/auth/chat.app.spaces",
+                "https://www.googleapis.com/auth/chat.app.spaces.create",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.customemojis",
                 "https://www.googleapis.com/auth/chat.customemojis.readonly",
@@ -5257,6 +5261,7 @@ def test_get_space(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -5284,6 +5289,7 @@ def test_get_space(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -5419,6 +5425,7 @@ async def test_get_space_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -5446,6 +5453,7 @@ async def test_get_space_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -5625,6 +5633,7 @@ def test_create_space(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=gc_space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -5652,6 +5661,7 @@ def test_create_space(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -5789,6 +5799,7 @@ async def test_create_space_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -5816,6 +5827,7 @@ async def test_create_space_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -5936,6 +5948,7 @@ def test_set_up_space(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -5963,6 +5976,7 @@ def test_set_up_space(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -6100,6 +6114,7 @@ async def test_set_up_space_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -6127,6 +6142,7 @@ async def test_set_up_space_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -6167,6 +6183,7 @@ def test_update_space(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=gc_space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -6194,6 +6211,7 @@ def test_update_space(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -6327,6 +6345,7 @@ async def test_update_space_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -6354,6 +6373,7 @@ async def test_update_space_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -7106,6 +7126,7 @@ def test_find_direct_message(request_type, transport: str = "grpc"):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -7133,6 +7154,7 @@ def test_find_direct_message(request_type, transport: str = "grpc"):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -7278,6 +7300,7 @@ async def test_find_direct_message_async(
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -7305,6 +7328,7 @@ async def test_find_direct_message_async(
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -21138,6 +21162,7 @@ async def test_get_space_empty_call_grpc_asyncio():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -21176,6 +21201,7 @@ async def test_create_space_empty_call_grpc_asyncio():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -21214,6 +21240,7 @@ async def test_set_up_space_empty_call_grpc_asyncio():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -21252,6 +21279,7 @@ async def test_update_space_empty_call_grpc_asyncio():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -21342,6 +21370,7 @@ async def test_find_direct_message_empty_call_grpc_asyncio():
                 space_history_state=history_state.HistoryState.HISTORY_OFF,
                 import_mode=True,
                 admin_installed=True,
+                customer="customer_value",
                 space_uri="space_uri_value",
             )
         )
@@ -22234,6 +22263,7 @@ def test_create_message_rest_call_success(request_type):
                 "joined_group_count": 1933,
             },
             "access_settings": {"access_state": 1, "audience": "audience_value"},
+            "customer": "customer_value",
             "space_uri": "space_uri_value",
             "predefined_permission_settings": 1,
             "permission_settings": {
@@ -23359,6 +23389,7 @@ def test_update_message_rest_call_success(request_type):
                 "joined_group_count": 1933,
             },
             "access_settings": {"access_state": 1, "audience": "audience_value"},
+            "customer": "customer_value",
             "space_uri": "space_uri_value",
             "predefined_permission_settings": 1,
             "permission_settings": {
@@ -24259,6 +24290,7 @@ def test_get_space_rest_call_success(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -24291,6 +24323,7 @@ def test_get_space_rest_call_success(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -24414,6 +24447,7 @@ def test_create_space_rest_call_success(request_type):
             "joined_group_count": 1933,
         },
         "access_settings": {"access_state": 1, "audience": "audience_value"},
+        "customer": "customer_value",
         "space_uri": "space_uri_value",
         "predefined_permission_settings": 1,
         "permission_settings": {
@@ -24515,6 +24549,7 @@ def test_create_space_rest_call_success(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=gc_space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -24547,6 +24582,7 @@ def test_create_space_rest_call_success(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -24664,6 +24700,7 @@ def test_set_up_space_rest_call_success(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -24696,6 +24733,7 @@ def test_set_up_space_rest_call_success(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -24819,6 +24857,7 @@ def test_update_space_rest_call_success(request_type):
             "joined_group_count": 1933,
         },
         "access_settings": {"access_state": 1, "audience": "audience_value"},
+        "customer": "customer_value",
         "space_uri": "space_uri_value",
         "predefined_permission_settings": 1,
         "permission_settings": {
@@ -24920,6 +24959,7 @@ def test_update_space_rest_call_success(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=gc_space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -24952,6 +24992,7 @@ def test_update_space_rest_call_success(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -25303,6 +25344,7 @@ def test_find_direct_message_rest_call_success(request_type):
             space_history_state=history_state.HistoryState.HISTORY_OFF,
             import_mode=True,
             admin_installed=True,
+            customer="customer_value",
             space_uri="space_uri_value",
             predefined_permission_settings=space.Space.PredefinedPermissionSettings.COLLABORATION_SPACE,
         )
@@ -25335,6 +25377,7 @@ def test_find_direct_message_rest_call_success(request_type):
     assert response.space_history_state == history_state.HistoryState.HISTORY_OFF
     assert response.import_mode is True
     assert response.admin_installed is True
+    assert response.customer == "customer_value"
     assert response.space_uri == "space_uri_value"
 
 
@@ -28933,6 +28976,10 @@ def test_chat_service_base_transport_with_credentials_file():
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.delete",
+                "https://www.googleapis.com/auth/chat.app.memberships",
+                "https://www.googleapis.com/auth/chat.app.spaces",
+                "https://www.googleapis.com/auth/chat.app.spaces.create",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.customemojis",
                 "https://www.googleapis.com/auth/chat.customemojis.readonly",
@@ -28982,6 +29029,10 @@ def test_chat_service_auth_adc():
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.delete",
+                "https://www.googleapis.com/auth/chat.app.memberships",
+                "https://www.googleapis.com/auth/chat.app.spaces",
+                "https://www.googleapis.com/auth/chat.app.spaces.create",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.customemojis",
                 "https://www.googleapis.com/auth/chat.customemojis.readonly",
@@ -29028,6 +29079,10 @@ def test_chat_service_transport_auth_adc(transport_class):
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.delete",
+                "https://www.googleapis.com/auth/chat.app.memberships",
+                "https://www.googleapis.com/auth/chat.app.spaces",
+                "https://www.googleapis.com/auth/chat.app.spaces.create",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.customemojis",
                 "https://www.googleapis.com/auth/chat.customemojis.readonly",
@@ -29106,6 +29161,10 @@ def test_chat_service_transport_create_channel(transport_class, grpc_helpers):
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.delete",
+                "https://www.googleapis.com/auth/chat.app.memberships",
+                "https://www.googleapis.com/auth/chat.app.spaces",
+                "https://www.googleapis.com/auth/chat.app.spaces.create",
                 "https://www.googleapis.com/auth/chat.bot",
                 "https://www.googleapis.com/auth/chat.customemojis",
                 "https://www.googleapis.com/auth/chat.customemojis.readonly",

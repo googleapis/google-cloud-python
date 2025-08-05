@@ -73,7 +73,7 @@ class SetUpSpaceRequest(proto.Message):
             the space. Omit the calling user, as they are added
             automatically.
 
-            The set currently allows up to 20 memberships (in addition
+            The set currently allows up to 49 memberships (in addition
             to the caller).
 
             For human membership, the ``Membership.member`` field must
