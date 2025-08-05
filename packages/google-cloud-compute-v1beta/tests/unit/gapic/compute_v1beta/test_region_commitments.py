@@ -3763,6 +3763,11 @@ def test_insert_rest_call_success(request_type):
                 },
                 "resource_policies": {},
                 "resource_status": {
+                    "health_info": {
+                        "degraded_block_count": 2082,
+                        "health_status": "health_status_value",
+                        "healthy_block_count": 2017,
+                    },
                     "reservation_block_count": 2468,
                     "reservation_maintenance": {
                         "instance_maintenance_ongoing_count": 3599,
@@ -3776,6 +3781,10 @@ def test_insert_rest_call_success(request_type):
                             "can_reschedule": True,
                             "latest_window_start_time": "latest_window_start_time_value",
                             "maintenance_on_shutdown": True,
+                            "maintenance_reasons": [
+                                "maintenance_reasons_value1",
+                                "maintenance_reasons_value2",
+                            ],
                             "maintenance_status": "maintenance_status_value",
                             "type_": "type__value",
                             "window_end_time": "window_end_time_value",
@@ -3788,6 +3797,7 @@ def test_insert_rest_call_success(request_type):
                     },
                 },
                 "satisfies_pzs": True,
+                "scheduling_type": "scheduling_type_value",
                 "self_link": "self_link_value",
                 "share_settings": {
                     "project_map": {},
@@ -4473,6 +4483,11 @@ def test_update_rest_call_success(request_type):
                 },
                 "resource_policies": {},
                 "resource_status": {
+                    "health_info": {
+                        "degraded_block_count": 2082,
+                        "health_status": "health_status_value",
+                        "healthy_block_count": 2017,
+                    },
                     "reservation_block_count": 2468,
                     "reservation_maintenance": {
                         "instance_maintenance_ongoing_count": 3599,
@@ -4486,6 +4501,10 @@ def test_update_rest_call_success(request_type):
                             "can_reschedule": True,
                             "latest_window_start_time": "latest_window_start_time_value",
                             "maintenance_on_shutdown": True,
+                            "maintenance_reasons": [
+                                "maintenance_reasons_value1",
+                                "maintenance_reasons_value2",
+                            ],
                             "maintenance_status": "maintenance_status_value",
                             "type_": "type__value",
                             "window_end_time": "window_end_time_value",
@@ -4498,6 +4517,7 @@ def test_update_rest_call_success(request_type):
                     },
                 },
                 "satisfies_pzs": True,
+                "scheduling_type": "scheduling_type_value",
                 "self_link": "self_link_value",
                 "share_settings": {
                     "project_map": {},
@@ -4822,6 +4842,11 @@ def test_update_reservations_rest_call_success(request_type):
                 },
                 "resource_policies": {},
                 "resource_status": {
+                    "health_info": {
+                        "degraded_block_count": 2082,
+                        "health_status": "health_status_value",
+                        "healthy_block_count": 2017,
+                    },
                     "reservation_block_count": 2468,
                     "reservation_maintenance": {
                         "instance_maintenance_ongoing_count": 3599,
@@ -4835,6 +4860,10 @@ def test_update_reservations_rest_call_success(request_type):
                             "can_reschedule": True,
                             "latest_window_start_time": "latest_window_start_time_value",
                             "maintenance_on_shutdown": True,
+                            "maintenance_reasons": [
+                                "maintenance_reasons_value1",
+                                "maintenance_reasons_value2",
+                            ],
                             "maintenance_status": "maintenance_status_value",
                             "type_": "type__value",
                             "window_end_time": "window_end_time_value",
@@ -4847,6 +4876,7 @@ def test_update_reservations_rest_call_success(request_type):
                     },
                 },
                 "satisfies_pzs": True,
+                "scheduling_type": "scheduling_type_value",
                 "self_link": "self_link_value",
                 "share_settings": {
                     "project_map": {},
