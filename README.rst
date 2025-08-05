@@ -1189,6 +1189,12 @@ Libraries
      - `API Issues <https://issuetracker.google.com/issues?q=componentid:1376234>`_
      - `File an API Issue <https://issuetracker.google.com/issues/new?component=1376234>`_
      - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
+   * - `Managed Service for Apache Kafka API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-managedkafka-schemaregistry>`_
+     - preview
+     - |PyPI-google-cloud-managedkafka-schemaregistry|
+     - `API Issues <https://issuetracker.google.com/issues?q=componentid:1376234>`_
+     - `File an API Issue <https://issuetracker.google.com/issues/new?component=1376234>`_
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Maps Platform Datasets API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-maps-mapsplatformdatasets>`_
      - preview
      - |PyPI-google-maps-mapsplatformdatasets|
@@ -1916,6 +1922,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-lustre
 .. |PyPI-google-cloud-managedkafka| image:: https://img.shields.io/pypi/v/google-cloud-managedkafka.svg
      :target: https://pypi.org/project/google-cloud-managedkafka
+.. |PyPI-google-cloud-managedkafka-schemaregistry| image:: https://img.shields.io/pypi/v/google-cloud-managedkafka-schemaregistry.svg
+     :target: https://pypi.org/project/google-cloud-managedkafka-schemaregistry
 .. |PyPI-google-maps-mapsplatformdatasets| image:: https://img.shields.io/pypi/v/google-maps-mapsplatformdatasets.svg
      :target: https://pypi.org/project/google-maps-mapsplatformdatasets
 .. |PyPI-google-maps-routing| image:: https://img.shields.io/pypi/v/google-maps-routing.svg
