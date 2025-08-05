@@ -168,8 +168,6 @@ python3.9 -m pip install /tmp/synthtool && \
 rm -rf /tmp/synthtool
 RUN python3.9 -m pip install nox
 
-COPY --from=builder /bazel_cache /bazel_cache
-
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
 RUN chmod a+rx ./cli.py
@@ -193,6 +191,8 @@ ENV XDG_CACHE_HOME="/bazel_cache"
 RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
              ${BAZEL_HOME}/_bazel_ubuntu/output_base \
              ${BAZELISK_HOME}
+
+COPY --from=builder /bazel_cache /bazel_cache
 
 # RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
