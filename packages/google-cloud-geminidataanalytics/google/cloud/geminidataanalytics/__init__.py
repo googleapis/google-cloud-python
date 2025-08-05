@@ -18,31 +18,31 @@ from google.cloud.geminidataanalytics import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.geminidataanalytics_v1alpha.services.context_retrieval_service.async_client import (
+from google.cloud.geminidataanalytics_v1beta.services.context_retrieval_service.async_client import (
     ContextRetrievalServiceAsyncClient,
 )
-from google.cloud.geminidataanalytics_v1alpha.services.context_retrieval_service.client import (
+from google.cloud.geminidataanalytics_v1beta.services.context_retrieval_service.client import (
     ContextRetrievalServiceClient,
 )
-from google.cloud.geminidataanalytics_v1alpha.services.data_agent_service.async_client import (
+from google.cloud.geminidataanalytics_v1beta.services.data_agent_service.async_client import (
     DataAgentServiceAsyncClient,
 )
-from google.cloud.geminidataanalytics_v1alpha.services.data_agent_service.client import (
+from google.cloud.geminidataanalytics_v1beta.services.data_agent_service.client import (
     DataAgentServiceClient,
 )
-from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service.async_client import (
+from google.cloud.geminidataanalytics_v1beta.services.data_chat_service.async_client import (
     DataChatServiceAsyncClient,
 )
-from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service.client import (
+from google.cloud.geminidataanalytics_v1beta.services.data_chat_service.client import (
     DataChatServiceClient,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.context import (
+from google.cloud.geminidataanalytics_v1beta.types.context import (
     AnalysisOptions,
     ChartOptions,
     Context,
     ConversationOptions,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.context_retrieval_service import (
+from google.cloud.geminidataanalytics_v1beta.types.context_retrieval_service import (
     DirectLookup,
     RetrieveBigQueryRecentRelevantTablesRequest,
     RetrieveBigQueryRecentRelevantTablesResponse,
@@ -58,19 +58,19 @@ from google.cloud.geminidataanalytics_v1alpha.types.context_retrieval_service im
     RetrieveBigQueryTableSuggestedExamplesResponse,
     TableCandidate,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.conversation import (
+from google.cloud.geminidataanalytics_v1beta.types.conversation import (
     Conversation,
     CreateConversationRequest,
     GetConversationRequest,
     ListConversationsRequest,
     ListConversationsResponse,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.credentials import (
+from google.cloud.geminidataanalytics_v1beta.types.credentials import (
     Credentials,
     OAuthCredentials,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.data_agent import DataAgent
-from google.cloud.geminidataanalytics_v1alpha.types.data_agent_service import (
+from google.cloud.geminidataanalytics_v1beta.types.data_agent import DataAgent
+from google.cloud.geminidataanalytics_v1beta.types.data_agent_service import (
     CreateDataAgentRequest,
     DeleteDataAgentRequest,
     GetDataAgentRequest,
@@ -81,10 +81,10 @@ from google.cloud.geminidataanalytics_v1alpha.types.data_agent_service import (
     OperationMetadata,
     UpdateDataAgentRequest,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.data_analytics_agent import (
+from google.cloud.geminidataanalytics_v1beta.types.data_analytics_agent import (
     DataAnalyticsAgent,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.data_chat_service import (
+from google.cloud.geminidataanalytics_v1beta.types.data_chat_service import (
     AnalysisEvent,
     AnalysisMessage,
     AnalysisQuery,
@@ -112,7 +112,7 @@ from google.cloud.geminidataanalytics_v1alpha.types.data_chat_service import (
     TextMessage,
     UserMessage,
 )
-from google.cloud.geminidataanalytics_v1alpha.types.datasource import (
+from google.cloud.geminidataanalytics_v1beta.types.datasource import (
     BigQueryTableReference,
     BigQueryTableReferences,
     Datasource,
