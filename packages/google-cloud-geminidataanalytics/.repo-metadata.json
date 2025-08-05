@@ -1,8 +1,8 @@
 {
     "name": "google-cloud-geminidataanalytics",
-    "name_pretty": "Data Analytics API with Gemini",
-    "api_description": "Developers can use the Conversational Analytics API, accessed through geminidataanalytics.googleapis.com, to build an artificial intelligence (AI)-powered chat interface, or data agent, that answers questions about structured data in BigQuery, Looker, and Looker Studio using natural language.",
-    "product_documentation": "https://cloud.google.com/gemini/docs/conversational-analytics-api/overview",
+    "name_pretty": "",
+    "api_description": "",
+    "product_documentation": "",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-geminidataanalytics/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
@@ -11,7 +11,7 @@
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-geminidataanalytics",
     "api_id": "geminidataanalytics.googleapis.com",
-    "default_version": "v1alpha",
+    "default_version": "v1beta",
     "codeowner_team": "",
     "api_shortname": "geminidataanalytics"
 }
