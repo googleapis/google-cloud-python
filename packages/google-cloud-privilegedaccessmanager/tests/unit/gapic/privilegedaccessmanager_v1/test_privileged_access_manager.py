@@ -11372,6 +11372,7 @@ def test_create_grant_rest_call_success(request_type):
                     "expired": {},
                     "ended": {},
                     "externally_modified": {},
+                    "withdrawn": {},
                     "event_time": {},
                 }
             ]
