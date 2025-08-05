@@ -192,8 +192,7 @@ ENV XDG_CACHE_HOME="/bazel_cache"
 # # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
 RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
              ${BAZEL_HOME}/_bazel_ubuntu/output_base \
-             ${BAZELISK_HOME} && \
-    chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
+             ${BAZELISK_HOME}
 
 # RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
