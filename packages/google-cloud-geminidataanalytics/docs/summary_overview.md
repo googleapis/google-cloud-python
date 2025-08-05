@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-#  API
+# Data Analytics API with Gemini API
 
-Overview of the APIs available for  API.
+Overview of the APIs available for Data Analytics API with Gemini API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
- API.
+Data Analytics API with Gemini API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-geminidataanalytics/latest/summary_class.html)
 

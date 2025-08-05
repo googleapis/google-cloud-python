@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of .
+This package includes clients for multiple versions of Data Analytics API with Gemini.
 By default, you will get version ``geminidataanalytics_v1beta``.
 
 
