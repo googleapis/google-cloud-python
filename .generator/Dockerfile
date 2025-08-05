@@ -191,6 +191,7 @@ ENV XDG_CACHE_HOME="/bazel_cache"
 RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
              ${BAZEL_HOME}/_bazel_ubuntu/output_base \
              ${BAZELISK_HOME}
+RUN chmod a+rx ${XDG_CACHE_HOME}
 
 COPY --from=builder /bazel_cache /bazel_cache
 
