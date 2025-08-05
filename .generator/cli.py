@@ -18,6 +18,7 @@ import logging
 import os
 import subprocess
 import sys
+import subprocess
 from typing import Dict, List
 
 try:
@@ -34,7 +35,6 @@ logger = logging.getLogger()
 
 LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
-BUILD_REQUEST_FILE = "build-request.json"
 SOURCE_DIR = "source"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
@@ -63,38 +63,54 @@ def handle_configure():
     logger.info("'configure' command executed.")
 
 
-def _determine_bazel_rule(api_path: str, source_path: str = SOURCE_DIR) -> str:
-    """Executes a `bazelisk query` to find a Bazel rule.
+import os
+import re
+import logging
+
+# Assume logger and SOURCE_DIR are defined
+# logging.basicConfig(level=logging.INFO)
+# logger = logging.getLogger(__name__)
+# SOURCE_DIR = "."
+
+def _determine_bazel_rule(api_path: str) -> str:
+    """Finds a Bazel rule by parsing the BUILD.bazel file directly.
 
     Args:
-        api_path (str): The API path to query for.
-        source_path (str): The path to the root of the Bazel workspace.
+        api_path (str): The API path, e.g., 'google/cloud/language/v1'.
 
     Returns:
-        str: The discovered Bazel rule.
+        str: The discovered Bazel rule, e.g., '//google/cloud/language/v1:language-v1-py'.
 
     Raises:
-        ValueError: If the subprocess call fails or returns an empty result.
+        ValueError: If the file can't be processed or no matching rule is found.
     """
-    logger.info(f"Determining Bazel rule for api_path: '{api_path}'")
+    logger.info(f"Determining Bazel rule for api_path: '{api_path}' by parsing file.")
     try:
-        query = f'filter("-py$", kind("rule", //{api_path}/...:*))'
-        command = ["bazelisk", "query", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", query]
-        result = subprocess.run(
-            command,
-            cwd=source_path,
-            text=True,
-            check=True,
-            capture_output=True,
+        build_file_path = os.path.join(
+            SOURCE_DIR, "googleapis", api_path, "BUILD.bazel"
         )
-        bazel_rule = result.stdout.strip()
-        if not bazel_rule:
-            raise ValueError(f"Bazelisk query `{query}` returned an empty bazel rule.")
+        
+        with open(build_file_path, "r") as f:
+            content = f.read()
+
+        match = re.search(r'name\s*=\s*"([^"]+-py)"', content)
+
+        # This check is for a logical failure (no match), not a runtime exception.
+        # It's good to keep it for clear error messaging.
+        if not match:
+            raise ValueError(
+                f"No Bazel rule with a name ending in '-py' found in {build_file_path}"
+            )
+
+        rule_name = match.group(1)
+        bazel_rule = f"//{api_path}:{rule_name}"
 
         logger.info(f"Found Bazel rule: {bazel_rule}")
         return bazel_rule
+        
     except Exception as e:
-        raise ValueError(f"Bazelisk query `{query}` failed") from e
+
+        raise ValueError(f"Failed to determine Bazel rule for '{api_path}' by parsing.") from e
 
 
 def _get_library_id(request_data: Dict) -> str:
@@ -130,7 +146,7 @@ def _build_bazel_target(bazel_rule: str, source: str = SOURCE_DIR):
         command = ["bazelisk",  "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "build", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", "--incompatible_strict_action_env", bazel_rule]
         subprocess.run(
             command,
-            cwd=source,
+            cwd=f"{source}/googleapis",
             text=True,
             check=True,
         )
@@ -163,7 +179,7 @@ def _locate_and_extract_artifact(
         info_command = ["bazelisk", "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "info", "bazel-bin"]
         result = subprocess.run(
             info_command,
-            cwd=source,
+            cwd=f"{source}/googleapis",
             text=True,
             check=True,
             capture_output=True,
@@ -202,7 +218,7 @@ def _run_post_processor(output_path: str = OUTPUT_DIR):
     """
     logger.info("Running Python post-processor...")
     if SYNTHTOOL_INSTALLED:
-        command = ["/app/bazel_env/bin/python3.9", "-m", "synthtool.languages.python_mono_repo"]
+        command = ["python3.9", "-m", "synthtool.languages.python_mono_repo"]
         subprocess.run(command, cwd=output_path, text=True, check=True)
     else:
         raise SYNTHTOOL_IMPORT_ERROR
@@ -229,10 +245,13 @@ def handle_generate(
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
-                bazel_rule = _determine_bazel_rule(api_path, source)
+                bazel_rule = _determine_bazel_rule(api_path)
                 _build_bazel_target(bazel_rule, source)
+                print("succesfully built bazel target.")
                 _locate_and_extract_artifact(bazel_rule, library_id, source, output)
+                print("succesfully located and extracted bazel tarball.")
                 _run_post_processor(output)
+                print("succesfully ran Python Post Processor.")
 
     except Exception as e:
         raise ValueError("Generation failed.") from e

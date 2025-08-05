@@ -108,10 +108,6 @@ RUN git clone https://github.com/googleapis/googleapis.git \
     && bazelisk --output_base=/bazel_cache/_bazel_ubuntu/output_base build --disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos  --incompatible_strict_action_env //google/cloud/language/v1:language-v1-py
 
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
-# TODO(https://github.com/googleapis/librarian/issues/907): Install Python dependencies from requirements.in.
-
-
-# TODO(https://github.com/googleapis/librarian/issues/906): Clone googleapis and run bazelisk build.
 
 # --- Final Stage ---
 # This stage creates the lightweight final image, copying only the
@@ -144,12 +140,6 @@ RUN apt-get update && \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# TODO(https://github.com/googleapis/librarian/issues/902): Create a dedicate non-root user and
-# switch to the non-root user to run subsequent commands.
-# Example:
-# RUN groupadd --system --gid 1000 appgroup && \
-#     useradd --system --uid 1000 --gid appgroup appuser
-# USER appuser
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
@@ -167,50 +157,21 @@ COPY --from=builder /usr/local/lib/python3.12 /usr/local/lib/python3.12
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
+# Copy bazel cache from the builder.
 COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
-
-ARG UID=1000
-ARG GID=1000
-
-# Create the group and user, but only if they don't already exist.
-RUN if ! getent group $GID > /dev/null; then \
-        groupadd -g $GID myuser; \
-    fi && \
-    if ! getent passwd $UID > /dev/null; then \
-        useradd -u $UID -g $GID -ms /bin/bash myuser; \
-    fi
-
-# Set ownership of the app directory now, before we copy files into it.
-RUN mkdir -p /app && chown $UID:$GID /app
-
-# Switch to the non-root user. All subsequent commands will run as this user.
-USER $UID
 
 # Set the working directory in the container.
 WORKDIR /app
 
-#  Install Python dependencies from requirements.in
-COPY --chown=$UID:$GID .generator/requirements.in .
-RUN python3.9 -m pip install --no-cache-dir -r requirements.in
+RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
+python3.9 -m pip install /tmp/synthtool && \
+rm -rf /tmp/synthtool
+RUN python3.9 -m pip install nox
+
+COPY --from=builder /bazel_cache /bazel_cache
 
 # Copy the CLI script into the container.
-COPY --chown=$UID:$GID .generator/cli.py .
-RUN chmod a+rx ./cli.py
-
-RUN /usr/local/bin/python3.9 -m venv bazel_env
-RUN . bazel_env/bin/activate
-ENV PATH=bazel_env/bin:$PATH
-
-RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
-    /app/bazel_env/bin/python3.9 -m pip install /tmp/synthtool && \
-    rm -rf /tmp/synthtool
-
-ENV BAZELISK_HOME="/bazel_cache/bazelisk"
-ENV BAZEL_HOME="/bazel_cache/bazel"
-ENV XDG_CACHE_HOME="/bazel_cache"
-COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
-
-# Test cloud build kaniko 2
+COPY .generator/cli.py .
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["/app/bazel_env/bin/python3.9", "./cli.py"]
+ENTRYPOINT ["python3.9", "./cli.py"]
