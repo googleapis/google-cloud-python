@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.shopping.merchant.inventories.v1beta",
-        "version": "v1beta"
+        "id": "google.shopping.merchant.inventories.v1",
+        "version": "v1"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceAsyncClient",
+          "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceAsyncClient",
           "shortName": "LocalInventoryServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceAsyncClient.delete_local_inventory",
+        "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceAsyncClient.delete_local_inventory",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService.DeleteLocalInventory",
+          "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService.DeleteLocalInventory",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService",
             "shortName": "LocalInventoryService"
           },
           "shortName": "DeleteLocalInventory"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.DeleteLocalInventoryRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.DeleteLocalInventoryRequest"
           },
           {
             "name": "name",
@@ -53,10 +53,10 @@
         "shortName": "delete_local_inventory"
       },
       "description": "Sample for DeleteLocalInventory",
-      "file": "merchantapi_v1beta_generated_local_inventory_service_delete_local_inventory_async.py",
+      "file": "merchantapi_v1_generated_local_inventory_service_delete_local_inventory_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_LocalInventoryService_DeleteLocalInventory_async",
+      "regionTag": "merchantapi_v1_generated_LocalInventoryService_DeleteLocalInventory_async",
       "segments": [
         {
           "end": 49,
@@ -87,20 +87,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_local_inventory_service_delete_local_inventory_async.py"
+      "title": "merchantapi_v1_generated_local_inventory_service_delete_local_inventory_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceClient",
+          "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceClient",
           "shortName": "LocalInventoryServiceClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceClient.delete_local_inventory",
+        "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceClient.delete_local_inventory",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService.DeleteLocalInventory",
+          "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService.DeleteLocalInventory",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService",
             "shortName": "LocalInventoryService"
           },
           "shortName": "DeleteLocalInventory"
@@ -108,7 +108,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.DeleteLocalInventoryRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.DeleteLocalInventoryRequest"
           },
           {
             "name": "name",
@@ -130,10 +130,10 @@
         "shortName": "delete_local_inventory"
       },
       "description": "Sample for DeleteLocalInventory",
-      "file": "merchantapi_v1beta_generated_local_inventory_service_delete_local_inventory_sync.py",
+      "file": "merchantapi_v1_generated_local_inventory_service_delete_local_inventory_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_LocalInventoryService_DeleteLocalInventory_sync",
+      "regionTag": "merchantapi_v1_generated_LocalInventoryService_DeleteLocalInventory_sync",
       "segments": [
         {
           "end": 49,
@@ -164,21 +164,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_local_inventory_service_delete_local_inventory_sync.py"
+      "title": "merchantapi_v1_generated_local_inventory_service_delete_local_inventory_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceAsyncClient",
+          "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceAsyncClient",
           "shortName": "LocalInventoryServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceAsyncClient.insert_local_inventory",
+        "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceAsyncClient.insert_local_inventory",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService.InsertLocalInventory",
+          "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService.InsertLocalInventory",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService",
             "shortName": "LocalInventoryService"
           },
           "shortName": "InsertLocalInventory"
@@ -186,7 +186,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.InsertLocalInventoryRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.InsertLocalInventoryRequest"
           },
           {
             "name": "retry",
@@ -201,14 +201,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_inventories_v1beta.types.LocalInventory",
+        "resultType": "google.shopping.merchant_inventories_v1.types.LocalInventory",
         "shortName": "insert_local_inventory"
       },
       "description": "Sample for InsertLocalInventory",
-      "file": "merchantapi_v1beta_generated_local_inventory_service_insert_local_inventory_async.py",
+      "file": "merchantapi_v1_generated_local_inventory_service_insert_local_inventory_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_LocalInventoryService_InsertLocalInventory_async",
+      "regionTag": "merchantapi_v1_generated_LocalInventoryService_InsertLocalInventory_async",
       "segments": [
         {
           "end": 55,
@@ -241,20 +241,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_local_inventory_service_insert_local_inventory_async.py"
+      "title": "merchantapi_v1_generated_local_inventory_service_insert_local_inventory_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceClient",
+          "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceClient",
           "shortName": "LocalInventoryServiceClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceClient.insert_local_inventory",
+        "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceClient.insert_local_inventory",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService.InsertLocalInventory",
+          "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService.InsertLocalInventory",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService",
             "shortName": "LocalInventoryService"
           },
           "shortName": "InsertLocalInventory"
@@ -262,7 +262,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.InsertLocalInventoryRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.InsertLocalInventoryRequest"
           },
           {
             "name": "retry",
@@ -277,14 +277,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_inventories_v1beta.types.LocalInventory",
+        "resultType": "google.shopping.merchant_inventories_v1.types.LocalInventory",
         "shortName": "insert_local_inventory"
       },
       "description": "Sample for InsertLocalInventory",
-      "file": "merchantapi_v1beta_generated_local_inventory_service_insert_local_inventory_sync.py",
+      "file": "merchantapi_v1_generated_local_inventory_service_insert_local_inventory_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_LocalInventoryService_InsertLocalInventory_sync",
+      "regionTag": "merchantapi_v1_generated_LocalInventoryService_InsertLocalInventory_sync",
       "segments": [
         {
           "end": 55,
@@ -317,21 +317,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_local_inventory_service_insert_local_inventory_sync.py"
+      "title": "merchantapi_v1_generated_local_inventory_service_insert_local_inventory_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceAsyncClient",
+          "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceAsyncClient",
           "shortName": "LocalInventoryServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceAsyncClient.list_local_inventories",
+        "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceAsyncClient.list_local_inventories",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService.ListLocalInventories",
+          "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService.ListLocalInventories",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService",
             "shortName": "LocalInventoryService"
           },
           "shortName": "ListLocalInventories"
@@ -339,7 +339,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.ListLocalInventoriesRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.ListLocalInventoriesRequest"
           },
           {
             "name": "parent",
@@ -358,14 +358,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_inventories_v1beta.services.local_inventory_service.pagers.ListLocalInventoriesAsyncPager",
+        "resultType": "google.shopping.merchant_inventories_v1.services.local_inventory_service.pagers.ListLocalInventoriesAsyncPager",
         "shortName": "list_local_inventories"
       },
       "description": "Sample for ListLocalInventories",
-      "file": "merchantapi_v1beta_generated_local_inventory_service_list_local_inventories_async.py",
+      "file": "merchantapi_v1_generated_local_inventory_service_list_local_inventories_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_LocalInventoryService_ListLocalInventories_async",
+      "regionTag": "merchantapi_v1_generated_LocalInventoryService_ListLocalInventories_async",
       "segments": [
         {
           "end": 52,
@@ -398,20 +398,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_local_inventory_service_list_local_inventories_async.py"
+      "title": "merchantapi_v1_generated_local_inventory_service_list_local_inventories_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceClient",
+          "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceClient",
           "shortName": "LocalInventoryServiceClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.LocalInventoryServiceClient.list_local_inventories",
+        "fullName": "google.shopping.merchant_inventories_v1.LocalInventoryServiceClient.list_local_inventories",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService.ListLocalInventories",
+          "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService.ListLocalInventories",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.LocalInventoryService",
             "shortName": "LocalInventoryService"
           },
           "shortName": "ListLocalInventories"
@@ -419,7 +419,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.ListLocalInventoriesRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.ListLocalInventoriesRequest"
           },
           {
             "name": "parent",
@@ -438,14 +438,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_inventories_v1beta.services.local_inventory_service.pagers.ListLocalInventoriesPager",
+        "resultType": "google.shopping.merchant_inventories_v1.services.local_inventory_service.pagers.ListLocalInventoriesPager",
         "shortName": "list_local_inventories"
       },
       "description": "Sample for ListLocalInventories",
-      "file": "merchantapi_v1beta_generated_local_inventory_service_list_local_inventories_sync.py",
+      "file": "merchantapi_v1_generated_local_inventory_service_list_local_inventories_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_LocalInventoryService_ListLocalInventories_sync",
+      "regionTag": "merchantapi_v1_generated_LocalInventoryService_ListLocalInventories_sync",
       "segments": [
         {
           "end": 52,
@@ -478,21 +478,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_local_inventory_service_list_local_inventories_sync.py"
+      "title": "merchantapi_v1_generated_local_inventory_service_list_local_inventories_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceAsyncClient",
+          "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceAsyncClient",
           "shortName": "RegionalInventoryServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceAsyncClient.delete_regional_inventory",
+        "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceAsyncClient.delete_regional_inventory",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService.DeleteRegionalInventory",
+          "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService.DeleteRegionalInventory",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService",
             "shortName": "RegionalInventoryService"
           },
           "shortName": "DeleteRegionalInventory"
@@ -500,7 +500,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.DeleteRegionalInventoryRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.DeleteRegionalInventoryRequest"
           },
           {
             "name": "name",
@@ -522,10 +522,10 @@
         "shortName": "delete_regional_inventory"
       },
       "description": "Sample for DeleteRegionalInventory",
-      "file": "merchantapi_v1beta_generated_regional_inventory_service_delete_regional_inventory_async.py",
+      "file": "merchantapi_v1_generated_regional_inventory_service_delete_regional_inventory_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_RegionalInventoryService_DeleteRegionalInventory_async",
+      "regionTag": "merchantapi_v1_generated_RegionalInventoryService_DeleteRegionalInventory_async",
       "segments": [
         {
           "end": 49,
@@ -556,20 +556,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_regional_inventory_service_delete_regional_inventory_async.py"
+      "title": "merchantapi_v1_generated_regional_inventory_service_delete_regional_inventory_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceClient",
+          "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceClient",
           "shortName": "RegionalInventoryServiceClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceClient.delete_regional_inventory",
+        "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceClient.delete_regional_inventory",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService.DeleteRegionalInventory",
+          "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService.DeleteRegionalInventory",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService",
             "shortName": "RegionalInventoryService"
           },
           "shortName": "DeleteRegionalInventory"
@@ -577,7 +577,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.DeleteRegionalInventoryRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.DeleteRegionalInventoryRequest"
           },
           {
             "name": "name",
@@ -599,10 +599,10 @@
         "shortName": "delete_regional_inventory"
       },
       "description": "Sample for DeleteRegionalInventory",
-      "file": "merchantapi_v1beta_generated_regional_inventory_service_delete_regional_inventory_sync.py",
+      "file": "merchantapi_v1_generated_regional_inventory_service_delete_regional_inventory_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_RegionalInventoryService_DeleteRegionalInventory_sync",
+      "regionTag": "merchantapi_v1_generated_RegionalInventoryService_DeleteRegionalInventory_sync",
       "segments": [
         {
           "end": 49,
@@ -633,21 +633,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_regional_inventory_service_delete_regional_inventory_sync.py"
+      "title": "merchantapi_v1_generated_regional_inventory_service_delete_regional_inventory_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceAsyncClient",
+          "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceAsyncClient",
           "shortName": "RegionalInventoryServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceAsyncClient.insert_regional_inventory",
+        "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceAsyncClient.insert_regional_inventory",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService.InsertRegionalInventory",
+          "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService.InsertRegionalInventory",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService",
             "shortName": "RegionalInventoryService"
           },
           "shortName": "InsertRegionalInventory"
@@ -655,7 +655,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.InsertRegionalInventoryRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.InsertRegionalInventoryRequest"
           },
           {
             "name": "retry",
@@ -670,14 +670,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_inventories_v1beta.types.RegionalInventory",
+        "resultType": "google.shopping.merchant_inventories_v1.types.RegionalInventory",
         "shortName": "insert_regional_inventory"
       },
       "description": "Sample for InsertRegionalInventory",
-      "file": "merchantapi_v1beta_generated_regional_inventory_service_insert_regional_inventory_async.py",
+      "file": "merchantapi_v1_generated_regional_inventory_service_insert_regional_inventory_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_RegionalInventoryService_InsertRegionalInventory_async",
+      "regionTag": "merchantapi_v1_generated_RegionalInventoryService_InsertRegionalInventory_async",
       "segments": [
         {
           "end": 55,
@@ -710,20 +710,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_regional_inventory_service_insert_regional_inventory_async.py"
+      "title": "merchantapi_v1_generated_regional_inventory_service_insert_regional_inventory_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceClient",
+          "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceClient",
           "shortName": "RegionalInventoryServiceClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceClient.insert_regional_inventory",
+        "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceClient.insert_regional_inventory",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService.InsertRegionalInventory",
+          "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService.InsertRegionalInventory",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService",
             "shortName": "RegionalInventoryService"
           },
           "shortName": "InsertRegionalInventory"
@@ -731,7 +731,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.InsertRegionalInventoryRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.InsertRegionalInventoryRequest"
           },
           {
             "name": "retry",
@@ -746,14 +746,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_inventories_v1beta.types.RegionalInventory",
+        "resultType": "google.shopping.merchant_inventories_v1.types.RegionalInventory",
         "shortName": "insert_regional_inventory"
       },
       "description": "Sample for InsertRegionalInventory",
-      "file": "merchantapi_v1beta_generated_regional_inventory_service_insert_regional_inventory_sync.py",
+      "file": "merchantapi_v1_generated_regional_inventory_service_insert_regional_inventory_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_RegionalInventoryService_InsertRegionalInventory_sync",
+      "regionTag": "merchantapi_v1_generated_RegionalInventoryService_InsertRegionalInventory_sync",
       "segments": [
         {
           "end": 55,
@@ -786,21 +786,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_regional_inventory_service_insert_regional_inventory_sync.py"
+      "title": "merchantapi_v1_generated_regional_inventory_service_insert_regional_inventory_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceAsyncClient",
+          "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceAsyncClient",
           "shortName": "RegionalInventoryServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceAsyncClient.list_regional_inventories",
+        "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceAsyncClient.list_regional_inventories",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService.ListRegionalInventories",
+          "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService.ListRegionalInventories",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService",
             "shortName": "RegionalInventoryService"
           },
           "shortName": "ListRegionalInventories"
@@ -808,7 +808,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.ListRegionalInventoriesRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.ListRegionalInventoriesRequest"
           },
           {
             "name": "parent",
@@ -827,14 +827,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_inventories_v1beta.services.regional_inventory_service.pagers.ListRegionalInventoriesAsyncPager",
+        "resultType": "google.shopping.merchant_inventories_v1.services.regional_inventory_service.pagers.ListRegionalInventoriesAsyncPager",
         "shortName": "list_regional_inventories"
       },
       "description": "Sample for ListRegionalInventories",
-      "file": "merchantapi_v1beta_generated_regional_inventory_service_list_regional_inventories_async.py",
+      "file": "merchantapi_v1_generated_regional_inventory_service_list_regional_inventories_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_RegionalInventoryService_ListRegionalInventories_async",
+      "regionTag": "merchantapi_v1_generated_RegionalInventoryService_ListRegionalInventories_async",
       "segments": [
         {
           "end": 52,
@@ -867,20 +867,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_regional_inventory_service_list_regional_inventories_async.py"
+      "title": "merchantapi_v1_generated_regional_inventory_service_list_regional_inventories_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceClient",
+          "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceClient",
           "shortName": "RegionalInventoryServiceClient"
         },
-        "fullName": "google.shopping.merchant_inventories_v1beta.RegionalInventoryServiceClient.list_regional_inventories",
+        "fullName": "google.shopping.merchant_inventories_v1.RegionalInventoryServiceClient.list_regional_inventories",
         "method": {
-          "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService.ListRegionalInventories",
+          "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService.ListRegionalInventories",
           "service": {
-            "fullName": "google.shopping.merchant.inventories.v1beta.RegionalInventoryService",
+            "fullName": "google.shopping.merchant.inventories.v1.RegionalInventoryService",
             "shortName": "RegionalInventoryService"
           },
           "shortName": "ListRegionalInventories"
@@ -888,7 +888,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_inventories_v1beta.types.ListRegionalInventoriesRequest"
+            "type": "google.shopping.merchant_inventories_v1.types.ListRegionalInventoriesRequest"
           },
           {
             "name": "parent",
@@ -907,14 +907,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_inventories_v1beta.services.regional_inventory_service.pagers.ListRegionalInventoriesPager",
+        "resultType": "google.shopping.merchant_inventories_v1.services.regional_inventory_service.pagers.ListRegionalInventoriesPager",
         "shortName": "list_regional_inventories"
       },
       "description": "Sample for ListRegionalInventories",
-      "file": "merchantapi_v1beta_generated_regional_inventory_service_list_regional_inventories_sync.py",
+      "file": "merchantapi_v1_generated_regional_inventory_service_list_regional_inventories_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_RegionalInventoryService_ListRegionalInventories_sync",
+      "regionTag": "merchantapi_v1_generated_RegionalInventoryService_ListRegionalInventories_sync",
       "segments": [
         {
           "end": 52,
@@ -947,7 +947,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_regional_inventory_service_list_regional_inventories_sync.py"
+      "title": "merchantapi_v1_generated_regional_inventory_service_list_regional_inventories_sync.py"
     }
   ]
 }
