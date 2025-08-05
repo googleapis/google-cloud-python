@@ -646,7 +646,7 @@ class PolarsCompiler:
     def compile_explode(self, node: nodes.ExplodeNode):
         assert node.offsets_col is None
         df = self.compile_node(node.child)
-        cols = [pl.col(col.id.sql) for col in node.column_ids]
+        cols = [col.id.sql for col in node.column_ids]
         return df.explode(cols)
 
     @compile_node.register
