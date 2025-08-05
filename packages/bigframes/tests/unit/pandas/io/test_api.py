@@ -14,9 +14,14 @@
 
 from unittest import mock
 
+import pytest
+
 import bigframes.dataframe
 import bigframes.pandas.io.api as bf_io_api
 import bigframes.session
+
+# _read_gbq_colab requires the polars engine.
+pytest.importorskip("polars")
 
 
 @mock.patch(
