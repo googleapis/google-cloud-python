@@ -131,7 +131,7 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
-def _build_bazel_target(bazel_rule: str, source: str = SOURCE_DIR):
+def _build_bazel_target(bazel_rule: str, source: str = f"{SOURCE_DIR}/googleapis"):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
@@ -146,7 +146,7 @@ def _build_bazel_target(bazel_rule: str, source: str = SOURCE_DIR):
         command = ["bazelisk",  "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "build", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", "--incompatible_strict_action_env", bazel_rule]
         subprocess.run(
             command,
-            cwd=f"{source}/googleapis",
+            cwd=source,
             text=True,
             check=True,
         )
@@ -158,8 +158,8 @@ def _build_bazel_target(bazel_rule: str, source: str = SOURCE_DIR):
 def _locate_and_extract_artifact(
     bazel_rule: str,
     library_id: str,
-    source: str,
     output: str,
+    source: str = f"{SOURCE_DIR}/googleapis",
 ):
     """Finds and extracts the tarball artifact from a Bazel build.
 
@@ -179,7 +179,7 @@ def _locate_and_extract_artifact(
         info_command = ["bazelisk", "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "info", "bazel-bin"]
         result = subprocess.run(
             info_command,
-            cwd=f"{source}/googleapis",
+            cwd=source,
             text=True,
             check=True,
             capture_output=True,
@@ -248,7 +248,7 @@ def handle_generate(
                 bazel_rule = _determine_bazel_rule(api_path)
                 _build_bazel_target(bazel_rule, source)
                 print("succesfully built bazel target.")
-                _locate_and_extract_artifact(bazel_rule, library_id, source, output)
+                _locate_and_extract_artifact(bazel_rule, library_id, output, source)
                 print("succesfully located and extracted bazel tarball.")
                 _run_post_processor(output)
                 print("succesfully ran Python Post Processor.")
