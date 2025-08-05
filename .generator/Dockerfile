@@ -172,6 +172,7 @@ COPY --from=builder /bazel_cache /bazel_cache
 
 # Copy the CLI script into the container.
 COPY .generator/cli.py .
+RUN chmod a+rx ./cli.py
 
 # Set the entrypoint for the container to run the script.
 ENTRYPOINT ["python3.9", "./cli.py"]
