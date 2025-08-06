@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.14.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.13.0...v2.14.0) (2025-08-05)
+
+
+### Features
+
+* Dynamic table width for better display across devices (https://github.com/googleapis/python-bigquery-dataframes/issues/1948) ([a6d30ae](https://github.com/googleapis/python-bigquery-dataframes/commit/a6d30ae3f4358925c999c53b558c1ecd3ee03e6c)) ([a6d30ae](https://github.com/googleapis/python-bigquery-dataframes/commit/a6d30ae3f4358925c999c53b558c1ecd3ee03e6c))
+* Retry AI/ML jobs that fail more often ([#1965](https://github.com/googleapis/python-bigquery-dataframes/issues/1965)) ([25bde9f](https://github.com/googleapis/python-bigquery-dataframes/commit/25bde9f9b89112db0efcc119bf29b6d1f3896c33))
+* Support series input in managed function ([#1920](https://github.com/googleapis/python-bigquery-dataframes/issues/1920)) ([62a189f](https://github.com/googleapis/python-bigquery-dataframes/commit/62a189f4d69f6c05fe348a1acd1fbac364fa60b9))
+
+
+### Bug Fixes
+
+* Enhance type error messages for bigframes functions ([#1958](https://github.com/googleapis/python-bigquery-dataframes/issues/1958)) ([770918e](https://github.com/googleapis/python-bigquery-dataframes/commit/770918e998bf1fde7a656e8f8a0ff0a8c68509f2))
+
+
+### Performance Improvements
+
+* Use promote_offsets for consistent row number generation for index.get_loc  ([#1957](https://github.com/googleapis/python-bigquery-dataframes/issues/1957)) ([c67a25a](https://github.com/googleapis/python-bigquery-dataframes/commit/c67a25a879ab2a35ca9053a81c9c85b5660206ae))
+
+
+### Documentation
+
+* Add code snippet for storing dataframes to a CSV file ([#1943](https://github.com/googleapis/python-bigquery-dataframes/issues/1943)) ([a511e09](https://github.com/googleapis/python-bigquery-dataframes/commit/a511e09e6924d2e8302af2eb4a602c6b9e5d2d72))
+* Add code snippet for storing dataframes to a CSV file ([#1953](https://github.com/googleapis/python-bigquery-dataframes/issues/1953)) ([a298a02](https://github.com/googleapis/python-bigquery-dataframes/commit/a298a02b451f03ca200fe0756b9a7b57e3d1bf0e))
+
 ## [2.13.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.12.0...v2.13.0) (2025-07-25)
 
 
