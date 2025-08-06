@@ -1,0 +1,17 @@
+{
+    "name": "google-shopping-merchant-inventories",
+    "name_pretty": "Merchant Inventories API",
+    "api_description": "Programmatically manage your Merchant Center accounts.",
+    "product_documentation": "https://developers.google.com/merchant/api",
+    "client_documentation": "https://googleapis.dev/python/google-shopping-merchant-inventories/latest",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=171084&template=555201",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-shopping-merchant-inventories",
+    "api_id": "inventories.googleapis.com",
+    "default_version": "v1beta",
+    "codeowner_team": "",
+    "api_shortname": "inventories"
+}

@@ -1,0 +1,17 @@
+{
+    "name": "google-cloud-visionai",
+    "name_pretty": "Vision AI API",
+    "api_description": "Easily build and deploy Vertex AI Vision applications using a single platform.",
+    "product_documentation": "https://cloud.google.com/vision-ai/docs",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-visionai/latest",
+    "issue_tracker": "https://issuetracker.google.com/issues/new?component=187174&pli=1&template=1161261",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-cloud-visionai",
+    "api_id": "visionai.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "visionai"
+}
