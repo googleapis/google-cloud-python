@@ -35,6 +35,8 @@ logger = logging.getLogger()
 
 LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
+INPUT_DIR = "input"
+BUILD_REQUEST_FILE = "build-request.json"
 SOURCE_DIR = "source"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
@@ -63,11 +65,12 @@ def handle_configure():
     logger.info("'configure' command executed.")
 
 
-def _determine_bazel_rule(api_path: str) -> str:
+def _determine_bazel_rule(api_path: str, source: str) -> str:
     """Executes a `bazelisk query` to find a Bazel rule.
 
     Args:
         api_path (str): The API path to query for.
+        source (str): The path to the root of the Bazel workspace.
 
     Returns:
         str: The discovered Bazel rule.
@@ -81,7 +84,7 @@ def _determine_bazel_rule(api_path: str) -> str:
         command = ["bazelisk", "query", query]
         result = subprocess.run(
             command,
-            cwd=f"{SOURCE_DIR}/googleapis",
+            cwd=source,
             capture_output=True,
             text=True,
             check=True,
@@ -114,11 +117,12 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
-def _build_bazel_target(bazel_rule: str):
+def _build_bazel_target(bazel_rule: str, source: str):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
         bazel_rule (str): The Bazel rule to build.
+        source (str): The path to the root of the Bazel workspace.
 
     Raises:
         ValueError: If the subprocess call fails.
@@ -128,7 +132,7 @@ def _build_bazel_target(bazel_rule: str):
         command = ["bazelisk", "build", bazel_rule]
         subprocess.run(
             command,
-            cwd=f"{SOURCE_DIR}/googleapis",
+            cwd=source,
             text=True,
             check=True,
         )
@@ -136,13 +140,22 @@ def _build_bazel_target(bazel_rule: str):
     except Exception as e:
         raise ValueError(f"Bazel build for {bazel_rule} rule failed.") from e
 
-
-def _locate_and_extract_artifact(bazel_rule: str, library_id: str):
+def _locate_and_extract_artifact(
+    bazel_rule: str,
+    library_id: str,
+    source: str,
+    output: str,
+    api_path: str,
+):
     """Finds and extracts the tarball artifact from a Bazel build.
 
     Args:
         bazel_rule (str): The Bazel rule that was built.
         library_id (str): The ID of the library being generated.
+        source (str): The path to the root of the Bazel workspace.
+        output (str): The path to the location where generated output
+            should be stored.
+        api_path (str): The API path for the artifact        
 
     Raises:
         ValueError: If failed to locate or extract artifact.
@@ -153,7 +166,7 @@ def _locate_and_extract_artifact(bazel_rule: str, library_id: str):
         info_command = ["bazelisk", "info", "bazel-bin"]
         result = subprocess.run(
             info_command,
-            cwd=f"{SOURCE_DIR}/googleapis",
+            cwd=source,
             text=True,
             check=True,
             capture_output=True,
@@ -167,7 +180,8 @@ def _locate_and_extract_artifact(bazel_rule: str, library_id: str):
         logger.info(f"Found artifact at: {tarball_path}")
 
         # 3. Create a staging directory.
-        staging_dir = os.path.join(OUTPUT_DIR, "owl-bot-staging", library_id)
+        api_version=api_path.split("/")[-1]
+        staging_dir = os.path.join(output, "owl-bot-staging", library_id, api_version)
         os.makedirs(staging_dir, exist_ok=True)
         logger.info(f"Preparing staging directory: {staging_dir}")
 
@@ -196,7 +210,9 @@ def _run_post_processor():
     logger.info("Python post-processor ran successfully.")
 
 
-def handle_generate():
+def handle_generate(
+    librarian: str = LIBRARIAN_DIR, source: str = SOURCE_DIR, output: str = OUTPUT_DIR, input: str = INPUT_DIR
+):
     """The main coordinator for the code generation process.
 
     This function orchestrates the generation of a client library by reading a
@@ -209,16 +225,16 @@ def handle_generate():
 
     try:
         # Read a generate-request.json file
-        request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
+        request_data = _read_json_file(f"{librarian}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
 
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
-                bazel_rule = _determine_bazel_rule(api_path)
-                _build_bazel_target(bazel_rule)
-                _locate_and_extract_artifact(bazel_rule, library_id)
-                _run_post_processor()
+                bazel_rule = _determine_bazel_rule(api_path, source)
+                _build_bazel_target(bazel_rule, source)
+                _locate_and_extract_artifact(bazel_rule, library_id, source, output, api_path)
+                _run_post_processor(output, f"packages/{library_id}")
 
     except Exception as e:
         raise ValueError("Generation failed.") from e
@@ -227,16 +243,17 @@ def handle_generate():
     logger.info("'generate' command executed.")
 
 
-def _run_nox_sessions(sessions: List[str]):
+def _run_nox_sessions(sessions: List[str], librarian: str):
     """Calls nox for all specified sessions.
 
     Args:
-        path(List[str]): The list of nox sessions to run.
+        sessions(List[str]): The list of nox sessions to run.
+        librarian(str): The path to the librarian build configuration directory
     """
-    # Read a generate-request.json file
+    # Read a build-request.json file
     current_session = None
     try:
-        request_data = _read_json_file(f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}")
+        request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         for nox_session in sessions:
             _run_individual_session(nox_session, library_id)
@@ -263,7 +280,7 @@ def _run_individual_session(nox_session: str, library_id: str):
     logger.info(result)
 
 
-def handle_build():
+def handle_build(librarian: str = LIBRARIAN_DIR):
     """The main coordinator for validating client library generation."""
     sessions = [
         "unit-3.9",
@@ -278,7 +295,7 @@ def handle_build():
         "mypy",
         "check_lower_bounds",
     ]
-    _run_nox_sessions(sessions)
+    _run_nox_sessions(sessions, librarian)
 
     logger.info("'build' command executed.")
 
@@ -303,10 +320,43 @@ if __name__ == "__main__":
     ]:
         parser_cmd = subparsers.add_parser(command_name, help=help_text)
         parser_cmd.set_defaults(func=handler_map[command_name])
-
+        parser_cmd.add_argument(
+            "--librarian",
+            type=str,
+            help="Path to the directory in the container which contains the librarian configuration",
+            default=LIBRARIAN_DIR,
+        )
+        parser_cmd.add_argument(
+            "--input",
+            type=str,
+            help="Path to the directory in the container which contains additional generator input",
+            default=INPUT_DIR,
+        )
+        parser_cmd.add_argument(
+            "--output",
+            type=str,
+            help="Path to the directory in the container where code should be generated",
+            default=OUTPUT_DIR,
+        )
+        parser_cmd.add_argument(
+            "--source",
+            type=str,
+            help="Path to the directory in the container which contains API protos",
+            default=SOURCE_DIR,
+        )
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
 
     args = parser.parse_args()
     args.func()
+
+    # Pass specific arguments to the handler functions for generate/build
+    if args.command == "generate":
+        args.func(
+            librarian=args.librarian, source=args.source, output=args.output, input=args.input
+        )
+    elif args.command == "build":
+        args.func(librarian=args.librarian)
+    else:
+        args.func()

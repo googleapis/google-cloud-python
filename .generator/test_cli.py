@@ -115,7 +115,7 @@ def test_determine_bazel_rule_success(mocker, caplog):
     )
     mocker.patch("cli.subprocess.run", return_value=mock_result)
 
-    rule = _determine_bazel_rule("google/cloud/language/v1")
+    rule = _determine_bazel_rule("google/cloud/language/v1", "source")
 
     assert rule == "//google/cloud/language/v1:google-cloud-language-v1-py"
     assert "Found Bazel rule" in caplog.text
@@ -127,7 +127,7 @@ def test_build_bazel_target_success(mocker, caplog):
     """
     caplog.set_level(logging.INFO)
     mocker.patch("cli.subprocess.run", return_value=MagicMock(returncode=0))
-    _build_bazel_target("mock/bazel:rule")
+    _build_bazel_target("mock/bazel:rule", "source")
     assert "Bazel build for mock/bazel:rule rule completed successfully" in caplog.text
 
 
@@ -141,7 +141,7 @@ def test_build_bazel_target_fails(mocker, caplog):
         side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Build failed"),
     )
     with pytest.raises(ValueError):
-        _build_bazel_target("mock/bazel:rule")
+        _build_bazel_target("mock/bazel:rule", "source")
 
 
 def test_determine_bazel_rule_command_fails(mocker, caplog):
@@ -155,7 +155,7 @@ def test_determine_bazel_rule_command_fails(mocker, caplog):
     )
 
     with pytest.raises(ValueError):
-        _determine_bazel_rule("google/cloud/language/v1")
+        _determine_bazel_rule("google/cloud/language/v1", "source")
 
     assert "Found Bazel rule" not in caplog.text
 
@@ -172,8 +172,10 @@ def test_locate_and_extract_artifact_success(mocker, caplog):
     _locate_and_extract_artifact(
         "//google/cloud/language/v1:rule-py",
         "google-cloud-language",
+        "source",
+        "output",
+        "google/cloud/language/v1"
     )
-
     assert (
         "Found artifact at: /path/to/bazel-bin/google/cloud/language/v1/rule-py.tar.gz"
         in caplog.text
@@ -248,7 +250,7 @@ def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
 
     handle_generate()
 
-    mock_determine_rule.assert_called_once_with("google/cloud/language/v1")
+    mock_determine_rule.assert_called_once_with("google/cloud/language/v1", "source")
 
 
 def test_handle_generate_fail(caplog):
@@ -301,7 +303,7 @@ def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
     mock_run_individual_session = mocker.patch("cli._run_individual_session")
 
     sessions_to_run = ["unit-3.9", "lint"]
-    _run_nox_sessions(sessions_to_run)
+    _run_nox_sessions(sessions_to_run, "librarian")
 
     assert mock_run_individual_session.call_count == len(sessions_to_run)
     mock_run_individual_session.assert_has_calls(
@@ -317,7 +319,7 @@ def test_run_nox_sessions_read_file_failure(mocker):
     mocker.patch("cli._read_json_file", side_effect=FileNotFoundError("file not found"))
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"])
+        _run_nox_sessions(["unit-3.9"], "librarian")
 
 
 def test_run_nox_sessions_get_library_id_failure(mocker):
@@ -329,7 +331,7 @@ def test_run_nox_sessions_get_library_id_failure(mocker):
     )
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"])
+        _run_nox_sessions(["unit-3.9"], "librarian")
 
 
 def test_run_nox_sessions_individual_session_failure(
@@ -345,7 +347,7 @@ def test_run_nox_sessions_individual_session_failure(
 
     sessions_to_run = ["unit-3.9", "lint"]
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(sessions_to_run)
+        _run_nox_sessions(sessions_to_run, "librarian")
 
     # Check that _run_individual_session was called at least once
     assert mock_run_individual_session.call_count > 0
