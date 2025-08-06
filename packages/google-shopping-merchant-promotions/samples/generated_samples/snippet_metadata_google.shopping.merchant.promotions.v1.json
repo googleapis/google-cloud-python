@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.shopping.merchant.promotions.v1beta",
-        "version": "v1beta"
+        "id": "google.shopping.merchant.promotions.v1",
+        "version": "v1"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceAsyncClient",
+          "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceAsyncClient",
           "shortName": "PromotionsServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceAsyncClient.get_promotion",
+        "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceAsyncClient.get_promotion",
         "method": {
-          "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService.GetPromotion",
+          "fullName": "google.shopping.merchant.promotions.v1.PromotionsService.GetPromotion",
           "service": {
-            "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+            "fullName": "google.shopping.merchant.promotions.v1.PromotionsService",
             "shortName": "PromotionsService"
           },
           "shortName": "GetPromotion"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_promotions_v1beta.types.GetPromotionRequest"
+            "type": "google.shopping.merchant_promotions_v1.types.GetPromotionRequest"
           },
           {
             "name": "name",
@@ -50,14 +50,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_promotions_v1beta.types.Promotion",
+        "resultType": "google.shopping.merchant_promotions_v1.types.Promotion",
         "shortName": "get_promotion"
       },
       "description": "Sample for GetPromotion",
-      "file": "merchantapi_v1beta_generated_promotions_service_get_promotion_async.py",
+      "file": "merchantapi_v1_generated_promotions_service_get_promotion_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_PromotionsService_GetPromotion_async",
+      "regionTag": "merchantapi_v1_generated_PromotionsService_GetPromotion_async",
       "segments": [
         {
           "end": 51,
@@ -90,20 +90,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_promotions_service_get_promotion_async.py"
+      "title": "merchantapi_v1_generated_promotions_service_get_promotion_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceClient",
+          "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceClient",
           "shortName": "PromotionsServiceClient"
         },
-        "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceClient.get_promotion",
+        "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceClient.get_promotion",
         "method": {
-          "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService.GetPromotion",
+          "fullName": "google.shopping.merchant.promotions.v1.PromotionsService.GetPromotion",
           "service": {
-            "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+            "fullName": "google.shopping.merchant.promotions.v1.PromotionsService",
             "shortName": "PromotionsService"
           },
           "shortName": "GetPromotion"
@@ -111,7 +111,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_promotions_v1beta.types.GetPromotionRequest"
+            "type": "google.shopping.merchant_promotions_v1.types.GetPromotionRequest"
           },
           {
             "name": "name",
@@ -130,14 +130,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_promotions_v1beta.types.Promotion",
+        "resultType": "google.shopping.merchant_promotions_v1.types.Promotion",
         "shortName": "get_promotion"
       },
       "description": "Sample for GetPromotion",
-      "file": "merchantapi_v1beta_generated_promotions_service_get_promotion_sync.py",
+      "file": "merchantapi_v1_generated_promotions_service_get_promotion_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_PromotionsService_GetPromotion_sync",
+      "regionTag": "merchantapi_v1_generated_PromotionsService_GetPromotion_sync",
       "segments": [
         {
           "end": 51,
@@ -170,21 +170,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_promotions_service_get_promotion_sync.py"
+      "title": "merchantapi_v1_generated_promotions_service_get_promotion_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceAsyncClient",
+          "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceAsyncClient",
           "shortName": "PromotionsServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceAsyncClient.insert_promotion",
+        "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceAsyncClient.insert_promotion",
         "method": {
-          "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService.InsertPromotion",
+          "fullName": "google.shopping.merchant.promotions.v1.PromotionsService.InsertPromotion",
           "service": {
-            "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+            "fullName": "google.shopping.merchant.promotions.v1.PromotionsService",
             "shortName": "PromotionsService"
           },
           "shortName": "InsertPromotion"
@@ -192,7 +192,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_promotions_v1beta.types.InsertPromotionRequest"
+            "type": "google.shopping.merchant_promotions_v1.types.InsertPromotionRequest"
           },
           {
             "name": "retry",
@@ -207,14 +207,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_promotions_v1beta.types.Promotion",
+        "resultType": "google.shopping.merchant_promotions_v1.types.Promotion",
         "shortName": "insert_promotion"
       },
       "description": "Sample for InsertPromotion",
-      "file": "merchantapi_v1beta_generated_promotions_service_insert_promotion_async.py",
+      "file": "merchantapi_v1_generated_promotions_service_insert_promotion_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_PromotionsService_InsertPromotion_async",
+      "regionTag": "merchantapi_v1_generated_PromotionsService_InsertPromotion_async",
       "segments": [
         {
           "end": 59,
@@ -247,20 +247,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_promotions_service_insert_promotion_async.py"
+      "title": "merchantapi_v1_generated_promotions_service_insert_promotion_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceClient",
+          "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceClient",
           "shortName": "PromotionsServiceClient"
         },
-        "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceClient.insert_promotion",
+        "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceClient.insert_promotion",
         "method": {
-          "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService.InsertPromotion",
+          "fullName": "google.shopping.merchant.promotions.v1.PromotionsService.InsertPromotion",
           "service": {
-            "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+            "fullName": "google.shopping.merchant.promotions.v1.PromotionsService",
             "shortName": "PromotionsService"
           },
           "shortName": "InsertPromotion"
@@ -268,7 +268,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_promotions_v1beta.types.InsertPromotionRequest"
+            "type": "google.shopping.merchant_promotions_v1.types.InsertPromotionRequest"
           },
           {
             "name": "retry",
@@ -283,14 +283,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_promotions_v1beta.types.Promotion",
+        "resultType": "google.shopping.merchant_promotions_v1.types.Promotion",
         "shortName": "insert_promotion"
       },
       "description": "Sample for InsertPromotion",
-      "file": "merchantapi_v1beta_generated_promotions_service_insert_promotion_sync.py",
+      "file": "merchantapi_v1_generated_promotions_service_insert_promotion_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_PromotionsService_InsertPromotion_sync",
+      "regionTag": "merchantapi_v1_generated_PromotionsService_InsertPromotion_sync",
       "segments": [
         {
           "end": 59,
@@ -323,21 +323,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_promotions_service_insert_promotion_sync.py"
+      "title": "merchantapi_v1_generated_promotions_service_insert_promotion_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceAsyncClient",
+          "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceAsyncClient",
           "shortName": "PromotionsServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceAsyncClient.list_promotions",
+        "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceAsyncClient.list_promotions",
         "method": {
-          "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService.ListPromotions",
+          "fullName": "google.shopping.merchant.promotions.v1.PromotionsService.ListPromotions",
           "service": {
-            "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+            "fullName": "google.shopping.merchant.promotions.v1.PromotionsService",
             "shortName": "PromotionsService"
           },
           "shortName": "ListPromotions"
@@ -345,7 +345,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_promotions_v1beta.types.ListPromotionsRequest"
+            "type": "google.shopping.merchant_promotions_v1.types.ListPromotionsRequest"
           },
           {
             "name": "parent",
@@ -364,14 +364,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_promotions_v1beta.services.promotions_service.pagers.ListPromotionsAsyncPager",
+        "resultType": "google.shopping.merchant_promotions_v1.services.promotions_service.pagers.ListPromotionsAsyncPager",
         "shortName": "list_promotions"
       },
       "description": "Sample for ListPromotions",
-      "file": "merchantapi_v1beta_generated_promotions_service_list_promotions_async.py",
+      "file": "merchantapi_v1_generated_promotions_service_list_promotions_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_PromotionsService_ListPromotions_async",
+      "regionTag": "merchantapi_v1_generated_PromotionsService_ListPromotions_async",
       "segments": [
         {
           "end": 52,
@@ -404,20 +404,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_promotions_service_list_promotions_async.py"
+      "title": "merchantapi_v1_generated_promotions_service_list_promotions_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceClient",
+          "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceClient",
           "shortName": "PromotionsServiceClient"
         },
-        "fullName": "google.shopping.merchant_promotions_v1beta.PromotionsServiceClient.list_promotions",
+        "fullName": "google.shopping.merchant_promotions_v1.PromotionsServiceClient.list_promotions",
         "method": {
-          "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService.ListPromotions",
+          "fullName": "google.shopping.merchant.promotions.v1.PromotionsService.ListPromotions",
           "service": {
-            "fullName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+            "fullName": "google.shopping.merchant.promotions.v1.PromotionsService",
             "shortName": "PromotionsService"
           },
           "shortName": "ListPromotions"
@@ -425,7 +425,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_promotions_v1beta.types.ListPromotionsRequest"
+            "type": "google.shopping.merchant_promotions_v1.types.ListPromotionsRequest"
           },
           {
             "name": "parent",
@@ -444,14 +444,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_promotions_v1beta.services.promotions_service.pagers.ListPromotionsPager",
+        "resultType": "google.shopping.merchant_promotions_v1.services.promotions_service.pagers.ListPromotionsPager",
         "shortName": "list_promotions"
       },
       "description": "Sample for ListPromotions",
-      "file": "merchantapi_v1beta_generated_promotions_service_list_promotions_sync.py",
+      "file": "merchantapi_v1_generated_promotions_service_list_promotions_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_PromotionsService_ListPromotions_sync",
+      "regionTag": "merchantapi_v1_generated_PromotionsService_ListPromotions_sync",
       "segments": [
         {
           "end": 52,
@@ -484,7 +484,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_promotions_service_list_promotions_sync.py"
+      "title": "merchantapi_v1_generated_promotions_service_list_promotions_sync.py"
     }
   ]
 }
