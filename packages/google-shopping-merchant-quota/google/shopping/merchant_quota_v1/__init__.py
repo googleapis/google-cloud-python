@@ -13,4 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.0.0"  # {x-release-please-version}
+from google.shopping.merchant_quota_v1 import gapic_version as package_version
+
+__version__ = package_version.__version__
+
+
+from .services.quota_service import QuotaServiceAsyncClient, QuotaServiceClient
+from .types.quota import (
+    ListQuotaGroupsRequest,
+    ListQuotaGroupsResponse,
+    MethodDetails,
+    QuotaGroup,
+)
+
+__all__ = (
+    "QuotaServiceAsyncClient",
+    "ListQuotaGroupsRequest",
+    "ListQuotaGroupsResponse",
+    "MethodDetails",
+    "QuotaGroup",
+    "QuotaServiceClient",
+)
