@@ -40,6 +40,28 @@ time_op = TimeOp()
 
 
 @dataclasses.dataclass(frozen=True)
+class ParseDatetimeOp(base_ops.UnaryOp):
+    # TODO: Support strict format
+    name: typing.ClassVar[str] = "parse_datetime"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] != dtypes.STRING_DTYPE:
+            raise TypeError("expected string input")
+        return pd.ArrowDtype(pa.timestamp("us", tz=None))
+
+
+@dataclasses.dataclass(frozen=True)
+class ParseTimestampOp(base_ops.UnaryOp):
+    # TODO: Support strict format
+    name: typing.ClassVar[str] = "parse_timestamp"
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if input_types[0] != dtypes.STRING_DTYPE:
+            raise TypeError("expected string input")
+        return pd.ArrowDtype(pa.timestamp("us", tz="UTC"))
+
+
+@dataclasses.dataclass(frozen=True)
 class ToDatetimeOp(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "to_datetime"
     format: typing.Optional[str] = None

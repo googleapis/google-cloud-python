@@ -33,7 +33,9 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.bool_ops as bool_ops
 import bigframes.operations.comparison_ops as comp_ops
+import bigframes.operations.datetime_ops as dt_ops
 import bigframes.operations.generic_ops as gen_ops
+import bigframes.operations.json_ops as json_ops
 import bigframes.operations.numeric_ops as num_ops
 import bigframes.operations.string_ops as string_ops
 
@@ -279,6 +281,30 @@ if polars_installed:
         def _(self, op: ops.ScalarOp, l_input: pl.Expr, r_input: pl.Expr) -> pl.Expr:
             assert isinstance(op, string_ops.StrConcatOp)
             return pl.concat_str(l_input, r_input)
+
+        @compile_op.register(dt_ops.StrftimeOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, dt_ops.StrftimeOp)
+            return input.dt.strftime(op.date_format)
+
+        @compile_op.register(dt_ops.ParseDatetimeOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, dt_ops.ParseDatetimeOp)
+            return input.str.to_datetime(
+                time_unit="us", time_zone=None, ambiguous="earliest"
+            )
+
+        @compile_op.register(dt_ops.ParseTimestampOp)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, dt_ops.ParseTimestampOp)
+            return input.str.to_datetime(
+                time_unit="us", time_zone="UTC", ambiguous="earliest"
+            )
+
+        @compile_op.register(json_ops.JSONDecode)
+        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
+            assert isinstance(op, json_ops.JSONDecode)
+            return input.str.json_decode(_DTYPE_MAPPING[op.to_type])
 
     @dataclasses.dataclass(frozen=True)
     class PolarsAggregateCompiler:

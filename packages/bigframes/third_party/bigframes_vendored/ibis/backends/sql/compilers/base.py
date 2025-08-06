@@ -537,7 +537,7 @@ class SQLGlotCompiler(abc.ABC):
             false=None if false is None else sge.convert(false),
         )
 
-    def cast(self, arg, to: dt.DataType) -> sge.Cast:
+    def cast(self, arg, to: dt.DataType, format=None) -> sge.Cast:
         return sge.Cast(
             this=sge.convert(arg), to=self.type_mapper.from_ibis(to), copy=False
         )

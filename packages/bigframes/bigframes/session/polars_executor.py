@@ -21,7 +21,7 @@ import pyarrow as pa
 from bigframes.core import array_value, bigframe_node, expression, local_data, nodes
 import bigframes.operations
 from bigframes.operations import aggregations as agg_ops
-from bigframes.operations import comparison_ops, numeric_ops
+from bigframes.operations import comparison_ops, generic_ops, numeric_ops
 from bigframes.session import executor, semi_executor
 
 if TYPE_CHECKING:
@@ -57,6 +57,7 @@ _COMPATIBLE_SCALAR_OPS = (
     numeric_ops.DivOp,
     numeric_ops.FloorDivOp,
     numeric_ops.ModOp,
+    generic_ops.AsTypeOp,
 )
 _COMPATIBLE_AGG_OPS = (
     agg_ops.SizeOp,
