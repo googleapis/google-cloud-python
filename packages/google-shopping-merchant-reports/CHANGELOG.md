@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.17](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.16...google-shopping-merchant-reports-v0.1.17) (2025-08-06)
+
+
+### Features
+
+* [google-shopping-merchant-reports] Add additional YouTube report fields to Merchant reports endpoint ([#14166](https://github.com/googleapis/google-cloud-python/issues/14166)) ([b5678de](https://github.com/googleapis/google-cloud-python/commit/b5678de0d3f2306361f5e758fb1722582a6634b5))
+* [google-shopping-merchant-reports] add reports API client libraries for v1 ([#14186](https://github.com/googleapis/google-cloud-python/issues/14186)) ([7752ebf](https://github.com/googleapis/google-cloud-python/commit/7752ebf623a2b91638814a4abc80947dff6d1a72))
+
 ## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.15...google-shopping-merchant-reports-v0.1.16) (2025-07-04)
 
 
