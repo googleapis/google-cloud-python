@@ -81,5 +81,6 @@ def configure_state_yaml() -> None:
     with open(LIBRARIAN_YAML, "w") as f:
         yaml.dump(state_dict, f, sort_keys=False, indent=2)
 
+
 if __name__ == "__main__":
     configure_state_yaml()
