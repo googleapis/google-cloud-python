@@ -2,6 +2,9 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Shopping Merchant Quota.
+By default, you will get version ``merchant_quota_v1beta``.
+
 
 API Reference
 -------------
@@ -10,6 +13,14 @@ API Reference
 
     merchant_quota_v1beta/services_
     merchant_quota_v1beta/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    merchant_quota_v1/services_
+    merchant_quota_v1/types_
 
 
 Changelog

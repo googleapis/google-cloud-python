@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.shopping.merchant.quota.v1beta",
-        "version": "v1beta"
+        "id": "google.shopping.merchant.quota.v1",
+        "version": "v1"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_quota_v1beta.QuotaServiceAsyncClient",
+          "fullName": "google.shopping.merchant_quota_v1.QuotaServiceAsyncClient",
           "shortName": "QuotaServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_quota_v1beta.QuotaServiceAsyncClient.list_quota_groups",
+        "fullName": "google.shopping.merchant_quota_v1.QuotaServiceAsyncClient.list_quota_groups",
         "method": {
-          "fullName": "google.shopping.merchant.quota.v1beta.QuotaService.ListQuotaGroups",
+          "fullName": "google.shopping.merchant.quota.v1.QuotaService.ListQuotaGroups",
           "service": {
-            "fullName": "google.shopping.merchant.quota.v1beta.QuotaService",
+            "fullName": "google.shopping.merchant.quota.v1.QuotaService",
             "shortName": "QuotaService"
           },
           "shortName": "ListQuotaGroups"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_quota_v1beta.types.ListQuotaGroupsRequest"
+            "type": "google.shopping.merchant_quota_v1.types.ListQuotaGroupsRequest"
           },
           {
             "name": "parent",
@@ -50,14 +50,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_quota_v1beta.services.quota_service.pagers.ListQuotaGroupsAsyncPager",
+        "resultType": "google.shopping.merchant_quota_v1.services.quota_service.pagers.ListQuotaGroupsAsyncPager",
         "shortName": "list_quota_groups"
       },
       "description": "Sample for ListQuotaGroups",
-      "file": "merchantapi_v1beta_generated_quota_service_list_quota_groups_async.py",
+      "file": "merchantapi_v1_generated_quota_service_list_quota_groups_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_QuotaService_ListQuotaGroups_async",
+      "regionTag": "merchantapi_v1_generated_QuotaService_ListQuotaGroups_async",
       "segments": [
         {
           "end": 52,
@@ -90,20 +90,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_quota_service_list_quota_groups_async.py"
+      "title": "merchantapi_v1_generated_quota_service_list_quota_groups_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_quota_v1beta.QuotaServiceClient",
+          "fullName": "google.shopping.merchant_quota_v1.QuotaServiceClient",
           "shortName": "QuotaServiceClient"
         },
-        "fullName": "google.shopping.merchant_quota_v1beta.QuotaServiceClient.list_quota_groups",
+        "fullName": "google.shopping.merchant_quota_v1.QuotaServiceClient.list_quota_groups",
         "method": {
-          "fullName": "google.shopping.merchant.quota.v1beta.QuotaService.ListQuotaGroups",
+          "fullName": "google.shopping.merchant.quota.v1.QuotaService.ListQuotaGroups",
           "service": {
-            "fullName": "google.shopping.merchant.quota.v1beta.QuotaService",
+            "fullName": "google.shopping.merchant.quota.v1.QuotaService",
             "shortName": "QuotaService"
           },
           "shortName": "ListQuotaGroups"
@@ -111,7 +111,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_quota_v1beta.types.ListQuotaGroupsRequest"
+            "type": "google.shopping.merchant_quota_v1.types.ListQuotaGroupsRequest"
           },
           {
             "name": "parent",
@@ -130,14 +130,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_quota_v1beta.services.quota_service.pagers.ListQuotaGroupsPager",
+        "resultType": "google.shopping.merchant_quota_v1.services.quota_service.pagers.ListQuotaGroupsPager",
         "shortName": "list_quota_groups"
       },
       "description": "Sample for ListQuotaGroups",
-      "file": "merchantapi_v1beta_generated_quota_service_list_quota_groups_sync.py",
+      "file": "merchantapi_v1_generated_quota_service_list_quota_groups_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_QuotaService_ListQuotaGroups_sync",
+      "regionTag": "merchantapi_v1_generated_QuotaService_ListQuotaGroups_sync",
       "segments": [
         {
           "end": 52,
@@ -170,7 +170,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_quota_service_list_quota_groups_sync.py"
+      "title": "merchantapi_v1_generated_quota_service_list_quota_groups_sync.py"
     }
   ]
 }
