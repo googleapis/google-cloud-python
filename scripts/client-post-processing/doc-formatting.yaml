@@ -361,24 +361,36 @@ replacements:
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/transports/grpc.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/transports/grpc_asyncio.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/async_client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/transports/grpc.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/email_preferences_service/transports/grpc_asyncio.py,
     ]
     before: name=accounts\/\*\/users\/me\/emailPreferences alias
     after: "`name=accounts/*/users/me/emailPreferences` alias"
-    count: 8
+    count: 16
   - paths: [
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/async_client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc_asyncio.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/async_client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/transports/grpc.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/online_return_policy_service/transports/grpc_asyncio.py,
     ]
     before: "This API defines the following resource model:\n    --------------------------------------------------------\n\n    `OnlineReturnPolicy"
     after: "This API defines the following resource model:\n\n    - `OnlineReturnPolicy"
-    count: 4
+    count: 8
   - paths: [
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/async_client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/client.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/transports/grpc.py,
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/omnichannel_settings_service/transports/grpc_asyncio.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/omnichannel_settings_service/async_client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/omnichannel_settings_service/client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/omnichannel_settings_service/transports/grpc.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1/services/omnichannel_settings_service/transports/grpc_asyncio.py,
     ]
     before: |
         This API defines the following resource model:
@@ -387,7 +399,7 @@ replacements:
     after: |
         This API defines the following resource model:
             - [OmnichannelSetting][google.shopping.merchant.accounts.v1.OmnichannelSetting]
-    count: 4
+    count: 8
   - paths: [
       packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/types/shippingsettings.py
     ]
