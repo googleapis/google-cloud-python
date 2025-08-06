@@ -29,6 +29,9 @@ from bigframes.bigquery._operations.datetime import (
 )
 from bigframes.bigquery._operations.geo import (
     st_area,
+    st_buffer,
+    st_centroid,
+    st_convexhull,
     st_difference,
     st_distance,
     st_intersection,
@@ -54,11 +57,18 @@ __all__ = [
     # approximate aggregate ops
     "approx_top_count",
     # array ops
-    "array_length",
     "array_agg",
+    "array_length",
     "array_to_string",
+    # datetime ops
+    "unix_micros",
+    "unix_millis",
+    "unix_seconds",
     # geo ops
     "st_area",
+    "st_buffer",
+    "st_centroid",
+    "st_convexhull",
     "st_difference",
     "st_distance",
     "st_intersection",
@@ -81,8 +91,4 @@ __all__ = [
     "sql_scalar",
     # struct ops
     "struct",
-    # datetime ops
-    "unix_micros",
-    "unix_millis",
-    "unix_seconds",
 ]

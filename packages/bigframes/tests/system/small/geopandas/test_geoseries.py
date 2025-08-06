@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
 import re
 
 import bigframes_vendored.constants as constants
@@ -31,6 +33,7 @@ from shapely.geometry import (  # type: ignore
 import bigframes.geopandas
 import bigframes.pandas
 import bigframes.series
+import bigframes.session
 from bigframes.testing.utils import assert_series_equal
 
 
@@ -75,7 +78,7 @@ def test_geo_y(urban_areas_dfs):
     )
 
 
-def test_geo_area_not_supported():
+def test_geo_area_not_supported(session: bigframes.session.Session):
     s = bigframes.pandas.Series(
         [
             Polygon([(0, 0), (1, 1), (0, 1)]),
@@ -85,6 +88,7 @@ def test_geo_area_not_supported():
             Point(0, 1),
         ],
         dtype=GeometryDtype(),
+        session=session,
     )
     bf_series: bigframes.geopandas.GeoSeries = s.geo
     with pytest.raises(
@@ -107,7 +111,7 @@ def test_geoseries_length_property_not_implemented(session):
         _ = gs.length
 
 
-def test_geo_distance_not_supported():
+def test_geo_distance_not_supported(session: bigframes.session.Session):
     s1 = bigframes.pandas.Series(
         [
             Polygon([(0, 0), (1, 1), (0, 1)]),
@@ -117,6 +121,7 @@ def test_geo_distance_not_supported():
             Point(0, 1),
         ],
         dtype=GeometryDtype(),
+        session=session,
     )
     s2 = bigframes.geopandas.GeoSeries(
         [
@@ -125,7 +130,8 @@ def test_geo_distance_not_supported():
             Polygon([(0, 0), (2, 2), (2, 0)]),
             LineString([(0, 0), (1, 1), (0, 1)]),
             Point(0, 1),
-        ]
+        ],
+        session=session,
     )
     with pytest.raises(
         NotImplementedError,
@@ -134,11 +140,11 @@ def test_geo_distance_not_supported():
         s1.geo.distance(s2)
 
 
-def test_geo_from_xy():
+def test_geo_from_xy(session: bigframes.session.Session):
     x = [2.5, 5, -3.0]
     y = [0.5, 1, 1.5]
     bf_result = (
-        bigframes.geopandas.GeoSeries.from_xy(x, y)
+        bigframes.geopandas.GeoSeries.from_xy(x, y, session=session)
         .astype(geopandas.array.GeometryDtype())
         .to_pandas()
     )
@@ -154,7 +160,7 @@ def test_geo_from_xy():
     )
 
 
-def test_geo_from_wkt():
+def test_geo_from_wkt(session: bigframes.session.Session):
     wkts = [
         "Point(0 1)",
         "Point(2 4)",
@@ -162,7 +168,9 @@ def test_geo_from_wkt():
         "Point(6 8)",
     ]
 
-    bf_result = bigframes.geopandas.GeoSeries.from_wkt(wkts).to_pandas()
+    bf_result = bigframes.geopandas.GeoSeries.from_wkt(
+        wkts, session=session
+    ).to_pandas()
 
     pd_result = geopandas.GeoSeries.from_wkt(wkts)
 
@@ -174,14 +182,15 @@ def test_geo_from_wkt():
     )
 
 
-def test_geo_to_wkt():
+def test_geo_to_wkt(session: bigframes.session.Session):
     bf_geo = bigframes.geopandas.GeoSeries(
         [
             Point(0, 1),
             Point(2, 4),
             Point(5, 3),
             Point(6, 8),
-        ]
+        ],
+        session=session,
     )
 
     pd_geo = geopandas.GeoSeries(
@@ -209,8 +218,8 @@ def test_geo_to_wkt():
     )
 
 
-def test_geo_boundary():
-    bf_s = bigframes.pandas.Series(
+def test_geo_boundary(session: bigframes.session.Session):
+    bf_s = bigframes.series.Series(
         [
             Polygon([(0, 0), (1, 1), (0, 1)]),
             Polygon([(10, 0), (10, 5), (0, 0)]),
@@ -218,6 +227,7 @@ def test_geo_boundary():
             LineString([(0, 0), (1, 1), (0, 1)]),
             Point(0, 1),
         ],
+        session=session,
     )
 
     pd_s = geopandas.GeoSeries(
@@ -229,6 +239,7 @@ def test_geo_boundary():
             Point(0, 1),
         ],
         index=pd.Index([0, 1, 2, 3, 4], dtype="Int64"),
+        crs="WGS84",
     )
 
     bf_result = bf_s.geo.boundary.to_pandas()
@@ -246,7 +257,7 @@ def test_geo_boundary():
 # For example, when the difference between two polygons is empty,
 # GeoPandas returns 'POLYGON EMPTY' while GeoSeries returns 'GeometryCollection([])'.
 # This is why we are hard-coding the expected results.
-def test_geo_difference_with_geometry_objects():
+def test_geo_difference_with_geometry_objects(session: bigframes.session.Session):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
@@ -259,8 +270,8 @@ def test_geo_difference_with_geometry_objects():
         LineString([(2, 0), (0, 2)]),
     ]
 
-    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
-    bf_s2 = bigframes.geopandas.GeoSeries(data=data2)
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
+    bf_s2 = bigframes.geopandas.GeoSeries(data=data2, session=session)
 
     bf_result = bf_s1.difference(bf_s2).to_pandas()
 
@@ -271,6 +282,7 @@ def test_geo_difference_with_geometry_objects():
             Point(0, 1),
         ],
         index=[0, 1, 2],
+        session=session,
     ).to_pandas()
 
     assert bf_result.dtype == "geometry"
@@ -279,20 +291,21 @@ def test_geo_difference_with_geometry_objects():
     assert expected.iloc[2].equals(bf_result.iloc[2])
 
 
-def test_geo_difference_with_single_geometry_object():
+def test_geo_difference_with_single_geometry_object(session: bigframes.session.Session):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
         Point(0, 1),
     ]
 
-    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
     bf_result = bf_s1.difference(
         bigframes.geopandas.GeoSeries(
             [
                 Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
                 Polygon([(1, 0), (0, 5), (0, 0), (1, 0)]),
-            ]
+            ],
+            session=session,
         ),
     ).to_pandas()
 
@@ -303,6 +316,7 @@ def test_geo_difference_with_single_geometry_object():
             None,
         ],
         index=[0, 1, 2],
+        session=session,
     ).to_pandas()
 
     assert bf_result.dtype == "geometry"
@@ -311,19 +325,22 @@ def test_geo_difference_with_single_geometry_object():
     assert expected.iloc[2] == bf_result.iloc[2]
 
 
-def test_geo_difference_with_similar_geometry_objects():
+def test_geo_difference_with_similar_geometry_objects(
+    session: bigframes.session.Session,
+):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(0, 0), (1, 1), (0, 1)]),
         Point(0, 1),
     ]
 
-    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
     bf_result = bf_s1.difference(bf_s1).to_pandas()
 
     expected = bigframes.geopandas.GeoSeries(
         [GeometryCollection([]), GeometryCollection([]), GeometryCollection([])],
         index=[0, 1, 2],
+        session=session,
     ).to_pandas()
 
     assert bf_result.dtype == "geometry"
@@ -332,9 +349,10 @@ def test_geo_difference_with_similar_geometry_objects():
     assert expected.iloc[2].equals(bf_result.iloc[2])
 
 
-def test_geo_drop_duplicates():
+def test_geo_drop_duplicates(session: bigframes.session.Session):
     bf_series = bigframes.geopandas.GeoSeries(
-        [Point(1, 1), Point(2, 2), Point(3, 3), Point(2, 2)]
+        [Point(1, 1), Point(2, 2), Point(3, 3), Point(2, 2)],
+        session=session,
     )
 
     pd_series = geopandas.GeoSeries(
@@ -353,7 +371,7 @@ def test_geo_drop_duplicates():
 # For example, when the intersection between two polygons is empty,
 # GeoPandas returns 'POLYGON EMPTY' while GeoSeries returns 'GeometryCollection([])'.
 # This is why we are hard-coding the expected results.
-def test_geo_intersection_with_geometry_objects():
+def test_geo_intersection_with_geometry_objects(session: bigframes.session.Session):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
@@ -366,8 +384,8 @@ def test_geo_intersection_with_geometry_objects():
         LineString([(2, 0), (0, 2)]),
     ]
 
-    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
-    bf_s2 = bigframes.geopandas.GeoSeries(data=data2)
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
+    bf_s2 = bigframes.geopandas.GeoSeries(data=data2, session=session)
 
     bf_result = bf_s1.intersection(bf_s2).to_pandas()
 
@@ -377,6 +395,7 @@ def test_geo_intersection_with_geometry_objects():
             Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
             GeometryCollection([]),
         ],
+        session=session,
     ).to_pandas()
 
     assert bf_result.dtype == "geometry"
@@ -385,20 +404,23 @@ def test_geo_intersection_with_geometry_objects():
     assert expected.iloc[2].equals(bf_result.iloc[2])
 
 
-def test_geo_intersection_with_single_geometry_object():
+def test_geo_intersection_with_single_geometry_object(
+    session: bigframes.session.Session,
+):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(4, 2), (6, 2), (8, 6), (4, 2)]),
         Point(0, 1),
     ]
 
-    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
     bf_result = bf_s1.intersection(
         bigframes.geopandas.GeoSeries(
             [
                 Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
                 Polygon([(1, 0), (0, 5), (0, 0), (1, 0)]),
-            ]
+            ],
+            session=session,
         ),
     ).to_pandas()
 
@@ -409,6 +431,7 @@ def test_geo_intersection_with_single_geometry_object():
             None,
         ],
         index=[0, 1, 2],
+        session=session,
     ).to_pandas()
 
     assert bf_result.dtype == "geometry"
@@ -417,14 +440,16 @@ def test_geo_intersection_with_single_geometry_object():
     assert expected.iloc[2] == bf_result.iloc[2]
 
 
-def test_geo_intersection_with_similar_geometry_objects():
+def test_geo_intersection_with_similar_geometry_objects(
+    session: bigframes.session.Session,
+):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(0, 0), (1, 1), (0, 1)]),
         Point(0, 1),
     ]
 
-    bf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    bf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
     bf_result = bf_s1.intersection(bf_s1).to_pandas()
 
     expected = bigframes.geopandas.GeoSeries(
@@ -434,9 +459,119 @@ def test_geo_intersection_with_similar_geometry_objects():
             Point(0, 1),
         ],
         index=[0, 1, 2],
+        session=session,
     ).to_pandas()
 
     assert bf_result.dtype == "geometry"
     assert expected.iloc[0].equals(bf_result.iloc[0])
     assert expected.iloc[1].equals(bf_result.iloc[1])
     assert expected.iloc[2].equals(bf_result.iloc[2])
+
+
+def test_geo_is_closed_not_supported(session: bigframes.session.Session):
+    s = bigframes.series.Series(
+        [
+            Polygon([(0, 0), (1, 1), (0, 1)]),
+            Polygon([(10, 0), (10, 5), (0, 0)]),
+            Polygon([(0, 0), (2, 2), (2, 0)]),
+            LineString([(0, 0), (1, 1), (0, 1)]),
+            Point(0, 1),
+        ],
+        dtype=GeometryDtype(),
+        session=session,
+    )
+    bf_series: bigframes.geopandas.GeoSeries = s.geo
+    with pytest.raises(
+        NotImplementedError,
+        match=re.escape(
+            f"GeoSeries.is_closed is not supported. Use bigframes.bigquery.st_isclosed(series), instead. {constants.FEEDBACK_LINK}"
+        ),
+    ):
+        bf_series.is_closed
+
+
+def test_geo_buffer_raises_notimplemented(session: bigframes.session.Session):
+    """GeoPandas takes distance in units of the coordinate system, but BigQuery
+    uses meters.
+    """
+    s = bigframes.geopandas.GeoSeries(
+        [
+            Point(0, 0),
+        ],
+        session=session,
+    )
+    with pytest.raises(
+        NotImplementedError, match=re.escape("bigframes.bigquery.st_buffer")
+    ):
+        s.buffer(1000)
+
+
+def test_geo_centroid(session: bigframes.session.Session):
+    bf_s = bigframes.series.Series(
+        [
+            Polygon([(0, 0), (0.1, 0.1), (0, 0.1)]),
+            LineString([(10, 10), (10.0001, 10.0001), (10, 10.0001)]),
+            Point(-10, -10),
+        ],
+        session=session,
+    )
+
+    pd_s = geopandas.GeoSeries(
+        [
+            Polygon([(0, 0), (0.1, 0.1), (0, 0.1)]),
+            LineString([(10, 10), (10.0001, 10.0001), (10, 10.0001)]),
+            Point(-10, -10),
+        ],
+        index=pd.Index([0, 1, 2], dtype="Int64"),
+        crs="WGS84",
+    )
+
+    bf_result = bf_s.geo.centroid.to_pandas()
+    # Avoid warning that centroid is incorrect for geographic CRS.
+    # https://gis.stackexchange.com/a/401815/275289
+    pd_result = pd_s.to_crs("+proj=cea").centroid.to_crs("WGS84")
+
+    geopandas.testing.assert_geoseries_equal(
+        bf_result,
+        pd_result,
+        check_series_type=False,
+        check_index_type=False,
+        # BigQuery geography calculations are on a sphere, so results will be
+        # slightly different.
+        check_less_precise=True,
+    )
+
+
+def test_geo_convex_hull(session: bigframes.session.Session):
+    bf_s = bigframes.series.Series(
+        [
+            Polygon([(0, 0), (1, 1), (0, 1)]),
+            Polygon([(10, 0), (10, 5), (0, 0)]),
+            Polygon([(0, 0), (2, 2), (2, 0)]),
+            LineString([(0, 0), (1, 1), (0, 1)]),
+            Point(0, 1),
+        ],
+        session=session,
+    )
+
+    pd_s = geopandas.GeoSeries(
+        [
+            Polygon([(0, 0), (1, 1), (0, 1)]),
+            Polygon([(10, 0), (10, 5), (0, 0)]),
+            Polygon([(0, 0), (2, 2), (2, 0)]),
+            LineString([(0, 0), (1, 1), (0, 1)]),
+            Point(0, 1),
+        ],
+        index=pd.Index([0, 1, 2, 3, 4], dtype="Int64"),
+        crs="WGS84",
+    )
+
+    bf_result = bf_s.geo.convex_hull.to_pandas()
+    pd_result = pd_s.convex_hull
+
+    geopandas.testing.assert_geoseries_equal(
+        bf_result,
+        pd_result,
+        check_series_type=False,
+        check_index_type=False,
+    )

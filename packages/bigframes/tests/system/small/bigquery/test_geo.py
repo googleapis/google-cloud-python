@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
 import geopandas  # type: ignore
 import pandas as pd
 import pandas.testing
@@ -29,9 +31,10 @@ from shapely.geometry import (  # type: ignore
 from bigframes.bigquery import st_length
 import bigframes.bigquery as bbq
 import bigframes.geopandas
+import bigframes.session
 
 
-def test_geo_st_area():
+def test_geo_st_area(session: bigframes.session.Session):
     data = [
         Polygon([(0.000, 0.0), (0.001, 0.001), (0.000, 0.001)]),
         Polygon([(0.0010, 0.004), (0.009, 0.005), (0.0010, 0.005)]),
@@ -41,7 +44,7 @@ def test_geo_st_area():
     ]
 
     geopd_s = geopandas.GeoSeries(data=data, crs="EPSG:4326")
-    geobf_s = bigframes.geopandas.GeoSeries(data=data)
+    geobf_s = bigframes.geopandas.GeoSeries(data=data, session=session)
 
     # For `geopd_s`, the data was further projected with `geopandas.GeoSeries.to_crs`
     # to `to_crs(26393)` to get the area in square meter. See: https://geopandas.org/en/stable/docs/user_guide/projections.html
@@ -123,7 +126,7 @@ def test_st_length_various_geometries(session):
     )  # type: ignore
 
 
-def test_geo_st_difference_with_geometry_objects():
+def test_geo_st_difference_with_geometry_objects(session: bigframes.session.Session):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
@@ -136,8 +139,8 @@ def test_geo_st_difference_with_geometry_objects():
         LineString([(2, 0), (0, 2)]),
     ]
 
-    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
-    geobf_s2 = bigframes.geopandas.GeoSeries(data=data2)
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
+    geobf_s2 = bigframes.geopandas.GeoSeries(data=data2, session=session)
     geobf_s_result = bbq.st_difference(geobf_s1, geobf_s2).to_pandas()
 
     expected = pd.Series(
@@ -158,7 +161,9 @@ def test_geo_st_difference_with_geometry_objects():
     )
 
 
-def test_geo_st_difference_with_single_geometry_object():
+def test_geo_st_difference_with_single_geometry_object(
+    session: bigframes.session.Session,
+):
     pytest.importorskip(
         "shapely",
         minversion="2.0.0",
@@ -171,7 +176,7 @@ def test_geo_st_difference_with_single_geometry_object():
         Point(0, 1),
     ]
 
-    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
     geobf_s_result = bbq.st_difference(
         geobf_s1,
         Polygon([(0, 0), (10, 0), (10, 5), (0, 5), (0, 0)]),
@@ -195,14 +200,16 @@ def test_geo_st_difference_with_single_geometry_object():
     )
 
 
-def test_geo_st_difference_with_similar_geometry_objects():
+def test_geo_st_difference_with_similar_geometry_objects(
+    session: bigframes.session.Session,
+):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(0, 0), (1, 1), (0, 1)]),
         Point(0, 1),
     ]
 
-    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
     geobf_s_result = bbq.st_difference(geobf_s1, geobf_s1).to_pandas()
 
     expected = pd.Series(
@@ -219,7 +226,7 @@ def test_geo_st_difference_with_similar_geometry_objects():
     )
 
 
-def test_geo_st_distance_with_geometry_objects():
+def test_geo_st_distance_with_geometry_objects(session: bigframes.session.Session):
     data1 = [
         # 0.00001 is approximately 1 meter.
         Polygon([(0, 0), (0.00001, 0), (0.00001, 0.00001), (0, 0.00001), (0, 0)]),
@@ -252,8 +259,8 @@ def test_geo_st_distance_with_geometry_objects():
         ),  # No matching row in data1, so this will be NULL after the call to distance.
     ]
 
-    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
-    geobf_s2 = bigframes.geopandas.GeoSeries(data=data2)
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
+    geobf_s2 = bigframes.geopandas.GeoSeries(data=data2, session=session)
     geobf_s_result = bbq.st_distance(geobf_s1, geobf_s2).to_pandas()
 
     expected = pd.Series(
@@ -275,7 +282,9 @@ def test_geo_st_distance_with_geometry_objects():
     )
 
 
-def test_geo_st_distance_with_single_geometry_object():
+def test_geo_st_distance_with_single_geometry_object(
+    session: bigframes.session.Session,
+):
     pytest.importorskip(
         "shapely",
         minversion="2.0.0",
@@ -297,7 +306,7 @@ def test_geo_st_distance_with_single_geometry_object():
         Point(0, 0.00002),
     ]
 
-    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
     geobf_s_result = bbq.st_distance(
         geobf_s1,
         Point(0, 0),
@@ -320,7 +329,7 @@ def test_geo_st_distance_with_single_geometry_object():
     )
 
 
-def test_geo_st_intersection_with_geometry_objects():
+def test_geo_st_intersection_with_geometry_objects(session: bigframes.session.Session):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(0, 0), (1, 1), (0, 1), (0, 0)]),
@@ -333,8 +342,8 @@ def test_geo_st_intersection_with_geometry_objects():
         LineString([(2, 0), (0, 2)]),
     ]
 
-    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
-    geobf_s2 = bigframes.geopandas.GeoSeries(data=data2)
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
+    geobf_s2 = bigframes.geopandas.GeoSeries(data=data2, session=session)
     geobf_s_result = bbq.st_intersection(geobf_s1, geobf_s2).to_pandas()
 
     expected = pd.Series(
@@ -355,7 +364,9 @@ def test_geo_st_intersection_with_geometry_objects():
     )
 
 
-def test_geo_st_intersection_with_single_geometry_object():
+def test_geo_st_intersection_with_single_geometry_object(
+    session: bigframes.session.Session,
+):
     pytest.importorskip(
         "shapely",
         minversion="2.0.0",
@@ -368,7 +379,7 @@ def test_geo_st_intersection_with_single_geometry_object():
         Point(0, 1),
     ]
 
-    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
     geobf_s_result = bbq.st_intersection(
         geobf_s1,
         Polygon([(0, 0), (10, 0), (10, 5), (0, 5), (0, 0)]),
@@ -392,14 +403,16 @@ def test_geo_st_intersection_with_single_geometry_object():
     )
 
 
-def test_geo_st_intersection_with_similar_geometry_objects():
+def test_geo_st_intersection_with_similar_geometry_objects(
+    session: bigframes.session.Session,
+):
     data1 = [
         Polygon([(0, 0), (10, 0), (10, 10), (0, 0)]),
         Polygon([(0, 0), (1, 1), (0, 1)]),
         Point(0, 1),
     ]
 
-    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1)
+    geobf_s1 = bigframes.geopandas.GeoSeries(data=data1, session=session)
     geobf_s_result = bbq.st_intersection(geobf_s1, geobf_s1).to_pandas()
 
     expected = pd.Series(
@@ -420,7 +433,7 @@ def test_geo_st_intersection_with_similar_geometry_objects():
     )
 
 
-def test_geo_st_isclosed():
+def test_geo_st_isclosed(session: bigframes.session.Session):
     bf_gs = bigframes.geopandas.GeoSeries(
         [
             Point(0, 0),  # Point
@@ -428,12 +441,15 @@ def test_geo_st_isclosed():
             LineString([(0, 0), (1, 1), (0, 1), (0, 0)]),  # Closed LineString
             Polygon([(0, 0), (1, 1), (0, 1)]),  # Open polygon
             GeometryCollection(),  # Empty GeometryCollection
-            bigframes.geopandas.GeoSeries.from_wkt(["GEOMETRYCOLLECTION EMPTY"]).iloc[
+            bigframes.geopandas.GeoSeries.from_wkt(
+                ["GEOMETRYCOLLECTION EMPTY"], session=session
+            ).iloc[
                 0
             ],  # Also empty
             None,  # Should be filtered out by dropna
         ],
         index=[0, 1, 2, 3, 4, 5, 6],
+        session=session,
     )
     bf_result = bbq.st_isclosed(bf_gs).to_pandas()
 
@@ -455,3 +471,12 @@ def test_geo_st_isclosed():
         # We default to Int64 (nullable) dtype, but pandas defaults to int64 index.
         check_index_type=False,
     )
+
+
+def test_st_buffer(session):
+    geoseries = bigframes.geopandas.GeoSeries(
+        [Point(0, 0), LineString([(1, 1), (2, 2)])], session=session
+    )
+    result = bbq.st_buffer(geoseries, 1000).to_pandas()
+    assert result.iloc[0].geom_type == "Polygon"
+    assert result.iloc[1].geom_type == "Polygon"

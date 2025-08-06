@@ -42,6 +42,22 @@ GeoStBoundaryOp = base_ops.create_unary_op(
 )
 geo_st_boundary_op = GeoStBoundaryOp()
 
+GeoStCentroidOp = base_ops.create_unary_op(
+    name="geo_st_centroid",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_geo_like, dtypes.GEO_DTYPE, description="geo-like"
+    ),
+)
+geo_st_centroid_op = GeoStCentroidOp()
+
+GeoStConvexhullOp = base_ops.create_unary_op(
+    name="geo_st_convexhull",
+    type_signature=op_typing.FixedOutputType(
+        dtypes.is_geo_like, dtypes.GEO_DTYPE, description="geo-like"
+    ),
+)
+geo_st_convexhull_op = GeoStConvexhullOp()
+
 GeoStDifferenceOp = base_ops.create_binary_op(
     name="geo_st_difference", type_signature=op_typing.BinaryGeo()
 )
@@ -88,6 +104,17 @@ GeoStIntersectionOp = base_ops.create_binary_op(
     name="geo_st_intersection", type_signature=op_typing.BinaryGeo()
 )
 geo_st_intersection_op = GeoStIntersectionOp()
+
+
+@dataclasses.dataclass(frozen=True)
+class GeoStBufferOp(base_ops.UnaryOp):
+    name = "st_buffer"
+    buffer_radius: float
+    num_seg_quarter_circle: float
+    use_spheroid: bool
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.GEO_DTYPE
 
 
 @dataclasses.dataclass(frozen=True)

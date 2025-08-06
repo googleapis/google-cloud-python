@@ -103,6 +103,187 @@ def st_area(
     return series
 
 
+def st_buffer(
+    series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
+    buffer_radius: float,
+    num_seg_quarter_circle: float = 8.0,
+    use_spheroid: bool = False,
+) -> bigframes.series.Series:
+    """
+    Computes a `GEOGRAPHY` that represents all points whose distance from the
+    input `GEOGRAPHY` is less than or equal to `distance` meters.
+
+    .. note::
+        BigQuery's Geography functions, like `st_buffer`, interpret the geometry
+        data type as a point set on the Earth's surface. A point set is a set
+        of points, lines, and polygons on the WGS84 reference spheroid, with
+        geodesic edges. See: https://cloud.google.com/bigquery/docs/geospatial-data
+
+    **Examples:**
+
+        >>> import bigframes.geopandas
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> from shapely.geometry import Point
+        >>> bpd.options.display.progress_bar = None
+
+        >>> series = bigframes.geopandas.GeoSeries(
+        ...         [
+        ...             Point(0, 0),
+        ...             Point(1, 1),
+        ...         ]
+        ... )
+        >>> series
+        0    POINT (0 0)
+        1    POINT (1 1)
+        dtype: geometry
+
+        >>> buffer = bbq.st_buffer(series, 100)
+        >>> bbq.st_area(buffer) > 0
+        0    True
+        1    True
+        dtype: boolean
+
+    Args:
+        series (bigframes.pandas.Series | bigframes.geopandas.GeoSeries):
+            A series containing geography objects.
+        buffer_radius (float):
+            The distance in meters.
+        num_seg_quarter_circle (float, optional):
+            Specifies the number of segments that are used to approximate a
+            quarter circle. The default value is 8.0.
+        use_spheroid (bool, optional):
+            Determines how this function measures distance. If use_spheroid is
+            FALSE, the function measures distance on the surface of a perfect
+            sphere. The use_spheroid parameter currently only supports the
+            value FALSE. The default value of use_spheroid is FALSE.
+
+    Returns:
+      bigframes.pandas.Series:
+          A series of geography objects representing the buffered geometries.
+    """
+    op = ops.GeoStBufferOp(
+        buffer_radius=buffer_radius,
+        num_seg_quarter_circle=num_seg_quarter_circle,
+        use_spheroid=use_spheroid,
+    )
+    series = series._apply_unary_op(op)
+    series.name = None
+    return series
+
+
+def st_centroid(
+    series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
+) -> bigframes.series.Series:
+    """
+    Computes the geometric centroid of a `GEOGRAPHY` type.
+
+    For `POINT` and `MULTIPOINT` types, this is the arithmetic mean of the
+    input coordinates. For `LINESTRING` and `POLYGON` types, this is the
+    center of mass. For `GEOMETRYCOLLECTION` types, this is the center of
+    mass of the collection's elements.
+
+    .. note::
+        BigQuery's Geography functions, like `st_centroid`, interpret the geometry
+        data type as a point set on the Earth's surface. A point set is a set
+        of points, lines, and polygons on the WGS84 reference spheroid, with
+        geodesic edges. See: https://cloud.google.com/bigquery/docs/geospatial-data
+
+    **Examples:**
+
+        >>> import bigframes.geopandas
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> from shapely.geometry import Polygon, LineString, Point
+        >>> bpd.options.display.progress_bar = None
+
+        >>> series = bigframes.geopandas.GeoSeries(
+        ...         [
+        ...             Polygon([(0.0, 0.0), (0.1, 0.1), (0.0, 0.1)]),
+        ...             LineString([(0, 0), (1, 1), (0, 1)]),
+        ...             Point(0, 1),
+        ...         ]
+        ... )
+        >>> series
+        0              POLYGON ((0 0, 0.1 0.1, 0 0.1, 0 0))
+        1                        LINESTRING (0 0, 1 1, 0 1)
+        2                                       POINT (0 1)
+        dtype: geometry
+
+        >>> bbq.st_centroid(series)
+        0    POINT (0.03333 0.06667)
+        1    POINT (0.49998 0.70712)
+        2                  POINT (0 1)
+        dtype: geometry
+
+    Args:
+        series (bigframes.pandas.Series | bigframes.geopandas.GeoSeries):
+            A series containing geography objects.
+
+    Returns:
+      bigframes.pandas.Series:
+          A series of geography objects representing the centroids.
+    """
+    series = series._apply_unary_op(ops.geo_st_centroid_op)
+    series.name = None
+    return series
+
+
+def st_convexhull(
+    series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
+) -> bigframes.series.Series:
+    """
+    Computes the convex hull of a `GEOGRAPHY` type.
+
+    The convex hull is the smallest convex set that contains all of the
+    points in the input `GEOGRAPHY`.
+
+    .. note::
+        BigQuery's Geography functions, like `st_convexhull`, interpret the geometry
+        data type as a point set on the Earth's surface. A point set is a set
+        of points, lines, and polygons on the WGS84 reference spheroid, with
+        geodesic edges. See: https://cloud.google.com/bigquery/docs/geospatial-data
+
+    **Examples:**
+
+        >>> import bigframes.geopandas
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> from shapely.geometry import Polygon, LineString, Point
+        >>> bpd.options.display.progress_bar = None
+
+        >>> series = bigframes.geopandas.GeoSeries(
+        ...         [
+        ...             Polygon([(0.0, 0.0), (0.1, 0.1), (0.0, 0.1)]),
+        ...             LineString([(0, 0), (1, 1), (0, 1)]),
+        ...             Point(0, 1),
+        ...         ]
+        ... )
+        >>> series
+        0              POLYGON ((0 0, 0.1 0.1, 0 0.1, 0 0))
+        1                        LINESTRING (0 0, 1 1, 0 1)
+        2                                       POINT (0 1)
+        dtype: geometry
+
+        >>> bbq.st_convexhull(series)
+        0    POLYGON ((0 0, 0.1 0.1, 0 0.1, 0 0))
+        1          POLYGON ((0 0, 1 1, 0 1, 0 0))
+        2                                POINT (0 1)
+        dtype: geometry
+
+    Args:
+        series (bigframes.pandas.Series | bigframes.geopandas.GeoSeries):
+            A series containing geography objects.
+
+    Returns:
+      bigframes.pandas.Series:
+          A series of geography objects representing the convex hulls.
+    """
+    series = series._apply_unary_op(ops.geo_st_convexhull_op)
+    series.name = None
+    return series
+
+
 def st_difference(
     series: Union[bigframes.series.Series, bigframes.geopandas.GeoSeries],
     other: Union[

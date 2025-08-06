@@ -1038,6 +1038,26 @@ def geo_st_boundary_op_impl(x: ibis_types.Value):
     return st_boundary(x)
 
 
+@scalar_op_compiler.register_unary_op(ops.GeoStBufferOp, pass_op=True)
+def geo_st_buffer_op_impl(x: ibis_types.Value, op: ops.GeoStBufferOp):
+    return st_buffer(
+        x,
+        op.buffer_radius,
+        op.num_seg_quarter_circle,
+        op.use_spheroid,
+    )
+
+
+@scalar_op_compiler.register_unary_op(ops.geo_st_centroid_op, pass_op=False)
+def geo_st_centroid_op_impl(x: ibis_types.Value):
+    return typing.cast(ibis_types.GeoSpatialValue, x).centroid()
+
+
+@scalar_op_compiler.register_unary_op(ops.geo_st_convexhull_op, pass_op=False)
+def geo_st_convexhull_op_impl(x: ibis_types.Value):
+    return st_convexhull(x)
+
+
 @scalar_op_compiler.register_binary_op(ops.geo_st_difference_op, pass_op=False)
 def geo_st_difference_op_impl(x: ibis_types.Value, y: ibis_types.Value):
     return typing.cast(ibis_types.GeoSpatialValue, x).difference(
@@ -2117,6 +2137,12 @@ def _ibis_num(number: float):
 
 
 @ibis_udf.scalar.builtin
+def st_convexhull(x: ibis_dtypes.geography) -> ibis_dtypes.geography:  # type: ignore
+    """ST_CONVEXHULL"""
+    ...
+
+
+@ibis_udf.scalar.builtin
 def st_geogfromtext(a: str) -> ibis_dtypes.geography:  # type: ignore
     """Convert string to geography."""
 
@@ -2134,6 +2160,16 @@ def unix_millis(a: ibis_dtypes.timestamp) -> int:  # type: ignore
 @ibis_udf.scalar.builtin
 def st_boundary(a: ibis_dtypes.geography) -> ibis_dtypes.geography:  # type: ignore
     """Find the boundary of a geography."""
+
+
+@ibis_udf.scalar.builtin
+def st_buffer(
+    geography: ibis_dtypes.geography,  # type: ignore
+    buffer_radius: ibis_dtypes.Float64,
+    num_seg_quarter_circle: ibis_dtypes.Float64,
+    use_spheroid: ibis_dtypes.Boolean,
+) -> ibis_dtypes.geography:  # type: ignore
+    ...
 
 
 @ibis_udf.scalar.builtin
