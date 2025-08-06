@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.shopping.merchant.conversions.v1beta",
-        "version": "v1beta"
+        "id": "google.shopping.merchant.conversions.v1",
+        "version": "v1"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient",
           "shortName": "ConversionSourcesServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient.create_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient.create_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.CreateConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.CreateConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "CreateConversionSource"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.CreateConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.CreateConversionSourceRequest"
           },
           {
             "name": "parent",
@@ -39,7 +39,7 @@
           },
           {
             "name": "conversion_source",
-            "type": "google.shopping.merchant_conversions_v1beta.types.ConversionSource"
+            "type": "google.shopping.merchant_conversions_v1.types.ConversionSource"
           },
           {
             "name": "retry",
@@ -54,14 +54,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.types.ConversionSource",
+        "resultType": "google.shopping.merchant_conversions_v1.types.ConversionSource",
         "shortName": "create_conversion_source"
       },
       "description": "Sample for CreateConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_create_conversion_source_async.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_create_conversion_source_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_CreateConversionSource_async",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_CreateConversionSource_async",
       "segments": [
         {
           "end": 55,
@@ -94,20 +94,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_create_conversion_source_async.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_create_conversion_source_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient",
           "shortName": "ConversionSourcesServiceClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient.create_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient.create_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.CreateConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.CreateConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "CreateConversionSource"
@@ -115,7 +115,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.CreateConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.CreateConversionSourceRequest"
           },
           {
             "name": "parent",
@@ -123,7 +123,7 @@
           },
           {
             "name": "conversion_source",
-            "type": "google.shopping.merchant_conversions_v1beta.types.ConversionSource"
+            "type": "google.shopping.merchant_conversions_v1.types.ConversionSource"
           },
           {
             "name": "retry",
@@ -138,14 +138,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.types.ConversionSource",
+        "resultType": "google.shopping.merchant_conversions_v1.types.ConversionSource",
         "shortName": "create_conversion_source"
       },
       "description": "Sample for CreateConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_create_conversion_source_sync.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_create_conversion_source_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_CreateConversionSource_sync",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_CreateConversionSource_sync",
       "segments": [
         {
           "end": 55,
@@ -178,21 +178,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_create_conversion_source_sync.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_create_conversion_source_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient",
           "shortName": "ConversionSourcesServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient.delete_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient.delete_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.DeleteConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.DeleteConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "DeleteConversionSource"
@@ -200,7 +200,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.DeleteConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.DeleteConversionSourceRequest"
           },
           {
             "name": "name",
@@ -222,10 +222,10 @@
         "shortName": "delete_conversion_source"
       },
       "description": "Sample for DeleteConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_delete_conversion_source_async.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_delete_conversion_source_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_DeleteConversionSource_async",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_DeleteConversionSource_async",
       "segments": [
         {
           "end": 49,
@@ -256,20 +256,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_delete_conversion_source_async.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_delete_conversion_source_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient",
           "shortName": "ConversionSourcesServiceClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient.delete_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient.delete_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.DeleteConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.DeleteConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "DeleteConversionSource"
@@ -277,7 +277,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.DeleteConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.DeleteConversionSourceRequest"
           },
           {
             "name": "name",
@@ -299,10 +299,10 @@
         "shortName": "delete_conversion_source"
       },
       "description": "Sample for DeleteConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_delete_conversion_source_sync.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_delete_conversion_source_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_DeleteConversionSource_sync",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_DeleteConversionSource_sync",
       "segments": [
         {
           "end": 49,
@@ -333,21 +333,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_delete_conversion_source_sync.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_delete_conversion_source_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient",
           "shortName": "ConversionSourcesServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient.get_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient.get_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.GetConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.GetConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "GetConversionSource"
@@ -355,7 +355,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.GetConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.GetConversionSourceRequest"
           },
           {
             "name": "name",
@@ -374,14 +374,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.types.ConversionSource",
+        "resultType": "google.shopping.merchant_conversions_v1.types.ConversionSource",
         "shortName": "get_conversion_source"
       },
       "description": "Sample for GetConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_get_conversion_source_async.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_get_conversion_source_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_GetConversionSource_async",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_GetConversionSource_async",
       "segments": [
         {
           "end": 51,
@@ -414,20 +414,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_get_conversion_source_async.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_get_conversion_source_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient",
           "shortName": "ConversionSourcesServiceClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient.get_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient.get_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.GetConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.GetConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "GetConversionSource"
@@ -435,7 +435,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.GetConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.GetConversionSourceRequest"
           },
           {
             "name": "name",
@@ -454,14 +454,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.types.ConversionSource",
+        "resultType": "google.shopping.merchant_conversions_v1.types.ConversionSource",
         "shortName": "get_conversion_source"
       },
       "description": "Sample for GetConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_get_conversion_source_sync.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_get_conversion_source_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_GetConversionSource_sync",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_GetConversionSource_sync",
       "segments": [
         {
           "end": 51,
@@ -494,21 +494,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_get_conversion_source_sync.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_get_conversion_source_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient",
           "shortName": "ConversionSourcesServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient.list_conversion_sources",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient.list_conversion_sources",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.ListConversionSources",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.ListConversionSources",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "ListConversionSources"
@@ -516,7 +516,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.ListConversionSourcesRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.ListConversionSourcesRequest"
           },
           {
             "name": "parent",
@@ -535,14 +535,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.services.conversion_sources_service.pagers.ListConversionSourcesAsyncPager",
+        "resultType": "google.shopping.merchant_conversions_v1.services.conversion_sources_service.pagers.ListConversionSourcesAsyncPager",
         "shortName": "list_conversion_sources"
       },
       "description": "Sample for ListConversionSources",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_list_conversion_sources_async.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_list_conversion_sources_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_ListConversionSources_async",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_ListConversionSources_async",
       "segments": [
         {
           "end": 52,
@@ -575,20 +575,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_list_conversion_sources_async.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_list_conversion_sources_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient",
           "shortName": "ConversionSourcesServiceClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient.list_conversion_sources",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient.list_conversion_sources",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.ListConversionSources",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.ListConversionSources",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "ListConversionSources"
@@ -596,7 +596,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.ListConversionSourcesRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.ListConversionSourcesRequest"
           },
           {
             "name": "parent",
@@ -615,14 +615,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.services.conversion_sources_service.pagers.ListConversionSourcesPager",
+        "resultType": "google.shopping.merchant_conversions_v1.services.conversion_sources_service.pagers.ListConversionSourcesPager",
         "shortName": "list_conversion_sources"
       },
       "description": "Sample for ListConversionSources",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_list_conversion_sources_sync.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_list_conversion_sources_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_ListConversionSources_sync",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_ListConversionSources_sync",
       "segments": [
         {
           "end": 52,
@@ -655,21 +655,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_list_conversion_sources_sync.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_list_conversion_sources_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient",
           "shortName": "ConversionSourcesServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient.undelete_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient.undelete_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.UndeleteConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.UndeleteConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "UndeleteConversionSource"
@@ -677,7 +677,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.UndeleteConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.UndeleteConversionSourceRequest"
           },
           {
             "name": "retry",
@@ -692,14 +692,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.types.ConversionSource",
+        "resultType": "google.shopping.merchant_conversions_v1.types.ConversionSource",
         "shortName": "undelete_conversion_source"
       },
       "description": "Sample for UndeleteConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_undelete_conversion_source_async.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_undelete_conversion_source_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_UndeleteConversionSource_async",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_UndeleteConversionSource_async",
       "segments": [
         {
           "end": 51,
@@ -732,20 +732,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_undelete_conversion_source_async.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_undelete_conversion_source_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient",
           "shortName": "ConversionSourcesServiceClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient.undelete_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient.undelete_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.UndeleteConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.UndeleteConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "UndeleteConversionSource"
@@ -753,7 +753,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.UndeleteConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.UndeleteConversionSourceRequest"
           },
           {
             "name": "retry",
@@ -768,14 +768,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.types.ConversionSource",
+        "resultType": "google.shopping.merchant_conversions_v1.types.ConversionSource",
         "shortName": "undelete_conversion_source"
       },
       "description": "Sample for UndeleteConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_undelete_conversion_source_sync.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_undelete_conversion_source_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_UndeleteConversionSource_sync",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_UndeleteConversionSource_sync",
       "segments": [
         {
           "end": 51,
@@ -808,21 +808,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_undelete_conversion_source_sync.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_undelete_conversion_source_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient",
           "shortName": "ConversionSourcesServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceAsyncClient.update_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceAsyncClient.update_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.UpdateConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.UpdateConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "UpdateConversionSource"
@@ -830,11 +830,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.UpdateConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.UpdateConversionSourceRequest"
           },
           {
             "name": "conversion_source",
-            "type": "google.shopping.merchant_conversions_v1beta.types.ConversionSource"
+            "type": "google.shopping.merchant_conversions_v1.types.ConversionSource"
           },
           {
             "name": "update_mask",
@@ -853,14 +853,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.types.ConversionSource",
+        "resultType": "google.shopping.merchant_conversions_v1.types.ConversionSource",
         "shortName": "update_conversion_source"
       },
       "description": "Sample for UpdateConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_update_conversion_source_async.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_update_conversion_source_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_UpdateConversionSource_async",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_UpdateConversionSource_async",
       "segments": [
         {
           "end": 54,
@@ -893,20 +893,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_update_conversion_source_async.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_update_conversion_source_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient",
+          "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient",
           "shortName": "ConversionSourcesServiceClient"
         },
-        "fullName": "google.shopping.merchant_conversions_v1beta.ConversionSourcesServiceClient.update_conversion_source",
+        "fullName": "google.shopping.merchant_conversions_v1.ConversionSourcesServiceClient.update_conversion_source",
         "method": {
-          "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService.UpdateConversionSource",
+          "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService.UpdateConversionSource",
           "service": {
-            "fullName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+            "fullName": "google.shopping.merchant.conversions.v1.ConversionSourcesService",
             "shortName": "ConversionSourcesService"
           },
           "shortName": "UpdateConversionSource"
@@ -914,11 +914,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_conversions_v1beta.types.UpdateConversionSourceRequest"
+            "type": "google.shopping.merchant_conversions_v1.types.UpdateConversionSourceRequest"
           },
           {
             "name": "conversion_source",
-            "type": "google.shopping.merchant_conversions_v1beta.types.ConversionSource"
+            "type": "google.shopping.merchant_conversions_v1.types.ConversionSource"
           },
           {
             "name": "update_mask",
@@ -937,14 +937,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_conversions_v1beta.types.ConversionSource",
+        "resultType": "google.shopping.merchant_conversions_v1.types.ConversionSource",
         "shortName": "update_conversion_source"
       },
       "description": "Sample for UpdateConversionSource",
-      "file": "merchantapi_v1beta_generated_conversion_sources_service_update_conversion_source_sync.py",
+      "file": "merchantapi_v1_generated_conversion_sources_service_update_conversion_source_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ConversionSourcesService_UpdateConversionSource_sync",
+      "regionTag": "merchantapi_v1_generated_ConversionSourcesService_UpdateConversionSource_sync",
       "segments": [
         {
           "end": 54,
@@ -977,7 +977,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_conversion_sources_service_update_conversion_source_sync.py"
+      "title": "merchantapi_v1_generated_conversion_sources_service_update_conversion_source_sync.py"
     }
   ]
 }
