@@ -3909,8 +3909,14 @@
             "component": "google-shopping-merchant-reports",
             "extra-files": [
                 "google/shopping/merchant_reports/gapic_version.py",
+                "google/shopping/merchant_reports_v1/gapic_version.py",
                 "google/shopping/merchant_reports_v1alpha/gapic_version.py",
                 "google/shopping/merchant_reports_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.reports.v1.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.reports.v1alpha.json",
