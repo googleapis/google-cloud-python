@@ -3792,7 +3792,13 @@
             "component": "google-shopping-merchant-ordertracking",
             "extra-files": [
                 "google/shopping/merchant_ordertracking/gapic_version.py",
+                "google/shopping/merchant_ordertracking_v1/gapic_version.py",
                 "google/shopping/merchant_ordertracking_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.ordertracking.v1.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.ordertracking.v1beta.json",
@@ -3807,7 +3813,13 @@
             "component": "google-shopping-merchant-products",
             "extra-files": [
                 "google/shopping/merchant_products/gapic_version.py",
+                "google/shopping/merchant_products_v1/gapic_version.py",
                 "google/shopping/merchant_products_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.products.v1.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.products.v1beta.json",
@@ -3837,7 +3849,13 @@
             "component": "google-shopping-merchant-promotions",
             "extra-files": [
                 "google/shopping/merchant_promotions/gapic_version.py",
+                "google/shopping/merchant_promotions_v1/gapic_version.py",
                 "google/shopping/merchant_promotions_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.promotions.v1.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.promotions.v1beta.json",
