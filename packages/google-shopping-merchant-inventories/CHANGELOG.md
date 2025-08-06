@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.16](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.15...google-shopping-merchant-inventories-v0.1.16) (2025-08-06)
+
+
+### Features
+
+* [google-shopping-merchant-inventories] add inventories API client libraries for v1 ([#14172](https://github.com/googleapis/google-cloud-python/issues/14172)) ([3e038db](https://github.com/googleapis/google-cloud-python/commit/3e038db85e048e57426bde3faea86225e68c579d))
+
 ## [0.1.15](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.14...google-shopping-merchant-inventories-v0.1.15) (2025-06-11)
 
 

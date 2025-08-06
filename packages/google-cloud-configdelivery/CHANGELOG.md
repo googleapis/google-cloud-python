@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-configdelivery-v0.1.2...google-cloud-configdelivery-v0.1.3) (2025-08-06)
+
+
+### Documentation
+
+* Mark Variant's resources field as input only ([477c835](https://github.com/googleapis/google-cloud-python/commit/477c8358e1f64ada6cf9c8ba9cc61e9269df89fd))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-configdelivery-v0.1.1...google-cloud-configdelivery-v0.1.2) (2025-07-10)
 
 

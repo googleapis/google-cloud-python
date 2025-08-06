@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.5...google-shopping-merchant-accounts-v0.3.6) (2025-08-06)
+
+
+### Features
+
+* [google-shopping-merchant-accounts] add accounts API client libraries for v1 ([#14187](https://github.com/googleapis/google-cloud-python/issues/14187)) ([df0012e](https://github.com/googleapis/google-cloud-python/commit/df0012e9d45c78d94cd244337261f4a1a516c124))
+
 ## [0.3.5](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v0.3.4...google-shopping-merchant-accounts-v0.3.5) (2025-07-02)
 
 

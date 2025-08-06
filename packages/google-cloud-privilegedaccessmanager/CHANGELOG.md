@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-privilegedaccessmanager-v0.1.8...google-cloud-privilegedaccessmanager-v0.1.9) (2025-08-06)
+
+
+### Features
+
+* [google-cloud-privilegedaccessmanager] Introducing new Grant states for Withdrawal operation ([#14168](https://github.com/googleapis/google-cloud-python/issues/14168)) ([e35550f](https://github.com/googleapis/google-cloud-python/commit/e35550fc0207a480f10c6d2859a971a565b055c9))
+* add a FooBar API ([2f16fa5](https://github.com/googleapis/google-cloud-python/commit/2f16fa5610250d05ecc605862e2f806b94593814))
+* add the VeoTuningSpec ([2f16fa5](https://github.com/googleapis/google-cloud-python/commit/2f16fa5610250d05ecc605862e2f806b94593814))
+* Remove private preview label from Model Armor protos ([2f16fa5](https://github.com/googleapis/google-cloud-python/commit/2f16fa5610250d05ecc605862e2f806b94593814))
+
+
+### Documentation
+
+* update comments for rpc BatchCreatePullRequestComments, ResolvePullRequestComments and UnresolvePullRequestComments ([2f16fa5](https://github.com/googleapis/google-cloud-python/commit/2f16fa5610250d05ecc605862e2f806b94593814))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-privilegedaccessmanager-v0.1.7...google-cloud-privilegedaccessmanager-v0.1.8) (2025-06-11)
 
 
