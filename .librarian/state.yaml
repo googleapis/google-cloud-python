@@ -9,8 +9,8 @@ libraries:
     service_config: ''
   id: google-cloud-language
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
-  preserve_regex: ''
-  remove_regex: ''
+  preserve_regex: []
+  remove_regex: []
   sourcePaths:
   - packages/google-cloud-language
   version: 2.17.2
