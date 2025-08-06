@@ -415,6 +415,7 @@ replacements:
   - paths: [
       packages/google-shopping-merchant-reports/google/shopping/merchant_reports_v1alpha/types/reports.py,
       packages/google-shopping-merchant-reports/google/shopping/merchant_reports_v1beta/types/reports.py,
+      packages/google-shopping-merchant-reports/google/shopping/merchant_reports_v1/types/reports.py,
     ]
     before: |
       Here's an example of how the aggregated status is computed:\n
@@ -434,7 +435,7 @@ replacements:
               PENDING Disapproved \| Disapproved \| NOT_ELIGIBLE_OR_DISAPPROVED
               ```\n
               Values:
-    count: 2
+    count: 3
   - paths: [
       packages/google-cloud-monitoring/google/cloud/monitoring_v3/types/metric_service.py
     ]

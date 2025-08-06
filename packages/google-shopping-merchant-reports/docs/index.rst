@@ -19,6 +19,14 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
+    merchant_reports_v1/services_
+    merchant_reports_v1/types_
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
     merchant_reports_v1alpha/services_
     merchant_reports_v1alpha/types_
 
