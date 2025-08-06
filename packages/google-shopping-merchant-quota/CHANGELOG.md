@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-quota-v0.1.8...google-shopping-merchant-quota-v0.1.9) (2025-08-06)
+
+
+### Features
+
+* add quota API for v1 ([29d65ad](https://github.com/googleapis/google-cloud-python/commit/29d65adc3fdb813641c21ceebe0b46305a47fbe5))
+* add quota API for v1 ([#14177](https://github.com/googleapis/google-cloud-python/issues/14177)) ([29d65ad](https://github.com/googleapis/google-cloud-python/commit/29d65adc3fdb813641c21ceebe0b46305a47fbe5))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-quota-v0.1.7...google-shopping-merchant-quota-v0.1.8) (2025-06-11)
 
 

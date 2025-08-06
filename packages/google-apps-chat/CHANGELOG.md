@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.7...google-apps-chat-v0.2.8) (2025-08-06)
+
+
+### Features
+
+* Addition of app auth support for chat api ([e9795e3](https://github.com/googleapis/google-cloud-python/commit/e9795e356339141f7087a982c08fe962b3f559da))
+
+
+### Documentation
+
+* Update reference documentation for createSpace,updateSpace,deleteSpace,createMembership,updateMembership,deleteMembership and the newly added field -customer- in space.proto ([e9795e3](https://github.com/googleapis/google-cloud-python/commit/e9795e356339141f7087a982c08fe962b3f559da))
+
 ## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.2.6...google-apps-chat-v0.2.7) (2025-07-23)
 
 

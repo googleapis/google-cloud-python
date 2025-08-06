@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-lfp-v0.1.10...google-shopping-merchant-lfp-v0.1.11) (2025-08-06)
+
+
+### Features
+
+* [google-shopping-merchant-lfp] add lfp API for v1 ([#14176](https://github.com/googleapis/google-cloud-python/issues/14176)) ([4181153](https://github.com/googleapis/google-cloud-python/commit/4181153ce7701f3c3ebae9465842d6d235075d57))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-lfp-v0.1.9...google-shopping-merchant-lfp-v0.1.10) (2025-04-29)
 
 

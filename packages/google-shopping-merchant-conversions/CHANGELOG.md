@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-conversions-v0.1.9...google-shopping-merchant-conversions-v0.1.10) (2025-08-06)
+
+
+### Features
+
+* add conversions API client libraries for v1 ([f2d8f3e](https://github.com/googleapis/google-cloud-python/commit/f2d8f3ed742d62237dad6045a4552bae1199c566))
+* add conversions API client libraries for v1 ([#14175](https://github.com/googleapis/google-cloud-python/issues/14175)) ([f2d8f3e](https://github.com/googleapis/google-cloud-python/commit/f2d8f3ed742d62237dad6045a4552bae1199c566))
+
 ## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-conversions-v0.1.8...google-shopping-merchant-conversions-v0.1.9) (2025-06-11)
 
 

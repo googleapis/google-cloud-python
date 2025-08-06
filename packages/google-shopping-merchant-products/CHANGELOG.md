@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.6...google-shopping-merchant-products-v0.2.7) (2025-08-06)
+
+
+### Features
+
+* [google-shopping-merchant-products] add products API client libraries for v1 ([#14183](https://github.com/googleapis/google-cloud-python/issues/14183)) ([4ae9435](https://github.com/googleapis/google-cloud-python/commit/4ae943546302636866015825a527b1a6ff9c0efa))
+
 ## [0.2.6](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-products-v0.2.5...google-shopping-merchant-products-v0.2.6) (2025-07-10)
 
 

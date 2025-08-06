@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.9](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-notifications-v0.1.8...google-shopping-merchant-notifications-v0.1.9) (2025-08-06)
+
+
+### Features
+
+* add notifications API client libraries for v1 ([9462b82](https://github.com/googleapis/google-cloud-python/commit/9462b82f477f9a8d727c928aee8f0a9950b82fe1))
+* add notifications API client libraries for v1 ([#14173](https://github.com/googleapis/google-cloud-python/issues/14173)) ([9462b82](https://github.com/googleapis/google-cloud-python/commit/9462b82f477f9a8d727c928aee8f0a9950b82fe1))
+
 ## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-notifications-v0.1.7...google-shopping-merchant-notifications-v0.1.8) (2025-06-11)
 
 

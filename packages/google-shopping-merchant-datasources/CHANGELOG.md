@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v0.1.10...google-shopping-merchant-datasources-v0.1.11) (2025-08-06)
+
+
+### Features
+
+* [google-shopping-merchant-datasources] add datasources API client libraries for v1 ([#14174](https://github.com/googleapis/google-cloud-python/issues/14174)) ([147cca6](https://github.com/googleapis/google-cloud-python/commit/147cca64defaaaa96cd0e4955c7972a088affa10))
+
 ## [0.1.10](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-datasources-v0.1.9...google-shopping-merchant-datasources-v0.1.10) (2025-06-11)
 
 
