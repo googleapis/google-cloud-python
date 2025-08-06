@@ -44,7 +44,7 @@ def configure_state_yaml() -> None:
     with open(PACKAGES_TO_ONBOARD_YAML, "r") as packages_to_onboard_yaml_file:
         packages_to_onboard = yaml.safe_load(packages_to_onboard_yaml_file)
 
-    state_dict["image"] = "google-cloud-python-generator:latest"
+    state_dict["image"] = "python-librarian-generator:latest"
     state_dict["libraries"] = []
     for package_name in packages_to_onboard["packages_to_onboard"]:
         package_path = Path(PACKAGES_DIR / package_name).resolve()
@@ -56,7 +56,6 @@ def configure_state_yaml() -> None:
                     [
                         {
                             "path": gapic_metadata["protoPackage"].replace(".", "/"),
-                            "service_config": "",
                         }
                     ]
                 )
@@ -66,15 +65,21 @@ def configure_state_yaml() -> None:
                 "version": release_please_manifest[f"packages/{package_name}"],
                 "last_generated_commit": "97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5",
                 "apis": api_paths,
-                "sourcePaths": [f"packages/{package_name}"],
-                "preserve_regex": "",
-                "remove_regex": "",
+                "source_roots": [f"^packages/{package_path.name}"],
+                "preserve_regex": [
+                    ".OwlBot.yaml",
+                    "CHANGELOG.md",
+                    "docs/CHANGELOG.md",
+                    "docs/README.rst",
+                    "samples/README.txt",
+                    "tar.gz",
+                ],
+                "remove_regex": [f"^packages/{package_path.name}"],
             }
         )
 
     with open(LIBRARIAN_YAML, "w") as f:
-        yaml.dump(state_dict, f)
-
+        yaml.dump(state_dict, f, sort_keys=False, indent=2)
 
 if __name__ == "__main__":
     configure_state_yaml()
