@@ -1,0 +1,17 @@
+{
+    "name": "google-apps-card",
+    "name_pretty": "Google Apps Card Protos",
+    "api_description": "Google Apps Card Protos",
+    "product_documentation": "https://developers.google.com/chat",
+    "client_documentation": "https://googleapis.dev/python/google-apps-card/latest",
+    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-apps-card",
+    "api_id": "card.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "card"
+}

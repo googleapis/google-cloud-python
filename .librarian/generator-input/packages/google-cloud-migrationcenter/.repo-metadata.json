@@ -1,0 +1,17 @@
+{
+    "name": "migrationcenter",
+    "name_pretty": "Migration Center API",
+    "api_description": "A unified platform that helps you accelerate your end-to-end cloud journey from your current on-premises or cloud environments to Google Cloud.",
+    "product_documentation": "https://cloud.google.com/migration-center/docs/migration-center-overview",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/migrationcenter/latest",
+    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-cloud-migrationcenter",
+    "api_id": "migrationcenter.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "migrationcenter"
+}
