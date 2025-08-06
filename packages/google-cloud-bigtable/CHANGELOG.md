@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.32.0](https://github.com/googleapis/python-bigtable/compare/v2.31.0...v2.32.0) (2025-08-01)
+
+
+### Features
+
+* Add Idempotency to Cloud Bigtable MutateRowsRequest API ([#1143](https://github.com/googleapis/python-bigtable/issues/1143)) ([c3e3eb0](https://github.com/googleapis/python-bigtable/commit/c3e3eb0e4ce44ece72b150dc5822846627074fba))
+* Add support for AddToCell in Data Client ([#1147](https://github.com/googleapis/python-bigtable/issues/1147)) ([1a5b4b5](https://github.com/googleapis/python-bigtable/commit/1a5b4b514cadae5c83d61296314285d3774992c5))
+* Implement SQL support in test proxy ([#1106](https://github.com/googleapis/python-bigtable/issues/1106)) ([7a91bbf](https://github.com/googleapis/python-bigtable/commit/7a91bbfb9df23f7e93c40b88648840342af6f16f))
+* Modernized Bigtable Admin Client featuring selective GAPIC generation ([#1177](https://github.com/googleapis/python-bigtable/issues/1177)) ([58e7d37](https://github.com/googleapis/python-bigtable/commit/58e7d3782df6b13a42af053263afc575222a6b83))
+
 ## [2.31.0](https://github.com/googleapis/python-bigtable/compare/v2.30.1...v2.31.0) (2025-05-22)
 
 
