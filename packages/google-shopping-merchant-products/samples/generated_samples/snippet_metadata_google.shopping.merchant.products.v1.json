@@ -2,8 +2,8 @@
   "clientLibrary": {
     "apis": [
       {
-        "id": "google.shopping.merchant.products.v1beta",
-        "version": "v1beta"
+        "id": "google.shopping.merchant.products.v1",
+        "version": "v1"
       }
     ],
     "language": "PYTHON",
@@ -16,14 +16,14 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceAsyncClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceAsyncClient",
           "shortName": "ProductInputsServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceAsyncClient.delete_product_input",
+        "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceAsyncClient.delete_product_input",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService.DeleteProductInput",
+          "fullName": "google.shopping.merchant.products.v1.ProductInputsService.DeleteProductInput",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductInputsService",
             "shortName": "ProductInputsService"
           },
           "shortName": "DeleteProductInput"
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.DeleteProductInputRequest"
+            "type": "google.shopping.merchant_products_v1.types.DeleteProductInputRequest"
           },
           {
             "name": "name",
@@ -53,10 +53,10 @@
         "shortName": "delete_product_input"
       },
       "description": "Sample for DeleteProductInput",
-      "file": "merchantapi_v1beta_generated_product_inputs_service_delete_product_input_async.py",
+      "file": "merchantapi_v1_generated_product_inputs_service_delete_product_input_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductInputsService_DeleteProductInput_async",
+      "regionTag": "merchantapi_v1_generated_ProductInputsService_DeleteProductInput_async",
       "segments": [
         {
           "end": 50,
@@ -87,20 +87,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_product_inputs_service_delete_product_input_async.py"
+      "title": "merchantapi_v1_generated_product_inputs_service_delete_product_input_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceClient",
           "shortName": "ProductInputsServiceClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceClient.delete_product_input",
+        "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceClient.delete_product_input",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService.DeleteProductInput",
+          "fullName": "google.shopping.merchant.products.v1.ProductInputsService.DeleteProductInput",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductInputsService",
             "shortName": "ProductInputsService"
           },
           "shortName": "DeleteProductInput"
@@ -108,7 +108,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.DeleteProductInputRequest"
+            "type": "google.shopping.merchant_products_v1.types.DeleteProductInputRequest"
           },
           {
             "name": "name",
@@ -130,10 +130,10 @@
         "shortName": "delete_product_input"
       },
       "description": "Sample for DeleteProductInput",
-      "file": "merchantapi_v1beta_generated_product_inputs_service_delete_product_input_sync.py",
+      "file": "merchantapi_v1_generated_product_inputs_service_delete_product_input_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductInputsService_DeleteProductInput_sync",
+      "regionTag": "merchantapi_v1_generated_ProductInputsService_DeleteProductInput_sync",
       "segments": [
         {
           "end": 50,
@@ -164,21 +164,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_product_inputs_service_delete_product_input_sync.py"
+      "title": "merchantapi_v1_generated_product_inputs_service_delete_product_input_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceAsyncClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceAsyncClient",
           "shortName": "ProductInputsServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceAsyncClient.insert_product_input",
+        "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceAsyncClient.insert_product_input",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService.InsertProductInput",
+          "fullName": "google.shopping.merchant.products.v1.ProductInputsService.InsertProductInput",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductInputsService",
             "shortName": "ProductInputsService"
           },
           "shortName": "InsertProductInput"
@@ -186,7 +186,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.InsertProductInputRequest"
+            "type": "google.shopping.merchant_products_v1.types.InsertProductInputRequest"
           },
           {
             "name": "retry",
@@ -201,14 +201,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_products_v1beta.types.ProductInput",
+        "resultType": "google.shopping.merchant_products_v1.types.ProductInput",
         "shortName": "insert_product_input"
       },
       "description": "Sample for InsertProductInput",
-      "file": "merchantapi_v1beta_generated_product_inputs_service_insert_product_input_async.py",
+      "file": "merchantapi_v1_generated_product_inputs_service_insert_product_input_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductInputsService_InsertProductInput_async",
+      "regionTag": "merchantapi_v1_generated_ProductInputsService_InsertProductInput_async",
       "segments": [
         {
           "end": 58,
@@ -241,20 +241,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_product_inputs_service_insert_product_input_async.py"
+      "title": "merchantapi_v1_generated_product_inputs_service_insert_product_input_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceClient",
           "shortName": "ProductInputsServiceClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceClient.insert_product_input",
+        "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceClient.insert_product_input",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService.InsertProductInput",
+          "fullName": "google.shopping.merchant.products.v1.ProductInputsService.InsertProductInput",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductInputsService",
             "shortName": "ProductInputsService"
           },
           "shortName": "InsertProductInput"
@@ -262,7 +262,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.InsertProductInputRequest"
+            "type": "google.shopping.merchant_products_v1.types.InsertProductInputRequest"
           },
           {
             "name": "retry",
@@ -277,14 +277,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_products_v1beta.types.ProductInput",
+        "resultType": "google.shopping.merchant_products_v1.types.ProductInput",
         "shortName": "insert_product_input"
       },
       "description": "Sample for InsertProductInput",
-      "file": "merchantapi_v1beta_generated_product_inputs_service_insert_product_input_sync.py",
+      "file": "merchantapi_v1_generated_product_inputs_service_insert_product_input_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductInputsService_InsertProductInput_sync",
+      "regionTag": "merchantapi_v1_generated_ProductInputsService_InsertProductInput_sync",
       "segments": [
         {
           "end": 58,
@@ -317,21 +317,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_product_inputs_service_insert_product_input_sync.py"
+      "title": "merchantapi_v1_generated_product_inputs_service_insert_product_input_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceAsyncClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceAsyncClient",
           "shortName": "ProductInputsServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceAsyncClient.update_product_input",
+        "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceAsyncClient.update_product_input",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService.UpdateProductInput",
+          "fullName": "google.shopping.merchant.products.v1.ProductInputsService.UpdateProductInput",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductInputsService",
             "shortName": "ProductInputsService"
           },
           "shortName": "UpdateProductInput"
@@ -339,11 +339,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.UpdateProductInputRequest"
+            "type": "google.shopping.merchant_products_v1.types.UpdateProductInputRequest"
           },
           {
             "name": "product_input",
-            "type": "google.shopping.merchant_products_v1beta.types.ProductInput"
+            "type": "google.shopping.merchant_products_v1.types.ProductInput"
           },
           {
             "name": "update_mask",
@@ -362,14 +362,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_products_v1beta.types.ProductInput",
+        "resultType": "google.shopping.merchant_products_v1.types.ProductInput",
         "shortName": "update_product_input"
       },
       "description": "Sample for UpdateProductInput",
-      "file": "merchantapi_v1beta_generated_product_inputs_service_update_product_input_async.py",
+      "file": "merchantapi_v1_generated_product_inputs_service_update_product_input_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductInputsService_UpdateProductInput_async",
+      "regionTag": "merchantapi_v1_generated_ProductInputsService_UpdateProductInput_async",
       "segments": [
         {
           "end": 57,
@@ -402,20 +402,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_product_inputs_service_update_product_input_async.py"
+      "title": "merchantapi_v1_generated_product_inputs_service_update_product_input_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceClient",
           "shortName": "ProductInputsServiceClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductInputsServiceClient.update_product_input",
+        "fullName": "google.shopping.merchant_products_v1.ProductInputsServiceClient.update_product_input",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService.UpdateProductInput",
+          "fullName": "google.shopping.merchant.products.v1.ProductInputsService.UpdateProductInput",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductInputsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductInputsService",
             "shortName": "ProductInputsService"
           },
           "shortName": "UpdateProductInput"
@@ -423,11 +423,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.UpdateProductInputRequest"
+            "type": "google.shopping.merchant_products_v1.types.UpdateProductInputRequest"
           },
           {
             "name": "product_input",
-            "type": "google.shopping.merchant_products_v1beta.types.ProductInput"
+            "type": "google.shopping.merchant_products_v1.types.ProductInput"
           },
           {
             "name": "update_mask",
@@ -446,14 +446,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_products_v1beta.types.ProductInput",
+        "resultType": "google.shopping.merchant_products_v1.types.ProductInput",
         "shortName": "update_product_input"
       },
       "description": "Sample for UpdateProductInput",
-      "file": "merchantapi_v1beta_generated_product_inputs_service_update_product_input_sync.py",
+      "file": "merchantapi_v1_generated_product_inputs_service_update_product_input_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductInputsService_UpdateProductInput_sync",
+      "regionTag": "merchantapi_v1_generated_ProductInputsService_UpdateProductInput_sync",
       "segments": [
         {
           "end": 57,
@@ -486,21 +486,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_product_inputs_service_update_product_input_sync.py"
+      "title": "merchantapi_v1_generated_product_inputs_service_update_product_input_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductsServiceAsyncClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductsServiceAsyncClient",
           "shortName": "ProductsServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductsServiceAsyncClient.get_product",
+        "fullName": "google.shopping.merchant_products_v1.ProductsServiceAsyncClient.get_product",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductsService.GetProduct",
+          "fullName": "google.shopping.merchant.products.v1.ProductsService.GetProduct",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductsService",
             "shortName": "ProductsService"
           },
           "shortName": "GetProduct"
@@ -508,7 +508,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.GetProductRequest"
+            "type": "google.shopping.merchant_products_v1.types.GetProductRequest"
           },
           {
             "name": "name",
@@ -527,14 +527,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_products_v1beta.types.Product",
+        "resultType": "google.shopping.merchant_products_v1.types.Product",
         "shortName": "get_product"
       },
       "description": "Sample for GetProduct",
-      "file": "merchantapi_v1beta_generated_products_service_get_product_async.py",
+      "file": "merchantapi_v1_generated_products_service_get_product_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductsService_GetProduct_async",
+      "regionTag": "merchantapi_v1_generated_ProductsService_GetProduct_async",
       "segments": [
         {
           "end": 51,
@@ -567,20 +567,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_products_service_get_product_async.py"
+      "title": "merchantapi_v1_generated_products_service_get_product_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductsServiceClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductsServiceClient",
           "shortName": "ProductsServiceClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductsServiceClient.get_product",
+        "fullName": "google.shopping.merchant_products_v1.ProductsServiceClient.get_product",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductsService.GetProduct",
+          "fullName": "google.shopping.merchant.products.v1.ProductsService.GetProduct",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductsService",
             "shortName": "ProductsService"
           },
           "shortName": "GetProduct"
@@ -588,7 +588,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.GetProductRequest"
+            "type": "google.shopping.merchant_products_v1.types.GetProductRequest"
           },
           {
             "name": "name",
@@ -607,14 +607,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_products_v1beta.types.Product",
+        "resultType": "google.shopping.merchant_products_v1.types.Product",
         "shortName": "get_product"
       },
       "description": "Sample for GetProduct",
-      "file": "merchantapi_v1beta_generated_products_service_get_product_sync.py",
+      "file": "merchantapi_v1_generated_products_service_get_product_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductsService_GetProduct_sync",
+      "regionTag": "merchantapi_v1_generated_ProductsService_GetProduct_sync",
       "segments": [
         {
           "end": 51,
@@ -647,21 +647,21 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_products_service_get_product_sync.py"
+      "title": "merchantapi_v1_generated_products_service_get_product_sync.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductsServiceAsyncClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductsServiceAsyncClient",
           "shortName": "ProductsServiceAsyncClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductsServiceAsyncClient.list_products",
+        "fullName": "google.shopping.merchant_products_v1.ProductsServiceAsyncClient.list_products",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductsService.ListProducts",
+          "fullName": "google.shopping.merchant.products.v1.ProductsService.ListProducts",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductsService",
             "shortName": "ProductsService"
           },
           "shortName": "ListProducts"
@@ -669,7 +669,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.ListProductsRequest"
+            "type": "google.shopping.merchant_products_v1.types.ListProductsRequest"
           },
           {
             "name": "parent",
@@ -688,14 +688,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_products_v1beta.services.products_service.pagers.ListProductsAsyncPager",
+        "resultType": "google.shopping.merchant_products_v1.services.products_service.pagers.ListProductsAsyncPager",
         "shortName": "list_products"
       },
       "description": "Sample for ListProducts",
-      "file": "merchantapi_v1beta_generated_products_service_list_products_async.py",
+      "file": "merchantapi_v1_generated_products_service_list_products_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductsService_ListProducts_async",
+      "regionTag": "merchantapi_v1_generated_ProductsService_ListProducts_async",
       "segments": [
         {
           "end": 52,
@@ -728,20 +728,20 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_products_service_list_products_async.py"
+      "title": "merchantapi_v1_generated_products_service_list_products_async.py"
     },
     {
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.shopping.merchant_products_v1beta.ProductsServiceClient",
+          "fullName": "google.shopping.merchant_products_v1.ProductsServiceClient",
           "shortName": "ProductsServiceClient"
         },
-        "fullName": "google.shopping.merchant_products_v1beta.ProductsServiceClient.list_products",
+        "fullName": "google.shopping.merchant_products_v1.ProductsServiceClient.list_products",
         "method": {
-          "fullName": "google.shopping.merchant.products.v1beta.ProductsService.ListProducts",
+          "fullName": "google.shopping.merchant.products.v1.ProductsService.ListProducts",
           "service": {
-            "fullName": "google.shopping.merchant.products.v1beta.ProductsService",
+            "fullName": "google.shopping.merchant.products.v1.ProductsService",
             "shortName": "ProductsService"
           },
           "shortName": "ListProducts"
@@ -749,7 +749,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.shopping.merchant_products_v1beta.types.ListProductsRequest"
+            "type": "google.shopping.merchant_products_v1.types.ListProductsRequest"
           },
           {
             "name": "parent",
@@ -768,14 +768,14 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.shopping.merchant_products_v1beta.services.products_service.pagers.ListProductsPager",
+        "resultType": "google.shopping.merchant_products_v1.services.products_service.pagers.ListProductsPager",
         "shortName": "list_products"
       },
       "description": "Sample for ListProducts",
-      "file": "merchantapi_v1beta_generated_products_service_list_products_sync.py",
+      "file": "merchantapi_v1_generated_products_service_list_products_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "merchantapi_v1beta_generated_ProductsService_ListProducts_sync",
+      "regionTag": "merchantapi_v1_generated_ProductsService_ListProducts_sync",
       "segments": [
         {
           "end": 52,
@@ -808,7 +808,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "merchantapi_v1beta_generated_products_service_list_products_sync.py"
+      "title": "merchantapi_v1_generated_products_service_list_products_sync.py"
     }
   ]
 }
