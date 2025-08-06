@@ -140,6 +140,7 @@ def _build_bazel_target(bazel_rule: str, source: str):
     except Exception as e:
         raise ValueError(f"Bazel build for {bazel_rule} rule failed.") from e
 
+
 def _locate_and_extract_artifact(
     bazel_rule: str,
     library_id: str,
@@ -155,7 +156,7 @@ def _locate_and_extract_artifact(
         source (str): The path to the root of the Bazel workspace.
         output (str): The path to the location where generated output
             should be stored.
-        api_path (str): The API path for the artifact        
+        api_path (str): The API path for the artifact
 
     Raises:
         ValueError: If failed to locate or extract artifact.
@@ -180,7 +181,7 @@ def _locate_and_extract_artifact(
         logger.info(f"Found artifact at: {tarball_path}")
 
         # 3. Create a staging directory.
-        api_version=api_path.split("/")[-1]
+        api_version = api_path.split("/")[-1]
         staging_dir = os.path.join(output, "owl-bot-staging", library_id, api_version)
         os.makedirs(staging_dir, exist_ok=True)
         logger.info(f"Preparing staging directory: {staging_dir}")
@@ -199,8 +200,7 @@ def _locate_and_extract_artifact(
 
 
 def _run_post_processor():
-    """Runs the synthtool post-processor on the output directory.
-    """
+    """Runs the synthtool post-processor on the output directory."""
     logger.info("Running Python post-processor...")
     if SYNTHTOOL_INSTALLED:
         command = ["python3", "-m", "synthtool.languages.python_mono_repo"]
@@ -211,7 +211,10 @@ def _run_post_processor():
 
 
 def handle_generate(
-    librarian: str = LIBRARIAN_DIR, source: str = SOURCE_DIR, output: str = OUTPUT_DIR, input: str = INPUT_DIR
+    librarian: str = LIBRARIAN_DIR,
+    source: str = SOURCE_DIR,
+    output: str = OUTPUT_DIR,
+    input: str = INPUT_DIR,
 ):
     """The main coordinator for the code generation process.
 
@@ -233,7 +236,9 @@ def handle_generate(
             if api_path:
                 bazel_rule = _determine_bazel_rule(api_path, source)
                 _build_bazel_target(bazel_rule, source)
-                _locate_and_extract_artifact(bazel_rule, library_id, source, output, api_path)
+                _locate_and_extract_artifact(
+                    bazel_rule, library_id, source, output, api_path
+                )
                 _run_post_processor(output, f"packages/{library_id}")
 
     except Exception as e:
@@ -354,7 +359,10 @@ if __name__ == "__main__":
     # Pass specific arguments to the handler functions for generate/build
     if args.command == "generate":
         args.func(
-            librarian=args.librarian, source=args.source, output=args.output, input=args.input
+            librarian=args.librarian,
+            source=args.source,
+            output=args.output,
+            input=args.input,
         )
     elif args.command == "build":
         args.func(librarian=args.librarian)
