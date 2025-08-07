@@ -864,8 +864,8 @@ class GlobalOrganizationOperationsClient(
                 the method description for details.
             operation (str):
                 Name of the Operations resource to
-                return, or its unique numeric
-                identifier.
+                return. Parent is derived from this
+                field.
 
                 This corresponds to the ``operation`` field
                 on the ``request`` instance; if ``request`` is provided, this

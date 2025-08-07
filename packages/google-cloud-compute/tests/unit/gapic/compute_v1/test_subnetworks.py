@@ -3221,6 +3221,7 @@ def test_list_usable_rest_required_fields(
             "order_by",
             "page_token",
             "return_partial_success",
+            "service_project",
         )
     )
     jsonified_request.update(unset_fields)
@@ -3285,6 +3286,7 @@ def test_list_usable_rest_unset_required_fields():
                 "orderBy",
                 "pageToken",
                 "returnPartialSuccess",
+                "serviceProject",
             )
         )
         & set(("project",))
