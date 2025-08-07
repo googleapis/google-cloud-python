@@ -188,10 +188,15 @@ ENV XDG_CACHE_HOME="/bazel_cache"
 
 # # Ensure the cache directories within the non-root user's context exist and are writable.
 # # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
-RUN mkdir -p /bazel_cache && \
-    chmod -R 777 /bazel_cache
 
 COPY --from=builder /bazel_cache /bazel_cache
+
+RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
+             ${BAZEL_HOME}/_bazel_ubuntu/output_base \
+             ${BAZELISK_HOME}
+
+RUN mkdir -p /bazel_cache && \
+    chmod -R 777 /bazel_cache
 
 # RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
