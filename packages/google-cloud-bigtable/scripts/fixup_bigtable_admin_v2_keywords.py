@@ -97,7 +97,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'update_authorized_view': ('authorized_view', 'update_mask', 'ignore_warnings', ),
         'update_backup': ('backup', 'update_mask', ),
         'update_cluster': ('name', 'location', 'state', 'serve_nodes', 'node_scaling_factor', 'cluster_config', 'default_storage_type', 'encryption_config', ),
-        'update_instance': ('display_name', 'name', 'state', 'type_', 'labels', 'create_time', 'satisfies_pzs', 'satisfies_pzi', ),
+        'update_instance': ('display_name', 'name', 'state', 'type_', 'labels', 'create_time', 'satisfies_pzs', 'satisfies_pzi', 'tags', ),
         'update_logical_view': ('logical_view', 'update_mask', ),
         'update_materialized_view': ('materialized_view', 'update_mask', ),
         'update_schema_bundle': ('schema_bundle', 'update_mask', 'ignore_warnings', ),

@@ -906,6 +906,41 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         scaled. If cluster_config.cluster_autoscaling_config is
         non-empty, then autoscaling is enabled.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_instance():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                instance = bigtable_admin_v2.Instance()
+                instance.display_name = "display_name_value"
+
+                request = bigtable_admin_v2.CreateInstanceRequest(
+                    parent="parent_value",
+                    instance_id="instance_id_value",
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.create_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateInstanceRequest, dict]):
                 The request object. Request message for
@@ -1035,6 +1070,32 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> instance.Instance:
         r"""Gets information about an instance.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_instance():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_instance(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetInstanceRequest, dict]):
                 The request object. Request message for
@@ -1123,6 +1184,32 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> bigtable_instance_admin.ListInstancesResponse:
         r"""Lists information about instances in a project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_instances():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListInstancesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.list_instances(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListInstancesRequest, dict]):
                 The request object. Request message for
@@ -1208,6 +1295,32 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         To update other Instance properties, such as labels, use
         PartialUpdateInstance.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_update_instance():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.Instance(
+                    display_name="display_name_value",
+                )
+
+                # Make the request
+                response = client.update_instance(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.Instance, dict]):
                 The request object. A collection of Bigtable
@@ -1278,6 +1391,39 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         r"""Partially updates an instance within a project. This
         method can modify all fields of an Instance and is the
         preferred way to update an Instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_partial_update_instance():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                instance = bigtable_admin_v2.Instance()
+                instance.display_name = "display_name_value"
+
+                request = bigtable_admin_v2.PartialUpdateInstanceRequest(
+                    instance=instance,
+                )
+
+                # Make the request
+                operation = client.partial_update_instance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.PartialUpdateInstanceRequest, dict]):
@@ -1390,6 +1536,29 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> None:
         r"""Delete an instance from a project.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_instance():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteInstanceRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_instance(request=request)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteInstanceRequest, dict]):
                 The request object. Request message for
@@ -1473,6 +1642,37 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         serve_nodes is set to non-zero, then the cluster is manually
         scaled. If cluster_config.cluster_autoscaling_config is
         non-empty, then autoscaling is enabled.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_cluster():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.CreateClusterRequest(
+                    parent="parent_value",
+                    cluster_id="cluster_id_value",
+                )
+
+                # Make the request
+                operation = client.create_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateClusterRequest, dict]):
@@ -1591,6 +1791,32 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> instance.Cluster:
         r"""Gets information about a cluster.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_cluster():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetClusterRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_cluster(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetClusterRequest, dict]):
                 The request object. Request message for
@@ -1677,6 +1903,32 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> bigtable_instance_admin.ListClustersResponse:
         r"""Lists information about clusters in an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_clusters():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListClustersRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.list_clusters(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListClustersRequest, dict]):
@@ -1766,6 +2018,35 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         cluster_config.cluster_autoscaling_config. In order to update
         it, you must use PartialUpdateCluster.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_update_cluster():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.Cluster(
+                )
+
+                # Make the request
+                operation = client.update_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.Cluster, dict]):
                 The request object. A resizable group of nodes in a particular cloud
@@ -1854,6 +2135,35 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         To disable autoscaling, clear
         cluster_config.cluster_autoscaling_config, and explicitly set a
         serve_node count via the update_mask.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_partial_update_cluster():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.PartialUpdateClusterRequest(
+                )
+
+                # Make the request
+                operation = client.partial_update_cluster(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.PartialUpdateClusterRequest, dict]):
@@ -1962,6 +2272,29 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> None:
         r"""Deletes a cluster from an instance.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_cluster():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteClusterRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_cluster(request=request)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteClusterRequest, dict]):
                 The request object. Request message for
@@ -2039,6 +2372,37 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> instance.AppProfile:
         r"""Creates an app profile within an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_app_profile():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                app_profile = bigtable_admin_v2.AppProfile()
+                app_profile.priority = "PRIORITY_HIGH"
+
+                request = bigtable_admin_v2.CreateAppProfileRequest(
+                    parent="parent_value",
+                    app_profile_id="app_profile_id_value",
+                    app_profile=app_profile,
+                )
+
+                # Make the request
+                response = client.create_app_profile(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateAppProfileRequest, dict]):
@@ -2146,6 +2510,32 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> instance.AppProfile:
         r"""Gets information about an app profile.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_app_profile():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetAppProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_app_profile(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetAppProfileRequest, dict]):
                 The request object. Request message for
@@ -2231,6 +2621,33 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAppProfilesPager:
         r"""Lists information about app profiles in an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_app_profiles():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListAppProfilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_app_profiles(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListAppProfilesRequest, dict]):
@@ -2334,6 +2751,39 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Updates an app profile within an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_update_app_profile():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                app_profile = bigtable_admin_v2.AppProfile()
+                app_profile.priority = "PRIORITY_HIGH"
+
+                request = bigtable_admin_v2.UpdateAppProfileRequest(
+                    app_profile=app_profile,
+                )
+
+                # Make the request
+                operation = client.update_app_profile(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.UpdateAppProfileRequest, dict]):
@@ -2442,6 +2892,30 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> None:
         r"""Deletes an app profile from an instance.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_app_profile():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteAppProfileRequest(
+                    name="name_value",
+                    ignore_warnings=True,
+                )
+
+                # Make the request
+                client.delete_app_profile(request=request)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteAppProfileRequest, dict]):
                 The request object. Request message for
@@ -2526,6 +3000,33 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         r"""Gets the access control policy for an instance
         resource. Returns an empty policy if an instance exists
         but does not have a policy set.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = iam_policy_pb2.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
@@ -2639,6 +3140,33 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on an instance
         resource. Replaces any existing policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = iam_policy_pb2.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -2754,6 +3282,34 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         r"""Returns permissions that the caller has on the
         specified instance resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = iam_policy_pb2.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value1', 'permissions_value2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for ``TestIamPermissions`` method.
@@ -2849,6 +3405,33 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> pagers.ListHotTabletsPager:
         r"""Lists hot tablets in a cluster, within the time range
         provided. Hot tablets are ordered based on CPU usage.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_hot_tablets():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListHotTabletsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_hot_tablets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListHotTabletsRequest, dict]):
@@ -2950,6 +3533,41 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Creates a logical view within an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_logical_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                logical_view = bigtable_admin_v2.LogicalView()
+                logical_view.query = "query_value"
+
+                request = bigtable_admin_v2.CreateLogicalViewRequest(
+                    parent="parent_value",
+                    logical_view_id="logical_view_id_value",
+                    logical_view=logical_view,
+                )
+
+                # Make the request
+                operation = client.create_logical_view(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateLogicalViewRequest, dict]):
@@ -3066,6 +3684,32 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> instance.LogicalView:
         r"""Gets information about a logical view.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_logical_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetLogicalViewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_logical_view(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetLogicalViewRequest, dict]):
                 The request object. Request message for
@@ -3150,6 +3794,33 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListLogicalViewsPager:
         r"""Lists information about logical views in an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_logical_views():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListLogicalViewsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_logical_views(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListLogicalViewsRequest, dict]):
@@ -3250,6 +3921,39 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Updates a logical view within an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_update_logical_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                logical_view = bigtable_admin_v2.LogicalView()
+                logical_view.query = "query_value"
+
+                request = bigtable_admin_v2.UpdateLogicalViewRequest(
+                    logical_view=logical_view,
+                )
+
+                # Make the request
+                operation = client.update_logical_view(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.UpdateLogicalViewRequest, dict]):
@@ -3361,6 +4065,29 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> None:
         r"""Deletes a logical view from an instance.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_logical_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteLogicalViewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_logical_view(request=request)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteLogicalViewRequest, dict]):
                 The request object. Request message for
@@ -3438,6 +4165,41 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Creates a materialized view within an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_materialized_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                materialized_view = bigtable_admin_v2.MaterializedView()
+                materialized_view.query = "query_value"
+
+                request = bigtable_admin_v2.CreateMaterializedViewRequest(
+                    parent="parent_value",
+                    materialized_view_id="materialized_view_id_value",
+                    materialized_view=materialized_view,
+                )
+
+                # Make the request
+                operation = client.create_materialized_view(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateMaterializedViewRequest, dict]):
@@ -3558,6 +4320,32 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> instance.MaterializedView:
         r"""Gets information about a materialized view.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_materialized_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetMaterializedViewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_materialized_view(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetMaterializedViewRequest, dict]):
                 The request object. Request message for
@@ -3643,6 +4431,33 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
     ) -> pagers.ListMaterializedViewsPager:
         r"""Lists information about materialized views in an
         instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_materialized_views():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListMaterializedViewsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_materialized_views(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListMaterializedViewsRequest, dict]):
@@ -3745,6 +4560,39 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Updates a materialized view within an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_update_materialized_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                materialized_view = bigtable_admin_v2.MaterializedView()
+                materialized_view.query = "query_value"
+
+                request = bigtable_admin_v2.UpdateMaterializedViewRequest(
+                    materialized_view=materialized_view,
+                )
+
+                # Make the request
+                operation = client.update_materialized_view(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.UpdateMaterializedViewRequest, dict]):
@@ -3857,6 +4705,29 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a materialized view from an instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_materialized_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableInstanceAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteMaterializedViewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_materialized_view(request=request)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteMaterializedViewRequest, dict]):

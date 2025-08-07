@@ -1358,19 +1358,12 @@ class TestTableAsync:
         # expect x-goog-request-params tag
         assert metadata[0][0] == "x-goog-request-params"
         routing_str = metadata[0][1]
-        assert self._expected_routing_header(table) in routing_str
+        assert f"table_name={table.table_name}" in routing_str
         if include_app_profile:
             assert "app_profile_id=profile" in routing_str
         else:
             # empty app_profile_id should send empty string
             assert "app_profile_id=" in routing_str
-
-    @staticmethod
-    def _expected_routing_header(table):
-        """
-        the expected routing header for this _ApiSurface type
-        """
-        return f"table_name={table.table_name}"
 
 
 @CrossSync.convert_class(
@@ -1398,13 +1391,6 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
         return self._get_target_class()(
             client, instance_id, table_id, view_id, app_profile_id, **kwargs
         )
-
-    @staticmethod
-    def _expected_routing_header(view):
-        """
-        the expected routing header for this _ApiSurface type
-        """
-        return f"authorized_view_name={view.authorized_view_name}"
 
     @CrossSync.pytest
     async def test_ctor(self):

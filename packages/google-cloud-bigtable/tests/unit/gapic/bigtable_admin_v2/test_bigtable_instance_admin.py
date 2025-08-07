@@ -20687,6 +20687,7 @@ def test_partial_update_instance_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "satisfies_pzs": True,
         "satisfies_pzi": True,
+        "tags": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

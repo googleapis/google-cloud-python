@@ -127,22 +127,17 @@ for file in ["async_client.py", "client.py"]:
 # fix tests
 s.replace(
     "tests/unit/gapic/bigtable_v2/test_bigtable.py",
-    'expected_headers = {"name": "projects/sample1/instances/sample2"}',
-    'expected_headers = {"name": "projects/sample1/instances/sample2", "app_profile_id": ""}'
+    'assert \(\n\s*gapic_v1\.routing_header\.to_grpc_metadata\(expected_headers\) in kw\["metadata"\]\n.*',
+    """
+        # assert the expected headers are present, in any order
+        routing_string =  next(iter([m[1] for m in kw["metadata"] if m[0] == 'x-goog-request-params']))
+        assert all([f"{k}={v}" in routing_string for k,v in expected_headers.items()])
+    """
 )
 s.replace(
     "tests/unit/gapic/bigtable_v2/test_bigtable.py",
-    """
-        expected_headers = {
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
-        }
-    """,
-    """
-        expected_headers = {
-            "app_profile_id": "",
-            "authorized_view_name": "projects/sample1/instances/sample2/tables/sample3/authorizedViews/sample4"
-        }
-    """
+    'expected_headers = {"name": "projects/sample1/instances/sample2"}',
+    'expected_headers = {"name": "projects/sample1/instances/sample2", "app_profile_id": ""}'
 )
 s.replace(
     "tests/unit/gapic/bigtable_v2/test_bigtable.py",
