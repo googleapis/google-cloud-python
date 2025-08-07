@@ -87,6 +87,10 @@ class DatastreamAsyncClient:
     parse_connection_profile_path = staticmethod(
         DatastreamClient.parse_connection_profile_path
     )
+    network_attachment_path = staticmethod(DatastreamClient.network_attachment_path)
+    parse_network_attachment_path = staticmethod(
+        DatastreamClient.parse_network_attachment_path
+    )
     networks_path = staticmethod(DatastreamClient.networks_path)
     parse_networks_path = staticmethod(DatastreamClient.parse_networks_path)
     private_connection_path = staticmethod(DatastreamClient.private_connection_path)

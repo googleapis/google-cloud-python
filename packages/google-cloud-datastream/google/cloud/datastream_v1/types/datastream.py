@@ -120,6 +120,16 @@ class DiscoverConnectionProfileRequest(proto.Message):
             objects and metadata.
 
             This field is a member of `oneof`_ ``data_object``.
+        salesforce_org (google.cloud.datastream_v1.types.SalesforceOrg):
+            Salesforce organization to enrich with child
+            data objects and metadata.
+
+            This field is a member of `oneof`_ ``data_object``.
+        mongodb_cluster (google.cloud.datastream_v1.types.MongodbCluster):
+            MongoDB cluster to enrich with child data
+            objects and metadata.
+
+            This field is a member of `oneof`_ ``data_object``.
     """
 
     parent: str = proto.Field(
@@ -171,6 +181,18 @@ class DiscoverConnectionProfileRequest(proto.Message):
         oneof="data_object",
         message=datastream_resources.SqlServerRdbms,
     )
+    salesforce_org: datastream_resources.SalesforceOrg = proto.Field(
+        proto.MESSAGE,
+        number=104,
+        oneof="data_object",
+        message=datastream_resources.SalesforceOrg,
+    )
+    mongodb_cluster: datastream_resources.MongodbCluster = proto.Field(
+        proto.MESSAGE,
+        number=105,
+        oneof="data_object",
+        message=datastream_resources.MongodbCluster,
+    )
 
 
 class DiscoverConnectionProfileResponse(proto.Message):
@@ -200,6 +222,14 @@ class DiscoverConnectionProfileResponse(proto.Message):
             Enriched SQLServer RDBMS object.
 
             This field is a member of `oneof`_ ``data_object``.
+        salesforce_org (google.cloud.datastream_v1.types.SalesforceOrg):
+            Enriched Salesforce organization.
+
+            This field is a member of `oneof`_ ``data_object``.
+        mongodb_cluster (google.cloud.datastream_v1.types.MongodbCluster):
+            Enriched MongoDB cluster.
+
+            This field is a member of `oneof`_ ``data_object``.
     """
 
     oracle_rdbms: datastream_resources.OracleRdbms = proto.Field(
@@ -225,6 +255,18 @@ class DiscoverConnectionProfileResponse(proto.Message):
         number=103,
         oneof="data_object",
         message=datastream_resources.SqlServerRdbms,
+    )
+    salesforce_org: datastream_resources.SalesforceOrg = proto.Field(
+        proto.MESSAGE,
+        number=104,
+        oneof="data_object",
+        message=datastream_resources.SalesforceOrg,
+    )
+    mongodb_cluster: datastream_resources.MongodbCluster = proto.Field(
+        proto.MESSAGE,
+        number=105,
+        oneof="data_object",
+        message=datastream_resources.MongodbCluster,
     )
 
 
@@ -1129,6 +1171,11 @@ class CreatePrivateConnectionRequest(proto.Message):
         force (bool):
             Optional. If set to true, will skip
             validations.
+        validate_only (bool):
+            Optional. When supplied with PSC Interface
+            config, will get/create the tenant project
+            required for the customer to allow list and
+            won't actually create the private connection.
     """
 
     parent: str = proto.Field(
@@ -1151,6 +1198,10 @@ class CreatePrivateConnectionRequest(proto.Message):
     force: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 
