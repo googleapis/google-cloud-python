@@ -843,22 +843,31 @@ def test_remote_function_with_external_package_dependencies(
 ):
     try:
 
-        def pd_np_foo(x):
+        # The return type hint in this function's signature has conflict. The
+        # `output_type` argument from remote_function decorator takes precedence
+        # and will be used instead.
+        def pd_np_foo(x) -> None:
             import numpy as mynp
             import pandas as mypd
 
             return mypd.Series([x, mynp.sqrt(mynp.abs(x))]).sum()
 
-        # Create the remote function with the name provided explicitly
-        pd_np_foo_remote = session.remote_function(
-            input_types=[int],
-            output_type=float,
-            dataset=dataset_id,
-            bigquery_connection=bq_cf_connection,
-            reuse=False,
-            packages=["numpy", "pandas >= 2.0.0"],
-            cloud_function_service_account="default",
-        )(pd_np_foo)
+        with warnings.catch_warnings(record=True) as record:
+            # Create the remote function with the name provided explicitly
+            pd_np_foo_remote = session.remote_function(
+                input_types=[int],
+                output_type=float,
+                dataset=dataset_id,
+                bigquery_connection=bq_cf_connection,
+                reuse=False,
+                packages=["numpy", "pandas >= 2.0.0"],
+                cloud_function_service_account="default",
+            )(pd_np_foo)
+
+        input_type_warning = "Conflicting input types detected"
+        assert not any(input_type_warning in str(warning.message) for warning in record)
+        return_type_warning = "Conflicting return type detected"
+        assert any(return_type_warning in str(warning.message) for warning in record)
 
         # The behavior of the created remote function should be as expected
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -1999,10 +2008,25 @@ def test_remote_function_unnamed_removed_w_session_cleanup():
     # create a clean session
     session = bigframes.connect()
 
-    # create an unnamed remote function in the session
-    @session.remote_function(reuse=False, cloud_function_service_account="default")
-    def foo(x: int) -> int:
-        return x + 1
+    with warnings.catch_warnings(record=True) as record:
+        # create an unnamed remote function in the session.
+        # The type hints in this function's signature are redundant. The
+        # `input_types` and `output_type` arguments from remote_function
+        # decorator take precedence and will be used instead.
+        @session.remote_function(
+            input_types=[int],
+            output_type=int,
+            reuse=False,
+            cloud_function_service_account="default",
+        )
+        def foo(x: int) -> int:
+            return x + 1
+
+    # No following warning with only redundant type hints (no conflict).
+    input_type_warning = "Conflicting input types detected"
+    assert not any(input_type_warning in str(warning.message) for warning in record)
+    return_type_warning = "Conflicting return type detected"
+    assert not any(return_type_warning in str(warning.message) for warning in record)
 
     # ensure that remote function artifacts are created
     assert foo.bigframes_remote_function is not None

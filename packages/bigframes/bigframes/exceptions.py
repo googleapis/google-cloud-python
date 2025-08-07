@@ -103,6 +103,10 @@ class FunctionAxisOnePreviewWarning(PreviewWarning):
     """Remote Function and Managed UDF with axis=1 preview."""
 
 
+class FunctionConflictTypeHintWarning(UserWarning):
+    """Conflicting type hints in a BigFrames function."""
+
+
 class FunctionPackageVersionWarning(PreviewWarning):
     """
     Managed UDF package versions for Numpy, Pandas, and Pyarrow may not

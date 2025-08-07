@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
+
 import google.api_core.exceptions
 import pandas
 import pyarrow
@@ -31,12 +33,22 @@ prefixer = test_utils.prefixer.Prefixer("bigframes", "")
 def test_managed_function_array_output(session, scalars_dfs, dataset_id):
     try:
 
-        @session.udf(
-            dataset=dataset_id,
-            name=prefixer.create_prefix(),
+        with warnings.catch_warnings(record=True) as record:
+
+            @session.udf(
+                dataset=dataset_id,
+                name=prefixer.create_prefix(),
+            )
+            def featurize(x: int) -> list[float]:
+                return [float(i) for i in [x, x + 1, x + 2]]
+
+        # No following conflict warning when there is no redundant type hints.
+        input_type_warning = "Conflicting input types detected"
+        return_type_warning = "Conflicting return type detected"
+        assert not any(input_type_warning in str(warning.message) for warning in record)
+        assert not any(
+            return_type_warning in str(warning.message) for warning in record
         )
-        def featurize(x: int) -> list[float]:
-            return [float(i) for i in [x, x + 1, x + 2]]
 
         scalars_df, scalars_pandas_df = scalars_dfs
 
@@ -222,7 +234,10 @@ def test_managed_function_series_combine(session, dataset_id, scalars_dfs):
 def test_managed_function_series_combine_array_output(session, dataset_id, scalars_dfs):
     try:
 
-        def add_list(x: int, y: int) -> list[int]:
+        # The type hints in this function's signature has conflicts. The
+        # `input_types` and `output_type` arguments from udf decorator take
+        # precedence and will be used instead.
+        def add_list(x, y: bool) -> list[bool]:
             return [x, y]
 
         scalars_df, scalars_pandas_df = scalars_dfs
@@ -234,9 +249,18 @@ def test_managed_function_series_combine_array_output(session, dataset_id, scala
         # Make sure there are NA values in the test column.
         assert any([pandas.isna(val) for val in bf_df[int_col_name_with_nulls]])
 
-        add_list_managed_func = session.udf(
-            dataset=dataset_id, name=prefixer.create_prefix()
-        )(add_list)
+        with warnings.catch_warnings(record=True) as record:
+            add_list_managed_func = session.udf(
+                input_types=[int, int],
+                output_type=list[int],
+                dataset=dataset_id,
+                name=prefixer.create_prefix(),
+            )(add_list)
+
+        input_type_warning = "Conflicting input types detected"
+        assert any(input_type_warning in str(warning.message) for warning in record)
+        return_type_warning = "Conflicting return type detected"
+        assert any(return_type_warning in str(warning.message) for warning in record)
 
         # After filtering out nulls the managed function application should work
         # similar to pandas.

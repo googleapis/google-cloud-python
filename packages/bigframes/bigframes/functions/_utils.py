@@ -14,10 +14,11 @@
 
 
 import hashlib
+import inspect
 import json
 import sys
 import typing
-from typing import cast, Optional, Set
+from typing import Any, cast, Optional, Sequence, Set
 import warnings
 
 import cloudpickle
@@ -290,3 +291,36 @@ def _build_unnest_post_routine(py_list_type: type[list]):
         return bbq.json_extract_string_array(input, value_dtype=result_dtype)
 
     return post_process
+
+
+def has_conflict_input_type(
+    signature: inspect.Signature,
+    input_types: Sequence[Any],
+) -> bool:
+    """Checks if the parameters have any conflict with the input_types."""
+    params = list(signature.parameters.values())
+
+    if len(params) != len(input_types):
+        return True
+
+    # Check for conflicts type hints.
+    for i, param in enumerate(params):
+        if param.annotation is not inspect.Parameter.empty:
+            if param.annotation != input_types[i]:
+                return True
+
+    # No conflicts were found after checking all parameters.
+    return False
+
+
+def has_conflict_output_type(
+    signature: inspect.Signature,
+    output_type: Any,
+) -> bool:
+    """Checks if the return type annotation conflicts with the output_type."""
+    return_annotation = signature.return_annotation
+
+    if return_annotation is inspect.Parameter.empty:
+        return False
+
+    return return_annotation != output_type
