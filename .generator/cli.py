@@ -46,7 +46,7 @@ def _read_json_file(path: str) -> Dict:
     """Helper function that reads a json file path and returns the loaded json content.
 
     Args:
-        path (str): The file path to read.
+        path(str): The file path to read.
 
     Returns:
         dict: The parsed JSON content.
@@ -69,8 +69,8 @@ def _determine_bazel_rule(api_path: str, source: str) -> str:
     """Executes a `bazelisk query` to find a Bazel rule.
 
     Args:
-        api_path (str): The API path to query for.
-        source (str): The path to the root of the Bazel workspace.
+        api_path(str): The API path to query for.
+        source(str): The path to the root of the Bazel workspace.
 
     Returns:
         str: The discovered Bazel rule.
@@ -121,8 +121,8 @@ def _build_bazel_target(bazel_rule: str, source: str):
     """Executes `bazelisk build` on a given Bazel rule.
 
     Args:
-        bazel_rule (str): The Bazel rule to build.
-        source (str): The path to the root of the Bazel workspace.
+        bazel_rule(str): The Bazel rule to build.
+        source(str): The path to the root of the Bazel workspace.
 
     Raises:
         ValueError: If the subprocess call fails.
@@ -151,12 +151,12 @@ def _locate_and_extract_artifact(
     """Finds and extracts the tarball artifact from a Bazel build.
 
     Args:
-        bazel_rule (str): The Bazel rule that was built.
-        library_id (str): The ID of the library being generated.
-        source (str): The path to the root of the Bazel workspace.
-        output (str): The path to the location where generated output
+        bazel_rule(str): The Bazel rule that was built.
+        library_id(str): The ID of the library being generated.
+        source(str): The path to the root of the Bazel workspace.
+        output(str): The path to the location where generated output
             should be stored.
-        api_path (str): The API path for the artifact
+        api_path(str): The API path for the artifact
 
     Raises:
         ValueError: If failed to locate or extract artifact.
@@ -221,6 +221,18 @@ def handle_generate(
     This function orchestrates the generation of a client library by reading a
     `librarian/generate-request.json` file, determining the necessary Bazel rule for each API, and
     (in future steps) executing the build.
+
+    See https://github.com/googleapis/librarian/blob/main/doc/container-contract.md#generate-container-command
+
+    Args:
+        librarian(str): Path to the directory in the container which contains
+            the librarian configuration.
+        source(str): Path to the directory in the container which contains 
+            API protos.
+        output(str): Path to the directory in the container where code 
+            should be generated.
+        input(str): The path path to the directory in the container 
+            which contains additional generator input.
 
     Raises:
         ValueError: If the `generate-request.json` file is not found or read.
