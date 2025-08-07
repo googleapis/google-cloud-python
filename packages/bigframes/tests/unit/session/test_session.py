@@ -252,10 +252,44 @@ def test_read_gbq_cached_table():
     )
     session.bqclient.get_table.return_value = table
 
-    with pytest.warns(UserWarning, match=re.escape("use_cache=False")):
+    with pytest.warns(
+        bigframes.exceptions.TimeTravelCacheWarning, match=re.escape("use_cache=False")
+    ):
         df = session.read_gbq("my-project.my_dataset.my_table")
 
     assert "1999-01-02T03:04:05.678901" in df.sql
+
+
+def test_read_gbq_cached_table_doesnt_warn_for_anonymous_tables_and_doesnt_include_time_travel():
+    session = mocks.create_bigquery_session()
+    table_ref = google.cloud.bigquery.TableReference(
+        google.cloud.bigquery.DatasetReference("my-project", "_anonymous_dataset"),
+        "my_table",
+    )
+    table = google.cloud.bigquery.Table(
+        table_ref, (google.cloud.bigquery.SchemaField("col", "INTEGER"),)
+    )
+    table._properties["location"] = session._location
+    table._properties["numRows"] = "1000000000"
+    table._properties["location"] = session._location
+    table._properties["type"] = "TABLE"
+    session._loader._df_snapshot[table_ref] = (
+        datetime.datetime(1999, 1, 2, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc),
+        table,
+    )
+
+    session.bqclient.query_and_wait = mock.MagicMock(
+        return_value=({"total_count": 3, "distinct_count": 2},)
+    )
+    session.bqclient.get_table.return_value = table
+
+    with warnings.catch_warnings():
+        warnings.simplefilter(
+            "error", category=bigframes.exceptions.TimeTravelCacheWarning
+        )
+        df = session.read_gbq("my-project._anonymous_dataset.my_table")
+
+    assert "1999-01-02T03:04:05.678901" not in df.sql
 
 
 @pytest.mark.parametrize("table", CLUSTERED_OR_PARTITIONED_TABLES)
@@ -474,7 +508,7 @@ def test_read_gbq_external_table_no_drive_access(api_name, query_or_table):
         google.api_core.exceptions.Forbidden,
         match="Check https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions.",
     ):
-        api(query_or_table)
+        api(query_or_table).to_pandas()
 
 
 @mock.patch.dict(os.environ, {}, clear=True)

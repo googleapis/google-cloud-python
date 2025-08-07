@@ -744,18 +744,15 @@ class GbqDataLoader:
             else (*columns, *[col for col in index_cols if col not in columns])
         )
 
-        try:
-            enable_snapshot = enable_snapshot and bf_read_gbq_table.validate_table(
-                self._bqclient,
-                table,
-                all_columns,
-                time_travel_timestamp,
-                filter_str,
-            )
-        except google.api_core.exceptions.Forbidden as ex:
-            if "Drive credentials" in ex.message:
-                ex.message += "\nCheck https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions."
-            raise
+        enable_snapshot = enable_snapshot and bf_read_gbq_table.is_time_travel_eligible(
+            self._bqclient,
+            table,
+            all_columns,
+            time_travel_timestamp,
+            filter_str,
+            should_warn=True,
+            should_dry_run=True,
+        )
 
         # ----------------------------
         # Create ordering and validate

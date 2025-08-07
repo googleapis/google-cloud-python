@@ -33,6 +33,7 @@ from typing import (
     Tuple,
     Union,
 )
+import warnings
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
@@ -348,7 +349,11 @@ def _read_gbq_colab(
         )
         _set_default_session_location_if_possible_deferred_query(create_query)
         if not config.options.bigquery._session_started:
-            config.options.bigquery.enable_polars_execution = True
+            with warnings.catch_warnings():
+                # Don't warning about Polars in SQL cell.
+                # Related to b/437090788.
+                warnings.simplefilter("ignore", bigframes.exceptions.PreviewWarning)
+                config.options.bigquery.enable_polars_execution = True
 
     return global_session.with_default_session(
         bigframes.session.Session._read_gbq_colab,

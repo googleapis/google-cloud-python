@@ -79,6 +79,10 @@ class TimeTravelDisabledWarning(Warning):
     """A query was reattempted without time travel."""
 
 
+class TimeTravelCacheWarning(Warning):
+    """Reads from the same table twice in the same session pull time travel from cache."""
+
+
 class AmbiguousWindowWarning(Warning):
     """A query may produce nondeterministic results as the window may be ambiguously ordered."""
 
