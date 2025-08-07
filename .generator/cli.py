@@ -159,6 +159,7 @@ def _locate_and_extract_artifact(
     bazel_rule: str,
     library_id: str,
     output: str,
+    api_path: str,
     source: str = SOURCE_DIR,
 ):
     """Finds and extracts the tarball artifact from a Bazel build.
@@ -193,7 +194,8 @@ def _locate_and_extract_artifact(
         logger.info(f"Found artifact at: {tarball_path}")
 
         # 3. Create a staging directory.
-        staging_dir = os.path.join(output, "owl-bot-staging", library_id)
+        api_version = api_path.split("/")[-1]
+        staging_dir = os.path.join(output, "owl-bot-staging", library_id, api_version)
         os.makedirs(staging_dir, exist_ok=True)
         logger.info(f"Preparing staging directory: {staging_dir}")
 
