@@ -59,18 +59,18 @@ _DEFAULT_TOKEN_URL = "https://sts.{universe_domain}/v1/token"
 @dataclass
 class SupplierContext:
     """A context class that contains information about the requested third party credential that is passed
-        to AWS security credential and subject token suppliers.
+    to AWS security credential and subject token suppliers.
 
-        Attributes:
-            subject_token_type (str): The requested subject token type based on the Oauth2.0 token exchange spec.
-                Expected values include::
+    Attributes:
+        subject_token_type (str): The requested subject token type based on the Oauth2.0 token exchange spec.
+            Expected values include::
 
-                    “urn:ietf:params:oauth:token-type:jwt”
-                    “urn:ietf:params:oauth:token-type:id-token”
-                    “urn:ietf:params:oauth:token-type:saml2”
-                    “urn:ietf:params:aws:token-type:aws4_request”
+                “urn:ietf:params:oauth:token-type:jwt”
+                “urn:ietf:params:oauth:token-type:id-token”
+                “urn:ietf:params:oauth:token-type:saml2”
+                “urn:ietf:params:aws:token-type:aws4_request”
 
-            audience (str): The requested audience for the subject token.
+        audience (str): The requested audience for the subject token.
     """
 
     subject_token_type: str

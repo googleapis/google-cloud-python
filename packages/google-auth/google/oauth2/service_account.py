@@ -84,6 +84,9 @@ from google.oauth2 import _client
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
+_TRUST_BOUNDARY_LOOKUP_ENDPOINT = (
+    "https://iamcredentials.{}/v1/projects/-/serviceAccounts/{}/allowedLocations"
+)
 
 
 class Credentials(
@@ -91,6 +94,7 @@ class Credentials(
     credentials.Scoped,
     credentials.CredentialsWithQuotaProject,
     credentials.CredentialsWithTokenUri,
+    credentials.CredentialsWithTrustBoundary,
 ):
     """Service account credentials
 
@@ -164,7 +168,7 @@ class Credentials(
             universe_domain (str): The universe domain. The default
                 universe domain is googleapis.com. For default value self
                 signed jwt is used for token refresh.
-            trust_boundary (str): String representation of trust boundary meta.
+            trust_boundary (Mapping[str,str]): A credential trust boundary.
 
         .. note:: Typically one of the helper constructors
             :meth:`from_service_account_file` or
@@ -194,7 +198,7 @@ class Credentials(
             self._additional_claims = additional_claims
         else:
             self._additional_claims = {}
-        self._trust_boundary = {"locations": [], "encoded_locations": "0x0"}
+        self._trust_boundary = trust_boundary
 
     @classmethod
     def _from_signer_and_info(cls, signer, info, **kwargs):
@@ -294,6 +298,7 @@ class Credentials(
             additional_claims=self._additional_claims.copy(),
             always_use_jwt_access=self._always_use_jwt_access,
             universe_domain=self._universe_domain,
+            trust_boundary=self._trust_boundary,
         )
         cred._cred_file_path = self._cred_file_path
         return cred
@@ -381,6 +386,12 @@ class Credentials(
         cred._token_uri = token_uri
         return cred
 
+    @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
+    def with_trust_boundary(self, trust_boundary):
+        cred = self._make_copy()
+        cred._trust_boundary = trust_boundary
+        return cred
+
     def _make_authorization_grant_assertion(self):
         """Create the OAuth 2.0 assertion.
 
@@ -424,8 +435,8 @@ class Credentials(
             return metrics.CRED_TYPE_SA_JWT
         return metrics.CRED_TYPE_SA_ASSERTION
 
-    @_helpers.copy_docstring(credentials.Credentials)
-    def refresh(self, request):
+    @_helpers.copy_docstring(credentials.CredentialsWithTrustBoundary)
+    def _refresh_token(self, request):
         if self._always_use_jwt_access and not self._jwt_credentials:
             # If self signed jwt should be used but jwt credential is not
             # created, try to create one with scopes
@@ -490,6 +501,28 @@ class Credentials(
             self._jwt_credentials = jwt.Credentials.from_signing_credentials(
                 self, audience
             )
+
+    def _build_trust_boundary_lookup_url(self):
+        """Builds and returns the URL for the trust boundary lookup API.
+
+        This method constructs the specific URL for the IAM Credentials API's
+        `allowedLocations` endpoint, using the credential's universe domain
+        and service account email.
+
+        Raises:
+            ValueError: If `self.service_account_email` is None or an empty
+                string, as it's required to form the URL.
+
+        Returns:
+            str: The URL for the trust boundary lookup endpoint.
+        """
+        if not self.service_account_email:
+            raise ValueError(
+                "Service account email is required to build the trust boundary lookup URL."
+            )
+        return _TRUST_BOUNDARY_LOOKUP_ENDPOINT.format(
+            self._universe_domain, self._service_account_email
+        )
 
     @_helpers.copy_docstring(credentials.Signing)
     def sign_bytes(self, message):
@@ -591,6 +624,7 @@ class IDTokenCredentials(
                 token endponint is used for token refresh. Note that
                 iam.serviceAccountTokenCreator role is required to use the IAM
                 endpoint.
+
         .. note:: Typically one of the helper constructors
             :meth:`from_service_account_file` or
             :meth:`from_service_account_info` are used instead of calling the
@@ -806,6 +840,7 @@ class IDTokenCredentials(
             additional_claims={"scope": "https://www.googleapis.com/auth/iam"},
         )
         jwt_credentials.refresh(request)
+
         self.token, self.expiry = _client.call_iam_generate_id_token_endpoint(
             request,
             self._iam_id_token_endpoint,

@@ -337,6 +337,8 @@ def call_iam_generate_id_token_endpoint(
             generateIdToken endpoint.
         audience (str): The audience for the ID token.
         access_token (str): The access token used to call the IAM endpoint.
+        universe_domain (str): The universe domain for the request. The
+            default is ``googleapis.com``.
 
     Returns:
         Tuple[str, datetime]: The ID token and expiration.
@@ -506,3 +508,118 @@ def refresh_grant(
         request, token_uri, body, can_retry=can_retry
     )
     return _handle_refresh_grant_response(response_data, refresh_token)
+
+
+def _lookup_trust_boundary(request, url, headers=None):
+    """Implements the global lookup of a credential trust boundary.
+    For the lookup, we send a request to the global lookup endpoint and then
+    parse the response. Service account credentials, workload identity
+    pools and workforce pools implementation may have trust boundaries configured.
+    Args:
+        request (google.auth.transport.Request): A callable used to make
+            HTTP requests.
+        url (str): The trust boundary lookup url.
+        headers (Optional[Mapping[str, str]]): The headers for the request.
+    Returns:
+        Mapping[str,list|str]: A dictionary containing
+            "locations" as a list of allowed locations as strings and
+            "encodedLocations" as a hex string.
+            e.g:
+            {
+                "locations": [
+                    "us-central1", "us-east1", "europe-west1", "asia-east1"
+                ],
+                "encodedLocations": "0xA30"
+            }
+            If the credential is not set up with explicit trust boundaries, a trust boundary
+            of "all" will be returned as a default response.
+            {
+                "locations": [],
+                "encodedLocations": "0x0"
+            }
+    Raises:
+        exceptions.RefreshError: If the response status code is not 200.
+        exceptions.MalformedError: If the response is not in a valid format.
+    """
+
+    response_data = _lookup_trust_boundary_request(request, url, headers=headers)
+    # In case of no-op response, the "locations" list may or may not be present as an empty list.
+    if "encodedLocations" not in response_data:
+        raise exceptions.MalformedError(
+            "Invalid trust boundary info: {}".format(response_data)
+        )
+    return response_data
+
+
+def _lookup_trust_boundary_request(request, url, can_retry=True, headers=None):
+    """Makes a request to the trust boundary lookup endpoint.
+
+    Args:
+        request (google.auth.transport.Request): A callable used to make
+            HTTP requests.
+        url (str): The trust boundary lookup url.
+        can_retry (bool): Enable or disable request retry behavior. Defaults to true.
+        headers (Optional[Mapping[str, str]]): The headers for the request.
+
+    Returns:
+        Mapping[str, str]: The JSON-decoded response data.
+
+    Raises:
+        google.auth.exceptions.RefreshError: If the token endpoint returned
+            an error.
+    """
+    response_status_ok, response_data, retryable_error = _lookup_trust_boundary_request_no_throw(
+        request, url, can_retry, headers
+    )
+    if not response_status_ok:
+        _handle_error_response(response_data, retryable_error)
+    return response_data
+
+
+def _lookup_trust_boundary_request_no_throw(request, url, can_retry=True, headers=None):
+    """Makes a request to the trust boundary lookup endpoint. This
+        function doesn't throw on response errors.
+
+    Args:
+        request (google.auth.transport.Request): A callable used to make
+            HTTP requests.
+        url (str): The trust boundary lookup url.
+        can_retry (bool): Enable or disable request retry behavior. Defaults to true.
+        headers (Optional[Mapping[str, str]]): The headers for the request.
+
+    Returns:
+        Tuple(bool, Mapping[str, str], Optional[bool]): A boolean indicating
+          if the request is successful, a mapping for the JSON-decoded response
+          data and in the case of an error a boolean indicating if the error
+          is retryable.
+    """
+
+    response_data = {}
+    retryable_error = False
+
+    retries = _exponential_backoff.ExponentialBackoff()
+    for _ in retries:
+        response = request(method="GET", url=url, headers=headers)
+        response_body = (
+            response.data.decode("utf-8")
+            if hasattr(response.data, "decode")
+            else response.data
+        )
+
+        try:
+            # response_body should be a JSON
+            response_data = json.loads(response_body)
+        except ValueError:
+            response_data = response_body
+
+        if response.status == http_client.OK:
+            return True, response_data, None
+
+        retryable_error = _can_retry(
+            status_code=response.status, response_data=response_data
+        )
+
+        if not can_retry or not retryable_error:
+            return False, response_data, retryable_error
+
+    return False, response_data, retryable_error

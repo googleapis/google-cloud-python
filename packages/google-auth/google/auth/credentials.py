@@ -23,9 +23,12 @@ from google.auth import _helpers, environment_vars
 from google.auth import exceptions
 from google.auth import metrics
 from google.auth._credentials_base import _BaseCredentials
+from google.auth._default import _LOGGER
 from google.auth._refresh_worker import RefreshThreadManager
 
 DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
+NO_OP_TRUST_BOUNDARY_LOCATIONS: list[str] = []
+NO_OP_TRUST_BOUNDARY_ENCODED_LOCATIONS = "0x0"
 
 
 class Credentials(_BaseCredentials):
@@ -178,22 +181,7 @@ class Credentials(_BaseCredentials):
             token (Optional[str]): If specified, overrides the current access
                 token.
         """
-        self._apply(headers, token=token)
-        """Trust boundary value will be a cached value from global lookup.
-
-        The response of trust boundary will be a list of regions and a hex
-        encoded representation.
-
-        An example of global lookup response:
-        {
-          "locations": [
-            "us-central1", "us-east1", "europe-west1", "asia-east1"
-          ]
-          "encoded_locations": "0xA30"
-        }
-        """
-        if self._trust_boundary is not None:
-            headers["x-allowed-locations"] = self._trust_boundary["encoded_locations"]
+        self._apply(headers, token)
         if self.quota_project_id:
             headers["x-goog-user-project"] = self.quota_project_id
 
@@ -299,6 +287,162 @@ class CredentialsWithUniverseDomain(Credentials):
         )
 
 
+class CredentialsWithTrustBoundary(Credentials):
+    """Abstract base for credentials supporting ``with_trust_boundary`` factory"""
+
+    @abc.abstractmethod
+    def _refresh_token(self, request):
+        """Refreshes the access token.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+
+        Raises:
+            google.auth.exceptions.RefreshError: If the credentials could
+                not be refreshed.
+        """
+        raise NotImplementedError("_refresh_token must be implemented")
+
+    def with_trust_boundary(self, trust_boundary):
+        """Returns a copy of these credentials with a modified trust boundary.
+
+        Args:
+            trust_boundary Mapping[str, str]: The trust boundary to use for the
+            credential. This should be a map with a "locations" key that maps to
+            a list of GCP regions, and a "encodedLocations" key that maps to a
+            hex string.
+
+        Returns:
+            google.auth.credentials.Credentials: A new credentials instance.
+        """
+        raise NotImplementedError("This credential does not support trust boundaries.")
+
+    def _is_trust_boundary_lookup_required(self):
+        """Checks if a trust boundary lookup is required.
+
+        A lookup is required if the feature is enabled via an environment
+        variable, the universe domain is supported, and a no-op boundary
+        is not already cached.
+
+        Returns:
+            bool: True if a trust boundary lookup is required, False otherwise.
+        """
+        # 1. Check if the feature is enabled via environment variable.
+        if not _helpers.get_bool_from_env(
+            environment_vars.GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED, default=False
+        ):
+            return False
+
+        # 2. Skip trust boundary flow for non-default universe domains.
+        if self.universe_domain != DEFAULT_UNIVERSE_DOMAIN:
+            return False
+
+        # 3. Do not trigger refresh if credential has a cached no-op trust boundary.
+        return not self._has_no_op_trust_boundary()
+
+    def _get_trust_boundary_header(self):
+        if self._trust_boundary is not None:
+            if self._has_no_op_trust_boundary():
+                # STS expects an empty string if the trust boundary value is no-op.
+                return {"x-allowed-locations": ""}
+            else:
+                return {"x-allowed-locations": self._trust_boundary["encodedLocations"]}
+        return {}
+
+    def apply(self, headers, token=None):
+        """Apply the token to the authentication header."""
+        super().apply(headers, token)
+        headers.update(self._get_trust_boundary_header())
+
+    def refresh(self, request):
+        """Refreshes the access token and the trust boundary.
+
+        This method calls the subclass's token refresh logic and then
+        refreshes the trust boundary if applicable.
+        """
+        self._refresh_token(request)
+        self._refresh_trust_boundary(request)
+
+    def _refresh_trust_boundary(self, request):
+        """Triggers a refresh of the trust boundary and updates the cache if necessary.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+
+        Raises:
+            google.auth.exceptions.RefreshError: If the trust boundary could
+                not be refreshed and no cached value is available.
+        """
+        if not self._is_trust_boundary_lookup_required():
+            return
+        try:
+            self._trust_boundary = self._lookup_trust_boundary(request)
+        except exceptions.RefreshError as error:
+            # If the call to the lookup API failed, check if there is a trust boundary
+            # already cached. If there is, do nothing. If not, then throw the error.
+            if self._trust_boundary is None:
+                raise error
+            if _helpers.is_logging_enabled(_LOGGER):
+                _LOGGER.debug(
+                    "Using cached trust boundary due to refresh error: %s", error
+                )
+            return
+
+    def _lookup_trust_boundary(self, request):
+        """Calls the trust boundary lookup API to refresh the trust boundary cache.
+
+        Args:
+            request (google.auth.transport.Request): The object used to make
+                HTTP requests.
+
+        Returns:
+            trust_boundary (dict): The trust boundary object returned by the lookup API.
+
+        Raises:
+            google.auth.exceptions.RefreshError: If the trust boundary could not be
+                retrieved.
+        """
+        from google.oauth2 import _client
+
+        url = self._build_trust_boundary_lookup_url()
+        if not url:
+            raise exceptions.InvalidValue("Failed to build trust boundary lookup URL.")
+
+        headers = {}
+        self._apply(headers)
+        headers.update(self._get_trust_boundary_header())
+        return _client._lookup_trust_boundary(request, url, headers=headers)
+
+    @abc.abstractmethod
+    def _build_trust_boundary_lookup_url(self):
+        """
+        Builds and returns the URL for the trust boundary lookup API.
+
+        This method should be implemented by subclasses to provide the
+        specific URL based on the credential type and its properties.
+
+        Returns:
+            str: The URL for the trust boundary lookup endpoint, or None
+                 if lookup should be skipped (e.g., for non-applicable universe domains).
+        """
+        raise NotImplementedError(
+            "_build_trust_boundary_lookup_url must be implemented"
+        )
+
+    def _has_no_op_trust_boundary(self):
+        # A no-op trust boundary is indicated by encodedLocations being "0x0".
+        # The "locations" list may or may not be present as an empty list.
+        if (
+            self._trust_boundary is not None
+            and self._trust_boundary["encodedLocations"]
+            == NO_OP_TRUST_BOUNDARY_ENCODED_LOCATIONS
+        ):
+            return True
+        return False
+
+
 class AnonymousCredentials(Credentials):
     """Credentials that do not provide any authentication information.
 
@@ -382,8 +526,7 @@ class ReadOnlyScoped(metaclass=abc.ABCMeta):
 
     @abc.abstractproperty
     def requires_scopes(self):
-        """True if these credentials require scopes to obtain an access token.
-        """
+        """True if these credentials require scopes to obtain an access token."""
         return False
 
     def has_scopes(self, scopes):

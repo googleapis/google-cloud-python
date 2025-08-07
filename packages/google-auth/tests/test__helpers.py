@@ -20,7 +20,7 @@ import urllib
 
 import pytest  # type: ignore
 
-from google.auth import _helpers
+from google.auth import _helpers, exceptions
 
 # _MOCK_BASE_LOGGER_NAME is the base logger namespace used for testing.
 _MOCK_BASE_LOGGER_NAME = "foogle"
@@ -232,6 +232,33 @@ def test_unpadded_urlsafe_b64encode():
 
     for case, expected in cases:
         assert _helpers.unpadded_urlsafe_b64encode(case) == expected
+
+
+def test_get_bool_from_env(monkeypatch):
+    # Test default value when environment variable is not set.
+    assert _helpers.get_bool_from_env("TEST_VAR") is False
+    assert _helpers.get_bool_from_env("TEST_VAR", default=True) is True
+
+    # Test true values (case-insensitive)
+    for true_value in ("true", "True", "TRUE", "1"):
+        monkeypatch.setenv("TEST_VAR", true_value)
+        assert _helpers.get_bool_from_env("TEST_VAR") is True
+
+    # Test false values (case-insensitive)
+    for false_value in ("false", "False", "FALSE", "0"):
+        monkeypatch.setenv("TEST_VAR", false_value)
+        assert _helpers.get_bool_from_env("TEST_VAR") is False
+
+    # Test invalid value
+    monkeypatch.setenv("TEST_VAR", "invalid_value")
+    with pytest.raises(exceptions.InvalidValue) as excinfo:
+        _helpers.get_bool_from_env("TEST_VAR")
+    assert 'must be one of "true", "false", "1", or "0"' in str(excinfo.value)
+
+    # Test empty string value
+    monkeypatch.setenv("TEST_VAR", "")
+    with pytest.raises(exceptions.InvalidValue):
+        _helpers.get_bool_from_env("TEST_VAR")
 
 
 def test_hash_sensitive_info_basic():

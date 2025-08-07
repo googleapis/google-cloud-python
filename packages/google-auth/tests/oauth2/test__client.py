@@ -324,7 +324,7 @@ def test_call_iam_generate_id_token_endpoint():
         "fake_email",
         "fake_audience",
         "fake_access_token",
-        "googleapis.com",
+        universe_domain="googleapis.com",
     )
 
     assert (
@@ -630,3 +630,178 @@ def test__token_endpoint_request_no_throw_with_retry(can_retry):
         assert mock_request.call_count == 3
     else:
         assert mock_request.call_count == 1
+
+
+def test_lookup_trust_boundary():
+    response_data = {
+        "locations": ["us-central1", "us-east1"],
+        "encodedLocations": "0x80080000000000",
+    }
+
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.OK
+    mock_response.data = json.dumps(response_data).encode("utf-8")
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    response = _client._lookup_trust_boundary(mock_request, url, headers=headers)
+
+    assert response["encodedLocations"] == "0x80080000000000"
+    assert response["locations"] == ["us-central1", "us-east1"]
+
+    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
+
+
+def test_lookup_trust_boundary_no_op_response_without_locations():
+    response_data = {"encodedLocations": "0x0"}
+
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.OK
+    mock_response.data = json.dumps(response_data).encode("utf-8")
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    # for the response to be valid, we only need encodedLocations to be present.
+    response = _client._lookup_trust_boundary(mock_request, url, headers=headers)
+    assert response["encodedLocations"] == "0x0"
+    assert "locations" not in response
+
+    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
+
+
+def test_lookup_trust_boundary_no_op_response():
+    response_data = {"locations": [], "encodedLocations": "0x0"}
+
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.OK
+    mock_response.data = json.dumps(response_data).encode("utf-8")
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    response = _client._lookup_trust_boundary(mock_request, url, headers=headers)
+
+    assert response["encodedLocations"] == "0x0"
+    assert response["locations"] == []
+
+    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
+
+
+def test_lookup_trust_boundary_error():
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.INTERNAL_SERVER_ERROR
+    mock_response.data = "this is an error message"
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    with pytest.raises(exceptions.RefreshError) as excinfo:
+        _client._lookup_trust_boundary(mock_request, url, headers=headers)
+    assert excinfo.match("this is an error message")
+
+    mock_request.assert_called_with(method="GET", url=url, headers=headers)
+
+
+def test_lookup_trust_boundary_missing_encoded_locations():
+    response_data = {"locations": [], "bad_field": "0x0"}
+
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.OK
+    mock_response.data = json.dumps(response_data).encode("utf-8")
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    with pytest.raises(exceptions.MalformedError) as excinfo:
+        _client._lookup_trust_boundary(mock_request, url, headers=headers)
+    assert excinfo.match("Invalid trust boundary info")
+
+    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
+
+
+def test_lookup_trust_boundary_internal_failure_and_retry_failure_error():
+    retryable_error = mock.create_autospec(transport.Response, instance=True)
+    retryable_error.status = http_client.BAD_REQUEST
+    retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
+        "utf-8"
+    )
+
+    unretryable_error = mock.create_autospec(transport.Response, instance=True)
+    unretryable_error.status = http_client.BAD_REQUEST
+    unretryable_error.data = json.dumps({"error_description": "invalid_scope"}).encode(
+        "utf-8"
+    )
+
+    request = mock.create_autospec(transport.Request)
+
+    request.side_effect = [retryable_error, retryable_error, unretryable_error]
+    headers = {"Authorization": "Bearer access_token"}
+
+    with pytest.raises(exceptions.RefreshError):
+        _client._lookup_trust_boundary_request(
+            request, "http://example.com", headers=headers
+        )
+    # request should be called three times. Two retryable errors and one
+    # unretryable error to break the retry loop.
+    assert request.call_count == 3
+    for call in request.call_args_list:
+        assert call[1]["headers"] == headers
+
+
+def test_lookup_trust_boundary_internal_failure_and_retry_succeeds():
+    retryable_error = mock.create_autospec(transport.Response, instance=True)
+    retryable_error.status = http_client.BAD_REQUEST
+    retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
+        "utf-8"
+    )
+
+    response_data = {"locations": [], "encodedLocations": "0x0"}
+    response = mock.create_autospec(transport.Response, instance=True)
+    response.status = http_client.OK
+    response.data = json.dumps(response_data).encode("utf-8")
+
+    request = mock.create_autospec(transport.Request)
+
+    headers = {"Authorization": "Bearer access_token"}
+    request.side_effect = [retryable_error, response]
+
+    _ = _client._lookup_trust_boundary_request(
+        request, "http://example.com", headers=headers
+    )
+
+    assert request.call_count == 2
+    for call in request.call_args_list:
+        assert call[1]["headers"] == headers
+
+
+def test_lookup_trust_boundary_with_headers():
+    response_data = {
+        "locations": ["us-central1", "us-east1"],
+        "encodedLocations": "0x80080000000000",
+    }
+
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.OK
+    mock_response.data = json.dumps(response_data).encode("utf-8")
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+    headers = {"Authorization": "Bearer access_token", "x-test-header": "test-value"}
+
+    _client._lookup_trust_boundary(mock_request, "http://example.com", headers=headers)
+
+    mock_request.assert_called_once_with(
+        method="GET", url="http://example.com", headers=headers
+    )
