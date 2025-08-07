@@ -906,6 +906,33 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         The table can be created with a full set of initial
         column families, specified in the request.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_table():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.CreateTableRequest(
+                    parent="parent_value",
+                    table_id="table_id_value",
+                )
+
+                # Make the request
+                response = client.create_table(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateTableRequest, dict]):
                 The request object. Request message for
@@ -1021,6 +1048,38 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         changed in backward-incompatible ways and is not
         recommended for production use. It is not subject to any
         SLA or deprecation policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_table_from_snapshot():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.CreateTableFromSnapshotRequest(
+                    parent="parent_value",
+                    table_id="table_id_value",
+                    source_snapshot="source_snapshot_value",
+                )
+
+                # Make the request
+                operation = client.create_table_from_snapshot(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateTableFromSnapshotRequest, dict]):
@@ -1146,6 +1205,33 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> pagers.ListTablesPager:
         r"""Lists all tables served from a specified instance.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_tables():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListTablesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_tables(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListTablesRequest, dict]):
                 The request object. Request message for
@@ -1243,6 +1329,32 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> table.Table:
         r"""Gets metadata information about the specified table.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_table():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetTableRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_table(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetTableRequest, dict]):
                 The request object. Request message for
@@ -1328,6 +1440,35 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Updates a specified table.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_update_table():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.UpdateTableRequest(
+                )
+
+                # Make the request
+                operation = client.update_table(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.UpdateTableRequest, dict]):
@@ -1447,6 +1588,29 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         r"""Permanently deletes a specified table and all of its
         data.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_table():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteTableRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_table(request=request)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteTableRequest, dict]):
                 The request object. Request message for
@@ -1523,6 +1687,36 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> operation.Operation:
         r"""Restores a specified table which was accidentally
         deleted.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_undelete_table():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.UndeleteTableRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.undelete_table(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.UndeleteTableRequest, dict]):
@@ -1621,6 +1815,37 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Creates a new AuthorizedView in a table.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_authorized_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.CreateAuthorizedViewRequest(
+                    parent="parent_value",
+                    authorized_view_id="authorized_view_id_value",
+                )
+
+                # Make the request
+                operation = client.create_authorized_view(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateAuthorizedViewRequest, dict]):
@@ -1740,6 +1965,33 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> pagers.ListAuthorizedViewsPager:
         r"""Lists all AuthorizedViews from a specific table.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_authorized_views():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListAuthorizedViewsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_authorized_views(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListAuthorizedViewsRequest, dict]):
                 The request object. Request message for
@@ -1839,6 +2091,32 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> table.AuthorizedView:
         r"""Gets information from a specified AuthorizedView.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_authorized_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetAuthorizedViewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_authorized_view(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetAuthorizedViewRequest, dict]):
                 The request object. Request message for
@@ -1928,6 +2206,35 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Updates an AuthorizedView in a table.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_update_authorized_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.UpdateAuthorizedViewRequest(
+                )
+
+                # Make the request
+                operation = client.update_authorized_view(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.UpdateAuthorizedViewRequest, dict]):
@@ -2044,6 +2351,29 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> None:
         r"""Permanently deletes a specified AuthorizedView.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_authorized_view():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteAuthorizedViewRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_authorized_view(request=request)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteAuthorizedViewRequest, dict]):
                 The request object. Request message for
@@ -2128,6 +2458,32 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         modifications will occur before this method returns, but
         data requests received prior to that point may see a
         table where only some modifications have taken effect.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_modify_column_families():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ModifyColumnFamiliesRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.modify_column_families(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ModifyColumnFamiliesRequest, dict]):
@@ -2230,6 +2586,30 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         rows in a table, or only those that match a particular
         prefix.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_drop_row_range():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DropRowRangeRequest(
+                    row_key_prefix=b'row_key_prefix_blob',
+                    name="name_value",
+                )
+
+                # Make the request
+                client.drop_row_range(request=request)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DropRowRangeRequest, dict]):
                 The request object. Request message for
@@ -2285,6 +2665,32 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         to the table that finished before this call started have
         been replicated. The tokens will be available for 90
         days.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_generate_consistency_token():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GenerateConsistencyTokenRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.generate_consistency_token(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GenerateConsistencyTokenRequest, dict]):
@@ -2378,6 +2784,33 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         token, that is, if replication has caught up based on
         the conditions specified in the token and the check
         request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_check_consistency():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.CheckConsistencyRequest(
+                    name="name_value",
+                    consistency_token="consistency_token_value",
+                )
+
+                # Make the request
+                response = client.check_consistency(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CheckConsistencyRequest, dict]):
@@ -2484,6 +2917,38 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         changed in backward-incompatible ways and is not
         recommended for production use. It is not subject to any
         SLA or deprecation policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_snapshot_table():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.SnapshotTableRequest(
+                    name="name_value",
+                    cluster="cluster_value",
+                    snapshot_id="snapshot_id_value",
+                )
+
+                # Make the request
+                operation = client.snapshot_table(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.SnapshotTableRequest, dict]):
@@ -2629,6 +3094,32 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         recommended for production use. It is not subject to any
         SLA or deprecation policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_snapshot():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetSnapshotRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_snapshot(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetSnapshotRequest, dict]):
                 The request object. Request message for
@@ -2738,6 +3229,33 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         changed in backward-incompatible ways and is not
         recommended for production use. It is not subject to any
         SLA or deprecation policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_snapshots():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListSnapshotsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_snapshots(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListSnapshotsRequest, dict]):
@@ -2862,6 +3380,29 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         recommended for production use. It is not subject to any
         SLA or deprecation policy.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_snapshot():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteSnapshotRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_snapshot(request=request)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteSnapshotRequest, dict]):
                 The request object. Request message for
@@ -2952,6 +3493,41 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         is [Backup][google.bigtable.admin.v2.Backup], if successful.
         Cancelling the returned operation will stop the creation and
         delete the backup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_backup():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                backup = bigtable_admin_v2.Backup()
+                backup.source_table = "source_table_value"
+
+                request = bigtable_admin_v2.CreateBackupRequest(
+                    parent="parent_value",
+                    backup_id="backup_id_value",
+                    backup=backup,
+                )
+
+                # Make the request
+                operation = client.create_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateBackupRequest, dict]):
@@ -3070,6 +3646,32 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         r"""Gets metadata on a pending or completed Cloud
         Bigtable Backup.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_backup():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_backup(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetBackupRequest, dict]):
                 The request object. The request for
@@ -3150,6 +3752,35 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> table.Backup:
         r"""Updates a pending or completed Cloud Bigtable Backup.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_update_backup():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                backup = bigtable_admin_v2.Backup()
+                backup.source_table = "source_table_value"
+
+                request = bigtable_admin_v2.UpdateBackupRequest(
+                    backup=backup,
+                )
+
+                # Make the request
+                response = client.update_backup(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.UpdateBackupRequest, dict]):
@@ -3251,6 +3882,29 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> None:
         r"""Deletes a pending or completed Cloud Bigtable backup.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_backup():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteBackupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_backup(request=request)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteBackupRequest, dict]):
                 The request object. The request for
@@ -3325,6 +3979,33 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> pagers.ListBackupsPager:
         r"""Lists Cloud Bigtable backups. Returns both completed
         and pending backups.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_backups():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListBackupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_backups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListBackupsRequest, dict]):
@@ -3432,6 +4113,38 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         The [response][google.longrunning.Operation.response] type is
         [Table][google.bigtable.admin.v2.Table], if successful.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_restore_table():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.RestoreTableRequest(
+                    backup="backup_value",
+                    parent="parent_value",
+                    table_id="table_id_value",
+                )
+
+                # Make the request
+                operation = client._restore_table(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.RestoreTableRequest, dict]):
                 The request object. The request for
@@ -3506,6 +4219,38 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         r"""Copy a Cloud Bigtable backup to a new backup in the
         destination cluster located in the destination instance
         and project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_copy_backup():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.CopyBackupRequest(
+                    parent="parent_value",
+                    backup_id="backup_id_value",
+                    source_backup="source_backup_value",
+                )
+
+                # Make the request
+                operation = client.copy_backup(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CopyBackupRequest, dict]):
@@ -3645,6 +4390,33 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         resource. Returns an empty policy if the resource exists
         but does not have a policy set.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
+
+            def sample_get_iam_policy():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = iam_policy_pb2.GetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.get_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
                 The request object. Request message for ``GetIamPolicy`` method.
@@ -3757,6 +4529,33 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy on a Bigtable
         resource. Replaces any existing policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
+
+            def sample_set_iam_policy():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = iam_policy_pb2.SetIamPolicyRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                response = client.set_iam_policy(request=request)
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
@@ -3872,6 +4671,34 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         r"""Returns permissions that the caller has on the
         specified Bigtable resource.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
+
+            def sample_test_iam_permissions():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = iam_policy_pb2.TestIamPermissionsRequest(
+                    resource="resource_value",
+                    permissions=['permissions_value1', 'permissions_value2'],
+                )
+
+                # Make the request
+                response = client.test_iam_permissions(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
                 The request object. Request message for ``TestIamPermissions`` method.
@@ -3968,6 +4795,41 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Creates a new schema bundle in the specified table.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_create_schema_bundle():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                schema_bundle = bigtable_admin_v2.SchemaBundle()
+                schema_bundle.proto_schema.proto_descriptors = b'proto_descriptors_blob'
+
+                request = bigtable_admin_v2.CreateSchemaBundleRequest(
+                    parent="parent_value",
+                    schema_bundle_id="schema_bundle_id_value",
+                    schema_bundle=schema_bundle,
+                )
+
+                # Make the request
+                operation = client.create_schema_bundle(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.CreateSchemaBundleRequest, dict]):
@@ -4086,6 +4948,39 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> operation.Operation:
         r"""Updates a schema bundle in the specified table.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_update_schema_bundle():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                schema_bundle = bigtable_admin_v2.SchemaBundle()
+                schema_bundle.proto_schema.proto_descriptors = b'proto_descriptors_blob'
+
+                request = bigtable_admin_v2.UpdateSchemaBundleRequest(
+                    schema_bundle=schema_bundle,
+                )
+
+                # Make the request
+                operation = client.update_schema_bundle(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.UpdateSchemaBundleRequest, dict]):
                 The request object. The request for
@@ -4196,6 +5091,32 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         r"""Gets metadata information about the specified schema
         bundle.
 
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_get_schema_bundle():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.GetSchemaBundleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_schema_bundle(request=request)
+
+                # Handle the response
+                print(response)
+
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.GetSchemaBundleRequest, dict]):
                 The request object. The request for
@@ -4281,6 +5202,33 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
     ) -> pagers.ListSchemaBundlesPager:
         r"""Lists all schema bundles associated with the
         specified table.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_list_schema_bundles():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.ListSchemaBundlesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_schema_bundles(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.ListSchemaBundlesRequest, dict]):
@@ -4380,6 +5328,29 @@ class BaseBigtableTableAdminClient(metaclass=BaseBigtableTableAdminClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a schema bundle in the specified table.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigtable_admin_v2
+
+            def sample_delete_schema_bundle():
+                # Create a client
+                client = bigtable_admin_v2.BigtableTableAdminClient()
+
+                # Initialize request argument(s)
+                request = bigtable_admin_v2.DeleteSchemaBundleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_schema_bundle(request=request)
 
         Args:
             request (Union[google.cloud.bigtable_admin_v2.types.DeleteSchemaBundleRequest, dict]):
