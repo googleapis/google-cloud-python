@@ -227,6 +227,28 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def network_attachment_path(
+        project: str,
+        region: str,
+        network_attachment: str,
+    ) -> str:
+        """Returns a fully-qualified network_attachment string."""
+        return "projects/{project}/regions/{region}/networkAttachments/{network_attachment}".format(
+            project=project,
+            region=region,
+            network_attachment=network_attachment,
+        )
+
+    @staticmethod
+    def parse_network_attachment_path(path: str) -> Dict[str, str]:
+        """Parses a network_attachment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/networkAttachments/(?P<network_attachment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def networks_path(
         project: str,
         network: str,

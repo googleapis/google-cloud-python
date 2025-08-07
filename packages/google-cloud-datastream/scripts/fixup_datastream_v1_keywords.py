@@ -40,14 +40,14 @@ class datastreamCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_connection_profile': ('parent', 'connection_profile_id', 'connection_profile', 'request_id', 'validate_only', 'force', ),
-        'create_private_connection': ('parent', 'private_connection_id', 'private_connection', 'request_id', 'force', ),
+        'create_private_connection': ('parent', 'private_connection_id', 'private_connection', 'request_id', 'force', 'validate_only', ),
         'create_route': ('parent', 'route_id', 'route', 'request_id', ),
         'create_stream': ('parent', 'stream_id', 'stream', 'request_id', 'validate_only', 'force', ),
         'delete_connection_profile': ('name', 'request_id', ),
         'delete_private_connection': ('name', 'request_id', 'force', ),
         'delete_route': ('name', 'request_id', ),
         'delete_stream': ('name', 'request_id', ),
-        'discover_connection_profile': ('parent', 'connection_profile', 'connection_profile_name', 'full_hierarchy', 'hierarchy_depth', 'oracle_rdbms', 'mysql_rdbms', 'postgresql_rdbms', 'sql_server_rdbms', ),
+        'discover_connection_profile': ('parent', 'connection_profile', 'connection_profile_name', 'full_hierarchy', 'hierarchy_depth', 'oracle_rdbms', 'mysql_rdbms', 'postgresql_rdbms', 'sql_server_rdbms', 'salesforce_org', 'mongodb_cluster', ),
         'fetch_static_ips': ('name', 'page_size', 'page_token', ),
         'get_connection_profile': ('name', ),
         'get_private_connection': ('name', ),

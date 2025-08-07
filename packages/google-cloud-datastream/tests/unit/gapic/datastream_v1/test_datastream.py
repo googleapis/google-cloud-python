@@ -14644,6 +14644,7 @@ def test_create_private_connection_rest_required_fields(
             "force",
             "private_connection_id",
             "request_id",
+            "validate_only",
         )
     )
     jsonified_request.update(unset_fields)
@@ -14712,6 +14713,7 @@ def test_create_private_connection_rest_unset_required_fields():
                 "force",
                 "privateConnectionId",
                 "requestId",
+                "validateOnly",
             )
         )
         & set(
@@ -18036,6 +18038,7 @@ def test_create_connection_profile_rest_call_success(request_type):
             "oracle_ssl_config": {
                 "ca_certificate": "ca_certificate_value",
                 "ca_certificate_set": True,
+                "server_certificate_distinguished_name": "server_certificate_distinguished_name_value",
             },
             "oracle_asm_config": {
                 "hostname": "hostname_value",
@@ -18074,11 +18077,15 @@ def test_create_connection_profile_rest_call_success(request_type):
             "database": "database_value",
             "secret_manager_stored_password": "secret_manager_stored_password_value",
             "ssl_config": {
-                "server_verification": {"ca_certificate": "ca_certificate_value"},
+                "server_verification": {
+                    "ca_certificate": "ca_certificate_value",
+                    "server_certificate_hostname": "server_certificate_hostname_value",
+                },
                 "server_and_client_verification": {
                     "client_certificate": "client_certificate_value",
                     "client_key": "client_key_value",
                     "ca_certificate": "ca_certificate_value",
+                    "server_certificate_hostname": "server_certificate_hostname_value",
                 },
             },
         },
@@ -18104,6 +18111,24 @@ def test_create_connection_profile_rest_call_success(request_type):
                 "client_secret": "client_secret_value",
                 "secret_manager_stored_client_secret": "secret_manager_stored_client_secret_value",
             },
+        },
+        "mongodb_profile": {
+            "host_addresses": [{"hostname": "hostname_value", "port": 453}],
+            "replica_set": "replica_set_value",
+            "username": "username_value",
+            "password": "password_value",
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
+            "ssl_config": {
+                "client_key": "client_key_value",
+                "client_key_set": True,
+                "client_certificate": "client_certificate_value",
+                "client_certificate_set": True,
+                "ca_certificate": "ca_certificate_value",
+                "ca_certificate_set": True,
+                "secret_manager_stored_client_key": "secret_manager_stored_client_key_value",
+            },
+            "srv_connection_format": {},
+            "standard_connection_format": {"direct_connection": True},
         },
         "static_service_ip_connectivity": {},
         "forward_ssh_connectivity": {
@@ -18334,6 +18359,7 @@ def test_update_connection_profile_rest_call_success(request_type):
             "oracle_ssl_config": {
                 "ca_certificate": "ca_certificate_value",
                 "ca_certificate_set": True,
+                "server_certificate_distinguished_name": "server_certificate_distinguished_name_value",
             },
             "oracle_asm_config": {
                 "hostname": "hostname_value",
@@ -18372,11 +18398,15 @@ def test_update_connection_profile_rest_call_success(request_type):
             "database": "database_value",
             "secret_manager_stored_password": "secret_manager_stored_password_value",
             "ssl_config": {
-                "server_verification": {"ca_certificate": "ca_certificate_value"},
+                "server_verification": {
+                    "ca_certificate": "ca_certificate_value",
+                    "server_certificate_hostname": "server_certificate_hostname_value",
+                },
                 "server_and_client_verification": {
                     "client_certificate": "client_certificate_value",
                     "client_key": "client_key_value",
                     "ca_certificate": "ca_certificate_value",
+                    "server_certificate_hostname": "server_certificate_hostname_value",
                 },
             },
         },
@@ -18402,6 +18432,24 @@ def test_update_connection_profile_rest_call_success(request_type):
                 "client_secret": "client_secret_value",
                 "secret_manager_stored_client_secret": "secret_manager_stored_client_secret_value",
             },
+        },
+        "mongodb_profile": {
+            "host_addresses": [{"hostname": "hostname_value", "port": 453}],
+            "replica_set": "replica_set_value",
+            "username": "username_value",
+            "password": "password_value",
+            "secret_manager_stored_password": "secret_manager_stored_password_value",
+            "ssl_config": {
+                "client_key": "client_key_value",
+                "client_key_set": True,
+                "client_certificate": "client_certificate_value",
+                "client_certificate_set": True,
+                "ca_certificate": "ca_certificate_value",
+                "ca_certificate_set": True,
+                "secret_manager_stored_client_key": "secret_manager_stored_client_key_value",
+            },
+            "srv_connection_format": {},
+            "standard_connection_format": {"direct_connection": True},
         },
         "static_service_ip_connectivity": {},
         "forward_ssh_connectivity": {
@@ -19286,6 +19334,23 @@ def test_create_stream_rest_call_success(request_type):
                 "exclude_objects": {},
                 "polling_interval": {"seconds": 751, "nanos": 543},
             },
+            "mongodb_source_config": {
+                "include_objects": {
+                    "databases": [
+                        {
+                            "database": "database_value",
+                            "collections": [
+                                {
+                                    "collection": "collection_value",
+                                    "fields": [{"field": "field_value"}],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "exclude_objects": {},
+                "max_concurrent_backfill_tasks": 3076,
+            },
         },
         "destination_config": {
             "destination_connection_profile": "destination_connection_profile_value",
@@ -19303,7 +19368,8 @@ def test_create_stream_rest_call_success(request_type):
                         "location": "location_value",
                         "dataset_id_prefix": "dataset_id_prefix_value",
                         "kms_key_name": "kms_key_name_value",
-                    }
+                    },
+                    "project_id": "project_id_value",
                 },
                 "data_freshness": {},
                 "blmt_config": {
@@ -19324,6 +19390,7 @@ def test_create_stream_rest_call_success(request_type):
             "postgresql_excluded_objects": {},
             "sql_server_excluded_objects": {},
             "salesforce_excluded_objects": {},
+            "mongodb_excluded_objects": {},
         },
         "backfill_none": {},
         "errors": [
@@ -19689,6 +19756,23 @@ def test_update_stream_rest_call_success(request_type):
                 "exclude_objects": {},
                 "polling_interval": {"seconds": 751, "nanos": 543},
             },
+            "mongodb_source_config": {
+                "include_objects": {
+                    "databases": [
+                        {
+                            "database": "database_value",
+                            "collections": [
+                                {
+                                    "collection": "collection_value",
+                                    "fields": [{"field": "field_value"}],
+                                }
+                            ],
+                        }
+                    ]
+                },
+                "exclude_objects": {},
+                "max_concurrent_backfill_tasks": 3076,
+            },
         },
         "destination_config": {
             "destination_connection_profile": "destination_connection_profile_value",
@@ -19706,7 +19790,8 @@ def test_update_stream_rest_call_success(request_type):
                         "location": "location_value",
                         "dataset_id_prefix": "dataset_id_prefix_value",
                         "kms_key_name": "kms_key_name_value",
-                    }
+                    },
+                    "project_id": "project_id_value",
                 },
                 "data_freshness": {},
                 "blmt_config": {
@@ -19727,6 +19812,7 @@ def test_update_stream_rest_call_success(request_type):
             "postgresql_excluded_objects": {},
             "sql_server_excluded_objects": {},
             "salesforce_excluded_objects": {},
+            "mongodb_excluded_objects": {},
         },
         "backfill_none": {},
         "errors": [
@@ -20978,6 +21064,7 @@ def test_create_private_connection_rest_call_success(request_type):
         "satisfies_pzs": True,
         "satisfies_pzi": True,
         "vpc_peering_config": {"vpc": "vpc_value", "subnet": "subnet_value"},
+        "psc_interface_config": {"network_attachment": "network_attachment_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -23654,9 +23741,37 @@ def test_parse_connection_profile_path():
     assert expected == actual
 
 
-def test_networks_path():
+def test_network_attachment_path():
     project = "cuttlefish"
-    network = "mussel"
+    region = "mussel"
+    network_attachment = "winkle"
+    expected = "projects/{project}/regions/{region}/networkAttachments/{network_attachment}".format(
+        project=project,
+        region=region,
+        network_attachment=network_attachment,
+    )
+    actual = DatastreamClient.network_attachment_path(
+        project, region, network_attachment
+    )
+    assert expected == actual
+
+
+def test_parse_network_attachment_path():
+    expected = {
+        "project": "nautilus",
+        "region": "scallop",
+        "network_attachment": "abalone",
+    }
+    path = DatastreamClient.network_attachment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatastreamClient.parse_network_attachment_path(path)
+    assert expected == actual
+
+
+def test_networks_path():
+    project = "squid"
+    network = "clam"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -23667,8 +23782,8 @@ def test_networks_path():
 
 def test_parse_networks_path():
     expected = {
-        "project": "winkle",
-        "network": "nautilus",
+        "project": "whelk",
+        "network": "octopus",
     }
     path = DatastreamClient.networks_path(**expected)
 
@@ -23678,9 +23793,9 @@ def test_parse_networks_path():
 
 
 def test_private_connection_path():
-    project = "scallop"
-    location = "abalone"
-    private_connection = "squid"
+    project = "oyster"
+    location = "nudibranch"
+    private_connection = "cuttlefish"
     expected = "projects/{project}/locations/{location}/privateConnections/{private_connection}".format(
         project=project,
         location=location,
@@ -23694,9 +23809,9 @@ def test_private_connection_path():
 
 def test_parse_private_connection_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "private_connection": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "private_connection": "nautilus",
     }
     path = DatastreamClient.private_connection_path(**expected)
 
@@ -23706,10 +23821,10 @@ def test_parse_private_connection_path():
 
 
 def test_route_path():
-    project = "oyster"
-    location = "nudibranch"
-    private_connection = "cuttlefish"
-    route = "mussel"
+    project = "scallop"
+    location = "abalone"
+    private_connection = "squid"
+    route = "clam"
     expected = "projects/{project}/locations/{location}/privateConnections/{private_connection}/routes/{route}".format(
         project=project,
         location=location,
@@ -23722,10 +23837,10 @@ def test_route_path():
 
 def test_parse_route_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "private_connection": "scallop",
-        "route": "abalone",
+        "project": "whelk",
+        "location": "octopus",
+        "private_connection": "oyster",
+        "route": "nudibranch",
     }
     path = DatastreamClient.route_path(**expected)
 
@@ -23735,9 +23850,9 @@ def test_parse_route_path():
 
 
 def test_stream_path():
-    project = "squid"
-    location = "clam"
-    stream = "whelk"
+    project = "cuttlefish"
+    location = "mussel"
+    stream = "winkle"
     expected = "projects/{project}/locations/{location}/streams/{stream}".format(
         project=project,
         location=location,
@@ -23749,9 +23864,9 @@ def test_stream_path():
 
 def test_parse_stream_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "stream": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "stream": "abalone",
     }
     path = DatastreamClient.stream_path(**expected)
 
@@ -23761,10 +23876,10 @@ def test_parse_stream_path():
 
 
 def test_stream_object_path():
-    project = "cuttlefish"
-    location = "mussel"
-    stream = "winkle"
-    object = "nautilus"
+    project = "squid"
+    location = "clam"
+    stream = "whelk"
+    object = "octopus"
     expected = "projects/{project}/locations/{location}/streams/{stream}/objects/{object}".format(
         project=project,
         location=location,
@@ -23777,10 +23892,10 @@ def test_stream_object_path():
 
 def test_parse_stream_object_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "stream": "squid",
-        "object": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "stream": "cuttlefish",
+        "object": "mussel",
     }
     path = DatastreamClient.stream_object_path(**expected)
 
@@ -23790,7 +23905,7 @@ def test_parse_stream_object_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -23800,7 +23915,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = DatastreamClient.common_billing_account_path(**expected)
 
@@ -23810,7 +23925,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -23820,7 +23935,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = DatastreamClient.common_folder_path(**expected)
 
@@ -23830,7 +23945,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -23840,7 +23955,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = DatastreamClient.common_organization_path(**expected)
 
@@ -23850,7 +23965,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -23860,7 +23975,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = DatastreamClient.common_project_path(**expected)
 
@@ -23870,8 +23985,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -23882,8 +23997,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = DatastreamClient.common_location_path(**expected)
 
