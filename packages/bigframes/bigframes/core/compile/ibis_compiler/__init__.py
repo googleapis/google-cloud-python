@@ -11,3 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""Compiler for BigFrames expression to Ibis expression.
+
+Make sure to import all ibis_compiler implementations here so that they get
+registered.
+"""
+
+from __future__ import annotations
+
+import bigframes.core.compile.ibis_compiler.operations.generic_ops  # noqa: F401
+import bigframes.core.compile.ibis_compiler.scalar_op_registry  # noqa: F401

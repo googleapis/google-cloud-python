@@ -30,11 +30,10 @@ from google.cloud import bigquery
 import pyarrow as pa
 
 from bigframes.core import utils
-import bigframes.core.compile.aggregate_compiler as agg_compiler
 import bigframes.core.compile.googlesql
+import bigframes.core.compile.ibis_compiler.aggregate_compiler as agg_compiler
+import bigframes.core.compile.ibis_compiler.scalar_op_compiler as op_compilers
 import bigframes.core.compile.ibis_types
-import bigframes.core.compile.scalar_op_compiler as op_compilers
-import bigframes.core.compile.scalar_op_compiler as scalar_op_compiler
 import bigframes.core.expression as ex
 from bigframes.core.ordering import OrderingExpression
 import bigframes.core.sql
@@ -679,13 +678,15 @@ def _join_condition(
 
 
 def _as_groupable(value: ibis_types.Value):
+    from bigframes.core.compile.ibis_compiler import scalar_op_registry
+
     # Some types need to be converted to another type to enable groupby
     if value.type().is_float64():
         return value.cast(ibis_dtypes.str)
     elif value.type().is_geospatial():
         return typing.cast(ibis_types.GeoSpatialColumn, value).as_binary()
     elif value.type().is_json():
-        return scalar_op_compiler.to_json_string(value)
+        return scalar_op_registry.to_json_string(value)
     else:
         return value
 

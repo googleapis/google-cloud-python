@@ -27,8 +27,8 @@ import bigframes_vendored.ibis.expr.types as ibis_types
 import pandas as pd
 
 from bigframes.core.compile import constants as compiler_constants
+import bigframes.core.compile.ibis_compiler.scalar_op_compiler as scalar_compilers
 import bigframes.core.compile.ibis_types as compile_ibis_types
-import bigframes.core.compile.scalar_op_compiler as scalar_compilers
 import bigframes.core.expression as ex
 import bigframes.core.window_spec as window_spec
 import bigframes.operations.aggregations as agg_ops

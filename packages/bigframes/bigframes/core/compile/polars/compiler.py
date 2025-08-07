@@ -17,7 +17,7 @@ import dataclasses
 import functools
 import itertools
 import operator
-from typing import cast, Literal, Optional, Sequence, Tuple, TYPE_CHECKING
+from typing import cast, Literal, Optional, Sequence, Tuple, Type, TYPE_CHECKING
 
 import pandas as pd
 
@@ -44,9 +44,34 @@ if TYPE_CHECKING:
     import polars as pl
 else:
     try:
-        import polars as pl
+        import bigframes._importing
+
+        # Use import_polars() instead of importing directly so that we check
+        # the version numbers.
+        pl = bigframes._importing.import_polars()
     except Exception:
         polars_installed = False
+
+
+def register_op(op: Type):
+    """Register a compilation from BigFrames to Ibis.
+
+    This decorator can be used, even if Polars is not installed.
+
+    Args:
+        op: The type of the operator the wrapped function compiles.
+    """
+
+    def decorator(func):
+        if polars_installed:
+            # Ignore the type because compile_op is a generic Callable, so
+            # register isn't available according to mypy.
+            return PolarsExpressionCompiler.compile_op.register(op)(func)  # type: ignore
+        else:
+            return func
+
+    return decorator
+
 
 if polars_installed:
     _DTYPE_MAPPING = {
@@ -239,14 +264,6 @@ if polars_installed:
                 return input.is_in(op.values)
             else:
                 return input.is_in(op.values) or input.is_null()
-
-        @compile_op.register(gen_ops.IsNullOp)
-        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
-            return input.is_null()
-
-        @compile_op.register(gen_ops.NotNullOp)
-        def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
-            return input.is_not_null()
 
         @compile_op.register(gen_ops.FillNaOp)
         @compile_op.register(gen_ops.CoalesceOp)

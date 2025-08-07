@@ -76,8 +76,8 @@ extras = {
         "google-cloud-bigtable >=2.24.0",
         "google-cloud-pubsub >=2.21.4",
     ],
-    # used for local engine, which is only needed for unit tests at present.
-    "polars": ["polars >= 1.7.0"],
+    # used for local engine
+    "polars": ["polars >= 1.21.0"],
     "scikit-learn": ["scikit-learn>=1.2.2"],
     # Packages required for basic development flow.
     "dev": [

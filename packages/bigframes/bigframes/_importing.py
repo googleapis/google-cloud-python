@@ -14,6 +14,7 @@
 import importlib
 from types import ModuleType
 
+import numpy
 from packaging import version
 
 # Keep this in sync with setup.py
@@ -22,9 +23,13 @@ POLARS_MIN_VERSION = version.Version("1.7.0")
 
 def import_polars() -> ModuleType:
     polars_module = importlib.import_module("polars")
-    imported_version = version.Version(polars_module.build_info()["version"])
-    if imported_version < POLARS_MIN_VERSION:
+    # Check for necessary methods instead of the version number because we
+    # can't trust the polars version until
+    # https://github.com/pola-rs/polars/issues/23940 is fixed.
+    try:
+        polars_module.lit(numpy.int64(100), dtype=polars_module.Int64())
+    except TypeError:
         raise ImportError(
-            f"Imported polars version: {imported_version} is below the minimum version: {POLARS_MIN_VERSION}"
+            f"Imported polars version is likely below the minimum version: {POLARS_MIN_VERSION}"
         )
     return polars_module

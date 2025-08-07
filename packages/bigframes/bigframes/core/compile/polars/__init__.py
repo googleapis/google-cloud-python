@@ -11,16 +11,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""Compiler for BigFrames expression to Polars LazyFrame expression.
+
+Make sure to import all polars implementations here so that they get registered.
+"""
 from __future__ import annotations
 
 import warnings
 
+# The ops imports appear first so that the implementations can be registered.
+# polars shouldn't be needed at import time, as register is a no-op if polars
+# isn't installed.
+import bigframes.core.compile.polars.operations.generic_ops  # noqa: F401
+
 try:
-    import polars  # noqa
+    import bigframes._importing
+
+    # Use import_polars() instead of importing directly so that we check the
+    # version numbers.
+    bigframes._importing.import_polars()
 
     from bigframes.core.compile.polars.compiler import PolarsCompiler
 
     __all__ = ["PolarsCompiler"]
-except Exception:
-    msg = "Polars compiler not available as polars is not installed."
+except Exception as exc:
+    msg = f"Polars compiler not available as there was an exception importing polars. Details: {str(exc)}"
     warnings.warn(msg)

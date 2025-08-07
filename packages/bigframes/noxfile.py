@@ -78,15 +78,20 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
 ]
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
-UNIT_TEST_EXTRAS: List[str] = ["tests", "anywidget"]
+UNIT_TEST_EXTRAS: List[str] = ["tests"]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
-    "3.12": ["tests", "polars", "scikit-learn", "anywidget"],
+    "3.10": ["tests", "scikit-learn", "anywidget"],
+    "3.11": ["tests", "polars", "scikit-learn", "anywidget"],
+    # Make sure we leave some versions without "extras" so we know those
+    # dependencies are actually optional.
+    "3.13": ["tests", "polars", "scikit-learn", "anywidget"],
 }
 
+# 3.11 is used by colab.
 # 3.10 is needed for Windows tests as it is the only version installed in the
 # bigframes-windows container image. For more information, search
 # bigframes/windows-docker, internally.
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.12", "3.13"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.13"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "jinja2",
     "mock",
@@ -105,12 +110,13 @@ SYSTEM_TEST_EXTERNAL_DEPENDENCIES = [
 ]
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_EXTRAS: List[str] = []
+SYSTEM_TEST_EXTRAS: List[str] = ["tests"]
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
-    "3.9": ["tests", "anywidget"],
-    "3.10": ["tests", "polars"],
-    "3.12": ["tests", "scikit-learn", "polars", "anywidget"],
-    "3.13": ["tests", "polars"],
+    # Make sure we leave some versions without "extras" so we know those
+    # dependencies are actually optional.
+    "3.10": ["tests", "scikit-learn", "anywidget"],
+    "3.11": ["tests", "scikit-learn", "polars", "anywidget"],
+    "3.13": ["tests", "polars", "anywidget"],
 }
 
 LOGGING_NAME_ENV_VAR = "BIGFRAMES_PERFORMANCE_LOG_NAME"
@@ -120,8 +126,8 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Sessions are executed in the order so putting the smaller sessions
 # ahead to fail fast at presubmit running.
 nox.options.sessions = [
-    "system-3.9",
-    "system-3.12",
+    "system-3.9",  # No extras.
+    "system-3.11",
     "cover",
     # TODO(b/401609005): remove
     "cleanup",

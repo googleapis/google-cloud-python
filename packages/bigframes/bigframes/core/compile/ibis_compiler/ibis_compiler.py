@@ -29,7 +29,6 @@ import bigframes.core.compile.compiled as compiled
 import bigframes.core.compile.concat as concat_impl
 import bigframes.core.compile.configs as configs
 import bigframes.core.compile.explode
-import bigframes.core.compile.scalar_op_compiler as compile_scalar
 import bigframes.core.nodes as nodes
 import bigframes.core.ordering as bf_ordering
 import bigframes.core.rewrite as rewrites
@@ -178,6 +177,8 @@ def compile_readlocal(node: nodes.ReadLocalNode, *args):
 
 @_compile_node.register
 def compile_readtable(node: nodes.ReadTableNode, *args):
+    from bigframes.core.compile.ibis_compiler import scalar_op_registry
+
     ibis_table = _table_to_ibis(
         node.source, scan_cols=[col.source_id for col in node.scan_list.items]
     )
@@ -188,7 +189,7 @@ def compile_readtable(node: nodes.ReadTableNode, *args):
             scan_item.dtype == dtypes.JSON_DTYPE
             and ibis_table[scan_item.source_id].type() == ibis_dtypes.string
         ):
-            json_column = compile_scalar.parse_json(
+            json_column = scalar_op_registry.parse_json(
                 ibis_table[scan_item.source_id]
             ).name(scan_item.source_id)
             ibis_table = ibis_table.mutate(json_column)
