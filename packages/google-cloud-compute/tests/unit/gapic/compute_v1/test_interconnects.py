@@ -2068,7 +2068,7 @@ def test_insert_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
-            interconnect_resource=compute.Interconnect(admin_enabled=True),
+            interconnect_resource=compute.Interconnect(aai_enabled=True),
         )
         mock_args.update(sample_request)
 
@@ -2107,7 +2107,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
         client.insert(
             compute.InsertInterconnectRequest(),
             project="project_value",
-            interconnect_resource=compute.Interconnect(admin_enabled=True),
+            interconnect_resource=compute.Interconnect(aai_enabled=True),
         )
 
 
@@ -2263,7 +2263,7 @@ def test_insert_unary_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
-            interconnect_resource=compute.Interconnect(admin_enabled=True),
+            interconnect_resource=compute.Interconnect(aai_enabled=True),
         )
         mock_args.update(sample_request)
 
@@ -2302,7 +2302,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
         client.insert_unary(
             compute.InsertInterconnectRequest(),
             project="project_value",
-            interconnect_resource=compute.Interconnect(admin_enabled=True),
+            interconnect_resource=compute.Interconnect(aai_enabled=True),
         )
 
 
@@ -2720,7 +2720,7 @@ def test_patch_rest_flattened():
         mock_args = dict(
             project="project_value",
             interconnect="interconnect_value",
-            interconnect_resource=compute.Interconnect(admin_enabled=True),
+            interconnect_resource=compute.Interconnect(aai_enabled=True),
         )
         mock_args.update(sample_request)
 
@@ -2760,7 +2760,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             compute.PatchInterconnectRequest(),
             project="project_value",
             interconnect="interconnect_value",
-            interconnect_resource=compute.Interconnect(admin_enabled=True),
+            interconnect_resource=compute.Interconnect(aai_enabled=True),
         )
 
 
@@ -2922,7 +2922,7 @@ def test_patch_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             interconnect="interconnect_value",
-            interconnect_resource=compute.Interconnect(admin_enabled=True),
+            interconnect_resource=compute.Interconnect(aai_enabled=True),
         )
         mock_args.update(sample_request)
 
@@ -2962,7 +2962,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             compute.PatchInterconnectRequest(),
             project="project_value",
             interconnect="interconnect_value",
-            interconnect_resource=compute.Interconnect(admin_enabled=True),
+            interconnect_resource=compute.Interconnect(aai_enabled=True),
         )
 
 
@@ -3666,6 +3666,7 @@ def test_get_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Interconnect(
+            aai_enabled=True,
             admin_enabled=True,
             available_features=["available_features_value"],
             creation_timestamp="creation_timestamp_value",
@@ -3709,6 +3710,7 @@ def test_get_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Interconnect)
+    assert response.aai_enabled is True
     assert response.admin_enabled is True
     assert response.available_features == ["available_features_value"]
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -4097,7 +4099,18 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request_init["interconnect_resource"] = {
+        "aai_enabled": True,
         "admin_enabled": True,
+        "application_aware_interconnect": {
+            "bandwidth_percentage_policy": {
+                "bandwidth_percentages": [
+                    {"percentage": 1054, "traffic_class": "traffic_class_value"}
+                ]
+            },
+            "profile_description": "profile_description_value",
+            "shape_average_percentages": {},
+            "strict_priority_policy": {},
+        },
         "available_features": [
             "available_features_value1",
             "available_features_value2",
@@ -4534,7 +4547,18 @@ def test_patch_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "interconnect": "sample2"}
     request_init["interconnect_resource"] = {
+        "aai_enabled": True,
         "admin_enabled": True,
+        "application_aware_interconnect": {
+            "bandwidth_percentage_policy": {
+                "bandwidth_percentages": [
+                    {"percentage": 1054, "traffic_class": "traffic_class_value"}
+                ]
+            },
+            "profile_description": "profile_description_value",
+            "shape_average_percentages": {},
+            "strict_priority_policy": {},
+        },
         "available_features": [
             "available_features_value1",
             "available_features_value2",

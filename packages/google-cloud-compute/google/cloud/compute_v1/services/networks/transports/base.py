@@ -182,6 +182,11 @@ class NetworksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.request_remove_peering: gapic_v1.method.wrap_method(
+                self.request_remove_peering,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.switch_to_custom_mode: gapic_v1.method.wrap_method(
                 self.switch_to_custom_mode,
                 default_timeout=None,
@@ -285,6 +290,15 @@ class NetworksTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.RemovePeeringNetworkRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def request_remove_peering(
+        self,
+    ) -> Callable[
+        [compute.RequestRemovePeeringNetworkRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

@@ -139,6 +139,7 @@ class computeCallTransformer(cst.CSTTransformer):
         'remove_resource_policies': ('disk', 'disks_remove_resource_policies_request_resource', 'project', 'zone', 'request_id', ),
         'remove_rule': ('firewall_policy', 'priority', 'request_id', ),
         'report_host_as_faulty': ('instance', 'instances_report_host_as_faulty_request_resource', 'project', 'zone', 'request_id', ),
+        'request_remove_peering': ('network', 'networks_request_remove_peering_request_resource', 'project', 'request_id', ),
         'reset': ('instance', 'project', 'zone', 'request_id', ),
         'resize': ('disk', 'disks_resize_request_resource', 'project', 'zone', 'request_id', ),
         'resume': ('instance', 'project', 'zone', 'request_id', ),
