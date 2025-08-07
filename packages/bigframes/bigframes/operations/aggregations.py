@@ -34,6 +34,11 @@ class WindowOp:
         return True
 
     @property
+    def nulls_count_for_min_values(self) -> bool:
+        """Whether null values count for min_values."""
+        return not self.skips_nulls
+
+    @property
     def implicitly_inherits_order(self):
         """
         Whether the operator implicitly inherits the underlying array order, should it exist.
@@ -480,6 +485,10 @@ class FirstNonNullOp(UnaryWindowOp):
     def skips_nulls(self):
         return False
 
+    @property
+    def nulls_count_for_min_values(self) -> bool:
+        return False
+
 
 @dataclasses.dataclass(frozen=True)
 class LastOp(UnaryWindowOp):
@@ -490,6 +499,10 @@ class LastOp(UnaryWindowOp):
 class LastNonNullOp(UnaryWindowOp):
     @property
     def skips_nulls(self):
+        return False
+
+    @property
+    def nulls_count_for_min_values(self) -> bool:
         return False
 
 

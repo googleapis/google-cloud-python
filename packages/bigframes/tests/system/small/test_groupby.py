@@ -768,3 +768,101 @@ def test_series_groupby_quantile(scalars_df_index, scalars_pandas_df_index, q):
     pd.testing.assert_series_equal(
         pd_result, bf_result, check_dtype=False, check_index_type=False
     )
+
+
+@pytest.mark.parametrize(
+    ("numeric_only", "min_count"),
+    [
+        (True, 2),
+        (False, -1),
+    ],
+)
+def test_series_groupby_first(
+    scalars_df_index, scalars_pandas_df_index, numeric_only, min_count
+):
+    bf_result = (
+        scalars_df_index.groupby("string_col")["int64_col"].first(
+            numeric_only=numeric_only, min_count=min_count
+        )
+    ).to_pandas()
+    pd_result = scalars_pandas_df_index.groupby("string_col")["int64_col"].first(
+        numeric_only=numeric_only, min_count=min_count
+    )
+    pd.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+@pytest.mark.parametrize(
+    ("numeric_only", "min_count"),
+    [
+        (False, 4),
+        (True, 0),
+    ],
+)
+def test_series_groupby_last(
+    scalars_df_index, scalars_pandas_df_index, numeric_only, min_count
+):
+    bf_result = (
+        scalars_df_index.groupby("string_col")["int64_col"].last(
+            numeric_only=numeric_only, min_count=min_count
+        )
+    ).to_pandas()
+    pd_result = scalars_pandas_df_index.groupby("string_col")["int64_col"].last(
+        numeric_only=numeric_only, min_count=min_count
+    )
+    pd.testing.assert_series_equal(pd_result, bf_result)
+
+
+@pytest.mark.parametrize(
+    ("numeric_only", "min_count"),
+    [
+        (False, 4),
+        (True, 0),
+    ],
+)
+def test_dataframe_groupby_first(
+    scalars_df_index, scalars_pandas_df_index, numeric_only, min_count
+):
+    # min_count seems to not work properly on older pandas
+    pytest.importorskip("pandas", minversion="2.0.0")
+    # bytes, dates not handling min_count properly in pandas
+    bf_result = (
+        scalars_df_index.drop(columns=["bytes_col", "date_col"])
+        .groupby(scalars_df_index.int64_col % 2)
+        .first(numeric_only=numeric_only, min_count=min_count)
+    ).to_pandas()
+    pd_result = (
+        scalars_pandas_df_index.drop(columns=["bytes_col", "date_col"])
+        .groupby(scalars_pandas_df_index.int64_col % 2)
+        .first(numeric_only=numeric_only, min_count=min_count)
+    )
+    pd.testing.assert_frame_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+@pytest.mark.parametrize(
+    ("numeric_only", "min_count"),
+    [
+        (True, 2),
+        (False, -1),
+    ],
+)
+def test_dataframe_groupby_last(
+    scalars_df_index, scalars_pandas_df_index, numeric_only, min_count
+):
+    bf_result = (
+        scalars_df_index.groupby(scalars_df_index.int64_col % 2).last(
+            numeric_only=numeric_only, min_count=min_count
+        )
+    ).to_pandas()
+    pd_result = scalars_pandas_df_index.groupby(
+        scalars_pandas_df_index.int64_col % 2
+    ).last(numeric_only=numeric_only, min_count=min_count)
+    pd.testing.assert_frame_equal(
+        pd_result,
+        bf_result,
+    )

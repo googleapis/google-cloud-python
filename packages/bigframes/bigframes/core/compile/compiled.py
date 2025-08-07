@@ -459,7 +459,7 @@ class UnorderedIR:
             for column in inputs:
                 clauses.append((column.isnull(), ibis_types.null()))
         if window_spec.min_periods and len(inputs) > 0:
-            if expression.op.skips_nulls:
+            if not expression.op.nulls_count_for_min_values:
                 # Most operations do not count NULL values towards min_periods
                 per_col_does_count = (column.notnull() for column in inputs)
                 # All inputs must be non-null for observation to count

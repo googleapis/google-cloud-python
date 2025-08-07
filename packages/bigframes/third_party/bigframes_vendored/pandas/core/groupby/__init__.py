@@ -537,6 +537,80 @@ class GroupBy:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def first(self, numeric_only: bool = False, min_count: int = -1):
+        """
+        Compute the first entry of each column within each group.
+
+        Defaults to skipping NA elements.
+
+        **Examples:**
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame(dict(A=[1, 1, 3], B=[None, 5, 6], C=[1, 2, 3]))
+            >>> df.groupby("A").first()
+                B  C
+            A
+            1  5.0  1
+            3  6.0  3
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> df.groupby("A").first(min_count=2)
+                B    C
+            A
+            1  <NA>     1
+            3  <NA>  <NA>
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Args:
+            numeric_only (bool, default False):
+                Include only float, int, boolean columns. If None, will attempt to use
+                everything, then use only numeric data.
+            min_count (int, default -1):
+                The required number of valid values to perform the operation. If fewer
+                than ``min_count`` valid values are present the result will be NA.
+
+        Returns:
+            bigframes.pandas.DataFrame or bigframes.pandas.Series:
+                First of values within each group.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def last(self, numeric_only: bool = False, min_count: int = -1):
+        """
+        Compute the last entry of each column within each group.
+
+        Defaults to skipping NA elements.
+
+        **Examples:**
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame(dict(A=[1, 1, 3], B=[5, None, 6], C=[1, 2, 3]))
+            >>> df.groupby("A").last()
+                 B  C
+            A
+            1  5.0  2
+            3  6.0  3
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+        Args:
+            numeric_only (bool, default False):
+                Include only float, int, boolean columns. If None, will attempt to use
+                everything, then use only numeric data.
+            min_count (int, default -1):
+                The required number of valid values to perform the operation. If fewer
+                than ``min_count`` valid values are present the result will be NA.
+
+        Returns:
+            bigframes.pandas.DataFrame or bigframes.pandas.Series:
+                Last of values within each group.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def sum(
         self,
         numeric_only: bool = False,

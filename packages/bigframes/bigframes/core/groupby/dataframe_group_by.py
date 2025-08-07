@@ -263,6 +263,48 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
     kurtosis = kurt
 
+    @validations.requires_ordering()
+    def first(self, numeric_only: bool = False, min_count: int = -1) -> df.DataFrame:
+        window_spec = window_specs.unbound(
+            grouping_keys=tuple(self._by_col_ids),
+            min_periods=min_count if min_count >= 0 else 0,
+        )
+        target_cols, index = self._aggregated_columns(numeric_only)
+        block, firsts_ids = self._block.multi_apply_window_op(
+            target_cols,
+            agg_ops.FirstNonNullOp(),
+            window_spec=window_spec,
+        )
+        block, _ = block.aggregate(
+            self._by_col_ids,
+            tuple(
+                aggs.agg(firsts_id, agg_ops.AnyValueOp()) for firsts_id in firsts_ids
+            ),
+            dropna=self._dropna,
+            column_labels=index,
+        )
+        return df.DataFrame(block)
+
+    @validations.requires_ordering()
+    def last(self, numeric_only: bool = False, min_count: int = -1) -> df.DataFrame:
+        window_spec = window_specs.unbound(
+            grouping_keys=tuple(self._by_col_ids),
+            min_periods=min_count if min_count >= 0 else 0,
+        )
+        target_cols, index = self._aggregated_columns(numeric_only)
+        block, lasts_ids = self._block.multi_apply_window_op(
+            target_cols,
+            agg_ops.LastNonNullOp(),
+            window_spec=window_spec,
+        )
+        block, _ = block.aggregate(
+            self._by_col_ids,
+            tuple(aggs.agg(lasts_id, agg_ops.AnyValueOp()) for lasts_id in lasts_ids),
+            dropna=self._dropna,
+            column_labels=index,
+        )
+        return df.DataFrame(block)
+
     def all(self) -> df.DataFrame:
         return self._aggregate_all(agg_ops.all_op)
 
