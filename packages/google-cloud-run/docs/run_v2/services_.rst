@@ -9,3 +9,4 @@ Services for Google Cloud Run v2 API
     revisions
     services
     tasks
+    worker_pools

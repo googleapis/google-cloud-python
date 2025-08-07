@@ -71,16 +71,21 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
-from google.cloud.run_v2.services.services import (
-    ServicesAsyncClient,
-    ServicesClient,
+from google.cloud.run_v2.services.worker_pools import (
+    WorkerPoolsAsyncClient,
+    WorkerPoolsClient,
     pagers,
     transports,
 )
-from google.cloud.run_v2.types import condition, k8s_min, revision_template
-from google.cloud.run_v2.types import service
-from google.cloud.run_v2.types import service as gcr_service
-from google.cloud.run_v2.types import traffic_target, vendor_settings
+from google.cloud.run_v2.types import (
+    condition,
+    instance_split,
+    k8s_min,
+    vendor_settings,
+)
+from google.cloud.run_v2.types import worker_pool
+from google.cloud.run_v2.types import worker_pool as gcr_worker_pool
+from google.cloud.run_v2.types import worker_pool_revision_template
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -137,61 +142,67 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert ServicesClient._get_default_mtls_endpoint(None) is None
-    assert ServicesClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert WorkerPoolsClient._get_default_mtls_endpoint(None) is None
     assert (
-        ServicesClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        WorkerPoolsClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    )
+    assert (
+        WorkerPoolsClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        ServicesClient._get_default_mtls_endpoint(sandbox_endpoint)
+        WorkerPoolsClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        ServicesClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        WorkerPoolsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
-    assert ServicesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert WorkerPoolsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test__read_environment_variables():
-    assert ServicesClient._read_environment_variables() == (False, "auto", None)
+    assert WorkerPoolsClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert ServicesClient._read_environment_variables() == (True, "auto", None)
+        assert WorkerPoolsClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert ServicesClient._read_environment_variables() == (False, "auto", None)
+        assert WorkerPoolsClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
         with pytest.raises(ValueError) as excinfo:
-            ServicesClient._read_environment_variables()
+            WorkerPoolsClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert ServicesClient._read_environment_variables() == (False, "never", None)
+        assert WorkerPoolsClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert ServicesClient._read_environment_variables() == (False, "always", None)
+        assert WorkerPoolsClient._read_environment_variables() == (
+            False,
+            "always",
+            None,
+        )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert ServicesClient._read_environment_variables() == (False, "auto", None)
+        assert WorkerPoolsClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
-            ServicesClient._read_environment_variables()
+            WorkerPoolsClient._read_environment_variables()
     assert (
         str(excinfo.value)
         == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
     )
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert ServicesClient._read_environment_variables() == (
+        assert WorkerPoolsClient._read_environment_variables() == (
             False,
             "auto",
             "foo.com",
@@ -202,12 +213,13 @@ def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert ServicesClient._get_client_cert_source(None, False) is None
+    assert WorkerPoolsClient._get_client_cert_source(None, False) is None
     assert (
-        ServicesClient._get_client_cert_source(mock_provided_cert_source, False) is None
+        WorkerPoolsClient._get_client_cert_source(mock_provided_cert_source, False)
+        is None
     )
     assert (
-        ServicesClient._get_client_cert_source(mock_provided_cert_source, True)
+        WorkerPoolsClient._get_client_cert_source(mock_provided_cert_source, True)
         == mock_provided_cert_source
     )
 
@@ -219,11 +231,11 @@ def test__get_client_cert_source():
             return_value=mock_default_cert_source,
         ):
             assert (
-                ServicesClient._get_client_cert_source(None, True)
+                WorkerPoolsClient._get_client_cert_source(None, True)
                 is mock_default_cert_source
             )
             assert (
-                ServicesClient._get_client_cert_source(
+                WorkerPoolsClient._get_client_cert_source(
                     mock_provided_cert_source, "true"
                 )
                 is mock_provided_cert_source
@@ -231,64 +243,64 @@ def test__get_client_cert_source():
 
 
 @mock.patch.object(
-    ServicesClient,
+    WorkerPoolsClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ServicesClient),
+    modify_default_endpoint_template(WorkerPoolsClient),
 )
 @mock.patch.object(
-    ServicesAsyncClient,
+    WorkerPoolsAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ServicesAsyncClient),
+    modify_default_endpoint_template(WorkerPoolsAsyncClient),
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
-    default_universe = ServicesClient._DEFAULT_UNIVERSE
-    default_endpoint = ServicesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = WorkerPoolsClient._DEFAULT_UNIVERSE
+    default_endpoint = WorkerPoolsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = ServicesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = WorkerPoolsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
     assert (
-        ServicesClient._get_api_endpoint(
+        WorkerPoolsClient._get_api_endpoint(
             api_override, mock_client_cert_source, default_universe, "always"
         )
         == api_override
     )
     assert (
-        ServicesClient._get_api_endpoint(
+        WorkerPoolsClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "auto"
         )
-        == ServicesClient.DEFAULT_MTLS_ENDPOINT
+        == WorkerPoolsClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        ServicesClient._get_api_endpoint(None, None, default_universe, "auto")
+        WorkerPoolsClient._get_api_endpoint(None, None, default_universe, "auto")
         == default_endpoint
     )
     assert (
-        ServicesClient._get_api_endpoint(None, None, default_universe, "always")
-        == ServicesClient.DEFAULT_MTLS_ENDPOINT
+        WorkerPoolsClient._get_api_endpoint(None, None, default_universe, "always")
+        == WorkerPoolsClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        ServicesClient._get_api_endpoint(
+        WorkerPoolsClient._get_api_endpoint(
             None, mock_client_cert_source, default_universe, "always"
         )
-        == ServicesClient.DEFAULT_MTLS_ENDPOINT
+        == WorkerPoolsClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        ServicesClient._get_api_endpoint(None, None, mock_universe, "never")
+        WorkerPoolsClient._get_api_endpoint(None, None, mock_universe, "never")
         == mock_endpoint
     )
     assert (
-        ServicesClient._get_api_endpoint(None, None, default_universe, "never")
+        WorkerPoolsClient._get_api_endpoint(None, None, default_universe, "never")
         == default_endpoint
     )
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        ServicesClient._get_api_endpoint(
+        WorkerPoolsClient._get_api_endpoint(
             None, mock_client_cert_source, mock_universe, "auto"
         )
     assert (
@@ -302,20 +314,22 @@ def test__get_universe_domain():
     universe_domain_env = "bar.com"
 
     assert (
-        ServicesClient._get_universe_domain(client_universe_domain, universe_domain_env)
+        WorkerPoolsClient._get_universe_domain(
+            client_universe_domain, universe_domain_env
+        )
         == client_universe_domain
     )
     assert (
-        ServicesClient._get_universe_domain(None, universe_domain_env)
+        WorkerPoolsClient._get_universe_domain(None, universe_domain_env)
         == universe_domain_env
     )
     assert (
-        ServicesClient._get_universe_domain(None, None)
-        == ServicesClient._DEFAULT_UNIVERSE
+        WorkerPoolsClient._get_universe_domain(None, None)
+        == WorkerPoolsClient._DEFAULT_UNIVERSE
     )
 
     with pytest.raises(ValueError) as excinfo:
-        ServicesClient._get_universe_domain("", None)
+        WorkerPoolsClient._get_universe_domain("", None)
     assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
@@ -335,7 +349,7 @@ def test__get_universe_domain():
 def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_info):
     cred = mock.Mock(["get_cred_info"])
     cred.get_cred_info = mock.Mock(return_value=cred_info_json)
-    client = ServicesClient(credentials=cred)
+    client = WorkerPoolsClient(credentials=cred)
     client._transport._credentials = cred
 
     error = core_exceptions.GoogleAPICallError("message", details=["foo"])
@@ -352,7 +366,7 @@ def test__add_cred_info_for_auth_errors(error_code, cred_info_json, show_cred_in
 def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
     cred = mock.Mock([])
     assert not hasattr(cred, "get_cred_info")
-    client = ServicesClient(credentials=cred)
+    client = WorkerPoolsClient(credentials=cred)
     client._transport._credentials = cred
 
     error = core_exceptions.GoogleAPICallError("message", details=[])
@@ -365,12 +379,12 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (ServicesClient, "grpc"),
-        (ServicesAsyncClient, "grpc_asyncio"),
-        (ServicesClient, "rest"),
+        (WorkerPoolsClient, "grpc"),
+        (WorkerPoolsAsyncClient, "grpc_asyncio"),
+        (WorkerPoolsClient, "rest"),
     ],
 )
-def test_services_client_from_service_account_info(client_class, transport_name):
+def test_worker_pools_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -391,12 +405,12 @@ def test_services_client_from_service_account_info(client_class, transport_name)
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.ServicesGrpcTransport, "grpc"),
-        (transports.ServicesGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.ServicesRestTransport, "rest"),
+        (transports.WorkerPoolsGrpcTransport, "grpc"),
+        (transports.WorkerPoolsGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.WorkerPoolsRestTransport, "rest"),
     ],
 )
-def test_services_client_service_account_always_use_jwt(
+def test_worker_pools_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -417,12 +431,12 @@ def test_services_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (ServicesClient, "grpc"),
-        (ServicesAsyncClient, "grpc_asyncio"),
-        (ServicesClient, "rest"),
+        (WorkerPoolsClient, "grpc"),
+        (WorkerPoolsAsyncClient, "grpc_asyncio"),
+        (WorkerPoolsClient, "rest"),
     ],
 )
-def test_services_client_from_service_account_file(client_class, transport_name):
+def test_worker_pools_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -447,45 +461,51 @@ def test_services_client_from_service_account_file(client_class, transport_name)
         )
 
 
-def test_services_client_get_transport_class():
-    transport = ServicesClient.get_transport_class()
+def test_worker_pools_client_get_transport_class():
+    transport = WorkerPoolsClient.get_transport_class()
     available_transports = [
-        transports.ServicesGrpcTransport,
-        transports.ServicesRestTransport,
+        transports.WorkerPoolsGrpcTransport,
+        transports.WorkerPoolsRestTransport,
     ]
     assert transport in available_transports
 
-    transport = ServicesClient.get_transport_class("grpc")
-    assert transport == transports.ServicesGrpcTransport
+    transport = WorkerPoolsClient.get_transport_class("grpc")
+    assert transport == transports.WorkerPoolsGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (ServicesClient, transports.ServicesGrpcTransport, "grpc"),
-        (ServicesAsyncClient, transports.ServicesGrpcAsyncIOTransport, "grpc_asyncio"),
-        (ServicesClient, transports.ServicesRestTransport, "rest"),
+        (WorkerPoolsClient, transports.WorkerPoolsGrpcTransport, "grpc"),
+        (
+            WorkerPoolsAsyncClient,
+            transports.WorkerPoolsGrpcAsyncIOTransport,
+            "grpc_asyncio",
+        ),
+        (WorkerPoolsClient, transports.WorkerPoolsRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
-    ServicesClient,
+    WorkerPoolsClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ServicesClient),
+    modify_default_endpoint_template(WorkerPoolsClient),
 )
 @mock.patch.object(
-    ServicesAsyncClient,
+    WorkerPoolsAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ServicesAsyncClient),
+    modify_default_endpoint_template(WorkerPoolsAsyncClient),
 )
-def test_services_client_client_options(client_class, transport_class, transport_name):
+def test_worker_pools_client_client_options(
+    client_class, transport_class, transport_name
+):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(ServicesClient, "get_transport_class") as gtc:
+    with mock.patch.object(WorkerPoolsClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(ServicesClient, "get_transport_class") as gtc:
+    with mock.patch.object(WorkerPoolsClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -608,36 +628,36 @@ def test_services_client_client_options(client_class, transport_class, transport
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (ServicesClient, transports.ServicesGrpcTransport, "grpc", "true"),
+        (WorkerPoolsClient, transports.WorkerPoolsGrpcTransport, "grpc", "true"),
         (
-            ServicesAsyncClient,
-            transports.ServicesGrpcAsyncIOTransport,
+            WorkerPoolsAsyncClient,
+            transports.WorkerPoolsGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
-        (ServicesClient, transports.ServicesGrpcTransport, "grpc", "false"),
+        (WorkerPoolsClient, transports.WorkerPoolsGrpcTransport, "grpc", "false"),
         (
-            ServicesAsyncClient,
-            transports.ServicesGrpcAsyncIOTransport,
+            WorkerPoolsAsyncClient,
+            transports.WorkerPoolsGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
-        (ServicesClient, transports.ServicesRestTransport, "rest", "true"),
-        (ServicesClient, transports.ServicesRestTransport, "rest", "false"),
+        (WorkerPoolsClient, transports.WorkerPoolsRestTransport, "rest", "true"),
+        (WorkerPoolsClient, transports.WorkerPoolsRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
-    ServicesClient,
+    WorkerPoolsClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ServicesClient),
+    modify_default_endpoint_template(WorkerPoolsClient),
 )
 @mock.patch.object(
-    ServicesAsyncClient,
+    WorkerPoolsAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ServicesAsyncClient),
+    modify_default_endpoint_template(WorkerPoolsAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_services_client_mtls_env_auto(
+def test_worker_pools_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -739,16 +759,16 @@ def test_services_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize("client_class", [ServicesClient, ServicesAsyncClient])
+@pytest.mark.parametrize("client_class", [WorkerPoolsClient, WorkerPoolsAsyncClient])
 @mock.patch.object(
-    ServicesClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ServicesClient)
+    WorkerPoolsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(WorkerPoolsClient)
 )
 @mock.patch.object(
-    ServicesAsyncClient,
+    WorkerPoolsAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(ServicesAsyncClient),
+    modify_default_endpoint(WorkerPoolsAsyncClient),
 )
-def test_services_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_worker_pools_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -839,26 +859,26 @@ def test_services_client_get_mtls_endpoint_and_cert_source(client_class):
         )
 
 
-@pytest.mark.parametrize("client_class", [ServicesClient, ServicesAsyncClient])
+@pytest.mark.parametrize("client_class", [WorkerPoolsClient, WorkerPoolsAsyncClient])
 @mock.patch.object(
-    ServicesClient,
+    WorkerPoolsClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ServicesClient),
+    modify_default_endpoint_template(WorkerPoolsClient),
 )
 @mock.patch.object(
-    ServicesAsyncClient,
+    WorkerPoolsAsyncClient,
     "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ServicesAsyncClient),
+    modify_default_endpoint_template(WorkerPoolsAsyncClient),
 )
-def test_services_client_client_api_endpoint(client_class):
+def test_worker_pools_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
-    default_universe = ServicesClient._DEFAULT_UNIVERSE
-    default_endpoint = ServicesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    default_universe = WorkerPoolsClient._DEFAULT_UNIVERSE
+    default_endpoint = WorkerPoolsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=default_universe
     )
     mock_universe = "bar.com"
-    mock_endpoint = ServicesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+    mock_endpoint = WorkerPoolsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
         UNIVERSE_DOMAIN=mock_universe
     )
 
@@ -926,12 +946,16 @@ def test_services_client_client_api_endpoint(client_class):
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (ServicesClient, transports.ServicesGrpcTransport, "grpc"),
-        (ServicesAsyncClient, transports.ServicesGrpcAsyncIOTransport, "grpc_asyncio"),
-        (ServicesClient, transports.ServicesRestTransport, "rest"),
+        (WorkerPoolsClient, transports.WorkerPoolsGrpcTransport, "grpc"),
+        (
+            WorkerPoolsAsyncClient,
+            transports.WorkerPoolsGrpcAsyncIOTransport,
+            "grpc_asyncio",
+        ),
+        (WorkerPoolsClient, transports.WorkerPoolsRestTransport, "rest"),
     ],
 )
-def test_services_client_client_options_scopes(
+def test_worker_pools_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -959,17 +983,17 @@ def test_services_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (ServicesClient, transports.ServicesGrpcTransport, "grpc", grpc_helpers),
+        (WorkerPoolsClient, transports.WorkerPoolsGrpcTransport, "grpc", grpc_helpers),
         (
-            ServicesAsyncClient,
-            transports.ServicesGrpcAsyncIOTransport,
+            WorkerPoolsAsyncClient,
+            transports.WorkerPoolsGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
-        (ServicesClient, transports.ServicesRestTransport, "rest", None),
+        (WorkerPoolsClient, transports.WorkerPoolsRestTransport, "rest", None),
     ],
 )
-def test_services_client_client_options_credentials_file(
+def test_worker_pools_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -993,12 +1017,12 @@ def test_services_client_client_options_credentials_file(
         )
 
 
-def test_services_client_client_options_from_dict():
+def test_worker_pools_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.run_v2.services.services.transports.ServicesGrpcTransport.__init__"
+        "google.cloud.run_v2.services.worker_pools.transports.WorkerPoolsGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = ServicesClient(client_options={"api_endpoint": "squid.clam.whelk"})
+        client = WorkerPoolsClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -1015,16 +1039,16 @@ def test_services_client_client_options_from_dict():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (ServicesClient, transports.ServicesGrpcTransport, "grpc", grpc_helpers),
+        (WorkerPoolsClient, transports.WorkerPoolsGrpcTransport, "grpc", grpc_helpers),
         (
-            ServicesAsyncClient,
-            transports.ServicesGrpcAsyncIOTransport,
+            WorkerPoolsAsyncClient,
+            transports.WorkerPoolsGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_services_client_create_channel_credentials_file(
+def test_worker_pools_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -1079,12 +1103,12 @@ def test_services_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcr_service.CreateServiceRequest,
+        gcr_worker_pool.CreateWorkerPoolRequest,
         dict,
     ],
 )
-def test_create_service(request_type, transport: str = "grpc"):
-    client = ServicesClient(
+def test_create_worker_pool(request_type, transport: str = "grpc"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1094,25 +1118,27 @@ def test_create_service(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.create_service(request)
+        response = client.create_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcr_service.CreateServiceRequest()
+        request = gcr_worker_pool.CreateWorkerPoolRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
-def test_create_service_non_empty_request_with_auto_populated_field():
+def test_create_worker_pool_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1120,30 +1146,32 @@ def test_create_service_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcr_service.CreateServiceRequest(
+    request = gcr_worker_pool.CreateWorkerPoolRequest(
         parent="parent_value",
-        service_id="service_id_value",
+        worker_pool_id="worker_pool_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.create_service(request=request)
+        client.create_worker_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcr_service.CreateServiceRequest(
+        assert args[0] == gcr_worker_pool.CreateWorkerPoolRequest(
             parent="parent_value",
-            service_id="service_id_value",
+            worker_pool_id="worker_pool_id_value",
         )
 
 
-def test_create_service_use_cached_wrapped_rpc():
+def test_create_worker_pool_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1153,16 +1181,20 @@ def test_create_service_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.create_service in client._transport._wrapped_methods
+        assert (
+            client._transport.create_worker_pool in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_service] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.create_worker_pool
+        ] = mock_rpc
         request = {}
-        client.create_service(request)
+        client.create_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -1172,7 +1204,7 @@ def test_create_service_use_cached_wrapped_rpc():
         # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
-        client.create_service(request)
+        client.create_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1180,13 +1212,13 @@ def test_create_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_service_async_use_cached_wrapped_rpc(
+async def test_create_worker_pool_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ServicesAsyncClient(
+        client = WorkerPoolsAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -1197,7 +1229,7 @@ async def test_create_service_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.create_service
+            client._client._transport.create_worker_pool
             in client._client._transport._wrapped_methods
         )
 
@@ -1205,11 +1237,11 @@ async def test_create_service_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.create_service
+            client._client._transport.create_worker_pool
         ] = mock_rpc
 
         request = {}
-        await client.create_service(request)
+        await client.create_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -1219,7 +1251,7 @@ async def test_create_service_async_use_cached_wrapped_rpc(
         # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
-        await client.create_service(request)
+        await client.create_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1227,10 +1259,11 @@ async def test_create_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_service_async(
-    transport: str = "grpc_asyncio", request_type=gcr_service.CreateServiceRequest
+async def test_create_worker_pool_async(
+    transport: str = "grpc_asyncio",
+    request_type=gcr_worker_pool.CreateWorkerPoolRequest,
 ):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -1240,17 +1273,19 @@ async def test_create_service_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.create_service(request)
+        response = await client.create_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcr_service.CreateServiceRequest()
+        request = gcr_worker_pool.CreateWorkerPoolRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1258,25 +1293,27 @@ async def test_create_service_async(
 
 
 @pytest.mark.asyncio
-async def test_create_service_async_from_dict():
-    await test_create_service_async(request_type=dict)
+async def test_create_worker_pool_async_from_dict():
+    await test_create_worker_pool_async(request_type=dict)
 
 
-def test_create_service_flattened():
-    client = ServicesClient(
+def test_create_worker_pool_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.create_service(
+        client.create_worker_pool(
             parent="parent_value",
-            service=gcr_service.Service(name="name_value"),
-            service_id="service_id_value",
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
+            worker_pool_id="worker_pool_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1286,38 +1323,40 @@ def test_create_service_flattened():
         arg = args[0].parent
         mock_val = "parent_value"
         assert arg == mock_val
-        arg = args[0].service
-        mock_val = gcr_service.Service(name="name_value")
+        arg = args[0].worker_pool
+        mock_val = gcr_worker_pool.WorkerPool(name="name_value")
         assert arg == mock_val
-        arg = args[0].service_id
-        mock_val = "service_id_value"
+        arg = args[0].worker_pool_id
+        mock_val = "worker_pool_id_value"
         assert arg == mock_val
 
 
-def test_create_service_flattened_error():
-    client = ServicesClient(
+def test_create_worker_pool_flattened_error():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.create_service(
-            gcr_service.CreateServiceRequest(),
+        client.create_worker_pool(
+            gcr_worker_pool.CreateWorkerPoolRequest(),
             parent="parent_value",
-            service=gcr_service.Service(name="name_value"),
-            service_id="service_id_value",
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
+            worker_pool_id="worker_pool_id_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_create_service_flattened_async():
-    client = ServicesAsyncClient(
+async def test_create_worker_pool_flattened_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1326,10 +1365,10 @@ async def test_create_service_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.create_service(
+        response = await client.create_worker_pool(
             parent="parent_value",
-            service=gcr_service.Service(name="name_value"),
-            service_id="service_id_value",
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
+            worker_pool_id="worker_pool_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1339,40 +1378,40 @@ async def test_create_service_flattened_async():
         arg = args[0].parent
         mock_val = "parent_value"
         assert arg == mock_val
-        arg = args[0].service
-        mock_val = gcr_service.Service(name="name_value")
+        arg = args[0].worker_pool
+        mock_val = gcr_worker_pool.WorkerPool(name="name_value")
         assert arg == mock_val
-        arg = args[0].service_id
-        mock_val = "service_id_value"
+        arg = args[0].worker_pool_id
+        mock_val = "worker_pool_id_value"
         assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_create_service_flattened_error_async():
-    client = ServicesAsyncClient(
+async def test_create_worker_pool_flattened_error_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.create_service(
-            gcr_service.CreateServiceRequest(),
+        await client.create_worker_pool(
+            gcr_worker_pool.CreateWorkerPoolRequest(),
             parent="parent_value",
-            service=gcr_service.Service(name="name_value"),
-            service_id="service_id_value",
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
+            worker_pool_id="worker_pool_id_value",
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetServiceRequest,
+        worker_pool.GetWorkerPoolRequest,
         dict,
     ],
 )
-def test_get_service(request_type, transport: str = "grpc"):
-    client = ServicesClient(
+def test_get_worker_pool(request_type, transport: str = "grpc"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1382,9 +1421,9 @@ def test_get_service(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = service.Service(
+        call.return_value = worker_pool.WorkerPool(
             name="name_value",
             description="description_value",
             uid="uid_value",
@@ -1393,30 +1432,25 @@ def test_get_service(request_type, transport: str = "grpc"):
             last_modifier="last_modifier_value",
             client="client_value",
             client_version="client_version_value",
-            ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
-            invoker_iam_disabled=True,
-            default_uri_disabled=True,
-            urls=["urls_value"],
-            custom_audiences=["custom_audiences_value"],
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
-            uri="uri_value",
+            custom_audiences=["custom_audiences_value"],
             satisfies_pzs=True,
             reconciling=True,
             etag="etag_value",
         )
-        response = client.get_service(request)
+        response = client.get_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = service.GetServiceRequest()
+        request = worker_pool.GetWorkerPoolRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, service.Service)
+    assert isinstance(response, worker_pool.WorkerPool)
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.uid == "uid_value"
@@ -1425,25 +1459,20 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert response.last_modifier == "last_modifier_value"
     assert response.client == "client_value"
     assert response.client_version == "client_version_value"
-    assert response.ingress == vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
-    assert response.invoker_iam_disabled is True
-    assert response.default_uri_disabled is True
-    assert response.urls == ["urls_value"]
-    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
-    assert response.uri == "uri_value"
+    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
 
 
-def test_get_service_non_empty_request_with_auto_populated_field():
+def test_get_worker_pool_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1451,28 +1480,28 @@ def test_get_service_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = service.GetServiceRequest(
+    request = worker_pool.GetWorkerPoolRequest(
         name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.get_service(request=request)
+        client.get_worker_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetServiceRequest(
+        assert args[0] == worker_pool.GetWorkerPoolRequest(
             name="name_value",
         )
 
 
-def test_get_service_use_cached_wrapped_rpc():
+def test_get_worker_pool_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1482,21 +1511,21 @@ def test_get_service_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.get_service in client._transport._wrapped_methods
+        assert client._transport.get_worker_pool in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_service] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_worker_pool] = mock_rpc
         request = {}
-        client.get_service(request)
+        client.get_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.get_service(request)
+        client.get_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1504,13 +1533,13 @@ def test_get_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_service_async_use_cached_wrapped_rpc(
+async def test_get_worker_pool_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ServicesAsyncClient(
+        client = WorkerPoolsAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -1521,7 +1550,7 @@ async def test_get_service_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.get_service
+            client._client._transport.get_worker_pool
             in client._client._transport._wrapped_methods
         )
 
@@ -1529,16 +1558,16 @@ async def test_get_service_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.get_service
+            client._client._transport.get_worker_pool
         ] = mock_rpc
 
         request = {}
-        await client.get_service(request)
+        await client.get_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.get_service(request)
+        await client.get_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1546,10 +1575,10 @@ async def test_get_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_service_async(
-    transport: str = "grpc_asyncio", request_type=service.GetServiceRequest
+async def test_get_worker_pool_async(
+    transport: str = "grpc_asyncio", request_type=worker_pool.GetWorkerPoolRequest
 ):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -1559,10 +1588,10 @@ async def test_get_service_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.Service(
+            worker_pool.WorkerPool(
                 name="name_value",
                 description="description_value",
                 uid="uid_value",
@@ -1571,31 +1600,26 @@ async def test_get_service_async(
                 last_modifier="last_modifier_value",
                 client="client_value",
                 client_version="client_version_value",
-                ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
-                invoker_iam_disabled=True,
-                default_uri_disabled=True,
-                urls=["urls_value"],
-                custom_audiences=["custom_audiences_value"],
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
-                uri="uri_value",
+                custom_audiences=["custom_audiences_value"],
                 satisfies_pzs=True,
                 reconciling=True,
                 etag="etag_value",
             )
         )
-        response = await client.get_service(request)
+        response = await client.get_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = service.GetServiceRequest()
+        request = worker_pool.GetWorkerPoolRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, service.Service)
+    assert isinstance(response, worker_pool.WorkerPool)
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.uid == "uid_value"
@@ -1604,38 +1628,33 @@ async def test_get_service_async(
     assert response.last_modifier == "last_modifier_value"
     assert response.client == "client_value"
     assert response.client_version == "client_version_value"
-    assert response.ingress == vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
-    assert response.invoker_iam_disabled is True
-    assert response.default_uri_disabled is True
-    assert response.urls == ["urls_value"]
-    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
-    assert response.uri == "uri_value"
+    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
 
 
 @pytest.mark.asyncio
-async def test_get_service_async_from_dict():
-    await test_get_service_async(request_type=dict)
+async def test_get_worker_pool_async_from_dict():
+    await test_get_worker_pool_async(request_type=dict)
 
 
-def test_get_service_flattened():
-    client = ServicesClient(
+def test_get_worker_pool_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = service.Service()
+        call.return_value = worker_pool.WorkerPool()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_service(
+        client.get_worker_pool(
             name="name_value",
         )
 
@@ -1648,35 +1667,37 @@ def test_get_service_flattened():
         assert arg == mock_val
 
 
-def test_get_service_flattened_error():
-    client = ServicesClient(
+def test_get_worker_pool_flattened_error():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.get_service(
-            service.GetServiceRequest(),
+        client.get_worker_pool(
+            worker_pool.GetWorkerPoolRequest(),
             name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_get_service_flattened_async():
-    client = ServicesAsyncClient(
+async def test_get_worker_pool_flattened_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = service.Service()
+        call.return_value = worker_pool.WorkerPool()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.Service())
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            worker_pool.WorkerPool()
+        )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_service(
+        response = await client.get_worker_pool(
             name="name_value",
         )
 
@@ -1690,16 +1711,16 @@ async def test_get_service_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_get_service_flattened_error_async():
-    client = ServicesAsyncClient(
+async def test_get_worker_pool_flattened_error_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.get_service(
-            service.GetServiceRequest(),
+        await client.get_worker_pool(
+            worker_pool.GetWorkerPoolRequest(),
             name="name_value",
         )
 
@@ -1707,12 +1728,12 @@ async def test_get_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListServicesRequest,
+        worker_pool.ListWorkerPoolsRequest,
         dict,
     ],
 )
-def test_list_services(request_type, transport: str = "grpc"):
-    client = ServicesClient(
+def test_list_worker_pools(request_type, transport: str = "grpc"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1722,28 +1743,30 @@ def test_list_services(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = service.ListServicesResponse(
+        call.return_value = worker_pool.ListWorkerPoolsResponse(
             next_page_token="next_page_token_value",
         )
-        response = client.list_services(request)
+        response = client.list_worker_pools(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = service.ListServicesRequest()
+        request = worker_pool.ListWorkerPoolsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListServicesPager)
+    assert isinstance(response, pagers.ListWorkerPoolsPager)
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_services_non_empty_request_with_auto_populated_field():
+def test_list_worker_pools_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -1751,30 +1774,32 @@ def test_list_services_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = service.ListServicesRequest(
+    request = worker_pool.ListWorkerPoolsRequest(
         parent="parent_value",
         page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.list_services(request=request)
+        client.list_worker_pools(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListServicesRequest(
+        assert args[0] == worker_pool.ListWorkerPoolsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
 
 
-def test_list_services_use_cached_wrapped_rpc():
+def test_list_worker_pools_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -1784,21 +1809,23 @@ def test_list_services_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.list_services in client._transport._wrapped_methods
+        assert client._transport.list_worker_pools in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_services] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.list_worker_pools
+        ] = mock_rpc
         request = {}
-        client.list_services(request)
+        client.list_worker_pools(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.list_services(request)
+        client.list_worker_pools(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1806,13 +1833,13 @@ def test_list_services_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_services_async_use_cached_wrapped_rpc(
+async def test_list_worker_pools_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ServicesAsyncClient(
+        client = WorkerPoolsAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -1823,7 +1850,7 @@ async def test_list_services_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.list_services
+            client._client._transport.list_worker_pools
             in client._client._transport._wrapped_methods
         )
 
@@ -1831,16 +1858,16 @@ async def test_list_services_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.list_services
+            client._client._transport.list_worker_pools
         ] = mock_rpc
 
         request = {}
-        await client.list_services(request)
+        await client.list_worker_pools(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        await client.list_services(request)
+        await client.list_worker_pools(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -1848,10 +1875,10 @@ async def test_list_services_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_services_async(
-    transport: str = "grpc_asyncio", request_type=service.ListServicesRequest
+async def test_list_worker_pools_async(
+    transport: str = "grpc_asyncio", request_type=worker_pool.ListWorkerPoolsRequest
 ):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -1861,43 +1888,47 @@ async def test_list_services_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListServicesResponse(
+            worker_pool.ListWorkerPoolsResponse(
                 next_page_token="next_page_token_value",
             )
         )
-        response = await client.list_services(request)
+        response = await client.list_worker_pools(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = service.ListServicesRequest()
+        request = worker_pool.ListWorkerPoolsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListServicesAsyncPager)
+    assert isinstance(response, pagers.ListWorkerPoolsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
-async def test_list_services_async_from_dict():
-    await test_list_services_async(request_type=dict)
+async def test_list_worker_pools_async_from_dict():
+    await test_list_worker_pools_async(request_type=dict)
 
 
-def test_list_services_flattened():
-    client = ServicesClient(
+def test_list_worker_pools_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = service.ListServicesResponse()
+        call.return_value = worker_pool.ListWorkerPoolsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_services(
+        client.list_worker_pools(
             parent="parent_value",
         )
 
@@ -1910,37 +1941,39 @@ def test_list_services_flattened():
         assert arg == mock_val
 
 
-def test_list_services_flattened_error():
-    client = ServicesClient(
+def test_list_worker_pools_flattened_error():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.list_services(
-            service.ListServicesRequest(),
+        client.list_worker_pools(
+            worker_pool.ListWorkerPoolsRequest(),
             parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_list_services_flattened_async():
-    client = ServicesAsyncClient(
+async def test_list_worker_pools_flattened_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = service.ListServicesResponse()
+        call.return_value = worker_pool.ListWorkerPoolsResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListServicesResponse()
+            worker_pool.ListWorkerPoolsResponse()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_services(
+        response = await client.list_worker_pools(
             parent="parent_value",
         )
 
@@ -1954,52 +1987,54 @@ async def test_list_services_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_list_services_flattened_error_async():
-    client = ServicesAsyncClient(
+async def test_list_worker_pools_flattened_error_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.list_services(
-            service.ListServicesRequest(),
+        await client.list_worker_pools(
+            worker_pool.ListWorkerPoolsRequest(),
             parent="parent_value",
         )
 
 
-def test_list_services_pager(transport_name: str = "grpc"):
-    client = ServicesClient(
+def test_list_worker_pools_pager(transport_name: str = "grpc"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="abc",
             ),
-            service.ListServicesResponse(
-                services=[],
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[],
                 next_page_token="def",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="ghi",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
             ),
             RuntimeError,
@@ -2008,7 +2043,7 @@ def test_list_services_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        pager = client.list_services(request={}, retry=retry, timeout=timeout)
+        pager = client.list_worker_pools(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -2016,89 +2051,93 @@ def test_list_services_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, service.Service) for i in results)
+        assert all(isinstance(i, worker_pool.WorkerPool) for i in results)
 
 
-def test_list_services_pages(transport_name: str = "grpc"):
-    client = ServicesClient(
+def test_list_worker_pools_pages(transport_name: str = "grpc"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="abc",
             ),
-            service.ListServicesResponse(
-                services=[],
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[],
                 next_page_token="def",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="ghi",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
             ),
             RuntimeError,
         )
-        pages = list(client.list_services(request={}).pages)
+        pages = list(client.list_worker_pools(request={}).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
-async def test_list_services_async_pager():
-    client = ServicesAsyncClient(
+async def test_list_worker_pools_async_pager():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_services), "__call__", new_callable=mock.AsyncMock
+        type(client.transport.list_worker_pools),
+        "__call__",
+        new_callable=mock.AsyncMock,
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="abc",
             ),
-            service.ListServicesResponse(
-                services=[],
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[],
                 next_page_token="def",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="ghi",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_services(
+        async_pager = await client.list_worker_pools(
             request={},
         )
         assert async_pager.next_page_token == "abc"
@@ -2107,43 +2146,45 @@ async def test_list_services_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, service.Service) for i in responses)
+        assert all(isinstance(i, worker_pool.WorkerPool) for i in responses)
 
 
 @pytest.mark.asyncio
-async def test_list_services_async_pages():
-    client = ServicesAsyncClient(
+async def test_list_worker_pools_async_pages():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_services), "__call__", new_callable=mock.AsyncMock
+        type(client.transport.list_worker_pools),
+        "__call__",
+        new_callable=mock.AsyncMock,
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="abc",
             ),
-            service.ListServicesResponse(
-                services=[],
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[],
                 next_page_token="def",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="ghi",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
             ),
             RuntimeError,
@@ -2152,7 +2193,7 @@ async def test_list_services_async_pages():
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
         async for page_ in (  # pragma: no branch
-            await client.list_services(request={})
+            await client.list_worker_pools(request={})
         ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -2162,12 +2203,12 @@ async def test_list_services_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcr_service.UpdateServiceRequest,
+        gcr_worker_pool.UpdateWorkerPoolRequest,
         dict,
     ],
 )
-def test_update_service(request_type, transport: str = "grpc"):
-    client = ServicesClient(
+def test_update_worker_pool(request_type, transport: str = "grpc"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2177,25 +2218,27 @@ def test_update_service(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.update_service(request)
+        response = client.update_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = gcr_service.UpdateServiceRequest()
+        request = gcr_worker_pool.UpdateWorkerPoolRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
-def test_update_service_non_empty_request_with_auto_populated_field():
+def test_update_worker_pool_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2203,24 +2246,26 @@ def test_update_service_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = gcr_service.UpdateServiceRequest()
+    request = gcr_worker_pool.UpdateWorkerPoolRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.update_service(request=request)
+        client.update_worker_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcr_service.UpdateServiceRequest()
+        assert args[0] == gcr_worker_pool.UpdateWorkerPoolRequest()
 
 
-def test_update_service_use_cached_wrapped_rpc():
+def test_update_worker_pool_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2230,16 +2275,20 @@ def test_update_service_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.update_service in client._transport._wrapped_methods
+        assert (
+            client._transport.update_worker_pool in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_service] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.update_worker_pool
+        ] = mock_rpc
         request = {}
-        client.update_service(request)
+        client.update_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -2249,7 +2298,7 @@ def test_update_service_use_cached_wrapped_rpc():
         # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
-        client.update_service(request)
+        client.update_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2257,13 +2306,13 @@ def test_update_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_service_async_use_cached_wrapped_rpc(
+async def test_update_worker_pool_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ServicesAsyncClient(
+        client = WorkerPoolsAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -2274,7 +2323,7 @@ async def test_update_service_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.update_service
+            client._client._transport.update_worker_pool
             in client._client._transport._wrapped_methods
         )
 
@@ -2282,11 +2331,11 @@ async def test_update_service_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.update_service
+            client._client._transport.update_worker_pool
         ] = mock_rpc
 
         request = {}
-        await client.update_service(request)
+        await client.update_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -2296,7 +2345,7 @@ async def test_update_service_async_use_cached_wrapped_rpc(
         # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
-        await client.update_service(request)
+        await client.update_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2304,10 +2353,11 @@ async def test_update_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_service_async(
-    transport: str = "grpc_asyncio", request_type=gcr_service.UpdateServiceRequest
+async def test_update_worker_pool_async(
+    transport: str = "grpc_asyncio",
+    request_type=gcr_worker_pool.UpdateWorkerPoolRequest,
 ):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -2317,17 +2367,19 @@ async def test_update_service_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.update_service(request)
+        response = await client.update_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = gcr_service.UpdateServiceRequest()
+        request = gcr_worker_pool.UpdateWorkerPoolRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2335,23 +2387,25 @@ async def test_update_service_async(
 
 
 @pytest.mark.asyncio
-async def test_update_service_async_from_dict():
-    await test_update_service_async(request_type=dict)
+async def test_update_worker_pool_async_from_dict():
+    await test_update_worker_pool_async(request_type=dict)
 
 
-def test_update_service_flattened():
-    client = ServicesClient(
+def test_update_worker_pool_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_service(
-            service=gcr_service.Service(name="name_value"),
+        client.update_worker_pool(
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2359,37 +2413,39 @@ def test_update_service_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        arg = args[0].service
-        mock_val = gcr_service.Service(name="name_value")
+        arg = args[0].worker_pool
+        mock_val = gcr_worker_pool.WorkerPool(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
         assert arg == mock_val
 
 
-def test_update_service_flattened_error():
-    client = ServicesClient(
+def test_update_worker_pool_flattened_error():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update_service(
-            gcr_service.UpdateServiceRequest(),
-            service=gcr_service.Service(name="name_value"),
+        client.update_worker_pool(
+            gcr_worker_pool.UpdateWorkerPoolRequest(),
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
-async def test_update_service_flattened_async():
-    client = ServicesAsyncClient(
+async def test_update_worker_pool_flattened_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2398,8 +2454,8 @@ async def test_update_service_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.update_service(
-            service=gcr_service.Service(name="name_value"),
+        response = await client.update_worker_pool(
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2407,8 +2463,8 @@ async def test_update_service_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        arg = args[0].service
-        mock_val = gcr_service.Service(name="name_value")
+        arg = args[0].worker_pool
+        mock_val = gcr_worker_pool.WorkerPool(name="name_value")
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2416,17 +2472,17 @@ async def test_update_service_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_update_service_flattened_error_async():
-    client = ServicesAsyncClient(
+async def test_update_worker_pool_flattened_error_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.update_service(
-            gcr_service.UpdateServiceRequest(),
-            service=gcr_service.Service(name="name_value"),
+        await client.update_worker_pool(
+            gcr_worker_pool.UpdateWorkerPoolRequest(),
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2434,12 +2490,12 @@ async def test_update_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteServiceRequest,
+        worker_pool.DeleteWorkerPoolRequest,
         dict,
     ],
 )
-def test_delete_service(request_type, transport: str = "grpc"):
-    client = ServicesClient(
+def test_delete_worker_pool(request_type, transport: str = "grpc"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2449,25 +2505,27 @@ def test_delete_service(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.delete_service(request)
+        response = client.delete_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = service.DeleteServiceRequest()
+        request = worker_pool.DeleteWorkerPoolRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
-def test_delete_service_non_empty_request_with_auto_populated_field():
+def test_delete_worker_pool_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2475,30 +2533,32 @@ def test_delete_service_non_empty_request_with_auto_populated_field():
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = service.DeleteServiceRequest(
+    request = worker_pool.DeleteWorkerPoolRequest(
         name="name_value",
         etag="etag_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
         call.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client.delete_service(request=request)
+        client.delete_worker_pool(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteServiceRequest(
+        assert args[0] == worker_pool.DeleteWorkerPoolRequest(
             name="name_value",
             etag="etag_value",
         )
 
 
-def test_delete_service_use_cached_wrapped_rpc():
+def test_delete_worker_pool_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2508,16 +2568,20 @@ def test_delete_service_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.delete_service in client._transport._wrapped_methods
+        assert (
+            client._transport.delete_worker_pool in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_service] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.delete_worker_pool
+        ] = mock_rpc
         request = {}
-        client.delete_service(request)
+        client.delete_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -2527,7 +2591,7 @@ def test_delete_service_use_cached_wrapped_rpc():
         # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
-        client.delete_service(request)
+        client.delete_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2535,13 +2599,13 @@ def test_delete_service_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_service_async_use_cached_wrapped_rpc(
+async def test_delete_worker_pool_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ServicesAsyncClient(
+        client = WorkerPoolsAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -2552,7 +2616,7 @@ async def test_delete_service_async_use_cached_wrapped_rpc(
 
         # Ensure method has been cached
         assert (
-            client._client._transport.delete_service
+            client._client._transport.delete_worker_pool
             in client._client._transport._wrapped_methods
         )
 
@@ -2560,11 +2624,11 @@ async def test_delete_service_async_use_cached_wrapped_rpc(
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
         client._client._transport._wrapped_methods[
-            client._client._transport.delete_service
+            client._client._transport.delete_worker_pool
         ] = mock_rpc
 
         request = {}
-        await client.delete_service(request)
+        await client.delete_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -2574,7 +2638,7 @@ async def test_delete_service_async_use_cached_wrapped_rpc(
         # Subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
-        await client.delete_service(request)
+        await client.delete_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
@@ -2582,10 +2646,10 @@ async def test_delete_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_service_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteServiceRequest
+async def test_delete_worker_pool_async(
+    transport: str = "grpc_asyncio", request_type=worker_pool.DeleteWorkerPoolRequest
 ):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -2595,17 +2659,19 @@ async def test_delete_service_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.delete_service(request)
+        response = await client.delete_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = service.DeleteServiceRequest()
+        request = worker_pool.DeleteWorkerPoolRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2613,22 +2679,24 @@ async def test_delete_service_async(
 
 
 @pytest.mark.asyncio
-async def test_delete_service_async_from_dict():
-    await test_delete_service_async(request_type=dict)
+async def test_delete_worker_pool_async_from_dict():
+    await test_delete_worker_pool_async(request_type=dict)
 
 
-def test_delete_service_flattened():
-    client = ServicesClient(
+def test_delete_worker_pool_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_service(
+        client.delete_worker_pool(
             name="name_value",
         )
 
@@ -2641,28 +2709,30 @@ def test_delete_service_flattened():
         assert arg == mock_val
 
 
-def test_delete_service_flattened_error():
-    client = ServicesClient(
+def test_delete_worker_pool_flattened_error():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_service(
-            service.DeleteServiceRequest(),
+        client.delete_worker_pool(
+            worker_pool.DeleteWorkerPoolRequest(),
             name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_delete_service_flattened_async():
-    client = ServicesAsyncClient(
+async def test_delete_worker_pool_flattened_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2671,7 +2741,7 @@ async def test_delete_service_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_service(
+        response = await client.delete_worker_pool(
             name="name_value",
         )
 
@@ -2685,16 +2755,16 @@ async def test_delete_service_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_delete_service_flattened_error_async():
-    client = ServicesAsyncClient(
+async def test_delete_worker_pool_flattened_error_async():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.delete_service(
-            service.DeleteServiceRequest(),
+        await client.delete_worker_pool(
+            worker_pool.DeleteWorkerPoolRequest(),
             name="name_value",
         )
 
@@ -2707,7 +2777,7 @@ async def test_delete_service_flattened_error_async():
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2740,7 +2810,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 def test_get_iam_policy_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -2769,7 +2839,7 @@ def test_get_iam_policy_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -2807,7 +2877,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ServicesAsyncClient(
+        client = WorkerPoolsAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -2846,7 +2916,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -2884,7 +2954,7 @@ async def test_get_iam_policy_async_from_dict():
 
 
 def test_get_iam_policy_field_headers():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -2914,7 +2984,7 @@ def test_get_iam_policy_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
@@ -2943,7 +3013,7 @@ async def test_get_iam_policy_field_headers_async():
 
 
 def test_get_iam_policy_from_dict_foreign():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2967,7 +3037,7 @@ def test_get_iam_policy_from_dict_foreign():
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3000,7 +3070,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 def test_set_iam_policy_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -3029,7 +3099,7 @@ def test_set_iam_policy_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -3067,7 +3137,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ServicesAsyncClient(
+        client = WorkerPoolsAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -3106,7 +3176,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -3144,7 +3214,7 @@ async def test_set_iam_policy_async_from_dict():
 
 
 def test_set_iam_policy_field_headers():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -3174,7 +3244,7 @@ def test_set_iam_policy_field_headers():
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
@@ -3203,7 +3273,7 @@ async def test_set_iam_policy_field_headers_async():
 
 
 def test_set_iam_policy_from_dict_foreign():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3228,7 +3298,7 @@ def test_set_iam_policy_from_dict_foreign():
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3261,7 +3331,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -3292,7 +3362,7 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="grpc",
         )
@@ -3334,7 +3404,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
-        client = ServicesAsyncClient(
+        client = WorkerPoolsAsyncClient(
             credentials=async_anonymous_credentials(),
             transport=transport,
         )
@@ -3374,7 +3444,7 @@ async def test_test_iam_permissions_async(
     transport: str = "grpc_asyncio",
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -3412,7 +3482,7 @@ async def test_test_iam_permissions_async_from_dict():
 
 
 def test_test_iam_permissions_field_headers():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -3444,7 +3514,7 @@ def test_test_iam_permissions_field_headers():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
@@ -3477,7 +3547,7 @@ async def test_test_iam_permissions_field_headers_async():
 
 
 def test_test_iam_permissions_from_dict_foreign():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3495,11 +3565,11 @@ def test_test_iam_permissions_from_dict_foreign():
         call.assert_called()
 
 
-def test_create_service_rest_use_cached_wrapped_rpc():
+def test_create_worker_pool_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -3509,17 +3579,21 @@ def test_create_service_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.create_service in client._transport._wrapped_methods
+        assert (
+            client._transport.create_worker_pool in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.create_service] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.create_worker_pool
+        ] = mock_rpc
 
         request = {}
-        client.create_service(request)
+        client.create_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -3528,21 +3602,21 @@ def test_create_service_rest_use_cached_wrapped_rpc():
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
-        client.create_service(request)
+        client.create_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_create_service_rest_required_fields(
-    request_type=gcr_service.CreateServiceRequest,
+def test_create_worker_pool_rest_required_fields(
+    request_type=gcr_worker_pool.CreateWorkerPoolRequest,
 ):
-    transport_class = transports.ServicesRestTransport
+    transport_class = transports.WorkerPoolsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
-    request_init["service_id"] = ""
+    request_init["worker_pool_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3550,28 +3624,28 @@ def test_create_service_rest_required_fields(
     )
 
     # verify fields with default values are dropped
-    assert "serviceId" not in jsonified_request
+    assert "workerPoolId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).create_service._get_unset_required_fields(jsonified_request)
+    ).create_worker_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "serviceId" in jsonified_request
-    assert jsonified_request["serviceId"] == request_init["service_id"]
+    assert "workerPoolId" in jsonified_request
+    assert jsonified_request["workerPoolId"] == request_init["worker_pool_id"]
 
     jsonified_request["parent"] = "parent_value"
-    jsonified_request["serviceId"] = "service_id_value"
+    jsonified_request["workerPoolId"] = "worker_pool_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).create_service._get_unset_required_fields(jsonified_request)
+    ).create_worker_pool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "service_id",
             "validate_only",
+            "worker_pool_id",
         )
     )
     jsonified_request.update(unset_fields)
@@ -3579,10 +3653,10 @@ def test_create_service_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
-    assert "serviceId" in jsonified_request
-    assert jsonified_request["serviceId"] == "service_id_value"
+    assert "workerPoolId" in jsonified_request
+    assert jsonified_request["workerPoolId"] == "worker_pool_id_value"
 
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3615,11 +3689,11 @@ def test_create_service_rest_required_fields(
             req.return_value = response_value
             req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-            response = client.create_service(request)
+            response = client.create_worker_pool(request)
 
             expected_params = [
                 (
-                    "serviceId",
+                    "workerPoolId",
                     "",
                 ),
                 ("$alt", "json;enum-encoding=int"),
@@ -3628,31 +3702,31 @@ def test_create_service_rest_required_fields(
             assert expected_params == actual_params
 
 
-def test_create_service_rest_unset_required_fields():
-    transport = transports.ServicesRestTransport(
+def test_create_worker_pool_rest_unset_required_fields():
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.create_service._get_unset_required_fields({})
+    unset_fields = transport.create_worker_pool._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
-                "serviceId",
                 "validateOnly",
+                "workerPoolId",
             )
         )
         & set(
             (
                 "parent",
-                "service",
-                "serviceId",
+                "workerPool",
+                "workerPoolId",
             )
         )
     )
 
 
-def test_create_service_rest_flattened():
-    client = ServicesClient(
+def test_create_worker_pool_rest_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3668,8 +3742,8 @@ def test_create_service_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            service=gcr_service.Service(name="name_value"),
-            service_id="service_id_value",
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
+            worker_pool_id="worker_pool_id_value",
         )
         mock_args.update(sample_request)
 
@@ -3681,20 +3755,21 @@ def test_create_service_rest_flattened():
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-        client.create_service(**mock_args)
+        client.create_worker_pool(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{parent=projects/*/locations/*}/services" % client.transport._host,
+            "%s/v2/{parent=projects/*/locations/*}/workerPools"
+            % client.transport._host,
             args[1],
         )
 
 
-def test_create_service_rest_flattened_error(transport: str = "rest"):
-    client = ServicesClient(
+def test_create_worker_pool_rest_flattened_error(transport: str = "rest"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3702,19 +3777,19 @@ def test_create_service_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.create_service(
-            gcr_service.CreateServiceRequest(),
+        client.create_worker_pool(
+            gcr_worker_pool.CreateWorkerPoolRequest(),
             parent="parent_value",
-            service=gcr_service.Service(name="name_value"),
-            service_id="service_id_value",
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
+            worker_pool_id="worker_pool_id_value",
         )
 
 
-def test_get_service_rest_use_cached_wrapped_rpc():
+def test_get_worker_pool_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -3724,30 +3799,32 @@ def test_get_service_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.get_service in client._transport._wrapped_methods
+        assert client._transport.get_worker_pool in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.get_service] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_worker_pool] = mock_rpc
 
         request = {}
-        client.get_service(request)
+        client.get_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.get_service(request)
+        client.get_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_get_service_rest_required_fields(request_type=service.GetServiceRequest):
-    transport_class = transports.ServicesRestTransport
+def test_get_worker_pool_rest_required_fields(
+    request_type=worker_pool.GetWorkerPoolRequest,
+):
+    transport_class = transports.WorkerPoolsRestTransport
 
     request_init = {}
     request_init["name"] = ""
@@ -3761,7 +3838,7 @@ def test_get_service_rest_required_fields(request_type=service.GetServiceRequest
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).get_service._get_unset_required_fields(jsonified_request)
+    ).get_worker_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3770,21 +3847,21 @@ def test_get_service_rest_required_fields(request_type=service.GetServiceRequest
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).get_service._get_unset_required_fields(jsonified_request)
+    ).get_worker_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == "name_value"
 
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = service.Service()
+    return_value = worker_pool.WorkerPool()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3805,31 +3882,31 @@ def test_get_service_rest_required_fields(request_type=service.GetServiceRequest
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = service.Service.pb(return_value)
+            return_value = worker_pool.WorkerPool.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
             req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-            response = client.get_service(request)
+            response = client.get_worker_pool(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_get_service_rest_unset_required_fields():
-    transport = transports.ServicesRestTransport(
+def test_get_worker_pool_rest_unset_required_fields():
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.get_service._get_unset_required_fields({})
+    unset_fields = transport.get_worker_pool._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-def test_get_service_rest_flattened():
-    client = ServicesClient(
+def test_get_worker_pool_rest_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3837,10 +3914,12 @@ def test_get_service_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = service.Service()
+        return_value = worker_pool.WorkerPool()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "projects/sample1/locations/sample2/services/sample3"}
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/workerPools/sample3"
+        }
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -3852,26 +3931,27 @@ def test_get_service_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = service.Service.pb(return_value)
+        return_value = worker_pool.WorkerPool.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-        client.get_service(**mock_args)
+        client.get_worker_pool(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{name=projects/*/locations/*/services/*}" % client.transport._host,
+            "%s/v2/{name=projects/*/locations/*/workerPools/*}"
+            % client.transport._host,
             args[1],
         )
 
 
-def test_get_service_rest_flattened_error(transport: str = "rest"):
-    client = ServicesClient(
+def test_get_worker_pool_rest_flattened_error(transport: str = "rest"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3879,17 +3959,17 @@ def test_get_service_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.get_service(
-            service.GetServiceRequest(),
+        client.get_worker_pool(
+            worker_pool.GetWorkerPoolRequest(),
             name="name_value",
         )
 
 
-def test_list_services_rest_use_cached_wrapped_rpc():
+def test_list_worker_pools_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -3899,30 +3979,34 @@ def test_list_services_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.list_services in client._transport._wrapped_methods
+        assert client._transport.list_worker_pools in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.list_services] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.list_worker_pools
+        ] = mock_rpc
 
         request = {}
-        client.list_services(request)
+        client.list_worker_pools(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
 
-        client.list_services(request)
+        client.list_worker_pools(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_list_services_rest_required_fields(request_type=service.ListServicesRequest):
-    transport_class = transports.ServicesRestTransport
+def test_list_worker_pools_rest_required_fields(
+    request_type=worker_pool.ListWorkerPoolsRequest,
+):
+    transport_class = transports.WorkerPoolsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
@@ -3936,7 +4020,7 @@ def test_list_services_rest_required_fields(request_type=service.ListServicesReq
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_services._get_unset_required_fields(jsonified_request)
+    ).list_worker_pools._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3945,7 +4029,7 @@ def test_list_services_rest_required_fields(request_type=service.ListServicesReq
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_services._get_unset_required_fields(jsonified_request)
+    ).list_worker_pools._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -3960,14 +4044,14 @@ def test_list_services_rest_required_fields(request_type=service.ListServicesReq
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
 
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = service.ListServicesResponse()
+    return_value = worker_pool.ListWorkerPoolsResponse()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3988,26 +4072,26 @@ def test_list_services_rest_required_fields(request_type=service.ListServicesReq
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = service.ListServicesResponse.pb(return_value)
+            return_value = worker_pool.ListWorkerPoolsResponse.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
             req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-            response = client.list_services(request)
+            response = client.list_worker_pools(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_list_services_rest_unset_required_fields():
-    transport = transports.ServicesRestTransport(
+def test_list_worker_pools_rest_unset_required_fields():
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.list_services._get_unset_required_fields({})
+    unset_fields = transport.list_worker_pools._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
@@ -4020,8 +4104,8 @@ def test_list_services_rest_unset_required_fields():
     )
 
 
-def test_list_services_rest_flattened():
-    client = ServicesClient(
+def test_list_worker_pools_rest_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4029,7 +4113,7 @@ def test_list_services_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = service.ListServicesResponse()
+        return_value = worker_pool.ListWorkerPoolsResponse()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"parent": "projects/sample1/locations/sample2"}
@@ -4044,26 +4128,27 @@ def test_list_services_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = service.ListServicesResponse.pb(return_value)
+        return_value = worker_pool.ListWorkerPoolsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-        client.list_services(**mock_args)
+        client.list_worker_pools(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{parent=projects/*/locations/*}/services" % client.transport._host,
+            "%s/v2/{parent=projects/*/locations/*}/workerPools"
+            % client.transport._host,
             args[1],
         )
 
 
-def test_list_services_rest_flattened_error(transport: str = "rest"):
-    client = ServicesClient(
+def test_list_worker_pools_rest_flattened_error(transport: str = "rest"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4071,14 +4156,14 @@ def test_list_services_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.list_services(
-            service.ListServicesRequest(),
+        client.list_worker_pools(
+            worker_pool.ListWorkerPoolsRequest(),
             parent="parent_value",
         )
 
 
-def test_list_services_rest_pager(transport: str = "rest"):
-    client = ServicesClient(
+def test_list_worker_pools_rest_pager(transport: str = "rest"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4089,28 +4174,28 @@ def test_list_services_rest_pager(transport: str = "rest"):
         # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="abc",
             ),
-            service.ListServicesResponse(
-                services=[],
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[],
                 next_page_token="def",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
                 ],
                 next_page_token="ghi",
             ),
-            service.ListServicesResponse(
-                services=[
-                    service.Service(),
-                    service.Service(),
+            worker_pool.ListWorkerPoolsResponse(
+                worker_pools=[
+                    worker_pool.WorkerPool(),
+                    worker_pool.WorkerPool(),
                 ],
             ),
         )
@@ -4118,7 +4203,9 @@ def test_list_services_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(service.ListServicesResponse.to_json(x) for x in response)
+        response = tuple(
+            worker_pool.ListWorkerPoolsResponse.to_json(x) for x in response
+        )
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -4127,22 +4214,22 @@ def test_list_services_rest_pager(transport: str = "rest"):
 
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
-        pager = client.list_services(request=sample_request)
+        pager = client.list_worker_pools(request=sample_request)
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, service.Service) for i in results)
+        assert all(isinstance(i, worker_pool.WorkerPool) for i in results)
 
-        pages = list(client.list_services(request=sample_request).pages)
+        pages = list(client.list_worker_pools(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
 
-def test_update_service_rest_use_cached_wrapped_rpc():
+def test_update_worker_pool_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -4152,17 +4239,21 @@ def test_update_service_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.update_service in client._transport._wrapped_methods
+        assert (
+            client._transport.update_worker_pool in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.update_service] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.update_worker_pool
+        ] = mock_rpc
 
         request = {}
-        client.update_service(request)
+        client.update_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -4171,17 +4262,17 @@ def test_update_service_rest_use_cached_wrapped_rpc():
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
-        client.update_service(request)
+        client.update_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_update_service_rest_required_fields(
-    request_type=gcr_service.UpdateServiceRequest,
+def test_update_worker_pool_rest_required_fields(
+    request_type=gcr_worker_pool.UpdateWorkerPoolRequest,
 ):
-    transport_class = transports.ServicesRestTransport
+    transport_class = transports.WorkerPoolsRestTransport
 
     request_init = {}
     request = request_type(**request_init)
@@ -4194,18 +4285,19 @@ def test_update_service_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update_service._get_unset_required_fields(jsonified_request)
+    ).update_worker_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).update_service._get_unset_required_fields(jsonified_request)
+    ).update_worker_pool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "allow_missing",
+            "force_new_revision",
             "update_mask",
             "validate_only",
         )
@@ -4214,7 +4306,7 @@ def test_update_service_rest_required_fields(
 
     # verify required fields with non-default values are left alone
 
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4247,33 +4339,34 @@ def test_update_service_rest_required_fields(
             req.return_value = response_value
             req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-            response = client.update_service(request)
+            response = client.update_worker_pool(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_update_service_rest_unset_required_fields():
-    transport = transports.ServicesRestTransport(
+def test_update_worker_pool_rest_unset_required_fields():
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.update_service._get_unset_required_fields({})
+    unset_fields = transport.update_worker_pool._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
                 "allowMissing",
+                "forceNewRevision",
                 "updateMask",
                 "validateOnly",
             )
         )
-        & set(("service",))
+        & set(("workerPool",))
     )
 
 
-def test_update_service_rest_flattened():
-    client = ServicesClient(
+def test_update_worker_pool_rest_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4285,12 +4378,14 @@ def test_update_service_rest_flattened():
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
-            "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
+            "worker_pool": {
+                "name": "projects/sample1/locations/sample2/workerPools/sample3"
+            }
         }
 
         # get truthy value for each flattened field
         mock_args = dict(
-            service=gcr_service.Service(name="name_value"),
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -4303,21 +4398,21 @@ def test_update_service_rest_flattened():
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-        client.update_service(**mock_args)
+        client.update_worker_pool(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{service.name=projects/*/locations/*/services/*}"
+            "%s/v2/{worker_pool.name=projects/*/locations/*/workerPools/*}"
             % client.transport._host,
             args[1],
         )
 
 
-def test_update_service_rest_flattened_error(transport: str = "rest"):
-    client = ServicesClient(
+def test_update_worker_pool_rest_flattened_error(transport: str = "rest"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4325,18 +4420,18 @@ def test_update_service_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.update_service(
-            gcr_service.UpdateServiceRequest(),
-            service=gcr_service.Service(name="name_value"),
+        client.update_worker_pool(
+            gcr_worker_pool.UpdateWorkerPoolRequest(),
+            worker_pool=gcr_worker_pool.WorkerPool(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
-def test_delete_service_rest_use_cached_wrapped_rpc():
+def test_delete_worker_pool_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -4346,17 +4441,21 @@ def test_delete_service_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert client._transport.delete_service in client._transport._wrapped_methods
+        assert (
+            client._transport.delete_worker_pool in client._transport._wrapped_methods
+        )
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[client._transport.delete_service] = mock_rpc
+        client._transport._wrapped_methods[
+            client._transport.delete_worker_pool
+        ] = mock_rpc
 
         request = {}
-        client.delete_service(request)
+        client.delete_worker_pool(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert mock_rpc.call_count == 1
@@ -4365,15 +4464,17 @@ def test_delete_service_rest_use_cached_wrapped_rpc():
         # subsequent calls should use the cached wrapper
         wrapper_fn.reset_mock()
 
-        client.delete_service(request)
+        client.delete_worker_pool(request)
 
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
 
 
-def test_delete_service_rest_required_fields(request_type=service.DeleteServiceRequest):
-    transport_class = transports.ServicesRestTransport
+def test_delete_worker_pool_rest_required_fields(
+    request_type=worker_pool.DeleteWorkerPoolRequest,
+):
+    transport_class = transports.WorkerPoolsRestTransport
 
     request_init = {}
     request_init["name"] = ""
@@ -4387,7 +4488,7 @@ def test_delete_service_rest_required_fields(request_type=service.DeleteServiceR
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).delete_service._get_unset_required_fields(jsonified_request)
+    ).delete_worker_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -4396,7 +4497,7 @@ def test_delete_service_rest_required_fields(request_type=service.DeleteServiceR
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).delete_service._get_unset_required_fields(jsonified_request)
+    ).delete_worker_pool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -4410,7 +4511,7 @@ def test_delete_service_rest_required_fields(request_type=service.DeleteServiceR
     assert "name" in jsonified_request
     assert jsonified_request["name"] == "name_value"
 
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4442,19 +4543,19 @@ def test_delete_service_rest_required_fields(request_type=service.DeleteServiceR
             req.return_value = response_value
             req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-            response = client.delete_service(request)
+            response = client.delete_worker_pool(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_delete_service_rest_unset_required_fields():
-    transport = transports.ServicesRestTransport(
+def test_delete_worker_pool_rest_unset_required_fields():
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.delete_service._get_unset_required_fields({})
+    unset_fields = transport.delete_worker_pool._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
@@ -4466,8 +4567,8 @@ def test_delete_service_rest_unset_required_fields():
     )
 
 
-def test_delete_service_rest_flattened():
-    client = ServicesClient(
+def test_delete_worker_pool_rest_flattened():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4478,7 +4579,9 @@ def test_delete_service_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "projects/sample1/locations/sample2/services/sample3"}
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/workerPools/sample3"
+        }
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -4494,20 +4597,21 @@ def test_delete_service_rest_flattened():
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-        client.delete_service(**mock_args)
+        client.delete_worker_pool(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v2/{name=projects/*/locations/*/services/*}" % client.transport._host,
+            "%s/v2/{name=projects/*/locations/*/workerPools/*}"
+            % client.transport._host,
             args[1],
         )
 
 
-def test_delete_service_rest_flattened_error(transport: str = "rest"):
-    client = ServicesClient(
+def test_delete_worker_pool_rest_flattened_error(transport: str = "rest"):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4515,8 +4619,8 @@ def test_delete_service_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_service(
-            service.DeleteServiceRequest(),
+        client.delete_worker_pool(
+            worker_pool.DeleteWorkerPoolRequest(),
             name="name_value",
         )
 
@@ -4525,7 +4629,7 @@ def test_get_iam_policy_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -4560,7 +4664,7 @@ def test_get_iam_policy_rest_use_cached_wrapped_rpc():
 def test_get_iam_policy_rest_required_fields(
     request_type=iam_policy_pb2.GetIamPolicyRequest,
 ):
-    transport_class = transports.ServicesRestTransport
+    transport_class = transports.WorkerPoolsRestTransport
 
     request_init = {}
     request_init["resource"] = ""
@@ -4592,7 +4696,7 @@ def test_get_iam_policy_rest_required_fields(
     assert "resource" in jsonified_request
     assert jsonified_request["resource"] == "resource_value"
 
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4633,7 +4737,7 @@ def test_get_iam_policy_rest_required_fields(
 
 
 def test_get_iam_policy_rest_unset_required_fields():
-    transport = transports.ServicesRestTransport(
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -4645,7 +4749,7 @@ def test_set_iam_policy_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -4680,7 +4784,7 @@ def test_set_iam_policy_rest_use_cached_wrapped_rpc():
 def test_set_iam_policy_rest_required_fields(
     request_type=iam_policy_pb2.SetIamPolicyRequest,
 ):
-    transport_class = transports.ServicesRestTransport
+    transport_class = transports.WorkerPoolsRestTransport
 
     request_init = {}
     request_init["resource"] = ""
@@ -4710,7 +4814,7 @@ def test_set_iam_policy_rest_required_fields(
     assert "resource" in jsonified_request
     assert jsonified_request["resource"] == "resource_value"
 
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4752,7 +4856,7 @@ def test_set_iam_policy_rest_required_fields(
 
 
 def test_set_iam_policy_rest_unset_required_fields():
-    transport = transports.ServicesRestTransport(
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -4772,7 +4876,7 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport="rest",
         )
@@ -4811,7 +4915,7 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
 def test_test_iam_permissions_rest_required_fields(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
-    transport_class = transports.ServicesRestTransport
+    transport_class = transports.WorkerPoolsRestTransport
 
     request_init = {}
     request_init["resource"] = ""
@@ -4845,7 +4949,7 @@ def test_test_iam_permissions_rest_required_fields(
     assert "permissions" in jsonified_request
     assert jsonified_request["permissions"] == "permissions_value"
 
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4887,7 +4991,7 @@ def test_test_iam_permissions_rest_required_fields(
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
-    transport = transports.ServicesRestTransport(
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
@@ -4905,33 +5009,33 @@ def test_test_iam_permissions_rest_unset_required_fields():
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.ServicesGrpcTransport(
+    transport = transports.WorkerPoolsGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.ServicesGrpcTransport(
+    transport = transports.WorkerPoolsGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.ServicesGrpcTransport(
+    transport = transports.WorkerPoolsGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             client_options=options,
             transport=transport,
         )
@@ -4940,16 +5044,16 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.ServicesGrpcTransport(
+    transport = transports.WorkerPoolsGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -4957,22 +5061,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.ServicesGrpcTransport(
+    transport = transports.WorkerPoolsGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = ServicesClient(transport=transport)
+    client = WorkerPoolsClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.ServicesGrpcTransport(
+    transport = transports.WorkerPoolsGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.ServicesGrpcAsyncIOTransport(
+    transport = transports.WorkerPoolsGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -4982,9 +5086,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.ServicesGrpcTransport,
-        transports.ServicesGrpcAsyncIOTransport,
-        transports.ServicesRestTransport,
+        transports.WorkerPoolsGrpcTransport,
+        transports.WorkerPoolsGrpcAsyncIOTransport,
+        transports.WorkerPoolsRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -4996,14 +5100,14 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = ServicesClient.get_transport_class("grpc")(
+    transport = WorkerPoolsClient.get_transport_class("grpc")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     assert client is not None
@@ -5011,105 +5115,113 @@ def test_initialize_client_w_grpc():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_service_empty_call_grpc():
-    client = ServicesClient(
+def test_create_worker_pool_empty_call_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.create_service(request=None)
+        client.create_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcr_service.CreateServiceRequest()
+        request_msg = gcr_worker_pool.CreateWorkerPoolRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_service_empty_call_grpc():
-    client = ServicesClient(
+def test_get_worker_pool_empty_call_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
-        call.return_value = service.Service()
-        client.get_service(request=None)
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
+        call.return_value = worker_pool.WorkerPool()
+        client.get_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = service.GetServiceRequest()
+        request_msg = worker_pool.GetWorkerPoolRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_services_empty_call_grpc():
-    client = ServicesClient(
+def test_list_worker_pools_empty_call_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
-        call.return_value = service.ListServicesResponse()
-        client.list_services(request=None)
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
+        call.return_value = worker_pool.ListWorkerPoolsResponse()
+        client.list_worker_pools(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = service.ListServicesRequest()
+        request_msg = worker_pool.ListWorkerPoolsRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_service_empty_call_grpc():
-    client = ServicesClient(
+def test_update_worker_pool_empty_call_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.update_service(request=None)
+        client.update_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcr_service.UpdateServiceRequest()
+        request_msg = gcr_worker_pool.UpdateWorkerPoolRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_service_empty_call_grpc():
-    client = ServicesClient(
+def test_delete_worker_pool_empty_call_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.delete_service(request=None)
+        client.delete_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = service.DeleteServiceRequest()
+        request_msg = worker_pool.DeleteWorkerPoolRequest()
 
         assert args[0] == request_msg
 
@@ -5117,7 +5229,7 @@ def test_delete_service_empty_call_grpc():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_get_iam_policy_empty_call_grpc():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -5138,7 +5250,7 @@ def test_get_iam_policy_empty_call_grpc():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_set_iam_policy_empty_call_grpc():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -5159,7 +5271,7 @@ def test_set_iam_policy_empty_call_grpc():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_test_iam_permissions_empty_call_grpc():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -5179,21 +5291,25 @@ def test_test_iam_permissions_empty_call_grpc():
         assert args[0] == request_msg
 
 
-def test_create_service_routing_parameters_request_1_grpc():
-    client = ServicesClient(
+def test_create_worker_pool_routing_parameters_request_1_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.create_service(request={"parent": "projects/sample1/locations/sample2"})
+        client.create_worker_pool(
+            request={"parent": "projects/sample1/locations/sample2"}
+        )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = gcr_service.CreateServiceRequest(
+        request_msg = gcr_worker_pool.CreateWorkerPoolRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
 
@@ -5205,23 +5321,23 @@ def test_create_service_routing_parameters_request_1_grpc():
         )
 
 
-def test_get_service_routing_parameters_request_1_grpc():
-    client = ServicesClient(
+def test_get_worker_pool_routing_parameters_request_1_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
-        call.return_value = service.Service()
-        client.get_service(
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
+        call.return_value = worker_pool.WorkerPool()
+        client.get_worker_pool(
             request={"name": "projects/sample1/locations/sample2/sample3"}
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = service.GetServiceRequest(
+        request_msg = worker_pool.GetWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
 
@@ -5233,21 +5349,25 @@ def test_get_service_routing_parameters_request_1_grpc():
         )
 
 
-def test_list_services_routing_parameters_request_1_grpc():
-    client = ServicesClient(
+def test_list_worker_pools_routing_parameters_request_1_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
-        call.return_value = service.ListServicesResponse()
-        client.list_services(request={"parent": "projects/sample1/locations/sample2"})
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
+        call.return_value = worker_pool.ListWorkerPoolsResponse()
+        client.list_worker_pools(
+            request={"parent": "projects/sample1/locations/sample2"}
+        )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = service.ListServicesRequest(
+        request_msg = worker_pool.ListWorkerPoolsRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
 
@@ -5259,24 +5379,28 @@ def test_list_services_routing_parameters_request_1_grpc():
         )
 
 
-def test_update_service_routing_parameters_request_1_grpc():
-    client = ServicesClient(
+def test_update_worker_pool_routing_parameters_request_1_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.update_service(
-            request={"service": {"name": "projects/sample1/locations/sample2/sample3"}}
+        client.update_worker_pool(
+            request={
+                "worker_pool": {"name": "projects/sample1/locations/sample2/sample3"}
+            }
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = gcr_service.UpdateServiceRequest(
-            **{"service": {"name": "projects/sample1/locations/sample2/sample3"}}
+        request_msg = gcr_worker_pool.UpdateWorkerPoolRequest(
+            **{"worker_pool": {"name": "projects/sample1/locations/sample2/sample3"}}
         )
 
         assert args[0] == request_msg
@@ -5287,23 +5411,25 @@ def test_update_service_routing_parameters_request_1_grpc():
         )
 
 
-def test_delete_service_routing_parameters_request_1_grpc():
-    client = ServicesClient(
+def test_delete_worker_pool_routing_parameters_request_1_grpc():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.delete_service(
+        client.delete_worker_pool(
             request={"name": "projects/sample1/locations/sample2/sample3"}
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = service.DeleteServiceRequest(
+        request_msg = worker_pool.DeleteWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
 
@@ -5316,14 +5442,14 @@ def test_delete_service_routing_parameters_request_1_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = ServicesAsyncClient.get_transport_class("grpc_asyncio")(
+    transport = WorkerPoolsAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
     )
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(), transport="grpc_asyncio"
     )
     assert client is not None
@@ -5332,24 +5458,26 @@ def test_initialize_client_w_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_create_service_empty_call_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_create_worker_pool_empty_call_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        await client.create_service(request=None)
+        await client.create_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcr_service.CreateServiceRequest()
+        request_msg = gcr_worker_pool.CreateWorkerPoolRequest()
 
         assert args[0] == request_msg
 
@@ -5357,17 +5485,17 @@ async def test_create_service_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_get_service_empty_call_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_get_worker_pool_empty_call_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.Service(
+            worker_pool.WorkerPool(
                 name="name_value",
                 description="description_value",
                 uid="uid_value",
@@ -5376,27 +5504,22 @@ async def test_get_service_empty_call_grpc_asyncio():
                 last_modifier="last_modifier_value",
                 client="client_value",
                 client_version="client_version_value",
-                ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
-                invoker_iam_disabled=True,
-                default_uri_disabled=True,
-                urls=["urls_value"],
-                custom_audiences=["custom_audiences_value"],
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
-                uri="uri_value",
+                custom_audiences=["custom_audiences_value"],
                 satisfies_pzs=True,
                 reconciling=True,
                 etag="etag_value",
             )
         )
-        await client.get_service(request=None)
+        await client.get_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = service.GetServiceRequest()
+        request_msg = worker_pool.GetWorkerPoolRequest()
 
         assert args[0] == request_msg
 
@@ -5404,26 +5527,28 @@ async def test_get_service_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_list_services_empty_call_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_list_worker_pools_empty_call_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListServicesResponse(
+            worker_pool.ListWorkerPoolsResponse(
                 next_page_token="next_page_token_value",
             )
         )
-        await client.list_services(request=None)
+        await client.list_worker_pools(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = service.ListServicesRequest()
+        request_msg = worker_pool.ListWorkerPoolsRequest()
 
         assert args[0] == request_msg
 
@@ -5431,24 +5556,26 @@ async def test_list_services_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_update_service_empty_call_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_update_worker_pool_empty_call_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        await client.update_service(request=None)
+        await client.update_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcr_service.UpdateServiceRequest()
+        request_msg = gcr_worker_pool.UpdateWorkerPoolRequest()
 
         assert args[0] == request_msg
 
@@ -5456,24 +5583,26 @@ async def test_update_service_empty_call_grpc_asyncio():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
-async def test_delete_service_empty_call_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_delete_worker_pool_empty_call_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        await client.delete_service(request=None)
+        await client.delete_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = service.DeleteServiceRequest()
+        request_msg = worker_pool.DeleteWorkerPoolRequest()
 
         assert args[0] == request_msg
 
@@ -5482,7 +5611,7 @@ async def test_delete_service_empty_call_grpc_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_get_iam_policy_empty_call_grpc_asyncio():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
@@ -5510,7 +5639,7 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_set_iam_policy_empty_call_grpc_asyncio():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
@@ -5538,7 +5667,7 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
 # i.e. request == None and no flattened fields passed, work.
 @pytest.mark.asyncio
 async def test_test_iam_permissions_empty_call_grpc_asyncio():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
@@ -5564,26 +5693,28 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
 
 
 @pytest.mark.asyncio
-async def test_create_service_routing_parameters_request_1_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_create_worker_pool_routing_parameters_request_1_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        await client.create_service(
+        await client.create_worker_pool(
             request={"parent": "projects/sample1/locations/sample2"}
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = gcr_service.CreateServiceRequest(
+        request_msg = gcr_worker_pool.CreateWorkerPoolRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
 
@@ -5596,17 +5727,17 @@ async def test_create_service_routing_parameters_request_1_grpc_asyncio():
 
 
 @pytest.mark.asyncio
-async def test_get_service_routing_parameters_request_1_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_get_worker_pool_routing_parameters_request_1_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.Service(
+            worker_pool.WorkerPool(
                 name="name_value",
                 description="description_value",
                 uid="uid_value",
@@ -5615,29 +5746,24 @@ async def test_get_service_routing_parameters_request_1_grpc_asyncio():
                 last_modifier="last_modifier_value",
                 client="client_value",
                 client_version="client_version_value",
-                ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
-                invoker_iam_disabled=True,
-                default_uri_disabled=True,
-                urls=["urls_value"],
-                custom_audiences=["custom_audiences_value"],
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
-                uri="uri_value",
+                custom_audiences=["custom_audiences_value"],
                 satisfies_pzs=True,
                 reconciling=True,
                 etag="etag_value",
             )
         )
-        await client.get_service(
+        await client.get_worker_pool(
             request={"name": "projects/sample1/locations/sample2/sample3"}
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = service.GetServiceRequest(
+        request_msg = worker_pool.GetWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
 
@@ -5650,28 +5776,30 @@ async def test_get_service_routing_parameters_request_1_grpc_asyncio():
 
 
 @pytest.mark.asyncio
-async def test_list_services_routing_parameters_request_1_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_list_worker_pools_routing_parameters_request_1_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListServicesResponse(
+            worker_pool.ListWorkerPoolsResponse(
                 next_page_token="next_page_token_value",
             )
         )
-        await client.list_services(
+        await client.list_worker_pools(
             request={"parent": "projects/sample1/locations/sample2"}
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = service.ListServicesRequest(
+        request_msg = worker_pool.ListWorkerPoolsRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
 
@@ -5684,27 +5812,31 @@ async def test_list_services_routing_parameters_request_1_grpc_asyncio():
 
 
 @pytest.mark.asyncio
-async def test_update_service_routing_parameters_request_1_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_update_worker_pool_routing_parameters_request_1_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        await client.update_service(
-            request={"service": {"name": "projects/sample1/locations/sample2/sample3"}}
+        await client.update_worker_pool(
+            request={
+                "worker_pool": {"name": "projects/sample1/locations/sample2/sample3"}
+            }
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = gcr_service.UpdateServiceRequest(
-            **{"service": {"name": "projects/sample1/locations/sample2/sample3"}}
+        request_msg = gcr_worker_pool.UpdateWorkerPoolRequest(
+            **{"worker_pool": {"name": "projects/sample1/locations/sample2/sample3"}}
         )
 
         assert args[0] == request_msg
@@ -5716,26 +5848,28 @@ async def test_update_service_routing_parameters_request_1_grpc_asyncio():
 
 
 @pytest.mark.asyncio
-async def test_delete_service_routing_parameters_request_1_grpc_asyncio():
-    client = ServicesAsyncClient(
+async def test_delete_worker_pool_routing_parameters_request_1_grpc_asyncio():
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport="grpc_asyncio",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        await client.delete_service(
+        await client.delete_worker_pool(
             request={"name": "projects/sample1/locations/sample2/sample3"}
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = service.DeleteServiceRequest(
+        request_msg = worker_pool.DeleteWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
 
@@ -5748,14 +5882,16 @@ async def test_delete_service_routing_parameters_request_1_grpc_asyncio():
 
 
 def test_transport_kind_rest():
-    transport = ServicesClient.get_transport_class("rest")(
+    transport = WorkerPoolsClient.get_transport_class("rest")(
         credentials=ga_credentials.AnonymousCredentials()
     )
     assert transport.kind == "rest"
 
 
-def test_create_service_rest_bad_request(request_type=gcr_service.CreateServiceRequest):
-    client = ServicesClient(
+def test_create_worker_pool_rest_bad_request(
+    request_type=gcr_worker_pool.CreateWorkerPoolRequest,
+):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
@@ -5774,24 +5910,24 @@ def test_create_service_rest_bad_request(request_type=gcr_service.CreateServiceR
         response_value.request = mock.Mock()
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.create_service(request)
+        client.create_worker_pool(request)
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcr_service.CreateServiceRequest,
+        gcr_worker_pool.CreateWorkerPoolRequest,
         dict,
     ],
 )
-def test_create_service_rest_call_success(request_type):
-    client = ServicesClient(
+def test_create_worker_pool_rest_call_success(request_type):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["service"] = {
+    request_init["worker_pool"] = {
         "name": "name_value",
         "description": "description_value",
         "uid": "uid_value",
@@ -5806,7 +5942,6 @@ def test_create_service_rest_call_success(request_type):
         "last_modifier": "last_modifier_value",
         "client": "client_value",
         "client_version": "client_version_value",
-        "ingress": 1,
         "launch_stage": 6,
         "binary_authorization": {
             "use_default": True,
@@ -5817,7 +5952,6 @@ def test_create_service_rest_call_success(request_type):
             "revision": "revision_value",
             "labels": {},
             "annotations": {},
-            "scaling": {"min_instance_count": 1920, "max_instance_count": 1922},
             "vpc_access": {
                 "connector": "connector_value",
                 "egress": 1,
@@ -5829,7 +5963,6 @@ def test_create_service_rest_call_success(request_type):
                     }
                 ],
             },
-            "timeout": {"seconds": 751, "nanos": 543},
             "service_account": "service_account_value",
             "containers": [
                 {
@@ -5916,34 +6049,14 @@ def test_create_service_rest_call_success(request_type):
                     },
                 }
             ],
-            "execution_environment": 1,
             "encryption_key": "encryption_key_value",
-            "max_instance_request_concurrency": 3436,
             "service_mesh": {"mesh": "mesh_value"},
             "encryption_key_revocation_action": 1,
-            "encryption_key_shutdown_duration": {},
-            "session_affinity": True,
-            "health_check_disabled": True,
+            "encryption_key_shutdown_duration": {"seconds": 751, "nanos": 543},
             "node_selector": {"accelerator": "accelerator_value"},
-            "gpu_zonal_redundancy_disabled": True,
         },
-        "traffic": [
-            {
-                "type_": 1,
-                "revision": "revision_value",
-                "percent": 753,
-                "tag": "tag_value",
-            }
-        ],
-        "scaling": {
-            "min_instance_count": 1920,
-            "scaling_mode": 1,
-            "manual_instance_count": 2234,
-        },
-        "invoker_iam_disabled": True,
-        "default_uri_disabled": True,
-        "urls": ["urls_value1", "urls_value2"],
-        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
+        "instance_splits": [{"type_": 1, "revision": "revision_value", "percent": 753}],
+        "scaling": {"manual_instance_count": 2234},
         "observed_generation": 2021,
         "terminal_condition": {
             "type_": "type__value",
@@ -5958,28 +6071,11 @@ def test_create_service_rest_call_success(request_type):
         "conditions": {},
         "latest_ready_revision": "latest_ready_revision_value",
         "latest_created_revision": "latest_created_revision_value",
-        "traffic_statuses": [
-            {
-                "type_": 1,
-                "revision": "revision_value",
-                "percent": 753,
-                "tag": "tag_value",
-                "uri": "uri_value",
-            }
+        "instance_split_statuses": [
+            {"type_": 1, "revision": "revision_value", "percent": 753}
         ],
-        "uri": "uri_value",
+        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
-        "build_config": {
-            "name": "name_value",
-            "source_location": "source_location_value",
-            "function_target": "function_target_value",
-            "image_uri": "image_uri_value",
-            "base_image": "base_image_value",
-            "enable_automatic_updates": True,
-            "worker_pool": "worker_pool_value",
-            "environment_variables": {},
-            "service_account": "service_account_value",
-        },
         "reconciling": True,
         "etag": "etag_value",
     }
@@ -5988,7 +6084,7 @@ def test_create_service_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcr_service.CreateServiceRequest.meta.fields["service"]
+    test_field = gcr_worker_pool.CreateWorkerPoolRequest.meta.fields["worker_pool"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -6016,7 +6112,7 @@ def test_create_service_rest_call_success(request_type):
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["service"].items():  # pragma: NO COVER
+    for field, value in request_init["worker_pool"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -6046,10 +6142,10 @@ def test_create_service_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(0, len(request_init["service"][field])):
-                    del request_init["service"][field][i][subfield]
+                for i in range(0, len(request_init["worker_pool"][field])):
+                    del request_init["worker_pool"][field][i][subfield]
             else:
-                del request_init["service"][field][subfield]
+                del request_init["worker_pool"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6064,19 +6160,21 @@ def test_create_service_rest_call_success(request_type):
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.create_service(request)
+        response = client.create_worker_pool(request)
 
     # Establish that the response is the type that we expect.
     json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_service_rest_interceptors(null_interceptor):
-    transport = transports.ServicesRestTransport(
+def test_create_worker_pool_rest_interceptors(null_interceptor):
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ServicesRestInterceptor(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkerPoolsRestInterceptor(),
     )
-    client = ServicesClient(transport=transport)
+    client = WorkerPoolsClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
@@ -6085,17 +6183,17 @@ def test_create_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         operation.Operation, "_set_result_from_operation"
     ), mock.patch.object(
-        transports.ServicesRestInterceptor, "post_create_service"
+        transports.WorkerPoolsRestInterceptor, "post_create_worker_pool"
     ) as post, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_create_service_with_metadata"
+        transports.WorkerPoolsRestInterceptor, "post_create_worker_pool_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.ServicesRestInterceptor, "pre_create_service"
+        transports.WorkerPoolsRestInterceptor, "pre_create_worker_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcr_service.CreateServiceRequest.pb(
-            gcr_service.CreateServiceRequest()
+        pb_message = gcr_worker_pool.CreateWorkerPoolRequest.pb(
+            gcr_worker_pool.CreateWorkerPoolRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -6110,7 +6208,7 @@ def test_create_service_rest_interceptors(null_interceptor):
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
-        request = gcr_service.CreateServiceRequest()
+        request = gcr_worker_pool.CreateWorkerPoolRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -6119,7 +6217,7 @@ def test_create_service_rest_interceptors(null_interceptor):
         post.return_value = operations_pb2.Operation()
         post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
-        client.create_service(
+        client.create_worker_pool(
             request,
             metadata=[
                 ("key", "val"),
@@ -6132,12 +6230,14 @@ def test_create_service_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_service_rest_bad_request(request_type=service.GetServiceRequest):
-    client = ServicesClient(
+def test_get_worker_pool_rest_bad_request(
+    request_type=worker_pool.GetWorkerPoolRequest,
+):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {"name": "projects/sample1/locations/sample2/workerPools/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6152,29 +6252,29 @@ def test_get_service_rest_bad_request(request_type=service.GetServiceRequest):
         response_value.request = mock.Mock()
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.get_service(request)
+        client.get_worker_pool(request)
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetServiceRequest,
+        worker_pool.GetWorkerPoolRequest,
         dict,
     ],
 )
-def test_get_service_rest_call_success(request_type):
-    client = ServicesClient(
+def test_get_worker_pool_rest_call_success(request_type):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {"name": "projects/sample1/locations/sample2/workerPools/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = service.Service(
+        return_value = worker_pool.WorkerPool(
             name="name_value",
             description="description_value",
             uid="uid_value",
@@ -6183,16 +6283,11 @@ def test_get_service_rest_call_success(request_type):
             last_modifier="last_modifier_value",
             client="client_value",
             client_version="client_version_value",
-            ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
-            invoker_iam_disabled=True,
-            default_uri_disabled=True,
-            urls=["urls_value"],
-            custom_audiences=["custom_audiences_value"],
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
-            uri="uri_value",
+            custom_audiences=["custom_audiences_value"],
             satisfies_pzs=True,
             reconciling=True,
             etag="etag_value",
@@ -6203,15 +6298,15 @@ def test_get_service_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = service.Service.pb(return_value)
+        return_value = worker_pool.WorkerPool.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.get_service(request)
+        response = client.get_worker_pool(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, service.Service)
+    assert isinstance(response, worker_pool.WorkerPool)
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.uid == "uid_value"
@@ -6220,44 +6315,43 @@ def test_get_service_rest_call_success(request_type):
     assert response.last_modifier == "last_modifier_value"
     assert response.client == "client_value"
     assert response.client_version == "client_version_value"
-    assert response.ingress == vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
-    assert response.invoker_iam_disabled is True
-    assert response.default_uri_disabled is True
-    assert response.urls == ["urls_value"]
-    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
-    assert response.uri == "uri_value"
+    assert response.custom_audiences == ["custom_audiences_value"]
     assert response.satisfies_pzs is True
     assert response.reconciling is True
     assert response.etag == "etag_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_service_rest_interceptors(null_interceptor):
-    transport = transports.ServicesRestTransport(
+def test_get_worker_pool_rest_interceptors(null_interceptor):
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ServicesRestInterceptor(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkerPoolsRestInterceptor(),
     )
-    client = ServicesClient(transport=transport)
+    client = WorkerPoolsClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_get_service"
+        transports.WorkerPoolsRestInterceptor, "post_get_worker_pool"
     ) as post, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_get_service_with_metadata"
+        transports.WorkerPoolsRestInterceptor, "post_get_worker_pool_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.ServicesRestInterceptor, "pre_get_service"
+        transports.WorkerPoolsRestInterceptor, "pre_get_worker_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = service.GetServiceRequest.pb(service.GetServiceRequest())
+        pb_message = worker_pool.GetWorkerPoolRequest.pb(
+            worker_pool.GetWorkerPoolRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6268,19 +6362,19 @@ def test_get_service_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.Service.to_json(service.Service())
+        return_value = worker_pool.WorkerPool.to_json(worker_pool.WorkerPool())
         req.return_value.content = return_value
 
-        request = service.GetServiceRequest()
+        request = worker_pool.GetWorkerPoolRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = service.Service()
-        post_with_metadata.return_value = service.Service(), metadata
+        post.return_value = worker_pool.WorkerPool()
+        post_with_metadata.return_value = worker_pool.WorkerPool(), metadata
 
-        client.get_service(
+        client.get_worker_pool(
             request,
             metadata=[
                 ("key", "val"),
@@ -6293,8 +6387,10 @@ def test_get_service_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_services_rest_bad_request(request_type=service.ListServicesRequest):
-    client = ServicesClient(
+def test_list_worker_pools_rest_bad_request(
+    request_type=worker_pool.ListWorkerPoolsRequest,
+):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
@@ -6313,18 +6409,18 @@ def test_list_services_rest_bad_request(request_type=service.ListServicesRequest
         response_value.request = mock.Mock()
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.list_services(request)
+        client.list_worker_pools(request)
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListServicesRequest,
+        worker_pool.ListWorkerPoolsRequest,
         dict,
     ],
 )
-def test_list_services_rest_call_success(request_type):
-    client = ServicesClient(
+def test_list_worker_pools_rest_call_success(request_type):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -6335,7 +6431,7 @@ def test_list_services_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = service.ListServicesResponse(
+        return_value = worker_pool.ListWorkerPoolsResponse(
             next_page_token="next_page_token_value",
         )
 
@@ -6344,41 +6440,45 @@ def test_list_services_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = service.ListServicesResponse.pb(return_value)
+        return_value = worker_pool.ListWorkerPoolsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.list_services(request)
+        response = client.list_worker_pools(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListServicesPager)
+    assert isinstance(response, pagers.ListWorkerPoolsPager)
     assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_services_rest_interceptors(null_interceptor):
-    transport = transports.ServicesRestTransport(
+def test_list_worker_pools_rest_interceptors(null_interceptor):
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ServicesRestInterceptor(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkerPoolsRestInterceptor(),
     )
-    client = ServicesClient(transport=transport)
+    client = WorkerPoolsClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_list_services"
+        transports.WorkerPoolsRestInterceptor, "post_list_worker_pools"
     ) as post, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_list_services_with_metadata"
+        transports.WorkerPoolsRestInterceptor, "post_list_worker_pools_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.ServicesRestInterceptor, "pre_list_services"
+        transports.WorkerPoolsRestInterceptor, "pre_list_worker_pools"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = service.ListServicesRequest.pb(service.ListServicesRequest())
+        pb_message = worker_pool.ListWorkerPoolsRequest.pb(
+            worker_pool.ListWorkerPoolsRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6389,21 +6489,24 @@ def test_list_services_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = service.ListServicesResponse.to_json(
-            service.ListServicesResponse()
+        return_value = worker_pool.ListWorkerPoolsResponse.to_json(
+            worker_pool.ListWorkerPoolsResponse()
         )
         req.return_value.content = return_value
 
-        request = service.ListServicesRequest()
+        request = worker_pool.ListWorkerPoolsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = service.ListServicesResponse()
-        post_with_metadata.return_value = service.ListServicesResponse(), metadata
+        post.return_value = worker_pool.ListWorkerPoolsResponse()
+        post_with_metadata.return_value = (
+            worker_pool.ListWorkerPoolsResponse(),
+            metadata,
+        )
 
-        client.list_services(
+        client.list_worker_pools(
             request,
             metadata=[
                 ("key", "val"),
@@ -6416,13 +6519,17 @@ def test_list_services_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_service_rest_bad_request(request_type=gcr_service.UpdateServiceRequest):
-    client = ServicesClient(
+def test_update_worker_pool_rest_bad_request(
+    request_type=gcr_worker_pool.UpdateWorkerPoolRequest,
+):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
     request_init = {
-        "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
+        "worker_pool": {
+            "name": "projects/sample1/locations/sample2/workerPools/sample3"
+        }
     }
     request = request_type(**request_init)
 
@@ -6438,27 +6545,29 @@ def test_update_service_rest_bad_request(request_type=gcr_service.UpdateServiceR
         response_value.request = mock.Mock()
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.update_service(request)
+        client.update_worker_pool(request)
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcr_service.UpdateServiceRequest,
+        gcr_worker_pool.UpdateWorkerPoolRequest,
         dict,
     ],
 )
-def test_update_service_rest_call_success(request_type):
-    client = ServicesClient(
+def test_update_worker_pool_rest_call_success(request_type):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
     request_init = {
-        "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
+        "worker_pool": {
+            "name": "projects/sample1/locations/sample2/workerPools/sample3"
+        }
     }
-    request_init["service"] = {
-        "name": "projects/sample1/locations/sample2/services/sample3",
+    request_init["worker_pool"] = {
+        "name": "projects/sample1/locations/sample2/workerPools/sample3",
         "description": "description_value",
         "uid": "uid_value",
         "generation": 1068,
@@ -6472,7 +6581,6 @@ def test_update_service_rest_call_success(request_type):
         "last_modifier": "last_modifier_value",
         "client": "client_value",
         "client_version": "client_version_value",
-        "ingress": 1,
         "launch_stage": 6,
         "binary_authorization": {
             "use_default": True,
@@ -6483,7 +6591,6 @@ def test_update_service_rest_call_success(request_type):
             "revision": "revision_value",
             "labels": {},
             "annotations": {},
-            "scaling": {"min_instance_count": 1920, "max_instance_count": 1922},
             "vpc_access": {
                 "connector": "connector_value",
                 "egress": 1,
@@ -6495,7 +6602,6 @@ def test_update_service_rest_call_success(request_type):
                     }
                 ],
             },
-            "timeout": {"seconds": 751, "nanos": 543},
             "service_account": "service_account_value",
             "containers": [
                 {
@@ -6582,34 +6688,14 @@ def test_update_service_rest_call_success(request_type):
                     },
                 }
             ],
-            "execution_environment": 1,
             "encryption_key": "encryption_key_value",
-            "max_instance_request_concurrency": 3436,
             "service_mesh": {"mesh": "mesh_value"},
             "encryption_key_revocation_action": 1,
-            "encryption_key_shutdown_duration": {},
-            "session_affinity": True,
-            "health_check_disabled": True,
+            "encryption_key_shutdown_duration": {"seconds": 751, "nanos": 543},
             "node_selector": {"accelerator": "accelerator_value"},
-            "gpu_zonal_redundancy_disabled": True,
         },
-        "traffic": [
-            {
-                "type_": 1,
-                "revision": "revision_value",
-                "percent": 753,
-                "tag": "tag_value",
-            }
-        ],
-        "scaling": {
-            "min_instance_count": 1920,
-            "scaling_mode": 1,
-            "manual_instance_count": 2234,
-        },
-        "invoker_iam_disabled": True,
-        "default_uri_disabled": True,
-        "urls": ["urls_value1", "urls_value2"],
-        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
+        "instance_splits": [{"type_": 1, "revision": "revision_value", "percent": 753}],
+        "scaling": {"manual_instance_count": 2234},
         "observed_generation": 2021,
         "terminal_condition": {
             "type_": "type__value",
@@ -6624,28 +6710,11 @@ def test_update_service_rest_call_success(request_type):
         "conditions": {},
         "latest_ready_revision": "latest_ready_revision_value",
         "latest_created_revision": "latest_created_revision_value",
-        "traffic_statuses": [
-            {
-                "type_": 1,
-                "revision": "revision_value",
-                "percent": 753,
-                "tag": "tag_value",
-                "uri": "uri_value",
-            }
+        "instance_split_statuses": [
+            {"type_": 1, "revision": "revision_value", "percent": 753}
         ],
-        "uri": "uri_value",
+        "custom_audiences": ["custom_audiences_value1", "custom_audiences_value2"],
         "satisfies_pzs": True,
-        "build_config": {
-            "name": "name_value",
-            "source_location": "source_location_value",
-            "function_target": "function_target_value",
-            "image_uri": "image_uri_value",
-            "base_image": "base_image_value",
-            "enable_automatic_updates": True,
-            "worker_pool": "worker_pool_value",
-            "environment_variables": {},
-            "service_account": "service_account_value",
-        },
         "reconciling": True,
         "etag": "etag_value",
     }
@@ -6654,7 +6723,7 @@ def test_update_service_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = gcr_service.UpdateServiceRequest.meta.fields["service"]
+    test_field = gcr_worker_pool.UpdateWorkerPoolRequest.meta.fields["worker_pool"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -6682,7 +6751,7 @@ def test_update_service_rest_call_success(request_type):
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["service"].items():  # pragma: NO COVER
+    for field, value in request_init["worker_pool"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -6712,10 +6781,10 @@ def test_update_service_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(0, len(request_init["service"][field])):
-                    del request_init["service"][field][i][subfield]
+                for i in range(0, len(request_init["worker_pool"][field])):
+                    del request_init["worker_pool"][field][i][subfield]
             else:
-                del request_init["service"][field][subfield]
+                del request_init["worker_pool"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6730,19 +6799,21 @@ def test_update_service_rest_call_success(request_type):
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.update_service(request)
+        response = client.update_worker_pool(request)
 
     # Establish that the response is the type that we expect.
     json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_service_rest_interceptors(null_interceptor):
-    transport = transports.ServicesRestTransport(
+def test_update_worker_pool_rest_interceptors(null_interceptor):
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ServicesRestInterceptor(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkerPoolsRestInterceptor(),
     )
-    client = ServicesClient(transport=transport)
+    client = WorkerPoolsClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
@@ -6751,17 +6822,17 @@ def test_update_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         operation.Operation, "_set_result_from_operation"
     ), mock.patch.object(
-        transports.ServicesRestInterceptor, "post_update_service"
+        transports.WorkerPoolsRestInterceptor, "post_update_worker_pool"
     ) as post, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_update_service_with_metadata"
+        transports.WorkerPoolsRestInterceptor, "post_update_worker_pool_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.ServicesRestInterceptor, "pre_update_service"
+        transports.WorkerPoolsRestInterceptor, "pre_update_worker_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = gcr_service.UpdateServiceRequest.pb(
-            gcr_service.UpdateServiceRequest()
+        pb_message = gcr_worker_pool.UpdateWorkerPoolRequest.pb(
+            gcr_worker_pool.UpdateWorkerPoolRequest()
         )
         transcode.return_value = {
             "method": "post",
@@ -6776,7 +6847,7 @@ def test_update_service_rest_interceptors(null_interceptor):
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
-        request = gcr_service.UpdateServiceRequest()
+        request = gcr_worker_pool.UpdateWorkerPoolRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -6785,7 +6856,7 @@ def test_update_service_rest_interceptors(null_interceptor):
         post.return_value = operations_pb2.Operation()
         post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
-        client.update_service(
+        client.update_worker_pool(
             request,
             metadata=[
                 ("key", "val"),
@@ -6798,12 +6869,14 @@ def test_update_service_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_service_rest_bad_request(request_type=service.DeleteServiceRequest):
-    client = ServicesClient(
+def test_delete_worker_pool_rest_bad_request(
+    request_type=worker_pool.DeleteWorkerPoolRequest,
+):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {"name": "projects/sample1/locations/sample2/workerPools/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6818,23 +6891,23 @@ def test_delete_service_rest_bad_request(request_type=service.DeleteServiceReque
         response_value.request = mock.Mock()
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        client.delete_service(request)
+        client.delete_worker_pool(request)
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteServiceRequest,
+        worker_pool.DeleteWorkerPoolRequest,
         dict,
     ],
 )
-def test_delete_service_rest_call_success(request_type):
-    client = ServicesClient(
+def test_delete_worker_pool_rest_call_success(request_type):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {"name": "projects/sample1/locations/sample2/workerPools/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6849,19 +6922,21 @@ def test_delete_service_rest_call_success(request_type):
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        response = client.delete_service(request)
+        response = client.delete_worker_pool(request)
 
     # Establish that the response is the type that we expect.
     json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_service_rest_interceptors(null_interceptor):
-    transport = transports.ServicesRestTransport(
+def test_delete_worker_pool_rest_interceptors(null_interceptor):
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ServicesRestInterceptor(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkerPoolsRestInterceptor(),
     )
-    client = ServicesClient(transport=transport)
+    client = WorkerPoolsClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
@@ -6870,16 +6945,18 @@ def test_delete_service_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         operation.Operation, "_set_result_from_operation"
     ), mock.patch.object(
-        transports.ServicesRestInterceptor, "post_delete_service"
+        transports.WorkerPoolsRestInterceptor, "post_delete_worker_pool"
     ) as post, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_delete_service_with_metadata"
+        transports.WorkerPoolsRestInterceptor, "post_delete_worker_pool_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.ServicesRestInterceptor, "pre_delete_service"
+        transports.WorkerPoolsRestInterceptor, "pre_delete_worker_pool"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = service.DeleteServiceRequest.pb(service.DeleteServiceRequest())
+        pb_message = worker_pool.DeleteWorkerPoolRequest.pb(
+            worker_pool.DeleteWorkerPoolRequest()
+        )
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6893,7 +6970,7 @@ def test_delete_service_rest_interceptors(null_interceptor):
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
-        request = service.DeleteServiceRequest()
+        request = worker_pool.DeleteWorkerPoolRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -6902,7 +6979,7 @@ def test_delete_service_rest_interceptors(null_interceptor):
         post.return_value = operations_pb2.Operation()
         post_with_metadata.return_value = operations_pb2.Operation(), metadata
 
-        client.delete_service(
+        client.delete_worker_pool(
             request,
             metadata=[
                 ("key", "val"),
@@ -6918,11 +6995,13 @@ def test_delete_service_rest_interceptors(null_interceptor):
 def test_get_iam_policy_rest_bad_request(
     request_type=iam_policy_pb2.GetIamPolicyRequest,
 ):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/workerPools/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6948,12 +7027,14 @@ def test_get_iam_policy_rest_bad_request(
     ],
 )
 def test_get_iam_policy_rest_call_success(request_type):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/workerPools/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6981,22 +7062,24 @@ def test_get_iam_policy_rest_call_success(request_type):
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.ServicesRestTransport(
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ServicesRestInterceptor(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkerPoolsRestInterceptor(),
     )
-    client = ServicesClient(transport=transport)
+    client = WorkerPoolsClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_get_iam_policy"
+        transports.WorkerPoolsRestInterceptor, "post_get_iam_policy"
     ) as post, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_get_iam_policy_with_metadata"
+        transports.WorkerPoolsRestInterceptor, "post_get_iam_policy_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.ServicesRestInterceptor, "pre_get_iam_policy"
+        transports.WorkerPoolsRestInterceptor, "pre_get_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
@@ -7040,11 +7123,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 def test_set_iam_policy_rest_bad_request(
     request_type=iam_policy_pb2.SetIamPolicyRequest,
 ):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/workerPools/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7070,12 +7155,14 @@ def test_set_iam_policy_rest_bad_request(
     ],
 )
 def test_set_iam_policy_rest_call_success(request_type):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/workerPools/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7103,22 +7190,24 @@ def test_set_iam_policy_rest_call_success(request_type):
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_set_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.ServicesRestTransport(
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ServicesRestInterceptor(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkerPoolsRestInterceptor(),
     )
-    client = ServicesClient(transport=transport)
+    client = WorkerPoolsClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_set_iam_policy"
+        transports.WorkerPoolsRestInterceptor, "post_set_iam_policy"
     ) as post, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_set_iam_policy_with_metadata"
+        transports.WorkerPoolsRestInterceptor, "post_set_iam_policy_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.ServicesRestInterceptor, "pre_set_iam_policy"
+        transports.WorkerPoolsRestInterceptor, "pre_set_iam_policy"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
@@ -7162,11 +7251,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 def test_test_iam_permissions_rest_bad_request(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/workerPools/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7192,12 +7283,14 @@ def test_test_iam_permissions_rest_bad_request(
     ],
 )
 def test_test_iam_permissions_rest_call_success(request_type):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/locations/sample2/services/sample3"}
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/workerPools/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7223,22 +7316,24 @@ def test_test_iam_permissions_rest_call_success(request_type):
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_test_iam_permissions_rest_interceptors(null_interceptor):
-    transport = transports.ServicesRestTransport(
+    transport = transports.WorkerPoolsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ServicesRestInterceptor(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkerPoolsRestInterceptor(),
     )
-    client = ServicesClient(transport=transport)
+    client = WorkerPoolsClient(transport=transport)
 
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_test_iam_permissions"
+        transports.WorkerPoolsRestInterceptor, "post_test_iam_permissions"
     ) as post, mock.patch.object(
-        transports.ServicesRestInterceptor, "post_test_iam_permissions_with_metadata"
+        transports.WorkerPoolsRestInterceptor, "post_test_iam_permissions_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.ServicesRestInterceptor, "pre_test_iam_permissions"
+        transports.WorkerPoolsRestInterceptor, "pre_test_iam_permissions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
@@ -7287,7 +7382,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 def test_delete_operation_rest_bad_request(
     request_type=operations_pb2.DeleteOperationRequest,
 ):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7319,7 +7414,7 @@ def test_delete_operation_rest_bad_request(
     ],
 )
 def test_delete_operation_rest(request_type):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7349,7 +7444,7 @@ def test_delete_operation_rest(request_type):
 def test_get_operation_rest_bad_request(
     request_type=operations_pb2.GetOperationRequest,
 ):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7381,7 +7476,7 @@ def test_get_operation_rest_bad_request(
     ],
 )
 def test_get_operation_rest(request_type):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7411,7 +7506,7 @@ def test_get_operation_rest(request_type):
 def test_list_operations_rest_bad_request(
     request_type=operations_pb2.ListOperationsRequest,
 ):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7443,7 +7538,7 @@ def test_list_operations_rest_bad_request(
     ],
 )
 def test_list_operations_rest(request_type):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7473,7 +7568,7 @@ def test_list_operations_rest(request_type):
 def test_wait_operation_rest_bad_request(
     request_type=operations_pb2.WaitOperationRequest,
 ):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7505,7 +7600,7 @@ def test_wait_operation_rest_bad_request(
     ],
 )
 def test_wait_operation_rest(request_type):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7533,7 +7628,7 @@ def test_wait_operation_rest(request_type):
 
 
 def test_initialize_client_w_rest():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     assert client is not None
@@ -7541,100 +7636,108 @@ def test_initialize_client_w_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_create_service_empty_call_rest():
-    client = ServicesClient(
+def test_create_worker_pool_empty_call_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
-        client.create_service(request=None)
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
+        client.create_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcr_service.CreateServiceRequest()
+        request_msg = gcr_worker_pool.CreateWorkerPoolRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_get_service_empty_call_rest():
-    client = ServicesClient(
+def test_get_worker_pool_empty_call_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
-        client.get_service(request=None)
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
+        client.get_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = service.GetServiceRequest()
+        request_msg = worker_pool.GetWorkerPoolRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_list_services_empty_call_rest():
-    client = ServicesClient(
+def test_list_worker_pools_empty_call_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
-        client.list_services(request=None)
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
+        client.list_worker_pools(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = service.ListServicesRequest()
+        request_msg = worker_pool.ListWorkerPoolsRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_update_service_empty_call_rest():
-    client = ServicesClient(
+def test_update_worker_pool_empty_call_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
-        client.update_service(request=None)
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
+        client.update_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = gcr_service.UpdateServiceRequest()
+        request_msg = gcr_worker_pool.UpdateWorkerPoolRequest()
 
         assert args[0] == request_msg
 
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
-def test_delete_service_empty_call_rest():
-    client = ServicesClient(
+def test_delete_worker_pool_empty_call_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
-        client.delete_service(request=None)
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
+        client.delete_worker_pool(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = service.DeleteServiceRequest()
+        request_msg = worker_pool.DeleteWorkerPoolRequest()
 
         assert args[0] == request_msg
 
@@ -7642,7 +7745,7 @@ def test_delete_service_empty_call_rest():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_get_iam_policy_empty_call_rest():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7662,7 +7765,7 @@ def test_get_iam_policy_empty_call_rest():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_set_iam_policy_empty_call_rest():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7682,7 +7785,7 @@ def test_set_iam_policy_empty_call_rest():
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
 def test_test_iam_permissions_empty_call_rest():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7701,20 +7804,24 @@ def test_test_iam_permissions_empty_call_rest():
         assert args[0] == request_msg
 
 
-def test_create_service_routing_parameters_request_1_rest():
-    client = ServicesClient(
+def test_create_worker_pool_routing_parameters_request_1_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
-        client.create_service(request={"parent": "projects/sample1/locations/sample2"})
+    with mock.patch.object(
+        type(client.transport.create_worker_pool), "__call__"
+    ) as call:
+        client.create_worker_pool(
+            request={"parent": "projects/sample1/locations/sample2"}
+        )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = gcr_service.CreateServiceRequest(
+        request_msg = gcr_worker_pool.CreateWorkerPoolRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
 
@@ -7726,22 +7833,22 @@ def test_create_service_routing_parameters_request_1_rest():
         )
 
 
-def test_get_service_routing_parameters_request_1_rest():
-    client = ServicesClient(
+def test_get_worker_pool_routing_parameters_request_1_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
-        client.get_service(
+    with mock.patch.object(type(client.transport.get_worker_pool), "__call__") as call:
+        client.get_worker_pool(
             request={"name": "projects/sample1/locations/sample2/sample3"}
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = service.GetServiceRequest(
+        request_msg = worker_pool.GetWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
 
@@ -7753,20 +7860,24 @@ def test_get_service_routing_parameters_request_1_rest():
         )
 
 
-def test_list_services_routing_parameters_request_1_rest():
-    client = ServicesClient(
+def test_list_worker_pools_routing_parameters_request_1_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
-        client.list_services(request={"parent": "projects/sample1/locations/sample2"})
+    with mock.patch.object(
+        type(client.transport.list_worker_pools), "__call__"
+    ) as call:
+        client.list_worker_pools(
+            request={"parent": "projects/sample1/locations/sample2"}
+        )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = service.ListServicesRequest(
+        request_msg = worker_pool.ListWorkerPoolsRequest(
             **{"parent": "projects/sample1/locations/sample2"}
         )
 
@@ -7778,23 +7889,27 @@ def test_list_services_routing_parameters_request_1_rest():
         )
 
 
-def test_update_service_routing_parameters_request_1_rest():
-    client = ServicesClient(
+def test_update_worker_pool_routing_parameters_request_1_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
-        client.update_service(
-            request={"service": {"name": "projects/sample1/locations/sample2/sample3"}}
+    with mock.patch.object(
+        type(client.transport.update_worker_pool), "__call__"
+    ) as call:
+        client.update_worker_pool(
+            request={
+                "worker_pool": {"name": "projects/sample1/locations/sample2/sample3"}
+            }
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = gcr_service.UpdateServiceRequest(
-            **{"service": {"name": "projects/sample1/locations/sample2/sample3"}}
+        request_msg = gcr_worker_pool.UpdateWorkerPoolRequest(
+            **{"worker_pool": {"name": "projects/sample1/locations/sample2/sample3"}}
         )
 
         assert args[0] == request_msg
@@ -7805,22 +7920,24 @@ def test_update_service_routing_parameters_request_1_rest():
         )
 
 
-def test_delete_service_routing_parameters_request_1_rest():
-    client = ServicesClient(
+def test_delete_worker_pool_routing_parameters_request_1_rest():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
-        client.delete_service(
+    with mock.patch.object(
+        type(client.transport.delete_worker_pool), "__call__"
+    ) as call:
+        client.delete_worker_pool(
             request={"name": "projects/sample1/locations/sample2/sample3"}
         )
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        request_msg = service.DeleteServiceRequest(
+        request_msg = worker_pool.DeleteWorkerPoolRequest(
             **{"name": "projects/sample1/locations/sample2/sample3"}
         )
 
@@ -7832,8 +7949,8 @@ def test_delete_service_routing_parameters_request_1_rest():
         )
 
 
-def test_services_rest_lro_client():
-    client = ServicesClient(
+def test_worker_pools_rest_lro_client():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -7851,42 +7968,42 @@ def test_services_rest_lro_client():
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.ServicesGrpcTransport,
+        transports.WorkerPoolsGrpcTransport,
     )
 
 
-def test_services_base_transport_error():
+def test_worker_pools_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.ServicesTransport(
+        transport = transports.WorkerPoolsTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_services_base_transport():
+def test_worker_pools_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.run_v2.services.services.transports.ServicesTransport.__init__"
+        "google.cloud.run_v2.services.worker_pools.transports.WorkerPoolsTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.ServicesTransport(
+        transport = transports.WorkerPoolsTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "create_service",
-        "get_service",
-        "list_services",
-        "update_service",
-        "delete_service",
+        "create_worker_pool",
+        "get_worker_pool",
+        "list_worker_pools",
+        "update_worker_pool",
+        "delete_worker_pool",
         "get_iam_policy",
         "set_iam_policy",
         "test_iam_permissions",
@@ -7916,16 +8033,16 @@ def test_services_base_transport():
             getattr(transport, r)()
 
 
-def test_services_base_transport_with_credentials_file():
+def test_worker_pools_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.run_v2.services.services.transports.ServicesTransport._prep_wrapped_messages"
+        "google.cloud.run_v2.services.worker_pools.transports.WorkerPoolsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.ServicesTransport(
+        transport = transports.WorkerPoolsTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -7937,22 +8054,22 @@ def test_services_base_transport_with_credentials_file():
         )
 
 
-def test_services_base_transport_with_adc():
+def test_worker_pools_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.run_v2.services.services.transports.ServicesTransport._prep_wrapped_messages"
+        "google.cloud.run_v2.services.worker_pools.transports.WorkerPoolsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.ServicesTransport()
+        transport = transports.WorkerPoolsTransport()
         adc.assert_called_once()
 
 
-def test_services_auth_adc():
+def test_worker_pools_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        ServicesClient()
+        WorkerPoolsClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -7963,11 +8080,11 @@ def test_services_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.ServicesGrpcTransport,
-        transports.ServicesGrpcAsyncIOTransport,
+        transports.WorkerPoolsGrpcTransport,
+        transports.WorkerPoolsGrpcAsyncIOTransport,
     ],
 )
-def test_services_transport_auth_adc(transport_class):
+def test_worker_pools_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -7983,12 +8100,12 @@ def test_services_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.ServicesGrpcTransport,
-        transports.ServicesGrpcAsyncIOTransport,
-        transports.ServicesRestTransport,
+        transports.WorkerPoolsGrpcTransport,
+        transports.WorkerPoolsGrpcAsyncIOTransport,
+        transports.WorkerPoolsRestTransport,
     ],
 )
-def test_services_transport_auth_gdch_credentials(transport_class):
+def test_worker_pools_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -8006,11 +8123,11 @@ def test_services_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.ServicesGrpcTransport, grpc_helpers),
-        (transports.ServicesGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.WorkerPoolsGrpcTransport, grpc_helpers),
+        (transports.WorkerPoolsGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_services_transport_create_channel(transport_class, grpc_helpers):
+def test_worker_pools_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -8040,9 +8157,9 @@ def test_services_transport_create_channel(transport_class, grpc_helpers):
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.ServicesGrpcTransport, transports.ServicesGrpcAsyncIOTransport],
+    [transports.WorkerPoolsGrpcTransport, transports.WorkerPoolsGrpcAsyncIOTransport],
 )
-def test_services_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_worker_pools_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -8080,12 +8197,12 @@ def test_services_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
-def test_services_http_transport_client_cert_source_for_mtls():
+def test_worker_pools_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.ServicesRestTransport(
+        transports.WorkerPoolsRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
@@ -8099,8 +8216,8 @@ def test_services_http_transport_client_cert_source_for_mtls():
         "rest",
     ],
 )
-def test_services_host_no_port(transport_name):
-    client = ServicesClient(
+def test_worker_pools_host_no_port(transport_name):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint="run.googleapis.com"),
         transport=transport_name,
@@ -8120,8 +8237,8 @@ def test_services_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_services_host_with_port(transport_name):
-    client = ServicesClient(
+def test_worker_pools_host_with_port(transport_name):
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="run.googleapis.com:8000"
@@ -8141,31 +8258,31 @@ def test_services_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_services_client_transport_session_collision(transport_name):
+def test_worker_pools_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = ServicesClient(
+    client1 = WorkerPoolsClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = ServicesClient(
+    client2 = WorkerPoolsClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.create_service._session
-    session2 = client2.transport.create_service._session
+    session1 = client1.transport.create_worker_pool._session
+    session2 = client2.transport.create_worker_pool._session
     assert session1 != session2
-    session1 = client1.transport.get_service._session
-    session2 = client2.transport.get_service._session
+    session1 = client1.transport.get_worker_pool._session
+    session2 = client2.transport.get_worker_pool._session
     assert session1 != session2
-    session1 = client1.transport.list_services._session
-    session2 = client2.transport.list_services._session
+    session1 = client1.transport.list_worker_pools._session
+    session2 = client2.transport.list_worker_pools._session
     assert session1 != session2
-    session1 = client1.transport.update_service._session
-    session2 = client2.transport.update_service._session
+    session1 = client1.transport.update_worker_pool._session
+    session2 = client2.transport.update_worker_pool._session
     assert session1 != session2
-    session1 = client1.transport.delete_service._session
-    session2 = client2.transport.delete_service._session
+    session1 = client1.transport.delete_worker_pool._session
+    session2 = client2.transport.delete_worker_pool._session
     assert session1 != session2
     session1 = client1.transport.get_iam_policy._session
     session2 = client2.transport.get_iam_policy._session
@@ -8178,11 +8295,11 @@ def test_services_client_transport_session_collision(transport_name):
     assert session1 != session2
 
 
-def test_services_grpc_transport_channel():
+def test_worker_pools_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.ServicesGrpcTransport(
+    transport = transports.WorkerPoolsGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -8191,11 +8308,11 @@ def test_services_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_services_grpc_asyncio_transport_channel():
+def test_worker_pools_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.ServicesGrpcAsyncIOTransport(
+    transport = transports.WorkerPoolsGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -8208,9 +8325,9 @@ def test_services_grpc_asyncio_transport_channel():
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.ServicesGrpcTransport, transports.ServicesGrpcAsyncIOTransport],
+    [transports.WorkerPoolsGrpcTransport, transports.WorkerPoolsGrpcAsyncIOTransport],
 )
-def test_services_transport_channel_mtls_with_client_cert_source(transport_class):
+def test_worker_pools_transport_channel_mtls_with_client_cert_source(transport_class):
     with mock.patch(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
@@ -8257,9 +8374,9 @@ def test_services_transport_channel_mtls_with_client_cert_source(transport_class
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.ServicesGrpcTransport, transports.ServicesGrpcAsyncIOTransport],
+    [transports.WorkerPoolsGrpcTransport, transports.WorkerPoolsGrpcAsyncIOTransport],
 )
-def test_services_transport_channel_mtls_with_adc(transport_class):
+def test_worker_pools_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -8296,8 +8413,8 @@ def test_services_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_services_grpc_lro_client():
-    client = ServicesClient(
+def test_worker_pools_grpc_lro_client():
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -8313,8 +8430,8 @@ def test_services_grpc_lro_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_services_grpc_lro_async_client():
-    client = ServicesAsyncClient(
+def test_worker_pools_grpc_lro_async_client():
+    client = WorkerPoolsAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -8330,60 +8447,6 @@ def test_services_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_build_path():
-    project = "squid"
-    location = "clam"
-    build = "whelk"
-    expected = "projects/{project}/locations/{location}/builds/{build}".format(
-        project=project,
-        location=location,
-        build=build,
-    )
-    actual = ServicesClient.build_path(project, location, build)
-    assert expected == actual
-
-
-def test_parse_build_path():
-    expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "build": "nudibranch",
-    }
-    path = ServicesClient.build_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ServicesClient.parse_build_path(path)
-    assert expected == actual
-
-
-def test_build_worker_pool_path():
-    project = "cuttlefish"
-    location = "mussel"
-    worker_pool = "winkle"
-    expected = (
-        "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
-            project=project,
-            location=location,
-            worker_pool=worker_pool,
-        )
-    )
-    actual = ServicesClient.build_worker_pool_path(project, location, worker_pool)
-    assert expected == actual
-
-
-def test_parse_build_worker_pool_path():
-    expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "worker_pool": "abalone",
-    }
-    path = ServicesClient.build_worker_pool_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ServicesClient.parse_build_worker_pool_path(path)
-    assert expected == actual
-
-
 def test_connector_path():
     project = "squid"
     location = "clam"
@@ -8393,7 +8456,7 @@ def test_connector_path():
         location=location,
         connector=connector,
     )
-    actual = ServicesClient.connector_path(project, location, connector)
+    actual = WorkerPoolsClient.connector_path(project, location, connector)
     assert expected == actual
 
 
@@ -8403,10 +8466,10 @@ def test_parse_connector_path():
         "location": "oyster",
         "connector": "nudibranch",
     }
-    path = ServicesClient.connector_path(**expected)
+    path = WorkerPoolsClient.connector_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_connector_path(path)
+    actual = WorkerPoolsClient.parse_connector_path(path)
     assert expected == actual
 
 
@@ -8421,7 +8484,7 @@ def test_crypto_key_path():
         key_ring=key_ring,
         crypto_key=crypto_key,
     )
-    actual = ServicesClient.crypto_key_path(project, location, key_ring, crypto_key)
+    actual = WorkerPoolsClient.crypto_key_path(project, location, key_ring, crypto_key)
     assert expected == actual
 
 
@@ -8432,10 +8495,10 @@ def test_parse_crypto_key_path():
         "key_ring": "squid",
         "crypto_key": "clam",
     }
-    path = ServicesClient.crypto_key_path(**expected)
+    path = WorkerPoolsClient.crypto_key_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_crypto_key_path(path)
+    actual = WorkerPoolsClient.parse_crypto_key_path(path)
     assert expected == actual
 
 
@@ -8448,7 +8511,7 @@ def test_mesh_path():
         location=location,
         mesh=mesh,
     )
-    actual = ServicesClient.mesh_path(project, location, mesh)
+    actual = WorkerPoolsClient.mesh_path(project, location, mesh)
     assert expected == actual
 
 
@@ -8458,10 +8521,10 @@ def test_parse_mesh_path():
         "location": "cuttlefish",
         "mesh": "mussel",
     }
-    path = ServicesClient.mesh_path(**expected)
+    path = WorkerPoolsClient.mesh_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_mesh_path(path)
+    actual = WorkerPoolsClient.parse_mesh_path(path)
     assert expected == actual
 
 
@@ -8470,7 +8533,7 @@ def test_policy_path():
     expected = "projects/{project}/policy".format(
         project=project,
     )
-    actual = ServicesClient.policy_path(project)
+    actual = WorkerPoolsClient.policy_path(project)
     assert expected == actual
 
 
@@ -8478,10 +8541,10 @@ def test_parse_policy_path():
     expected = {
         "project": "nautilus",
     }
-    path = ServicesClient.policy_path(**expected)
+    path = WorkerPoolsClient.policy_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_policy_path(path)
+    actual = WorkerPoolsClient.parse_policy_path(path)
     assert expected == actual
 
 
@@ -8496,7 +8559,7 @@ def test_revision_path():
         service=service,
         revision=revision,
     )
-    actual = ServicesClient.revision_path(project, location, service, revision)
+    actual = WorkerPoolsClient.revision_path(project, location, service, revision)
     assert expected == actual
 
 
@@ -8507,10 +8570,10 @@ def test_parse_revision_path():
         "service": "oyster",
         "revision": "nudibranch",
     }
-    path = ServicesClient.revision_path(**expected)
+    path = WorkerPoolsClient.revision_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_revision_path(path)
+    actual = WorkerPoolsClient.parse_revision_path(path)
     assert expected == actual
 
 
@@ -8521,7 +8584,7 @@ def test_secret_path():
         project=project,
         secret=secret,
     )
-    actual = ServicesClient.secret_path(project, secret)
+    actual = WorkerPoolsClient.secret_path(project, secret)
     assert expected == actual
 
 
@@ -8530,10 +8593,10 @@ def test_parse_secret_path():
         "project": "winkle",
         "secret": "nautilus",
     }
-    path = ServicesClient.secret_path(**expected)
+    path = WorkerPoolsClient.secret_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_secret_path(path)
+    actual = WorkerPoolsClient.parse_secret_path(path)
     assert expected == actual
 
 
@@ -8546,7 +8609,7 @@ def test_secret_version_path():
         secret=secret,
         version=version,
     )
-    actual = ServicesClient.secret_version_path(project, secret, version)
+    actual = WorkerPoolsClient.secret_version_path(project, secret, version)
     assert expected == actual
 
 
@@ -8556,36 +8619,38 @@ def test_parse_secret_version_path():
         "secret": "whelk",
         "version": "octopus",
     }
-    path = ServicesClient.secret_version_path(**expected)
+    path = WorkerPoolsClient.secret_version_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_secret_version_path(path)
+    actual = WorkerPoolsClient.parse_secret_version_path(path)
     assert expected == actual
 
 
-def test_service_path():
+def test_worker_pool_path():
     project = "oyster"
     location = "nudibranch"
-    service = "cuttlefish"
-    expected = "projects/{project}/locations/{location}/services/{service}".format(
-        project=project,
-        location=location,
-        service=service,
+    worker_pool = "cuttlefish"
+    expected = (
+        "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
+            project=project,
+            location=location,
+            worker_pool=worker_pool,
+        )
     )
-    actual = ServicesClient.service_path(project, location, service)
+    actual = WorkerPoolsClient.worker_pool_path(project, location, worker_pool)
     assert expected == actual
 
 
-def test_parse_service_path():
+def test_parse_worker_pool_path():
     expected = {
         "project": "mussel",
         "location": "winkle",
-        "service": "nautilus",
+        "worker_pool": "nautilus",
     }
-    path = ServicesClient.service_path(**expected)
+    path = WorkerPoolsClient.worker_pool_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_service_path(path)
+    actual = WorkerPoolsClient.parse_worker_pool_path(path)
     assert expected == actual
 
 
@@ -8594,7 +8659,7 @@ def test_common_billing_account_path():
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = ServicesClient.common_billing_account_path(billing_account)
+    actual = WorkerPoolsClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
@@ -8602,10 +8667,10 @@ def test_parse_common_billing_account_path():
     expected = {
         "billing_account": "abalone",
     }
-    path = ServicesClient.common_billing_account_path(**expected)
+    path = WorkerPoolsClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_common_billing_account_path(path)
+    actual = WorkerPoolsClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
@@ -8614,7 +8679,7 @@ def test_common_folder_path():
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = ServicesClient.common_folder_path(folder)
+    actual = WorkerPoolsClient.common_folder_path(folder)
     assert expected == actual
 
 
@@ -8622,10 +8687,10 @@ def test_parse_common_folder_path():
     expected = {
         "folder": "clam",
     }
-    path = ServicesClient.common_folder_path(**expected)
+    path = WorkerPoolsClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_common_folder_path(path)
+    actual = WorkerPoolsClient.parse_common_folder_path(path)
     assert expected == actual
 
 
@@ -8634,7 +8699,7 @@ def test_common_organization_path():
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = ServicesClient.common_organization_path(organization)
+    actual = WorkerPoolsClient.common_organization_path(organization)
     assert expected == actual
 
 
@@ -8642,10 +8707,10 @@ def test_parse_common_organization_path():
     expected = {
         "organization": "octopus",
     }
-    path = ServicesClient.common_organization_path(**expected)
+    path = WorkerPoolsClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_common_organization_path(path)
+    actual = WorkerPoolsClient.parse_common_organization_path(path)
     assert expected == actual
 
 
@@ -8654,7 +8719,7 @@ def test_common_project_path():
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = ServicesClient.common_project_path(project)
+    actual = WorkerPoolsClient.common_project_path(project)
     assert expected == actual
 
 
@@ -8662,10 +8727,10 @@ def test_parse_common_project_path():
     expected = {
         "project": "nudibranch",
     }
-    path = ServicesClient.common_project_path(**expected)
+    path = WorkerPoolsClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_common_project_path(path)
+    actual = WorkerPoolsClient.parse_common_project_path(path)
     assert expected == actual
 
 
@@ -8676,7 +8741,7 @@ def test_common_location_path():
         project=project,
         location=location,
     )
-    actual = ServicesClient.common_location_path(project, location)
+    actual = WorkerPoolsClient.common_location_path(project, location)
     assert expected == actual
 
 
@@ -8685,10 +8750,10 @@ def test_parse_common_location_path():
         "project": "winkle",
         "location": "nautilus",
     }
-    path = ServicesClient.common_location_path(**expected)
+    path = WorkerPoolsClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = ServicesClient.parse_common_location_path(path)
+    actual = WorkerPoolsClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -8696,18 +8761,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.ServicesTransport, "_prep_wrapped_messages"
+        transports.WorkerPoolsTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.ServicesTransport, "_prep_wrapped_messages"
+        transports.WorkerPoolsTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = ServicesClient.get_transport_class()
+        transport_class = WorkerPoolsClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -8716,7 +8781,7 @@ def test_client_with_default_client_info():
 
 
 def test_delete_operation(transport: str = "grpc"):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -8741,7 +8806,7 @@ def test_delete_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -8765,7 +8830,7 @@ async def test_delete_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_delete_operation_field_headers():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -8794,7 +8859,7 @@ def test_delete_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
@@ -8821,7 +8886,7 @@ async def test_delete_operation_field_headers_async():
 
 
 def test_delete_operation_from_dict():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8839,7 +8904,7 @@ def test_delete_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8855,7 +8920,7 @@ async def test_delete_operation_from_dict_async():
 
 
 def test_wait_operation(transport: str = "grpc"):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -8880,7 +8945,7 @@ def test_wait_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_wait_operation(transport: str = "grpc_asyncio"):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -8906,7 +8971,7 @@ async def test_wait_operation(transport: str = "grpc_asyncio"):
 
 
 def test_wait_operation_field_headers():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -8935,7 +9000,7 @@ def test_wait_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_wait_operation_field_headers_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
@@ -8964,7 +9029,7 @@ async def test_wait_operation_field_headers_async():
 
 
 def test_wait_operation_from_dict():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8982,7 +9047,7 @@ def test_wait_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_wait_operation_from_dict_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9000,7 +9065,7 @@ async def test_wait_operation_from_dict_async():
 
 
 def test_get_operation(transport: str = "grpc"):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -9025,7 +9090,7 @@ def test_get_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -9051,7 +9116,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_operation_field_headers():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -9080,7 +9145,7 @@ def test_get_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
@@ -9109,7 +9174,7 @@ async def test_get_operation_field_headers_async():
 
 
 def test_get_operation_from_dict():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9127,7 +9192,7 @@ def test_get_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9145,7 +9210,7 @@ async def test_get_operation_from_dict_async():
 
 
 def test_list_operations(transport: str = "grpc"):
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -9170,7 +9235,7 @@ def test_list_operations(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
     )
@@ -9196,7 +9261,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_operations_field_headers():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -9225,7 +9290,7 @@ def test_list_operations_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
 
@@ -9254,7 +9319,7 @@ async def test_list_operations_field_headers_async():
 
 
 def test_list_operations_from_dict():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9272,7 +9337,7 @@ def test_list_operations_from_dict():
 
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9290,7 +9355,7 @@ async def test_list_operations_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
@@ -9303,7 +9368,7 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = ServicesAsyncClient(
+    client = WorkerPoolsAsyncClient(
         credentials=async_anonymous_credentials(), transport="grpc_asyncio"
     )
     with mock.patch.object(
@@ -9315,7 +9380,7 @@ async def test_transport_close_grpc_asyncio():
 
 
 def test_transport_close_rest():
-    client = ServicesClient(
+    client = WorkerPoolsClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
     with mock.patch.object(
@@ -9332,7 +9397,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = ServicesClient(
+        client = WorkerPoolsClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -9346,8 +9411,8 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (ServicesClient, transports.ServicesGrpcTransport),
-        (ServicesAsyncClient, transports.ServicesGrpcAsyncIOTransport),
+        (WorkerPoolsClient, transports.WorkerPoolsGrpcTransport),
+        (WorkerPoolsAsyncClient, transports.WorkerPoolsGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):

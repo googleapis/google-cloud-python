@@ -14,10 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-from http import HTTPStatus
-import json
 import logging as std_logging
-import os
 import re
 from typing import (
     Callable,
@@ -30,36 +27,22 @@ from typing import (
     Tuple,
     Type,
     Union,
-    cast,
 )
-import warnings
 
-from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.run_v2 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-try:
-    from google.api_core import client_logging  # type: ignore
-
-    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    CLIENT_LOGGING_SUPPORTED = False
-
-_LOGGER = std_logging.getLogger(__name__)
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.api import launch_stage_pb2  # type: ignore
 from google.api_core import operation  # type: ignore
@@ -71,94 +54,76 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.run_v2.services.services import pagers
-from google.cloud.run_v2.types import condition, revision_template
-from google.cloud.run_v2.types import service
-from google.cloud.run_v2.types import service as gcr_service
-from google.cloud.run_v2.types import traffic_target, vendor_settings
+from google.cloud.run_v2.services.worker_pools import pagers
+from google.cloud.run_v2.types import condition, instance_split, vendor_settings
+from google.cloud.run_v2.types import worker_pool
+from google.cloud.run_v2.types import worker_pool as gcr_worker_pool
+from google.cloud.run_v2.types import worker_pool_revision_template
 
-from .transports.base import DEFAULT_CLIENT_INFO, ServicesTransport
-from .transports.grpc import ServicesGrpcTransport
-from .transports.grpc_asyncio import ServicesGrpcAsyncIOTransport
-from .transports.rest import ServicesRestTransport
+from .client import WorkerPoolsClient
+from .transports.base import DEFAULT_CLIENT_INFO, WorkerPoolsTransport
+from .transports.grpc_asyncio import WorkerPoolsGrpcAsyncIOTransport
 
+try:
+    from google.api_core import client_logging  # type: ignore
 
-class ServicesClientMeta(type):
-    """Metaclass for the Services client.
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
 
-    This provides class-level methods for building and retrieving
-    support objects (e.g. transport) without polluting the client instance
-    objects.
-    """
-
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[ServicesTransport]]
-    _transport_registry["grpc"] = ServicesGrpcTransport
-    _transport_registry["grpc_asyncio"] = ServicesGrpcAsyncIOTransport
-    _transport_registry["rest"] = ServicesRestTransport
-
-    def get_transport_class(
-        cls,
-        label: Optional[str] = None,
-    ) -> Type[ServicesTransport]:
-        """Returns an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return cls._transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(cls._transport_registry.values()))
+_LOGGER = std_logging.getLogger(__name__)
 
 
-class ServicesClient(metaclass=ServicesClientMeta):
-    """Cloud Run Service Control Plane API"""
+class WorkerPoolsAsyncClient:
+    """Cloud Run WorkerPool Control Plane API."""
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
-        """Converts api endpoint to mTLS endpoint.
+    _client: WorkerPoolsClient
 
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            str: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
-
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
+    # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = "run.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_ENDPOINT = WorkerPoolsClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = WorkerPoolsClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = WorkerPoolsClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = WorkerPoolsClient._DEFAULT_UNIVERSE
 
-    _DEFAULT_ENDPOINT_TEMPLATE = "run.{UNIVERSE_DOMAIN}"
-    _DEFAULT_UNIVERSE = "googleapis.com"
+    connector_path = staticmethod(WorkerPoolsClient.connector_path)
+    parse_connector_path = staticmethod(WorkerPoolsClient.parse_connector_path)
+    crypto_key_path = staticmethod(WorkerPoolsClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(WorkerPoolsClient.parse_crypto_key_path)
+    mesh_path = staticmethod(WorkerPoolsClient.mesh_path)
+    parse_mesh_path = staticmethod(WorkerPoolsClient.parse_mesh_path)
+    policy_path = staticmethod(WorkerPoolsClient.policy_path)
+    parse_policy_path = staticmethod(WorkerPoolsClient.parse_policy_path)
+    revision_path = staticmethod(WorkerPoolsClient.revision_path)
+    parse_revision_path = staticmethod(WorkerPoolsClient.parse_revision_path)
+    secret_path = staticmethod(WorkerPoolsClient.secret_path)
+    parse_secret_path = staticmethod(WorkerPoolsClient.parse_secret_path)
+    secret_version_path = staticmethod(WorkerPoolsClient.secret_version_path)
+    parse_secret_version_path = staticmethod(
+        WorkerPoolsClient.parse_secret_version_path
+    )
+    worker_pool_path = staticmethod(WorkerPoolsClient.worker_pool_path)
+    parse_worker_pool_path = staticmethod(WorkerPoolsClient.parse_worker_pool_path)
+    common_billing_account_path = staticmethod(
+        WorkerPoolsClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        WorkerPoolsClient.parse_common_billing_account_path
+    )
+    common_folder_path = staticmethod(WorkerPoolsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(WorkerPoolsClient.parse_common_folder_path)
+    common_organization_path = staticmethod(WorkerPoolsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        WorkerPoolsClient.parse_common_organization_path
+    )
+    common_project_path = staticmethod(WorkerPoolsClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        WorkerPoolsClient.parse_common_project_path
+    )
+    common_location_path = staticmethod(WorkerPoolsClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        WorkerPoolsClient.parse_common_location_path
+    )
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -171,11 +136,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ServicesClient: The constructed client.
+            WorkerPoolsAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_info(info)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        return WorkerPoolsClient.from_service_account_info.__func__(WorkerPoolsAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -189,320 +152,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ServicesClient: The constructed client.
+            WorkerPoolsAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        return WorkerPoolsClient.from_service_account_file.__func__(WorkerPoolsAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
-    @property
-    def transport(self) -> ServicesTransport:
-        """Returns the transport used by the client instance.
-
-        Returns:
-            ServicesTransport: The transport used by the client
-                instance.
-        """
-        return self._transport
-
-    @staticmethod
-    def build_path(
-        project: str,
-        location: str,
-        build: str,
-    ) -> str:
-        """Returns a fully-qualified build string."""
-        return "projects/{project}/locations/{location}/builds/{build}".format(
-            project=project,
-            location=location,
-            build=build,
-        )
-
-    @staticmethod
-    def parse_build_path(path: str) -> Dict[str, str]:
-        """Parses a build path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/builds/(?P<build>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def build_worker_pool_path(
-        project: str,
-        location: str,
-        worker_pool: str,
-    ) -> str:
-        """Returns a fully-qualified build_worker_pool string."""
-        return (
-            "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
-                project=project,
-                location=location,
-                worker_pool=worker_pool,
-            )
-        )
-
-    @staticmethod
-    def parse_build_worker_pool_path(path: str) -> Dict[str, str]:
-        """Parses a build_worker_pool path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/workerPools/(?P<worker_pool>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def connector_path(
-        project: str,
-        location: str,
-        connector: str,
-    ) -> str:
-        """Returns a fully-qualified connector string."""
-        return "projects/{project}/locations/{location}/connectors/{connector}".format(
-            project=project,
-            location=location,
-            connector=connector,
-        )
-
-    @staticmethod
-    def parse_connector_path(path: str) -> Dict[str, str]:
-        """Parses a connector path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/connectors/(?P<connector>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def crypto_key_path(
-        project: str,
-        location: str,
-        key_ring: str,
-        crypto_key: str,
-    ) -> str:
-        """Returns a fully-qualified crypto_key string."""
-        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
-            project=project,
-            location=location,
-            key_ring=key_ring,
-            crypto_key=crypto_key,
-        )
-
-    @staticmethod
-    def parse_crypto_key_path(path: str) -> Dict[str, str]:
-        """Parses a crypto_key path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def mesh_path(
-        project: str,
-        location: str,
-        mesh: str,
-    ) -> str:
-        """Returns a fully-qualified mesh string."""
-        return "projects/{project}/locations/{location}/meshes/{mesh}".format(
-            project=project,
-            location=location,
-            mesh=mesh,
-        )
-
-    @staticmethod
-    def parse_mesh_path(path: str) -> Dict[str, str]:
-        """Parses a mesh path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/meshes/(?P<mesh>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def policy_path(
-        project: str,
-    ) -> str:
-        """Returns a fully-qualified policy string."""
-        return "projects/{project}/policy".format(
-            project=project,
-        )
-
-    @staticmethod
-    def parse_policy_path(path: str) -> Dict[str, str]:
-        """Parses a policy path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/policy$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def revision_path(
-        project: str,
-        location: str,
-        service: str,
-        revision: str,
-    ) -> str:
-        """Returns a fully-qualified revision string."""
-        return "projects/{project}/locations/{location}/services/{service}/revisions/{revision}".format(
-            project=project,
-            location=location,
-            service=service,
-            revision=revision,
-        )
-
-    @staticmethod
-    def parse_revision_path(path: str) -> Dict[str, str]:
-        """Parses a revision path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/services/(?P<service>.+?)/revisions/(?P<revision>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def secret_path(
-        project: str,
-        secret: str,
-    ) -> str:
-        """Returns a fully-qualified secret string."""
-        return "projects/{project}/secrets/{secret}".format(
-            project=project,
-            secret=secret,
-        )
-
-    @staticmethod
-    def parse_secret_path(path: str) -> Dict[str, str]:
-        """Parses a secret path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def secret_version_path(
-        project: str,
-        secret: str,
-        version: str,
-    ) -> str:
-        """Returns a fully-qualified secret_version string."""
-        return "projects/{project}/secrets/{secret}/versions/{version}".format(
-            project=project,
-            secret=secret,
-            version=version,
-        )
-
-    @staticmethod
-    def parse_secret_version_path(path: str) -> Dict[str, str]:
-        """Parses a secret_version path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)/versions/(?P<version>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def service_path(
-        project: str,
-        location: str,
-        service: str,
-    ) -> str:
-        """Returns a fully-qualified service string."""
-        return "projects/{project}/locations/{location}/services/{service}".format(
-            project=project,
-            location=location,
-            service=service,
-        )
-
-    @staticmethod
-    def parse_service_path(path: str) -> Dict[str, str]:
-        """Parses a service path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/services/(?P<service>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_billing_account_path(
-        billing_account: str,
-    ) -> str:
-        """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
-
-    @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
-        """Parse a billing_account path into its component segments."""
-        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_folder_path(
-        folder: str,
-    ) -> str:
-        """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(
-            folder=folder,
-        )
-
-    @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
-        """Parse a folder path into its component segments."""
-        m = re.match(r"^folders/(?P<folder>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_organization_path(
-        organization: str,
-    ) -> str:
-        """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(
-            organization=organization,
-        )
-
-    @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
-        """Parse a organization path into its component segments."""
-        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_project_path(
-        project: str,
-    ) -> str:
-        """Returns a fully-qualified project string."""
-        return "projects/{project}".format(
-            project=project,
-        )
-
-    @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
-        """Parse a project path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_location_path(
-        project: str,
-        location: str,
-    ) -> str:
-        """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project,
-            location=location,
-        )
-
-    @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
-        """Parse a location path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
-        return m.groupdict() if m else {}
-
     @classmethod
     def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+        cls, client_options: Optional[ClientOptions] = None
     ):
-        """Deprecated. Return the API endpoint and client cert source for mutual TLS.
+        """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
         (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
@@ -532,190 +192,16 @@ class ServicesClient(metaclass=ServicesClientMeta):
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
+        return WorkerPoolsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-
-        # Figure out the client cert source to use.
-        client_cert_source = None
-        if use_client_cert == "true":
-            if client_options.client_cert_source:
-                client_cert_source = client_options.client_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = cls.DEFAULT_ENDPOINT
-
-        return api_endpoint, client_cert_source
-
-    @staticmethod
-    def _read_environment_variables():
-        """Returns the environment variables used by the client.
+    @property
+    def transport(self) -> WorkerPoolsTransport:
+        """Returns the transport used by the client instance.
 
         Returns:
-            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
-
-        Raises:
-            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                any of ["true", "false"].
-            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                is not any of ["auto", "never", "always"].
+            WorkerPoolsTransport: The transport used by the client instance.
         """
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
-
-    @staticmethod
-    def _get_client_cert_source(provided_cert_source, use_cert_flag):
-        """Return the client cert source to be used by the client.
-
-        Args:
-            provided_cert_source (bytes): The client certificate source provided.
-            use_cert_flag (bool): A flag indicating whether to use the client certificate.
-
-        Returns:
-            bytes or None: The client cert source to be used by the client.
-        """
-        client_cert_source = None
-        if use_cert_flag:
-            if provided_cert_source:
-                client_cert_source = provided_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-        return client_cert_source
-
-    @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
-        """Return the API endpoint used by the client.
-
-        Args:
-            api_override (str): The API endpoint override. If specified, this is always
-                the return value of this function and the other arguments are not used.
-            client_cert_source (bytes): The client certificate source used by the client.
-            universe_domain (str): The universe domain used by the client.
-            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
-                Possible values are "always", "auto", or "never".
-
-        Returns:
-            str: The API endpoint to be used by the client.
-        """
-        if api_override is not None:
-            api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            _default_universe = ServicesClient._DEFAULT_UNIVERSE
-            if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
-            api_endpoint = ServicesClient.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = ServicesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
-            )
-        return api_endpoint
-
-    @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
-        """Return the universe domain used by the client.
-
-        Args:
-            client_universe_domain (Optional[str]): The universe domain configured via the client options.
-            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
-
-        Returns:
-            str: The universe domain to be used by the client.
-
-        Raises:
-            ValueError: If the universe domain is an empty string.
-        """
-        universe_domain = ServicesClient._DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
-
-    def _validate_universe_domain(self):
-        """Validates client's and credentials' universe domains are consistent.
-
-        Returns:
-            bool: True iff the configured universe domain is valid.
-
-        Raises:
-            ValueError: If the configured universe domain is not valid.
-        """
-
-        # NOTE (b/349488459): universe validation is disabled until further notice.
-        return True
-
-    def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
-    ) -> None:
-        """Adds credential info string to error details for 401/403/404 errors.
-
-        Args:
-            error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
-        """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
-            return
-
-        cred = self._transport._credentials
-
-        # get_cred_info is only available in google-auth>=2.35.0
-        if not hasattr(cred, "get_cred_info"):
-            return
-
-        # ignore the type check since pypy test fails when get_cred_info
-        # is not available
-        cred_info = cred.get_cred_info()  # type: ignore
-        if cred_info and hasattr(error._details, "append"):
-            error._details.append(json.dumps(cred_info))
+        return self._client.transport
 
     @property
     def api_endpoint(self):
@@ -724,28 +210,31 @@ class ServicesClient(metaclass=ServicesClientMeta):
         Returns:
             str: The API endpoint used by the client instance.
         """
-        return self._api_endpoint
+        return self._client._api_endpoint
 
     @property
     def universe_domain(self) -> str:
         """Return the universe domain used by the client instance.
 
         Returns:
-            str: The universe domain used by the client instance.
+            str: The universe domain used
+                by the client instance.
         """
-        return self._universe_domain
+        return self._client._universe_domain
+
+    get_transport_class = WorkerPoolsClient.get_transport_class
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[str, ServicesTransport, Callable[..., ServicesTransport]]
-        ] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+            Union[str, WorkerPoolsTransport, Callable[..., WorkerPoolsTransport]]
+        ] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the services client.
+        """Instantiates the worker pools async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -753,10 +242,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,ServicesTransport,Callable[..., ServicesTransport]]]):
-                The transport to use, or a Callable that constructs and returns a new transport.
+            transport (Optional[Union[str,WorkerPoolsTransport,Callable[..., WorkerPoolsTransport]]]):
+                The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the ServicesTransport constructor.
+                arguments as used in the WorkerPoolsTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -780,7 +269,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 set, no client certificate will be used.
 
                 3. The ``universe_domain`` property can be used to override the
-                default "googleapis.com" universe. Note that the ``api_endpoint``
+                default "googleapis.com" universe. Note that ``api_endpoint``
                 property still takes precedence; and ``universe_domain`` is
                 currently not supported for mTLS.
 
@@ -791,137 +280,50 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client_options = client_options
-        if isinstance(self._client_options, dict):
-            self._client_options = client_options_lib.from_dict(self._client_options)
-        if self._client_options is None:
-            self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
+        self._client = WorkerPoolsClient(
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
-        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
-
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ServicesClient._read_environment_variables()
-        self._client_cert_source = ServicesClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
-        )
-        self._universe_domain = ServicesClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
-        )
-        self._api_endpoint = None  # updated below, depending on `transport`
-
-        # Initialize the universe domain validation.
-        self._is_universe_domain_valid = False
-
-        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
-            # Setup logging.
-            client_logging.initialize_logging()
-
-        api_key_value = getattr(self._client_options, "api_key", None)
-        if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.run_v2.WorkerPoolsAsyncClient`.",
+                extra={
+                    "serviceName": "google.cloud.run.v2.WorkerPools",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.cloud.run.v2.WorkerPools",
+                    "credentialsType": None,
+                },
             )
 
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, ServicesTransport)
-        if transport_provided:
-            # transport is a ServicesTransport instance.
-            if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
-            if self._client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
-                )
-            self._transport = cast(ServicesTransport, transport)
-            self._api_endpoint = self._transport.host
-
-        self._api_endpoint = self._api_endpoint or ServicesClient._get_api_endpoint(
-            self._client_options.api_endpoint,
-            self._client_cert_source,
-            self._universe_domain,
-            self._use_mtls_endpoint,
-        )
-
-        if not transport_provided:
-            import google.auth._default  # type: ignore
-
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
-
-            transport_init: Union[
-                Type[ServicesTransport], Callable[..., ServicesTransport]
-            ] = (
-                ServicesClient.get_transport_class(transport)
-                if isinstance(transport, str) or transport is None
-                else cast(Callable[..., ServicesTransport], transport)
-            )
-            # initialize with the provided callable or the passed in class
-            self._transport = transport_init(
-                credentials=credentials,
-                credentials_file=self._client_options.credentials_file,
-                host=self._api_endpoint,
-                scopes=self._client_options.scopes,
-                client_cert_source_for_mtls=self._client_cert_source,
-                quota_project_id=self._client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-                api_audience=self._client_options.api_audience,
-            )
-
-        if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
-                _LOGGER.debug(
-                    "Created client `google.cloud.run_v2.ServicesClient`.",
-                    extra={
-                        "serviceName": "google.cloud.run.v2.Services",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
-                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
-                    }
-                    if hasattr(self._transport, "_credentials")
-                    else {
-                        "serviceName": "google.cloud.run.v2.Services",
-                        "credentialsType": None,
-                    },
-                )
-
-    def create_service(
+    async def create_worker_pool(
         self,
-        request: Optional[Union[gcr_service.CreateServiceRequest, dict]] = None,
+        request: Optional[Union[gcr_worker_pool.CreateWorkerPoolRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        service: Optional[gcr_service.Service] = None,
-        service_id: Optional[str] = None,
+        worker_pool: Optional[gcr_worker_pool.WorkerPool] = None,
+        worker_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
-        r"""Creates a new Service in a given project and
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a new WorkerPool in a given project and
         location.
 
         .. code-block:: python
@@ -935,59 +337,57 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_create_service():
+            async def sample_create_worker_pool():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsAsyncClient()
 
                 # Initialize request argument(s)
-                request = run_v2.CreateServiceRequest(
+                request = run_v2.CreateWorkerPoolRequest(
                     parent="parent_value",
-                    service_id="service_id_value",
+                    worker_pool_id="worker_pool_id_value",
                 )
 
                 # Make the request
-                operation = client.create_service(request=request)
+                operation = client.create_worker_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.CreateServiceRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.CreateWorkerPoolRequest, dict]]):
                 The request object. Request message for creating a
-                Service.
-            parent (str):
-                Required. The location and project in
-                which this service should be created.
-                Format:
-                projects/{project}/locations/{location},
-                where {project} can be project id or
-                number. Only lowercase characters,
-                digits, and hyphens.
+                WorkerPool.
+            parent (:class:`str`):
+                Required. The location and project in which this worker
+                pool should be created. Format:
+                ``projects/{project}/locations/{location}``, where
+                ``{project}`` can be project id or number. Only
+                lowercase characters, digits, and hyphens.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            service (google.cloud.run_v2.types.Service):
-                Required. The Service instance to
+            worker_pool (:class:`google.cloud.run_v2.types.WorkerPool`):
+                Required. The WorkerPool instance to
                 create.
 
-                This corresponds to the ``service`` field
+                This corresponds to the ``worker_pool`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            service_id (str):
-                Required. The unique identifier for the Service. It must
-                begin with letter, and cannot end with hyphen; must
-                contain fewer than 50 characters. The name of the
-                service becomes {parent}/services/{service_id}.
+            worker_pool_id (:class:`str`):
+                Required. The unique identifier for the WorkerPool. It
+                must begin with letter, and cannot end with hyphen; must
+                contain fewer than 50 characters. The name of the worker
+                pool becomes ``{parent}/workerPools/{worker_pool_id}``.
 
-                This corresponds to the ``service_id`` field
+                This corresponds to the ``worker_pool_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -996,12 +396,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Service` Service acts as a top-level container that manages a set of
+                The result type for the operation will be :class:`google.cloud.run_v2.types.WorkerPool` WorkerPool acts as a top-level container that manages a set of
                    configurations and revision templates which implement
-                   a network service. Service exists to provide a
+                   a pull-based workload. WorkerPool exists to provide a
                    singular abstraction which can be access controlled,
                    reasoned about, and which encapsulates software
                    lifecycle decisions such as rollout policy and team
@@ -1011,7 +411,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, service, service_id]
+        flattened_params = [parent, worker_pool, worker_pool_id]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1023,20 +423,23 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcr_service.CreateServiceRequest):
-            request = gcr_service.CreateServiceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if service is not None:
-                request.service = service
-            if service_id is not None:
-                request.service_id = service_id
+        if not isinstance(request, gcr_worker_pool.CreateWorkerPoolRequest):
+            request = gcr_worker_pool.CreateWorkerPoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if worker_pool is not None:
+            request.worker_pool = worker_pool
+        if worker_pool_id is not None:
+            request.worker_pool_id = worker_pool_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_service]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_worker_pool
+        ]
 
         header_params = {}
 
@@ -1053,10 +456,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
             )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1064,26 +467,26 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
-            gcr_service.Service,
-            metadata_type=gcr_service.Service,
+            self._client._transport.operations_client,
+            gcr_worker_pool.WorkerPool,
+            metadata_type=gcr_worker_pool.WorkerPool,
         )
 
         # Done; return the response.
         return response
 
-    def get_service(
+    async def get_worker_pool(
         self,
-        request: Optional[Union[service.GetServiceRequest, dict]] = None,
+        request: Optional[Union[worker_pool.GetWorkerPoolRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> service.Service:
-        r"""Gets information about a Service.
+    ) -> worker_pool.WorkerPool:
+        r"""Gets information about a WorkerPool.
 
         .. code-block:: python
 
@@ -1096,36 +499,34 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_get_service():
+            async def sample_get_worker_pool():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsAsyncClient()
 
                 # Initialize request argument(s)
-                request = run_v2.GetServiceRequest(
+                request = run_v2.GetWorkerPoolRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_service(request=request)
+                response = await client.get_worker_pool(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.GetServiceRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.GetWorkerPoolRequest, dict]]):
                 The request object. Request message for obtaining a
-                Service by its full name.
-            name (str):
-                Required. The full name of the
-                Service. Format:
-                projects/{project}/locations/{location}/services/{service},
-                where {project} can be project id or
-                number.
+                WorkerPool by its full name.
+            name (:class:`str`):
+                Required. The full name of the WorkerPool. Format:
+                ``projects/{project}/locations/{location}/workerPools/{worker_pool}``,
+                where ``{project}`` can be project id or number.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1134,16 +535,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.run_v2.types.Service:
-                Service acts as a top-level container
-                that manages a set of configurations and
-                revision templates which implement a
-                network service. Service exists to
-                provide a singular abstraction which can
-                be access controlled, reasoned about,
-                and which encapsulates software
-                lifecycle decisions such as rollout
-                policy and team resource ownership.
+            google.cloud.run_v2.types.WorkerPool:
+                WorkerPool acts as a top-level
+                container that manages a set of
+                configurations and revision templates
+                which implement a pull-based workload.
+                WorkerPool exists to provide a singular
+                abstraction which can be access
+                controlled, reasoned about, and which
+                encapsulates software lifecycle
+                decisions such as rollout policy and
+                team resource ownership.
 
         """
         # Create or coerce a protobuf request object.
@@ -1161,16 +563,19 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, service.GetServiceRequest):
-            request = service.GetServiceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        if not isinstance(request, worker_pool.GetWorkerPoolRequest):
+            request = worker_pool.GetWorkerPoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_service]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_worker_pool
+        ]
 
         header_params = {}
 
@@ -1187,10 +592,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
             )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1200,17 +605,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Done; return the response.
         return response
 
-    def list_services(
+    async def list_worker_pools(
         self,
-        request: Optional[Union[service.ListServicesRequest, dict]] = None,
+        request: Optional[Union[worker_pool.ListWorkerPoolsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListServicesPager:
-        r"""Lists Services. Results are sorted by creation time,
-        descending.
+    ) -> pagers.ListWorkerPoolsAsyncPager:
+        r"""Lists WorkerPools. Results are sorted by creation
+        time, descending.
 
         .. code-block:: python
 
@@ -1223,39 +628,37 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_list_services():
+            async def sample_list_worker_pools():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsAsyncClient()
 
                 # Initialize request argument(s)
-                request = run_v2.ListServicesRequest(
+                request = run_v2.ListWorkerPoolsRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_services(request=request)
+                page_result = client.list_worker_pools(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.ListServicesRequest, dict]):
+            request (Optional[Union[google.cloud.run_v2.types.ListWorkerPoolsRequest, dict]]):
                 The request object. Request message for retrieving a list
-                of Services.
-            parent (str):
-                Required. The location and project to
-                list resources on. Location must be a
-                valid Google Cloud region, and cannot be
-                the "-" wildcard. Format:
-                projects/{project}/locations/{location},
-                where {project} can be project id or
-                number.
+                of WorkerPools.
+            parent (:class:`str`):
+                Required. The location and project to list resources on.
+                Location must be a valid Google Cloud region, and cannot
+                be the "-" wildcard. Format:
+                ``projects/{project}/locations/{location}``, where
+                ``{project}`` can be project id or number.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1264,9 +667,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.run_v2.services.services.pagers.ListServicesPager:
+            google.cloud.run_v2.services.worker_pools.pagers.ListWorkerPoolsAsyncPager:
                 Response message containing a list of
-                Services.
+                WorkerPools.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1287,16 +690,19 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, service.ListServicesRequest):
-            request = service.ListServicesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+        if not isinstance(request, worker_pool.ListWorkerPoolsRequest):
+            request = worker_pool.ListWorkerPoolsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_services]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_worker_pools
+        ]
 
         header_params = {}
 
@@ -1313,10 +719,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
             )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1324,8 +730,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListServicesPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListWorkerPoolsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -1337,17 +743,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Done; return the response.
         return response
 
-    def update_service(
+    async def update_worker_pool(
         self,
-        request: Optional[Union[gcr_service.UpdateServiceRequest, dict]] = None,
+        request: Optional[Union[gcr_worker_pool.UpdateWorkerPoolRequest, dict]] = None,
         *,
-        service: Optional[gcr_service.Service] = None,
+        worker_pool: Optional[gcr_worker_pool.WorkerPool] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
-        r"""Updates a Service.
+    ) -> operation_async.AsyncOperation:
+        r"""Updates a WorkerPool.
 
         .. code-block:: python
 
@@ -1360,41 +766,43 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_update_service():
+            async def sample_update_worker_pool():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsAsyncClient()
 
                 # Initialize request argument(s)
-                request = run_v2.UpdateServiceRequest(
+                request = run_v2.UpdateWorkerPoolRequest(
                 )
 
                 # Make the request
-                operation = client.update_service(request=request)
+                operation = client.update_worker_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.UpdateServiceRequest, dict]):
-                The request object. Request message for updating a
-                service.
-            service (google.cloud.run_v2.types.Service):
-                Required. The Service to be updated.
-                This corresponds to the ``service`` field
+            request (Optional[Union[google.cloud.run_v2.types.UpdateWorkerPoolRequest, dict]]):
+                The request object. Request message for updating a worker
+                pool.
+            worker_pool (:class:`google.cloud.run_v2.types.WorkerPool`):
+                Required. The WorkerPool to be
+                updated.
+
+                This corresponds to the ``worker_pool`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. The list of fields to be
                 updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1403,12 +811,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Service` Service acts as a top-level container that manages a set of
+                The result type for the operation will be :class:`google.cloud.run_v2.types.WorkerPool` WorkerPool acts as a top-level container that manages a set of
                    configurations and revision templates which implement
-                   a network service. Service exists to provide a
+                   a pull-based workload. WorkerPool exists to provide a
                    singular abstraction which can be access controlled,
                    reasoned about, and which encapsulates software
                    lifecycle decisions such as rollout policy and team
@@ -1418,7 +826,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [service, update_mask]
+        flattened_params = [worker_pool, update_mask]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1430,25 +838,28 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcr_service.UpdateServiceRequest):
-            request = gcr_service.UpdateServiceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if service is not None:
-                request.service = service
-            if update_mask is not None:
-                request.update_mask = update_mask
+        if not isinstance(request, gcr_worker_pool.UpdateWorkerPoolRequest):
+            request = gcr_worker_pool.UpdateWorkerPoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if worker_pool is not None:
+            request.worker_pool = worker_pool
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_service]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_worker_pool
+        ]
 
         header_params = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
         )
-        regex_match = routing_param_regex.match(request.service.name)
+        regex_match = routing_param_regex.match(request.worker_pool.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
@@ -1458,10 +869,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
             )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1469,28 +880,26 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
-            gcr_service.Service,
-            metadata_type=gcr_service.Service,
+            self._client._transport.operations_client,
+            gcr_worker_pool.WorkerPool,
+            metadata_type=gcr_worker_pool.WorkerPool,
         )
 
         # Done; return the response.
         return response
 
-    def delete_service(
+    async def delete_worker_pool(
         self,
-        request: Optional[Union[service.DeleteServiceRequest, dict]] = None,
+        request: Optional[Union[worker_pool.DeleteWorkerPoolRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation.Operation:
-        r"""Deletes a Service.
-        This will cause the Service to stop serving traffic and
-        will delete all revisions.
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a WorkerPool.
 
         .. code-block:: python
 
@@ -1503,40 +912,38 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_delete_service():
+            async def sample_delete_worker_pool():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsAsyncClient()
 
                 # Initialize request argument(s)
-                request = run_v2.DeleteServiceRequest(
+                request = run_v2.DeleteWorkerPoolRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                operation = client.delete_service(request=request)
+                operation = client.delete_worker_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = (await operation).result()
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.DeleteServiceRequest, dict]):
-                The request object. Request message to delete a Service
-                by its full name.
-            name (str):
-                Required. The full name of the
-                Service. Format:
-                projects/{project}/locations/{location}/services/{service},
-                where {project} can be project id or
-                number.
+            request (Optional[Union[google.cloud.run_v2.types.DeleteWorkerPoolRequest, dict]]):
+                The request object. Request message to delete a
+                WorkerPool by its full name.
+            name (:class:`str`):
+                Required. The full name of the WorkerPool. Format:
+                ``projects/{project}/locations/{location}/workerPools/{worker_pool}``,
+                where ``{project}`` can be project id or number.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1545,12 +952,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.api_core.operation.Operation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Service` Service acts as a top-level container that manages a set of
+                The result type for the operation will be :class:`google.cloud.run_v2.types.WorkerPool` WorkerPool acts as a top-level container that manages a set of
                    configurations and revision templates which implement
-                   a network service. Service exists to provide a
+                   a pull-based workload. WorkerPool exists to provide a
                    singular abstraction which can be access controlled,
                    reasoned about, and which encapsulates software
                    lifecycle decisions such as rollout policy and team
@@ -1572,16 +979,19 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, service.DeleteServiceRequest):
-            request = service.DeleteServiceRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        if not isinstance(request, worker_pool.DeleteWorkerPoolRequest):
+            request = worker_pool.DeleteWorkerPoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_service]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_worker_pool
+        ]
 
         header_params = {}
 
@@ -1598,10 +1008,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
             )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1609,17 +1019,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Wrap the response in an operation future.
-        response = operation.from_gapic(
+        response = operation_async.from_gapic(
             response,
-            self._transport.operations_client,
-            service.Service,
-            metadata_type=service.Service,
+            self._client._transport.operations_client,
+            worker_pool.WorkerPool,
+            metadata_type=worker_pool.WorkerPool,
         )
 
         # Done; return the response.
         return response
 
-    def get_iam_policy(
+    async def get_iam_policy(
         self,
         request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
@@ -1628,8 +1038,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM Access Control policy currently in
-        effect for the given Cloud Run Service. This result does
-        not include any inherited policies.
+        effect for the given Cloud Run WorkerPool. This result
+        does not include any inherited policies.
 
         .. code-block:: python
 
@@ -1643,9 +1053,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
             from google.cloud import run_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1653,15 +1063,15 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.GetIamPolicyRequest, dict]]):
                 The request object. Request message for ``GetIamPolicy`` method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1704,17 +1114,18 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            # - The request isn't a proto-plus wrapped type,
-            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
-            # Null request, just make one.
             request = iam_policy_pb2.GetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1723,10 +1134,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1736,7 +1147,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Done; return the response.
         return response
 
-    def set_iam_policy(
+    async def set_iam_policy(
         self,
         request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
@@ -1745,7 +1156,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM Access control policy for the specified
-        Service. Overwrites any existing policy.
+        WorkerPool. Overwrites any existing policy.
 
         .. code-block:: python
 
@@ -1759,9 +1170,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
             from google.cloud import run_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1769,15 +1180,15 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.SetIamPolicyRequest, dict]]):
                 The request object. Request message for ``SetIamPolicy`` method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1820,17 +1231,18 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         """
         # Create or coerce a protobuf request object.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            # - The request isn't a proto-plus wrapped type,
-            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
-            # Null request, just make one.
             request = iam_policy_pb2.SetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.set_iam_policy
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1839,10 +1251,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1852,7 +1264,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Done; return the response.
         return response
 
-    def test_iam_permissions(
+    async def test_iam_permissions(
         self,
         request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
@@ -1877,9 +1289,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
             from google.cloud import run_v2
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1888,15 +1300,15 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]):
+            request (Optional[Union[google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest, dict]]):
                 The request object. Request message for ``TestIamPermissions`` method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1909,17 +1321,18 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
+        # - The request isn't a proto-plus wrapped type,
+        #   so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            # - The request isn't a proto-plus wrapped type,
-            #   so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
-            # Null request, just make one.
             request = iam_policy_pb2.TestIamPermissionsRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.test_iam_permissions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1928,10 +1341,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1941,20 +1354,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "ServicesClient":
-        return self
-
-    def __exit__(self, type, value, traceback):
-        """Releases underlying transport's resources.
-
-        .. warning::
-            ONLY use as a context manager if the transport is NOT shared
-            with other clients! Exiting the with block will CLOSE the transport
-            and may cause errors in other clients!
-        """
-        self.transport.close()
-
-    def list_operations(
+    async def list_operations(
         self,
         request: Optional[operations_pb2.ListOperationsRequest] = None,
         *,
@@ -1968,7 +1368,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
             request (:class:`~.operations_pb2.ListOperationsRequest`):
                 The request object. Request message for
                 `ListOperations` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1987,7 +1387,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_operations]
+        rpc = self.transport._wrapped_methods[self._client._transport.list_operations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1996,24 +1396,20 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
-        try:
-            # Send the request.
-            response = rpc(
-                request,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
-            # Done; return the response.
-            return response
-        except core_exceptions.GoogleAPICallError as e:
-            self._add_cred_info_for_auth_errors(e)
-            raise e
+        # Done; return the response.
+        return response
 
-    def get_operation(
+    async def get_operation(
         self,
         request: Optional[operations_pb2.GetOperationRequest] = None,
         *,
@@ -2027,7 +1423,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
             request (:class:`~.operations_pb2.GetOperationRequest`):
                 The request object. Request message for
                 `GetOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2046,7 +1442,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_operation]
+        rpc = self.transport._wrapped_methods[self._client._transport.get_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2055,24 +1451,20 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
-        try:
-            # Send the request.
-            response = rpc(
-                request,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
-            # Done; return the response.
-            return response
-        except core_exceptions.GoogleAPICallError as e:
-            self._add_cred_info_for_auth_errors(e)
-            raise e
+        # Done; return the response.
+        return response
 
-    def delete_operation(
+    async def delete_operation(
         self,
         request: Optional[operations_pb2.DeleteOperationRequest] = None,
         *,
@@ -2091,7 +1483,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
             request (:class:`~.operations_pb2.DeleteOperationRequest`):
                 The request object. Request message for
                 `DeleteOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2109,7 +1501,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_operation]
+        rpc = self.transport._wrapped_methods[self._client._transport.delete_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2118,17 +1510,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def wait_operation(
+    async def wait_operation(
         self,
         request: Optional[operations_pb2.WaitOperationRequest] = None,
         *,
@@ -2148,7 +1540,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
             request (:class:`~.operations_pb2.WaitOperationRequest`):
                 The request object. Request message for
                 `WaitOperation` method.
-            retry (google.api_core.retry.Retry): Designation of what errors,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2167,7 +1559,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.wait_operation]
+        rpc = self.transport._wrapped_methods[self._client._transport.wait_operation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2176,22 +1568,24 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
-        try:
-            # Send the request.
-            response = rpc(
-                request,
-                retry=retry,
-                timeout=timeout,
-                metadata=metadata,
-            )
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
-            # Done; return the response.
-            return response
-        except core_exceptions.GoogleAPICallError as e:
-            self._add_cred_info_for_auth_errors(e)
-            raise e
+        # Done; return the response.
+        return response
+
+    async def __aenter__(self) -> "WorkerPoolsAsyncClient":
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -2201,4 +1595,5 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = ("ServicesClient",)
+
+__all__ = ("WorkerPoolsAsyncClient",)

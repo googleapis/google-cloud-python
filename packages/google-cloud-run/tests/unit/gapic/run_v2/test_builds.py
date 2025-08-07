@@ -2414,7 +2414,7 @@ def test_builds_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_worker_pool_path():
+def test_build_worker_pool_path():
     project = "squid"
     location = "clam"
     worker_pool = "whelk"
@@ -2425,20 +2425,20 @@ def test_worker_pool_path():
             worker_pool=worker_pool,
         )
     )
-    actual = BuildsClient.worker_pool_path(project, location, worker_pool)
+    actual = BuildsClient.build_worker_pool_path(project, location, worker_pool)
     assert expected == actual
 
 
-def test_parse_worker_pool_path():
+def test_parse_build_worker_pool_path():
     expected = {
         "project": "octopus",
         "location": "oyster",
         "worker_pool": "nudibranch",
     }
-    path = BuildsClient.worker_pool_path(**expected)
+    path = BuildsClient.build_worker_pool_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = BuildsClient.parse_worker_pool_path(path)
+    actual = BuildsClient.parse_build_worker_pool_path(path)
     assert expected == actual
 
 

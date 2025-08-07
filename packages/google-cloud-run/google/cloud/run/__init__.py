@@ -30,6 +30,10 @@ from google.cloud.run_v2.services.services.async_client import ServicesAsyncClie
 from google.cloud.run_v2.services.services.client import ServicesClient
 from google.cloud.run_v2.services.tasks.async_client import TasksAsyncClient
 from google.cloud.run_v2.services.tasks.client import TasksClient
+from google.cloud.run_v2.services.worker_pools.async_client import (
+    WorkerPoolsAsyncClient,
+)
+from google.cloud.run_v2.services.worker_pools.client import WorkerPoolsClient
 from google.cloud.run_v2.types.build import (
     StorageSource,
     SubmitBuildRequest,
@@ -45,6 +49,11 @@ from google.cloud.run_v2.types.execution import (
     ListExecutionsResponse,
 )
 from google.cloud.run_v2.types.execution_template import ExecutionTemplate
+from google.cloud.run_v2.types.instance_split import (
+    InstanceSplit,
+    InstanceSplitAllocationType,
+    InstanceSplitStatus,
+)
 from google.cloud.run_v2.types.job import (
     CreateJobRequest,
     DeleteJobRequest,
@@ -120,6 +129,19 @@ from google.cloud.run_v2.types.vendor_settings import (
     ServiceMesh,
     ServiceScaling,
     VpcAccess,
+    WorkerPoolScaling,
+)
+from google.cloud.run_v2.types.worker_pool import (
+    CreateWorkerPoolRequest,
+    DeleteWorkerPoolRequest,
+    GetWorkerPoolRequest,
+    ListWorkerPoolsRequest,
+    ListWorkerPoolsResponse,
+    UpdateWorkerPoolRequest,
+    WorkerPool,
+)
+from google.cloud.run_v2.types.worker_pool_revision_template import (
+    WorkerPoolRevisionTemplate,
 )
 
 __all__ = (
@@ -135,6 +157,8 @@ __all__ = (
     "ServicesAsyncClient",
     "TasksClient",
     "TasksAsyncClient",
+    "WorkerPoolsClient",
+    "WorkerPoolsAsyncClient",
     "StorageSource",
     "SubmitBuildRequest",
     "SubmitBuildResponse",
@@ -146,6 +170,9 @@ __all__ = (
     "ListExecutionsRequest",
     "ListExecutionsResponse",
     "ExecutionTemplate",
+    "InstanceSplit",
+    "InstanceSplitStatus",
+    "InstanceSplitAllocationType",
     "CreateJobRequest",
     "DeleteJobRequest",
     "ExecutionReference",
@@ -205,7 +232,16 @@ __all__ = (
     "ServiceMesh",
     "ServiceScaling",
     "VpcAccess",
+    "WorkerPoolScaling",
     "EncryptionKeyRevocationAction",
     "ExecutionEnvironment",
     "IngressTraffic",
+    "CreateWorkerPoolRequest",
+    "DeleteWorkerPoolRequest",
+    "GetWorkerPoolRequest",
+    "ListWorkerPoolsRequest",
+    "ListWorkerPoolsResponse",
+    "UpdateWorkerPoolRequest",
+    "WorkerPool",
+    "WorkerPoolRevisionTemplate",
 )
