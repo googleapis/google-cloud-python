@@ -25,6 +25,7 @@ from google.auth.credentials import AnonymousCredentials
 from google.cloud.bigtable_v2.types import ReadRowsResponse
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 from google.api_core import exceptions as core_exceptions
+from google.api_core import client_options
 from google.cloud.bigtable.data.exceptions import InvalidChunk
 from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
 from google.cloud.bigtable.data.mutations import DeleteAllFromRow
@@ -835,6 +836,80 @@ class TestBigtableDataClient:
             close_mock.assert_not_called()
         close_mock.assert_called_once()
         true_close()
+
+    def test_default_universe_domain(self):
+        """When not passed, universe_domain should default to googleapis.com"""
+        with self._make_client(project="project-id", credentials=None) as client:
+            assert client.universe_domain == "googleapis.com"
+            assert client.api_endpoint == "bigtable.googleapis.com"
+
+    def test_custom_universe_domain(self):
+        """test with a customized universe domain value and emulator enabled"""
+        universe_domain = "test-universe.test"
+        options = client_options.ClientOptions(universe_domain=universe_domain)
+        with self._make_client(
+            project="project_id",
+            client_options=options,
+            use_emulator=True,
+            credentials=None,
+        ) as client:
+            assert client.universe_domain == universe_domain
+            assert client.api_endpoint == f"bigtable.{universe_domain}"
+
+    def test_configured_universe_domain_matches_GDU(self):
+        """that configured universe domain succeeds with matched GDU credentials."""
+        universe_domain = "googleapis.com"
+        options = client_options.ClientOptions(universe_domain=universe_domain)
+        with self._make_client(
+            project="project_id", client_options=options, credentials=None
+        ) as client:
+            assert client.universe_domain == "googleapis.com"
+            assert client.api_endpoint == "bigtable.googleapis.com"
+
+    def test_credential_universe_domain_matches_GDU(self):
+        """Test with credentials"""
+        creds = AnonymousCredentials()
+        creds._universe_domain = "googleapis.com"
+        with self._make_client(project="project_id", credentials=creds) as client:
+            assert client.universe_domain == "googleapis.com"
+            assert client.api_endpoint == "bigtable.googleapis.com"
+
+    def test_anomynous_credential_universe_domain(self):
+        """Anomynopus credentials should use default universe domain"""
+        creds = AnonymousCredentials()
+        with self._make_client(project="project_id", credentials=creds) as client:
+            assert client.universe_domain == "googleapis.com"
+            assert client.api_endpoint == "bigtable.googleapis.com"
+
+    def test_configured_universe_domain_mismatched_credentials(self):
+        """Test that configured universe domain errors with mismatched universe
+        domain credentials."""
+        universe_domain = "test-universe.test"
+        options = client_options.ClientOptions(universe_domain=universe_domain)
+        creds = AnonymousCredentials()
+        creds._universe_domain = "different-universe"
+        with pytest.raises(ValueError) as exc:
+            self._make_client(
+                project="project_id",
+                client_options=options,
+                use_emulator=False,
+                credentials=creds,
+            )
+        err_msg = f"The configured universe domain ({universe_domain}) does not match the universe domain found in the credentials ({creds.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+        assert exc.value.args[0] == err_msg
+
+    def test_configured_universe_domain_matches_credentials(self):
+        """Test that configured universe domain succeeds with matching universe
+        domain credentials."""
+        universe_domain = "test-universe.test"
+        options = client_options.ClientOptions(universe_domain=universe_domain)
+        creds = AnonymousCredentials()
+        creds._universe_domain = universe_domain
+        with self._make_client(
+            project="project_id", credentials=creds, client_options=options
+        ) as client:
+            assert client.universe_domain == universe_domain
+            assert client.api_endpoint == f"bigtable.{universe_domain}"
 
 
 @CrossSync._Sync_Impl.add_mapping_decorator("TestTable")
