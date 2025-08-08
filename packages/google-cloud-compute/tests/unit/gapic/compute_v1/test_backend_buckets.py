@@ -5918,6 +5918,7 @@ def test_insert_rest_call_success(request_type):
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "self_link": "self_link_value",
         "used_by": [{"reference": "reference_value"}],
     }
@@ -6331,6 +6332,7 @@ def test_patch_rest_call_success(request_type):
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "self_link": "self_link_value",
         "used_by": [{"reference": "reference_value"}],
     }
@@ -7316,6 +7318,7 @@ def test_update_rest_call_success(request_type):
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
         "name": "name_value",
+        "params": {"resource_manager_tags": {}},
         "self_link": "self_link_value",
         "used_by": [{"reference": "reference_value"}],
     }

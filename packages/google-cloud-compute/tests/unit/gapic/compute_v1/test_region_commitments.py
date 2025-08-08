@@ -3025,6 +3025,9 @@ def test_insert_rest_call_success(request_type):
         "region": "region_value",
         "reservations": [
             {
+                "advanced_deployment_control": {
+                    "reservation_operational_mode": "reservation_operational_mode_value"
+                },
                 "aggregate_reservation": {
                     "in_use_resources": [
                         {
@@ -3530,6 +3533,9 @@ def test_update_rest_call_success(request_type):
         "region": "region_value",
         "reservations": [
             {
+                "advanced_deployment_control": {
+                    "reservation_operational_mode": "reservation_operational_mode_value"
+                },
                 "aggregate_reservation": {
                     "in_use_resources": [
                         {

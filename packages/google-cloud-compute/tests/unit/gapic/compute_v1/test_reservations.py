@@ -2190,14 +2190,8 @@ def test_insert_rest_flattened():
             project="project_value",
             zone="zone_value",
             reservation_resource=compute.Reservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -2240,14 +2234,8 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             reservation_resource=compute.Reservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -2412,14 +2400,8 @@ def test_insert_unary_rest_flattened():
             project="project_value",
             zone="zone_value",
             reservation_resource=compute.Reservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -2462,14 +2444,8 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             reservation_resource=compute.Reservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -4223,14 +4199,8 @@ def test_update_rest_flattened():
             zone="zone_value",
             reservation="reservation_value",
             reservation_resource=compute.Reservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -4274,14 +4244,8 @@ def test_update_rest_flattened_error(transport: str = "rest"):
             zone="zone_value",
             reservation="reservation_value",
             reservation_resource=compute.Reservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -4468,14 +4432,8 @@ def test_update_unary_rest_flattened():
             zone="zone_value",
             reservation="reservation_value",
             reservation_resource=compute.Reservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -4519,14 +4477,8 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
             zone="zone_value",
             reservation="reservation_value",
             reservation_resource=compute.Reservation(
-                aggregate_reservation=compute.AllocationAggregateReservation(
-                    in_use_resources=[
-                        compute.AllocationAggregateReservationReservedResourceInfo(
-                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
-                                accelerator_count=1805
-                            )
-                        )
-                    ]
+                advanced_deployment_control=compute.ReservationAdvancedDeploymentControl(
+                    reservation_operational_mode="reservation_operational_mode_value"
                 )
             ),
         )
@@ -5240,6 +5192,9 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["reservation_resource"] = {
+        "advanced_deployment_control": {
+            "reservation_operational_mode": "reservation_operational_mode_value"
+        },
         "aggregate_reservation": {
             "in_use_resources": [
                 {
@@ -6653,6 +6608,9 @@ def test_update_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "reservation": "sample3"}
     request_init["reservation_resource"] = {
+        "advanced_deployment_control": {
+            "reservation_operational_mode": "reservation_operational_mode_value"
+        },
         "aggregate_reservation": {
             "in_use_resources": [
                 {
