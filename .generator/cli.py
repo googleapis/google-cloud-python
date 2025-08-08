@@ -16,6 +16,7 @@ import argparse
 import json
 import logging
 import os
+import shutil
 import subprocess
 import sys
 import subprocess
@@ -24,6 +25,7 @@ from typing import Dict, List
 try:
     import synthtool
     from synthtool import gcp
+    from synthtool.languages import python_mono_repo
 
     SYNTHTOOL_INSTALLED = True
     SYNTHTOOL_IMPORT_ERROR = None
@@ -199,15 +201,85 @@ def _locate_and_extract_artifact(
         ) from e
 
 
-def _run_post_processor():
-    """Runs the synthtool post-processor on the output directory."""
+def _run_post_processor(output: str, library_id: str):
+    """Runs the synthtool post-processor on the output directory.
+    
+    Args:
+        output(str): Path to the directory in the container where code
+            should be generated.
+        library_id(str): The library id to be used for post processing.
+        
+    """
+    os.chdir(output)
+    path_to_library = f"packages/{library_id}"
     logger.info("Running Python post-processor...")
     if SYNTHTOOL_INSTALLED:
-        command = ["python3", "-m", "synthtool.languages.python_mono_repo"]
-        subprocess.run(command, cwd=OUTPUT_DIR, text=True, check=True)
+        python_mono_repo.owlbot_main(path_to_library)
     else:
         raise SYNTHTOOL_IMPORT_ERROR
     logger.info("Python post-processor ran successfully.")
+
+
+def _copy_files_needed_for_post_processing(output: str, input: str, library_id: str):
+    """Copy files to the output directory whcih are needed during the post processing
+    step, such as .repo-metadata.json and script/client-post-processing, using
+    the input directory as the source.
+
+    Args:
+        output(str): Path to the directory in the container where code
+            should be generated.
+        input(str): The path to the directory in the container
+            which contains additional generator input.
+        library_id(str): The library id to be used for post processing.
+    """
+
+    path_to_library = f"packages/{library_id}"
+
+    # We need to create these directories so that we can copy files necessary for post-processing.
+    os.makedirs(f"{output}/{path_to_library}")
+    os.makedirs(f"{output}/{path_to_library}/scripts/client-post-processing")
+    shutil.copy(
+        f"{input}/{path_to_library}/.repo-metadata.json",
+        f"{output}/{path_to_library}/.repo-metadata.json",
+    )
+
+    # copy post-procesing files
+    for post_processing_file in glob.glob(f"{input}/client-post-processing/*.yaml"):
+        with open(post_processing_file, "r") as post_processing:
+            if f"{path_to_library}/" in post_processing.read():
+                shutil.copy(
+                    post_processing_file,
+                    f"{output}/{path_to_library}/scripts/client-post-processing",
+                )
+
+
+def _clean_up_files_after_post_processing(output: str, library_id: str):
+    """
+    Clean up files which should not be included in the generated client
+
+    Args:
+        output(str): Path to the directory in the container where code
+            should be generated.
+        library_id(str): The library id to be used for post processing.
+    """
+    path_to_library = f"packages/{library_id}"
+    shutil.rmtree(f"{output}/{path_to_library}/.nox")
+    os.remove(f"{output}/{path_to_library}/CHANGELOG.md")
+    os.remove(f"{output}/{path_to_library}/docs/CHANGELOG.md")
+    os.remove(f"{output}/{path_to_library}/docs/README.rst")
+    for post_processing_file in glob.glob(
+        f"{output}/{path_to_library}/scripts/client-post-processing/*.yaml"
+    ):
+        os.remove(post_processing_file)
+    for gapic_version_file in glob.glob(
+        f"{output}/{path_to_library}/**/gapic_version.py", recursive=True
+    ):
+        os.remove(gapic_version_file)
+    for snippet_metadata_file in glob.glob(
+        f"{output}/{path_to_library}/samples/generated_samples/snippet_metadata*.json"
+    ):
+        os.remove(snippet_metadata_file)
+    shutil.rmtree(f"{output}/owl-bot-staging")
 
 
 def handle_generate(
@@ -227,11 +299,11 @@ def handle_generate(
     Args:
         librarian(str): Path to the directory in the container which contains
             the librarian configuration.
-        source(str): Path to the directory in the container which contains 
+        source(str): Path to the directory in the container which contains
             API protos.
-        output(str): Path to the directory in the container where code 
+        output(str): Path to the directory in the container where code
             should be generated.
-        input(str): The path path to the directory in the container 
+        input(str): The path to the directory in the container
             which contains additional generator input.
 
     Raises:
@@ -242,7 +314,6 @@ def handle_generate(
         # Read a generate-request.json file
         request_data = _read_json_file(f"{librarian}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
-
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
@@ -251,7 +322,15 @@ def handle_generate(
                 _locate_and_extract_artifact(
                     bazel_rule, library_id, source, output, api_path
                 )
-                _run_post_processor(output, f"packages/{library_id}")
+
+        _copy_files_needed_for_post_processing(output, input, library_id)
+        _run_post_processor(output, f"packages/{library_id}")
+        _clean_up_files_after_post_processing(output, library_id)
+
+        # Write the `generate-response.json` using `generate-request.json` as the source
+        with open(f"{librarian}/generate-response.json", "w") as f:
+            json.dump(request_data, f, indent=4)
+            f.write("\n")
 
     except Exception as e:
         raise ValueError("Generation failed.") from e
@@ -286,6 +365,7 @@ def _run_individual_session(nox_session: str, library_id: str):
         nox_session(str): The nox session to run
         library_id(str): The library id under test
     """
+
     command = [
         "nox",
         "-s",
@@ -366,7 +446,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     args = parser.parse_args()
-    args.func()
 
     # Pass specific arguments to the handler functions for generate/build
     if args.command == "generate":
