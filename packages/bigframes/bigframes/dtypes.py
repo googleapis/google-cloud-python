@@ -289,6 +289,10 @@ def is_time_like(type_: ExpressionType) -> bool:
     return type_ in (DATETIME_DTYPE, TIMESTAMP_DTYPE, TIME_DTYPE)
 
 
+def is_time_or_date_like(type_: ExpressionType) -> bool:
+    return type_ in (DATE_DTYPE, DATETIME_DTYPE, TIME_DTYPE, TIMESTAMP_DTYPE)
+
+
 def is_geo_like(type_: ExpressionType) -> bool:
     return type_ in (GEO_DTYPE,)
 

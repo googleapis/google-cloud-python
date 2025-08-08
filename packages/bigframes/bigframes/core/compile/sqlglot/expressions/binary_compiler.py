@@ -14,6 +14,7 @@
 
 from __future__ import annotations
 
+import bigframes_vendored.constants as constants
 import sqlglot.expressions as sge
 
 from bigframes import dtypes
@@ -35,8 +36,83 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
         # String addition
         return sge.Concat(expressions=[left.expr, right.expr])
 
-    # Numerical addition
-    return sge.Add(this=left.expr, expression=right.expr)
+    if dtypes.is_numeric(left.dtype) and dtypes.is_numeric(right.dtype):
+        left_expr = left.expr
+        if left.dtype == dtypes.BOOL_DTYPE:
+            left_expr = sge.Cast(this=left_expr, to="INT64")
+        right_expr = right.expr
+        if right.dtype == dtypes.BOOL_DTYPE:
+            right_expr = sge.Cast(this=right_expr, to="INT64")
+        return sge.Add(this=left_expr, expression=right_expr)
+
+    if (
+        dtypes.is_time_or_date_like(left.dtype)
+        and right.dtype == dtypes.TIMEDELTA_DTYPE
+    ):
+        left_expr = left.expr
+        if left.dtype == dtypes.DATE_DTYPE:
+            left_expr = sge.Cast(this=left_expr, to="DATETIME")
+        return sge.TimestampAdd(
+            this=left_expr, expression=right.expr, unit=sge.Var(this="MICROSECOND")
+        )
+    if (
+        dtypes.is_time_or_date_like(right.dtype)
+        and left.dtype == dtypes.TIMEDELTA_DTYPE
+    ):
+        right_expr = right.expr
+        if right.dtype == dtypes.DATE_DTYPE:
+            right_expr = sge.Cast(this=right_expr, to="DATETIME")
+        return sge.TimestampAdd(
+            this=right_expr, expression=left.expr, unit=sge.Var(this="MICROSECOND")
+        )
+    if left.dtype == dtypes.TIMEDELTA_DTYPE and right.dtype == dtypes.TIMEDELTA_DTYPE:
+        return sge.Add(this=left.expr, expression=right.expr)
+
+    raise TypeError(
+        f"Cannot add type {left.dtype} and {right.dtype}. {constants.FEEDBACK_LINK}"
+    )
+
+
+@BINARY_OP_REGISTRATION.register(ops.sub_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if dtypes.is_numeric(left.dtype) and dtypes.is_numeric(right.dtype):
+        left_expr = left.expr
+        if left.dtype == dtypes.BOOL_DTYPE:
+            left_expr = sge.Cast(this=left_expr, to="INT64")
+        right_expr = right.expr
+        if right.dtype == dtypes.BOOL_DTYPE:
+            right_expr = sge.Cast(this=right_expr, to="INT64")
+        return sge.Sub(this=left_expr, expression=right_expr)
+
+    if (
+        dtypes.is_time_or_date_like(left.dtype)
+        and right.dtype == dtypes.TIMEDELTA_DTYPE
+    ):
+        left_expr = left.expr
+        if left.dtype == dtypes.DATE_DTYPE:
+            left_expr = sge.Cast(this=left_expr, to="DATETIME")
+        return sge.TimestampSub(
+            this=left_expr, expression=right.expr, unit=sge.Var(this="MICROSECOND")
+        )
+    if dtypes.is_time_or_date_like(left.dtype) and dtypes.is_time_or_date_like(
+        right.dtype
+    ):
+        left_expr = left.expr
+        if left.dtype == dtypes.DATE_DTYPE:
+            left_expr = sge.Cast(this=left_expr, to="DATETIME")
+        right_expr = right.expr
+        if right.dtype == dtypes.DATE_DTYPE:
+            right_expr = sge.Cast(this=right_expr, to="DATETIME")
+        return sge.TimestampDiff(
+            this=left_expr, expression=right_expr, unit=sge.Var(this="MICROSECOND")
+        )
+
+    if left.dtype == dtypes.TIMEDELTA_DTYPE and right.dtype == dtypes.TIMEDELTA_DTYPE:
+        return sge.Sub(this=left.expr, expression=right.expr)
+
+    raise TypeError(
+        f"Cannot subtract type {left.dtype} and {right.dtype}. {constants.FEEDBACK_LINK}"
+    )
 
 
 @BINARY_OP_REGISTRATION.register(ops.ge_op)
