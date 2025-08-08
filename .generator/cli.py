@@ -248,7 +248,7 @@ def _locate_and_extract_artifact(
         ) from e
 
 
-def _run_post_processor(output_path: str = OUTPUT_DIR):
+def _run_post_processor(output_path: str, library_id: str):
     """Runs the synthtool post-processor on the output directory.
 
     Args:
@@ -257,7 +257,9 @@ def _run_post_processor(output_path: str = OUTPUT_DIR):
     logger.info("Running Python post-processor...")
     if SYNTHTOOL_INSTALLED:
         command = ["python3.9", "-m", "synthtool.languages.python_mono_repo"]
-        subprocess.run(command, cwd=output_path, text=True, check=True, capture_output=False)
+        path_to_library = f"packages/{library_id}"
+        # synthtool.python_mono_repo.owlbot_main(path_to_library)
+        subprocess.run(command, cwd=path_to_library, text=True, check=True, capture_output=False)
     else:
         raise SYNTHTOOL_IMPORT_ERROR
     logger.info("Python post-processor ran successfully.")
@@ -290,7 +292,7 @@ def handle_generate(
                 print("succesfully located and extracted bazel tarball.")
         
         _copy_files_needed_for_post_processing(output, input, library_id)
-        _run_post_processor(output)
+        _run_post_processor(output, library_id)
         print("succesfully ran Python Post Processor.")
 
     except Exception as e:
