@@ -217,7 +217,7 @@ def _run_post_processor(output: str, relative_path: str):
     logger.info("Running Python post-processor...")
     os.chdir(output)
     command = ["python3", "-m", "synthtool.languages.python_mono_repo"]
-    subprocess.run(command, cwd=OUTPUT_DIR, text=True, check=True)
+    subprocess.run(command, cwd=output, text=True, check=True)
     logger.info("Python post-processor ran successfully.")
 
 
