@@ -292,7 +292,7 @@ def handle_generate(
                 print("succesfully located and extracted bazel tarball.")
         
         _copy_files_needed_for_post_processing(output, input, library_id)
-        _run_post_processor(output, library_id)
+        # _run_post_processor(output, library_id)
         print("succesfully ran Python Post Processor.")
 
     except Exception as e:
