@@ -40,7 +40,7 @@ LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
 SOURCE_DIR = "/source"
 OUTPUT_DIR = "output"
-INPUT_DIR = "input"
+INPUT_DIR = "/input"
 REPO_DIR = "repo"
 
 def _copy_files_needed_for_post_processing(output: str, input: str, library_id: str):
