@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.support.v2beta",
     manifest={
         "ListAttachmentsRequest",
+        "GetAttachmentRequest",
         "ListAttachmentsResponse",
     },
 )
@@ -65,6 +66,20 @@ class ListAttachmentsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class GetAttachmentRequest(proto.Message):
+    r"""Request for getting an attachment.
+
+    Attributes:
+        name (str):
+            Required. The name of the attachment to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

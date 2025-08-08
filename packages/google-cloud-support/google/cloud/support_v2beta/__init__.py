@@ -27,7 +27,11 @@ from .services.comment_service import CommentServiceAsyncClient, CommentServiceC
 from .services.feed_service import FeedServiceAsyncClient, FeedServiceClient
 from .types.actor import Actor
 from .types.attachment import Attachment
-from .types.attachment_service import ListAttachmentsRequest, ListAttachmentsResponse
+from .types.attachment_service import (
+    GetAttachmentRequest,
+    ListAttachmentsRequest,
+    ListAttachmentsResponse,
+)
 from .types.case import Case, CaseClassification, Product, ProductLine
 from .types.case_service import (
     CloseCaseRequest,
@@ -45,6 +49,7 @@ from .types.case_service import (
 from .types.comment import Comment
 from .types.comment_service import (
     CreateCommentRequest,
+    GetCommentRequest,
     ListCommentsRequest,
     ListCommentsResponse,
 )
@@ -75,7 +80,9 @@ __all__ = (
     "Escalation",
     "FeedItem",
     "FeedServiceClient",
+    "GetAttachmentRequest",
     "GetCaseRequest",
+    "GetCommentRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "ListCasesRequest",

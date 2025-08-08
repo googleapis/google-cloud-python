@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "CaseAttachmentServiceClient",
           "rpcs": {
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
+              ]
+            },
             "ListAttachments": {
               "methods": [
                 "list_attachments"
@@ -20,6 +25,11 @@
         "grpc-async": {
           "libraryClient": "CaseAttachmentServiceAsyncClient",
           "rpcs": {
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
+              ]
+            },
             "ListAttachments": {
               "methods": [
                 "list_attachments"
@@ -30,6 +40,11 @@
         "rest": {
           "libraryClient": "CaseAttachmentServiceClient",
           "rpcs": {
+            "GetAttachment": {
+              "methods": [
+                "get_attachment"
+              ]
+            },
             "ListAttachments": {
               "methods": [
                 "list_attachments"
@@ -188,6 +203,11 @@
                 "create_comment"
               ]
             },
+            "GetComment": {
+              "methods": [
+                "get_comment"
+              ]
+            },
             "ListComments": {
               "methods": [
                 "list_comments"
@@ -203,6 +223,11 @@
                 "create_comment"
               ]
             },
+            "GetComment": {
+              "methods": [
+                "get_comment"
+              ]
+            },
             "ListComments": {
               "methods": [
                 "list_comments"
@@ -216,6 +241,11 @@
             "CreateComment": {
               "methods": [
                 "create_comment"
+              ]
+            },
+            "GetComment": {
+              "methods": [
+                "get_comment"
               ]
             },
             "ListComments": {

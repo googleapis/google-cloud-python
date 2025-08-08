@@ -26,6 +26,7 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.support_v2beta import gapic_version as package_version
+from google.cloud.support_v2beta.types import comment
 from google.cloud.support_v2beta.types import comment as gcs_comment
 from google.cloud.support_v2beta.types import comment_service
 
@@ -152,6 +153,11 @@ class CommentServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_comment: gapic_v1.method.wrap_method(
+                self.get_comment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -181,6 +187,15 @@ class CommentServiceTransport(abc.ABC):
     ) -> Callable[
         [comment_service.CreateCommentRequest],
         Union[gcs_comment.Comment, Awaitable[gcs_comment.Comment]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_comment(
+        self,
+    ) -> Callable[
+        [comment_service.GetCommentRequest],
+        Union[comment.Comment, Awaitable[comment.Comment]],
     ]:
         raise NotImplementedError()
 

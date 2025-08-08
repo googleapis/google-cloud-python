@@ -15,7 +15,11 @@
 #
 from .actor import Actor
 from .attachment import Attachment
-from .attachment_service import ListAttachmentsRequest, ListAttachmentsResponse
+from .attachment_service import (
+    GetAttachmentRequest,
+    ListAttachmentsRequest,
+    ListAttachmentsResponse,
+)
 from .case import Case, CaseClassification, Product, ProductLine
 from .case_service import (
     CloseCaseRequest,
@@ -33,6 +37,7 @@ from .case_service import (
 from .comment import Comment
 from .comment_service import (
     CreateCommentRequest,
+    GetCommentRequest,
     ListCommentsRequest,
     ListCommentsResponse,
 )
@@ -45,6 +50,7 @@ from .feed_service import ShowFeedRequest, ShowFeedResponse
 __all__ = (
     "Actor",
     "Attachment",
+    "GetAttachmentRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "Case",
@@ -64,6 +70,7 @@ __all__ = (
     "UpdateCaseRequest",
     "Comment",
     "CreateCommentRequest",
+    "GetCommentRequest",
     "ListCommentsRequest",
     "ListCommentsResponse",
     "TextContent",

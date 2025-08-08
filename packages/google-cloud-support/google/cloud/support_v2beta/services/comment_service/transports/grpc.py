@@ -28,6 +28,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.support_v2beta.types import comment
 from google.cloud.support_v2beta.types import comment as gcs_comment
 from google.cloud.support_v2beta.types import comment_service
 
@@ -375,6 +376,32 @@ class CommentServiceGrpcTransport(CommentServiceTransport):
                 response_deserializer=gcs_comment.Comment.deserialize,
             )
         return self._stubs["create_comment"]
+
+    @property
+    def get_comment(
+        self,
+    ) -> Callable[[comment_service.GetCommentRequest], comment.Comment]:
+        r"""Return a callable for the get comment method over gRPC.
+
+        Retrieve a comment.
+
+        Returns:
+            Callable[[~.GetCommentRequest],
+                    ~.Comment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_comment" not in self._stubs:
+            self._stubs["get_comment"] = self._logged_channel.unary_unary(
+                "/google.cloud.support.v2beta.CommentService/GetComment",
+                request_serializer=comment_service.GetCommentRequest.serialize,
+                response_deserializer=comment.Comment.deserialize,
+            )
+        return self._stubs["get_comment"]
 
     def close(self):
         self._logged_channel.close()
