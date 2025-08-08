@@ -72,7 +72,12 @@ def _determine_bazel_rule(api_path: str, source: str) -> str:
     logger.info(f"Determining Bazel rule for api_path: '{api_path}'")
     try:
         query = f'filter("-py$", kind("rule", //{api_path}/...:*))'
-        command = ["bazelisk", "query", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", query]
+        command = [
+            "bazelisk",
+            "query",
+            "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos",
+            query,
+        ]
         result = subprocess.run(
             command,
             cwd=source,
@@ -120,7 +125,14 @@ def _build_bazel_target(bazel_rule: str, source: str):
     """
     logger.info(f"Executing build for rule: {bazel_rule}")
     try:
-        command = ["bazelisk",  "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "build", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", "--incompatible_strict_action_env", bazel_rule]
+        command = [
+            "bazelisk",
+            "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
+            "build",
+            "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos",
+            "--incompatible_strict_action_env",
+            bazel_rule,
+        ]
         subprocess.run(
             command,
             cwd=source,
@@ -155,7 +167,12 @@ def _locate_and_extract_artifact(
     try:
         # 1. Find the bazel-bin output directory.
         logger.info("Locating Bazel output directory...")
-        info_command = ["bazelisk", "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "info", "bazel-bin"]
+        info_command = [
+            "bazelisk",
+            "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
+            "info",
+            "bazel-bin",
+        ]
         result = subprocess.run(
             info_command,
             cwd=source,
@@ -171,7 +188,7 @@ def _locate_and_extract_artifact(
         tarball_path = os.path.join(bazel_bin_path, rule_path.strip("/"), tarball_name)
         logger.info(f"Found artifact at: {tarball_path}")
 
-        api_version=api_path.split("/")[-1]
+        api_version = api_path.split("/")[-1]
         # 3. Create a staging directory.
         api_version = api_path.split("/")[-1]
         staging_dir = os.path.join(output, "owl-bot-staging", library_id, api_version)
@@ -180,9 +197,7 @@ def _locate_and_extract_artifact(
 
         # 4. Extract the artifact.
         extract_command = ["tar", "-xvf", tarball_path, "--strip-components=1"]
-        subprocess.run(
-            extract_command, cwd=staging_dir, text=True, check=True
-        )
+        subprocess.run(extract_command, cwd=staging_dir, text=True, check=True)
         logger.info(f"Artifact {tarball_path} extracted successfully.")
 
     except Exception as e:
@@ -191,7 +206,7 @@ def _locate_and_extract_artifact(
         ) from e
 
 
-def _run_post_processor(output:str, relative_path:str):
+def _run_post_processor(output: str, relative_path: str):
     """Runs the synthtool post-processor on the output directory.
 
     Args:
@@ -200,20 +215,53 @@ def _run_post_processor(output:str, relative_path:str):
     logger.info("Running Python post-processor...")
     os.chdir(output)
     from synthtool.languages import python_mono_repo
+
     python_mono_repo.owlbot_main(relative_path)
     shutil.rmtree(f"{output}/{relative_path}/.nox")
     os.remove(f"{output}/{relative_path}/CHANGELOG.md")
     os.remove(f"{output}/{relative_path}/docs/CHANGELOG.md")
     os.remove(f"{output}/{relative_path}/docs/README.rst")
-    for post_processing_file in glob.glob(f"{output}/{relative_path}/scripts/client-post-processing/*.yaml"):
+    for post_processing_file in glob.glob(
+        f"{output}/{relative_path}/scripts/client-post-processing/*.yaml"
+    ):
         os.remove(post_processing_file)
-    for gapic_version_file in glob.glob(f"{output}/{relative_path}/**/gapic_version.py", recursive=True):
+    for gapic_version_file in glob.glob(
+        f"{output}/{relative_path}/**/gapic_version.py", recursive=True
+    ):
         os.remove(gapic_version_file)
-    for snippet_metadata_file in glob.glob(f"{output}/{relative_path}/samples/generated_samples/snippet_metadata*.json"):
+    for snippet_metadata_file in glob.glob(
+        f"{output}/{relative_path}/samples/generated_samples/snippet_metadata*.json"
+    ):
         os.remove(snippet_metadata_file)
     shutil.rmtree(f"{output}/owl-bot-staging")
     logger.info("Python post-processor ran successfully.")
 
+def _copy_files_needed_for_post_processing(
+        output: str, input: str, library_id: str
+    ):
+        """Copy files to the output directory whcih are needed during the post processing
+        step, such as .repo-metadata.json and script/client-post-processing, using
+        the input directory as the source.
+        """
+
+        path_to_library = f"packages/{library_id}"
+
+        # We need to create these directories so that we can copy files necessary for post-processing.
+        os.makedirs(f"{output}/{path_to_library}")
+        os.makedirs(f"{output}/{path_to_library}/scripts/client-post-processing")
+        shutil.move(
+            f"{input}/{path_to_library}/.repo-metadata.json",
+            f"{output}/{path_to_library}/.repo-metadata.json",
+        )
+
+        # copy post-procesing files
+        for post_processing_file in glob.glob(f"{input}/client-post-processing/*.yaml"):
+            with open(post_processing_file, "r") as post_processing:
+                if f"{path_to_library}/" in post_processing.read():
+                    shutil.move(
+                        post_processing_file,
+                        f"{output}/{path_to_library}/scripts/client-post-processing",
+                    )
 
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
@@ -232,11 +280,11 @@ def handle_generate(
     Args:
         librarian(str): Path to the directory in the container which contains
             the librarian configuration.
-        source(str): Path to the directory in the container which contains 
+        source(str): Path to the directory in the container which contains
             API protos.
-        output(str): Path to the directory in the container where code 
+        output(str): Path to the directory in the container where code
             should be generated.
-        input(str): The path path to the directory in the container 
+        input(str): The path to the directory in the container
             which contains additional generator input.
 
     Raises:
@@ -256,17 +304,7 @@ def handle_generate(
                     bazel_rule, library_id, source, output, api_path
                 )
 
-        os.makedirs(name="f{output}/packages/{library_id}")
-        subprocess.run(f"mkdir -p {output}/packages/{library_id}", shell=True)
-        subprocess.run(f"touch {output}/packages/{library_id}/.repo-metadata.json", shell=True)
-        subprocess.run(f"cp {input}/packages/{library_id}/.repo-metadata.json {output}/packages/{library_id}/.repo-metadata.json", shell=True)
-
-        # copy post-procesing files
-        for post_processing_file in glob.glob(f"{input}/client-post-processing/*.yaml"):
-            with open(post_processing_file, "r") as post_processing:
-                if f"packages/{library_id}/" in post_processing.read():
-                    os.makedirs(f"{output}/packages/{library_id}/scripts/client-post-processing")
-                    subprocess.run(f"cp {post_processing_file} {output}/packages/{library_id}/scripts/client-post-processing", shell=True)
+        _copy_files_needed_for_post_processing(output, input, library_id)
         _run_post_processor(output, f"packages/{library_id}")
 
         # Write the `generate-response.json` using `generate-request.json` as the source
