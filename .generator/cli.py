@@ -288,9 +288,10 @@ def handle_generate(
                 print("succesfully built bazel target.")
                 _locate_and_extract_artifact(bazel_rule, library_id, output, source)
                 print("succesfully located and extracted bazel tarball.")
-            _run_post_processor(output)
-            _copy_files_needed_for_post_processing(output, input, library_id)
-            print("succesfully ran Python Post Processor.")
+        
+        _copy_files_needed_for_post_processing(output, input, library_id)
+        _run_post_processor(output)
+        print("succesfully ran Python Post Processor.")
 
     except Exception as e:
         raise ValueError("Generation failed.") from e
