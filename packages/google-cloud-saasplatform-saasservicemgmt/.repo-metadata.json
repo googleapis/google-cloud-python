@@ -1,8 +1,8 @@
 {
     "name": "google-cloud-saasplatform-saasservicemgmt",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "SaaS Runtime API",
+    "api_description": "SaaS Runtime lets you store, host, manage, and monitor software as a service (SaaS) applications on Google Cloud.",
+    "product_documentation": "https://cloud.google.com/saas-runtime/docs/overview",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-saasplatform-saasservicemgmt/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
