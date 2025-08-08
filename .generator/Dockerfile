@@ -140,6 +140,41 @@ RUN apt-get update && \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+ARG UID=1000
+ARG GID=1000
+
+# Create the group and user, but only if they don't already exist.
+RUN if ! getent group $GID > /dev/null; then \
+        groupadd -g $GID myuser; \
+    fi && \
+    if ! getent passwd $UID > /dev/null; then \
+        useradd -u $UID -g $GID -ms /bin/bash myuser; \
+    fi
+
+RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
+
+RUN mkdir -p /bazel_cache && \
+    chown -R $UID:$GID /app /bazel_cache
+
+# 2025/08/05 08:27:44 could not create directory /.cache/bazelisk: mkdir /.cache: permission denied
+# Traceback (most recent call last):
+#   File "/app/./cli.py", line 147, in _build_bazel_target
+#     subprocess.run(
+#   File "/usr/local/lib/python3.9/subprocess.py", line 528, in run
+#     raise CalledProcessError(retcode, process.args,
+# subprocess.CalledProcessError: Command '['bazelisk', '--output_base=/bazel_cache/_bazel_ubuntu/output_base', 'build', '--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos', '--incompatible_strict_action_env', '//google/cloud/language/v1beta2:language-v1beta2-py']' returned non-zero exit status 1
+# We'll point both to the /bazel_cache directory which will be mounted as a volume.
+ENV BAZELISK_HOME="/bazel_cache/bazelisk"
+ENV BAZEL_HOME="/bazel_cache/bazel"
+ENV XDG_CACHE_HOME="/bazel_cache"
+RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
+             ${BAZEL_HOME}/_bazel_ubuntu/output_base \
+             ${BAZELISK_HOME} && \
+    chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
+
+ENV PATH=bazel_env/bin:$PATH
+
+USER $UID
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
@@ -169,34 +204,13 @@ rm -rf /tmp/synthtool
 RUN python3.9 -m pip install nox
 
 # Copy the CLI script into the container.
-COPY .generator/cli.py .
+COPY --chown=$UID:$GID .generator/cli.py .
 RUN chmod a+rx ./cli.py
-
-ENV PATH=bazel_env/bin:$PATH
-
-# 2025/08/05 08:27:44 could not create directory /.cache/bazelisk: mkdir /.cache: permission denied
-# Traceback (most recent call last):
-#   File "/app/./cli.py", line 147, in _build_bazel_target
-#     subprocess.run(
-#   File "/usr/local/lib/python3.9/subprocess.py", line 528, in run
-#     raise CalledProcessError(retcode, process.args,
-# subprocess.CalledProcessError: Command '['bazelisk', '--output_base=/bazel_cache/_bazel_ubuntu/output_base', 'build', '--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos', '--incompatible_strict_action_env', '//google/cloud/language/v1beta2:language-v1beta2-py']' returned non-zero exit status 1
-# We'll point both to the /bazel_cache directory which will be mounted as a volume.
-ENV BAZELISK_HOME="/bazel_cache/bazelisk"
-ENV BAZEL_HOME="/bazel_cache/bazel"
-ENV XDG_CACHE_HOME="/bazel_cache"
 
 # # Ensure the cache directories within the non-root user's context exist and are writable.
 # # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
 
 COPY --from=builder /bazel_cache /bazel_cache
-
-RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
-             ${BAZEL_HOME}/_bazel_ubuntu/output_base \
-             ${BAZELISK_HOME}
-
-RUN mkdir -p /bazel_cache && \
-    chmod -R 777 /bazel_cache
 
 # RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
