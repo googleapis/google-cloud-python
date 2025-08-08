@@ -489,7 +489,7 @@ class Index(vendored_pandas_index.Index):
             self._block.index_columns,
             normalize=normalize,
             ascending=ascending,
-            dropna=dropna,
+            drop_na=dropna,
         )
         import bigframes.series as series
 

@@ -244,6 +244,30 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     aggregate = agg
 
+    def value_counts(
+        self,
+        normalize: bool = False,
+        sort: bool = True,
+        ascending: bool = False,
+        dropna: bool = True,
+    ) -> Union[df.DataFrame, series.Series]:
+        columns = [self._value_column]
+        block = self._block
+        if self._dropna:  # this drops null grouping columns
+            block = block_ops.dropna(block, self._by_col_ids)
+        block = block_ops.value_counts(
+            block,
+            columns,
+            normalize=normalize,
+            sort=sort,
+            ascending=ascending,
+            drop_na=dropna,  # this drops null value columns
+            grouping_keys=self._by_col_ids,
+        )
+        # TODO: once as_index=Fales supported, return DataFrame instead by resetting index
+        # with .to_frame().reset_index(drop=False)
+        return series.Series(block)
+
     @validations.requires_ordering()
     def cumsum(self, *args, **kwargs) -> series.Series:
         return self._apply_window_op(

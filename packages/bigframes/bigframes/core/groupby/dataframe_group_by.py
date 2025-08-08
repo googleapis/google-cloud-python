@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import datetime
 import typing
-from typing import Literal, Sequence, Tuple, Union
+from typing import Literal, Optional, Sequence, Tuple, Union
 
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.groupby as vendored_pandas_groupby
@@ -371,6 +371,39 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             grouping_keys=tuple(self._by_col_ids),
         )
         return self._apply_window_op(agg_ops.DiffOp(periods), window=window)
+
+    def value_counts(
+        self,
+        subset: Optional[Sequence[blocks.Label]] = None,
+        normalize: bool = False,
+        sort: bool = True,
+        ascending: bool = False,
+        dropna: bool = True,
+    ) -> Union[df.DataFrame, series.Series]:
+        if subset is None:
+            columns = self._selected_cols
+        else:
+            columns = [
+                column
+                for column in self._block.value_columns
+                if self._block.col_id_to_label[column] in subset
+            ]
+        block = self._block
+        if self._dropna:  # this drops null grouping columns
+            block = block_ops.dropna(block, self._by_col_ids)
+        block = block_ops.value_counts(
+            block,
+            columns,
+            normalize=normalize,
+            sort=sort,
+            ascending=ascending,
+            drop_na=dropna,  # this drops null value columns
+            grouping_keys=self._by_col_ids,
+        )
+        if self._as_index:
+            return series.Series(block)
+        else:
+            return series.Series(block).to_frame().reset_index(drop=False)
 
     @validations.requires_ordering()
     def rolling(

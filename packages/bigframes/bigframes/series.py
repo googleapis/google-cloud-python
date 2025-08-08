@@ -1631,7 +1631,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             [self._value_column],
             normalize=normalize,
             ascending=ascending,
-            dropna=dropna,
+            drop_na=dropna,
         )
         return Series(block)
 

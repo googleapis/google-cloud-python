@@ -1330,6 +1330,32 @@ class SeriesGroupBy(GroupBy):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def value_counts(
+        self,
+        normalize: bool = False,
+        sort: bool = True,
+        ascending: bool = False,
+        dropna: bool = True,
+    ):
+        """
+        Return a Series or DataFrame containing counts of unique rows.
+
+        Args:
+            normalize (bool, default False):
+                Return proportions rather than frequencies.
+            sort (bool, default True):
+                Sort by frequencies.
+            ascending (bool, default False):
+                Sort in ascending order.
+            dropna (bool, default True):
+                Don't include counts of rows that contain NA values.
+
+        Returns:
+            Series or DataFrame:
+                Series if the groupby as_index is True, otherwise DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
 
 class DataFrameGroupBy(GroupBy):
     def agg(self, func, **kwargs):
@@ -1478,5 +1504,104 @@ class DataFrameGroupBy(GroupBy):
         Returns:
             bigframes.pandas.DataFrame:
                 Number of unique values within a BigQuery DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def value_counts(
+        self,
+        subset=None,
+        normalize: bool = False,
+        sort: bool = True,
+        ascending: bool = False,
+        dropna: bool = True,
+    ):
+        """
+        Return a Series or DataFrame containing counts of unique rows.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> import numpy as np
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({
+            ...     'gender': ['male', 'male', 'female', 'male', 'female', 'male'],
+            ...     'education': ['low', 'medium', 'high', 'low', 'high', 'low'],
+            ...     'country': ['US', 'FR', 'US', 'FR', 'FR', 'FR']
+            ... })
+
+            >>> df
+               gender education country
+            0    male       low      US
+            1    male    medium      FR
+            2  female      high      US
+            3    male       low      FR
+            4  female      high      FR
+            5    male       low      FR
+            <BLANKLINE>
+            [6 rows x 3 columns]
+
+            >>> df.groupby('gender').value_counts()
+                 gender  education  country
+            female  high       FR         1
+                               US         1
+            male    low        FR         2
+                               US         1
+                    medium     FR         1
+            Name: count, dtype: Int64
+
+            >>> df.groupby('gender').value_counts(ascending=True)
+            gender  education  country
+            female  high       FR         1
+                               US         1
+            male    low        US         1
+                    medium     FR         1
+                    low        FR         2
+            Name: count, dtype: Int64
+
+            >>> df.groupby('gender').value_counts(normalize=True)
+            gender  education  country
+            female  high       FR          0.5
+                               US          0.5
+            male    low        FR          0.5
+                               US         0.25
+                    medium     FR         0.25
+            Name: proportion, dtype: Float64
+
+            >>> df.groupby('gender', as_index=False).value_counts()
+               gender education country  count
+            0  female      high      FR      1
+            1  female      high      US      1
+            2    male       low      FR      2
+            3    male       low      US      1
+            4    male    medium      FR      1
+            <BLANKLINE>
+            [5 rows x 4 columns]
+
+            >>> df.groupby('gender', as_index=False).value_counts(normalize=True)
+               gender education country  proportion
+            0  female      high      FR         0.5
+            1  female      high      US         0.5
+            2    male       low      FR         0.5
+            3    male       low      US        0.25
+            4    male    medium      FR        0.25
+            <BLANKLINE>
+            [5 rows x 4 columns]
+
+        Args:
+            subset (list-like, optional):
+                Columns to use when counting unique combinations.
+            normalize (bool, default False):
+                Return proportions rather than frequencies.
+            sort (bool, default True):
+                Sort by frequencies.
+            ascending (bool, default False):
+                Sort in ascending order.
+            dropna (bool, default True):
+                Don't include counts of rows that contain NA values.
+
+        Returns:
+            Series or DataFrame:
+                Series if the groupby as_index is True, otherwise DataFrame.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

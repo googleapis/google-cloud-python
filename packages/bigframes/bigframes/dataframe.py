@@ -2475,7 +2475,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             normalize=normalize,
             sort=sort,
             ascending=ascending,
-            dropna=dropna,
+            drop_na=dropna,
         )
         return bigframes.series.Series(block)
 
