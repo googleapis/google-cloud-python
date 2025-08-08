@@ -156,6 +156,7 @@
     "packages/google-cloud-resource-settings": "1.12.0",
     "packages/google-cloud-retail": "2.5.0",
     "packages/google-cloud-run": "0.10.19",
+    "packages/google-cloud-saasplatform-saasservicemgmt": "0.0.0",
     "packages/google-cloud-scheduler": "2.16.1",
     "packages/google-cloud-secret-manager": "2.24.0",
     "packages/google-cloud-securesourcemanager": "0.1.17",

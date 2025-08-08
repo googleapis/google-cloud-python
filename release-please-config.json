@@ -2721,6 +2721,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-saasplatform-saasservicemgmt": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-saasplatform-saasservicemgmt",
+            "extra-files": [
+                "google/cloud/saasplatform_saasservicemgmt/gapic_version.py",
+                "google/cloud/saasplatform_saasservicemgmt_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.saasplatform.saasservicemgmt.v1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-scheduler": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
