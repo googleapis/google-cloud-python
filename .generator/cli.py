@@ -19,6 +19,9 @@ import os
 import subprocess
 import sys
 import subprocess
+import shutil
+import glob
+
 from typing import Dict, List
 
 try:
@@ -39,6 +42,36 @@ SOURCE_DIR = "/source"
 OUTPUT_DIR = "output"
 REPO_DIR = "repo"
 
+def _copy_files_needed_for_post_processing(output: str, input: str, library_id: str):
+    """Copy files to the output directory whcih are needed during the post processing
+    step, such as .repo-metadata.json and script/client-post-processing, using
+    the input directory as the source.
+    Args:
+        output(str): Path to the directory in the container where code
+            should be generated.
+        input(str): The path to the directory in the container
+            which contains additional generator input.
+        library_id(str): The library id to be used for post processing.
+    """
+
+    path_to_library = f"packages/{library_id}"
+
+    # We need to create these directories so that we can copy files necessary for post-processing.
+    os.makedirs(f"{output}/{path_to_library}")
+    os.makedirs(f"{output}/{path_to_library}/scripts/client-post-processing")
+    shutil.move(
+        f"{input}/{path_to_library}/.repo-metadata.json",
+        f"{output}/{path_to_library}/.repo-metadata.json",
+    )
+
+    # copy post-procesing files
+    for post_processing_file in glob.glob(f"{input}/client-post-processing/*.yaml"):
+        with open(post_processing_file, "r") as post_processing:
+            if f"{path_to_library}/" in post_processing.read():
+                shutil.move(
+                    post_processing_file,
+                    f"{output}/{path_to_library}/scripts/client-post-processing",
+                )
 
 def _read_json_file(path: str) -> Dict:
     """Helper function that reads a json file path and returns the loaded json content.
@@ -253,6 +286,7 @@ def handle_generate(
                 _locate_and_extract_artifact(bazel_rule, library_id, output, source)
                 print("succesfully located and extracted bazel tarball.")
             _run_post_processor(output)
+            _copy_files_needed_for_post_processing(output, input, library_id)
             print("succesfully ran Python Post Processor.")
 
     except Exception as e:
