@@ -22,6 +22,8 @@ import subprocess
 import sys
 from typing import Dict, List
 
+from synthtool.languages import python_mono_repo
+
 logger = logging.getLogger()
 
 LIBRARIAN_DIR = "librarian"
@@ -214,54 +216,59 @@ def _run_post_processor(output: str, relative_path: str):
     """
     logger.info("Running Python post-processor...")
     os.chdir(output)
-    from synthtool.languages import python_mono_repo
-
     python_mono_repo.owlbot_main(relative_path)
-    shutil.rmtree(f"{output}/{relative_path}/.nox")
-    os.remove(f"{output}/{relative_path}/CHANGELOG.md")
-    os.remove(f"{output}/{relative_path}/docs/CHANGELOG.md")
-    os.remove(f"{output}/{relative_path}/docs/README.rst")
+    logger.info("Python post-processor ran successfully.")
+
+
+def _copy_files_needed_for_post_processing(output: str, input: str, library_id: str):
+    """Copy files to the output directory whcih are needed during the post processing
+    step, such as .repo-metadata.json and script/client-post-processing, using
+    the input directory as the source.
+    """
+
+    path_to_library = f"packages/{library_id}"
+
+    # We need to create these directories so that we can copy files necessary for post-processing.
+    os.makedirs(f"{output}/{path_to_library}")
+    os.makedirs(f"{output}/{path_to_library}/scripts/client-post-processing")
+    shutil.move(
+        f"{input}/{path_to_library}/.repo-metadata.json",
+        f"{output}/{path_to_library}/.repo-metadata.json",
+    )
+
+    # copy post-procesing files
+    for post_processing_file in glob.glob(f"{input}/client-post-processing/*.yaml"):
+        with open(post_processing_file, "r") as post_processing:
+            if f"{path_to_library}/" in post_processing.read():
+                shutil.move(
+                    post_processing_file,
+                    f"{output}/{path_to_library}/scripts/client-post-processing",
+                )
+
+
+def _clean_up_files_after_post_processing(output: str, library_id: str):
+    """
+    Clean up files which should not be included in the generated client
+    """
+    path_to_library = f"packages/{library_id}"
+    shutil.rmtree(f"{output}/{path_to_library}/.nox")
+    os.remove(f"{output}/{path_to_library}/CHANGELOG.md")
+    os.remove(f"{output}/{path_to_library}/docs/CHANGELOG.md")
+    os.remove(f"{output}/{path_to_library}/docs/README.rst")
     for post_processing_file in glob.glob(
-        f"{output}/{relative_path}/scripts/client-post-processing/*.yaml"
+        f"{output}/{path_to_library}/scripts/client-post-processing/*.yaml"
     ):
         os.remove(post_processing_file)
     for gapic_version_file in glob.glob(
-        f"{output}/{relative_path}/**/gapic_version.py", recursive=True
+        f"{output}/{path_to_library}/**/gapic_version.py", recursive=True
     ):
         os.remove(gapic_version_file)
     for snippet_metadata_file in glob.glob(
-        f"{output}/{relative_path}/samples/generated_samples/snippet_metadata*.json"
+        f"{output}/{path_to_library}/samples/generated_samples/snippet_metadata*.json"
     ):
         os.remove(snippet_metadata_file)
     shutil.rmtree(f"{output}/owl-bot-staging")
-    logger.info("Python post-processor ran successfully.")
 
-def _copy_files_needed_for_post_processing(
-        output: str, input: str, library_id: str
-    ):
-        """Copy files to the output directory whcih are needed during the post processing
-        step, such as .repo-metadata.json and script/client-post-processing, using
-        the input directory as the source.
-        """
-
-        path_to_library = f"packages/{library_id}"
-
-        # We need to create these directories so that we can copy files necessary for post-processing.
-        os.makedirs(f"{output}/{path_to_library}")
-        os.makedirs(f"{output}/{path_to_library}/scripts/client-post-processing")
-        shutil.move(
-            f"{input}/{path_to_library}/.repo-metadata.json",
-            f"{output}/{path_to_library}/.repo-metadata.json",
-        )
-
-        # copy post-procesing files
-        for post_processing_file in glob.glob(f"{input}/client-post-processing/*.yaml"):
-            with open(post_processing_file, "r") as post_processing:
-                if f"{path_to_library}/" in post_processing.read():
-                    shutil.move(
-                        post_processing_file,
-                        f"{output}/{path_to_library}/scripts/client-post-processing",
-                    )
 
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
@@ -306,6 +313,7 @@ def handle_generate(
 
         _copy_files_needed_for_post_processing(output, input, library_id)
         _run_post_processor(output, f"packages/{library_id}")
+        _clean_up_files_after_post_processing(output, library_id)
 
         # Write the `generate-response.json` using `generate-request.json` as the source
         with open(f"{librarian}/generate-response.json", "w") as f:
