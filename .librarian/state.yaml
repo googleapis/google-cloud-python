@@ -1,4 +1,4 @@
-image: python-librarian-generator:latest
+image: python-librarian-generator-2:latest
 libraries:
 - id: google-cloud-dms
   version: 1.12.4
