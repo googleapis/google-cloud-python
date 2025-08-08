@@ -27,6 +27,7 @@ from typing import Dict, List
 try:
     import synthtool
     from synthtool import gcp
+    from synthtool.languages import python_mono_repo
 
     SYNTHTOOL_INSTALLED = True
     SYNTHTOOL_IMPORT_ERROR = None
@@ -258,8 +259,8 @@ def _run_post_processor(output_path: str, library_id: str):
     if SYNTHTOOL_INSTALLED:
         command = ["python3.9", "-m", "synthtool.languages.python_mono_repo"]
         path_to_library = f"{output_path}/packages/{library_id}"
-        synthtool.languages.python_mono_repo.owlbot_main(path_to_library)
-        subprocess.run(command, cwd=output_path, text=True, check=True, capture_output=False)
+        python_mono_repo.owlbot_main(path_to_library)
+        # subprocess.run(command, cwd=output_path, text=True, check=True, capture_output=False)
     else:
         raise SYNTHTOOL_IMPORT_ERROR
     logger.info("Python post-processor ran successfully.")
