@@ -172,11 +172,6 @@ RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
              ${BAZELISK_HOME} && \
     chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
 
-RUN /usr/local/bin/python3.9 -m venv bazel_env
-RUN . bazel_env/bin/activate
-
-ENV PATH=bazel_env/bin:$PATH
-
 USER $UID
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
@@ -200,6 +195,11 @@ COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
 
 # Set the working directory in the container.
 WORKDIR /app
+
+RUN /usr/local/bin/python3.9 -m venv bazel_env
+RUN . bazel_env/bin/activate
+
+ENV PATH=bazel_env/bin:$PATH
 
 RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
 bazel_env/bin/python3.9 -m pip install /tmp/synthtool nox && \
