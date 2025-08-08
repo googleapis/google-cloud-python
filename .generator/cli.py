@@ -40,6 +40,7 @@ LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
 SOURCE_DIR = "/source"
 OUTPUT_DIR = "output"
+INPUT_DIR = "input"
 REPO_DIR = "repo"
 
 def _copy_files_needed_for_post_processing(output: str, input: str, library_id: str):
@@ -263,7 +264,7 @@ def _run_post_processor(output_path: str = OUTPUT_DIR):
 
 
 def handle_generate(
-    librarian: str = LIBRARIAN_DIR, source: str = SOURCE_DIR, output: str = OUTPUT_DIR
+    librarian: str = LIBRARIAN_DIR, source: str = SOURCE_DIR, output: str = OUTPUT_DIR, input: str = INPUT_DIR
 ):
     """The main coordinator for the code generation process.
 
