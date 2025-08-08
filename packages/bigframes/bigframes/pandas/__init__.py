@@ -293,7 +293,7 @@ def clean_up_by_session_id(
         session.bqclient, dataset, session_id
     )
 
-    bff_utils._clean_up_by_session_id(
+    bff_utils.clean_up_by_session_id(
         session.bqclient, session.cloudfunctionsclient, dataset, session_id
     )
 

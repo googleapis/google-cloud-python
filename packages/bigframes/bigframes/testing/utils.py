@@ -440,11 +440,11 @@ def get_function_name(func, package_requirements=None, is_row_processor=False):
     """Get a bigframes function name for testing given a udf."""
     # Augment user package requirements with any internal package
     # requirements.
-    package_requirements = bff_utils._get_updated_package_requirements(
+    package_requirements = bff_utils.get_updated_package_requirements(
         package_requirements, is_row_processor
     )
 
     # Compute a unique hash representing the user code.
-    function_hash = bff_utils._get_hash(func, package_requirements)
+    function_hash = bff_utils.get_hash(func, package_requirements)
 
     return f"bigframes_{function_hash}"

@@ -90,7 +90,7 @@ def _try_import_routine(
         return BigqueryCallableRoutine(
             udf_def,
             session,
-            post_routine=_utils._build_unnest_post_routine(override_type),
+            post_routine=_utils.build_unnest_post_routine(override_type),
         )
     return BigqueryCallableRoutine(udf_def, session, is_managed=not is_remote)
 
@@ -107,7 +107,7 @@ def _try_import_row_routine(
         return BigqueryCallableRowRoutine(
             udf_def,
             session,
-            post_routine=_utils._build_unnest_post_routine(override_type),
+            post_routine=_utils.build_unnest_post_routine(override_type),
         )
     return BigqueryCallableRowRoutine(udf_def, session, is_managed=not is_remote)
 

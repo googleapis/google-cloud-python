@@ -597,7 +597,7 @@ class FunctionSession:
                 bqrf_metadata = _utils.get_bigframes_metadata(
                     python_output_type=py_sig.return_annotation
                 )
-                post_process_routine = _utils._build_unnest_post_routine(
+                post_process_routine = _utils.build_unnest_post_routine(
                     py_sig.return_annotation
                 )
                 py_sig = py_sig.replace(return_annotation=str)

@@ -245,7 +245,7 @@ class FunctionClient:
 
         # Augment user package requirements with any internal package
         # requirements.
-        packages = _utils._get_updated_package_requirements(
+        packages = _utils.get_updated_package_requirements(
             packages, is_row_processor, capture_references, ignore_package_version=True
         )
         if packages:
@@ -258,7 +258,7 @@ class FunctionClient:
         bq_function_name = name
         if not bq_function_name:
             # Compute a unique hash representing the user code.
-            function_hash = _utils._get_hash(func, packages)
+            function_hash = _utils.get_hash(func, packages)
             bq_function_name = _utils.get_bigframes_function_name(
                 function_hash,
                 session_id,
@@ -539,12 +539,12 @@ class FunctionClient:
         """Provision a BigQuery remote function."""
         # Augment user package requirements with any internal package
         # requirements
-        package_requirements = _utils._get_updated_package_requirements(
+        package_requirements = _utils.get_updated_package_requirements(
             package_requirements, is_row_processor
         )
 
         # Compute a unique hash representing the user code
-        function_hash = _utils._get_hash(def_, package_requirements)
+        function_hash = _utils.get_hash(def_, package_requirements)
 
         # If reuse of any existing function with the same name (indicated by the
         # same hash of its source code) is not intended, then attach a unique
