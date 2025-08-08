@@ -297,6 +297,11 @@ def handle_generate(
         _run_post_processor(output, library_id)
         print("succesfully ran Python Post Processor.")
 
+        # Write the `generate-response.json` using `generate-request.json` as the source
+        with open(f"{librarian}/generate-response.json", "w") as f:
+            json.dump(request_data, f, indent=4)
+            f.write("\n")
+
     except Exception as e:
         raise ValueError("Generation failed.") from e
 
