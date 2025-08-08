@@ -16,7 +16,7 @@
 def run_quickstart(project_id: str) -> None:
     your_gcp_project_id = project_id
 
-    # [START bigquery_bigframes_quickstart]
+    # [START bigquery_bigframes_quickstart_create_dataframe]
     import bigframes.pandas as bpd
 
     # Set BigQuery DataFrames options
@@ -37,12 +37,16 @@ def run_quickstart(project_id: str) -> None:
 
     # Efficiently preview the results using the .peek() method.
     df.peek()
+    # [END bigquery_bigframes_quickstart_create_dataframe]
 
+    # [START bigquery_bigframes_quickstart_calculate_print]
     # Use the DataFrame just as you would a pandas DataFrame, but calculations
     # happen in the BigQuery query engine instead of the local system.
     average_body_mass = df["body_mass_g"].mean()
     print(f"average_body_mass: {average_body_mass}")
+    # [END bigquery_bigframes_quickstart_calculate_print]
 
+    # [START bigquery_bigframes_quickstart_eval_metrics]
     # Create the Linear Regression model
     from bigframes.ml.linear_model import LinearRegression
 
@@ -70,7 +74,7 @@ def run_quickstart(project_id: str) -> None:
     model = LinearRegression(fit_intercept=False)
     model.fit(X, y)
     model.score(X, y)
-    # [END bigquery_bigframes_quickstart]
+    # [END bigquery_bigframes_quickstart_eval_metrics]
 
     # close session and reset option so not to affect other tests
     bpd.close_session()
