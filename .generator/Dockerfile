@@ -210,7 +210,7 @@ RUN chmod a+rx ./cli.py
 # # Ensure the cache directories within the non-root user's context exist and are writable.
 # # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
 
-COPY --from=builder /bazel_cache /bazel_cache
+COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
 
 # RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
