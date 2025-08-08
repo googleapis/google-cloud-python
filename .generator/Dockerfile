@@ -203,14 +203,14 @@ python3.9 -m pip install /tmp/synthtool && \
 rm -rf /tmp/synthtool
 RUN python3.9 -m pip install nox
 
-# Copy the CLI script into the container.
-COPY --chown=$UID:$GID .generator/cli.py .
-RUN chmod a+rx ./cli.py
-
 # # Ensure the cache directories within the non-root user's context exist and are writable.
 # # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
 
 COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
+
+# Copy the CLI script into the container.
+COPY --chown=$UID:$GID .generator/cli.py .
+RUN chmod a+rx ./cli.py
 
 # RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
