@@ -218,4 +218,4 @@ COPY --chown=$UID:$GID .generator/cli.py .
 RUN chmod a+rx ./cli.py
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["python3.9", "./cli.py"]
+ENTRYPOINT ["/app/bazel_env/bin/python3.9", "./cli.py"]
