@@ -245,7 +245,7 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
     # We need to create these directories so that we can copy files necessary for post-processing.
     os.makedirs(f"{output}/{path_to_library}")
     os.makedirs(f"{output}/{path_to_library}/scripts/client-post-processing")
-    shutil.move(
+    shutil.copy(
         f"{input}/{path_to_library}/.repo-metadata.json",
         f"{output}/{path_to_library}/.repo-metadata.json",
     )
@@ -254,7 +254,7 @@ def _copy_files_needed_for_post_processing(output: str, input: str, library_id: 
     for post_processing_file in glob.glob(f"{input}/client-post-processing/*.yaml"):
         with open(post_processing_file, "r") as post_processing:
             if f"{path_to_library}/" in post_processing.read():
-                shutil.move(
+                shutil.copy(
                     post_processing_file,
                     f"{output}/{path_to_library}/scripts/client-post-processing",
                 )
