@@ -28,6 +28,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.support_v2beta.types import comment
 from google.cloud.support_v2beta.types import comment as gcs_comment
 from google.cloud.support_v2beta.types import comment_service
 
@@ -78,6 +79,14 @@ class CommentServiceRestInterceptor:
                 return request, metadata
 
             def post_create_comment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_comment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_comment(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -138,6 +147,52 @@ class CommentServiceRestInterceptor:
         `post_create_comment` interceptor. The (possibly modified) response returned by
         `post_create_comment` will be passed to
         `post_create_comment_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_comment(
+        self,
+        request: comment_service.GetCommentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        comment_service.GetCommentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_comment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CommentService server.
+        """
+        return request, metadata
+
+    def post_get_comment(self, response: comment.Comment) -> comment.Comment:
+        """Post-rpc interceptor for get_comment
+
+        DEPRECATED. Please use the `post_get_comment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CommentService server but before
+        it is returned to user code. This `post_get_comment` interceptor runs
+        before the `post_get_comment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_comment_with_metadata(
+        self,
+        response: comment.Comment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[comment.Comment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_comment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CommentService server but before it is returned to user code.
+
+        We recommend only using this `post_get_comment_with_metadata`
+        interceptor in new development instead of the `post_get_comment` interceptor.
+        When both interceptors are used, this `post_get_comment_with_metadata` interceptor runs after the
+        `post_get_comment` interceptor. The (possibly modified) response returned by
+        `post_get_comment` will be passed to
+        `post_get_comment_with_metadata`.
         """
         return response, metadata
 
@@ -436,6 +491,160 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
                 )
             return resp
 
+    class _GetComment(
+        _BaseCommentServiceRestTransport._BaseGetComment, CommentServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CommentServiceRestTransport.GetComment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: comment_service.GetCommentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> comment.Comment:
+            r"""Call the get comment method over HTTP.
+
+            Args:
+                request (~.comment_service.GetCommentRequest):
+                    The request object. The request message for the
+                GetComment endpoint.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.comment.Comment:
+                    A comment associated with a support
+                case.
+                Case comments are the primary way for
+                Google Support to communicate with a
+                user who has opened a case. When a user
+                responds to Google Support, the user's
+                responses also appear as comments.
+
+            """
+
+            http_options = (
+                _BaseCommentServiceRestTransport._BaseGetComment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_comment(request, metadata)
+            transcoded_request = _BaseCommentServiceRestTransport._BaseGetComment._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseCommentServiceRestTransport._BaseGetComment._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2beta.CommentServiceClient.GetComment",
+                    extra={
+                        "serviceName": "google.cloud.support.v2beta.CommentService",
+                        "rpcName": "GetComment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CommentServiceRestTransport._GetComment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = comment.Comment()
+            pb_resp = comment.Comment.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_comment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_comment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = comment.Comment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2beta.CommentServiceClient.get_comment",
+                    extra={
+                        "serviceName": "google.cloud.support.v2beta.CommentService",
+                        "rpcName": "GetComment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListComments(
         _BaseCommentServiceRestTransport._BaseListComments, CommentServiceRestStub
     ):
@@ -592,6 +801,14 @@ class CommentServiceRestTransport(_BaseCommentServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateComment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_comment(
+        self,
+    ) -> Callable[[comment_service.GetCommentRequest], comment.Comment]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetComment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_comments(

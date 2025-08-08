@@ -28,7 +28,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.support_v2beta.types import attachment_service
+from google.cloud.support_v2beta.types import attachment, attachment_service
 
 from .base import DEFAULT_CLIENT_INFO, CaseAttachmentServiceTransport
 
@@ -349,6 +349,32 @@ class CaseAttachmentServiceGrpcTransport(CaseAttachmentServiceTransport):
                 response_deserializer=attachment_service.ListAttachmentsResponse.deserialize,
             )
         return self._stubs["list_attachments"]
+
+    @property
+    def get_attachment(
+        self,
+    ) -> Callable[[attachment_service.GetAttachmentRequest], attachment.Attachment]:
+        r"""Return a callable for the get attachment method over gRPC.
+
+        Retrieve an attachment.
+
+        Returns:
+            Callable[[~.GetAttachmentRequest],
+                    ~.Attachment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_attachment" not in self._stubs:
+            self._stubs["get_attachment"] = self._logged_channel.unary_unary(
+                "/google.cloud.support.v2beta.CaseAttachmentService/GetAttachment",
+                request_serializer=attachment_service.GetAttachmentRequest.serialize,
+                response_deserializer=attachment.Attachment.deserialize,
+            )
+        return self._stubs["get_attachment"]
 
     def close(self):
         self._logged_channel.close()

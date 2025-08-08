@@ -28,7 +28,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.support_v2beta.types import attachment_service
+from google.cloud.support_v2beta.types import attachment, attachment_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseCaseAttachmentServiceRestTransport
@@ -72,6 +72,14 @@ class CaseAttachmentServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomCaseAttachmentServiceInterceptor(CaseAttachmentServiceRestInterceptor):
+            def pre_get_attachment(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_attachment(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_attachments(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -85,6 +93,54 @@ class CaseAttachmentServiceRestInterceptor:
 
 
     """
+
+    def pre_get_attachment(
+        self,
+        request: attachment_service.GetAttachmentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        attachment_service.GetAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_attachment
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CaseAttachmentService server.
+        """
+        return request, metadata
+
+    def post_get_attachment(
+        self, response: attachment.Attachment
+    ) -> attachment.Attachment:
+        """Post-rpc interceptor for get_attachment
+
+        DEPRECATED. Please use the `post_get_attachment_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CaseAttachmentService server but before
+        it is returned to user code. This `post_get_attachment` interceptor runs
+        before the `post_get_attachment_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_attachment_with_metadata(
+        self,
+        response: attachment.Attachment,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[attachment.Attachment, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_attachment
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CaseAttachmentService server but before it is returned to user code.
+
+        We recommend only using this `post_get_attachment_with_metadata`
+        interceptor in new development instead of the `post_get_attachment` interceptor.
+        When both interceptors are used, this `post_get_attachment_with_metadata` interceptor runs after the
+        `post_get_attachment` interceptor. The (possibly modified) response returned by
+        `post_get_attachment` will be passed to
+        `post_get_attachment_with_metadata`.
+        """
+        return response, metadata
 
     def pre_list_attachments(
         self,
@@ -225,6 +281,160 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CaseAttachmentServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _GetAttachment(
+        _BaseCaseAttachmentServiceRestTransport._BaseGetAttachment,
+        CaseAttachmentServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CaseAttachmentServiceRestTransport.GetAttachment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: attachment_service.GetAttachmentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> attachment.Attachment:
+            r"""Call the get attachment method over HTTP.
+
+            Args:
+                request (~.attachment_service.GetAttachmentRequest):
+                    The request object. Request for getting an attachment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.attachment.Attachment:
+                    An Attachment contains metadata about a file that was
+                uploaded to a case - it is NOT a file itself. That being
+                said, the name of an Attachment object can be used to
+                download its accompanying file through the
+                ``media.download`` endpoint.
+
+                While attachments can be uploaded in the console at the
+                same time as a comment, they're associated on a "case"
+                level, not a "comment" level.
+
+            """
+
+            http_options = (
+                _BaseCaseAttachmentServiceRestTransport._BaseGetAttachment._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_attachment(request, metadata)
+            transcoded_request = _BaseCaseAttachmentServiceRestTransport._BaseGetAttachment._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCaseAttachmentServiceRestTransport._BaseGetAttachment._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2beta.CaseAttachmentServiceClient.GetAttachment",
+                    extra={
+                        "serviceName": "google.cloud.support.v2beta.CaseAttachmentService",
+                        "rpcName": "GetAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CaseAttachmentServiceRestTransport._GetAttachment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = attachment.Attachment()
+            pb_resp = attachment.Attachment.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_attachment(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_attachment_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = attachment.Attachment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2beta.CaseAttachmentServiceClient.get_attachment",
+                    extra={
+                        "serviceName": "google.cloud.support.v2beta.CaseAttachmentService",
+                        "rpcName": "GetAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _ListAttachments(
         _BaseCaseAttachmentServiceRestTransport._BaseListAttachments,
@@ -379,6 +589,14 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
                     },
                 )
             return resp
+
+    @property
+    def get_attachment(
+        self,
+    ) -> Callable[[attachment_service.GetAttachmentRequest], attachment.Attachment]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAttachment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_attachments(
