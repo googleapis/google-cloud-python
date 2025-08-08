@@ -82,12 +82,24 @@ FROM marketplace.gcr.io/google/ubuntu2404
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
+    git \
     libssl3 \
     zlib1g \
     libbz2-1.0 \
     libffi8 \
     libsqlite3-0 \
     libreadline8 \
+    # For running bazelisk commands
+    openjdk-17-jdk \
+    # To avoid bazel error
+    # "python interpreter `python3` not found in PATH"
+    python3-dev \
+    # To avoid bazel error
+    # "Cannot find gcc or CC; either correct your path or set the CC environment variable"
+    build-essential \
+    # To avoid bazel error
+    # unzip command not found
+    unzip \ 
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -114,11 +126,83 @@ COPY --from=builder /usr/local/lib/python3.12 /usr/local/lib/python3.12
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
+COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
+
 # Set the working directory in the container.
 WORKDIR /app
 
-# Copy the CLI script into the container.
-COPY .generator/cli.py .
+
+# RUN find /app -exec chmod a+rw {} \;
+# RUN find /app -type d -exec chmod a+x {} \;
+
+# # For bazel
+# RUN mkdir -p /.cache
+# RUN find /.cache -exec chmod a+rw {} \;
+# RUN find /.cache -type d -exec chmod a+x {} \;
+
+# --- Create a dedicated non-root user ---
+# Use arguments to make the user and group IDs configurable from the build command.
+ARG UID=1000
+ARG GID=1000
+
+# Create the group and user, but only if they don't already exist.
+RUN if ! getent group $GID > /dev/null; then \
+        groupadd -g $GID myuser; \
+    fi && \
+    if ! getent passwd $UID > /dev/null; then \
+        useradd -u $UID -g $GID -ms /bin/bash myuser; \
+    fi
+
+# Set ownership of the app and cache directory now, before we copy files into it.
+RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
+
+# Set ownership of the app and cache directory now, before we copy files into it.
+# Bazel's default cache locations are often under $HOME/.cache/bazel or /tmp.
+# We'll use /bazel_cache as a dedicated mount point for the cache to ensure persistence.
+# Also, set a symlink from the user's home to this cache directory to ensure Bazelisk picks it up.
+RUN mkdir -p /app /bazel_cache /source && \
+    chown -R $UID:$GID /app /bazel_cache /source
+
+# Switch to the non-root user. All subsequent commands will run as this user.
+USER $UID
+
+# Set environment variables for Bazelisk/Bazel cache locations for the non-root user.
+# BAZELISK_HOME is where Bazelisk itself caches Bazel binaries.
+# BAZEL_HOME (or --output_user_root) controls where Bazel stores its output and repository caches.
+# We'll point both to the /bazel_cache directory which will be mounted as a volume.
+ENV BAZELISK_HOME="/bazel_cache/bazelisk"
+ENV BAZEL_HOME="/bazel_cache/bazel"
+ENV XDG_CACHE_HOME="/bazel_cache"
+
+# Ensure the cache directories within the non-root user's context exist and are writable.
+# This is crucial as Bazel creates subdirectories under BAZEL_HOME.
+RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
+             ${BAZEL_HOME}/_bazel_ubuntu/output_base \
+             ${BAZELISK_HOME} && \
+    chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
+
+RUN /usr/local/bin/python3.9 -m venv bazel_env
+RUN . bazel_env/bin/activate
+
+RUN git clone https://github.com/googleapis/googleapis.git \
+    && cd googleapis \
+    && bazelisk --output_base=/bazel_cache/_bazel_ubuntu/output_base build --disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos  --incompatible_strict_action_env //google/cloud/language/v1:language-v1-py
+
+
+
+RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
+
+ENV PATH=bazel_env/bin:$PATH
+
+RUN git clone https://github.com/googleapis/synthtool.git && cd synthtool && /app/bazel_env/bin/python3.9 -m pip install . nox
+
+# Make sure this is at the end so that changes to cli.py do not require
+# re-running bazelisk build
+# Copy your CLI script into the container and make it executable.
+COPY --chown=$UID:$GID /.generator/cli.py .
+RUN chmod a+rx ./cli.py
+
+ENV PATH="$PATH:/app/bazel_env/bin"
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["python3.11", "./cli.py"]
+ENTRYPOINT ["/app/bazel_env/bin/python3.9", "./cli.py"]

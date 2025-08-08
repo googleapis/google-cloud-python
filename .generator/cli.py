@@ -13,23 +13,14 @@
 # limitations under the License.
 
 import argparse
+import glob
 import json
 import logging
 import os
+import shutil
 import subprocess
 import sys
-import subprocess
 from typing import Dict, List
-
-try:
-    import synthtool
-    from synthtool import gcp
-
-    SYNTHTOOL_INSTALLED = True
-    SYNTHTOOL_IMPORT_ERROR = None
-except ImportError as e:
-    SYNTHTOOL_IMPORT_ERROR = e
-    SYNTHTOOL_INSTALLED = False
 
 logger = logging.getLogger()
 
@@ -81,7 +72,7 @@ def _determine_bazel_rule(api_path: str, source: str) -> str:
     logger.info(f"Determining Bazel rule for api_path: '{api_path}'")
     try:
         query = f'filter("-py$", kind("rule", //{api_path}/...:*))'
-        command = ["bazelisk", "query", query]
+        command = ["bazelisk", "query", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", query]
         result = subprocess.run(
             command,
             cwd=source,
@@ -113,7 +104,7 @@ def _get_library_id(request_data: Dict) -> str:
     """
     library_id = request_data.get("id")
     if not library_id:
-        raise ValueError("Request file is missing required 'id' field.")
+        raise ValueError(f"Request file is missing required 'id' field. {request_data}")
     return library_id
 
 
@@ -129,7 +120,7 @@ def _build_bazel_target(bazel_rule: str, source: str):
     """
     logger.info(f"Executing build for rule: {bazel_rule}")
     try:
-        command = ["bazelisk", "build", bazel_rule]
+        command = ["bazelisk",  "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "build", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", "--incompatible_strict_action_env", bazel_rule]
         subprocess.run(
             command,
             cwd=source,
@@ -164,7 +155,7 @@ def _locate_and_extract_artifact(
     try:
         # 1. Find the bazel-bin output directory.
         logger.info("Locating Bazel output directory...")
-        info_command = ["bazelisk", "info", "bazel-bin"]
+        info_command = ["bazelisk", "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "info", "bazel-bin"]
         result = subprocess.run(
             info_command,
             cwd=source,
@@ -180,6 +171,7 @@ def _locate_and_extract_artifact(
         tarball_path = os.path.join(bazel_bin_path, rule_path.strip("/"), tarball_name)
         logger.info(f"Found artifact at: {tarball_path}")
 
+        api_version=api_path.split("/")[-1]
         # 3. Create a staging directory.
         api_version = api_path.split("/")[-1]
         staging_dir = os.path.join(output, "owl-bot-staging", library_id, api_version)
@@ -189,7 +181,7 @@ def _locate_and_extract_artifact(
         # 4. Extract the artifact.
         extract_command = ["tar", "-xvf", tarball_path, "--strip-components=1"]
         subprocess.run(
-            extract_command, cwd=staging_dir, capture_output=True, text=True, check=True
+            extract_command, cwd=staging_dir, text=True, check=True
         )
         logger.info(f"Artifact {tarball_path} extracted successfully.")
 
@@ -199,14 +191,27 @@ def _locate_and_extract_artifact(
         ) from e
 
 
-def _run_post_processor():
-    """Runs the synthtool post-processor on the output directory."""
+def _run_post_processor(output:str, relative_path:str):
+    """Runs the synthtool post-processor on the output directory.
+
+    Args:
+        output_path(str): path to the output directory
+    """
     logger.info("Running Python post-processor...")
-    if SYNTHTOOL_INSTALLED:
-        command = ["python3", "-m", "synthtool.languages.python_mono_repo"]
-        subprocess.run(command, cwd=OUTPUT_DIR, text=True, check=True)
-    else:
-        raise SYNTHTOOL_IMPORT_ERROR
+    os.chdir(output)
+    from synthtool.languages import python_mono_repo
+    python_mono_repo.owlbot_main(relative_path)
+    shutil.rmtree(f"{output}/{relative_path}/.nox")
+    os.remove(f"{output}/{relative_path}/CHANGELOG.md")
+    os.remove(f"{output}/{relative_path}/docs/CHANGELOG.md")
+    os.remove(f"{output}/{relative_path}/docs/README.rst")
+    for post_processing_file in glob.glob(f"{output}/{relative_path}/scripts/client-post-processing/*.yaml"):
+        os.remove(post_processing_file)
+    for gapic_version_file in glob.glob(f"{output}/{relative_path}/**/gapic_version.py", recursive=True):
+        os.remove(gapic_version_file)
+    for snippet_metadata_file in glob.glob(f"{output}/{relative_path}/samples/generated_samples/snippet_metadata*.json"):
+        os.remove(snippet_metadata_file)
+    shutil.rmtree(f"{output}/owl-bot-staging")
     logger.info("Python post-processor ran successfully.")
 
 
@@ -242,7 +247,6 @@ def handle_generate(
         # Read a generate-request.json file
         request_data = _read_json_file(f"{librarian}/{GENERATE_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
-
         for api in request_data.get("apis", []):
             api_path = api.get("path")
             if api_path:
@@ -251,8 +255,24 @@ def handle_generate(
                 _locate_and_extract_artifact(
                     bazel_rule, library_id, source, output, api_path
                 )
-                _run_post_processor(output, f"packages/{library_id}")
 
+        os.makedirs(name="f{output}/packages/{library_id}")
+        subprocess.run(f"mkdir -p {output}/packages/{library_id}", shell=True)
+        subprocess.run(f"touch {output}/packages/{library_id}/.repo-metadata.json", shell=True)
+        subprocess.run(f"cp {input}/packages/{library_id}/.repo-metadata.json {output}/packages/{library_id}/.repo-metadata.json", shell=True)
+
+        # copy post-procesing files
+        for post_processing_file in glob.glob(f"{input}/client-post-processing/*.yaml"):
+            with open(post_processing_file, "r") as post_processing:
+                if f"packages/{library_id}/" in post_processing.read():
+                    os.makedirs(f"{output}/packages/{library_id}/scripts/client-post-processing")
+                    subprocess.run(f"cp {post_processing_file} {output}/packages/{library_id}/scripts/client-post-processing", shell=True)
+        _run_post_processor(output, f"packages/{library_id}")
+
+        # Write the `generate-response.json` using `generate-request.json` as the source
+        with open(f"{librarian}/generate-response.json", "w") as f:
+            json.dump(request_data, f, indent=4)
+            f.write("\n")
     except Exception as e:
         raise ValueError("Generation failed.") from e
 
@@ -286,6 +306,7 @@ def _run_individual_session(nox_session: str, library_id: str):
         nox_session(str): The nox session to run
         library_id(str): The library id under test
     """
+
     command = [
         "nox",
         "-s",
@@ -366,7 +387,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     args = parser.parse_args()
-    args.func()
 
     # Pass specific arguments to the handler functions for generate/build
     if args.command == "generate":
