@@ -258,9 +258,8 @@ def _run_post_processor(output_path: str, library_id: str):
     if SYNTHTOOL_INSTALLED:
         command = ["python3.9", "-m", "synthtool.languages.python_mono_repo"]
         path_to_library = f"{output_path}/packages/{library_id}"
-        command_with_stdbuf = ["stdbuf", "-o0"] + command
         # synthtool.python_mono_repo.owlbot_main(path_to_library)
-        subprocess.run(command_with_stdbuf, cwd=output_path, text=True, check=True, capture_output=False)
+        subprocess.run(command, cwd=output_path, text=True, check=True, capture_output=False)
     else:
         raise SYNTHTOOL_IMPORT_ERROR
     logger.info("Python post-processor ran successfully.")
