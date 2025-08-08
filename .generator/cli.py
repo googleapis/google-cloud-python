@@ -258,7 +258,7 @@ def _run_post_processor(output_path: str, library_id: str):
     if SYNTHTOOL_INSTALLED:
         command = ["python3.9", "-m", "synthtool.languages.python_mono_repo"]
         path_to_library = f"{output_path}/packages/{library_id}"
-        # synthtool.python_mono_repo.owlbot_main(path_to_library)
+        synthtool.languages.python_mono_repo.owlbot_main(path_to_library)
         subprocess.run(command, cwd=output_path, text=True, check=True, capture_output=False)
     else:
         raise SYNTHTOOL_IMPORT_ERROR
@@ -292,7 +292,7 @@ def handle_generate(
                 print("succesfully located and extracted bazel tarball.")
         
         _copy_files_needed_for_post_processing(output, input, library_id)
-        # _run_post_processor(output, library_id)
+        _run_post_processor(output, library_id)
         print("succesfully ran Python Post Processor.")
 
     except Exception as e:
