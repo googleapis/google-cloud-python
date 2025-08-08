@@ -39,6 +39,7 @@ logger = logging.getLogger()
 
 LIBRARIAN_DIR = "librarian"
 GENERATE_REQUEST_FILE = "generate-request.json"
+BUILD_REQUEST_FILE = "build-request.json"
 SOURCE_DIR = "/source"
 OUTPUT_DIR = "output"
 INPUT_DIR = "/input"
