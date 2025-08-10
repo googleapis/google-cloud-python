@@ -5387,7 +5387,10 @@ def test_create_connectivity_test_rest_call_success(request_type):
             "redis_cluster": "redis_cluster_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
-            "cloud_run_revision": {"uri": "uri_value"},
+            "cloud_run_revision": {
+                "uri": "uri_value",
+                "service_uri": "service_uri_value",
+            },
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",
@@ -5939,7 +5942,10 @@ def test_update_connectivity_test_rest_call_success(request_type):
             "redis_cluster": "redis_cluster_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
-            "cloud_run_revision": {"uri": "uri_value"},
+            "cloud_run_revision": {
+                "uri": "uri_value",
+                "service_uri": "service_uri_value",
+            },
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",

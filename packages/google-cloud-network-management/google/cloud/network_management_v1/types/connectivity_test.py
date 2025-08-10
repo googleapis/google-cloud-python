@@ -200,18 +200,14 @@ class Endpoint(proto.Message):
         instance (str):
             A Compute Engine instance URI.
         forwarding_rule (str):
-            A forwarding rule and its corresponding IP
-            address represent the frontend configuration of
-            a Google Cloud load balancer. Forwarding rules
-            are also used for protocol forwarding, Private
-            Service Connect and other network services to
-            provide forwarding information in the control
-            plane. Applicable only to destination endpoint.
-            Format:
-
-            projects/{project}/global/forwardingRules/{id}
-            or
-            projects/{project}/regions/{region}/forwardingRules/{id}
+            A forwarding rule and its corresponding IP address represent
+            the frontend configuration of a Google Cloud load balancer.
+            Forwarding rules are also used for protocol forwarding,
+            Private Service Connect and other network services to
+            provide forwarding information in the control plane.
+            Applicable only to destination endpoint. Format:
+            ``projects/{project}/global/forwardingRules/{id}`` or
+            ``projects/{project}/regions/{region}/forwardingRules/{id}``
         forwarding_rule_target (google.cloud.network_management_v1.types.Endpoint.ForwardingRuleTarget):
             Output only. Specifies the type of the target
             of the forwarding rule.
@@ -366,12 +362,20 @@ class Endpoint(proto.Message):
                 A `Cloud Run <https://cloud.google.com/run>`__
                 `revision <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>`__
                 URI. The format is:
-                projects/{project}/locations/{location}/revisions/{revision}
+                ``projects/{project}/locations/{location}/revisions/{revision}``
+            service_uri (str):
+                Output only. The URI of the Cloud Run service that the
+                revision belongs to. The format is:
+                ``projects/{project}/locations/{location}/services/{service}``
         """
 
         uri: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        service_uri: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     ip_address: str = proto.Field(
