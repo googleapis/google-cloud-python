@@ -300,13 +300,6 @@ replacements:
                     during site visits\n
     count: 1
   - paths: [
-      packages/google-cloud-network-management/google/cloud/network_management_v1/types/connectivity_test.py,
-    ]
-    before: |
-      \             projects\/\{project\}\/global\/forwardingRules\/\{id\}
-    after: "            projects/{project}/global/forwardingRules/{id}\n"
-    count: 1
-  - paths: [
       packages/google-cloud-oracledatabase/google/cloud/oracledatabase_v1/types/exadata_infra.py,
     ]
     before: |
