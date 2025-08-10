@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "ListCommentsRequest",
         "ListCommentsResponse",
         "CreateCommentRequest",
+        "GetCommentRequest",
     },
 )
 
@@ -109,6 +110,21 @@ class CreateCommentRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=gcs_comment.Comment,
+    )
+
+
+class GetCommentRequest(proto.Message):
+    r"""The request message for the GetComment endpoint.
+
+    Attributes:
+        name (str):
+            Required. The name of the comment to
+            retrieve.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

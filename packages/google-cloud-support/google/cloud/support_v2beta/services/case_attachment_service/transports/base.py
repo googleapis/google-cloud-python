@@ -26,7 +26,7 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.support_v2beta import gapic_version as package_version
-from google.cloud.support_v2beta.types import attachment_service
+from google.cloud.support_v2beta.types import attachment, attachment_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -146,6 +146,11 @@ class CaseAttachmentServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_attachment: gapic_v1.method.wrap_method(
+                self.get_attachment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -166,6 +171,15 @@ class CaseAttachmentServiceTransport(abc.ABC):
             attachment_service.ListAttachmentsResponse,
             Awaitable[attachment_service.ListAttachmentsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_attachment(
+        self,
+    ) -> Callable[
+        [attachment_service.GetAttachmentRequest],
+        Union[attachment.Attachment, Awaitable[attachment.Attachment]],
     ]:
         raise NotImplementedError()
 
