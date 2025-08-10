@@ -5561,6 +5561,7 @@ def test_get_vulnerability_report(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = vulnerability.VulnerabilityReport(
             name="name_value",
+            highest_upgradable_cve_severity=vulnerability.VulnerabilityReport.VulnerabilitySeverityLevel.NONE,
         )
         response = client.get_vulnerability_report(request)
 
@@ -5573,6 +5574,10 @@ def test_get_vulnerability_report(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, vulnerability.VulnerabilityReport)
     assert response.name == "name_value"
+    assert (
+        response.highest_upgradable_cve_severity
+        == vulnerability.VulnerabilityReport.VulnerabilitySeverityLevel.NONE
+    )
 
 
 def test_get_vulnerability_report_non_empty_request_with_auto_populated_field():
@@ -5709,6 +5714,7 @@ async def test_get_vulnerability_report_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             vulnerability.VulnerabilityReport(
                 name="name_value",
+                highest_upgradable_cve_severity=vulnerability.VulnerabilityReport.VulnerabilitySeverityLevel.NONE,
             )
         )
         response = await client.get_vulnerability_report(request)
@@ -5722,6 +5728,10 @@ async def test_get_vulnerability_report_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, vulnerability.VulnerabilityReport)
     assert response.name == "name_value"
+    assert (
+        response.highest_upgradable_cve_severity
+        == vulnerability.VulnerabilityReport.VulnerabilitySeverityLevel.NONE
+    )
 
 
 @pytest.mark.asyncio
@@ -9842,6 +9852,7 @@ async def test_get_vulnerability_report_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             vulnerability.VulnerabilityReport(
                 name="name_value",
+                highest_upgradable_cve_severity=vulnerability.VulnerabilityReport.VulnerabilitySeverityLevel.NONE,
             )
         )
         await client.get_vulnerability_report(request=None)
@@ -11723,6 +11734,7 @@ def test_get_vulnerability_report_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = vulnerability.VulnerabilityReport(
             name="name_value",
+            highest_upgradable_cve_severity=vulnerability.VulnerabilityReport.VulnerabilitySeverityLevel.NONE,
         )
 
         # Wrap the value into a proper Response obj
@@ -11740,6 +11752,10 @@ def test_get_vulnerability_report_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, vulnerability.VulnerabilityReport)
     assert response.name == "name_value"
+    assert (
+        response.highest_upgradable_cve_severity
+        == vulnerability.VulnerabilityReport.VulnerabilitySeverityLevel.NONE
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
