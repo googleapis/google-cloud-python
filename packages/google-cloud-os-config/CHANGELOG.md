@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-config-v1.20.2...google-cloud-os-config-v1.21.0) (2025-08-10)
+
+
+### Features
+
+* Add highest_upgradable_cve_severity field to Vulnerability report ([e8feca7](https://github.com/googleapis/google-cloud-python/commit/e8feca76cfe1a2eaf7e96ff2341715545d15b5a8))
+
+
+### Documentation
+
+* A comment for field `filter` in message `.google.cloud.osconfig.v1.ListVulnerabilityReportsRequest` is changed ([e8feca7](https://github.com/googleapis/google-cloud-python/commit/e8feca76cfe1a2eaf7e96ff2341715545d15b5a8))
+* A comment for field `update_time` in message `.google.cloud.osconfig.v1.VulnerabilityReport` is changed ([e8feca7](https://github.com/googleapis/google-cloud-python/commit/e8feca76cfe1a2eaf7e96ff2341715545d15b5a8))
+
 ## [1.20.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-config-v1.20.1...google-cloud-os-config-v1.20.2) (2025-06-11)
 
 

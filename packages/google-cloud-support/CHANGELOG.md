@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.19](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.18...google-cloud-support-v0.1.19) (2025-08-10)
+
+
+### Features
+
+* [google-cloud-support] Add`GetAttachmentRequest` and `GetComment` ([#14208](https://github.com/googleapis/google-cloud-python/issues/14208)) ([483de87](https://github.com/googleapis/google-cloud-python/commit/483de87d0e8e7229618823b306d86d9aed687afc))
+
 ## [0.1.18](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.17...google-cloud-support-v0.1.18) (2025-06-23)
 
 
