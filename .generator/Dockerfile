@@ -195,24 +195,28 @@ COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 # Copy bazel cache from the builder.
 COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
 
-# Set the working directory in the container.
-WORKDIR /app
-
-RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
-python3.9 -m pip install /tmp/synthtool && \
-rm -rf /tmp/synthtool
-RUN python3.9 -m pip install nox
-
-# Copy the CLI script into the container.
-COPY --chown=$UID:$GID .generator/cli.py .
-RUN chmod a+rx ./cli.py
-
 # # Ensure the cache directories within the non-root user's context exist and are writable.
 # # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
 
 COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
 
+# Set the working directory in the container.
+WORKDIR /app
+
+RUN /usr/local/bin/python3.9 -m venv bazel_env
+RUN . bazel_env/bin/activate
+
+ENV PATH=bazel_env/bin:$PATH
+
+RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
+bazel_env/bin/python3.9 -m pip install /tmp/synthtool nox && \
+rm -rf /tmp/synthtool
+
+# Copy the CLI script into the container.
+COPY --chown=$UID:$GID .generator/cli.py .
+RUN chmod a+rx ./cli.py
+
 # RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["python3.9", "./cli.py"]
+ENTRYPOINT ["/app/bazel_env/bin/python3.9", "./cli.py"]
