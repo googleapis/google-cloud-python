@@ -210,7 +210,4 @@ rm -rf /tmp/synthtool
 COPY --chown=$UID:$GID .generator/cli.py .
 RUN chmod a+rx ./cli.py
 
-# Set the entrypoint for the container to run the script.
-# NOTE: The entrypoint is set to `/app/bazel_env/bin/python3.9` instead of `python3.9` to allow
-# the post processor to pick up the installed nox module.
-ENTRYPOINT ["/app/bazel_env/bin/python3.9", "./cli.py"]
+ENTRYPOINT ["python3.9", "./cli.py"]
