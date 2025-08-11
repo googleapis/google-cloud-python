@@ -22,10 +22,16 @@ RUN apt-get update && \
     # Essential for compiling C code
     build-essential \
     # For downloading secure files
+    git \
     wget \
     ca-certificates \
     # For running bazelisk commands
     openjdk-17-jdk \
+    zip \
+    unzip \ 
+    # To avoid bazel error
+    # "python interpreter `python3` not found in PATH"
+    python3-dev \
     # --- Critical libraries for a complete Python build ---
     libssl-dev \
     zlib1g-dev \
@@ -67,10 +73,39 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VER
 # Set the working directory for build-related tasks.
 WORKDIR /app
 
+# Create the group and user, but only if they don't already exist.
+ARG UID=1000
+ARG GID=1000
+
+RUN if ! getent group $GID > /dev/null; then \
+        groupadd -g $GID myuser; \
+    fi && \
+    if ! getent passwd $UID > /dev/null; then \
+        useradd -u $UID -g $GID -ms /bin/bash myuser; \
+    fi
+
+# Set ownership of the app directory now, before we copy files into it.
+RUN mkdir -p /app && chown $UID:$GID /app
+
+# We'll point both to the /bazel_cache directory which will be mounted as a volume.
+ENV BAZELISK_HOME="/bazel_cache/bazelisk"
+ENV BAZEL_HOME="/bazel_cache/bazel"
+
+# Ensure the cache directories within the non-root user's context exist and are writable.
+# This is crucial as Bazel creates subdirectories under BAZEL_HOME.
+RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
+             ${BAZEL_HOME}/_bazel_ubuntu/output_base \
+             ${BAZELISK_HOME} && \
+    chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
+
+RUN /usr/local/bin/python3.9 -m venv bazel_env
+RUN . bazel_env/bin/activate
+
+RUN git clone https://github.com/googleapis/googleapis.git \
+    && cd googleapis \
+    && bazelisk --output_base=/bazel_cache/_bazel_ubuntu/output_base build --disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos  --incompatible_strict_action_env //google/cloud/language/v1:language-v1-py
+
 # TODO(https://github.com/googleapis/librarian/issues/904): Install protoc for gencode.
-# TODO(https://github.com/googleapis/librarian/issues/907): Install Python dependencies from requirements.in.
-# TODO(https://github.com/googleapis/librarian/issues/905): Install Synthtool by cloning its repo.
-# TODO(https://github.com/googleapis/librarian/issues/906): Clone googleapis and run bazelisk build.
 
 # --- Final Stage ---
 # This stage creates the lightweight final image, copying only the
@@ -82,21 +117,58 @@ FROM marketplace.gcr.io/google/ubuntu2404
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
+    git \
     libssl3 \
     zlib1g \
     libbz2-1.0 \
     libffi8 \
     libsqlite3-0 \
     libreadline8 \
+    # For running bazelisk commands
+    openjdk-17-jdk \
+    # To avoid bazel error
+    # "python interpreter `python3` not found in PATH"
+    python3-dev \
+    # To avoid bazel error
+    # "Cannot find gcc or CC; either correct your path or set the CC environment variable"
+    build-essential \
+    # To avoid bazel error
+    # unzip command not found
+    unzip \ 
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# TODO(https://github.com/googleapis/librarian/issues/902): Create a dedicate non-root user and
-# switch to the non-root user to run subsequent commands.
-# Example:
-# RUN groupadd --system --gid 1000 appgroup && \
-#     useradd --system --uid 1000 --gid appgroup appuser
-# USER appuser
+# Create the group and user, but only if they don't already exist.
+# NOTE: A user needs to be configured by passing down the UID/GID with the 
+# docker build command to allow the user running the librarian CLI to have
+# the permissions within the /app and /bazel_cache directories in the following way:
+# DOCKER_BUILDKIT=1 docker build -f .generator/Dockerfile  --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t python-librarian-generator:latest .
+ARG UID=1000
+ARG GID=1000
+
+RUN if ! getent group $GID > /dev/null; then \
+        groupadd -g $GID myuser; \
+    fi && \
+    if ! getent passwd $UID > /dev/null; then \
+        useradd -u $UID -g $GID -ms /bin/bash myuser; \
+    fi
+
+# 2025/08/05 08:27:44 could not create directory /.cache/bazelisk: mkdir /.cache: permission denied
+# Traceback (most recent call last):
+#   File "/app/./cli.py", line 147, in _build_bazel_target
+#     subprocess.run(
+#   File "/usr/local/lib/python3.9/subprocess.py", line 528, in run
+#     raise CalledProcessError(retcode, process.args,
+# subprocess.CalledProcessError: Command '['bazelisk', '--output_base=/bazel_cache/_bazel_ubuntu/output_base', 'build', '--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos', '--incompatible_strict_action_env', '//google/cloud/language/v1beta2:language-v1beta2-py']' returned non-zero exit status 1
+# We'll point both to the /bazel_cache directory which will be mounted as a volume.
+ENV BAZELISK_HOME="/bazel_cache/bazelisk"
+ENV BAZEL_HOME="/bazel_cache/bazel"
+RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
+             ${BAZEL_HOME}/_bazel_ubuntu/output_base \
+             ${BAZELISK_HOME} && \
+    chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
+
+USER $UID
 
 # Copy all Python interpreters, their pip executables, and their standard libraries from the builder.
 COPY --from=builder /usr/local/bin/python3.9 /usr/local/bin/
@@ -114,11 +186,31 @@ COPY --from=builder /usr/local/lib/python3.12 /usr/local/lib/python3.12
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
+# Copy the bazelisk executable from the builder.
+COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
+
+# Copy bazel cache from the builder.
+COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
+
 # Set the working directory in the container.
 WORKDIR /app
 
+# Create a virtual env and set the Path to fix the missing nox error
+# when running the post processor changes.
+RUN /usr/local/bin/python3.9 -m venv bazel_env
+RUN . bazel_env/bin/activate
+
+ENV PATH=/app/bazel_env/bin:$PATH
+
+RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
+bazel_env/bin/python3.9 -m pip install /tmp/synthtool nox && \
+rm -rf /tmp/synthtool
+
 # Copy the CLI script into the container.
-COPY .generator/cli.py .
+COPY --chown=$UID:$GID .generator/cli.py .
+RUN chmod a+rx ./cli.py
 
 # Set the entrypoint for the container to run the script.
-ENTRYPOINT ["python3.11", "./cli.py"]
+# NOTE: The entrypoint is set to `/app/bazel_env/bin/python3.9` instead of `python3.9` to allow
+# the post processor to pick up the installed nox module.
+ENTRYPOINT ["/app/bazel_env/bin/python3.9", "./cli.py"]
