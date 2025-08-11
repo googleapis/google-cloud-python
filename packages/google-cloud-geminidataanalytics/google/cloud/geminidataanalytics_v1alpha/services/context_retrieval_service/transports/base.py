@@ -134,11 +134,6 @@ class ContextRetrievalServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.retrieve_big_query_table_context: gapic_v1.method.wrap_method(
-                self.retrieve_big_query_table_context,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.retrieve_big_query_table_contexts: gapic_v1.method.wrap_method(
                 self.retrieve_big_query_table_contexts,
                 default_timeout=None,
@@ -203,18 +198,6 @@ class ContextRetrievalServiceTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
-        raise NotImplementedError()
-
-    @property
-    def retrieve_big_query_table_context(
-        self,
-    ) -> Callable[
-        [context_retrieval_service.RetrieveBigQueryTableContextRequest],
-        Union[
-            context_retrieval_service.RetrieveBigQueryTableContextResponse,
-            Awaitable[context_retrieval_service.RetrieveBigQueryTableContextResponse],
-        ],
-    ]:
         raise NotImplementedError()
 
     @property

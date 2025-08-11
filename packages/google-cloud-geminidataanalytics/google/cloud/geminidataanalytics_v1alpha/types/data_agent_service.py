@@ -266,7 +266,8 @@ class CreateDataAgentRequest(proto.Message):
         data_agent_id (str):
             Optional. Id of the requesting object. Must be unique within
             the parent. The allowed format is:
-            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``.
+            ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``. If not provided, the
+            server will auto-generate a value for the id.
         data_agent (google.cloud.geminidataanalytics_v1alpha.types.DataAgent):
             Required. The resource being created.
         request_id (str):

@@ -527,7 +527,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
     """REST backend synchronous transport for DataChatService.
 
     Service to ask a natural language question on top of BigQuery
-    and LookerStudio datasources to get back streamed responses of
+    and Looker Studio datasources to get back streamed responses of
     various kinds to help provide a rich conversational answer.
 
     This class defines the same methods as the primary client, so the
@@ -655,8 +655,8 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             Returns:
                 ~.data_chat_service.Message:
-                    A message from an internaction
-                between the user and the system.
+                    A message from an interaction between
+                the user and the system.
 
             """
 
