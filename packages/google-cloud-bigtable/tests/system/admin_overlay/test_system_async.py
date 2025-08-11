@@ -143,20 +143,27 @@ async def create_instance(
             default_storage_type=storage_type,
         )
 
-    create_instance_request = admin_v2.CreateInstanceRequest(
-        parent=instance_admin_client.common_project_path(project_id),
-        instance_id=instance_id,
-        instance=admin_v2.Instance(
-            display_name=instance_id[
-                :30
-            ],  # truncate to 30 characters because of character limit
-        ),
-        clusters=clusters,
-    )
-    operation = await instance_admin_client.create_instance(create_instance_request)
-    instance = await operation.result()
+    # Instance and cluster creation are currently unsupported in the Bigtable emulator
+    if os.getenv(BIGTABLE_EMULATOR):
+        # All we need for system tests so far is the instance name.
+        instance = admin_v2.Instance(
+            name=instance_admin_client.instance_path(project_id, instance_id),
+        )
+    else:
+        create_instance_request = admin_v2.CreateInstanceRequest(
+            parent=instance_admin_client.common_project_path(project_id),
+            instance_id=instance_id,
+            instance=admin_v2.Instance(
+                display_name=instance_id[
+                    :30
+                ],  # truncate to 30 characters because of character limit
+            ),
+            clusters=clusters,
+        )
+        operation = await instance_admin_client.create_instance(create_instance_request)
+        instance = await operation.result()
 
-    instances_to_delete.append(instance)
+        instances_to_delete.append(instance)
 
     # Create a table within the instance
     create_table_request = admin_v2.CreateTableRequest(
@@ -272,6 +279,10 @@ async def assert_table_cell_value_equal_to(
     }
 )
 @CrossSync.pytest
+@pytest.mark.skipif(
+    os.getenv(BIGTABLE_EMULATOR),
+    reason="Backups are not supported in the Bigtable emulator",
+)
 @pytest.mark.parametrize(
     "second_instance_storage_type,expect_optimize_operation",
     [

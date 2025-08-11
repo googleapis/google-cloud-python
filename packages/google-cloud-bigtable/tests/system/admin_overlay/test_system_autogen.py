@@ -113,15 +113,20 @@ def create_instance(
             location=instance_admin_client.common_location_path(project_id, location),
             default_storage_type=storage_type,
         )
-    create_instance_request = admin_v2.CreateInstanceRequest(
-        parent=instance_admin_client.common_project_path(project_id),
-        instance_id=instance_id,
-        instance=admin_v2.Instance(display_name=instance_id[:30]),
-        clusters=clusters,
-    )
-    operation = instance_admin_client.create_instance(create_instance_request)
-    instance = operation.result()
-    instances_to_delete.append(instance)
+    if os.getenv(BIGTABLE_EMULATOR):
+        instance = admin_v2.Instance(
+            name=instance_admin_client.instance_path(project_id, instance_id)
+        )
+    else:
+        create_instance_request = admin_v2.CreateInstanceRequest(
+            parent=instance_admin_client.common_project_path(project_id),
+            instance_id=instance_id,
+            instance=admin_v2.Instance(display_name=instance_id[:30]),
+            clusters=clusters,
+        )
+        operation = instance_admin_client.create_instance(create_instance_request)
+        instance = operation.result()
+        instances_to_delete.append(instance)
     create_table_request = admin_v2.CreateTableRequest(
         parent=instance_admin_client.instance_path(project_id, instance_id),
         table_id=TEST_TABLE_NAME,
@@ -201,6 +206,10 @@ def assert_table_cell_value_equal_to(
         assert latest_cell.value.decode("utf-8") == value
 
 
+@pytest.mark.skipif(
+    os.getenv(BIGTABLE_EMULATOR),
+    reason="Backups are not supported in the Bigtable emulator",
+)
 @pytest.mark.parametrize(
     "second_instance_storage_type,expect_optimize_operation",
     [(admin_v2.StorageType.HDD, False), (admin_v2.StorageType.SSD, True)],
@@ -215,7 +224,7 @@ def test_optimize_restored_table(
     second_instance_storage_type,
     expect_optimize_operation,
 ):
-    instance_with_backup, table_to_backup = create_instance(
+    (instance_with_backup, table_to_backup) = create_instance(
         instance_admin_client,
         table_admin_client,
         data_client,
@@ -223,7 +232,7 @@ def test_optimize_restored_table(
         instances_to_delete,
         admin_v2.StorageType.HDD,
     )
-    instance_to_restore, _ = create_instance(
+    (instance_to_restore, _) = create_instance(
         instance_admin_client,
         table_admin_client,
         data_client,
@@ -273,7 +282,7 @@ def test_wait_for_consistency(
     instances_to_delete,
     admin_overlay_project_id,
 ):
-    instance, table = create_instance(
+    (instance, table) = create_instance(
         instance_admin_client,
         table_admin_client,
         data_client,
