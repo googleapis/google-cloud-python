@@ -45,6 +45,8 @@ We use `nox` to instrument our tests.
   nox -r -s lint
   ```
 
+- When writing tests, use the idiomatic "pytest" style.
+
 ## Documentation
 
 If a method or property is implementing the same interface as a third-party

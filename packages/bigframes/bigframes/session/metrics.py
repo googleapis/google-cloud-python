@@ -42,9 +42,9 @@ class ExecutionMetrics:
             assert row_iterator is not None
 
             # TODO(tswast): Pass None after making benchmark publishing robust to missing data.
-            bytes_processed = getattr(row_iterator, "total_bytes_processed", 0)
-            query_char_count = len(getattr(row_iterator, "query", ""))
-            slot_millis = getattr(row_iterator, "slot_millis", 0)
+            bytes_processed = getattr(row_iterator, "total_bytes_processed", 0) or 0
+            query_char_count = len(getattr(row_iterator, "query", "") or "")
+            slot_millis = getattr(row_iterator, "slot_millis", 0) or 0
             exec_seconds = 0.0
 
             self.execution_count += 1
@@ -63,10 +63,10 @@ class ExecutionMetrics:
         elif (stats := get_performance_stats(query_job)) is not None:
             query_char_count, bytes_processed, slot_millis, exec_seconds = stats
             self.execution_count += 1
-            self.query_char_count += query_char_count
-            self.bytes_processed += bytes_processed
-            self.slot_millis += slot_millis
-            self.execution_secs += exec_seconds
+            self.query_char_count += query_char_count or 0
+            self.bytes_processed += bytes_processed or 0
+            self.slot_millis += slot_millis or 0
+            self.execution_secs += exec_seconds or 0
             write_stats_to_disk(
                 query_char_count=query_char_count,
                 bytes_processed=bytes_processed,
