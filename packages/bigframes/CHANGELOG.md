@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.15.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.14.0...v2.15.0) (2025-08-11)
+
+
+### Features
+
+* Add `st_buffer`, `st_centroid`, and `st_convexhull` and their corresponding GeoSeries methods ([#1963](https://github.com/googleapis/python-bigquery-dataframes/issues/1963)) ([c4c7fa5](https://github.com/googleapis/python-bigquery-dataframes/commit/c4c7fa578e135e7f0e31ad3063db379514957acc))
+* Add first, last support to GroupBy ([#1969](https://github.com/googleapis/python-bigquery-dataframes/issues/1969)) ([41dda88](https://github.com/googleapis/python-bigquery-dataframes/commit/41dda889860c0ed8ca2eab81b34a9d71372c69f7))
+* Add value_counts to GroupBy classes ([#1974](https://github.com/googleapis/python-bigquery-dataframes/issues/1974)) ([82175a4](https://github.com/googleapis/python-bigquery-dataframes/commit/82175a4d0fa41d8aee11efdf8778a21bb70b1c0f))
+* Allow callable as a conditional or replacement input in DataFrame.where ([#1971](https://github.com/googleapis/python-bigquery-dataframes/issues/1971)) ([a8d57d2](https://github.com/googleapis/python-bigquery-dataframes/commit/a8d57d2f7075158eff69ec65a14c232756ab72a6))
+* Can cast locally in hybrid engine ([#1944](https://github.com/googleapis/python-bigquery-dataframes/issues/1944)) ([d9bc4a5](https://github.com/googleapis/python-bigquery-dataframes/commit/d9bc4a5940e9930d5e3c3bfffdadd2f91f96b53b))
+* Df.join lsuffix and rsuffix support ([#1857](https://github.com/googleapis/python-bigquery-dataframes/issues/1857)) ([26515c3](https://github.com/googleapis/python-bigquery-dataframes/commit/26515c34c4f0a5e4602d2f59bf229d41e0fc9196))
+
+
+### Bug Fixes
+
+* Add warnings for duplicated or conflicting type hints in bigfram… ([#1956](https://github.com/googleapis/python-bigquery-dataframes/issues/1956)) ([d38e42c](https://github.com/googleapis/python-bigquery-dataframes/commit/d38e42ce689e65f57223e9a8b14c4262cba08966))
+* Make `remote_function` more robust when there are `create_function` retries ([#1973](https://github.com/googleapis/python-bigquery-dataframes/issues/1973)) ([cd954ac](https://github.com/googleapis/python-bigquery-dataframes/commit/cd954ac07ad5e5820a20b941d3c6cab7cfcc1f29))
+* Make ExecutionMetrics stats tracking more robust to missing stats ([#1977](https://github.com/googleapis/python-bigquery-dataframes/issues/1977)) ([feb3ff4](https://github.com/googleapis/python-bigquery-dataframes/commit/feb3ff4b543eb8acbf6adf335b67a266a1cf4297))
+
+
+### Performance Improvements
+
+* Remove an unnecessary extra `dry_run` query from `read_gbq_table` ([#1972](https://github.com/googleapis/python-bigquery-dataframes/issues/1972)) ([d17b711](https://github.com/googleapis/python-bigquery-dataframes/commit/d17b711750d281ef3efd42c160f3784cd60021ae))
+
+
+### Documentation
+
+* Divide BQ DataFrames quickstart code cell ([#1975](https://github.com/googleapis/python-bigquery-dataframes/issues/1975)) ([fedb8f2](https://github.com/googleapis/python-bigquery-dataframes/commit/fedb8f23120aa315c7e9dd6f1bf1255ccf1ebc48))
+
 ## [2.14.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.13.0...v2.14.0) (2025-08-05)
 
 
