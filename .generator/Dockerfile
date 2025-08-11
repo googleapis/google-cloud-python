@@ -144,6 +144,10 @@ ARG UID=1000
 ARG GID=1000
 
 # Create the group and user, but only if they don't already exist.
+# NOTE: A default user is required to pass down the UID/GID with the 
+# docker build command to allow the user running the librarian CLI to have
+# the permissions within the /app and /bazel_cache directories:
+# DOCKER_BUILDKIT=1 docker build -f .generator/Dockerfile  --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t python-librarian-generator:latest .
 RUN if ! getent group $GID > /dev/null; then \
         groupadd -g $GID myuser; \
     fi && \
@@ -151,10 +155,10 @@ RUN if ! getent group $GID > /dev/null; then \
         useradd -u $UID -g $GID -ms /bin/bash myuser; \
     fi
 
-RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
+# RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
 
-RUN mkdir -p /bazel_cache && \
-    chown -R $UID:$GID /app /bazel_cache
+# RUN mkdir -p /bazel_cache && \
+#     chown -R $UID:$GID /app /bazel_cache
 
 # 2025/08/05 08:27:44 could not create directory /.cache/bazelisk: mkdir /.cache: permission denied
 # Traceback (most recent call last):
@@ -215,8 +219,6 @@ rm -rf /tmp/synthtool
 # Copy the CLI script into the container.
 COPY --chown=$UID:$GID .generator/cli.py .
 RUN chmod a+rx ./cli.py
-
-# RUN chown $UID:$GID -R /app /.cache /bazel_cache /source
 
 # Set the entrypoint for the container to run the script.
 ENTRYPOINT ["/app/bazel_env/bin/python3.9", "./cli.py"]
