@@ -206,7 +206,7 @@ WORKDIR /app
 RUN /usr/local/bin/python3.9 -m venv bazel_env
 RUN . bazel_env/bin/activate
 
-# ENV PATH=bazel_env/bin:$PATH
+ENV PATH=/app/bazel_env/bin:$PATH
 
 RUN git clone --depth 1 https://github.com/googleapis/synthtool.git /tmp/synthtool && \
 bazel_env/bin/python3.9 -m pip install /tmp/synthtool nox && \
