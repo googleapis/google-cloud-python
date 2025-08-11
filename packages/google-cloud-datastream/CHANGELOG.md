@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.14.1...google-cloud-datastream-v1.15.0) (2025-08-10)
+
+
+### Features
+
+* Add new field `mongodb_cluster` to message `DiscoverConnectionProfileRequest` ([7aed62d](https://github.com/googleapis/google-cloud-python/commit/7aed62d6a94d47c9e75ecfb2ec4a41c92b32578a))
+* Add new field `mongodb_profile` to message `ConnectionProfile` ([7aed62d](https://github.com/googleapis/google-cloud-python/commit/7aed62d6a94d47c9e75ecfb2ec4a41c92b32578a))
+* Add new field `project_id` to message `BigQueryDestinationConfig` ([7aed62d](https://github.com/googleapis/google-cloud-python/commit/7aed62d6a94d47c9e75ecfb2ec4a41c92b32578a))
+* Add new field `psc_interface_config` to message `PrivateConnection` ([7aed62d](https://github.com/googleapis/google-cloud-python/commit/7aed62d6a94d47c9e75ecfb2ec4a41c92b32578a))
+* Add new field `salesforce_org` to message `DiscoverConnectionProfileRequest` ([7aed62d](https://github.com/googleapis/google-cloud-python/commit/7aed62d6a94d47c9e75ecfb2ec4a41c92b32578a))
+* Add new field `validate_only` to message `CreatePrivateConnectionRequest` ([7aed62d](https://github.com/googleapis/google-cloud-python/commit/7aed62d6a94d47c9e75ecfb2ec4a41c92b32578a))
+* Add new field for server certificate  to message `OracleSslConfig` ([7aed62d](https://github.com/googleapis/google-cloud-python/commit/7aed62d6a94d47c9e75ecfb2ec4a41c92b32578a))
+* Add new field for server certificate to message `PostgresqlSslConfig` ([7aed62d](https://github.com/googleapis/google-cloud-python/commit/7aed62d6a94d47c9e75ecfb2ec4a41c92b32578a))
+
 ## [1.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.14.0...google-cloud-datastream-v1.14.1) (2025-06-11)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.27.0...google-cloud-network-management-v1.28.0) (2025-08-10)
+
+
+### Features
+
+* [google-cloud-network-management] add `service_uri` field to CloudRunRevisionEndpoint ([#14210](https://github.com/googleapis/google-cloud-python/issues/14210)) ([c86a9cd](https://github.com/googleapis/google-cloud-python/commit/c86a9cd33d9b80bccfed552b4eecc4babee0c094))
+
 ## [1.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.26.1...google-cloud-network-management-v1.27.0) (2025-07-10)
 
 
