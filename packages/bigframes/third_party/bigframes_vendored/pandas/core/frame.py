@@ -4574,7 +4574,15 @@ class DataFrame(generic.NDFrame):
     # ----------------------------------------------------------------------
     # Merging / joining methods
 
-    def join(self, other, *, on: Optional[str] = None, how: str) -> DataFrame:
+    def join(
+        self,
+        other,
+        *,
+        on: Optional[str] = None,
+        how: str,
+        lsuffix: str = "",
+        rsuffix: str = "",
+    ) -> DataFrame:
         """Join columns of another DataFrame.
 
         Join columns with `other` DataFrame on index
@@ -4647,6 +4655,19 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [2 rows x 4 columns]
 
+        If there are overlapping columns, `lsuffix` and `rsuffix` can be used:
+
+            >>> df1 = bpd.DataFrame({'key': ['K0', 'K1', 'K2'], 'A': ['A0', 'A1', 'A2']})
+            >>> df2 = bpd.DataFrame({'key': ['K0', 'K1', 'K2'], 'A': ['B0', 'B1', 'B2']})
+            >>> df1.set_index('key').join(df2.set_index('key'), lsuffix='_left', rsuffix='_right')
+                 A_left A_right
+            key
+            K0       A0      B0
+            K1       A1      B1
+            K2       A2      B2
+            <BLANKLINE>
+            [3 rows x 2 columns]
+
         Args:
             other:
                 DataFrame or Series with an Index similar to the Index of this one.
@@ -4663,6 +4684,10 @@ class DataFrame(generic.NDFrame):
                 index, preserving the order of the calling's one.
                 ``cross``: creates the cartesian product from both frames, preserves
                 the order of the left keys.
+            lsuffix(str, default ''):
+                Suffix to use from left frame's overlapping columns.
+            rsuffix(str, default ''):
+                Suffix to use from right frame's overlapping columns.
 
         Returns:
             bigframes.pandas.DataFrame:
@@ -4677,6 +4702,10 @@ class DataFrame(generic.NDFrame):
             ValueError:
                 If left index to join on does not have the same number of levels
                 as the right index.
+            ValueError:
+                If columns overlap but no suffix is specified.
+            ValueError:
+                If `on` column is not unique.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

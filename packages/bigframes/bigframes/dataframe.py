@@ -3520,16 +3520,22 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         on: Optional[str] = None,
         how: str = "left",
+        lsuffix: str = "",
+        rsuffix: str = "",
     ) -> DataFrame:
         if isinstance(other, bigframes.series.Series):
             other = other.to_frame()
 
         left, right = self, other
 
-        if not left.columns.intersection(right.columns).empty:
-            raise NotImplementedError(
-                f"Deduping column names is not implemented. {constants.FEEDBACK_LINK}"
-            )
+        col_intersection = left.columns.intersection(right.columns)
+
+        if not col_intersection.empty:
+            if lsuffix == rsuffix == "":
+                raise ValueError(
+                    f"columns overlap but no suffix specified: {col_intersection}"
+                )
+
         if how == "cross":
             if on is not None:
                 raise ValueError("'on' is not supported for cross join.")
@@ -3537,7 +3543,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 right._block,
                 left_join_ids=[],
                 right_join_ids=[],
-                suffixes=("", ""),
+                suffixes=(lsuffix, rsuffix),
                 how="cross",
                 sort=True,
             )
@@ -3545,45 +3551,107 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         # Join left columns with right index
         if on is not None:
+            if left._has_index and (on in left.index.names):
+                if on in left.columns:
+                    raise ValueError(
+                        f"'{on}' is both an index level and a column label, which is ambiguous."
+                    )
+                else:
+                    raise NotImplementedError(
+                        f"Joining on index level '{on}' is not yet supported. {constants.FEEDBACK_LINK}"
+                    )
+            if (left.columns == on).sum() > 1:
+                raise ValueError(f"The column label '{on}' is not unique.")
+
             if other._block.index.nlevels != 1:
                 raise ValueError(
                     "Join on columns must match the index level of the other DataFrame. Join on column with multi-index haven't been supported."
                 )
-            # Switch left index with on column
-            left_columns = left.columns
-            left_idx_original_names = left.index.names if left._has_index else ()
-            left_idx_names_in_cols = [
-                f"bigframes_left_idx_name_{i}"
-                for i in range(len(left_idx_original_names))
-            ]
-            if left._has_index:
-                left.index.names = left_idx_names_in_cols
-            left = left.reset_index(drop=False)
-            left = left.set_index(on)
 
-            # Join on index and switch back
-            combined_df = left._perform_join_by_index(right, how=how)
-            combined_df.index.name = on
-            combined_df = combined_df.reset_index(drop=False)
-            combined_df = combined_df.set_index(left_idx_names_in_cols)
-
-            # To be consistent with Pandas
-            if combined_df._has_index:
-                combined_df.index.names = (
-                    left_idx_original_names
-                    if how in ("inner", "left")
-                    else ([None] * len(combined_df.index.names))
-                )
-
-            # Reorder columns
-            combined_df = combined_df[list(left_columns) + list(right.columns)]
-            return combined_df
+            return self._join_on_key(
+                other,
+                on=on,
+                how=how,
+                lsuffix=lsuffix,
+                rsuffix=rsuffix,
+                should_duplicate_on_key=(on in col_intersection),
+            )
 
         # Join left index with right index
         if left._block.index.nlevels != right._block.index.nlevels:
             raise ValueError("Index to join on must have the same number of levels.")
 
-        return left._perform_join_by_index(right, how=how)
+        return left._perform_join_by_index(right, how=how)._add_join_suffix(
+            left.columns, right.columns, lsuffix=lsuffix, rsuffix=rsuffix
+        )
+
+    def _join_on_key(
+        self,
+        other: DataFrame,
+        on: str,
+        how: str,
+        lsuffix: str,
+        rsuffix: str,
+        should_duplicate_on_key: bool,
+    ) -> DataFrame:
+        left, right = self.copy(), other
+        # Replace all columns names with unique names for reordering.
+        left_col_original_names = left.columns
+        on_col_name = "bigframes_left_col_on"
+        dup_on_col_name = "bigframes_left_col_on_dup"
+        left_col_temp_names = [
+            f"bigframes_left_col_name_{i}" if col_name != on else on_col_name
+            for i, col_name in enumerate(left_col_original_names)
+        ]
+        left.columns = pandas.Index(left_col_temp_names)
+        # if on column is also in right df, we need to duplicate the column
+        # and set it to be the first column
+        if should_duplicate_on_key:
+            left[dup_on_col_name] = left[on_col_name]
+            on_col_name = dup_on_col_name
+            left_col_temp_names = [on_col_name] + left_col_temp_names
+            left = left[left_col_temp_names]
+
+        # Switch left index with on column
+        left_idx_original_names = left.index.names if left._has_index else ()
+        left_idx_names_in_cols = [
+            f"bigframes_left_idx_name_{i}" for i in range(len(left_idx_original_names))
+        ]
+        if left._has_index:
+            left.index.names = left_idx_names_in_cols
+        left = left.reset_index(drop=False)
+        left = left.set_index(on_col_name)
+
+        right_col_original_names = right.columns
+        right_col_temp_names = [
+            f"bigframes_right_col_name_{i}"
+            for i in range(len(right_col_original_names))
+        ]
+        right.columns = pandas.Index(right_col_temp_names)
+
+        # Join on index and switch back
+        combined_df = left._perform_join_by_index(right, how=how)
+        combined_df.index.name = on_col_name
+        combined_df = combined_df.reset_index(drop=False)
+        combined_df = combined_df.set_index(left_idx_names_in_cols)
+
+        # To be consistent with Pandas
+        if combined_df._has_index:
+            combined_df.index.names = (
+                left_idx_original_names
+                if how in ("inner", "left")
+                else ([None] * len(combined_df.index.names))
+            )
+
+        # Reorder columns
+        combined_df = combined_df[left_col_temp_names + right_col_temp_names]
+        return combined_df._add_join_suffix(
+            left_col_original_names,
+            right_col_original_names,
+            lsuffix=lsuffix,
+            rsuffix=rsuffix,
+            extra_col=on if on_col_name == dup_on_col_name else None,
+        )
 
     def _perform_join_by_index(
         self,
@@ -3596,6 +3664,59 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             other._block, how=how, block_identity_join=True, always_order=always_order
         )
         return DataFrame(block)
+
+    def _add_join_suffix(
+        self,
+        left_columns,
+        right_columns,
+        lsuffix: str = "",
+        rsuffix: str = "",
+        extra_col: typing.Optional[str] = None,
+    ):
+        """Applies suffixes to overlapping column names to mimic a pandas join.
+
+        This method identifies columns that are common to both a "left" and "right"
+        set of columns and renames them using the provided suffixes. Columns that
+        are not in the intersection are kept with their original names.
+
+        Args:
+            left_columns (pandas.Index):
+                The column labels from the left DataFrame.
+            right_columns (pandas.Index):
+                The column labels from the right DataFrame.
+            lsuffix (str):
+                The suffix to apply to overlapping column names from the left side.
+            rsuffix (str):
+                The suffix to apply to overlapping column names from the right side.
+            extra_col (typing.Optional[str]):
+                An optional column name to prepend to the final list of columns.
+                This argument is used specifically to match the behavior of a
+                pandas join. When a join key (i.e., the 'on' column) exists
+                in both the left and right DataFrames, pandas creates two versions
+                of that column: one copy keeps its original name and is placed as
+                the first column, while the other instances receive the normal
+                suffix. Passing the join key's name here replicates that behavior.
+
+        Returns:
+            DataFrame:
+                A new DataFrame with the columns renamed to resolve overlaps.
+        """
+        combined_df = self.copy()
+        col_intersection = left_columns.intersection(right_columns)
+        final_col_names = [] if extra_col is None else [extra_col]
+        for col_name in left_columns:
+            if col_name in col_intersection:
+                final_col_names.append(f"{col_name}{lsuffix}")
+            else:
+                final_col_names.append(col_name)
+
+        for col_name in right_columns:
+            if col_name in col_intersection:
+                final_col_names.append(f"{col_name}{rsuffix}")
+            else:
+                final_col_names.append(col_name)
+        combined_df.columns = pandas.Index(final_col_names)
+        return combined_df
 
     @validations.requires_ordering()
     def rolling(

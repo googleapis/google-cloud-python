@@ -2445,12 +2445,40 @@ def test_join_different_table(
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
 
 
-def test_join_duplicate_columns_raises_not_implemented(scalars_dfs):
+@all_joins
+def test_join_raise_when_param_on_duplicate_with_column(scalars_df_index, how):
+    if how == "cross":
+        return
+    bf_df_a = scalars_df_index[["string_col", "int64_col"]].rename(
+        columns={"int64_col": "string_col"}
+    )
+    bf_df_b = scalars_df_index.dropna()["string_col"]
+    with pytest.raises(
+        ValueError, match="The column label 'string_col' is not unique."
+    ):
+        bf_df_a.join(bf_df_b, on="string_col", how=how, lsuffix="_l", rsuffix="_r")
+
+
+def test_join_duplicate_columns_raises_value_error(scalars_dfs):
     scalars_df, _ = scalars_dfs
     df_a = scalars_df[["string_col", "float64_col"]]
     df_b = scalars_df[["float64_col"]]
-    with pytest.raises(NotImplementedError):
-        df_a.join(df_b, how="outer").to_pandas()
+    with pytest.raises(ValueError, match="columns overlap but no suffix specified"):
+        df_a.join(df_b, how="outer")
+
+
+@all_joins
+def test_join_param_on_duplicate_with_index_raises_value_error(scalars_df_index, how):
+    if how == "cross":
+        return
+    bf_df_a = scalars_df_index[["string_col"]]
+    bf_df_a.index.name = "string_col"
+    bf_df_b = scalars_df_index.dropna()["string_col"]
+    with pytest.raises(
+        ValueError,
+        match="'string_col' is both an index level and a column label, which is ambiguous.",
+    ):
+        bf_df_a.join(bf_df_b, on="string_col", how=how, lsuffix="_l", rsuffix="_r")
 
 
 @all_joins
@@ -2462,7 +2490,7 @@ def test_join_param_on(scalars_dfs, how):
     bf_df_b = bf_df[["float64_col"]]
 
     if how == "cross":
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match="'on' is not supported for cross join."):
             bf_df_a.join(bf_df_b, on="rowindex_2", how=how)
     else:
         bf_result = bf_df_a.join(bf_df_b, on="rowindex_2", how=how).to_pandas()
