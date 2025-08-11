@@ -73,10 +73,10 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VER
 # Set the working directory for build-related tasks.
 WORKDIR /app
 
+# Create the group and user, but only if they don't already exist.
 ARG UID=1000
 ARG GID=1000
 
-# Create the group and user, but only if they don't already exist.
 RUN if ! getent group $GID > /dev/null; then \
         groupadd -g $GID myuser; \
     fi && \
@@ -84,17 +84,15 @@ RUN if ! getent group $GID > /dev/null; then \
         useradd -u $UID -g $GID -ms /bin/bash myuser; \
     fi
 
-    
 # Set ownership of the app directory now, before we copy files into it.
 RUN mkdir -p /app && chown $UID:$GID /app
 
 # We'll point both to the /bazel_cache directory which will be mounted as a volume.
 ENV BAZELISK_HOME="/bazel_cache/bazelisk"
 ENV BAZEL_HOME="/bazel_cache/bazel"
-ENV XDG_CACHE_HOME="/bazel_cache"
 
-# # Ensure the cache directories within the non-root user's context exist and are writable.
-# # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
+# Ensure the cache directories within the non-root user's context exist and are writable.
+# This is crucial as Bazel creates subdirectories under BAZEL_HOME.
 RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
              ${BAZEL_HOME}/_bazel_ubuntu/output_base \
              ${BAZELISK_HOME} && \
@@ -140,25 +138,20 @@ RUN apt-get update && \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Create the group and user, but only if they don't already exist.
+# NOTE: A user needs to be configured by passing down the UID/GID with the 
+# docker build command to allow the user running the librarian CLI to have
+# the permissions within the /app and /bazel_cache directories in the following way:
+# DOCKER_BUILDKIT=1 docker build -f .generator/Dockerfile  --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t python-librarian-generator:latest .
 ARG UID=1000
 ARG GID=1000
 
-# Create the group and user, but only if they don't already exist.
-# NOTE: A default user is required to pass down the UID/GID with the 
-# docker build command to allow the user running the librarian CLI to have
-# the permissions within the /app and /bazel_cache directories:
-# DOCKER_BUILDKIT=1 docker build -f .generator/Dockerfile  --build-arg UID=$(id -u) --build-arg GID=$(id -g) -t python-librarian-generator:latest .
 RUN if ! getent group $GID > /dev/null; then \
         groupadd -g $GID myuser; \
     fi && \
     if ! getent passwd $UID > /dev/null; then \
         useradd -u $UID -g $GID -ms /bin/bash myuser; \
     fi
-
-# RUN mkdir -p /app /.cache && chown $UID:$GID /app /.cache
-
-# RUN mkdir -p /bazel_cache && \
-#     chown -R $UID:$GID /app /bazel_cache
 
 # 2025/08/05 08:27:44 could not create directory /.cache/bazelisk: mkdir /.cache: permission denied
 # Traceback (most recent call last):
@@ -170,13 +163,10 @@ RUN if ! getent group $GID > /dev/null; then \
 # We'll point both to the /bazel_cache directory which will be mounted as a volume.
 ENV BAZELISK_HOME="/bazel_cache/bazelisk"
 ENV BAZEL_HOME="/bazel_cache/bazel"
-ENV XDG_CACHE_HOME="/bazel_cache"
 RUN mkdir -p ${BAZEL_HOME}/_bazel_ubuntu/cache/repos \
              ${BAZEL_HOME}/_bazel_ubuntu/output_base \
              ${BAZELISK_HOME} && \
     chown -R $UID:$GID ${BAZEL_HOME} ${BAZELISK_HOME}
-
-ENV PATH=bazel_env/bin:$PATH
 
 USER $UID
 
@@ -196,17 +186,17 @@ COPY --from=builder /usr/local/lib/python3.12 /usr/local/lib/python3.12
 COPY --from=builder /usr/local/bin/python3.13 /usr/local/bin/
 COPY --from=builder /usr/local/lib/python3.13 /usr/local/lib/python3.13
 
-# Copy bazel cache from the builder.
+# Copy the bazelisk executable from the builder.
 COPY --from=builder /usr/local/bin/bazelisk /usr/local/bin/
 
-# # Ensure the cache directories within the non-root user's context exist and are writable.
-# # This is crucial as Bazel creates subdirectories under BAZEL_HOME.
-
+# Copy bazel cache from the builder.
 COPY --from=builder --chown=$UID:$GID /bazel_cache /bazel_cache
 
 # Set the working directory in the container.
 WORKDIR /app
 
+# Create a virtual env and set the Path to fix the missing nox error
+# when running the post processor changes.
 RUN /usr/local/bin/python3.9 -m venv bazel_env
 RUN . bazel_env/bin/activate
 
@@ -221,4 +211,6 @@ COPY --chown=$UID:$GID .generator/cli.py .
 RUN chmod a+rx ./cli.py
 
 # Set the entrypoint for the container to run the script.
+# NOTE: The entrypoint is set to `/app/bazel_env/bin/python3.9` instead of `python3.9` to allow
+# the post processor to pick up the installed nox module.
 ENTRYPOINT ["/app/bazel_env/bin/python3.9", "./cli.py"]
