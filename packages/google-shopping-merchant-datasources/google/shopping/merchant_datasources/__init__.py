@@ -18,19 +18,19 @@ from google.shopping.merchant_datasources import gapic_version as package_versio
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_datasources_v1beta.services.data_sources_service.async_client import (
+from google.shopping.merchant_datasources_v1.services.data_sources_service.async_client import (
     DataSourcesServiceAsyncClient,
 )
-from google.shopping.merchant_datasources_v1beta.services.data_sources_service.client import (
+from google.shopping.merchant_datasources_v1.services.data_sources_service.client import (
     DataSourcesServiceClient,
 )
-from google.shopping.merchant_datasources_v1beta.services.file_uploads_service.async_client import (
+from google.shopping.merchant_datasources_v1.services.file_uploads_service.async_client import (
     FileUploadsServiceAsyncClient,
 )
-from google.shopping.merchant_datasources_v1beta.services.file_uploads_service.client import (
+from google.shopping.merchant_datasources_v1.services.file_uploads_service.client import (
     FileUploadsServiceClient,
 )
-from google.shopping.merchant_datasources_v1beta.types.datasources import (
+from google.shopping.merchant_datasources_v1.types.datasources import (
     CreateDataSourceRequest,
     DataSource,
     DeleteDataSourceRequest,
@@ -40,7 +40,7 @@ from google.shopping.merchant_datasources_v1beta.types.datasources import (
     ListDataSourcesResponse,
     UpdateDataSourceRequest,
 )
-from google.shopping.merchant_datasources_v1beta.types.datasourcetypes import (
+from google.shopping.merchant_datasources_v1.types.datasourcetypes import (
     DataSourceReference,
     LocalInventoryDataSource,
     MerchantReviewDataSource,
@@ -50,8 +50,8 @@ from google.shopping.merchant_datasources_v1beta.types.datasourcetypes import (
     RegionalInventoryDataSource,
     SupplementalProductDataSource,
 )
-from google.shopping.merchant_datasources_v1beta.types.fileinputs import FileInput
-from google.shopping.merchant_datasources_v1beta.types.fileuploads import (
+from google.shopping.merchant_datasources_v1.types.fileinputs import FileInput
+from google.shopping.merchant_datasources_v1.types.fileuploads import (
     FileUpload,
     GetFileUploadRequest,
 )
