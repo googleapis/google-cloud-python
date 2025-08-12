@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import argparse
+import glob
 import json
 import logging
 import os
@@ -20,7 +21,6 @@ import re
 import shutil
 import subprocess
 import sys
-import subprocess
 from typing import Dict, List
 
 try:
@@ -138,7 +138,7 @@ def _build_bazel_target(bazel_rule: str, source: str):
     """
     logger.info(f"Executing build for rule: {bazel_rule}")
     try:
-        command = ["bazelisk", "build", bazel_rule]
+        command = ["bazelisk", "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "build", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", "--incompatible_strict_action_env", bazel_rule]
         subprocess.run(
             command,
             cwd=source,
@@ -173,7 +173,7 @@ def _locate_and_extract_artifact(
     try:
         # 1. Find the bazel-bin output directory.
         logger.info("Locating Bazel output directory...")
-        info_command = ["bazelisk", "info", "bazel-bin"]
+        info_command = ["bazelisk", "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "info", "bazel-bin"]
         result = subprocess.run(
             info_command,
             cwd=source,
@@ -331,7 +331,7 @@ def handle_generate(
                 )
 
         _copy_files_needed_for_post_processing(output, input, library_id)
-        _run_post_processor(output, f"packages/{library_id}")
+        _run_post_processor(output, library_id)
         _clean_up_files_after_post_processing(output, library_id)
 
         # Write the `generate-response.json` using `generate-request.json` as the source
