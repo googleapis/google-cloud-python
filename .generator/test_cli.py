@@ -110,10 +110,8 @@ def test_determine_bazel_rule_success(mocker, caplog):
     Tests the happy path of _determine_bazel_rule.
     """
     caplog.set_level(logging.INFO)
-    mock_result = MagicMock(
-        stdout="//google/cloud/language/v1:google-cloud-language-v1-py\n"
-    )
-    mocker.patch("cli.subprocess.run", return_value=mock_result)
+    mock_content = 'name = "google-cloud-language-v1-py",\n'
+    mocker.patch("cli.open", mock_open(read_data=mock_content))
 
     rule = _determine_bazel_rule("google/cloud/language/v1", "source")
 
@@ -131,15 +129,35 @@ def test_build_bazel_target_success(mocker, caplog):
     assert "Bazel build for mock/bazel:rule rule completed successfully" in caplog.text
 
 
+def test_build_bazel_target_fails_to_find_rule_match(mocker, caplog):
+    """
+    Tests that ValueError is raised if the subprocess command fails.
+    """
+    caplog.set_level(logging.ERROR)
+    mock_content = '"google-cloud-language-v1-py",\n'
+    mocker.patch("cli.open", mock_open(read_data=mock_content))
+
+    with pytest.raises(ValueError):
+        _build_bazel_target("mock/bazel:rule", "source")
+
+
+def test_build_bazel_target_fails_to_determine_rule(caplog):
+    """
+    Tests that ValueError is raised if the subprocess command fails.
+    """
+    caplog.set_level(logging.ERROR)
+    with pytest.raises(ValueError):
+        _build_bazel_target("mock/bazel:rule", "source")
+
+
 def test_build_bazel_target_fails(mocker, caplog):
     """
     Tests that ValueError is raised if the subprocess command fails.
     """
     caplog.set_level(logging.ERROR)
-    mocker.patch(
-        "cli.subprocess.run",
-        side_effect=subprocess.CalledProcessError(1, "cmd", stderr="Build failed"),
-    )
+    mock_content = '"google-cloud-language-v1-py",\n'
+    mocker.patch("cli.open", mock_open(read_data=mock_content))
+
     with pytest.raises(ValueError):
         _build_bazel_target("mock/bazel:rule", "source")
 
@@ -174,7 +192,7 @@ def test_locate_and_extract_artifact_success(mocker, caplog):
         "google-cloud-language",
         "source",
         "output",
-        "google/cloud/language/v1"
+        "google/cloud/language/v1",
     )
     assert (
         "Found artifact at: /path/to/bazel-bin/google/cloud/language/v1/rule-py.tar.gz"

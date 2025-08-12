@@ -16,6 +16,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import subprocess
 import sys
 import subprocess
@@ -66,37 +67,43 @@ def handle_configure():
 
 
 def _determine_bazel_rule(api_path: str, source: str) -> str:
-    """Executes a `bazelisk query` to find a Bazel rule.
+    """Finds a Bazel rule by parsing the BUILD.bazel file directly.
 
     Args:
-        api_path(str): The API path to query for.
+        api_path (str): The API path, e.g., 'google/cloud/language/v1'.
         source(str): The path to the root of the Bazel workspace.
 
     Returns:
-        str: The discovered Bazel rule.
+        str: The discovered Bazel rule, e.g., '//google/cloud/language/v1:language-v1-py'.
 
     Raises:
-        ValueError: If the subprocess call fails or returns an empty result.
+        ValueError: If the file can't be processed or no matching rule is found.
     """
-    logger.info(f"Determining Bazel rule for api_path: '{api_path}'")
+    logger.info(f"Determining Bazel rule for api_path: '{api_path}' by parsing file.")
     try:
-        query = f'filter("-py$", kind("rule", //{api_path}/...:*))'
-        command = ["bazelisk", "query", query]
-        result = subprocess.run(
-            command,
-            cwd=source,
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        bazel_rule = result.stdout.strip()
-        if not bazel_rule:
-            raise ValueError(f"Bazelisk query `{query}` returned an empty bazel rule.")
+        build_file_path = os.path.join(source, api_path, "BUILD.bazel")
+
+        with open(build_file_path, "r") as f:
+            content = f.read()
+
+        match = re.search(r'name\s*=\s*"([^"]+-py)"', content)
+
+        # This check is for a logical failure (no match), not a runtime exception.
+        # It's good to keep it for clear error messaging.
+        if not match:
+            raise ValueError(
+                f"No Bazel rule with a name ending in '-py' found in {build_file_path}"
+            )
+
+        rule_name = match.group(1)
+        bazel_rule = f"//{api_path}:{rule_name}"
 
         logger.info(f"Found Bazel rule: {bazel_rule}")
         return bazel_rule
     except Exception as e:
-        raise ValueError(f"Bazelisk query `{query}` failed") from e
+        raise ValueError(
+            f"Failed to determine Bazel rule for '{api_path}' by parsing."
+        ) from e
 
 
 def _get_library_id(request_data: Dict) -> str:
@@ -227,11 +234,11 @@ def handle_generate(
     Args:
         librarian(str): Path to the directory in the container which contains
             the librarian configuration.
-        source(str): Path to the directory in the container which contains 
+        source(str): Path to the directory in the container which contains
             API protos.
-        output(str): Path to the directory in the container where code 
+        output(str): Path to the directory in the container where code
             should be generated.
-        input(str): The path path to the directory in the container 
+        input(str): The path path to the directory in the container
             which contains additional generator input.
 
     Raises:
