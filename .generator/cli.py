@@ -138,7 +138,14 @@ def _build_bazel_target(bazel_rule: str, source: str):
     """
     logger.info(f"Executing build for rule: {bazel_rule}")
     try:
-        command = ["bazelisk", "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "build", "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos", "--incompatible_strict_action_env", bazel_rule]
+        command = [
+            "bazelisk",
+            "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
+            "build",
+            "--disk_cache=/bazel_cache/_bazel_ubuntu/cache/repos",
+            "--incompatible_strict_action_env",
+            bazel_rule,
+        ]
         subprocess.run(
             command,
             cwd=source,
@@ -173,7 +180,12 @@ def _locate_and_extract_artifact(
     try:
         # 1. Find the bazel-bin output directory.
         logger.info("Locating Bazel output directory...")
-        info_command = ["bazelisk", "--output_base=/bazel_cache/_bazel_ubuntu/output_base", "info", "bazel-bin"]
+        info_command = [
+            "bazelisk",
+            "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
+            "info",
+            "bazel-bin",
+        ]
         result = subprocess.run(
             info_command,
             cwd=source,
@@ -210,12 +222,12 @@ def _locate_and_extract_artifact(
 
 def _run_post_processor(output: str, library_id: str):
     """Runs the synthtool post-processor on the output directory.
-    
+
     Args:
         output(str): Path to the directory in the container where code
             should be generated.
         library_id(str): The library id to be used for post processing.
-        
+
     """
     os.chdir(output)
     path_to_library = f"packages/{library_id}"
