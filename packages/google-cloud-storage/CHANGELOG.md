@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.3.0](https://github.com/googleapis/python-storage/compare/v3.2.0...v3.3.0) (2025-08-05)
+
+
+### Features
+
+* Add support for bucket IP filter ([#1516](https://github.com/googleapis/python-storage/issues/1516)) ([a29073c](https://github.com/googleapis/python-storage/commit/a29073cf58df9c5667305e05c6378284057cda23))
+
+
+### Bug Fixes
+
+* Add logs on AssertionError for issue [#1512](https://github.com/googleapis/python-storage/issues/1512) ([#1518](https://github.com/googleapis/python-storage/issues/1518)) ([6a9923e](https://github.com/googleapis/python-storage/commit/6a9923e4fc944f7a7c3906eb7800d23677bd2481))
+
+
+### Documentation
+
+* Update the documentation of move_blob function ([#1507](https://github.com/googleapis/python-storage/issues/1507)) ([72252e9](https://github.com/googleapis/python-storage/commit/72252e940909ce2e3da9cfd80f5b7b43a026f45c))
+
 ## [3.2.0](https://github.com/googleapis/python-storage/compare/v3.1.1...v3.2.0) (2025-07-04)
 
 
