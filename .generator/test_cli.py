@@ -25,6 +25,8 @@ from cli import (
     LIBRARIAN_DIR,
     REPO_DIR,
     _build_bazel_target,
+    _clean_up_files_after_post_processing,
+    _copy_files_needed_for_post_processing,
     _determine_bazel_rule,
     _get_library_id,
     _locate_and_extract_artifact,
@@ -223,6 +225,9 @@ def test_locate_and_extract_artifact_fails(mocker, caplog):
         _locate_and_extract_artifact(
             "//google/cloud/language/v1:rule-py",
             "google-cloud-language",
+            "source",
+            "output",
+            "google/cloud/language/v1",
         )
 
 
@@ -242,17 +247,6 @@ def test_run_post_processor_success(mocker, caplog):
 
     mock_owlbot_main.assert_called_once_with("packages/google-cloud-language")
     assert "Python post-processor ran successfully." in caplog.text
-
-
-def test_locate_and_extract_artifact_fails(mocker, caplog):
-    """
-    Tests that an exception is raised if the subprocess command fails.
-    """
-    caplog.set_level(logging.INFO)
-    mocker.patch("cli.SYNTHTOOL_INSTALLED", return_value=True)
-
-    with pytest.raises(FileNotFoundError):
-        _run_post_processor("output", "google-cloud-language")
 
 
 def test_handle_generate_success(caplog, mock_generate_request_file, mocker):
@@ -421,3 +415,17 @@ def test_invalid_json(mocker):
 
     with pytest.raises(json.JSONDecodeError):
         _read_json_file("fake/path.json")
+
+def test_copy_files_needed_for_post_processing_success(mocker):
+    mock_makedirs = mocker.patch("os.makedirs")
+    mock_shutil_copy = mocker.patch("shutil.copy")
+    _copy_files_needed_for_post_processing('output', 'input', 'library_id')
+    
+    mock_makedirs.assert_called()
+    mock_shutil_copy.assert_called_once()
+
+
+def test_clean_up_files_after_post_processing_success(mocker):
+    mock_shutil_rmtree = mocker.patch("shutil.rmtree")
+    mock_os_remove = mocker.patch("os.remove")
+    _clean_up_files_after_post_processing('output', 'library_id')
