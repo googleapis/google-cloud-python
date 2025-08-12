@@ -18,24 +18,24 @@ from google.shopping.merchant_issueresolution import gapic_version as package_ve
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_issueresolution_v1beta.services.aggregate_product_statuses_service.async_client import (
+from google.shopping.merchant_issueresolution_v1.services.aggregate_product_statuses_service.async_client import (
     AggregateProductStatusesServiceAsyncClient,
 )
-from google.shopping.merchant_issueresolution_v1beta.services.aggregate_product_statuses_service.client import (
+from google.shopping.merchant_issueresolution_v1.services.aggregate_product_statuses_service.client import (
     AggregateProductStatusesServiceClient,
 )
-from google.shopping.merchant_issueresolution_v1beta.services.issue_resolution_service.async_client import (
+from google.shopping.merchant_issueresolution_v1.services.issue_resolution_service.async_client import (
     IssueResolutionServiceAsyncClient,
 )
-from google.shopping.merchant_issueresolution_v1beta.services.issue_resolution_service.client import (
+from google.shopping.merchant_issueresolution_v1.services.issue_resolution_service.client import (
     IssueResolutionServiceClient,
 )
-from google.shopping.merchant_issueresolution_v1beta.types.aggregateproductstatuses import (
+from google.shopping.merchant_issueresolution_v1.types.aggregateproductstatuses import (
     AggregateProductStatus,
     ListAggregateProductStatusesRequest,
     ListAggregateProductStatusesResponse,
 )
-from google.shopping.merchant_issueresolution_v1beta.types.issueresolution import (
+from google.shopping.merchant_issueresolution_v1.types.issueresolution import (
     Action,
     ActionFlow,
     ActionInput,
