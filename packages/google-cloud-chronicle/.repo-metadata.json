@@ -5,7 +5,7 @@
     "product_documentation": "https://cloud.google.com/chronicle/docs/secops/secops-overview",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-chronicle/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=1387895",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",

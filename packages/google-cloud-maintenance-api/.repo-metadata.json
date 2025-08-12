@@ -5,7 +5,7 @@
     "product_documentation": "https://cloud.google.com/unified-maintenance/docs/overview",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-maintenance-api/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=1673988&template=1161103",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",

@@ -5,7 +5,7 @@
     "product_documentation": "https://cloud.google.com/securitycentermanagement/docs/overview",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-securitycentermanagement/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",

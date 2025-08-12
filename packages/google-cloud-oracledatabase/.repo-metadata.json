@@ -5,7 +5,7 @@
     "product_documentation": "https://cloud.google.com/oracle/database/docs",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-oracledatabase/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=1492565",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",

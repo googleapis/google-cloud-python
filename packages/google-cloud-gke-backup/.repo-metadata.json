@@ -5,7 +5,7 @@
     "product_documentation": "https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke",
     "client_documentation": "https://cloud.google.com/python/docs/reference/gkebackup/latest",
     "issue_tracker": "",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",

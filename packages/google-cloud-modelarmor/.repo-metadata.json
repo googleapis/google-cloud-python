@@ -5,7 +5,7 @@
     "product_documentation": "https://cloud.google.com/security-command-center/docs/model-armor-overview",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-modelarmor/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=1514910&template=0",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",

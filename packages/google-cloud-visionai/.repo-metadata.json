@@ -5,7 +5,7 @@
     "product_documentation": "https://cloud.google.com/vision-ai/docs",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-visionai/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=187174&pli=1&template=1161261",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",

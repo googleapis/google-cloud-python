@@ -5,7 +5,7 @@
     "product_documentation": "https://cloud.google.com/kms/docs/",
     "client_documentation": "https://cloud.google.com/python/docs/reference/inventory/latest",
     "issue_tracker": "https://issuetracker.google.com/issues/new?component=190860&template=819701",
-    "release_level": "preview",
+    "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/google-cloud-python",
