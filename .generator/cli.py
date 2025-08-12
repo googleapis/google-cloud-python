@@ -25,7 +25,6 @@ from typing import Dict, List
 
 try:
     import synthtool
-    from synthtool import gcp
     from synthtool.languages import python_mono_repo
 
     SYNTHTOOL_INSTALLED = True
