@@ -18,52 +18,65 @@ from google.shopping.merchant_products import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_products_v1beta.services.product_inputs_service.async_client import (
+from google.shopping.merchant_products_v1.services.product_inputs_service.async_client import (
     ProductInputsServiceAsyncClient,
 )
-from google.shopping.merchant_products_v1beta.services.product_inputs_service.client import (
+from google.shopping.merchant_products_v1.services.product_inputs_service.client import (
     ProductInputsServiceClient,
 )
-from google.shopping.merchant_products_v1beta.services.products_service.async_client import (
+from google.shopping.merchant_products_v1.services.products_service.async_client import (
     ProductsServiceAsyncClient,
 )
-from google.shopping.merchant_products_v1beta.services.products_service.client import (
+from google.shopping.merchant_products_v1.services.products_service.client import (
     ProductsServiceClient,
 )
-from google.shopping.merchant_products_v1beta.types.productinputs import (
+from google.shopping.merchant_products_v1.types.productinputs import (
     DeleteProductInputRequest,
     InsertProductInputRequest,
     ProductInput,
     UpdateProductInputRequest,
 )
-from google.shopping.merchant_products_v1beta.types.products import (
+from google.shopping.merchant_products_v1.types.products import (
     GetProductRequest,
     ListProductsRequest,
     ListProductsResponse,
     Product,
 )
-from google.shopping.merchant_products_v1beta.types.products_common import (
-    Attributes,
+from google.shopping.merchant_products_v1.types.products_common import (
+    AgeGroup,
     AutomatedDiscounts,
-    Certification,
+    Availability,
+    CertificationAuthority,
+    CertificationName,
     CloudExportAdditionalProperties,
+    Condition,
+    CreditType,
+    DigitalSourceType,
+    EnergyEfficiencyClass,
     FreeShippingThreshold,
-    Installment,
+    Gender,
     LoyaltyPoints,
     LoyaltyProgram,
+    Pause,
+    PickupMethod,
+    PickupSla,
+    ProductAttributes,
+    ProductCertification,
     ProductDetail,
     ProductDimension,
+    ProductInstallment,
     ProductStatus,
-    ProductStructuredDescription,
-    ProductStructuredTitle,
     ProductSustainabilityIncentive,
     ProductWeight,
     Shipping,
     ShippingDimension,
     ShippingWeight,
+    SizeSystem,
+    SizeType,
+    StructuredDescription,
+    StructuredTitle,
     SubscriptionCost,
     SubscriptionPeriod,
-    Tax,
     UnitPricingBaseMeasure,
     UnitPricingMeasure,
 )
@@ -81,27 +94,40 @@ __all__ = (
     "ListProductsRequest",
     "ListProductsResponse",
     "Product",
-    "Attributes",
     "AutomatedDiscounts",
-    "Certification",
     "CloudExportAdditionalProperties",
     "FreeShippingThreshold",
-    "Installment",
     "LoyaltyPoints",
     "LoyaltyProgram",
+    "ProductAttributes",
+    "ProductCertification",
     "ProductDetail",
     "ProductDimension",
+    "ProductInstallment",
     "ProductStatus",
-    "ProductStructuredDescription",
-    "ProductStructuredTitle",
     "ProductSustainabilityIncentive",
     "ProductWeight",
     "Shipping",
     "ShippingDimension",
     "ShippingWeight",
+    "StructuredDescription",
+    "StructuredTitle",
     "SubscriptionCost",
-    "Tax",
     "UnitPricingBaseMeasure",
     "UnitPricingMeasure",
+    "AgeGroup",
+    "Availability",
+    "CertificationAuthority",
+    "CertificationName",
+    "Condition",
+    "CreditType",
+    "DigitalSourceType",
+    "EnergyEfficiencyClass",
+    "Gender",
+    "Pause",
+    "PickupMethod",
+    "PickupSla",
+    "SizeSystem",
+    "SizeType",
     "SubscriptionPeriod",
 )
