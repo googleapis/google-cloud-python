@@ -59,7 +59,7 @@ class Test_connect(unittest.TestCase):
 
         self.assertIs(connection.database, database)
         instance.database.assert_called_once_with(
-            DATABASE, pool=None, database_role=None
+            DATABASE, pool=None, database_role=None, logger=None
         )
         # Database constructs its own pool
         self.assertIsNotNone(connection.database._pool)
@@ -107,7 +107,7 @@ class Test_connect(unittest.TestCase):
 
         self.assertIs(connection.database, database)
         instance.database.assert_called_once_with(
-            DATABASE, pool=pool, database_role=role
+            DATABASE, pool=pool, database_role=role, logger=None
         )
 
     def test_w_credential_file_path(self, mock_client):

@@ -819,8 +819,9 @@ def connect(
     instance = client.instance(instance_id)
     database = None
     if database_id:
+        logger = kwargs.get("logger")
         database = instance.database(
-            database_id, pool=pool, database_role=database_role
+            database_id, pool=pool, database_role=database_role, logger=logger
         )
     conn = Connection(instance, database, **kwargs)
     if pool is not None:

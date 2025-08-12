@@ -888,8 +888,9 @@ class _Instance(object):
         pool=None,
         database_dialect=DatabaseDialect.GOOGLE_STANDARD_SQL,
         database_role=None,
+        logger=None,
     ):
-        return _Database(database_id, pool, database_dialect, database_role)
+        return _Database(database_id, pool, database_dialect, database_role, logger)
 
 
 class _Database(object):
@@ -899,8 +900,10 @@ class _Database(object):
         pool=None,
         database_dialect=DatabaseDialect.GOOGLE_STANDARD_SQL,
         database_role=None,
+        logger=None,
     ):
         self.name = database_id
         self.pool = pool
         self.database_dialect = database_dialect
         self.database_role = database_role
+        self.logger = logger

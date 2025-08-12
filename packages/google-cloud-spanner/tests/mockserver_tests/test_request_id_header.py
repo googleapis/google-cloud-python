@@ -227,10 +227,6 @@ class TestRequestIDHeader(MockServerTestBase):
                 (1, REQ_RAND_PROCESS_ID, NTH_CLIENT, CHANNEL_ID, exec_sql_seq, 1),
             )
         ]
-        print(f"Filtered unary segments: {filtered_unary_segments}")
-        print(f"Want unary segments: {want_unary_segments}")
-        print(f"Got stream segments: {got_stream_segments}")
-        print(f"Want stream segments: {want_stream_segments}")
         assert all(seg in filtered_unary_segments for seg in want_unary_segments)
         assert got_stream_segments == want_stream_segments
 
@@ -269,8 +265,6 @@ class TestRequestIDHeader(MockServerTestBase):
                 (1, REQ_RAND_PROCESS_ID, NTH_CLIENT, CHANNEL_ID, exec_sql_seq, 1),
             )
         ]
-        print(f"Got stream segments: {got_stream_segments}")
-        print(f"Want stream segments: {want_stream_segments}")
         assert got_stream_segments == want_stream_segments
 
     def test_streaming_retryable_error(self):

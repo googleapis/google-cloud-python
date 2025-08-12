@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import logging
 import unittest
 
 import grpc
@@ -170,12 +170,15 @@ class MockServerTestBase(unittest.TestCase):
     spanner_service: SpannerServicer = None
     database_admin_service: DatabaseAdminServicer = None
     port: int = None
+    logger: logging.Logger = None
 
     def __init__(self, *args, **kwargs):
         super(MockServerTestBase, self).__init__(*args, **kwargs)
         self._client = None
         self._instance = None
         self._database = None
+        self.logger = logging.getLogger("MockServerTestBase")
+        self.logger.setLevel(logging.WARN)
 
     @classmethod
     def setup_class(cls):
@@ -227,6 +230,7 @@ class MockServerTestBase(unittest.TestCase):
                 "test-database",
                 pool=FixedSizePool(size=10),
                 enable_interceptors_in_tests=True,
+                logger=self.logger,
             )
         return self._database
 
