@@ -14,5 +14,5 @@
 #
 
 packages_to_onboard: [
-  "google-cloud-dms"
+  "google-cloud-language"
 ]
