@@ -23,8 +23,8 @@ credentials.
 
 Credentials from external accounts (workload identity federation) are used to
 identify a particular application from an on-prem or non-Google Cloud platform
-including Amazon Web Services (AWS), Microsoft Azure or any identity provider
-that supports OpenID Connect (OIDC).
+including Amazon Web Services (AWS), Microsoft Azure, any identity provider
+that supports OpenID Connect (OIDC), or via X.509 certificates.
 
 Obtaining credentials
 ---------------------
@@ -196,8 +196,8 @@ External credentials (Workload identity federation)
 +++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Using workload identity federation, your application can access Google Cloud
-resources from Amazon Web Services (AWS), Microsoft Azure or any identity
-provider that supports OpenID Connect (OIDC).
+resources from Amazon Web Services (AWS), Microsoft Azure, any identity
+provider that supports OpenID Connect (OIDC), or via X.509 certificates.
 
 Traditionally, applications running outside Google Cloud have used service
 account keys to access Google Cloud resources. Using identity federation,
@@ -289,6 +289,80 @@ Follow the detailed instructions on how to
     https://openid.net/connect/
 .. _Configure Workload Identity Federation from an OIDC identity provider:
     https://cloud.google.com/iam/docs/access-resources-oidc
+
+.. _accessing-resources-using-x509-certificate-sourced-credentials:
+
+Accessing resources using X.509 certificate-sourced credentials
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+For `X.509 certificate-sourced credentials`_, the authentication library uses an X.509 certificate and private key to prove your application's identity. The certificate has a built-in expiration date and must be renewed to maintain access.
+
+The library constructs a subject token by creating a JSON array containing the base64-encoded leaf certificate, followed by any intermediate certificates from a provided trust chain.
+
+**Generating Configuration Files for X.509 Federation**
+
+To configure X.509 certificate-sourced credentials, you need to generate two separate configuration files: a primary **credential configuration file** and a **certificate configuration file**. The ``gcloud iam workload-identity-pools create-cred-config`` command can be used to create both.
+
+The location where the certificate configuration file is created depends on whether you use the ``--credential-cert-configuration-output-file`` flag.
+
+**Default Behavior (Recommended)**
+
+If you omit the ``--credential-cert-configuration-output-file`` flag, gcloud creates the certificate configuration file at a default, well-known location that the auth library can automatically discover. This is the simplest approach for most use cases.
+
+**Example Command (Default Behavior):**
+
+.. code-block:: bash
+
+    gcloud iam workload-identity-pools create-cred-config \
+        projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/$POOL_ID/providers/$PROVIDER_ID \
+        --service-account $SERVICE_ACCOUNT_EMAIL \
+        --credential-cert-path "$PATH_TO_CERTIFICATE" \
+        --credential-cert-private-key-path "$PATH_TO_PRIVATE_KEY" \
+        --credential-cert-trust-chain-path "$PATH_TO_TRUST_CHAIN" \
+        --output-file /path/to/config.json
+
+Where the following variables need to be substituted:
+
+* ``$PROJECT_NUMBER``: The unique, numerical identifier for your Google Cloud project. This is not the Project ID string.
+* ``$POOL_ID``: The workload identity pool ID.
+* ``$PROVIDER_ID``: The provider ID.
+* ``$SERVICE_ACCOUNT_EMAIL``: The email of the service account to impersonate.
+* ``$PATH_TO_CERTIFICATE``: The file path where your leaf X.509 certificate is located.
+* ``$PATH_TO_PRIVATE_KEY``: The file path where the corresponding private key for the leaf certificate is located.
+* ``$PATH_TO_TRUST_CHAIN``: The file path of the X.509 certificate trust chain file. This file should be a PEM-formatted file containing any intermediate certificates required to complete the trust chain between the leaf certificate and the trust store configured in the Workload Identity Federation pool. The leaf certificate is optional in this file.
+
+This command results in:
+
+* ``/path/to/config.json``: Created at the path you specified. This file will contain ``"use_default_certificate_config": true`` to instruct clients to look for the certificate configuration at the default path.
+* ``certificate_config.json``: Created at the default gcloud configuration path, which is typically ``~/.config/gcloud/certificate_config.json`` on Linux and macOS, or ``%APPDATA%\gcloud\certificate_config.json`` on Windows.
+
+
+**Custom Location Behavior**
+
+If you need to store the certificate configuration file in a non-default location, use the ``--credential-cert-configuration-output-file`` flag.
+
+**Example Command (Custom Location):**
+
+.. code-block:: bash
+
+    gcloud iam workload-identity-pools create-cred-config \
+        projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/$POOL_ID/providers/$PROVIDER_ID \
+        --service-account $SERVICE_ACCOUNT_EMAIL \
+        --credential-cert-path "$PATH_TO_CERTIFICATE" \
+        --credential-cert-private-key-path "$PATH_TO_PRIVATE_KEY" \
+        --credential-cert-trust-chain-path "$PATH_TO_TRUST_CHAIN" \
+        --credential-cert-configuration-output-file "/custom/path/cert_config.json" \
+        --output-file /path/to/config.json
+
+
+This command results in:
+
+* ``/path/to/config.json``: Created at the path you specified. This file will contain a ``"certificate_config_location"`` field that points to your custom path.
+* ``cert_config.json``: Created at ``/custom/path/cert_config.json``, as specified by the flag.
+
+You can now use the Auth library to call Google Cloud resources with X.509 certificate-sourced credentials.
+
+.. _X.509 certificate-sourced credentials: https://cloud.google.com/iam/docs/workload-identity-federation-with-x509-certificates
+
 
 Using Executable-sourced credentials with OIDC and SAML
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
