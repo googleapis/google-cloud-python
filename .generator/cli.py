@@ -137,6 +137,11 @@ def _build_bazel_target(bazel_rule: str, source: str):
     """
     logger.info(f"Executing build for rule: {bazel_rule}")
     try:
+        # We're using the prewarmed bazel cache from the docker image to speed up the bazelisk commands.
+        # Previously built artifacts are stored in `/bazel_cache/_bazel_ubuntu/output_base` and will be
+        # used to speed up the build. `disk_cache` is used as the 'remote cache' and is also prewarmed as part of
+        # the docker image.
+        # See https://bazel.build/remote/caching#disk-cache which explains using a file system as a 'remote cache'.
         command = [
             "bazelisk",
             "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
@@ -179,6 +184,8 @@ def _locate_and_extract_artifact(
     try:
         # 1. Find the bazel-bin output directory.
         logger.info("Locating Bazel output directory...")
+        # Previously built artifacts are stored in `/bazel_cache/_bazel_ubuntu/output_base`.
+        # See `--output_base` in `_build_bazel_target`
         info_command = [
             "bazelisk",
             "--output_base=/bazel_cache/_bazel_ubuntu/output_base",
