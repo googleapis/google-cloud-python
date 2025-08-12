@@ -32,3 +32,4 @@ jobs:
     - name: Check coverage
       run: |
         pytest --cov=. --cov-report=term-missing --cov-fail-under=100
+      working-directory: .generator
