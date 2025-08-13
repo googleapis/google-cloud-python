@@ -26,8 +26,12 @@ import pandas as pd
 class DisplayOptions:
     __doc__ = vendored_pandas_config.display_options_doc
 
+    # Options borrowed from pandas.
     max_columns: int = 20
-    max_rows: int = 25
+    max_rows: int = 10
+    precision: int = 6
+
+    # Options unique to BigQuery DataFrames.
     progress_bar: Optional[str] = "auto"
     repr_mode: Literal["head", "deferred", "anywidget"] = "head"
 
@@ -52,6 +56,8 @@ def pandas_repr(display_options: DisplayOptions):
         display_options.max_columns,
         "display.max_rows",
         display_options.max_rows,
+        "display.precision",
+        display_options.precision,
         "display.show_dimensions",
         True,
     ) as pandas_context:

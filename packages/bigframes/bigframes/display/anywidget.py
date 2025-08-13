@@ -23,6 +23,7 @@ import uuid
 import pandas as pd
 
 import bigframes
+import bigframes.display.html
 
 # anywidget and traitlets are optional dependencies. We don't want the import of this
 # module to fail if they aren't installed, though. Instead, we try to limit the surface that
@@ -201,12 +202,9 @@ class TableWidget(WIDGET_BASE):
         page_data = cached_data.iloc[start:end]
 
         # Generate HTML table
-        self.table_html = page_data.to_html(
-            index=False,
-            max_rows=None,
+        self.table_html = bigframes.display.html.render_html(
+            dataframe=page_data,
             table_id=f"table-{self._table_id}",
-            classes="table table-striped table-hover",
-            escape=False,
         )
 
     @traitlets.observe("page")

@@ -5972,22 +5972,18 @@ class DataFrame(generic.NDFrame):
         Using `melt` without optional arguments:
 
             >>> df.melt()
-                variable    value
-            0	       A      1.0
-            1	       A     <NA>
-            2	       A      3.0
-            3	       A      4.0
-            4	       A      5.0
-            5	       B      1.0
-            6	       B      2.0
-            7	       B      3.0
-            8	       B      4.0
-            9	       B      5.0
-            10	       C     <NA>
-            11	       C      3.5
-            12	       C     <NA>
-            13	       C      4.5
-            14	       C      5.0
+              variable  value
+            0        A    1.0
+            1        A   <NA>
+            2        A    3.0
+            3        A    4.0
+            4        A    5.0
+            5        B    1.0
+            6        B    2.0
+            7        B    3.0
+            8        B    4.0
+            9        B    5.0
+            ...
             <BLANKLINE>
             [15 rows x 2 columns]
 

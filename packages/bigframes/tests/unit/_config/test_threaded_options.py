@@ -37,5 +37,5 @@ def test_mutate_options_threaded():
 
     assert result_dict["this_before"] == 50
     assert result_dict["this_after"] == 50
-    assert result_dict["other_before"] == 25
+    assert result_dict["other_before"] == 10
     assert result_dict["other_after"] == 100

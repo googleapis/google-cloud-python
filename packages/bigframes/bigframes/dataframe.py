@@ -23,6 +23,7 @@ import json
 import re
 import sys
 import textwrap
+import traceback
 import typing
 from typing import (
     Callable,
@@ -814,7 +815,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             except (AttributeError, ValueError, ImportError):
                 # Fallback if anywidget is not available
                 warnings.warn(
-                    "Anywidget mode is not available. Please `pip install anywidget traitlets` or `pip install 'bigframes[anywidget]'` to use interactive tables. Falling back to deferred mode."
+                    "Anywidget mode is not available. "
+                    "Please `pip install anywidget traitlets` or `pip install 'bigframes[anywidget]'` to use interactive tables. "
+                    f"Falling back to deferred mode. Error: {traceback.format_exc()}"
                 )
                 return formatter.repr_query_job(self._compute_dry_run())
 
