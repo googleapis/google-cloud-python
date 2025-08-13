@@ -18,13 +18,13 @@ from google.shopping.merchant_conversions import gapic_version as package_versio
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_conversions_v1beta.services.conversion_sources_service.async_client import (
+from google.shopping.merchant_conversions_v1.services.conversion_sources_service.async_client import (
     ConversionSourcesServiceAsyncClient,
 )
-from google.shopping.merchant_conversions_v1beta.services.conversion_sources_service.client import (
+from google.shopping.merchant_conversions_v1.services.conversion_sources_service.client import (
     ConversionSourcesServiceClient,
 )
-from google.shopping.merchant_conversions_v1beta.types.conversionsources import (
+from google.shopping.merchant_conversions_v1.types.conversionsources import (
     AttributionSettings,
     ConversionSource,
     CreateConversionSourceRequest,
