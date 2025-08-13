@@ -220,7 +220,7 @@
     "packages/google-shopping-merchant-quota": "0.1.9",
     "packages/google-shopping-merchant-reports": "0.1.17",
     "packages/google-shopping-merchant-reviews": "0.2.0",
-    "packages/google-shopping-type": "0.1.12",
+    "packages/google-shopping-type": "1.0.0",
     "packages/googleapis-common-protos": "1.70.0",
     "packages/grafeas": "1.15.0",
     "packages/grpc-google-iam-v1": "0.14.2"
