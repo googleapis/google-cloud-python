@@ -14,5 +14,16 @@
 #
 
 packages_to_onboard: [
-  "google-cloud-language"
+  "google-ads-admanager",
+  "google-ads-marketingplatform-admin",
+  "google-ai-generativelanguage",
+  "google-analytics-admin",
+  "google-analytics-data",
+  "googleapis-common-protos",
+  "google-apps-card",
+  "google-apps-chat",
+  "google-apps-events-subscriptions",
+  "google-apps-meet",
+  "google-apps-script-type",
+  "google-area120-tables",
 ]

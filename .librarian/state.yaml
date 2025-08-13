@@ -1,14 +1,12 @@
 image: python-librarian-generator:latest
 libraries:
-- id: google-cloud-language
-  version: 2.17.2
+- id: google-ads-admanager
+  version: 0.3.0
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
   apis:
-  - path: google/cloud/language/v1beta2
-  - path: google/cloud/language/v2
-  - path: google/cloud/language/v1
+  - path: google/ads/admanager/v1
   source_roots:
-  - ^packages/google-cloud-language
+  - ^packages/google-ads-admanager
   preserve_regex:
   - .OwlBot.yaml
   - CHANGELOG.md
@@ -20,4 +18,226 @@ libraries:
   - samples/generated_samples/snippet_metadata_
   - scripts/client-post-processing
   remove_regex:
-  - ^packages/google-cloud-language
+  - ^packages/google-ads-admanager
+- id: google-ads-marketingplatform-admin
+  version: 0.1.6
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/marketingplatform/admin/v1alpha
+  source_roots:
+  - ^packages/google-ads-marketingplatform-admin
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-ads-marketingplatform-admin
+- id: google-ai-generativelanguage
+  version: 0.6.18
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/ai/generativelanguage/v1
+  - path: google/ai/generativelanguage/v1beta
+  - path: google/ai/generativelanguage/v1beta3
+  - path: google/ai/generativelanguage/v1beta2
+  - path: google/ai/generativelanguage/v1alpha
+  source_roots:
+  - ^packages/google-ai-generativelanguage
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-ai-generativelanguage
+- id: google-analytics-admin
+  version: 0.24.1
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/analytics/admin/v1beta
+  - path: google/analytics/admin/v1alpha
+  source_roots:
+  - ^packages/google-analytics-admin
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-analytics-admin
+- id: google-analytics-data
+  version: 0.18.19
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/analytics/data/v1alpha
+  - path: google/analytics/data/v1beta
+  source_roots:
+  - ^packages/google-analytics-data
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-analytics-data
+- id: googleapis-common-protos
+  version: 1.70.0
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis: []
+  source_roots:
+  - ^packages/googleapis-common-protos
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/googleapis-common-protos
+- id: google-apps-card
+  version: 0.1.8
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/apps/card/v1
+  source_roots:
+  - ^packages/google-apps-card
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-apps-card
+- id: google-apps-chat
+  version: 0.2.8
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/chat/v1
+  source_roots:
+  - ^packages/google-apps-chat
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-apps-chat
+- id: google-apps-events-subscriptions
+  version: 0.2.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/apps/events/subscriptions/v1
+  - path: google/apps/events/subscriptions/v1beta
+  source_roots:
+  - ^packages/google-apps-events-subscriptions
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-apps-events-subscriptions
+- id: google-apps-meet
+  version: 0.1.16
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/apps/meet/v2beta
+  - path: google/apps/meet/v2
+  source_roots:
+  - ^packages/google-apps-meet
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-apps-meet
+- id: google-apps-script-type
+  version: 0.3.15
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/apps/script/type
+  - path: google/apps/script/type/gmail
+  - path: google/apps/script/type/docs
+  - path: google/apps/script/type/drive
+  - path: google/apps/script/type/sheets
+  - path: google/apps/script/type/calendar
+  - path: google/apps/script/type/slides
+  source_roots:
+  - ^packages/google-apps-script-type
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-apps-script-type
+- id: google-area120-tables
+  version: 0.11.17
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/area120/tables/v1alpha1
+  source_roots:
+  - ^packages/google-area120-tables
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-area120-tables
