@@ -1,12 +1,12 @@
 image: python-librarian-generator:latest
 libraries:
-- id: google-area120-tables
-  version: 0.11.17
+- id: google-ads-admanager
+  version: 0.3.0
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
   apis:
-  - path: google/area120/tables/v1alpha1
+  - path: google/ads/admanager/v1
   source_roots:
-  - ^packages/google-area120-tables
+  - ^packages/google-ads-admanager
   preserve_regex:
   - .OwlBot.yaml
   - CHANGELOG.md
@@ -18,4 +18,1194 @@ libraries:
   - samples/generated_samples/snippet_metadata_
   - scripts/client-post-processing
   remove_regex:
-  - ^packages/google-area120-tables
+  - ^packages/google-ads-admanager
+- id: google-ads-marketingplatform-admin
+  version: 0.1.6
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/marketingplatform/admin/v1alpha
+  source_roots:
+  - ^packages/google-ads-marketingplatform-admin
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-ads-marketingplatform-admin
+- id: google-ai-generativelanguage
+  version: 0.6.18
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/ai/generativelanguage/v1
+  - path: google/ai/generativelanguage/v1beta
+  - path: google/ai/generativelanguage/v1beta3
+  - path: google/ai/generativelanguage/v1beta2
+  - path: google/ai/generativelanguage/v1alpha
+  source_roots:
+  - ^packages/google-ai-generativelanguage
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-ai-generativelanguage
+- id: google-analytics-admin
+  version: 0.24.1
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/analytics/admin/v1beta
+  - path: google/analytics/admin/v1alpha
+  source_roots:
+  - ^packages/google-analytics-admin
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-analytics-admin
+- id: google-analytics-data
+  version: 0.18.19
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/analytics/data/v1alpha
+  - path: google/analytics/data/v1beta
+  source_roots:
+  - ^packages/google-analytics-data
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-analytics-data
+- id: google-apps-chat
+  version: 0.2.8
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/chat/v1
+  source_roots:
+  - ^packages/google-apps-chat
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-apps-chat
+- id: google-apps-events-subscriptions
+  version: 0.2.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/apps/events/subscriptions/v1
+  - path: google/apps/events/subscriptions/v1beta
+  source_roots:
+  - ^packages/google-apps-events-subscriptions
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-apps-events-subscriptions
+- id: google-apps-meet
+  version: 0.1.16
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/apps/meet/v2beta
+  - path: google/apps/meet/v2
+  source_roots:
+  - ^packages/google-apps-meet
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-apps-meet
+- id: google-cloud-access-approval
+  version: 1.16.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/accessapproval/v1
+  source_roots:
+  - ^packages/google-cloud-access-approval
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-access-approval
+- id: google-cloud-access-context-manager
+  version: 0.2.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis: []
+  source_roots:
+  - ^packages/google-cloud-access-context-manager
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-access-context-manager
+- id: google-cloud-advisorynotifications
+  version: 0.3.16
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/advisorynotifications/v1
+  source_roots:
+  - ^packages/google-cloud-advisorynotifications
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-advisorynotifications
+- id: google-cloud-alloydb
+  version: 0.4.8
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/alloydb/v1beta
+  - path: google/cloud/alloydb/v1
+  - path: google/cloud/alloydb/v1alpha
+  source_roots:
+  - ^packages/google-cloud-alloydb
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-alloydb
+- id: google-cloud-alloydb-connectors
+  version: 0.1.10
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/alloydb/connectors/v1
+  - path: google/cloud/alloydb/connectors/v1alpha
+  - path: google/cloud/alloydb/connectors/v1beta
+  source_roots:
+  - ^packages/google-cloud-alloydb-connectors
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-alloydb-connectors
+- id: google-cloud-api-gateway
+  version: 1.12.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/apigateway/v1
+  source_roots:
+  - ^packages/google-cloud-api-gateway
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-api-gateway
+- id: google-cloud-apigee-connect
+  version: 1.12.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/apigeeconnect/v1
+  source_roots:
+  - ^packages/google-cloud-apigee-connect
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-apigee-connect
+- id: google-cloud-apigee-registry
+  version: 0.6.18
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/apigeeregistry/v1
+  source_roots:
+  - ^packages/google-cloud-apigee-registry
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-apigee-registry
+- id: google-cloud-apihub
+  version: 0.2.6
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/apihub/v1
+  source_roots:
+  - ^packages/google-cloud-apihub
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-apihub
+- id: google-cloud-api-keys
+  version: 0.5.17
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/api/apikeys/v2
+  source_roots:
+  - ^packages/google-cloud-api-keys
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-api-keys
+- id: google-cloud-appengine-admin
+  version: 1.14.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/appengine/v1
+  source_roots:
+  - ^packages/google-cloud-appengine-admin
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-appengine-admin
+- id: google-cloud-appengine-logging
+  version: 1.6.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/appengine/logging/v1
+  source_roots:
+  - ^packages/google-cloud-appengine-logging
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-appengine-logging
+- id: google-cloud-apphub
+  version: 0.1.10
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/apphub/v1
+  source_roots:
+  - ^packages/google-cloud-apphub
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-apphub
+- id: google-cloud-artifact-registry
+  version: 1.16.1
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/devtools/artifactregistry/v1
+  - path: google/devtools/artifactregistry/v1beta2
+  source_roots:
+  - ^packages/google-cloud-artifact-registry
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-artifact-registry
+- id: google-cloud-asset
+  version: 3.30.1
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/asset/v1p5beta1
+  - path: google/cloud/asset/v1
+  - path: google/cloud/asset/v1p4beta1
+  - path: google/cloud/asset/v1p1beta1
+  - path: google/cloud/asset/v1p2beta1
+  source_roots:
+  - ^packages/google-cloud-asset
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-asset
+- id: google-cloud-assured-workloads
+  version: 1.15.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/assuredworkloads/v1
+  - path: google/cloud/assuredworkloads/v1beta1
+  source_roots:
+  - ^packages/google-cloud-assured-workloads
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-assured-workloads
+- id: google-cloud-audit-log
+  version: 0.3.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis: []
+  source_roots:
+  - ^packages/google-cloud-audit-log
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-audit-log
+- id: google-cloud-automl
+  version: 2.16.4
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/automl/v1beta1
+  - path: google/cloud/automl/v1
+  source_roots:
+  - ^packages/google-cloud-automl
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-automl
+- id: google-cloud-backupdr
+  version: 0.2.5
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/backupdr/v1
+  source_roots:
+  - ^packages/google-cloud-backupdr
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-backupdr
+- id: google-cloud-bare-metal-solution
+  version: 1.10.3
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/baremetalsolution/v2
+  source_roots:
+  - ^packages/google-cloud-bare-metal-solution
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bare-metal-solution
+- id: google-cloud-batch
+  version: 0.17.36
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/batch/v1alpha
+  - path: google/cloud/batch/v1
+  source_roots:
+  - ^packages/google-cloud-batch
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-batch
+- id: google-cloud-beyondcorp-appconnections
+  version: 0.4.18
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/beyondcorp/appconnections/v1
+  source_roots:
+  - ^packages/google-cloud-beyondcorp-appconnections
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-beyondcorp-appconnections
+- id: google-cloud-beyondcorp-appconnectors
+  version: 0.4.18
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/beyondcorp/appconnectors/v1
+  source_roots:
+  - ^packages/google-cloud-beyondcorp-appconnectors
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-beyondcorp-appconnectors
+- id: google-cloud-beyondcorp-appgateways
+  version: 0.4.18
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/beyondcorp/appgateways/v1
+  source_roots:
+  - ^packages/google-cloud-beyondcorp-appgateways
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-beyondcorp-appgateways
+- id: google-cloud-beyondcorp-clientconnectorservices
+  version: 0.4.18
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/beyondcorp/clientconnectorservices/v1
+  source_roots:
+  - ^packages/google-cloud-beyondcorp-clientconnectorservices
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-beyondcorp-clientconnectorservices
+- id: google-cloud-beyondcorp-clientgateways
+  version: 0.4.17
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/beyondcorp/clientgateways/v1
+  source_roots:
+  - ^packages/google-cloud-beyondcorp-clientgateways
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-beyondcorp-clientgateways
+- id: google-cloud-bigquery-analyticshub
+  version: 0.4.19
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/bigquery/analyticshub/v1
+  source_roots:
+  - ^packages/google-cloud-bigquery-analyticshub
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bigquery-analyticshub
+- id: google-cloud-bigquery-biglake
+  version: 0.4.15
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/bigquery/biglake/v1alpha1
+  - path: google/cloud/bigquery/biglake/v1
+  source_roots:
+  - ^packages/google-cloud-bigquery-biglake
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bigquery-biglake
+- id: google-cloud-bigquery-connection
+  version: 1.18.3
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/bigquery/connection/v1
+  source_roots:
+  - ^packages/google-cloud-bigquery-connection
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bigquery-connection
+- id: google-cloud-bigquery-data-exchange
+  version: 0.5.20
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/bigquery/dataexchange/v1beta1
+  source_roots:
+  - ^packages/google-cloud-bigquery-data-exchange
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bigquery-data-exchange
+- id: google-cloud-bigquery-datapolicies
+  version: 0.6.16
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/bigquery/datapolicies/v2beta1
+  - path: google/cloud/bigquery/datapolicies/v2
+  - path: google/cloud/bigquery/datapolicies/v1beta1
+  - path: google/cloud/bigquery/datapolicies/v1
+  source_roots:
+  - ^packages/google-cloud-bigquery-datapolicies
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bigquery-datapolicies
+- id: google-cloud-bigquery-datatransfer
+  version: 3.19.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/bigquery/datatransfer/v1
+  source_roots:
+  - ^packages/google-cloud-bigquery-datatransfer
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bigquery-datatransfer
+- id: google-cloud-bigquery-logging
+  version: 1.6.3
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/bigquery/logging/v1
+  source_roots:
+  - ^packages/google-cloud-bigquery-logging
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bigquery-logging
+- id: google-cloud-bigquery-migration
+  version: 0.11.15
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/bigquery/migration/v2alpha
+  - path: google/cloud/bigquery/migration/v2
+  source_roots:
+  - ^packages/google-cloud-bigquery-migration
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bigquery-migration
+- id: google-cloud-bigquery-reservation
+  version: 1.17.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/bigquery/reservation/v1
+  source_roots:
+  - ^packages/google-cloud-bigquery-reservation
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-bigquery-reservation
+- id: google-cloud-billing
+  version: 1.16.3
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/billing/v1
+  source_roots:
+  - ^packages/google-cloud-billing
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-billing
+- id: google-cloud-billing-budgets
+  version: 1.17.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/billing/budgets/v1
+  - path: google/cloud/billing/budgets/v1beta1
+  source_roots:
+  - ^packages/google-cloud-billing-budgets
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-billing-budgets
+- id: google-cloud-binary-authorization
+  version: 1.13.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/binaryauthorization/v1
+  - path: google/cloud/binaryauthorization/v1beta1
+  source_roots:
+  - ^packages/google-cloud-binary-authorization
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-binary-authorization
+- id: google-cloud-build
+  version: 3.31.3
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/devtools/cloudbuild/v1
+  - path: google/devtools/cloudbuild/v2
+  source_roots:
+  - ^packages/google-cloud-build
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-build
+- id: google-cloud-certificate-manager
+  version: 1.10.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/certificatemanager/v1
+  source_roots:
+  - ^packages/google-cloud-certificate-manager
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-certificate-manager
+- id: google-cloud-channel
+  version: 1.23.0
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/channel/v1
+  source_roots:
+  - ^packages/google-cloud-channel
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-channel
+- id: google-cloud-chronicle
+  version: 0.1.0
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/chronicle/v1
+  source_roots:
+  - ^packages/google-cloud-chronicle
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-chronicle
+- id: google-cloud-cloudcontrolspartner
+  version: 0.2.7
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/cloudcontrolspartner/v1beta
+  - path: google/cloud/cloudcontrolspartner/v1
+  source_roots:
+  - ^packages/google-cloud-cloudcontrolspartner
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-cloudcontrolspartner
+- id: google-cloud-commerce-consumer-procurement
+  version: 0.2.0
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/commerce/consumer/procurement/v1
+  - path: google/cloud/commerce/consumer/procurement/v1alpha1
+  source_roots:
+  - ^packages/google-cloud-commerce-consumer-procurement
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-commerce-consumer-procurement
+- id: google-cloud-common
+  version: 1.5.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/common
+  source_roots:
+  - ^packages/google-cloud-common
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-common
+- id: google-cloud-compute
+  version: 1.35.0
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/compute/v1
+  source_roots:
+  - ^packages/google-cloud-compute
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-compute
+- id: google-cloud-compute-v1beta
+  version: 0.1.5
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/compute/v1beta
+  source_roots:
+  - ^packages/google-cloud-compute-v1beta
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-compute-v1beta
+- id: google-cloud-confidentialcomputing
+  version: 0.4.18
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/confidentialcomputing/v1
+  source_roots:
+  - ^packages/google-cloud-confidentialcomputing
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-confidentialcomputing
+- id: google-cloud-config
+  version: 0.1.20
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/config/v1
+  source_roots:
+  - ^packages/google-cloud-config
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-config
+- id: google-cloud-configdelivery
+  version: 0.1.3
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/configdelivery/v1beta
+  - path: google/cloud/configdelivery/v1alpha
+  - path: google/cloud/configdelivery/v1
+  source_roots:
+  - ^packages/google-cloud-configdelivery
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-configdelivery
+- id: google-cloud-contact-center-insights
+  version: 1.23.3
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/contactcenterinsights/v1
+  source_roots:
+  - ^packages/google-cloud-contact-center-insights
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-contact-center-insights
+- id: google-cloud-container
+  version: 2.59.0
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/container/v1
+  - path: google/container/v1beta1
+  source_roots:
+  - ^packages/google-cloud-container
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-container
+- id: google-cloud-containeranalysis
+  version: 2.18.1
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/devtools/containeranalysis/v1
+  source_roots:
+  - ^packages/google-cloud-containeranalysis
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-containeranalysis
+- id: google-cloud-contentwarehouse
+  version: 0.7.16
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/cloud/contentwarehouse/v1
+  source_roots:
+  - ^packages/google-cloud-contentwarehouse
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-contentwarehouse
