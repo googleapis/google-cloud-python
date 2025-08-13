@@ -326,7 +326,7 @@ class Tan(TrigonometricUnary):
 class BitwiseNot(Unary):
     """Bitwise NOT operation."""
 
-    arg: Integer
+    arg: Value[dt.Integer | dt.Binary]
 
     dtype = rlz.numeric_like("args", operator.invert)
 

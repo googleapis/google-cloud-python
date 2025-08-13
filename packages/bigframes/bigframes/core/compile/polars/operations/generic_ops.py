@@ -45,3 +45,14 @@ def isnull_op_impl(
     input: pl.Expr,
 ) -> pl.Expr:
     return input.is_null()
+
+
+@polars_compiler.register_op(generic_ops.PyUdfOp)
+def py_udf_op_impl(
+    compiler: polars_compiler.PolarsExpressionCompiler,
+    op: generic_ops.PyUdfOp,  # type: ignore
+    input: pl.Expr,
+) -> pl.Expr:
+    return input.map_elements(
+        op.fn, return_dtype=polars_compiler._DTYPE_MAPPING[op._output_type]
+    )

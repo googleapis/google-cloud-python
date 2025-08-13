@@ -32,6 +32,9 @@ class BinaryValue(Value):
         """
         return ops.HashBytes(self, how).to_expr()
 
+    def __invert__(self) -> BinaryValue:
+        return ops.BitwiseNot(self).to_expr()
+
 
 @public
 class BinaryScalar(Scalar, BinaryValue):

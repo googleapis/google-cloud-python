@@ -14,10 +14,18 @@
 
 import dataclasses
 
+import numpy as np
+
 from bigframes import dtypes
 from bigframes.core import bigframe_node, expression
 from bigframes.core.rewrite import op_lowering
-from bigframes.operations import comparison_ops, datetime_ops, json_ops, numeric_ops
+from bigframes.operations import (
+    comparison_ops,
+    datetime_ops,
+    generic_ops,
+    json_ops,
+    numeric_ops,
+)
 import bigframes.operations as ops
 
 # TODO: Would be more precise to actually have separate op set for polars ops (where they diverge from the original ops)
@@ -288,6 +296,26 @@ class LowerAsTypeRule(op_lowering.OpLoweringRule):
         return _lower_cast(expr.op, expr.inputs[0])
 
 
+def invert_bytes(byte_string):
+    inverted_bytes = ~np.frombuffer(byte_string, dtype=np.uint8)
+    return inverted_bytes.tobytes()
+
+
+class LowerInvertOp(op_lowering.OpLoweringRule):
+    @property
+    def op(self) -> type[ops.ScalarOp]:
+        return generic_ops.InvertOp
+
+    def lower(self, expr: expression.OpExpression) -> expression.Expression:
+        assert isinstance(expr.op, generic_ops.InvertOp)
+        arg = expr.children[0]
+        if arg.output_type == dtypes.BYTES_DTYPE:
+            return generic_ops.PyUdfOp(invert_bytes, dtypes.BYTES_DTYPE).as_expr(
+                expr.inputs[0]
+            )
+        return expr
+
+
 def _coerce_comparables(
     expr1: expression.Expression,
     expr2: expression.Expression,
@@ -385,6 +413,7 @@ POLARS_LOWERING_RULES = (
     LowerFloorDivRule(),
     LowerModRule(),
     LowerAsTypeRule(),
+    LowerInvertOp(),
 )
 
 

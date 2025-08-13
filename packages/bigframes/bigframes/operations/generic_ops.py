@@ -446,3 +446,15 @@ class SqlScalarOp(base_ops.NaryOp):
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return self._output_type
+
+
+@dataclasses.dataclass(frozen=True)
+class PyUdfOp(base_ops.NaryOp):
+    """Represents a local UDF."""
+
+    name: typing.ClassVar[str] = "py_udf"
+    fn: typing.Callable
+    _output_type: dtypes.ExpressionType
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return self._output_type

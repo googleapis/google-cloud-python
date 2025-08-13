@@ -58,6 +58,11 @@ _COMPATIBLE_SCALAR_OPS = (
     numeric_ops.FloorDivOp,
     numeric_ops.ModOp,
     generic_ops.AsTypeOp,
+    generic_ops.WhereOp,
+    generic_ops.CoalesceOp,
+    generic_ops.FillNaOp,
+    generic_ops.CaseWhenOp,
+    generic_ops.InvertOp,
 )
 _COMPATIBLE_AGG_OPS = (
     agg_ops.SizeOp,
