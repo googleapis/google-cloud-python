@@ -26,6 +26,7 @@ packages_to_onboard: [
   "google-apps-chat",
   "google-apps-events-subscriptions",
   "google-apps-meet",
+  "google-cloud-appengine-logging",
   # TODO: Uncomment once https://github.com/googleapis/librarian/issues/1713 is fixed
   # "google-area120-tables",
   "google-cloud-access-approval",
@@ -39,7 +40,6 @@ packages_to_onboard: [
   "google-cloud-apihub",
   "google-cloud-api-keys",
   "google-cloud-appengine-admin",
-  "google-cloud-appengine-logging",
   "google-cloud-apphub",
   "google-cloud-artifact-registry",
   "google-cloud-asset",

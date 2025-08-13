@@ -160,6 +160,25 @@ libraries:
   - scripts/client-post-processing
   remove_regex:
   - ^packages/google-apps-meet
+- id: google-cloud-appengine-logging
+  version: 1.6.2
+  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
+  apis:
+  - path: google/appengine/logging/v1
+  source_roots:
+  - ^packages/google-cloud-appengine-logging
+  preserve_regex:
+  - .OwlBot.yaml
+  - CHANGELOG.md
+  - docs/CHANGELOG.md
+  - docs/README.rst
+  - samples/README.txt
+  - tar.gz
+  - gapic_version.py
+  - samples/generated_samples/snippet_metadata_
+  - scripts/client-post-processing
+  remove_regex:
+  - ^packages/google-cloud-appengine-logging
 - id: google-cloud-access-approval
   version: 1.16.2
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
@@ -372,25 +391,6 @@ libraries:
   - scripts/client-post-processing
   remove_regex:
   - ^packages/google-cloud-appengine-admin
-- id: google-cloud-appengine-logging
-  version: 1.6.2
-  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
-  apis:
-  - path: google/appengine/logging/v1
-  source_roots:
-  - ^packages/google-cloud-appengine-logging
-  preserve_regex:
-  - .OwlBot.yaml
-  - CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  remove_regex:
-  - ^packages/google-cloud-appengine-logging
 - id: google-cloud-apphub
   version: 0.1.10
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
