@@ -19,12 +19,12 @@ packages_to_onboard: [
   "google-ai-generativelanguage",
   "google-analytics-admin",
   "google-analytics-data",
-  "googleapis-common-protos",
   # TODO: Onboard these once
   # service config is present in the following location
   # https://github.com/googleapis/googleapis/tree/master/google/apps/card/v1
   # "google-apps-card",
   # "google-apps-script-type",
+  # "googleapis-common-protos",
   "google-apps-chat",
   "google-apps-events-subscriptions",
   "google-apps-meet",

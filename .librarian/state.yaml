@@ -101,31 +101,6 @@ libraries:
   - scripts/client-post-processing
   remove_regex:
   - ^packages/google-analytics-data
-- id: googleapis-common-protos
-  version: 1.70.0
-  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
-  apis:
-  - path: google/api
-  - path: google/cloud
-  - path: google/gapic/metadata
-  - path: google/logging/type
-  - path: google/longrunning
-  - path: google/rpc
-  - path: google/type
-  source_roots:
-  - ^packages/googleapis-common-protos
-  preserve_regex:
-  - .OwlBot.yaml
-  - CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  remove_regex:
-  - ^packages/googleapis-common-protos
 - id: google-apps-chat
   version: 0.2.8
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
