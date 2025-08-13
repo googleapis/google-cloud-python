@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v0.1.12...google-shopping-type-v1.0.0) (2025-08-13)
+
+
+### Features
+
+* update release level to stable ([36b954f](https://github.com/googleapis/google-cloud-python/commit/36b954fa18367a079311efcad7b18444c5c00c03))
+
 ## [0.1.12](https://github.com/googleapis/google-cloud-python/compare/google-shopping-type-v0.1.11...google-shopping-type-v0.1.12) (2025-06-11)
 
 
