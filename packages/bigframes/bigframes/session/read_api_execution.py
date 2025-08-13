@@ -80,16 +80,12 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
             read_session=requested_session,
             max_stream_count=1,
         )
-        session = self.bqstoragereadclient.create_read_session(
-            request=request, retry=None
-        )
+        session = self.bqstoragereadclient.create_read_session(request=request)
 
         if not session.streams:
             batches: Iterator[pa.RecordBatch] = iter([])
         else:
-            reader = self.bqstoragereadclient.read_rows(
-                session.streams[0].name, retry=None
-            )
+            reader = self.bqstoragereadclient.read_rows(session.streams[0].name)
             rowstream = reader.rows()
 
             def process_page(page):
