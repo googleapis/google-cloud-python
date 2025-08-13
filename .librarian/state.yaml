@@ -119,25 +119,6 @@ libraries:
   - scripts/client-post-processing
   remove_regex:
   - ^packages/googleapis-common-protos
-- id: google-apps-card
-  version: 0.1.8
-  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
-  apis:
-  - path: google/apps/card/v1
-  source_roots:
-  - ^packages/google-apps-card
-  preserve_regex:
-  - .OwlBot.yaml
-  - CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  remove_regex:
-  - ^packages/google-apps-card
 - id: google-apps-chat
   version: 0.2.8
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
