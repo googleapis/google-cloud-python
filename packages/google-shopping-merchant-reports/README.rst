@@ -1,14 +1,14 @@
 Python Client for Merchant Reports API
 ======================================
 
-|preview| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `Merchant Reports API`_: Programmatically manage your Merchant Center accounts
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
 .. |pypi| image:: https://img.shields.io/pypi/v/google-shopping-merchant-reports.svg
    :target: https://pypi.org/project/google-shopping-merchant-reports/
