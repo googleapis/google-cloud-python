@@ -59,6 +59,18 @@ def configure_state_yaml() -> None:
                         }
                     ]
                 )
+        if package_name == "googleapis-common-protos":
+            paths_to_add = [
+                {"path": "google/api"},
+                {"path": "google/cloud"},
+                {"path": "google/gapic/metadata"},
+                {"path": "google/logging/type"},
+                {"path": "google/longrunning"},
+                {"path": "google/rpc"},
+                {"path": "google/type"},
+            ]
+            api_paths.extend(paths_to_add)
+
         state_dict["libraries"].append(
             {
                 "id": package_name,

@@ -104,7 +104,14 @@ libraries:
 - id: googleapis-common-protos
   version: 1.70.0
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
-  apis: []
+  apis:
+  - path: google/api
+  - path: google/cloud
+  - path: google/gapic/metadata
+  - path: google/logging/type
+  - path: google/longrunning
+  - path: google/rpc
+  - path: google/type
   source_roots:
   - ^packages/googleapis-common-protos
   preserve_regex:
