@@ -178,31 +178,6 @@ libraries:
   - scripts/client-post-processing
   remove_regex:
   - ^packages/google-apps-meet
-- id: google-apps-script-type
-  version: 0.3.15
-  last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
-  apis:
-  - path: google/apps/script/type
-  - path: google/apps/script/type/gmail
-  - path: google/apps/script/type/docs
-  - path: google/apps/script/type/drive
-  - path: google/apps/script/type/sheets
-  - path: google/apps/script/type/calendar
-  - path: google/apps/script/type/slides
-  source_roots:
-  - ^packages/google-apps-script-type
-  preserve_regex:
-  - .OwlBot.yaml
-  - CHANGELOG.md
-  - docs/CHANGELOG.md
-  - docs/README.rst
-  - samples/README.txt
-  - tar.gz
-  - gapic_version.py
-  - samples/generated_samples/snippet_metadata_
-  - scripts/client-post-processing
-  remove_regex:
-  - ^packages/google-apps-script-type
 - id: google-area120-tables
   version: 0.11.17
   last_generated_commit: 97a83d76a09a7f6dcab43675c87bdfeb5bcf1cb5
