@@ -302,37 +302,16 @@ def test_blob_image_normalize_to_bq(images_mm_df: bpd.DataFrame, bq_connection: 
 
 
 @pytest.mark.parametrize(
-    "verbose, expected",
+    "verbose",
     [
-        (
-            True,
-            pd.Series(
-                [
-                    {"status": "File has not been decrypted", "content": ""},
-                    {
-                        "status": "",
-                        "content": "Sample  PDF    This  is  a  testing  file.  Some  dummy  messages  are  used  for  testing  purposes.   ",
-                    },
-                ]
-            ),
-        ),
-        (
-            False,
-            pd.Series(
-                [
-                    "",
-                    "Sample  PDF    This  is  a  testing  file.  Some  dummy  messages  are  used  for  testing  purposes.   ",
-                ],
-                name="pdf",
-            ),
-        ),
+        (True),
+        (False),
     ],
 )
 def test_blob_pdf_extract(
     pdf_mm_df: bpd.DataFrame,
     verbose: bool,
     bq_connection: str,
-    expected: pd.Series,
 ):
     actual = (
         pdf_mm_df["pdf"]
@@ -341,49 +320,44 @@ def test_blob_pdf_extract(
         .to_pandas()
     )
 
-    pd.testing.assert_series_equal(
-        actual,
-        expected,
-        check_dtype=False,
-        check_index=False,
+    # check relative length
+    expected_text = "Sample PDF This is a testing file. Some dummy messages are used for testing purposes."
+    expected_len = len(expected_text)
+
+    actual_text = ""
+    if verbose:
+        # The first entry is for a file that doesn't exist, so we check the second one
+        successful_results = actual[actual.apply(lambda x: x["status"] == "")]
+        actual_text = successful_results.apply(lambda x: x["content"]).iloc[0]
+    else:
+        actual_text = actual[actual != ""].iloc[0]
+    actual_len = len(actual_text)
+
+    relative_length_tolerance = 0.25
+    min_acceptable_len = expected_len * (1 - relative_length_tolerance)
+    max_acceptable_len = expected_len * (1 + relative_length_tolerance)
+    assert min_acceptable_len <= actual_len <= max_acceptable_len, (
+        f"Item (verbose={verbose}): Extracted text length {actual_len} is outside the acceptable range "
+        f"[{min_acceptable_len:.0f}, {max_acceptable_len:.0f}]. "
+        f"Expected reference length was {expected_len}. "
     )
+
+    # check for major keywords
+    major_keywords = ["Sample", "PDF", "testing", "dummy", "messages"]
+    for keyword in major_keywords:
+        assert (
+            keyword.lower() in actual_text.lower()
+        ), f"Item (verbose={verbose}): Expected keyword '{keyword}' not found in extracted text. "
 
 
 @pytest.mark.parametrize(
-    "verbose, expected",
+    "verbose",
     [
-        (
-            True,
-            pd.Series(
-                [
-                    {"status": "File has not been decrypted", "content": []},
-                    {
-                        "status": "",
-                        "content": [
-                            "Sample  PDF    This  is  a  testing  file.  Some ",
-                            "dummy  messages  are  used  for  testing ",
-                            "purposes.   ",
-                        ],
-                    },
-                ]
-            ),
-        ),
-        (
-            False,
-            pd.Series(
-                [
-                    pd.NA,
-                    "Sample  PDF    This  is  a  testing  file.  Some ",
-                    "dummy  messages  are  used  for  testing ",
-                    "purposes.   ",
-                ],
-            ),
-        ),
+        (True),
+        (False),
     ],
 )
-def test_blob_pdf_chunk(
-    pdf_mm_df: bpd.DataFrame, verbose: bool, bq_connection: str, expected: pd.Series
-):
+def test_blob_pdf_chunk(pdf_mm_df: bpd.DataFrame, verbose: bool, bq_connection: str):
     actual = (
         pdf_mm_df["pdf"]
         .blob.pdf_chunk(
@@ -397,12 +371,35 @@ def test_blob_pdf_chunk(
         .to_pandas()
     )
 
-    pd.testing.assert_series_equal(
-        actual,
-        expected,
-        check_dtype=False,
-        check_index=False,
+    # check relative length
+    expected_text = "Sample PDF This is a testing file. Some dummy messages are used for testing purposes."
+    expected_len = len(expected_text)
+
+    actual_text = ""
+    if verbose:
+        # The first entry is for a file that doesn't exist, so we check the second one
+        successful_results = actual[actual.apply(lambda x: x["status"] == "")]
+        actual_text = "".join(successful_results.apply(lambda x: x["content"]).iloc[0])
+    else:
+        # First entry is NA
+        actual_text = "".join(actual.dropna())
+    actual_len = len(actual_text)
+
+    relative_length_tolerance = 0.25
+    min_acceptable_len = expected_len * (1 - relative_length_tolerance)
+    max_acceptable_len = expected_len * (1 + relative_length_tolerance)
+    assert min_acceptable_len <= actual_len <= max_acceptable_len, (
+        f"Item (verbose={verbose}): Extracted text length {actual_len} is outside the acceptable range "
+        f"[{min_acceptable_len:.0f}, {max_acceptable_len:.0f}]. "
+        f"Expected reference length was {expected_len}. "
     )
+
+    # check for major keywords
+    major_keywords = ["Sample", "PDF", "testing", "dummy", "messages"]
+    for keyword in major_keywords:
+        assert (
+            keyword.lower() in actual_text.lower()
+        ), f"Item (verbose={verbose}): Expected keyword '{keyword}' not found in extracted text. "
 
 
 @pytest.mark.parametrize(

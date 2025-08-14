@@ -473,7 +473,9 @@ def pdf_extract_func(src_obj_ref_rt: str) -> str:
     return result_json
 
 
-pdf_extract_def = FunctionDef(pdf_extract_func, ["pypdf", "requests", "pypdf[crypto]"])
+pdf_extract_def = FunctionDef(
+    pdf_extract_func, ["pypdf>=5.3.1,<6.0.0", "requests", "cryptography==43.0.3"]
+)
 
 
 # Extracts text from a PDF url and chunks it simultaneously
@@ -527,4 +529,6 @@ def pdf_chunk_func(src_obj_ref_rt: str, chunk_size: int, overlap_size: int) -> s
     return result_json
 
 
-pdf_chunk_def = FunctionDef(pdf_chunk_func, ["pypdf", "requests", "pypdf[crypto]"])
+pdf_chunk_def = FunctionDef(
+    pdf_chunk_func, ["pypdf>=5.3.1,<6.0.0", "requests", "cryptography==43.0.3"]
+)
