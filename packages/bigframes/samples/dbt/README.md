@@ -10,6 +10,8 @@ It includes basic configurations and sample models to help you get started quick
 - `dbt_project.yml`: configures your dbt project - **dbt_sample_project**.
 - `dbt_bigframes_code_sample_1.py`: An example to read BigQuery data and perform basic transformation.
 - `dbt_bigframes_code_sample_2.py`: An example to build an incremental model that leverages BigFrames UDF capabilities.
+- `prepare_table.py`: An ML example to consolidate various data sources into a single, unified table for later usage.
+- `prediction.py`: An ML example to train models and then generate predictions using the prepared table.
 
 ## Requirements
 
