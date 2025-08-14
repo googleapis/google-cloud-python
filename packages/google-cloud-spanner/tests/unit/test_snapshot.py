@@ -158,6 +158,7 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
             resume_token=resume_token,
             metadata=metadata,
             precommit_token=None,
+            _pb=None,
             spec=["value", "resume_token", "metadata", "precommit_token"],
         )
 

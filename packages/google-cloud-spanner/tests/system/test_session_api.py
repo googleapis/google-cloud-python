@@ -932,6 +932,8 @@ def test_transaction_read_and_insert_then_exception(sessions_database):
 def test_transaction_read_and_insert_or_update_then_commit(
     sessions_database,
     sessions_to_delete,
+    # TODO: Re-enable when the emulator returns pre-commit tokens for reads.
+    not_emulator,
 ):
     # [START spanner_test_dml_read_your_writes]
     sd = _sample_data
@@ -1586,7 +1588,11 @@ def _read_w_concurrent_update(transaction, pkey):
     transaction.update(COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, value + 1]])
 
 
-def test_transaction_read_w_concurrent_updates(sessions_database):
+def test_transaction_read_w_concurrent_updates(
+    sessions_database,
+    # TODO: Re-enable when the Emulator returns pre-commit tokens for streaming reads.
+    not_emulator,
+):
     pkey = "read_w_concurrent_updates"
     _transaction_concurrency_helper(sessions_database, _read_w_concurrent_update, pkey)
 

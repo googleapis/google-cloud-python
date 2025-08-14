@@ -328,14 +328,20 @@ class Transaction(_SnapshotBase, _BatchBase):
             # successfully commit, and must be retried with the new precommit token.
             # The mutations should not be included in the new request, and no further
             # retries or exception handling should be performed.
-            if commit_response_pb.precommit_token:
+            if commit_response_pb._pb.HasField("precommit_token"):
                 add_span_event(span, commit_retry_event_name)
+                nth_request = database._next_nth_request
                 commit_response_pb = api.commit(
                     request=CommitRequest(
                         precommit_token=commit_response_pb.precommit_token,
                         **common_commit_request_args,
                     ),
-                    metadata=metadata,
+                    metadata=database.metadata_with_request_id(
+                        nth_request,
+                        1,
+                        metadata,
+                        span,
+                    ),
                 )
 
             add_span_event(span, "Commit Done")
@@ -521,7 +527,7 @@ class Transaction(_SnapshotBase, _BatchBase):
         if is_inline_begin:
             self._lock.release()
 
-        if result_set_pb.precommit_token is not None:
+        if result_set_pb._pb.HasField("precommit_token"):
             self._update_for_precommit_token_pb(result_set_pb.precommit_token)
 
         return result_set_pb.stats.row_count_exact

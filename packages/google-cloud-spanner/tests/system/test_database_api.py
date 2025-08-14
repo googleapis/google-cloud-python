@@ -569,7 +569,10 @@ def test_db_run_in_transaction_then_snapshot_execute_sql(shared_database):
         batch.delete(sd.TABLE, sd.ALL)
 
     def _unit_of_work(transaction, test):
-        rows = list(transaction.read(test.TABLE, test.COLUMNS, sd.ALL))
+        # TODO: Remove query and execute a read instead when the Emulator has been fixed
+        #       and returns pre-commit tokens for streaming read results.
+        rows = list(transaction.execute_sql(sd.SQL))
+        # rows = list(transaction.read(test.TABLE, test.COLUMNS, sd.ALL))
         assert rows == []
 
         transaction.insert_or_update(test.TABLE, test.COLUMNS, test.ROW_DATA)
@@ -882,7 +885,10 @@ def test_db_run_in_transaction_w_max_commit_delay(shared_database):
         batch.delete(sd.TABLE, sd.ALL)
 
     def _unit_of_work(transaction, test):
-        rows = list(transaction.read(test.TABLE, test.COLUMNS, sd.ALL))
+        # TODO: Remove query and execute a read instead when the Emulator has been fixed
+        #       and returns pre-commit tokens for streaming read results.
+        rows = list(transaction.execute_sql(sd.SQL))
+        # rows = list(transaction.read(test.TABLE, test.COLUMNS, sd.ALL))
         assert rows == []
 
         transaction.insert_or_update(test.TABLE, test.COLUMNS, test.ROW_DATA)

@@ -533,7 +533,7 @@ class TestTransaction(OpenTelemetryBase):
             )
             commit.assert_any_call(
                 request=expected_retry_request,
-                metadata=base_metadata,
+                metadata=expected_retry_metadata,
             )
 
         if not HAS_OPENTELEMETRY_INSTALLED:

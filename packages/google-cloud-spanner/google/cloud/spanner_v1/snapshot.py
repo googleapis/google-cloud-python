@@ -133,7 +133,11 @@ def _restart_on_unavailable(
                 # Update the transaction from the response.
                 if transaction is not None:
                     transaction._update_for_result_set_pb(item)
-                if item.precommit_token is not None and transaction is not None:
+                if (
+                    item._pb is not None
+                    and item._pb.HasField("precommit_token")
+                    and transaction is not None
+                ):
                     transaction._update_for_precommit_token_pb(item.precommit_token)
 
                 if item.resume_token:
@@ -1029,7 +1033,7 @@ class _SnapshotBase(_SessionWrapper):
         if self._transaction_id is None and transaction_pb.id:
             self._transaction_id = transaction_pb.id
 
-        if transaction_pb.precommit_token:
+        if transaction_pb._pb.HasField("precommit_token"):
             self._update_for_precommit_token_pb_unsafe(transaction_pb.precommit_token)
 
     def _update_for_precommit_token_pb(
