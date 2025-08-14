@@ -517,6 +517,7 @@ class ShiftOp(UnaryWindowOp):
 
 @dataclasses.dataclass(frozen=True)
 class DiffOp(UnaryWindowOp):
+    name: ClassVar[str] = "diff"
     periods: int
 
     @property

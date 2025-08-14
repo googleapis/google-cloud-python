@@ -31,7 +31,7 @@ import bigframes.operations as ops
 
 @functools.singledispatch
 def compile_scalar_expression(
-    expression: expression.Expression,
+    expr: expression.Expression,
 ) -> sge.Expression:
     """Compiles BigFrames scalar expression into SQLGlot expression."""
     raise ValueError(f"Can't compile unrecognized node: {expression}")

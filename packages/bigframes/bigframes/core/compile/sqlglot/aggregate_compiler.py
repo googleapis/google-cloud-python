@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import sqlglot.expressions as sge
 
-from bigframes.core import expression
+from bigframes.core import expression, window_spec
 from bigframes.core.compile.sqlglot.aggregations import (
     binary_compiler,
     nullary_compiler,
@@ -56,3 +56,21 @@ def compile_aggregate(
         return binary_compiler.compile(aggregate.op, left, right)
     else:
         raise ValueError(f"Unexpected aggregation: {aggregate}")
+
+
+def compile_analytic(
+    aggregate: expression.Aggregation,
+    window: window_spec.WindowSpec,
+) -> sge.Expression:
+    if isinstance(aggregate, expression.NullaryAggregation):
+        return nullary_compiler.compile(aggregate.op)
+    if isinstance(aggregate, expression.UnaryAggregation):
+        column = typed_expr.TypedExpr(
+            scalar_compiler.compile_scalar_expression(aggregate.arg),
+            aggregate.arg.output_type,
+        )
+        return unary_compiler.compile(aggregate.op, column, window)
+    elif isinstance(aggregate, expression.BinaryAggregation):
+        raise NotImplementedError("binary analytic operations not yet supported")
+    else:
+        raise ValueError(f"Unexpected analytic operation: {aggregate}")

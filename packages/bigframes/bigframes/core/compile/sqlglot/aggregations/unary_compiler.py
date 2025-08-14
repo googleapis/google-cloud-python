@@ -18,6 +18,7 @@ import typing
 
 import sqlglot.expressions as sge
 
+from bigframes import dtypes
 from bigframes.core import window_spec
 import bigframes.core.compile.sqlglot.aggregations.op_registration as reg
 from bigframes.core.compile.sqlglot.aggregations.windows import apply_window_if_present
@@ -42,8 +43,11 @@ def _(
     column: typed_expr.TypedExpr,
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
+    expr = column.expr
+    if column.dtype == dtypes.BOOL_DTYPE:
+        expr = sge.Cast(this=column.expr, to="INT64")
     # Will be null if all inputs are null. Pandas defaults to zero sum though.
-    expr = apply_window_if_present(sge.func("SUM", column.expr), window)
+    expr = apply_window_if_present(sge.func("SUM", expr), window)
     return sge.func("IFNULL", expr, ir._literal(0, column.dtype))
 
 

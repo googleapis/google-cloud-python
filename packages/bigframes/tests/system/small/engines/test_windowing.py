@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud import bigquery
 import pytest
 
-from bigframes.core import array_value
-from bigframes.session import polars_executor
+from bigframes.core import array_value, expression, identifiers, nodes, window_spec
+import bigframes.operations.aggregations as agg_ops
+from bigframes.session import direct_gbq_execution, polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
 
 pytest.importorskip("polars")
@@ -31,3 +33,28 @@ def test_engines_with_offsets(
 ):
     result, _ = scalars_array_value.promote_offsets()
     assert_equivalence_execution(result.node, REFERENCE_ENGINE, engine)
+
+
+def test_engines_with_rows_window(
+    scalars_array_value: array_value.ArrayValue,
+    bigquery_client: bigquery.Client,
+):
+    window = window_spec.WindowSpec(
+        bounds=window_spec.RowsWindowBounds.from_window_size(3, "left"),
+    )
+    window_node = nodes.WindowOpNode(
+        child=scalars_array_value.node,
+        expression=expression.UnaryAggregation(
+            agg_ops.sum_op, expression.deref("int64_too")
+        ),
+        window_spec=window,
+        output_name=identifiers.ColumnId("sum_int64"),
+        never_skip_nulls=False,
+        skip_reproject_unsafe=False,
+    )
+
+    bq_executor = direct_gbq_execution.DirectGbqExecutor(bigquery_client)
+    bq_sqlgot_executor = direct_gbq_execution.DirectGbqExecutor(
+        bigquery_client, compiler="sqlglot"
+    )
+    assert_equivalence_execution(window_node, bq_executor, bq_sqlgot_executor)

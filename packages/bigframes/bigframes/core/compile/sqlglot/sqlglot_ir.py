@@ -409,6 +409,13 @@ class SQLGlotIR:
             new_expr = new_expr.where(condition, append=False)
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
+    def window(
+        self,
+        window_op: sge.Expression,
+        output_column_id: str,
+    ) -> SQLGlotIR:
+        return self.project(((output_column_id, window_op),))
+
     def insert(
         self,
         destination: bigquery.TableReference,
