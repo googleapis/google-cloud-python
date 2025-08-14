@@ -73,6 +73,51 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     )
 
 
+@BINARY_OP_REGISTRATION.register(ops.div_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    left_expr = left.expr
+    if left.dtype == dtypes.BOOL_DTYPE:
+        left_expr = sge.Cast(this=left_expr, to="INT64")
+    right_expr = right.expr
+    if right.dtype == dtypes.BOOL_DTYPE:
+        right_expr = sge.Cast(this=right_expr, to="INT64")
+
+    result = sge.func("IEEE_DIVIDE", left_expr, right_expr)
+    if left.dtype == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype):
+        return sge.Cast(this=sge.Floor(this=result), to="INT64")
+    else:
+        return result
+
+
+@BINARY_OP_REGISTRATION.register(ops.ge_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.GTE(this=left.expr, expression=right.expr)
+
+
+@BINARY_OP_REGISTRATION.register(ops.JSONSet)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.func("JSON_SET", left.expr, sge.convert(op.json_path), right.expr)
+
+
+@BINARY_OP_REGISTRATION.register(ops.mul_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    left_expr = left.expr
+    if left.dtype == dtypes.BOOL_DTYPE:
+        left_expr = sge.Cast(this=left_expr, to="INT64")
+    right_expr = right.expr
+    if right.dtype == dtypes.BOOL_DTYPE:
+        right_expr = sge.Cast(this=right_expr, to="INT64")
+
+    result = sge.Mul(this=left_expr, expression=right_expr)
+
+    if (dtypes.is_numeric(left.dtype) and right.dtype == dtypes.TIMEDELTA_DTYPE) or (
+        left.dtype == dtypes.TIMEDELTA_DTYPE and dtypes.is_numeric(right.dtype)
+    ):
+        return sge.Cast(this=sge.Floor(this=result), to="INT64")
+    else:
+        return result
+
+
 @BINARY_OP_REGISTRATION.register(ops.sub_op)
 def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     if dtypes.is_numeric(left.dtype) and dtypes.is_numeric(right.dtype):
@@ -113,13 +158,3 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     raise TypeError(
         f"Cannot subtract type {left.dtype} and {right.dtype}. {constants.FEEDBACK_LINK}"
     )
-
-
-@BINARY_OP_REGISTRATION.register(ops.ge_op)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    return sge.GTE(this=left.expr, expression=right.expr)
-
-
-@BINARY_OP_REGISTRATION.register(ops.JSONSet)
-def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
-    return sge.func("JSON_SET", left.expr, sge.convert(op.json_path), right.expr)

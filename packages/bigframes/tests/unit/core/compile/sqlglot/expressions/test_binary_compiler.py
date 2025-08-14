@@ -82,6 +82,26 @@ def test_add_unsupported_raises(scalar_types_df: bpd.DataFrame):
         _apply_binary_op(scalar_types_df, ops.add_op, "int64_col", "string_col")
 
 
+def test_div_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_div_int"] = bf_df["int64_col"] / bf_df["int64_col"]
+    bf_df["int_div_1"] = bf_df["int64_col"] / 1
+
+    bf_df["int_div_bool"] = bf_df["int64_col"] / bf_df["bool_col"]
+    bf_df["bool_div_int"] = bf_df["bool_col"] / bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_div_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col", "int64_col"]]
+    timedelta = pd.Timedelta(1, unit="d")
+    bf_df["timedelta_div_numeric"] = timedelta / bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
 def test_json_set(json_types_df: bpd.DataFrame, snapshot):
     bf_df = json_types_df[["json_col"]]
     sql = _apply_binary_op(
@@ -122,3 +142,25 @@ def test_sub_unsupported_raises(scalar_types_df: bpd.DataFrame):
 
     with pytest.raises(TypeError):
         _apply_binary_op(scalar_types_df, ops.sub_op, "int64_col", "string_col")
+
+
+def test_mul_numeric(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "bool_col"]]
+
+    bf_df["int_mul_int"] = bf_df["int64_col"] * bf_df["int64_col"]
+    bf_df["int_mul_1"] = bf_df["int64_col"] * 1
+
+    bf_df["int_mul_bool"] = bf_df["int64_col"] * bf_df["bool_col"]
+    bf_df["bool_mul_int"] = bf_df["bool_col"] * bf_df["int64_col"]
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_mul_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["timestamp_col", "int64_col"]]
+    timedelta = pd.Timedelta(1, unit="d")
+
+    bf_df["timedelta_mul_numeric"] = timedelta * bf_df["int64_col"]
+    bf_df["numeric_mul_timedelta"] = bf_df["int64_col"] * timedelta
+
+    snapshot.assert_match(bf_df.sql, "out.sql")
