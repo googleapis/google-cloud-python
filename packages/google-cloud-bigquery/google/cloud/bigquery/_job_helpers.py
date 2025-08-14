@@ -561,6 +561,9 @@ def query_and_wait(
             query=query,
             total_bytes_processed=query_results.total_bytes_processed,
             slot_millis=query_results.slot_millis,
+            created=query_results.created,
+            started=query_results.started,
+            ended=query_results.ended,
         )
 
     if job_retry is not None:

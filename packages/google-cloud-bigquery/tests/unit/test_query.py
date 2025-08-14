@@ -2016,6 +2016,54 @@ class Test_QueryResults(unittest.TestCase):
         query = self._make_one(resource)
         self.assertEqual(query.slot_millis, 123456)
 
+    def test_created_missing(self):
+        query = self._make_one(self._make_resource())
+        self.assertIsNone(query.created)
+
+    def test_created_present_integer(self):
+        resource = self._make_resource()
+        resource["creationTime"] = 1437767599006
+        query = self._make_one(resource)
+        self.assertEqual(query.created.timestamp() * 1000, 1437767599006)
+
+    def test_created_present_string(self):
+        resource = self._make_resource()
+        resource["creationTime"] = "1437767599006"
+        query = self._make_one(resource)
+        self.assertEqual(query.created.timestamp() * 1000, 1437767599006)
+
+    def test_started_missing(self):
+        query = self._make_one(self._make_resource())
+        self.assertIsNone(query.started)
+
+    def test_started_present_integer(self):
+        resource = self._make_resource()
+        resource["startTime"] = 1437767599006
+        query = self._make_one(resource)
+        self.assertEqual(query.started.timestamp() * 1000, 1437767599006)
+
+    def test_started_present_string(self):
+        resource = self._make_resource()
+        resource["startTime"] = "1437767599006"
+        query = self._make_one(resource)
+        self.assertEqual(query.started.timestamp() * 1000, 1437767599006)
+
+    def test_ended_missing(self):
+        query = self._make_one(self._make_resource())
+        self.assertIsNone(query.ended)
+
+    def test_ended_present_integer(self):
+        resource = self._make_resource()
+        resource["endTime"] = 1437767599006
+        query = self._make_one(resource)
+        self.assertEqual(query.ended.timestamp() * 1000, 1437767599006)
+
+    def test_ended_present_string(self):
+        resource = self._make_resource()
+        resource["endTime"] = "1437767599006"
+        query = self._make_one(resource)
+        self.assertEqual(query.ended.timestamp() * 1000, 1437767599006)
+
     def test_num_dml_affected_rows_missing(self):
         query = self._make_one(self._make_resource())
         self.assertIsNone(query.num_dml_affected_rows)

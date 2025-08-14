@@ -889,6 +889,9 @@ class TestQueryJob(_Base):
         job_resource_done = self._make_resource(started=True, ended=True, location="EU")
         job_resource_done["statistics"]["query"]["totalBytesProcessed"] = str(1234)
         job_resource_done["statistics"]["query"]["totalSlotMs"] = str(5678)
+        job_resource_done["statistics"]["creationTime"] = str(11)
+        job_resource_done["statistics"]["startTime"] = str(22)
+        job_resource_done["statistics"]["endTime"] = str(33)
         job_resource_done["configuration"]["query"]["destinationTable"] = {
             "projectId": "dest-project",
             "datasetId": "dest_dataset",
@@ -971,6 +974,9 @@ class TestQueryJob(_Base):
         self.assertEqual(result.query, job.query)
         self.assertEqual(result.total_bytes_processed, 1234)
         self.assertEqual(result.slot_millis, 5678)
+        self.assertEqual(result.created.timestamp() * 1000, 11)
+        self.assertEqual(result.started.timestamp() * 1000, 22)
+        self.assertEqual(result.ended.timestamp() * 1000, 33)
 
         query_results_path = f"/projects/{self.PROJECT}/queries/{self.JOB_ID}"
         query_results_call = mock.call(

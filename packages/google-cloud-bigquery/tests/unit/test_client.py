@@ -5719,6 +5719,9 @@ class TestClient(unittest.TestCase):
             "queryId": "job_abcDEF_",
             "totalBytesProcessed": 1234,
             "totalSlotMs": 5678,
+            "creationTime": "1437767599006",
+            "startTime": "1437767600007",
+            "endTime": "1437767601008",
         }
         creds = _make_credentials()
         http = object()
@@ -5737,6 +5740,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(rows.query, query)
         self.assertEqual(rows.total_bytes_processed, 1234)
         self.assertEqual(rows.slot_millis, 5678)
+        self.assertEqual(rows.created.timestamp() * 1000, 1437767599006)
+        self.assertEqual(rows.started.timestamp() * 1000, 1437767600007)
+        self.assertEqual(rows.ended.timestamp() * 1000, 1437767601008)
 
         # Verify the request we send is to jobs.query.
         conn.api_request.assert_called_once()

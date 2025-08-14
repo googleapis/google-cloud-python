@@ -1788,7 +1788,15 @@ class RowIterator(HTTPIterator):
         query (Optional[str]):
             The query text used.
         total_bytes_processed (Optional[int]):
-            total bytes processed from job statistics, if present.
+            If representing query results, the total bytes processed by the associated query.
+        slot_millis (Optional[int]):
+            If representing query results, the number of slot ms billed for the associated query.
+        created (Optional[datetime.datetime]):
+            If representing query results, the creation time of the associated query.
+        started (Optional[datetime.datetime]):
+            If representing query results, the start time of the associated query.
+        ended (Optional[datetime.datetime]):
+            If representing query results, the end time of the associated query.
     """
 
     def __init__(
@@ -1813,6 +1821,9 @@ class RowIterator(HTTPIterator):
         query: Optional[str] = None,
         total_bytes_processed: Optional[int] = None,
         slot_millis: Optional[int] = None,
+        created: Optional[datetime.datetime] = None,
+        started: Optional[datetime.datetime] = None,
+        ended: Optional[datetime.datetime] = None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1843,6 +1854,9 @@ class RowIterator(HTTPIterator):
         self._query = query
         self._total_bytes_processed = total_bytes_processed
         self._slot_millis = slot_millis
+        self._job_created = created
+        self._job_started = started
+        self._job_ended = ended
 
     @property
     def _billing_project(self) -> Optional[str]:
@@ -1904,6 +1918,21 @@ class RowIterator(HTTPIterator):
     def slot_millis(self) -> Optional[int]:
         """Number of slot ms the user is actually billed for."""
         return self._slot_millis
+
+    @property
+    def created(self) -> Optional[datetime.datetime]:
+        """If representing query results, the creation time of the associated query."""
+        return self._job_created
+
+    @property
+    def started(self) -> Optional[datetime.datetime]:
+        """If representing query results, the start time of the associated query."""
+        return self._job_started
+
+    @property
+    def ended(self) -> Optional[datetime.datetime]:
+        """If representing query results, the end time of the associated query."""
+        return self._job_ended
 
     def _is_almost_completely_cached(self):
         """Check if all results are completely cached.

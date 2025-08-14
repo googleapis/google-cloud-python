@@ -1287,7 +1287,7 @@ class _QueryResults(object):
         """Total number of slot ms the user is actually billed for.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.slot_millis
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.total_slot_ms
 
         Returns:
             Optional[int]: Count generated on the server (None until set by the server).
@@ -1309,6 +1309,56 @@ class _QueryResults(object):
         num_dml_affected_rows = self._properties.get("numDmlAffectedRows")
         if num_dml_affected_rows is not None:
             return int(num_dml_affected_rows)
+
+    @property
+    def created(self):
+        """Creation time of this query.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.creation_time
+
+        Returns:
+            Optional[datetime.datetime]:
+                the creation time (None until set from the server).
+        """
+        millis = self._properties.get("creationTime")
+        if millis is not None:
+            return _helpers._datetime_from_microseconds(int(millis) * 1000.0)
+
+    @property
+    def started(self):
+        """Start time of this query.
+
+        This field will be present when the query transitions from the
+        PENDING state to either RUNNING or DONE.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.start_time
+
+        Returns:
+            Optional[datetime.datetime]:
+                the start time (None until set from the server).
+        """
+        millis = self._properties.get("startTime")
+        if millis is not None:
+            return _helpers._datetime_from_microseconds(int(millis) * 1000.0)
+
+    @property
+    def ended(self):
+        """End time of this query.
+
+        This field will be present whenever a query is in the DONE state.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.end_time
+
+        Returns:
+            Optional[datetime.datetime]:
+                the end time (None until set from the server).
+        """
+        millis = self._properties.get("endTime")
+        if millis is not None:
+            return _helpers._datetime_from_microseconds(int(millis) * 1000.0)
 
     @property
     def rows(self):
