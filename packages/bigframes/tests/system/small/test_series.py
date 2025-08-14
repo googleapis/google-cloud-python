@@ -1339,6 +1339,18 @@ def test_reset_index_drop(scalars_df_index, scalars_pandas_df_index):
     pd.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
 
 
+def test_series_reset_index_inplace(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.sort_index(ascending=False)["float64_col"]
+    bf_result.reset_index(drop=True, inplace=True)
+    pd_result = scalars_pandas_df_index.sort_index(ascending=False)["float64_col"]
+    pd_result.reset_index(drop=True, inplace=True)
+
+    # BigQuery DataFrames default indices use nullable Int64 always
+    pd_result.index = pd_result.index.astype("Int64")
+
+    pd.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
+
+
 @pytest.mark.parametrize(
     ("name",),
     [

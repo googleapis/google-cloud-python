@@ -387,25 +387,39 @@ class Block:
             index_labels=self.index.names,
         )
 
-    def reset_index(self, drop: bool = True) -> Block:
+    def reset_index(self, level: LevelsType = None, drop: bool = True) -> Block:
         """Reset the index of the block, promoting the old index to a value column.
 
         Arguments:
+            level: the label or index level of the index levels to remove.
             name: this is the column id for the new value id derived from the old index
 
         Returns:
             A new Block because dropping index columns can break references
             from Index classes that point to this block.
         """
+        if level:
+            # preserve original order, not user provided order
+            level_ids: Sequence[str] = [
+                id for id in self.index_columns if id in self.index.resolve_level(level)
+            ]
+        else:
+            level_ids = self.index_columns
+
         expr = self._expr
-        if (
+        if set(self.index_columns) > set(level_ids):
+            new_index_cols = [col for col in self.index_columns if col not in level_ids]
+            new_index_labels = [self.col_id_to_index_name[id] for id in new_index_cols]
+        elif (
             self.session._default_index_type
             == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
         ):
             expr, new_index_col_id = expr.promote_offsets()
             new_index_cols = [new_index_col_id]
+            new_index_labels = [None]
         elif self.session._default_index_type == bigframes.enums.DefaultIndexKind.NULL:
             new_index_cols = []
+            new_index_labels = []
         else:
             raise ValueError(
                 f"Unrecognized default index kind: {self.session._default_index_type}"
@@ -415,22 +429,23 @@ class Block:
             # Even though the index might be part of the ordering, keep that
             # ordering expression as reset_index shouldn't change the row
             # order.
-            expr = expr.drop_columns(self.index_columns)
+            expr = expr.drop_columns(level_ids)
             return Block(
                 expr,
                 index_columns=new_index_cols,
+                index_labels=new_index_labels,
                 column_labels=self.column_labels,
             )
         else:
             # Add index names to column index
-            index_labels = self.index.names
             column_labels_modified = self.column_labels
-            for level, label in enumerate(index_labels):
+            for position, level_id in enumerate(level_ids):
+                label = self.col_id_to_index_name[level_id]
                 if label is None:
-                    if "index" not in self.column_labels and len(index_labels) <= 1:
+                    if "index" not in self.column_labels and self.index.nlevels <= 1:
                         label = "index"
                     else:
-                        label = f"level_{level}"
+                        label = f"level_{self.index_columns.index(level_id)}"
 
                 if label in self.column_labels:
                     raise ValueError(f"cannot insert {label}, already exists")
@@ -439,11 +454,12 @@ class Block:
                     label = tuple(label if i == 0 else "" for i in range(nlevels))
                 # Create index copy with label inserted
                 # See: https://pandas.pydata.org/docs/reference/api/pandas.Index.insert.html
-                column_labels_modified = column_labels_modified.insert(level, label)
+                column_labels_modified = column_labels_modified.insert(position, label)
 
             return Block(
-                expr,
+                expr.select_columns((*new_index_cols, *level_ids, *self.value_columns)),
                 index_columns=new_index_cols,
+                index_labels=new_index_labels,
                 column_labels=column_labels_modified,
             )
 

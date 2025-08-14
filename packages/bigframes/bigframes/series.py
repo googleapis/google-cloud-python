@@ -406,17 +406,59 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             return False
         return block_ops.equals(self._block, other._block)
 
+    @overload  # type: ignore[override]
+    def reset_index(
+        self,
+        level: blocks.LevelsType = ...,
+        *,
+        name: typing.Optional[str] = ...,
+        drop: Literal[False] = ...,
+        inplace: Literal[False] = ...,
+    ) -> bigframes.dataframe.DataFrame:
+        ...
+
+    @overload
+    def reset_index(
+        self,
+        level: blocks.LevelsType = ...,
+        *,
+        name: typing.Optional[str] = ...,
+        drop: Literal[True] = ...,
+        inplace: Literal[False] = ...,
+    ) -> Series:
+        ...
+
+    @overload
+    def reset_index(
+        self,
+        level: blocks.LevelsType = ...,
+        *,
+        name: typing.Optional[str] = ...,
+        drop: bool = ...,
+        inplace: Literal[True] = ...,
+    ) -> None:
+        ...
+
     @validations.requires_ordering()
     def reset_index(
         self,
+        level: blocks.LevelsType = None,
         *,
         name: typing.Optional[str] = None,
         drop: bool = False,
-    ) -> bigframes.dataframe.DataFrame | Series:
-        block = self._block.reset_index(drop)
+        inplace: bool = False,
+    ) -> bigframes.dataframe.DataFrame | Series | None:
+        block = self._block.reset_index(level, drop)
         if drop:
+            if inplace:
+                self._set_block(block)
+                return None
             return Series(block)
         else:
+            if inplace:
+                raise ValueError(
+                    "Series.reset_index cannot combine inplace=True and drop=False"
+                )
             if name:
                 block = block.assign_label(self._value_column, name)
             return bigframes.dataframe.DataFrame(block)

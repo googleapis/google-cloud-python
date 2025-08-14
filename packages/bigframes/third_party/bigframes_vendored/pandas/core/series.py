@@ -321,9 +321,11 @@ class Series(NDFrame):  # type: ignore[misc]
 
     def reset_index(
         self,
+        level=None,
         *,
         drop: bool = False,
         name=pd_ext.no_default,
+        inplace: bool = False,
     ) -> DataFrame | Series | None:
         """
         Generate a new DataFrame or Series with the index reset.
@@ -399,6 +401,9 @@ class Series(NDFrame):  # type: ignore[misc]
             [4 rows x 3 columns]
 
         Args:
+            level (int, str, tuple, or list, default optional):
+                For a Series with a MultiIndex, only remove the specified levels
+                from the index. Removes all levels by default.
             drop (bool, default False):
                 Just reset the index, without inserting it as a column in
                 the new DataFrame.
@@ -406,6 +411,8 @@ class Series(NDFrame):  # type: ignore[misc]
                 The name to use for the column containing the original Series
                 values. Uses ``self.name`` by default. This argument is ignored
                 when `drop` is True.
+            inplace (bool, default False):
+                Modify the Series in place (do not create a new object).
 
         Returns:
             bigframes.pandas.Series or bigframes.pandas.DataFrame or None:

@@ -2070,6 +2070,26 @@ def test_reset_index(scalars_df_index, scalars_pandas_df_index, drop):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+@pytest.mark.parametrize(
+    ("drop",),
+    ((True,), (False,)),
+)
+def test_reset_index_inplace(scalars_df_index, scalars_pandas_df_index, drop):
+    df = scalars_df_index.copy()
+    df.reset_index(drop=drop, inplace=True)
+    assert df.index.name is None
+
+    bf_result = df.to_pandas()
+    pd_result = scalars_pandas_df_index.copy()
+    pd_result.reset_index(drop=drop, inplace=True)
+
+    # Pandas uses int64 instead of Int64 (nullable) dtype.
+    pd_result.index = pd_result.index.astype(pd.Int64Dtype())
+
+    # reset_index should maintain the original ordering.
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
 def test_reset_index_then_filter(
     scalars_df_index,
     scalars_pandas_df_index,

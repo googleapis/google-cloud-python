@@ -1657,13 +1657,11 @@ def test_reset_index_with_unnamed_index(
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
-def test_reset_index_with_unnamed_multiindex(
-    scalars_df_index,
-    scalars_pandas_df_index,
-):
+def test_reset_index_with_unnamed_multiindex(session):
     bf_df = dataframe.DataFrame(
         ([1, 2, 3], [2, 5, 7]),
         index=pd.MultiIndex.from_tuples([("a", "aa"), ("a", "aa")]),
+        session=session,
     )
     pd_df = pd.DataFrame(
         ([1, 2, 3], [2, 5, 7]),

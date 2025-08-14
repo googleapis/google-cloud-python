@@ -1601,8 +1601,10 @@ class DataFrame(generic.NDFrame):
 
     def reset_index(
         self,
+        level=None,
         *,
         drop: bool = False,
+        inplace: bool = False,
     ) -> DataFrame | None:
         """Reset the index.
 
@@ -1696,9 +1698,14 @@ class DataFrame(generic.NDFrame):
 
 
         Args:
+            level (int, str, tuple, or list, default None):
+                Only remove the given levels from the index. Removes all levels by
+                default.
             drop (bool, default False):
                 Do not try to insert index into dataframe columns. This resets
                 the index to the default integer index.
+            inplace (bool, default False):
+                Whether to modify the DataFrame rather than creating a new one.
 
         Returns:
             bigframes.pandas.DataFrame: DataFrame with the new index.
