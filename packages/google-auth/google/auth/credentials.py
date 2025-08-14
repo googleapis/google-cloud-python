@@ -18,6 +18,7 @@
 import abc
 from enum import Enum
 import os
+from typing import List
 
 from google.auth import _helpers, environment_vars
 from google.auth import exceptions
@@ -27,7 +28,7 @@ from google.auth._default import _LOGGER
 from google.auth._refresh_worker import RefreshThreadManager
 
 DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
-NO_OP_TRUST_BOUNDARY_LOCATIONS: list[str] = []
+NO_OP_TRUST_BOUNDARY_LOCATIONS: List[str] = []
 NO_OP_TRUST_BOUNDARY_ENCODED_LOCATIONS = "0x0"
 
 
@@ -434,13 +435,12 @@ class CredentialsWithTrustBoundary(Credentials):
     def _has_no_op_trust_boundary(self):
         # A no-op trust boundary is indicated by encodedLocations being "0x0".
         # The "locations" list may or may not be present as an empty list.
-        if (
-            self._trust_boundary is not None
-            and self._trust_boundary["encodedLocations"]
+        if self._trust_boundary is None:
+            return False
+        return (
+            self._trust_boundary.get("encodedLocations")
             == NO_OP_TRUST_BOUNDARY_ENCODED_LOCATIONS
-        ):
-            return True
-        return False
+        )
 
 
 class AnonymousCredentials(Credentials):
