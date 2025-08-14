@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.57.0](https://github.com/googleapis/python-spanner/compare/v3.56.0...v3.57.0) (2025-08-14)
+
+
+### Features
+
+* Support configuring logger in dbapi kwargs ([#1400](https://github.com/googleapis/python-spanner/issues/1400)) ([ffa5c9e](https://github.com/googleapis/python-spanner/commit/ffa5c9e627583ab0635dcaa5512b6e034d811d86))
+
 ## [3.56.0](https://github.com/googleapis/python-spanner/compare/v3.55.0...v3.56.0) (2025-07-24)
 
 
