@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import threading
 from typing import List, Optional, Sequence
 import uuid
 
@@ -40,18 +41,29 @@ class AnonymousDatasetManager(temporary_storage.TemporaryStorageManager):
     ):
         self.bqclient = bqclient
         self._location = location
-        self.dataset = bf_io_bigquery.create_bq_dataset_reference(
-            self.bqclient,
-            location=self._location,
-        )
 
         self.session_id = session_id
         self._table_ids: List[bigquery.TableReference] = []
         self._kms_key = kms_key
 
+        self._dataset_lock = threading.Lock()
+        self._datset_ref: Optional[bigquery.DatasetReference] = None
+
     @property
     def location(self):
         return self._location
+
+    @property
+    def dataset(self) -> bigquery.DatasetReference:
+        if self._datset_ref is not None:
+            return self._datset_ref
+        with self._dataset_lock:
+            if self._datset_ref is None:
+                self._datset_ref = bf_io_bigquery.create_bq_dataset_reference(
+                    self.bqclient,
+                    location=self._location,
+                )
+        return self._datset_ref
 
     def _default_expiration(self):
         """When should the table expire automatically?"""
