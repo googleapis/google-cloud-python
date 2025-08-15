@@ -4031,18 +4031,27 @@ class PrivatePoolV1Config(proto.Message):
         r"""Defines the configuration to be used for creating workers in
         the pool.
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             machine_type (str):
-                Machine type of a worker, such as ``e2-medium``. See `Worker
-                pool config
+                Optional. Machine type of a worker, such as ``e2-medium``.
+                See `Worker pool config
                 file <https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema>`__.
                 If left blank, Cloud Build will use a sensible default.
             disk_size_gb (int):
                 Size of the disk attached to the worker, in GB. See `Worker
                 pool config
                 file <https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema>`__.
-                Specify a value of up to 2000. If ``0`` is specified, Cloud
+                Specify a value of up to 4000. If ``0`` is specified, Cloud
                 Build will use a standard disk size.
+            enable_nested_virtualization (bool):
+                Optional. Enable nested virtualization on the
+                worker, if supported by the machine type. By
+                default, nested virtualization is disabled.
+
+                This field is a member of `oneof`_ ``_enable_nested_virtualization``.
         """
 
         machine_type: str = proto.Field(
@@ -4052,6 +4061,11 @@ class PrivatePoolV1Config(proto.Message):
         disk_size_gb: int = proto.Field(
             proto.INT64,
             number=2,
+        )
+        enable_nested_virtualization: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+            optional=True,
         )
 
     class NetworkConfig(proto.Message):
