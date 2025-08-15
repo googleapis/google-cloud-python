@@ -364,7 +364,7 @@ def handle_generate(
     logger.info("'generate' command executed.")
 
 
-def _run_nox_sessions(sessions: List[str], librarian: str):
+def _run_nox_sessions(sessions: List[str], librarian: str, repo: str):
     """Calls nox for all specified sessions.
 
     Args:
@@ -377,12 +377,12 @@ def _run_nox_sessions(sessions: List[str], librarian: str):
         request_data = _read_json_file(f"{librarian}/{BUILD_REQUEST_FILE}")
         library_id = _get_library_id(request_data)
         for nox_session in sessions:
-            _run_individual_session(nox_session, library_id)
+            _run_individual_session(nox_session, library_id, repo)
     except Exception as e:
         raise ValueError(f"Failed to run the nox session: {current_session}") from e
 
 
-def _run_individual_session(nox_session: str, library_id: str):
+def _run_individual_session(nox_session: str, library_id: str, repo: str):
     """
     Calls nox with the specified sessions.
 
@@ -396,13 +396,13 @@ def _run_individual_session(nox_session: str, library_id: str):
         "-s",
         nox_session,
         "-f",
-        f"{REPO_DIR}/packages/{library_id}",
+        f"{repo}/packages/{library_id}/noxfile.py",
     ]
     result = subprocess.run(command, text=True, check=True)
     logger.info(result)
 
 
-def handle_build(librarian: str = LIBRARIAN_DIR):
+def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
     """The main coordinator for validating client library generation."""
     sessions = [
         "unit-3.9",
@@ -417,7 +417,7 @@ def handle_build(librarian: str = LIBRARIAN_DIR):
         "mypy",
         "check_lower_bounds",
     ]
-    _run_nox_sessions(sessions, librarian)
+    _run_nox_sessions(sessions, librarian, repo)
 
     logger.info("'build' command executed.")
 
@@ -466,6 +466,12 @@ if __name__ == "__main__": # pragma: NO COVER
             help="Path to the directory in the container which contains API protos",
             default=SOURCE_DIR,
         )
+        parser_cmd.add_argument(
+            "--repo",
+            type=str,
+            help="Path to the directory in the container which contains google-cloud-python repository",
+            default=SOURCE_DIR,
+        )
     if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
@@ -481,6 +487,6 @@ if __name__ == "__main__": # pragma: NO COVER
             input=args.input,
         )
     elif args.command == "build":
-        args.func(librarian=args.librarian)
+        args.func(librarian=args.librarian, repo=args.repo)
     else:
         args.func()
