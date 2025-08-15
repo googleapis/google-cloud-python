@@ -19,7 +19,7 @@ from sqlalchemy.testing import (
     is_false,
 )
 from google.cloud.spanner_v1 import (
-    BatchCreateSessionsRequest,
+    CreateSessionRequest,
     ExecuteSqlRequest,
     ResultSet,
     ResultSetStats,
@@ -59,7 +59,7 @@ class TestFloat32(MockServerTestBase):
 
             requests = self.spanner_service.requests
             eq_(4, len(requests))
-            is_instance_of(requests[0], BatchCreateSessionsRequest)
+            is_instance_of(requests[0], CreateSessionRequest)
             is_instance_of(requests[1], BeginTransactionRequest)
             is_instance_of(requests[2], ExecuteSqlRequest)
             is_instance_of(requests[3], CommitRequest)

@@ -256,6 +256,11 @@ class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
             assert isinstance(typ, LargeBinary)
             eq_(typ.length, 20)
 
+    @testing.requires.table_reflection
+    def test_string_length_reflection(self, connection, metadata):
+        typ = self._type_round_trip(connection, metadata, types.String(52))[0]
+        assert isinstance(typ, types.String)
+
 
 class ComputedReflectionFixtureTest(_ComputedReflectionFixtureTest):
     @classmethod
@@ -2574,6 +2579,12 @@ class IsOrIsNotDistinctFromTest(_IsOrIsNotDistinctFromTest):
 @pytest.mark.skip("Spanner doesn't bizarre characters in foreign key names")
 class BizarroCharacterFKResolutionTest(fixtures.TestBase):
     pass
+
+
+class BizarroCharacterTest(fixtures.TestBase):
+    @pytest.mark.skip("Bizarre characters in foreign key names are not supported")
+    def test_fk_ref(self, testing_engine):
+        pass
 
 
 class IsolationLevelTest(fixtures.TestBase):

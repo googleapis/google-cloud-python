@@ -16,8 +16,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
-    FixedSizePool,
-    BatchCreateSessionsRequest,
+    CreateSessionRequest,
     ExecuteSqlRequest,
     CommitRequest,
     BeginTransactionRequest,
@@ -41,10 +40,7 @@ class TestIsolationLevel(MockServerTestBase):
         from test.mockserver_tests.isolation_level_model import Singer
 
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(engine) as session:
             singer = Singer(name="Test")
@@ -60,7 +56,7 @@ class TestIsolationLevel(MockServerTestBase):
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
         engine = create_engine(
             "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
+            connect_args={"client": self.client, "logger": MockServerTestBase.logger},
             isolation_level="REPEATABLE READ",
         )
 
@@ -74,10 +70,7 @@ class TestIsolationLevel(MockServerTestBase):
         from test.mockserver_tests.isolation_level_model import Singer
 
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(
             engine.execution_options(isolation_level="repeatable read")
@@ -93,7 +86,7 @@ class TestIsolationLevel(MockServerTestBase):
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
         engine = create_engine(
             "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
+            connect_args={"client": self.client, "logger": MockServerTestBase.logger},
             isolation_level="REPEATABLE READ",
         )
 
@@ -113,7 +106,7 @@ class TestIsolationLevel(MockServerTestBase):
             "spanner:///projects/p/instances/i/databases/d",
             connect_args={
                 "client": self.client,
-                "pool": FixedSizePool(size=10),
+                "logger": MockServerTestBase.logger,
                 "ignore_transaction_warnings": True,
             },
         )
@@ -130,7 +123,7 @@ class TestIsolationLevel(MockServerTestBase):
         # Verify the requests that we got.
         requests = self.spanner_service.requests
         eq_(3, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], ExecuteSqlRequest)
         is_instance_of(requests[2], CommitRequest)
         execute_request: ExecuteSqlRequest = requests[1]
@@ -147,10 +140,7 @@ class TestIsolationLevel(MockServerTestBase):
     def test_invalid_isolation_level(self):
         from test.mockserver_tests.isolation_level_model import Singer
 
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
         with pytest.raises(ValueError):
             with Session(engine.execution_options(isolation_level="foo")) as session:
                 singer = Singer(name="Test")
@@ -161,7 +151,7 @@ class TestIsolationLevel(MockServerTestBase):
         # Verify the requests that we got.
         requests = self.spanner_service.requests
         eq_(4, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], BeginTransactionRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         is_instance_of(requests[3], CommitRequest)

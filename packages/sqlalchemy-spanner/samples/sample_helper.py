@@ -49,7 +49,7 @@ def start_emulator() -> (DockerContainer, str):
     ).with_exposed_ports(9010)
     emulator.start()
     wait_for_logs(emulator, "gRPC server listening at 0.0.0.0:9010")
-    port = emulator.get_exposed_port(9010)
+    port = str(emulator.get_exposed_port(9010))
     _create_instance_and_database(port)
     return emulator, port
 

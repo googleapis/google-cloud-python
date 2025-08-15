@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from sqlalchemy import (
@@ -32,11 +33,9 @@ from sqlalchemy import (
 from sqlalchemy.orm import Session, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
-    FixedSizePool,
-    BatchCreateSessionsRequest,
+    CreateSessionRequest,
     ExecuteSqlRequest,
     ResultSet,
-    PingingPool,
     TypeCode,
 )
 from test.mockserver_tests.mock_server_test_base import (
@@ -58,7 +57,7 @@ class TestBasics(MockServerTestBase):
         eq_(1, len(result_list))
         requests = self.spanner_service.requests
         eq_(2, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], ExecuteSqlRequest)
 
     def test_select1(self):
@@ -69,10 +68,7 @@ class TestBasics(MockServerTestBase):
 
     def test_sqlalchemy_select1(self):
         add_select1_result()
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": PingingPool(size=10)},
-        )
+        engine = self.create_engine()
         with engine.connect().execution_options(
             isolation_level="AUTOCOMMIT"
         ) as connection:
@@ -92,10 +88,7 @@ class TestBasics(MockServerTestBase):
             TypeCode.TIMESTAMP,
             [(iso_now,)],
         )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": PingingPool(size=10)},
-        )
+        engine = self.create_engine()
         with engine.connect().execution_options(
             isolation_level="AUTOCOMMIT"
         ) as connection:
@@ -111,10 +104,7 @@ LIMIT 1
 """,
             ResultSet(),
         )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
         metadata = MetaData()
         Table(
             "users",
@@ -148,10 +138,7 @@ LIMIT 1
 """,
             ResultSet(),
         )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
         metadata = MetaData()
         Table(
             "users",
@@ -190,10 +177,7 @@ LIMIT 1
 """,
                 ResultSet(),
             )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
         metadata = MetaData()
         for i in range(2):
             Table(
@@ -224,7 +208,7 @@ LIMIT 1
             "spanner:///projects/p/instances/i/databases/d",
             connect_args={
                 "client": self.client,
-                "pool": PingingPool(size=10),
+                "logger": MockServerTestBase.logger,
                 "ignore_transaction_warnings": True,
             },
         )
@@ -258,10 +242,7 @@ LIMIT 1
         update = "UPDATE singers SET name=@a0 WHERE singers.id = @a1"
         add_update_count(update, 1)
 
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(engine) as session:
             singer = (
@@ -277,7 +258,7 @@ LIMIT 1
             "spanner:///projects/p/instances/i/databases/d",
             connect_args={
                 "client": self.client,
-                "pool": FixedSizePool(size=10),
+                "logger": MockServerTestBase.logger,
                 "database_role": "my_role",
             },
         )
@@ -285,10 +266,10 @@ LIMIT 1
             session.execute(select(1))
         requests = self.spanner_service.requests
         eq_(2, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], ExecuteSqlRequest)
-        request: BatchCreateSessionsRequest = requests[0]
-        eq_("my_role", request.session_template.creator_role)
+        request: CreateSessionRequest = requests[0]
+        eq_("my_role", request.session.creator_role)
 
     def test_select_table_in_named_schema(self):
         class Base(DeclarativeBase):
@@ -309,10 +290,7 @@ LIMIT 1
             " LIMIT @a1"
         )
         add_singer_query_result(query)
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         insert = "INSERT INTO my_schema.singers (name) VALUES (@a0) THEN RETURN id"
         add_single_result(insert, "id", TypeCode.INT64, [("1",)])

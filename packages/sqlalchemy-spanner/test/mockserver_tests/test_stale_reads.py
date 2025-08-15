@@ -13,12 +13,11 @@
 # limitations under the License.
 
 import datetime
-from sqlalchemy import create_engine, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
-    FixedSizePool,
-    BatchCreateSessionsRequest,
+    CreateSessionRequest,
     ExecuteSqlRequest,
     BeginTransactionRequest,
     TransactionOptions,
@@ -34,11 +33,7 @@ class TestStaleReads(MockServerTestBase):
         from test.mockserver_tests.stale_read_model import Singer
 
         add_singer_query_result("SELECT singers.id, singers.name \nFROM singers")
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            echo=True,
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         timestamp = datetime.datetime.fromtimestamp(1733328910)
         for i in range(2):
@@ -55,7 +50,7 @@ class TestStaleReads(MockServerTestBase):
         # Verify the requests that we got.
         requests = self.spanner_service.requests
         eq_(7, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], BeginTransactionRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         is_instance_of(requests[3], ExecuteSqlRequest)
@@ -83,11 +78,7 @@ class TestStaleReads(MockServerTestBase):
         from test.mockserver_tests.stale_read_model import Singer
 
         add_singer_query_result("SELECT singers.id, singers.name \nFROM singers")
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            echo=True,
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(
             engine.execution_options(
@@ -102,7 +93,7 @@ class TestStaleReads(MockServerTestBase):
         # Verify the requests that we got.
         requests = self.spanner_service.requests
         eq_(3, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], ExecuteSqlRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         # Verify that the requests use a stale read.

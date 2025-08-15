@@ -48,6 +48,7 @@ docs/_build
 docs.metadata
 
 # Virtual environment
+.venv/
 env/
 coverage.xml
 sponge_log.xml
@@ -60,3 +61,4 @@ pylintrc
 pylintrc.test
 
 test.cfg
+database

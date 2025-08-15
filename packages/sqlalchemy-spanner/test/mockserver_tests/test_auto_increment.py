@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
-    FixedSizePool,
     ResultSet,
-    BatchCreateSessionsRequest,
+    CreateSessionRequest,
     ExecuteSqlRequest,
     CommitRequest,
     BeginTransactionRequest,
@@ -45,10 +43,7 @@ LIMIT 1
 """,
             ResultSet(),
         )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests
         eq_(1, len(requests))
@@ -74,10 +69,7 @@ LIMIT 1
 """,
             ResultSet(),
         )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
         engine.dialect.use_auto_increment = True
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests
@@ -103,10 +95,7 @@ LIMIT 1
 """,
             ResultSet(),
         )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
         engine.dialect.default_sequence_kind = "non_existing_kind"
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests
@@ -126,10 +115,7 @@ LIMIT 1
         from test.mockserver_tests.auto_increment_model import Singer
 
         self.add_insert_result("INSERT INTO singers (name) VALUES (@a0) THEN RETURN id")
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(engine) as session:
             singer = Singer(name="Test")
@@ -141,7 +127,7 @@ LIMIT 1
         # Verify the requests that we got.
         requests = self.spanner_service.requests
         eq_(4, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], BeginTransactionRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         is_instance_of(requests[3], CommitRequest)
@@ -152,10 +138,7 @@ LIMIT 1
         # SQLAlchemy should not use a THEN RETURN clause when a value for the
         # primary key has been set on the model.
         add_update_count("INSERT INTO singers (id, name) VALUES (@a0, @a1)", 1)
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(engine) as session:
             # Manually specify a value for the primary key.

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import logging
 
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from sqlalchemy import Engine, create_engine
@@ -22,7 +23,6 @@ from google.auth.credentials import AnonymousCredentials
 from google.cloud.spanner_v1 import (
     Client,
     ResultSet,
-    PingingPool,
     TypeCode,
 )
 from google.cloud.spanner_v1.database import Database
@@ -131,9 +131,12 @@ class MockServerTestBase(fixtures.TestBase):
     spanner_service: SpannerServicer = None
     database_admin_service: DatabaseAdminServicer = None
     port: int = None
+    logger: logging.Logger = None
 
     @classmethod
     def setup_class(cls):
+        MockServerTestBase.logger = logging.getLogger("level warning")
+        MockServerTestBase.logger.setLevel(logging.WARN)
         (
             MockServerTestBase.server,
             MockServerTestBase.spanner_service,
@@ -151,6 +154,7 @@ class MockServerTestBase(fixtures.TestBase):
         self._client = None
         self._instance = None
         self._database = None
+        _ = self.database
 
     def teardown_method(self):
         MockServerTestBase.spanner_service.clear_requests()
@@ -159,7 +163,7 @@ class MockServerTestBase(fixtures.TestBase):
     def create_engine(self) -> Engine:
         return create_engine(
             "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": PingingPool(size=10)},
+            connect_args={"client": self.client, "logger": MockServerTestBase.logger},
         )
 
     @property
@@ -177,13 +181,13 @@ class MockServerTestBase(fixtures.TestBase):
     @property
     def instance(self) -> Instance:
         if self._instance is None:
-            self._instance = self.client.instance("test-instance")
+            self._instance = self.client.instance("i")
         return self._instance
 
     @property
     def database(self) -> Database:
+        logger = logging.getLogger("level warning")
+        logger.setLevel(logging.WARN)
         if self._database is None:
-            self._database = self.instance.database(
-                "test-database", pool=PingingPool(size=10)
-            )
+            self._database = self.instance.database("d", logger=logger)
         return self._database

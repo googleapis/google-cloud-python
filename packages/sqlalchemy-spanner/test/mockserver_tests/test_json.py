@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import create_engine, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
-    FixedSizePool,
     ResultSet,
-    BatchCreateSessionsRequest,
+    CreateSessionRequest,
     ExecuteSqlRequest,
     CommitRequest,
     BeginTransactionRequest,
@@ -47,10 +46,7 @@ LIMIT 1
 """,
             ResultSet(),
         )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests
         eq_(1, len(requests))
@@ -83,10 +79,7 @@ LIMIT 1
         add_update_count(
             "INSERT INTO venues (id, name, description) VALUES (@a0, @a1, @a2)", 1
         )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(engine) as session:
             venue = Venue(id=1, name="Test", description=description)
@@ -96,7 +89,7 @@ LIMIT 1
         # Verify the requests that we got.
         requests = self.spanner_service.requests
         eq_(4, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], BeginTransactionRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         is_instance_of(requests[3], CommitRequest)
@@ -126,10 +119,7 @@ LIMIT 1
 
         sql = "SELECT venues.id, venues.name, venues.description \n" "FROM venues"
         add_venue_query_result(sql, description)
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(engine.execution_options(read_only=True)) as session:
             venue = session.execute(select(Venue)).first()[0]

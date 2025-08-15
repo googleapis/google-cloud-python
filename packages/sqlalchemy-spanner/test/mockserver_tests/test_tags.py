@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import create_engine, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
-    FixedSizePool,
-    BatchCreateSessionsRequest,
+    CreateSessionRequest,
     ExecuteSqlRequest,
     BeginTransactionRequest,
     CommitRequest,
@@ -36,10 +35,7 @@ class TestStaleReads(MockServerTestBase):
         from test.mockserver_tests.tags_model import Singer
 
         add_singer_query_result("SELECT singers.id, singers.name \n" + "FROM singers")
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(engine.execution_options(read_only=True)) as session:
             # Execute two queries in a read-only transaction.
@@ -53,7 +49,7 @@ class TestStaleReads(MockServerTestBase):
         # Verify the requests that we got.
         requests = self.spanner_service.requests
         eq_(4, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], BeginTransactionRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         is_instance_of(requests[3], ExecuteSqlRequest)
@@ -71,10 +67,7 @@ class TestStaleReads(MockServerTestBase):
             "WHERE singers.id = @a0"
         )
         add_update_count("INSERT INTO singers (id, name) VALUES (@a0, @a1)", 1)
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
 
         with Session(
             engine.execution_options(transaction_tag="my-transaction-tag")
@@ -91,7 +84,7 @@ class TestStaleReads(MockServerTestBase):
         # Verify the requests that we got.
         requests = self.spanner_service.requests
         eq_(6, len(requests))
-        is_instance_of(requests[0], BatchCreateSessionsRequest)
+        is_instance_of(requests[0], CreateSessionRequest)
         is_instance_of(requests[1], BeginTransactionRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         is_instance_of(requests[3], ExecuteSqlRequest)

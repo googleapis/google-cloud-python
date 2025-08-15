@@ -16,7 +16,7 @@ from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_v1 import (
     ResultSet,
     ResultSetStats,
-    BatchCreateSessionsRequest,
+    CreateSessionRequest,
     ExecuteBatchDmlRequest,
     CommitRequest,
     BeginTransactionRequest,
@@ -116,7 +116,7 @@ LIMIT 1""",
 
             requests = self.spanner_service.requests
             eq_(5, len(requests))
-            is_instance_of(requests[0], BatchCreateSessionsRequest)
+            is_instance_of(requests[0], CreateSessionRequest)
             is_instance_of(requests[1], BeginTransactionRequest)
             is_instance_of(requests[2], ExecuteBatchDmlRequest)
             is_instance_of(requests[3], ExecuteBatchDmlRequest)

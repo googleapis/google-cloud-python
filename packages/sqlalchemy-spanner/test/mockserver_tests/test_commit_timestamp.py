@@ -12,12 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import create_engine
 from sqlalchemy.testing import eq_, is_instance_of
-from google.cloud.spanner_v1 import (
-    FixedSizePool,
-    ResultSet,
-)
+from google.cloud.spanner_v1 import ResultSet
 from test.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
@@ -45,10 +41,7 @@ LIMIT 1
                 LIMIT 1""",
             ResultSet(),
         )
-        engine = create_engine(
-            "spanner:///projects/p/instances/i/databases/d",
-            connect_args={"client": self.client, "pool": FixedSizePool(size=10)},
-        )
+        engine = self.create_engine()
         Base.metadata.create_all(engine)
         requests = self.database_admin_service.requests
         eq_(1, len(requests))
