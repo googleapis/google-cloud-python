@@ -347,6 +347,26 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     )
 
 
+@UNARY_OP_REGISTRATION.register(ops.iso_day_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Extract(this=sge.Identifier(this="DAYOFWEEK"), expression=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.iso_week_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Extract(this=sge.Identifier(this="ISOWEEK"), expression=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.iso_year_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Extract(this=sge.Identifier(this="ISOYEAR"), expression=expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.isnull_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Is(this=expr.expr, expression=sge.Null())
+
+
 @UNARY_OP_REGISTRATION.register(ops.isnumeric_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.RegexpLike(this=expr.expr, expression=sge.convert(r"^\pN+$"))
@@ -445,6 +465,21 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return sge.TimestampTrunc(this=expr.expr, unit=sge.Identifier(this="DAY"))
 
 
+@UNARY_OP_REGISTRATION.register(ops.notnull_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.Not(this=sge.Is(this=expr.expr, expression=sge.Null()))
+
+
+@UNARY_OP_REGISTRATION.register(ops.obj_fetch_metadata_op)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("OBJ.FETCH_METADATA", expr.expr)
+
+
+@UNARY_OP_REGISTRATION.register(ops.ObjGetAccessUrl)
+def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
+    return sge.func("OBJ.GET_ACCESS_URL", expr.expr)
+
+
 @UNARY_OP_REGISTRATION.register(ops.pos_op)
 def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
     return expr.expr
@@ -486,31 +521,6 @@ def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
 @UNARY_OP_REGISTRATION.register(ops.StrStripOp)
 def _(op: ops.StrStripOp, expr: TypedExpr) -> sge.Expression:
     return sge.Trim(this=sge.convert(op.to_strip), expression=expr.expr)
-
-
-@UNARY_OP_REGISTRATION.register(ops.iso_day_op)
-def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
-    return sge.Extract(this=sge.Identifier(this="DAYOFWEEK"), expression=expr.expr)
-
-
-@UNARY_OP_REGISTRATION.register(ops.iso_week_op)
-def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
-    return sge.Extract(this=sge.Identifier(this="ISOWEEK"), expression=expr.expr)
-
-
-@UNARY_OP_REGISTRATION.register(ops.iso_year_op)
-def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
-    return sge.Extract(this=sge.Identifier(this="ISOYEAR"), expression=expr.expr)
-
-
-@UNARY_OP_REGISTRATION.register(ops.isnull_op)
-def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
-    return sge.Is(this=expr.expr, expression=sge.Null())
-
-
-@UNARY_OP_REGISTRATION.register(ops.notnull_op)
-def _(op: ops.base_ops.UnaryOp, expr: TypedExpr) -> sge.Expression:
-    return sge.Not(this=sge.Is(this=expr.expr, expression=sge.Null()))
 
 
 @UNARY_OP_REGISTRATION.register(ops.sin_op)
@@ -626,7 +636,6 @@ def _(op: ops.UnixSeconds, expr: TypedExpr) -> sge.Expression:
     return sge.func("UNIX_SECONDS", expr.expr)
 
 
-# JSON Ops
 @UNARY_OP_REGISTRATION.register(ops.JSONExtract)
 def _(op: ops.JSONExtract, expr: TypedExpr) -> sge.Expression:
     return sge.func("JSON_EXTRACT", expr.expr, sge.convert(op.json_path))

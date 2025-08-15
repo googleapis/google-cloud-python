@@ -158,3 +158,8 @@ def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
     raise TypeError(
         f"Cannot subtract type {left.dtype} and {right.dtype}. {constants.FEEDBACK_LINK}"
     )
+
+
+@BINARY_OP_REGISTRATION.register(ops.obj_make_ref_op)
+def _(op, left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    return sge.func("OBJ.MAKE_REF", left.expr, right.expr)

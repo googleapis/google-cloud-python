@@ -405,6 +405,18 @@ def test_normalize(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_obj_fetch_metadata(scalar_types_df: bpd.DataFrame, snapshot):
+    blob_s = scalar_types_df["string_col"].str.to_blob()
+    sql = blob_s.blob.version().to_frame().sql
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_obj_get_access_url(scalar_types_df: bpd.DataFrame, snapshot):
+    blob_s = scalar_types_df["string_col"].str.to_blob()
+    sql = blob_s.blob.read_url().to_frame().sql
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_pos(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["float64_col"]]
     sql = _apply_unary_op(bf_df, ops.pos_op, "float64_col")

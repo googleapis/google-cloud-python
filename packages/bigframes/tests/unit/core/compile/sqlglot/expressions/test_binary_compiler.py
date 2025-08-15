@@ -164,3 +164,8 @@ def test_mul_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df["numeric_mul_timedelta"] = bf_df["int64_col"] * timedelta
 
     snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_obj_make_ref(scalar_types_df: bpd.DataFrame, snapshot):
+    blob_df = scalar_types_df["string_col"].str.to_blob()
+    snapshot.assert_match(blob_df.to_frame().sql, "out.sql")
