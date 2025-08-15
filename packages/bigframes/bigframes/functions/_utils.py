@@ -25,6 +25,7 @@ import cloudpickle
 import google.api_core.exceptions
 from google.cloud import bigquery, functions_v2
 import numpy
+from packaging.requirements import Requirement
 import pandas
 import pyarrow
 
@@ -63,6 +64,16 @@ def get_remote_function_locations(bq_location):
     return bq_location, cloud_function_region
 
 
+def _package_existed(package_requirements: list[str], package: str) -> bool:
+    """Checks if a package (regardless of version) exists in a given list."""
+    if not package_requirements:
+        return False
+
+    return Requirement(package).name in {
+        Requirement(req).name for req in package_requirements
+    }
+
+
 def get_updated_package_requirements(
     package_requirements=None,
     is_row_processor=False,
@@ -96,13 +107,16 @@ def get_updated_package_requirements(
             requirements.append(f"pyarrow=={pyarrow.__version__}")
             requirements.append(f"numpy=={numpy.__version__}")
 
-    # TODO(b/435023957): Fix the issue of potential duplicate package versions
-    # when `package_requirements` also contains `pandas/pyarrow/numpy`.
-    if package_requirements:
-        requirements.extend(package_requirements)
+    if not requirements:
+        return package_requirements
 
-    requirements = sorted(requirements)
-    return requirements
+    if not package_requirements:
+        package_requirements = []
+    for package in requirements:
+        if not _package_existed(package_requirements, package):
+            package_requirements.append(package)
+
+    return sorted(package_requirements)
 
 
 def clean_up_by_session_id(

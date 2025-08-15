@@ -113,8 +113,8 @@ class FunctionConflictTypeHintWarning(UserWarning):
 
 class FunctionPackageVersionWarning(PreviewWarning):
     """
-    Managed UDF package versions for Numpy, Pandas, and Pyarrow may not
-    precisely match users' local environment or the exact versions specified.
+    Warns that package versions in remote function or managed function may not
+    match local or specified versions, which might cause unexpected behavior.
     """
 
 
