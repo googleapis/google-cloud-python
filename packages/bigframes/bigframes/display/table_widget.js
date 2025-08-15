@@ -88,7 +88,9 @@ function render({ model, el }) {
 		const totalPages = Math.ceil(rowCount / pageSize);
 
 		rowCountLabel.textContent = `${rowCount.toLocaleString()} total rows`;
-		paginationLabel.textContent = `Page ${currentPage + 1} of ${totalPages || 1}`;
+		paginationLabel.textContent = `Page ${(
+			currentPage + 1
+		).toLocaleString()} of ${(totalPages || 1).toLocaleString()}`;
 		prevPage.disabled = currentPage === 0;
 		nextPage.disabled = currentPage >= totalPages - 1;
 		pageSizeSelect.value = pageSize;
