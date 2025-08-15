@@ -411,7 +411,7 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
         "unit-3.12",
         "unit-3.13",
         "docs",
-        "system",
+        "system-3.13",
         "lint",
         "lint_setup_py",
         "mypy",
