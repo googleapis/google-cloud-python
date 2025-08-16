@@ -48,27 +48,29 @@ class ProcessorVersion(proto.Message):
         display_name (str):
             The display name of the processor version.
         document_schema (google.cloud.documentai_v1.types.DocumentSchema):
-            The schema of the processor version.
-            Describes the output.
+            Output only. The schema of the processor
+            version. Describes the output.
         state (google.cloud.documentai_v1.types.ProcessorVersion.State):
             Output only. The state of the processor
             version.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time the processor version was created.
+            Output only. The time the processor version
+            was created.
         latest_evaluation (google.cloud.documentai_v1.types.EvaluationReference):
-            The most recently invoked evaluation for the
-            processor version.
+            Output only. The most recently invoked
+            evaluation for the processor version.
         kms_key_name (str):
-            The KMS key name used for encryption.
+            Output only. The KMS key name used for
+            encryption.
         kms_key_version_name (str):
-            The KMS key version with which data is
-            encrypted.
+            Output only. The KMS key version with which
+            data is encrypted.
         google_managed (bool):
             Output only. Denotes that this ``ProcessorVersion`` is
             managed by Google.
         deprecation_info (google.cloud.documentai_v1.types.ProcessorVersion.DeprecationInfo):
-            If set, information about the eventual
-            deprecation of this version.
+            Output only. If set, information about the
+            eventual deprecation of this version.
         model_type (google.cloud.documentai_v1.types.ProcessorVersion.ModelType):
             Output only. The model type of this processor
             version.
@@ -367,7 +369,8 @@ class Processor(proto.Message):
             Output only. Immutable. The http endpoint
             that can be called to invoke processing.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time the processor was created.
+            Output only. The time the processor was
+            created.
         kms_key_name (str):
             The `KMS
             key <https://cloud.google.com/security-key-management>`__
