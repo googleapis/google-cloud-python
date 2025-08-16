@@ -71,35 +71,35 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.run_v2.services.services import pagers
-from google.cloud.run_v2.types import condition, revision_template
-from google.cloud.run_v2.types import service
-from google.cloud.run_v2.types import service as gcr_service
-from google.cloud.run_v2.types import traffic_target, vendor_settings
+from google.cloud.run_v2.services.worker_pools import pagers
+from google.cloud.run_v2.types import condition, instance_split, vendor_settings
+from google.cloud.run_v2.types import worker_pool
+from google.cloud.run_v2.types import worker_pool as gcr_worker_pool
+from google.cloud.run_v2.types import worker_pool_revision_template
 
-from .transports.base import DEFAULT_CLIENT_INFO, ServicesTransport
-from .transports.grpc import ServicesGrpcTransport
-from .transports.grpc_asyncio import ServicesGrpcAsyncIOTransport
-from .transports.rest import ServicesRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, WorkerPoolsTransport
+from .transports.grpc import WorkerPoolsGrpcTransport
+from .transports.grpc_asyncio import WorkerPoolsGrpcAsyncIOTransport
+from .transports.rest import WorkerPoolsRestTransport
 
 
-class ServicesClientMeta(type):
-    """Metaclass for the Services client.
+class WorkerPoolsClientMeta(type):
+    """Metaclass for the WorkerPools client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[ServicesTransport]]
-    _transport_registry["grpc"] = ServicesGrpcTransport
-    _transport_registry["grpc_asyncio"] = ServicesGrpcAsyncIOTransport
-    _transport_registry["rest"] = ServicesRestTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[WorkerPoolsTransport]]
+    _transport_registry["grpc"] = WorkerPoolsGrpcTransport
+    _transport_registry["grpc_asyncio"] = WorkerPoolsGrpcAsyncIOTransport
+    _transport_registry["rest"] = WorkerPoolsRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[ServicesTransport]:
+    ) -> Type[WorkerPoolsTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -118,8 +118,8 @@ class ServicesClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class ServicesClient(metaclass=ServicesClientMeta):
-    """Cloud Run Service Control Plane API"""
+class WorkerPoolsClient(metaclass=WorkerPoolsClientMeta):
+    """Cloud Run WorkerPool Control Plane API."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -171,7 +171,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ServicesClient: The constructed client.
+            WorkerPoolsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -189,7 +189,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            ServicesClient: The constructed client.
+            WorkerPoolsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -198,60 +198,14 @@ class ServicesClient(metaclass=ServicesClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> ServicesTransport:
+    def transport(self) -> WorkerPoolsTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            ServicesTransport: The transport used by the client
+            WorkerPoolsTransport: The transport used by the client
                 instance.
         """
         return self._transport
-
-    @staticmethod
-    def build_path(
-        project: str,
-        location: str,
-        build: str,
-    ) -> str:
-        """Returns a fully-qualified build string."""
-        return "projects/{project}/locations/{location}/builds/{build}".format(
-            project=project,
-            location=location,
-            build=build,
-        )
-
-    @staticmethod
-    def parse_build_path(path: str) -> Dict[str, str]:
-        """Parses a build path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/builds/(?P<build>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def build_worker_pool_path(
-        project: str,
-        location: str,
-        worker_pool: str,
-    ) -> str:
-        """Returns a fully-qualified build_worker_pool string."""
-        return (
-            "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
-                project=project,
-                location=location,
-                worker_pool=worker_pool,
-            )
-        )
-
-    @staticmethod
-    def parse_build_worker_pool_path(path: str) -> Dict[str, str]:
-        """Parses a build_worker_pool path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/workerPools/(?P<worker_pool>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
 
     @staticmethod
     def connector_path(
@@ -400,23 +354,25 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def service_path(
+    def worker_pool_path(
         project: str,
         location: str,
-        service: str,
+        worker_pool: str,
     ) -> str:
-        """Returns a fully-qualified service string."""
-        return "projects/{project}/locations/{location}/services/{service}".format(
-            project=project,
-            location=location,
-            service=service,
+        """Returns a fully-qualified worker_pool string."""
+        return (
+            "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
+                project=project,
+                location=location,
+                worker_pool=worker_pool,
+            )
         )
 
     @staticmethod
-    def parse_service_path(path: str) -> Dict[str, str]:
-        """Parses a service path into its component segments."""
+    def parse_worker_pool_path(path: str) -> Dict[str, str]:
+        """Parses a worker_pool path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/services/(?P<service>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/workerPools/(?P<worker_pool>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -640,14 +596,14 @@ class ServicesClient(metaclass=ServicesClientMeta):
         elif use_mtls_endpoint == "always" or (
             use_mtls_endpoint == "auto" and client_cert_source
         ):
-            _default_universe = ServicesClient._DEFAULT_UNIVERSE
+            _default_universe = WorkerPoolsClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
                 raise MutualTLSChannelError(
                     f"mTLS is not supported in any universe other than {_default_universe}."
                 )
-            api_endpoint = ServicesClient.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = WorkerPoolsClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = ServicesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+            api_endpoint = WorkerPoolsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
                 UNIVERSE_DOMAIN=universe_domain
             )
         return api_endpoint
@@ -668,7 +624,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         Raises:
             ValueError: If the universe domain is an empty string.
         """
-        universe_domain = ServicesClient._DEFAULT_UNIVERSE
+        universe_domain = WorkerPoolsClient._DEFAULT_UNIVERSE
         if client_universe_domain is not None:
             universe_domain = client_universe_domain
         elif universe_domain_env is not None:
@@ -740,12 +696,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[str, ServicesTransport, Callable[..., ServicesTransport]]
+            Union[str, WorkerPoolsTransport, Callable[..., WorkerPoolsTransport]]
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the services client.
+        """Instantiates the worker pools client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -753,10 +709,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Optional[Union[str,ServicesTransport,Callable[..., ServicesTransport]]]):
+            transport (Optional[Union[str,WorkerPoolsTransport,Callable[..., WorkerPoolsTransport]]]):
                 The transport to use, or a Callable that constructs and returns a new transport.
                 If a Callable is given, it will be called with the same set of initialization
-                arguments as used in the ServicesTransport constructor.
+                arguments as used in the WorkerPoolsTransport constructor.
                 If set to None, a transport is chosen automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
                 Custom options for the client.
@@ -809,11 +765,11 @@ class ServicesClient(metaclass=ServicesClientMeta):
             self._use_client_cert,
             self._use_mtls_endpoint,
             self._universe_domain_env,
-        ) = ServicesClient._read_environment_variables()
-        self._client_cert_source = ServicesClient._get_client_cert_source(
+        ) = WorkerPoolsClient._read_environment_variables()
+        self._client_cert_source = WorkerPoolsClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = ServicesClient._get_universe_domain(
+        self._universe_domain = WorkerPoolsClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
         self._api_endpoint = None  # updated below, depending on `transport`
@@ -834,9 +790,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, ServicesTransport)
+        transport_provided = isinstance(transport, WorkerPoolsTransport)
         if transport_provided:
-            # transport is a ServicesTransport instance.
+            # transport is a WorkerPoolsTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -847,10 +803,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
                     "When providing a transport instance, provide its scopes "
                     "directly."
                 )
-            self._transport = cast(ServicesTransport, transport)
+            self._transport = cast(WorkerPoolsTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = self._api_endpoint or ServicesClient._get_api_endpoint(
+        self._api_endpoint = self._api_endpoint or WorkerPoolsClient._get_api_endpoint(
             self._client_options.api_endpoint,
             self._client_cert_source,
             self._universe_domain,
@@ -868,11 +824,11 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 )
 
             transport_init: Union[
-                Type[ServicesTransport], Callable[..., ServicesTransport]
+                Type[WorkerPoolsTransport], Callable[..., WorkerPoolsTransport]
             ] = (
-                ServicesClient.get_transport_class(transport)
+                WorkerPoolsClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(Callable[..., ServicesTransport], transport)
+                else cast(Callable[..., WorkerPoolsTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -892,9 +848,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 std_logging.DEBUG
             ):  # pragma: NO COVER
                 _LOGGER.debug(
-                    "Created client `google.cloud.run_v2.ServicesClient`.",
+                    "Created client `google.cloud.run_v2.WorkerPoolsClient`.",
                     extra={
-                        "serviceName": "google.cloud.run.v2.Services",
+                        "serviceName": "google.cloud.run.v2.WorkerPools",
                         "universeDomain": getattr(
                             self._transport._credentials, "universe_domain", ""
                         ),
@@ -905,23 +861,23 @@ class ServicesClient(metaclass=ServicesClientMeta):
                     }
                     if hasattr(self._transport, "_credentials")
                     else {
-                        "serviceName": "google.cloud.run.v2.Services",
+                        "serviceName": "google.cloud.run.v2.WorkerPools",
                         "credentialsType": None,
                     },
                 )
 
-    def create_service(
+    def create_worker_pool(
         self,
-        request: Optional[Union[gcr_service.CreateServiceRequest, dict]] = None,
+        request: Optional[Union[gcr_worker_pool.CreateWorkerPoolRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        service: Optional[gcr_service.Service] = None,
-        service_id: Optional[str] = None,
+        worker_pool: Optional[gcr_worker_pool.WorkerPool] = None,
+        worker_pool_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Creates a new Service in a given project and
+        r"""Creates a new WorkerPool in a given project and
         location.
 
         .. code-block:: python
@@ -935,18 +891,18 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_create_service():
+            def sample_create_worker_pool():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsClient()
 
                 # Initialize request argument(s)
-                request = run_v2.CreateServiceRequest(
+                request = run_v2.CreateWorkerPoolRequest(
                     parent="parent_value",
-                    service_id="service_id_value",
+                    worker_pool_id="worker_pool_id_value",
                 )
 
                 # Make the request
-                operation = client.create_service(request=request)
+                operation = client.create_worker_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -956,35 +912,33 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.CreateServiceRequest, dict]):
+            request (Union[google.cloud.run_v2.types.CreateWorkerPoolRequest, dict]):
                 The request object. Request message for creating a
-                Service.
+                WorkerPool.
             parent (str):
-                Required. The location and project in
-                which this service should be created.
-                Format:
-                projects/{project}/locations/{location},
-                where {project} can be project id or
-                number. Only lowercase characters,
-                digits, and hyphens.
+                Required. The location and project in which this worker
+                pool should be created. Format:
+                ``projects/{project}/locations/{location}``, where
+                ``{project}`` can be project id or number. Only
+                lowercase characters, digits, and hyphens.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            service (google.cloud.run_v2.types.Service):
-                Required. The Service instance to
+            worker_pool (google.cloud.run_v2.types.WorkerPool):
+                Required. The WorkerPool instance to
                 create.
 
-                This corresponds to the ``service`` field
+                This corresponds to the ``worker_pool`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            service_id (str):
-                Required. The unique identifier for the Service. It must
-                begin with letter, and cannot end with hyphen; must
-                contain fewer than 50 characters. The name of the
-                service becomes {parent}/services/{service_id}.
+            worker_pool_id (str):
+                Required. The unique identifier for the WorkerPool. It
+                must begin with letter, and cannot end with hyphen; must
+                contain fewer than 50 characters. The name of the worker
+                pool becomes ``{parent}/workerPools/{worker_pool_id}``.
 
-                This corresponds to the ``service_id`` field
+                This corresponds to the ``worker_pool_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -999,9 +953,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Service` Service acts as a top-level container that manages a set of
+                The result type for the operation will be :class:`google.cloud.run_v2.types.WorkerPool` WorkerPool acts as a top-level container that manages a set of
                    configurations and revision templates which implement
-                   a network service. Service exists to provide a
+                   a pull-based workload. WorkerPool exists to provide a
                    singular abstraction which can be access controlled,
                    reasoned about, and which encapsulates software
                    lifecycle decisions such as rollout policy and team
@@ -1011,7 +965,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [parent, service, service_id]
+        flattened_params = [parent, worker_pool, worker_pool_id]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1023,20 +977,20 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcr_service.CreateServiceRequest):
-            request = gcr_service.CreateServiceRequest(request)
+        if not isinstance(request, gcr_worker_pool.CreateWorkerPoolRequest):
+            request = gcr_worker_pool.CreateWorkerPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
                 request.parent = parent
-            if service is not None:
-                request.service = service
-            if service_id is not None:
-                request.service_id = service_id
+            if worker_pool is not None:
+                request.worker_pool = worker_pool
+            if worker_pool_id is not None:
+                request.worker_pool_id = worker_pool_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_service]
+        rpc = self._transport._wrapped_methods[self._transport.create_worker_pool]
 
         header_params = {}
 
@@ -1067,23 +1021,23 @@ class ServicesClient(metaclass=ServicesClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            gcr_service.Service,
-            metadata_type=gcr_service.Service,
+            gcr_worker_pool.WorkerPool,
+            metadata_type=gcr_worker_pool.WorkerPool,
         )
 
         # Done; return the response.
         return response
 
-    def get_service(
+    def get_worker_pool(
         self,
-        request: Optional[Union[service.GetServiceRequest, dict]] = None,
+        request: Optional[Union[worker_pool.GetWorkerPoolRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> service.Service:
-        r"""Gets information about a Service.
+    ) -> worker_pool.WorkerPool:
+        r"""Gets information about a WorkerPool.
 
         .. code-block:: python
 
@@ -1096,31 +1050,29 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_get_service():
+            def sample_get_worker_pool():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsClient()
 
                 # Initialize request argument(s)
-                request = run_v2.GetServiceRequest(
+                request = run_v2.GetWorkerPoolRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_service(request=request)
+                response = client.get_worker_pool(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.GetServiceRequest, dict]):
+            request (Union[google.cloud.run_v2.types.GetWorkerPoolRequest, dict]):
                 The request object. Request message for obtaining a
-                Service by its full name.
+                WorkerPool by its full name.
             name (str):
-                Required. The full name of the
-                Service. Format:
-                projects/{project}/locations/{location}/services/{service},
-                where {project} can be project id or
-                number.
+                Required. The full name of the WorkerPool. Format:
+                ``projects/{project}/locations/{location}/workerPools/{worker_pool}``,
+                where ``{project}`` can be project id or number.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1134,16 +1086,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.run_v2.types.Service:
-                Service acts as a top-level container
-                that manages a set of configurations and
-                revision templates which implement a
-                network service. Service exists to
-                provide a singular abstraction which can
-                be access controlled, reasoned about,
-                and which encapsulates software
-                lifecycle decisions such as rollout
-                policy and team resource ownership.
+            google.cloud.run_v2.types.WorkerPool:
+                WorkerPool acts as a top-level
+                container that manages a set of
+                configurations and revision templates
+                which implement a pull-based workload.
+                WorkerPool exists to provide a singular
+                abstraction which can be access
+                controlled, reasoned about, and which
+                encapsulates software lifecycle
+                decisions such as rollout policy and
+                team resource ownership.
 
         """
         # Create or coerce a protobuf request object.
@@ -1161,8 +1114,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, service.GetServiceRequest):
-            request = service.GetServiceRequest(request)
+        if not isinstance(request, worker_pool.GetWorkerPoolRequest):
+            request = worker_pool.GetWorkerPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1170,7 +1123,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_service]
+        rpc = self._transport._wrapped_methods[self._transport.get_worker_pool]
 
         header_params = {}
 
@@ -1200,17 +1153,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Done; return the response.
         return response
 
-    def list_services(
+    def list_worker_pools(
         self,
-        request: Optional[Union[service.ListServicesRequest, dict]] = None,
+        request: Optional[Union[worker_pool.ListWorkerPoolsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListServicesPager:
-        r"""Lists Services. Results are sorted by creation time,
-        descending.
+    ) -> pagers.ListWorkerPoolsPager:
+        r"""Lists WorkerPools. Results are sorted by creation
+        time, descending.
 
         .. code-block:: python
 
@@ -1223,34 +1176,32 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_list_services():
+            def sample_list_worker_pools():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsClient()
 
                 # Initialize request argument(s)
-                request = run_v2.ListServicesRequest(
+                request = run_v2.ListWorkerPoolsRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_services(request=request)
+                page_result = client.list_worker_pools(request=request)
 
                 # Handle the response
                 for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.ListServicesRequest, dict]):
+            request (Union[google.cloud.run_v2.types.ListWorkerPoolsRequest, dict]):
                 The request object. Request message for retrieving a list
-                of Services.
+                of WorkerPools.
             parent (str):
-                Required. The location and project to
-                list resources on. Location must be a
-                valid Google Cloud region, and cannot be
-                the "-" wildcard. Format:
-                projects/{project}/locations/{location},
-                where {project} can be project id or
-                number.
+                Required. The location and project to list resources on.
+                Location must be a valid Google Cloud region, and cannot
+                be the "-" wildcard. Format:
+                ``projects/{project}/locations/{location}``, where
+                ``{project}`` can be project id or number.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1264,9 +1215,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.run_v2.services.services.pagers.ListServicesPager:
+            google.cloud.run_v2.services.worker_pools.pagers.ListWorkerPoolsPager:
                 Response message containing a list of
-                Services.
+                WorkerPools.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1287,8 +1238,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, service.ListServicesRequest):
-            request = service.ListServicesRequest(request)
+        if not isinstance(request, worker_pool.ListWorkerPoolsRequest):
+            request = worker_pool.ListWorkerPoolsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1296,7 +1247,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_services]
+        rpc = self._transport._wrapped_methods[self._transport.list_worker_pools]
 
         header_params = {}
 
@@ -1325,7 +1276,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers.ListServicesPager(
+        response = pagers.ListWorkerPoolsPager(
             method=rpc,
             request=request,
             response=response,
@@ -1337,17 +1288,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Done; return the response.
         return response
 
-    def update_service(
+    def update_worker_pool(
         self,
-        request: Optional[Union[gcr_service.UpdateServiceRequest, dict]] = None,
+        request: Optional[Union[gcr_worker_pool.UpdateWorkerPoolRequest, dict]] = None,
         *,
-        service: Optional[gcr_service.Service] = None,
+        worker_pool: Optional[gcr_worker_pool.WorkerPool] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Updates a Service.
+        r"""Updates a WorkerPool.
 
         .. code-block:: python
 
@@ -1360,16 +1311,16 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_update_service():
+            def sample_update_worker_pool():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsClient()
 
                 # Initialize request argument(s)
-                request = run_v2.UpdateServiceRequest(
+                request = run_v2.UpdateWorkerPoolRequest(
                 )
 
                 # Make the request
-                operation = client.update_service(request=request)
+                operation = client.update_worker_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -1379,12 +1330,14 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.UpdateServiceRequest, dict]):
-                The request object. Request message for updating a
-                service.
-            service (google.cloud.run_v2.types.Service):
-                Required. The Service to be updated.
-                This corresponds to the ``service`` field
+            request (Union[google.cloud.run_v2.types.UpdateWorkerPoolRequest, dict]):
+                The request object. Request message for updating a worker
+                pool.
+            worker_pool (google.cloud.run_v2.types.WorkerPool):
+                Required. The WorkerPool to be
+                updated.
+
+                This corresponds to the ``worker_pool`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -1406,9 +1359,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Service` Service acts as a top-level container that manages a set of
+                The result type for the operation will be :class:`google.cloud.run_v2.types.WorkerPool` WorkerPool acts as a top-level container that manages a set of
                    configurations and revision templates which implement
-                   a network service. Service exists to provide a
+                   a pull-based workload. WorkerPool exists to provide a
                    singular abstraction which can be access controlled,
                    reasoned about, and which encapsulates software
                    lifecycle decisions such as rollout policy and team
@@ -1418,7 +1371,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [service, update_mask]
+        flattened_params = [worker_pool, update_mask]
         has_flattened_params = (
             len([param for param in flattened_params if param is not None]) > 0
         )
@@ -1430,25 +1383,25 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, gcr_service.UpdateServiceRequest):
-            request = gcr_service.UpdateServiceRequest(request)
+        if not isinstance(request, gcr_worker_pool.UpdateWorkerPoolRequest):
+            request = gcr_worker_pool.UpdateWorkerPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-            if service is not None:
-                request.service = service
+            if worker_pool is not None:
+                request.worker_pool = worker_pool
             if update_mask is not None:
                 request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_service]
+        rpc = self._transport._wrapped_methods[self._transport.update_worker_pool]
 
         header_params = {}
 
         routing_param_regex = re.compile(
             "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
         )
-        regex_match = routing_param_regex.match(request.service.name)
+        regex_match = routing_param_regex.match(request.worker_pool.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
@@ -1472,25 +1425,23 @@ class ServicesClient(metaclass=ServicesClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            gcr_service.Service,
-            metadata_type=gcr_service.Service,
+            gcr_worker_pool.WorkerPool,
+            metadata_type=gcr_worker_pool.WorkerPool,
         )
 
         # Done; return the response.
         return response
 
-    def delete_service(
+    def delete_worker_pool(
         self,
-        request: Optional[Union[service.DeleteServiceRequest, dict]] = None,
+        request: Optional[Union[worker_pool.DeleteWorkerPoolRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Deletes a Service.
-        This will cause the Service to stop serving traffic and
-        will delete all revisions.
+        r"""Deletes a WorkerPool.
 
         .. code-block:: python
 
@@ -1503,17 +1454,17 @@ class ServicesClient(metaclass=ServicesClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import run_v2
 
-            def sample_delete_service():
+            def sample_delete_worker_pool():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsClient()
 
                 # Initialize request argument(s)
-                request = run_v2.DeleteServiceRequest(
+                request = run_v2.DeleteWorkerPoolRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                operation = client.delete_service(request=request)
+                operation = client.delete_worker_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
@@ -1523,15 +1474,13 @@ class ServicesClient(metaclass=ServicesClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.run_v2.types.DeleteServiceRequest, dict]):
-                The request object. Request message to delete a Service
-                by its full name.
+            request (Union[google.cloud.run_v2.types.DeleteWorkerPoolRequest, dict]):
+                The request object. Request message to delete a
+                WorkerPool by its full name.
             name (str):
-                Required. The full name of the
-                Service. Format:
-                projects/{project}/locations/{location}/services/{service},
-                where {project} can be project id or
-                number.
+                Required. The full name of the WorkerPool. Format:
+                ``projects/{project}/locations/{location}/workerPools/{worker_pool}``,
+                where ``{project}`` can be project id or number.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1548,9 +1497,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.run_v2.types.Service` Service acts as a top-level container that manages a set of
+                The result type for the operation will be :class:`google.cloud.run_v2.types.WorkerPool` WorkerPool acts as a top-level container that manages a set of
                    configurations and revision templates which implement
-                   a network service. Service exists to provide a
+                   a pull-based workload. WorkerPool exists to provide a
                    singular abstraction which can be access controlled,
                    reasoned about, and which encapsulates software
                    lifecycle decisions such as rollout policy and team
@@ -1572,8 +1521,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(request, service.DeleteServiceRequest):
-            request = service.DeleteServiceRequest(request)
+        if not isinstance(request, worker_pool.DeleteWorkerPoolRequest):
+            request = worker_pool.DeleteWorkerPoolRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1581,7 +1530,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_service]
+        rpc = self._transport._wrapped_methods[self._transport.delete_worker_pool]
 
         header_params = {}
 
@@ -1612,8 +1561,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            service.Service,
-            metadata_type=service.Service,
+            worker_pool.WorkerPool,
+            metadata_type=worker_pool.WorkerPool,
         )
 
         # Done; return the response.
@@ -1628,8 +1577,8 @@ class ServicesClient(metaclass=ServicesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM Access Control policy currently in
-        effect for the given Cloud Run Service. This result does
-        not include any inherited policies.
+        effect for the given Cloud Run WorkerPool. This result
+        does not include any inherited policies.
 
         .. code-block:: python
 
@@ -1645,7 +1594,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
             def sample_get_iam_policy():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -1745,7 +1694,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM Access control policy for the specified
-        Service. Overwrites any existing policy.
+        WorkerPool. Overwrites any existing policy.
 
         .. code-block:: python
 
@@ -1761,7 +1710,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
             def sample_set_iam_policy():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -1879,7 +1828,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
             def sample_test_iam_permissions():
                 # Create a client
-                client = run_v2.ServicesClient()
+                client = run_v2.WorkerPoolsClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1941,7 +1890,7 @@ class ServicesClient(metaclass=ServicesClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "ServicesClient":
+    def __enter__(self) -> "WorkerPoolsClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -2201,4 +2150,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = ("ServicesClient",)
+__all__ = ("WorkerPoolsClient",)

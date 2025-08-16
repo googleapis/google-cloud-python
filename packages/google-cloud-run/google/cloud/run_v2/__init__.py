@@ -24,6 +24,7 @@ from .services.jobs import JobsAsyncClient, JobsClient
 from .services.revisions import RevisionsAsyncClient, RevisionsClient
 from .services.services import ServicesAsyncClient, ServicesClient
 from .services.tasks import TasksAsyncClient, TasksClient
+from .services.worker_pools import WorkerPoolsAsyncClient, WorkerPoolsClient
 from .types.build import StorageSource, SubmitBuildRequest, SubmitBuildResponse
 from .types.condition import Condition
 from .types.execution import (
@@ -35,6 +36,11 @@ from .types.execution import (
     ListExecutionsResponse,
 )
 from .types.execution_template import ExecutionTemplate
+from .types.instance_split import (
+    InstanceSplit,
+    InstanceSplitAllocationType,
+    InstanceSplitStatus,
+)
 from .types.job import (
     CreateJobRequest,
     DeleteJobRequest,
@@ -110,7 +116,18 @@ from .types.vendor_settings import (
     ServiceMesh,
     ServiceScaling,
     VpcAccess,
+    WorkerPoolScaling,
 )
+from .types.worker_pool import (
+    CreateWorkerPoolRequest,
+    DeleteWorkerPoolRequest,
+    GetWorkerPoolRequest,
+    ListWorkerPoolsRequest,
+    ListWorkerPoolsResponse,
+    UpdateWorkerPoolRequest,
+    WorkerPool,
+)
+from .types.worker_pool_revision_template import WorkerPoolRevisionTemplate
 
 __all__ = (
     "BuildsAsyncClient",
@@ -119,6 +136,7 @@ __all__ = (
     "RevisionsAsyncClient",
     "ServicesAsyncClient",
     "TasksAsyncClient",
+    "WorkerPoolsAsyncClient",
     "BinaryAuthorization",
     "BuildConfig",
     "BuildInfo",
@@ -130,10 +148,12 @@ __all__ = (
     "ContainerPort",
     "CreateJobRequest",
     "CreateServiceRequest",
+    "CreateWorkerPoolRequest",
     "DeleteExecutionRequest",
     "DeleteJobRequest",
     "DeleteRevisionRequest",
     "DeleteServiceRequest",
+    "DeleteWorkerPoolRequest",
     "EmptyDirVolumeSource",
     "EncryptionKeyRevocationAction",
     "EnvVar",
@@ -150,9 +170,13 @@ __all__ = (
     "GetRevisionRequest",
     "GetServiceRequest",
     "GetTaskRequest",
+    "GetWorkerPoolRequest",
     "HTTPGetAction",
     "HTTPHeader",
     "IngressTraffic",
+    "InstanceSplit",
+    "InstanceSplitAllocationType",
+    "InstanceSplitStatus",
     "Job",
     "JobsClient",
     "ListExecutionsRequest",
@@ -165,6 +189,8 @@ __all__ = (
     "ListServicesResponse",
     "ListTasksRequest",
     "ListTasksResponse",
+    "ListWorkerPoolsRequest",
+    "ListWorkerPoolsResponse",
     "NFSVolumeSource",
     "NodeSelector",
     "Probe",
@@ -194,8 +220,13 @@ __all__ = (
     "TrafficTargetStatus",
     "UpdateJobRequest",
     "UpdateServiceRequest",
+    "UpdateWorkerPoolRequest",
     "VersionToPath",
     "Volume",
     "VolumeMount",
     "VpcAccess",
+    "WorkerPool",
+    "WorkerPoolRevisionTemplate",
+    "WorkerPoolScaling",
+    "WorkerPoolsClient",
 )
