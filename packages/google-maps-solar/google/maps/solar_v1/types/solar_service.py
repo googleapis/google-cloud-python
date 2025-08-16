@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "DataLayerView",
         "ImageryQuality",
         "SolarPanelOrientation",
+        "Experiment",
         "FindClosestBuildingInsightsRequest",
         "LatLngBox",
         "BuildingInsights",
@@ -88,19 +89,25 @@ class ImageryQuality(proto.Enum):
         IMAGERY_QUALITY_UNSPECIFIED (0):
             No quality is known.
         HIGH (1):
-            The underlying imagery and DSM data were
-            processed at 0.1 m/pixel.
+            Solar data is derived from aerial imagery
+            captured at low-altitude and processed at 0.1
+            m/pixel.
         MEDIUM (2):
-            The underlying imagery and DSM data were
-            processed at 0.25 m/pixel.
+            Solar data is derived from enhanced aerial
+            imagery captured at high-altitude and processed
+            at 0.25 m/pixel.
         LOW (3):
-            The underlying imagery and DSM data were
-            processed at 0.5 m/pixel.
+            Solar data is derived from enhanced satellite
+            imagery processed at 0.25 m/pixel.
+        BASE (4):
+            Solar data is derived from enhanced satellite
+            imagery processed at 0.25 m/pixel.
     """
     IMAGERY_QUALITY_UNSPECIFIED = 0
     HIGH = 1
     MEDIUM = 2
     LOW = 3
+    BASE = 4
 
 
 class SolarPanelOrientation(proto.Enum):
@@ -121,6 +128,21 @@ class SolarPanelOrientation(proto.Enum):
     SOLAR_PANEL_ORIENTATION_UNSPECIFIED = 0
     LANDSCAPE = 1
     PORTRAIT = 2
+
+
+class Experiment(proto.Enum):
+    r"""Specifies pre-GA experiments that can be enabled in the API.
+
+    Values:
+        EXPERIMENT_UNSPECIFIED (0):
+            No experiments are specified.
+        EXPANDED_COVERAGE (1):
+            Expands the geographic region available for querying solar
+            data. For more information, see `Expanded
+            Coverage <https://developers.google.com/maps/documentation/solar/expanded-coverage>`__.
+    """
+    EXPERIMENT_UNSPECIFIED = 0
+    EXPANDED_COVERAGE = 1
 
 
 class FindClosestBuildingInsightsRequest(proto.Message):
@@ -146,6 +168,9 @@ class FindClosestBuildingInsightsRequest(proto.Message):
             interpreted as the exact required quality and only
             ``MEDIUM`` quality imagery is returned if
             ``required_quality`` is set to ``MEDIUM``.
+        experiments (MutableSequence[google.maps.solar_v1.types.Experiment]):
+            Optional. Specifies the pre-GA features to
+            enable.
     """
 
     location: latlng_pb2.LatLng = proto.Field(
@@ -161,6 +186,11 @@ class FindClosestBuildingInsightsRequest(proto.Message):
     exact_quality_required: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    experiments: MutableSequence["Experiment"] = proto.RepeatedField(
+        proto.ENUM,
+        number=5,
+        enum="Experiment",
     )
 
 
@@ -194,7 +224,7 @@ class BuildingInsights(proto.Message):
     Attributes:
         name (str):
             The resource name for the building, of the format
-            ``building/<place ID>``.
+            ``buildings/{place_id}``.
         center (google.type.latlng_pb2.LatLng):
             A point near the center of the building.
         bounding_box (google.maps.solar_v1.types.LatLngBox):
@@ -1123,6 +1153,9 @@ class GetDataLayersRequest(proto.Message):
             interpreted as the exact required quality and only
             ``MEDIUM`` quality imagery is returned if
             ``required_quality`` is set to ``MEDIUM``.
+        experiments (MutableSequence[google.maps.solar_v1.types.Experiment]):
+            Optional. Specifies the pre-GA experiments to
+            enable.
     """
 
     location: latlng_pb2.LatLng = proto.Field(
@@ -1151,6 +1184,11 @@ class GetDataLayersRequest(proto.Message):
     exact_quality_required: bool = proto.Field(
         proto.BOOL,
         number=7,
+    )
+    experiments: MutableSequence["Experiment"] = proto.RepeatedField(
+        proto.ENUM,
+        number=8,
+        enum="Experiment",
     )
 
 
