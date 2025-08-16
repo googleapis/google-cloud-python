@@ -1192,6 +1192,8 @@ def test_create_reservation(request_type, transport: str = "grpc"):
             primary_location="primary_location_value",
             secondary_location="secondary_location_value",
             original_primary_location="original_primary_location_value",
+            max_slots=986,
+            scaling_mode=gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
         )
         response = client.create_reservation(request)
 
@@ -1212,6 +1214,10 @@ def test_create_reservation(request_type, transport: str = "grpc"):
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert (
+        response.scaling_mode == gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
+    )
 
 
 def test_create_reservation_non_empty_request_with_auto_populated_field():
@@ -1357,6 +1363,8 @@ async def test_create_reservation_async(
                 primary_location="primary_location_value",
                 secondary_location="secondary_location_value",
                 original_primary_location="original_primary_location_value",
+                max_slots=986,
+                scaling_mode=gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
             )
         )
         response = await client.create_reservation(request)
@@ -1378,6 +1386,10 @@ async def test_create_reservation_async(
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert (
+        response.scaling_mode == gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
+    )
 
 
 @pytest.mark.asyncio
@@ -2129,6 +2141,8 @@ def test_get_reservation(request_type, transport: str = "grpc"):
             primary_location="primary_location_value",
             secondary_location="secondary_location_value",
             original_primary_location="original_primary_location_value",
+            max_slots=986,
+            scaling_mode=reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
         )
         response = client.get_reservation(request)
 
@@ -2149,6 +2163,8 @@ def test_get_reservation(request_type, transport: str = "grpc"):
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert response.scaling_mode == reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
 
 
 def test_get_reservation_non_empty_request_with_auto_populated_field():
@@ -2283,6 +2299,8 @@ async def test_get_reservation_async(
                 primary_location="primary_location_value",
                 secondary_location="secondary_location_value",
                 original_primary_location="original_primary_location_value",
+                max_slots=986,
+                scaling_mode=reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
             )
         )
         response = await client.get_reservation(request)
@@ -2304,6 +2322,8 @@ async def test_get_reservation_async(
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert response.scaling_mode == reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
 
 
 @pytest.mark.asyncio
@@ -2815,6 +2835,8 @@ def test_update_reservation(request_type, transport: str = "grpc"):
             primary_location="primary_location_value",
             secondary_location="secondary_location_value",
             original_primary_location="original_primary_location_value",
+            max_slots=986,
+            scaling_mode=gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
         )
         response = client.update_reservation(request)
 
@@ -2835,6 +2857,10 @@ def test_update_reservation(request_type, transport: str = "grpc"):
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert (
+        response.scaling_mode == gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
+    )
 
 
 def test_update_reservation_non_empty_request_with_auto_populated_field():
@@ -2974,6 +3000,8 @@ async def test_update_reservation_async(
                 primary_location="primary_location_value",
                 secondary_location="secondary_location_value",
                 original_primary_location="original_primary_location_value",
+                max_slots=986,
+                scaling_mode=gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
             )
         )
         response = await client.update_reservation(request)
@@ -2995,6 +3023,10 @@ async def test_update_reservation_async(
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert (
+        response.scaling_mode == gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
+    )
 
 
 @pytest.mark.asyncio
@@ -3195,6 +3227,8 @@ def test_failover_reservation(request_type, transport: str = "grpc"):
             primary_location="primary_location_value",
             secondary_location="secondary_location_value",
             original_primary_location="original_primary_location_value",
+            max_slots=986,
+            scaling_mode=reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
         )
         response = client.failover_reservation(request)
 
@@ -3215,6 +3249,8 @@ def test_failover_reservation(request_type, transport: str = "grpc"):
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert response.scaling_mode == reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
 
 
 def test_failover_reservation_non_empty_request_with_auto_populated_field():
@@ -3357,6 +3393,8 @@ async def test_failover_reservation_async(
                 primary_location="primary_location_value",
                 secondary_location="secondary_location_value",
                 original_primary_location="original_primary_location_value",
+                max_slots=986,
+                scaling_mode=reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
             )
         )
         response = await client.failover_reservation(request)
@@ -3378,6 +3416,8 @@ async def test_failover_reservation_async(
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert response.scaling_mode == reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
 
 
 @pytest.mark.asyncio
@@ -14561,6 +14601,8 @@ async def test_create_reservation_empty_call_grpc_asyncio():
                 primary_location="primary_location_value",
                 secondary_location="secondary_location_value",
                 original_primary_location="original_primary_location_value",
+                max_slots=986,
+                scaling_mode=gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
             )
         )
         await client.create_reservation(request=None)
@@ -14625,6 +14667,8 @@ async def test_get_reservation_empty_call_grpc_asyncio():
                 primary_location="primary_location_value",
                 secondary_location="secondary_location_value",
                 original_primary_location="original_primary_location_value",
+                max_slots=986,
+                scaling_mode=reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
             )
         )
         await client.get_reservation(request=None)
@@ -14687,6 +14731,8 @@ async def test_update_reservation_empty_call_grpc_asyncio():
                 primary_location="primary_location_value",
                 secondary_location="secondary_location_value",
                 original_primary_location="original_primary_location_value",
+                max_slots=986,
+                scaling_mode=gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
             )
         )
         await client.update_reservation(request=None)
@@ -14724,6 +14770,8 @@ async def test_failover_reservation_empty_call_grpc_asyncio():
                 primary_location="primary_location_value",
                 secondary_location="secondary_location_value",
                 original_primary_location="original_primary_location_value",
+                max_slots=986,
+                scaling_mode=reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
             )
         )
         await client.failover_reservation(request=None)
@@ -15287,6 +15335,8 @@ def test_create_reservation_rest_call_success(request_type):
         "primary_location": "primary_location_value",
         "secondary_location": "secondary_location_value",
         "original_primary_location": "original_primary_location_value",
+        "max_slots": 986,
+        "scaling_mode": 1,
         "replication_status": {
             "error": {
                 "code": 411,
@@ -15384,6 +15434,8 @@ def test_create_reservation_rest_call_success(request_type):
             primary_location="primary_location_value",
             secondary_location="secondary_location_value",
             original_primary_location="original_primary_location_value",
+            max_slots=986,
+            scaling_mode=gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
         )
 
         # Wrap the value into a proper Response obj
@@ -15409,6 +15461,10 @@ def test_create_reservation_rest_call_success(request_type):
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert (
+        response.scaling_mode == gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15663,6 +15719,8 @@ def test_get_reservation_rest_call_success(request_type):
             primary_location="primary_location_value",
             secondary_location="secondary_location_value",
             original_primary_location="original_primary_location_value",
+            max_slots=986,
+            scaling_mode=reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
         )
 
         # Wrap the value into a proper Response obj
@@ -15688,6 +15746,8 @@ def test_get_reservation_rest_call_success(request_type):
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert response.scaling_mode == reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -15922,6 +15982,8 @@ def test_update_reservation_rest_call_success(request_type):
         "primary_location": "primary_location_value",
         "secondary_location": "secondary_location_value",
         "original_primary_location": "original_primary_location_value",
+        "max_slots": 986,
+        "scaling_mode": 1,
         "replication_status": {
             "error": {
                 "code": 411,
@@ -16019,6 +16081,8 @@ def test_update_reservation_rest_call_success(request_type):
             primary_location="primary_location_value",
             secondary_location="secondary_location_value",
             original_primary_location="original_primary_location_value",
+            max_slots=986,
+            scaling_mode=gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
         )
 
         # Wrap the value into a proper Response obj
@@ -16044,6 +16108,10 @@ def test_update_reservation_rest_call_success(request_type):
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert (
+        response.scaling_mode == gcbr_reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -16165,6 +16233,8 @@ def test_failover_reservation_rest_call_success(request_type):
             primary_location="primary_location_value",
             secondary_location="secondary_location_value",
             original_primary_location="original_primary_location_value",
+            max_slots=986,
+            scaling_mode=reservation.Reservation.ScalingMode.AUTOSCALE_ONLY,
         )
 
         # Wrap the value into a proper Response obj
@@ -16190,6 +16260,8 @@ def test_failover_reservation_rest_call_success(request_type):
     assert response.primary_location == "primary_location_value"
     assert response.secondary_location == "secondary_location_value"
     assert response.original_primary_location == "original_primary_location_value"
+    assert response.max_slots == 986
+    assert response.scaling_mode == reservation.Reservation.ScalingMode.AUTOSCALE_ONLY
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
