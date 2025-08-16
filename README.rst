@@ -1453,6 +1453,12 @@ Libraries
      -
      -
      - `Client Library Issues <https://github.com/googleapis/python-bigquery-sqlalchemy/issues>`_
+   * - `SaaS Runtime API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-saasplatform-saasservicemgmt>`_
+     - preview
+     - |PyPI-google-cloud-saasplatform-saasservicemgmt|
+     -
+     -
+     - `Client Library Issues <https://github.com/googleapis/google-cloud-python/issues>`_
    * - `Secure Source Manager API <https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-securesourcemanager>`_
      - preview
      - |PyPI-google-cloud-securesourcemanager|
@@ -2010,6 +2016,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-runtimeconfig
 .. |PyPI-sqlalchemy-bigquery| image:: https://img.shields.io/pypi/v/sqlalchemy-bigquery.svg
      :target: https://pypi.org/project/sqlalchemy-bigquery
+.. |PyPI-google-cloud-saasplatform-saasservicemgmt| image:: https://img.shields.io/pypi/v/google-cloud-saasplatform-saasservicemgmt.svg
+     :target: https://pypi.org/project/google-cloud-saasplatform-saasservicemgmt
 .. |PyPI-google-cloud-securesourcemanager| image:: https://img.shields.io/pypi/v/google-cloud-securesourcemanager.svg
      :target: https://pypi.org/project/google-cloud-securesourcemanager
 .. |PyPI-google-cloud-securitycentermanagement| image:: https://img.shields.io/pypi/v/google-cloud-securitycentermanagement.svg
