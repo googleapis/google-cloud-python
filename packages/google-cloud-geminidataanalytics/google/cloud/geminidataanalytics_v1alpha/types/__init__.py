@@ -13,13 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .context import AnalysisOptions, ChartOptions, Context, ConversationOptions
+from .context import (
+    AnalysisOptions,
+    ChartOptions,
+    Context,
+    ConversationOptions,
+    ExampleQuery,
+)
 from .context_retrieval_service import (
     DirectLookup,
     RetrieveBigQueryRecentRelevantTablesRequest,
     RetrieveBigQueryRecentRelevantTablesResponse,
-    RetrieveBigQueryTableContextRequest,
-    RetrieveBigQueryTableContextResponse,
     RetrieveBigQueryTableContextsFromRecentTablesRequest,
     RetrieveBigQueryTableContextsFromRecentTablesResponse,
     RetrieveBigQueryTableContextsRequest,
@@ -82,6 +86,8 @@ from .data_chat_service import (
 from .datasource import (
     BigQueryTableReference,
     BigQueryTableReferences,
+    DataFilter,
+    DataFilterType,
     Datasource,
     DatasourceReferences,
     Field,
@@ -98,11 +104,10 @@ __all__ = (
     "ChartOptions",
     "Context",
     "ConversationOptions",
+    "ExampleQuery",
     "DirectLookup",
     "RetrieveBigQueryRecentRelevantTablesRequest",
     "RetrieveBigQueryRecentRelevantTablesResponse",
-    "RetrieveBigQueryTableContextRequest",
-    "RetrieveBigQueryTableContextResponse",
     "RetrieveBigQueryTableContextsFromRecentTablesRequest",
     "RetrieveBigQueryTableContextsFromRecentTablesResponse",
     "RetrieveBigQueryTableContextsRequest",
@@ -158,6 +163,7 @@ __all__ = (
     "UserMessage",
     "BigQueryTableReference",
     "BigQueryTableReferences",
+    "DataFilter",
     "Datasource",
     "DatasourceReferences",
     "Field",
@@ -167,4 +173,5 @@ __all__ = (
     "Schema",
     "StudioDatasourceReference",
     "StudioDatasourceReferences",
+    "DataFilterType",
 )
