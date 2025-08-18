@@ -378,6 +378,11 @@ def _run_nox_sessions(sessions: List[str], librarian: str, repo: str):
         library_id = _get_library_id(request_data)
         for nox_session in sessions:
             _run_individual_session(nox_session, library_id, repo)
+        
+         # Write the `build-response.json` using `build-request.json` as the source
+        with open(f"{librarian}/build-response.json", "w") as f:
+            json.dump(request_data, f, indent=4)
+            f.write("\n")
     except Exception as e:
         raise ValueError(f"Failed to run the nox session: {current_session}") from e
 
