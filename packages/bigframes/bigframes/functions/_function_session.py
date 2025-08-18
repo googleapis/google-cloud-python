@@ -555,10 +555,6 @@ class FunctionSession:
                     warnings.warn(msg, category=bfe.FunctionConflictTypeHintWarning)
                 py_sig = py_sig.replace(return_annotation=output_type)
 
-            # Try to get input types via type annotations.
-
-            # The function will actually be receiving a pandas Series, but allow both
-            # BigQuery DataFrames and pandas object types for compatibility.
             # The function will actually be receiving a pandas Series, but allow
             # both BigQuery DataFrames and pandas object types for compatibility.
             is_row_processor = False
