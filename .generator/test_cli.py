@@ -298,14 +298,15 @@ def test_run_individual_session_success(mocker, caplog):
 
     test_session = "unit-3.9"
     test_library_id = "test-library"
-    _run_individual_session(test_session, test_library_id)
+    repo = "repo"
+    _run_individual_session(test_session, test_library_id, repo)
 
     expected_command = [
         "nox",
         "-s",
         test_session,
         "-f",
-        f"{REPO_DIR}/packages/{test_library_id}",
+        f"{REPO_DIR}/packages/{test_library_id}/noxfile.py"
     ]
     mock_subprocess_run.assert_called_once_with(expected_command, text=True, check=True)
 
@@ -320,7 +321,7 @@ def test_run_individual_session_failure(mocker):
     )
 
     with pytest.raises(subprocess.CalledProcessError):
-        _run_individual_session("lint", "another-library")
+        _run_individual_session("lint", "another-library", "repo")
 
 
 def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
@@ -330,13 +331,13 @@ def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
     mock_run_individual_session = mocker.patch("cli._run_individual_session")
 
     sessions_to_run = ["unit-3.9", "lint"]
-    _run_nox_sessions(sessions_to_run, "librarian")
+    _run_nox_sessions(sessions_to_run, "librarian", "repo")
 
     assert mock_run_individual_session.call_count == len(sessions_to_run)
     mock_run_individual_session.assert_has_calls(
         [
-            mocker.call("unit-3.9", "mock-library"),
-            mocker.call("lint", "mock-library"),
+            mocker.call("unit-3.9", "mock-library", "repo"),
+            mocker.call("lint", "mock-library", "repo"),
         ]
     )
 
@@ -346,7 +347,7 @@ def test_run_nox_sessions_read_file_failure(mocker):
     mocker.patch("cli._read_json_file", side_effect=FileNotFoundError("file not found"))
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"], "librarian")
+        _run_nox_sessions(["unit-3.9"], "librarian", "repo")
 
 
 def test_run_nox_sessions_get_library_id_failure(mocker):
@@ -358,7 +359,7 @@ def test_run_nox_sessions_get_library_id_failure(mocker):
     )
 
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(["unit-3.9"], "librarian")
+        _run_nox_sessions(["unit-3.9"], "librarian", "repo")
 
 
 def test_run_nox_sessions_individual_session_failure(
@@ -374,7 +375,7 @@ def test_run_nox_sessions_individual_session_failure(
 
     sessions_to_run = ["unit-3.9", "lint"]
     with pytest.raises(ValueError, match="Failed to run the nox session"):
-        _run_nox_sessions(sessions_to_run, "librarian")
+        _run_nox_sessions(sessions_to_run, "librarian", "repo")
 
     # Check that _run_individual_session was called at least once
     assert mock_run_individual_session.call_count > 0
