@@ -58,7 +58,11 @@ packages = [
 setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
-    classifiers=["Intended Audience :: Developers"],
+    license="Apache 2.0",
+    classifiers=[
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+    ],
     description=description,
     long_description=readme,
     entry_points={
