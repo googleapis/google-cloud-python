@@ -1550,6 +1550,8 @@ class QueryJob(_AsyncJob):
             return _EmptyRowIterator(
                 project=self.project,
                 location=self.location,
+                schema=self.schema,
+                total_bytes_processed=self.total_bytes_processed,
                 # Intentionally omit job_id and query_id since this doesn't
                 # actually correspond to a finished query job.
             )
@@ -1737,7 +1739,11 @@ class QueryJob(_AsyncJob):
                 project=self.project,
                 job_id=self.job_id,
                 query_id=self.query_id,
+                schema=self.schema,
                 num_dml_affected_rows=self._query_results.num_dml_affected_rows,
+                query=self.query,
+                total_bytes_processed=self.total_bytes_processed,
+                slot_millis=self.slot_millis,
             )
 
         # We know that there's at least 1 row, so only treat the response from

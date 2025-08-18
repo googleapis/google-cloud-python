@@ -15,6 +15,7 @@
 """Client for interacting with the Google BigQuery API."""
 
 from __future__ import absolute_import
+from __future__ import annotations
 from __future__ import division
 
 from collections import abc as collections_abc
@@ -31,6 +32,7 @@ import tempfile
 import typing
 from typing import (
     Any,
+    Callable,
     Dict,
     IO,
     Iterable,
@@ -3633,8 +3635,8 @@ class Client(ClientWithProject):
                 rate-limit-exceeded errors.  Passing ``None`` disables
                 job retry. Not all jobs can be retried.
             page_size (Optional[int]):
-                The maximum number of rows in each page of results from this
-                request. Non-positive values are ignored.
+                The maximum number of rows in each page of results from the
+                initial jobs.query request. Non-positive values are ignored.
             max_results (Optional[int]):
                 The maximum total number of rows from this request.
 
@@ -3655,6 +3657,39 @@ class Client(ClientWithProject):
                 If ``job_config`` is not an instance of
                 :class:`~google.cloud.bigquery.job.QueryJobConfig`
                 class.
+        """
+        return self._query_and_wait_bigframes(
+            query,
+            job_config=job_config,
+            location=location,
+            project=project,
+            api_timeout=api_timeout,
+            wait_timeout=wait_timeout,
+            retry=retry,
+            job_retry=job_retry,
+            page_size=page_size,
+            max_results=max_results,
+        )
+
+    def _query_and_wait_bigframes(
+        self,
+        query,
+        *,
+        job_config: Optional[QueryJobConfig] = None,
+        location: Optional[str] = None,
+        project: Optional[str] = None,
+        api_timeout: TimeoutType = DEFAULT_TIMEOUT,
+        wait_timeout: Union[Optional[float], object] = POLLING_DEFAULT_VALUE,
+        retry: retries.Retry = DEFAULT_RETRY,
+        job_retry: retries.Retry = DEFAULT_JOB_RETRY,
+        page_size: Optional[int] = None,
+        max_results: Optional[int] = None,
+        callback: Callable = lambda _: None,
+    ) -> RowIterator:
+        """See query_and_wait.
+
+        This method has an extra callback parameter, which is used by bigframes
+        to create better progress bars.
         """
         if project is None:
             project = self.project
@@ -3681,6 +3716,7 @@ class Client(ClientWithProject):
             job_retry=job_retry,
             page_size=page_size,
             max_results=max_results,
+            callback=callback,
         )
 
     def insert_rows(

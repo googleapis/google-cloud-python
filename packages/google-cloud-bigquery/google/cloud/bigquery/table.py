@@ -1837,7 +1837,7 @@ class RowIterator(HTTPIterator):
             page_start=_rows_page_start,
             next_token="pageToken",
         )
-        schema = _to_schema_fields(schema)
+        schema = _to_schema_fields(schema) if schema else ()
         self._field_to_index = _helpers._field_to_index_mapping(schema)
         self._page_size = page_size
         self._preserve_order = False
@@ -2917,7 +2917,6 @@ class _EmptyRowIterator(RowIterator):
     statements.
     """
 
-    schema = ()
     pages = ()
     total_rows = 0
 

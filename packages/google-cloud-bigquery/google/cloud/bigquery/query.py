@@ -1228,11 +1228,18 @@ class _QueryResults(object):
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.job_reference
+        or https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.location
 
         Returns:
             str: Job ID of the query job.
         """
-        return self._properties.get("jobReference", {}).get("location")
+        location = self._properties.get("jobReference", {}).get("location")
+
+        # Sometimes there's no job, but we still want to get the location
+        # information. Prefer the value from job for backwards compatibilitity.
+        if not location:
+            location = self._properties.get("location")
+        return location
 
     @property
     def query_id(self) -> Optional[str]:
