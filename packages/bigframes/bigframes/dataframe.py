@@ -2797,10 +2797,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )
 
         # Execute it with the DataFrame when cond or/and other is callable.
+        # It can be either a plain python function or remote/managed function.
         if callable(cond):
-            cond = cond(self)
+            if hasattr(cond, "bigframes_bigquery_function"):
+                cond = self.apply(cond, axis=1)
+            else:
+                cond = cond(self)
         if callable(other):
-            other = other(self)
+            if hasattr(other, "bigframes_bigquery_function"):
+                other = self.apply(other, axis=1)
+            else:
+                other = other(self)
 
         aligned_block, (_, _) = self._block.join(cond._block, how="left")
         # No left join is needed when 'other' is None or constant.
@@ -2813,7 +2820,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         labels = aligned_block.column_labels[:self_len]
         self_col = {x: ex.deref(y) for x, y in zip(labels, ids)}
 
-        if isinstance(cond, bigframes.series.Series) and cond.name in self_col:
+        if isinstance(cond, bigframes.series.Series):
             # This is when 'cond' is a valid series.
             y = aligned_block.value_columns[self_len]
             cond_col = {x: ex.deref(y) for x in self_col.keys()}

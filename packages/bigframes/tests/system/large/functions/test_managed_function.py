@@ -963,3 +963,115 @@ SELECT "pandas na" AS text, NULL AS num
         cleanup_function_assets(
             float_parser_mf, session.bqclient, ignore_failures=False
         )
+
+
+def test_managed_function_df_where(session, dataset_id, scalars_dfs):
+    try:
+
+        # The return type has to be bool type for callable where condition.
+        def is_sum_positive(a, b):
+            return a + b > 0
+
+        is_sum_positive_mf = session.udf(
+            input_types=[int, int],
+            output_type=bool,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
+        )(is_sum_positive)
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+        int64_cols = ["int64_col", "int64_too"]
+
+        bf_int64_df = scalars_df[int64_cols]
+        bf_int64_df_filtered = bf_int64_df.dropna()
+        pd_int64_df = scalars_pandas_df[int64_cols]
+        pd_int64_df_filtered = pd_int64_df.dropna()
+
+        # Use callable condition in dataframe.where method.
+        bf_result = bf_int64_df_filtered.where(is_sum_positive_mf).to_pandas()
+        # Pandas doesn't support such case, use following as workaround.
+        pd_result = pd_int64_df_filtered.where(pd_int64_df_filtered.sum(axis=1) > 0)
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+        # Make sure the read_gbq_function path works for this function.
+        is_sum_positive_ref = session.read_gbq_function(
+            function_name=is_sum_positive_mf.bigframes_bigquery_function
+        )
+
+        bf_result_gbq = bf_int64_df_filtered.where(
+            is_sum_positive_ref, -bf_int64_df_filtered
+        ).to_pandas()
+        pd_result_gbq = pd_int64_df_filtered.where(
+            pd_int64_df_filtered.sum(axis=1) > 0, -pd_int64_df_filtered
+        )
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_frame_equal(
+            bf_result_gbq, pd_result_gbq, check_dtype=False
+        )
+
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(
+            is_sum_positive_mf, session.bqclient, ignore_failures=False
+        )
+
+
+def test_managed_function_df_where_series(session, dataset_id, scalars_dfs):
+    try:
+
+        # The return type has to be bool type for callable where condition.
+        def is_sum_positive_series(s):
+            return s["int64_col"] + s["int64_too"] > 0
+
+        is_sum_positive_series_mf = session.udf(
+            input_types=bigframes.series.Series,
+            output_type=bool,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
+        )(is_sum_positive_series)
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+        int64_cols = ["int64_col", "int64_too"]
+
+        bf_int64_df = scalars_df[int64_cols]
+        bf_int64_df_filtered = bf_int64_df.dropna()
+        pd_int64_df = scalars_pandas_df[int64_cols]
+        pd_int64_df_filtered = pd_int64_df.dropna()
+
+        # Use callable condition in dataframe.where method.
+        bf_result = bf_int64_df_filtered.where(is_sum_positive_series).to_pandas()
+        pd_result = pd_int64_df_filtered.where(is_sum_positive_series)
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+        # Make sure the read_gbq_function path works for this function.
+        is_sum_positive_series_ref = session.read_gbq_function(
+            function_name=is_sum_positive_series_mf.bigframes_bigquery_function,
+            is_row_processor=True,
+        )
+
+        # This is for callable `other` arg in dataframe.where method.
+        def func_for_other(x):
+            return -x
+
+        bf_result_gbq = bf_int64_df_filtered.where(
+            is_sum_positive_series_ref, func_for_other
+        ).to_pandas()
+        pd_result_gbq = pd_int64_df_filtered.where(
+            is_sum_positive_series, func_for_other
+        )
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_frame_equal(
+            bf_result_gbq, pd_result_gbq, check_dtype=False
+        )
+
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(
+            is_sum_positive_series_mf, session.bqclient, ignore_failures=False
+        )
