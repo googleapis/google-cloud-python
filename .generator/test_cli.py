@@ -22,6 +22,7 @@ import pytest
 
 from cli import (
     GENERATE_REQUEST_FILE,
+    BUILD_REQUEST_FILE,
     LIBRARIAN_DIR,
     REPO_DIR,
     _build_bazel_target,
@@ -45,6 +46,26 @@ def mock_generate_request_file(tmp_path, monkeypatch):
     """Creates the mock request file at the correct path inside a temp dir."""
     # Create the path as expected by the script: .librarian/generate-request.json
     request_path = f"{LIBRARIAN_DIR}/{GENERATE_REQUEST_FILE}"
+    request_dir = tmp_path / os.path.dirname(request_path)
+    request_dir.mkdir()
+    request_file = request_dir / os.path.basename(request_path)
+
+    request_content = {
+        "id": "google-cloud-language",
+        "apis": [{"path": "google/cloud/language/v1"}],
+    }
+    request_file.write_text(json.dumps(request_content))
+
+    # Change the current working directory to the temp path for the test.
+    monkeypatch.chdir(tmp_path)
+    return request_file
+
+
+@pytest.fixture
+def mock_build_request_file(tmp_path, monkeypatch):
+    """Creates the mock request file at the correct path inside a temp dir."""
+    # Create the path as expected by the script: .librarian/build-request.json
+    request_path = f"{LIBRARIAN_DIR}/{BUILD_REQUEST_FILE}"
     request_dir = tmp_path / os.path.dirname(request_path)
     request_dir.mkdir()
     request_file = request_dir / os.path.basename(request_path)
@@ -306,7 +327,7 @@ def test_run_individual_session_success(mocker, caplog):
         "-s",
         test_session,
         "-f",
-        f"{REPO_DIR}/packages/{test_library_id}/noxfile.py"
+        f"{REPO_DIR}/packages/{test_library_id}/noxfile.py",
     ]
     mock_subprocess_run.assert_called_once_with(expected_command, text=True, check=True)
 
@@ -324,7 +345,9 @@ def test_run_individual_session_failure(mocker):
         _run_individual_session("lint", "another-library", "repo")
 
 
-def test_run_nox_sessions_success(mocker, mock_generate_request_data_for_nox):
+def test_run_nox_sessions_success(
+    mocker, mock_generate_request_data_for_nox, mock_build_request_file
+):
     """Tests that _run_nox_sessions successfully runs all specified sessions."""
     mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
     mocker.patch("cli._get_library_id", return_value="mock-library")
@@ -417,11 +440,12 @@ def test_invalid_json(mocker):
     with pytest.raises(json.JSONDecodeError):
         _read_json_file("fake/path.json")
 
+
 def test_copy_files_needed_for_post_processing_success(mocker):
     mock_makedirs = mocker.patch("os.makedirs")
     mock_shutil_copy = mocker.patch("shutil.copy")
-    _copy_files_needed_for_post_processing('output', 'input', 'library_id')
-    
+    _copy_files_needed_for_post_processing("output", "input", "library_id")
+
     mock_makedirs.assert_called()
     mock_shutil_copy.assert_called_once()
 
@@ -429,4 +453,4 @@ def test_copy_files_needed_for_post_processing_success(mocker):
 def test_clean_up_files_after_post_processing_success(mocker):
     mock_shutil_rmtree = mocker.patch("shutil.rmtree")
     mock_os_remove = mocker.patch("os.remove")
-    _clean_up_files_after_post_processing('output', 'library_id')
+    _clean_up_files_after_post_processing("output", "library_id")
