@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import inspect
 from unittest.mock import patch
 
 from bigframes.functions._utils import (
     _package_existed,
     get_updated_package_requirements,
+    has_conflict_output_type,
 )
 
 
@@ -147,3 +149,27 @@ def test_package_existed_helper():
     assert not _package_existed(reqs, "xgboost")
     # Empty list
     assert not _package_existed([], "pandas")
+
+
+def test_has_conflict_output_type_no_conflict():
+    """Tests has_conflict_output_type with type annotation."""
+    # Helper functions with type annotation for has_conflict_output_type.
+    def _func_with_return_type(x: int) -> int:
+        return x
+
+    signature = inspect.signature(_func_with_return_type)
+
+    assert has_conflict_output_type(signature, output_type=float)
+    assert not has_conflict_output_type(signature, output_type=int)
+
+
+def test_has_conflict_output_type_no_annotation():
+    """Tests has_conflict_output_type without type annotation."""
+    # Helper functions without type annotation for has_conflict_output_type.
+    def _func_without_return_type(x):
+        return x
+
+    signature = inspect.signature(_func_without_return_type)
+
+    assert not has_conflict_output_type(signature, output_type=int)
+    assert not has_conflict_output_type(signature, output_type=float)
