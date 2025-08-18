@@ -316,6 +316,8 @@ class TestBasics(fixtures.TablesTest):
             updated_at: Mapped[datetime.datetime] = mapped_column(
                 spanner_allow_commit_timestamp=True,
                 default=text("PENDING_COMMIT_TIMESTAMP()"),
+                # Make sure that this column is never part of a THEN RETURN clause.
+                spanner_exclude_from_returning=True,
             )
 
         @event.listens_for(TimestampUser, "before_update")

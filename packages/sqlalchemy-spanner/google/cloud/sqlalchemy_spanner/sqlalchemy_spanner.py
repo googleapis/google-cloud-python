@@ -425,7 +425,14 @@ class SpannerSQLCompiler(SQLCompiler):
             self._label_select_column(
                 None, c, True, False, {"spanner_is_returning": True}
             )
-            for c in expression._select_iterables(returning_cols)
+            for c in expression._select_iterables(
+                filter(
+                    lambda col: not col.dialect_options.get("spanner", {}).get(
+                        "exclude_from_returning", False
+                    ),
+                    returning_cols,
+                )
+            )
         ]
 
         return "THEN RETURN " + ", ".join(columns)
@@ -831,6 +838,7 @@ class SpannerDialect(DefaultDialect):
     update_returning = True
     delete_returning = True
     supports_multivalues_insert = True
+    use_insertmanyvalues = True
 
     ddl_compiler = SpannerDDLCompiler
     preparer = SpannerIdentifierPreparer

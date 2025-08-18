@@ -93,6 +93,11 @@ def informational_fk(session):
 
 
 @nox.session()
+def insertmany(session):
+    _sample(session)
+
+
+@nox.session()
 def _all_samples(session):
     _sample(session)
 
