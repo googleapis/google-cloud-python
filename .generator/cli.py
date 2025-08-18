@@ -414,7 +414,7 @@ def handle_build(librarian: str = LIBRARIAN_DIR, repo: str = REPO_DIR):
         "system-3.13",
         "lint",
         "lint_setup_py",
-        "mypy",
+        "mypy-3.13",
         "check_lower_bounds",
     ]
     _run_nox_sessions(sessions, librarian, repo)
