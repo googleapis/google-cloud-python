@@ -154,7 +154,9 @@ class Concert(Base):
     title: Mapped[str] = mapped_column(String(200), nullable=False)
     singer: Mapped["Singer"] = relationship(back_populates="concerts")
     venue: Mapped["Venue"] = relationship(back_populates="concerts")
-    ticket_sales: Mapped[List["TicketSale"]] = relationship(back_populates="concert")
+    ticket_sales: Mapped[List["TicketSale"]] = relationship(
+        back_populates="concert", passive_deletes=True
+    )
 
 
 class TicketSale(Base):
@@ -163,6 +165,7 @@ class TicketSale(Base):
         ForeignKeyConstraint(
             ["venue_code", "start_time", "singer_id"],
             ["concerts.venue_code", "concerts.start_time", "concerts.singer_id"],
+            spanner_not_enforced=True,
         ),
     )
     id: Mapped[int] = mapped_column(
@@ -178,7 +181,12 @@ class TicketSale(Base):
     start_time: Mapped[Optional[datetime.datetime]] = mapped_column(
         DateTime, nullable=False
     )
-    singer_id: Mapped[str] = mapped_column(String(36), ForeignKey("singers.id"))
+    # Create an informational foreign key that is not enforced by Spanner.
+    # See https://cloud.google.com/spanner/docs/foreign-keys/overview#informational-foreign-keys
+    # for more information.
+    singer_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("singers.id", spanner_not_enforced=True)
+    )
     # Create a commit timestamp column and set a client-side default of
     # PENDING_COMMIT_TIMESTAMP() An event handler below is responsible for
     # setting PENDING_COMMIT_TIMESTAMP() on updates. If using SQLAlchemy

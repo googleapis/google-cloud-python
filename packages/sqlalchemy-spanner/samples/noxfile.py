@@ -88,6 +88,11 @@ def database_role(session):
 
 
 @nox.session()
+def informational_fk(session):
+    _sample(session)
+
+
+@nox.session()
 def _all_samples(session):
     _sample(session)
 

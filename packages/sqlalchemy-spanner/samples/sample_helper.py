@@ -16,8 +16,10 @@ import os
 from typing import Callable
 
 from google.api_core.client_options import ClientOptions
+from google.api_core.exceptions import AlreadyExists
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.spanner_v1 import Client
+from google.cloud.spanner_v1.database import Database
 from sqlalchemy import create_engine
 from sqlalchemy.dialects import registry
 from testcontainers.core.container import DockerContainer
@@ -32,9 +34,15 @@ def run_sample(sample_method: Callable):
         "google.cloud.sqlalchemy_spanner.sqlalchemy_spanner",
         "SpannerDialect",
     )
-    os.environ["SPANNER_EMULATOR_HOST"] = ""
-    emulator, port = start_emulator()
-    os.environ["SPANNER_EMULATOR_HOST"] = "localhost:" + str(port)
+    emulator = None
+    if os.getenv("USE_EXISTING_EMULATOR") == "true":
+        if os.getenv("SPANNER_EMULATOR_HOST") is None:
+            os.environ["SPANNER_EMULATOR_HOST"] = "localhost:9010"
+            _create_instance_and_database("9010")
+    else:
+        os.environ["SPANNER_EMULATOR_HOST"] = ""
+        emulator, port = start_emulator()
+        os.environ["SPANNER_EMULATOR_HOST"] = "localhost:" + str(port)
     try:
         _create_tables()
         sample_method()
@@ -68,10 +76,16 @@ def _create_instance_and_database(port: str):
     database_id = "sample-database"
 
     instance = client.instance(instance_id, instance_config)
-    created_op = instance.create()
-    created_op.result(1800)  # block until completion
+    try:
+        created_op = instance.create()
+        created_op.result(1800)  # block until completion
+    except AlreadyExists:
+        # Ignore
+        print("Using existing instance")
 
-    database = instance.database(database_id)
+    database: Database = instance.database(database_id)
+    if database.exists():
+        database.drop()
     created_op = database.create()
     created_op.result(1800)
 

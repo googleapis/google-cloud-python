@@ -652,6 +652,12 @@ class SpannerDDLCompiler(DDLCompiler):
             "Create UNIQUE indexes instead."
         )
 
+    def visit_foreign_key_constraint(self, constraint, **kw):
+        text = super().visit_foreign_key_constraint(constraint, **kw)
+        if constraint.dialect_options.get("spanner", {}).get("not_enforced", False):
+            text += " NOT ENFORCED"
+        return text
+
     def post_create_table(self, table):
         """Build statements to be executed after CREATE TABLE.
 
