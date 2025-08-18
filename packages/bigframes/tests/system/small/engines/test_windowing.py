@@ -35,21 +35,23 @@ def test_engines_with_offsets(
     assert_equivalence_execution(result.node, REFERENCE_ENGINE, engine)
 
 
+@pytest.mark.parametrize("never_skip_nulls", [True, False])
+@pytest.mark.parametrize("agg_op", [agg_ops.sum_op, agg_ops.count_op])
 def test_engines_with_rows_window(
     scalars_array_value: array_value.ArrayValue,
     bigquery_client: bigquery.Client,
+    never_skip_nulls,
+    agg_op,
 ):
     window = window_spec.WindowSpec(
         bounds=window_spec.RowsWindowBounds.from_window_size(3, "left"),
     )
     window_node = nodes.WindowOpNode(
         child=scalars_array_value.node,
-        expression=expression.UnaryAggregation(
-            agg_ops.sum_op, expression.deref("int64_too")
-        ),
+        expression=expression.UnaryAggregation(agg_op, expression.deref("int64_too")),
         window_spec=window,
-        output_name=identifiers.ColumnId("sum_int64"),
-        never_skip_nulls=False,
+        output_name=identifiers.ColumnId("agg_int64"),
+        never_skip_nulls=never_skip_nulls,
         skip_reproject_unsafe=False,
     )
 

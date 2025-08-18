@@ -30,9 +30,17 @@ if sys.version_info < (3, 12):
     )
 
 
-def test_compile_window_w_rolling(scalar_types_df: bpd.DataFrame, snapshot):
+def test_compile_window_w_skips_nulls_op(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col"]].sort_index()
+    # The SumOp's skips_nulls is True
     result = bf_df.rolling(window=3).sum()
+    snapshot.assert_match(result.sql, "out.sql")
+
+
+def test_compile_window_wo_skips_nulls_op(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col"]].sort_index()
+    # The CountOp's skips_nulls is False
+    result = bf_df.rolling(window=5).count()
     snapshot.assert_match(result.sql, "out.sql")
 
 
@@ -46,13 +54,8 @@ def test_compile_window_w_groupby_rolling(scalar_types_df: bpd.DataFrame, snapsh
     snapshot.assert_match(result.sql, "out.sql")
 
 
-def test_compile_window_w_min_periods(scalar_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalar_types_df[["int64_col"]].sort_index()
-    result = bf_df.expanding(min_periods=3).sum()
-    snapshot.assert_match(result.sql, "out.sql")
-
-
 def test_compile_window_w_range_rolling(compiler_session, snapshot):
+    # TODO: use `duration_col` instead.
     values = np.arange(20)
     pd_df = pd.DataFrame(
         {

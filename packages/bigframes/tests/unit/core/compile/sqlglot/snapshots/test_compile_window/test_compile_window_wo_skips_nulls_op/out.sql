@@ -7,17 +7,14 @@ WITH `bfcte_0` AS (
   SELECT
     *,
     CASE
-      WHEN SUM(CAST(NOT `bfcol_0` IS NULL AS INT64)) OVER (
+      WHEN COUNT(CAST(NOT `bfcol_0` IS NULL AS INT64)) OVER (
         ORDER BY `bfcol_1` IS NULL ASC NULLS LAST, `bfcol_1` ASC NULLS LAST
-        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-      ) < 3
+        ROWS BETWEEN 4 PRECEDING AND CURRENT ROW
+      ) < 5
       THEN NULL
-      ELSE COALESCE(
-        SUM(`bfcol_0`) OVER (
-          ORDER BY `bfcol_1` IS NULL ASC NULLS LAST, `bfcol_1` ASC NULLS LAST
-          ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-        ),
-        0
+      ELSE COUNT(`bfcol_0`) OVER (
+        ORDER BY `bfcol_1` IS NULL ASC NULLS LAST, `bfcol_1` ASC NULLS LAST
+        ROWS BETWEEN 4 PRECEDING AND CURRENT ROW
       )
     END AS `bfcol_4`
   FROM `bfcte_0`

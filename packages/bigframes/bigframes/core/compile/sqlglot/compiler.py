@@ -336,6 +336,9 @@ class SQLGlotCompiler:
                             this=is_observation_expr, expression=expr
                         )
                 is_observation = ir._cast(is_observation_expr, "INT64")
+                observation_count = windows.apply_window_if_present(
+                    sge.func("SUM", is_observation), window_spec
+                )
             else:
                 # Operations like count treat even NULLs as valid observations
                 # for the sake of min_periods notnull is just used to convert
@@ -344,10 +347,10 @@ class SQLGlotCompiler:
                     sge.Not(this=sge.Is(this=inputs[0], expression=sge.Null())),
                     "INT64",
                 )
+                observation_count = windows.apply_window_if_present(
+                    sge.func("COUNT", is_observation), window_spec
+                )
 
-            observation_count = windows.apply_window_if_present(
-                sge.func("SUM", is_observation), window_spec
-            )
             clauses.append(
                 (
                     observation_count < sge.convert(window_spec.min_periods),
