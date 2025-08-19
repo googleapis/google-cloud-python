@@ -89,6 +89,7 @@ def scalar_types_table_schema() -> typing.Sequence[bigquery.SchemaField]:
         bigquery.SchemaField("string_col", "STRING"),
         bigquery.SchemaField("time_col", "TIME"),
         bigquery.SchemaField("timestamp_col", "TIMESTAMP"),
+        bigquery.SchemaField("duration_col", "INTEGER"),
     ]
 
 

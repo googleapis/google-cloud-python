@@ -124,14 +124,14 @@ def test_sub_numeric(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_sub_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalar_types_df[["timestamp_col", "date_col"]]
-    timedelta = pd.Timedelta(1, unit="d")
+    bf_df = scalar_types_df[["timestamp_col", "duration_col", "date_col"]]
+    bf_df["duration_col"] = bpd.to_timedelta(bf_df["duration_col"], unit="us")
 
-    bf_df["date_sub_timedelta"] = bf_df["date_col"] - timedelta
-    bf_df["timestamp_sub_timedelta"] = bf_df["timestamp_col"] - timedelta
+    bf_df["date_sub_timedelta"] = bf_df["date_col"] - bf_df["duration_col"]
+    bf_df["timestamp_sub_timedelta"] = bf_df["timestamp_col"] - bf_df["duration_col"]
     bf_df["timestamp_sub_date"] = bf_df["date_col"] - bf_df["date_col"]
     bf_df["date_sub_timestamp"] = bf_df["timestamp_col"] - bf_df["timestamp_col"]
-    bf_df["timedelta_sub_timedelta"] = timedelta - timedelta
+    bf_df["timedelta_sub_timedelta"] = bf_df["duration_col"] - bf_df["duration_col"]
 
     snapshot.assert_match(bf_df.sql, "out.sql")
 
@@ -157,11 +157,11 @@ def test_mul_numeric(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_mul_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
-    bf_df = scalar_types_df[["timestamp_col", "int64_col"]]
-    timedelta = pd.Timedelta(1, unit="d")
+    bf_df = scalar_types_df[["timestamp_col", "int64_col", "duration_col"]]
+    bf_df["duration_col"] = bpd.to_timedelta(bf_df["duration_col"], unit="us")
 
-    bf_df["timedelta_mul_numeric"] = timedelta * bf_df["int64_col"]
-    bf_df["numeric_mul_timedelta"] = bf_df["int64_col"] * timedelta
+    bf_df["timedelta_mul_numeric"] = bf_df["duration_col"] * bf_df["int64_col"]
+    bf_df["numeric_mul_timedelta"] = bf_df["int64_col"] * bf_df["duration_col"]
 
     snapshot.assert_match(bf_df.sql, "out.sql")
 

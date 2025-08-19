@@ -22,6 +22,7 @@ import sqlglot
 import sqlglot.expressions as sge
 
 from bigframes import operations as ops
+from bigframes.core.compile.constants import UNIT_TO_US_CONVERSION_FACTORS
 from bigframes.core.compile.sqlglot.expressions.op_registration import OpRegistration
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
@@ -618,7 +619,11 @@ def _(op: ops.ToTimestampOp, expr: TypedExpr) -> sge.Expression:
 
 @UNARY_OP_REGISTRATION.register(ops.ToTimedeltaOp)
 def _(op: ops.ToTimedeltaOp, expr: TypedExpr) -> sge.Expression:
-    return sge.Interval(this=expr.expr, unit=sge.Identifier(this="SECOND"))
+    value = expr.expr
+    factor = UNIT_TO_US_CONVERSION_FACTORS[op.unit]
+    if factor != 1:
+        value = sge.Mul(this=value, expression=sge.convert(factor))
+    return sge.Interval(this=value, unit=sge.Identifier(this="MICROSECOND"))
 
 
 @UNARY_OP_REGISTRATION.register(ops.UnixMicros)

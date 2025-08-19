@@ -599,9 +599,11 @@ def test_to_timestamp(scalar_types_df: bpd.DataFrame, snapshot):
 
 def test_to_timedelta(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col"]]
-    sql = _apply_unary_op(bf_df, ops.ToTimedeltaOp("s"), "int64_col")
+    bf_df["duration_us"] = bpd.to_timedelta(bf_df["int64_col"], "us")
+    bf_df["duration_s"] = bpd.to_timedelta(bf_df["int64_col"], "s")
+    bf_df["duration_w"] = bpd.to_timedelta(bf_df["int64_col"], "W")
 
-    snapshot.assert_match(sql, "out.sql")
+    snapshot.assert_match(bf_df.sql, "out.sql")
 
 
 def test_unix_micros(scalar_types_df: bpd.DataFrame, snapshot):

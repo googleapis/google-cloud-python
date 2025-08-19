@@ -13,7 +13,8 @@ WITH `bfcte_0` AS (
     `rowindex_2` AS `bfcol_10`,
     `string_col` AS `bfcol_11`,
     `time_col` AS `bfcol_12`,
-    `timestamp_col` AS `bfcol_13`
+    `timestamp_col` AS `bfcol_13`,
+    `duration_col` AS `bfcol_14`
   FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 )
 SELECT
@@ -31,5 +32,6 @@ SELECT
   `bfcol_10` AS `rowindex_2`,
   `bfcol_11` AS `string_col`,
   `bfcol_12` AS `time_col`,
-  `bfcol_13` AS `timestamp_col`
+  `bfcol_13` AS `timestamp_col`,
+  `bfcol_14` AS `duration_col`
 FROM `bfcte_0`
