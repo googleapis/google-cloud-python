@@ -1122,7 +1122,8 @@ class SpannerDialect(DefaultDialect):
 
         sql = """
             SELECT col.table_schema, col.table_name, col.column_name,
-                col.spanner_type, col.is_nullable, col.generation_expression
+                col.spanner_type, col.is_nullable, col.generation_expression,
+                col.column_default
             FROM information_schema.columns as col
             JOIN information_schema.tables AS t
                 USING (TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME)
@@ -1150,7 +1151,7 @@ class SpannerDialect(DefaultDialect):
                     "name": col[2],
                     "type": self._designate_type(col[3]),
                     "nullable": col[4] == "YES",
-                    "default": None,
+                    "default": col[6] if col[6] is not None else None,
                 }
 
                 if col[5] is not None:

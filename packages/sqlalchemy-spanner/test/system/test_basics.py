@@ -34,7 +34,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Session, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.types import REAL
-from sqlalchemy.testing import eq_, is_true, is_not_none
+from sqlalchemy.testing import eq_, is_true, is_not_none, is_none
 from sqlalchemy.testing.plugin.plugin_base import fixtures
 
 
@@ -47,7 +47,7 @@ class TestBasics(fixtures.TablesTest):
             Column("number", Integer),
             Column("name", String(20)),
             Column("alternative_name", String(20)),
-            Column("prime", Boolean),
+            Column("prime", Boolean, server_default=text("FALSE")),
             Column("ln", REAL),
             PrimaryKeyConstraint("number"),
         )
@@ -120,12 +120,15 @@ class TestBasics(fixtures.TablesTest):
         eq_(5, len(table.columns))
         eq_("number", table.columns[0].name)
         eq_(BIGINT, type(table.columns[0].type))
+        is_none(table.columns[0].server_default)
         eq_("name", table.columns[1].name)
         eq_(String, type(table.columns[1].type))
         eq_("alternative_name", table.columns[2].name)
         eq_(String, type(table.columns[2].type))
         eq_("prime", table.columns[3].name)
         eq_(Boolean, type(table.columns[3].type))
+        is_not_none(table.columns[3].server_default)
+        eq_("FALSE", table.columns[3].server_default.arg.text)
         eq_("ln", table.columns[4].name)
         eq_(REAL, type(table.columns[4].type))
         eq_(1, len(table.indexes))
