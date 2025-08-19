@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.14.0...v1.15.0) (2025-08-19)
+
+
+### Features
+
+* Add license metadata to setup.py ([#712](https://github.com/googleapis/python-spanner-sqlalchemy/issues/712)) ([8f2e97e](https://github.com/googleapis/python-spanner-sqlalchemy/commit/8f2e97e527b00bfb6db40d946a21f522177eab7b))
+* Enable SQLAlchemy 2.0's insertmany feature ([#721](https://github.com/googleapis/python-spanner-sqlalchemy/issues/721)) ([1fe9f4b](https://github.com/googleapis/python-spanner-sqlalchemy/commit/1fe9f4b0a2f94d66c925d1d60a1fd83fc45e9c89))
+* Support informational foreign keys ([#719](https://github.com/googleapis/python-spanner-sqlalchemy/issues/719)) ([c565ae1](https://github.com/googleapis/python-spanner-sqlalchemy/commit/c565ae12b1b429c66037e9cd0c4be427a60ab5b0))
+
+
+### Bug Fixes
+
+* Report column defaults in introspection ([#744](https://github.com/googleapis/python-spanner-sqlalchemy/issues/744)) ([309c641](https://github.com/googleapis/python-spanner-sqlalchemy/commit/309c64179d668dbe24881e6d7fb4783fb1d8bbf2)), closes [#730](https://github.com/googleapis/python-spanner-sqlalchemy/issues/730)
+* Respect existing server default in alter column DDL ([#733](https://github.com/googleapis/python-spanner-sqlalchemy/issues/733)) ([1f8a25f](https://github.com/googleapis/python-spanner-sqlalchemy/commit/1f8a25f63286c1241141985d4f10f558e929a272))
+
 ## [1.14.0](https://github.com/googleapis/python-spanner-sqlalchemy/compare/v1.13.1...v1.14.0) (2025-06-27)
 
 
