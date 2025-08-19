@@ -3109,6 +3109,26 @@ def test_where_with_default(scalars_df_index, scalars_pandas_df_index):
     )
 
 
+def test_where_with_callable(scalars_df_index, scalars_pandas_df_index):
+    def _is_positive(x):
+        return x > 0
+
+    # Both cond and other are callable.
+    bf_result = (
+        scalars_df_index["int64_col"]
+        .where(cond=_is_positive, other=lambda x: x * 10)
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_index["int64_col"].where(
+        cond=_is_positive, other=lambda x: x * 10
+    )
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
 @pytest.mark.parametrize(
     ("ordered"),
     [

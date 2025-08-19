@@ -2930,3 +2930,42 @@ def test_remote_function_df_where_series(session, dataset_id, scalars_dfs):
         cleanup_function_assets(
             is_sum_positive_series_mf, session.bqclient, ignore_failures=False
         )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_series_where(session, dataset_id, scalars_dfs):
+    try:
+
+        def _ten_times(x):
+            return x * 10
+
+        ten_times_mf = session.remote_function(
+            input_types=float,
+            output_type=float,
+            dataset=dataset_id,
+            reuse=False,
+            cloud_function_service_account="default",
+        )(_ten_times)
+
+        scalars, scalars_pandas = scalars_dfs
+
+        bf_int64 = scalars["float64_col"]
+        bf_int64_filtered = bf_int64.dropna()
+        pd_int64 = scalars_pandas["float64_col"]
+        pd_int64_filtered = pd_int64.dropna()
+
+        # The cond is not a callable and the other is a callable (remote
+        # function) in series.where method.
+        bf_result = bf_int64_filtered.where(
+            cond=bf_int64_filtered < 0, other=ten_times_mf
+        ).to_pandas()
+        pd_result = pd_int64_filtered.where(
+            cond=pd_int64_filtered < 0, other=_ten_times
+        )
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+    finally:
+        # Clean up the gcp assets created for the remote function.
+        cleanup_function_assets(ten_times_mf, session.bqclient, ignore_failures=False)

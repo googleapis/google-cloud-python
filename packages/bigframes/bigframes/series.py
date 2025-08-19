@@ -1478,7 +1478,23 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             for item in batch_df.squeeze(axis=1).items():
                 yield item
 
+    def _apply_callable(self, condition):
+        """ "Executes the possible callable condition as needed."""
+        if callable(condition):
+            # When it's a bigframes function.
+            if hasattr(condition, "bigframes_bigquery_function"):
+                return self.apply(condition)
+            # When it's a plain Python function.
+            else:
+                return self.apply(condition, by_row=False)
+
+        # When it's not a callable.
+        return condition
+
     def where(self, cond, other=None):
+        cond = self._apply_callable(cond)
+        other = self._apply_callable(other)
+
         value_id, cond_id, other_id, block = self._align3(cond, other)
         block, result_id = block.project_expr(
             ops.where_op.as_expr(value_id, cond_id, other_id)

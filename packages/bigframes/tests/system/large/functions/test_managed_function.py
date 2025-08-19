@@ -1075,3 +1075,39 @@ def test_managed_function_df_where_series(session, dataset_id, scalars_dfs):
         cleanup_function_assets(
             is_sum_positive_series_mf, session.bqclient, ignore_failures=False
         )
+
+
+def test_managed_function_series_where(session, dataset_id, scalars_dfs):
+    try:
+
+        # The return type has to be bool type for callable where condition.
+        def _is_positive(s):
+            return s + 1000 > 0
+
+        is_positive_mf = session.udf(
+            input_types=int,
+            output_type=bool,
+            dataset=dataset_id,
+            name=prefixer.create_prefix(),
+        )(_is_positive)
+
+        scalars, scalars_pandas = scalars_dfs
+
+        bf_int64 = scalars["int64_col"]
+        bf_int64_filtered = bf_int64.dropna()
+        pd_int64 = scalars_pandas["int64_col"]
+        pd_int64_filtered = pd_int64.dropna()
+
+        # The cond is a callable (managed function) and the other is not a
+        # callable in series.where method.
+        bf_result = bf_int64_filtered.where(
+            cond=is_positive_mf, other=-bf_int64_filtered
+        ).to_pandas()
+        pd_result = pd_int64_filtered.where(cond=_is_positive, other=-pd_int64_filtered)
+
+        # Ignore any dtype difference.
+        pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+    finally:
+        # Clean up the gcp assets created for the managed function.
+        cleanup_function_assets(is_positive_mf, session.bqclient, ignore_failures=False)
